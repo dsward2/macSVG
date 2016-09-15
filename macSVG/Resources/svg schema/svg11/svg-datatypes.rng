@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Datatypes Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<define name="SVG.ID.datatype">
+ <data type="ID"/>
+</define>
+
+<define name="SVG.Text.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Length.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Lengths.datatype">
+ <text/>
+</define>
+
+<define name="SVG.URI.datatype">
+ <data type="anyURI"/>
+</define>
+
+<define name="SVG.PreserveAspectRatioSpec.datatype">
+ <text/>
+</define>
+
+<define name="SVG.OpacityValue.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Integer.datatype">
+ <data type="integer"/>
+</define>
+
+<define name="SVG.Coordinate.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Coordinates.datatype">
+ <text/>
+</define>
+
+<define name="SVG.LanguageCode.datatype">
+ <data type="language"/>
+</define>
+
+<define name="SVG.LanguageCodes.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Color.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Script.datatype">
+ <text/>
+</define>
+
+<define name="SVG.ContentType.datatype">
+ <text/>
+</define>
+
+<define name="SVG.ViewBoxSpec.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Boolean.datatype">
+ <text/>
+</define>
+
+<define name="SVG.Number.datatype">
+ <data type="decimal"/>
+</define>
+
+<define name="SVG.Numbers.datatype">
+ <text/>
+</define>
+
+<define name="SVG.ClipFillRule.datatype">
+ <text/>
+</define>
+
+<define name="SVG.SVGColor.datatype">
+ <text/>
+</define>
+
+<define name="SVG.TransformList.datatype">
+ <text/>
+</define>
+
+<define name="SVG.PathData.datatype">
+ <text/>
+</define>
+
+
+</grammar>

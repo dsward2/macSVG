@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- SVG 1.1 Basic Document Model Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1 (Basic)
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" ns="http://www.w3.org/2000/svg">
+
+
+<!-- Content Models (Default)  -->
+
+<define name="SVG.Cursor.class">
+ <empty/>
+</define>
+
+<define name="SVG.Marker.class">
+ <empty/>
+</define>
+
+</grammar>

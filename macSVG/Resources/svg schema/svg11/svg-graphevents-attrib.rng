@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Graphical Element Events Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.onfocusin.attrib">
+ <optional>
+  <attribute name="onfocusin">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onfocusout.attrib">
+ <optional>
+  <attribute name="onfocusout">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onactivate.attrib">
+ <optional>
+  <attribute name="onactivate">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onclick.attrib">
+ <optional>
+  <attribute name="onclick">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onmousedown.attrib">
+ <optional>
+  <attribute name="onmousedown">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onmouseup.attrib">
+ <optional>
+  <attribute name="onmouseup">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onmouseover.attrib">
+ <optional>
+  <attribute name="onmouseover">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onmousemove.attrib">
+ <optional>
+  <attribute name="onmousemove">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onmouseout.attrib">
+ <optional>
+  <attribute name="onmouseout">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.onload.attrib">
+ <optional>
+  <attribute name="onload">
+   <ref name="SVG.Script.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.GraphicalEvents.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.GraphicalEvents.attrib" combine="interleave">
+ <ref name="SVG.onfocusin.attrib"/>
+ <ref name="SVG.onfocusout.attrib"/>
+ <ref name="SVG.onactivate.attrib"/>
+ <ref name="SVG.onclick.attrib"/>
+ <ref name="SVG.onmousedown.attrib"/>
+ <ref name="SVG.onmouseup.attrib"/>
+ <ref name="SVG.onmouseover.attrib"/>
+ <ref name="SVG.onmousemove.attrib"/>
+ <ref name="SVG.onmouseout.attrib"/>
+ <ref name="SVG.onload.attrib"/>
+ <ref name="SVG.GraphicalEvents.extra.attrib"/>
+</define>
+
+</grammar>

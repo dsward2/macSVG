@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Basic Clip Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.ClipPathValue.datatype">
+  <text/>
+</define>
+
+<!-- set of elements -->
+
+<define name="SVG.Clip.extra.class">
+  <empty/>
+</define>
+
+<define name="SVG.Clip.class">
+  <choice>
+   <ref name="SVG.clipPath"/>
+   <ref name="SVG.Clip.extra.class"/>
+  </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.Clip.extra.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.Clip.attrib" combine="interleave">
+   <optional>
+    <attribute name="clip-path">
+     <ref name="SVG.ClipPathValue.datatype"/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="clip-rule">
+     <ref name="SVG.ClipFillRule.datatype"/>
+    </attribute>
+   </optional>
+   <ref name="SVG.Clip.extra.attrib"/>
+</define>
+
+<!-- clipPath element -->
+
+<define name="SVG.clipPath">
+  <element name="clipPath">
+    <zeroOrMore>
+      <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <interleave>
+     <zeroOrMore>
+      <choice>
+       <ref name="SVG.Animation.class"/>
+       <ref name="SVG.Use.class"/>
+      </choice>
+     </zeroOrMore>
+     <optional>
+      <ref name="SVG.Shape.class"/>
+     </optional>
+    </interleave> 
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.Style.attrib"/>
+    <ref name="SVG.Text.attrib"/>
+    <ref name="SVG.TextContent.attrib"/>
+    <ref name="SVG.Font.attrib"/>
+    <ref name="SVG.Paint.attrib"/>
+    <ref name="SVG.Color.attrib"/>
+    <ref name="SVG.Opacity.attrib"/>
+    <ref name="SVG.Graphics.attrib"/>
+    <ref name="SVG.Clip.attrib"/>
+    <ref name="SVG.Mask.attrib"/>
+    <ref name="SVG.Filter.attrib"/>
+    <ref name="SVG.Cursor.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <optional>
+      <attribute name="transform">
+        <ref name="SVG.TransformList.datatype"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="clipPathUnits">
+        <choice>
+          <value>userSpaceOnUse</value>
+          <value>objectBoundingBox</value>
+        </choice>
+      </attribute>
+    </optional>
+  </element>
+</define>
+
+
+</grammar>

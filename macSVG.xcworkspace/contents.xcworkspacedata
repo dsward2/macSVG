@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:/Users/dsward/Documents/ArkPhone_LLC_Projects/macSVG_Project/macSVG.xcworkspace">
+   </FileRef>
+   <FileRef
+      location = "container:/Users/dsward/Documents/ArkPhone_LLC_Projects/macSVG_Project/macSVG.xcodeproj">
+   </FileRef>
+   <Group
+      location = "container:MacSVG Plugin Projects"
+      name = "MacSVG Plugin Projects">
+      <Group
+         location = "container:MacSVG Plugin Projects/macSVGPlugin Framework"
+         name = "MacSVG Plugin Framework">
+         <FileRef
+            location = "group:MacSVGPlugin.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:MacSVG Plugin Projects/macSVG Plugins"
+         name = "MacSVG Plugins">
+         <FileRef
+            location = "group:AnimateElementEditor/AnimateElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:AnimateMotionElementEditor/AnimateMotionElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:AnimateTransformElementEditor/AnimateTransformElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:BezierCircleGenerator/BezierCircleGenerator.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:ColorAttributeEditorPlugin/ColorAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:CoordinatesAttributeEditor/CoordinatesAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:ImageElementEditor/ImageElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:IRIReferenceAttributeEditor/IRIReferenceAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:PathElementEditorPlugin/PathElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:PathElementShapeAnimationEditor/PathElementShapeAnimationEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:PieChartGenerator/PieChartGenerator.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:PointsAttributeEditor/PointsAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:SVGAttributeEditor/SVGAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:SVGElementEditor/SVGElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:TextElementEditor/TextElementEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:TransformAttributeEditorPlugin/TransformAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:TransformElementsDialog/TransformElementsDialog.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
+</Workspace>

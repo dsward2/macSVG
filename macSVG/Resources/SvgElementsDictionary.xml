@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<svgElementsDictionary>
+  <svgElement id="a">
+    <docref>linking.html#Links</docref>
+    <prototype>a xlink:href="http://www.w3c.org/Graphics/SVG/"</prototype>
+  </svgElement>
+  <svgElement id="altGlyph">
+    <docref>text.html#AlternateGlyphs</docref>
+    <prototype>altGlyph</prototype>
+  </svgElement>
+  <svgElement id="altGlyphDef">
+    <docref>text.html#AlternateGlyphs</docref>
+    <prototype>altGlyphDef</prototype>
+  </svgElement>
+  <svgElement id="altGlyphItem">
+    <docref>text.html#AlternateGlyphs</docref>
+    <prototype>altGlyphItem</prototype>
+  </svgElement>
+  <svgElement id="animate">
+    <docref>animate.html#AnimateElement</docref>
+    <prototype>animate attributeName="x" attributeType="XML" begin="0s" dur="1s" values="100;200;100;" repeatCount="indefinite" additive="replace" accumulate="none" fill="freeze"</prototype>
+  </svgElement>
+  <svgElement id="animateColor">
+    <docref>animate.html#AnimateColorElement</docref>
+    <prototype>animateColor attributeName="fill" attributeType="XML" values="red;green;red;" begin="0s" dur="1s" repeatCount="indefinite" additive="replace" accumulate="none" fill="freeze"</prototype>
+  </svgElement>
+  <svgElement id="animateMotion">
+    <docref>animate.html#AnimateMotionElement</docref>
+    <prototype>animateMotion begin="0s" dur="3s" values="50 50;300 300;" repeatCount="indefinite" calcMode="" keyTimes="0;1;" keySplines="0.5 0 0.5 1"  additive="replace" accumulate="none" fill="freeze"</prototype>
+  </svgElement>
+  <svgElement id="animateTransform">
+    <docref>animate.html#AnimateTransformElement</docref>
+    <prototype>animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 320 372;360 320 372;" begin="0s" dur="6s" repeatCount="indefinite" additive="replace" accumulate="none" fill="freeze"</prototype>
+  </svgElement>
+  <svgElement id="circle">
+    <docref>shapes.html#CircleElement</docref>
+    <prototype>circle cx="100" cy="100" r="50" stroke-width="3" stroke="red" fill="blue" transform=""</prototype>
+  </svgElement>
+  <svgElement id="clipPath">
+    <docref>masking.html#EstablishingANewClippingPath</docref>
+    <prototype>clipPath</prototype>
+  </svgElement>
+  <svgElement id="color-profile">
+    <docref>color.html#ColorProfileElement</docref>
+    <prototype>color-profile</prototype>
+  </svgElement>
+  <svgElement id="cursor">
+    <docref>interact.html#CursorElement</docref>
+    <prototype>cursor</prototype>
+  </svgElement>
+  <svgElement id="defs">
+    <docref>struct.html#DefsElement</docref>
+    <prototype>defs</prototype>
+  </svgElement>
+  <svgElement id="desc">
+    <docref>struct.html#DescriptionAndTitleElements</docref>
+    <prototype>desc</prototype>
+  </svgElement>
+  <svgElement id="ellipse">
+    <docref>shapes.html#EllipseElement</docref>
+    <prototype>ellipse  cx="100" cy="100" rx="50" ry="30" stroke-width="3" stroke="red" fill="blue" transform=""</prototype>
+  </svgElement>
+  <svgElement id="feBlend">
+    <docref>filters.html#feBlend</docref>
+    <prototype>feBlend</prototype>
+  </svgElement>
+  <svgElement id="feColorMatrix">
+    <docref>filters.html#feColorMatrix</docref>
+    <prototype>feColorMatrix</prototype>
+  </svgElement>
+  <svgElement id="feComponentTransfer">
+    <docref>filters.html#feComponentTransfer</docref>
+    <prototype>feComponentTransfer</prototype>
+  </svgElement>
+  <svgElement id="feComposite">
+    <docref>filters.html#feComposite</docref>
+    <prototype>feComposite</prototype>
+  </svgElement>
+  <svgElement id="feConvolveMatrix">
+    <docref>filters.html#feConvolveMatrix</docref>
+    <prototype>feConvolveMatrix</prototype>
+  </svgElement>
+  <svgElement id="feDiffuseLighting">
+    <docref>filters.html#feDiffuseLighting</docref>
+    <prototype>feDiffuseLighting</prototype>
+  </svgElement>
+  <svgElement id="feDisplacementMap">
+    <docref>filters.html#feDisplacementMap</docref>
+    <prototype>feDisplacementMap</prototype>
+  </svgElement>
+  <svgElement id="feDistantLight">
+    <docref>filters.html#feDistantLight</docref>
+    <prototype>feDistantLight</prototype>
+  </svgElement>
+  <svgElement id="feFlood">
+    <docref>filters.html#feFlood</docref>
+    <prototype>feFlood</prototype>
+  </svgElement>
+  <svgElement id="feFuncA">
+    <docref>filters.html#feFuncAElement</docref>
+    <prototype>feFuncA</prototype>
+  </svgElement>
+  <svgElement id="feFuncB">
+    <docref>filters.html#feFuncBElement</docref>
+    <prototype>feFuncB</prototype>
+  </svgElement>
+  <svgElement id="feFuncG">
+    <docref>filters.html#feFuncGElement</docref>
+    <prototype>feFuncG</prototype>
+  </svgElement>
+  <svgElement id="feFuncR">
+    <docref>filters.html#feFuncRElement</docref>
+    <prototype>feFuncR</prototype>
+  </svgElement>
+  <svgElement id="feGaussianBlur">
+    <docref>filters.html#feGaussianBlur</docref>
+    <prototype>feGaussianBlur</prototype>
+  </svgElement>
+  <svgElement id="feImage">
+    <docref>filters.html#feImage</docref>
+    <prototype>feImage</prototype>
+  </svgElement>
+  <svgElement id="feMerge">
+    <docref>filters.html#feMerge</docref>
+    <prototype>feMerge</prototype>
+  </svgElement>
+  <svgElement id="feMergeNode">
+    <docref>filters.html#feMergeNodeElement</docref>
+    <prototype>feMergeNode</prototype>
+  </svgElement>
+  <svgElement id="feMorphology">
+    <docref>filters.html#feMorphology</docref>
+    <prototype>feMorphology</prototype>
+  </svgElement>
+  <svgElement id="feOffset">
+    <docref>filters.html#feOffset</docref>
+    <prototype>feOffset</prototype>
+  </svgElement>
+  <svgElement id="fePointLight">
+    <docref>filters.html#fePointLight</docref>
+    <prototype>fePointLight</prototype>
+  </svgElement>
+  <svgElement id="feSpecularLighting">
+    <docref>filters.html#feSpecularLighting</docref>
+    <prototype>feSpecularLighting</prototype>
+  </svgElement>
+  <svgElement id="feSpotLight">
+    <docref>filters.html#feSpotLight</docref>
+    <prototype>feSpotLight</prototype>
+  </svgElement>
+  <svgElement id="feTile">
+    <docref>filters.html#feTile</docref>
+    <prototype>feTile</prototype>
+  </svgElement>
+  <svgElement id="feTurbulence">
+    <docref>filters.html#feTurbulence</docref>
+    <prototype>feTurbulence</prototype>
+  </svgElement>
+  <svgElement id="filter">
+    <docref>filters.html#FilterElement</docref>
+    <prototype>filter</prototype>
+  </svgElement>
+  <svgElement id="font">
+    <docref>fonts.html#FontElement</docref>
+    <prototype>font</prototype>
+  </svgElement>
+  <svgElement id="font-face">
+    <docref>fonts.html#FontFaceElement</docref>
+    <prototype>font-face</prototype>
+  </svgElement>
+  <svgElement id="font-face-format">
+    <docref>fonts.html#FontFaceFormatElement</docref>
+    <prototype>font-face-format</prototype>
+  </svgElement>
+  <svgElement id="font-face-name">
+    <docref>fonts.html#FontFaceNameElement</docref>
+    <prototype>font-face-name</prototype>
+  </svgElement>
+  <svgElement id="font-face-src">
+    <docref>fonts.html#FontFaceSrcElement</docref>
+    <prototype>font-face-src</prototype>
+  </svgElement>
+  <svgElement id="font-face-uri">
+    <docref>fonts.html#FontFaceNameElement</docref>
+    <prototype>font-face-uri</prototype>
+  </svgElement>
+  <svgElement id="foreignObject">
+    <docref>extend.html#ForeignObjectElement</docref>
+    <prototype>foreignObject x="100" y="100" width="100" height="100" transform=""</prototype>
+  </svgElement>
+  <svgElement id="g">
+    <docref>struct.html#GElement</docref>
+    <prototype>g transform=""</prototype>
+  </svgElement>
+  <svgElement id="glyph">
+    <docref>fonts.html#GlyphElement</docref>
+    <prototype>glyph</prototype>
+  </svgElement>
+  <svgElement id="glyphRef">
+    <docref>fonts.html#GlyphElement</docref>
+    <prototype>glyphRef</prototype>
+  </svgElement>
+  <svgElement id="hkern">
+    <docref>fonts.html#KernElements</docref>
+    <prototype>hkern</prototype>
+  </svgElement>
+  <svgElement id="image">
+    <docref>struct.html#ImageElement</docref>
+    <prototype>image xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" x="50" y="50" width="161" height="240" transform="" preserveAspectRatio="xMidYMid meet"</prototype>
+  </svgElement>
+  <svgElement id="line">
+    <docref>shapes.html#LineElement</docref>
+    <prototype>line x1="20" y1="20" x2="100" y2="100" stroke-width="5" stroke="black" transform=""</prototype>
+  </svgElement>
+  <svgElement id="linearGradient">
+    <docref>pservers.html#LinearGradientElement</docref>
+    <prototype>linearGradient id="aGradient" x1="0%" y1="0%" x2="0%" y2="100%"</prototype>
+  </svgElement>
+  <svgElement id="marker">
+    <docref>painting.html#MarkerElement</docref>
+    <prototype>marker viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto" overflow="visible"</prototype>
+  </svgElement>
+  <svgElement id="mask">
+    <docref>masking.html#MaskElement</docref>
+    <prototype>mask</prototype>
+  </svgElement>
+  <svgElement id="metadata">
+    <docref>metadata.html#MetadataElement</docref>
+    <prototype>metadata</prototype>
+  </svgElement>
+  <svgElement id="missing-glyph">
+    <docref>fonts.html#MissingGlyphElement</docref>
+    <prototype>missing-glyph</prototype>
+  </svgElement>
+  <svgElement id="mpath">
+    <docref>animate.html#mpathElement</docref>
+    <prototype>mpath xlink:href="#aPathElement"</prototype>
+  </svgElement>
+  <svgElement id="path">
+    <docref>paths.html#PathElement</docref>
+    <prototype>path d="M 100 100 L 300 100 L 200 300 z" fill="red" stroke="blue" stroke-width="5" transform="" stroke-linecap="butt" stroke-linejoin="miter"</prototype>
+  </svgElement>
+  <svgElement id="pattern">
+    <docref>pservers.html#PatternElement</docref>
+    <prototype>pattern</prototype>
+  </svgElement>
+  <svgElement id="polygon">
+    <docref>shapes.html#PolygonElement</docref>
+    <prototype>polygon points="60,20 100,40 100,80 60,100 20,80 20,40" fill="red" stroke="blue" stroke-width="5"  transform=""</prototype>
+  </svgElement>
+  <svgElement id="polyline">
+    <docref>shapes.html#PolylineElement</docref>
+    <prototype>polyline fill="none" stroke="black" points="20,100 40,60 70,80 100,20" transform=""</prototype>
+  </svgElement>
+  <svgElement id="radialGradient">
+    <docref>pservers.html#RadialGradientElement</docref>
+    <prototype>radialGradient id="aGradient"</prototype>
+  </svgElement>
+  <svgElement id="rect">
+    <docref>shapes.html#RectElement</docref>
+    <prototype>rect x="100" y="100" width="100" height="100" stroke-width="3" stroke="red" fill="blue" transform=""</prototype>
+  </svgElement>
+  <svgElement id="script">
+    <docref>script.html#ScriptElement</docref>
+    <prototype>script  type="application/ecmascript"</prototype>
+  </svgElement>
+  <svgElement id="set">
+    <docref>animate.html#SetElement</docref>
+    <prototype>set attributeName="y" attributeType="XML" begin="0s" dur="1s" from="100" to="200" repeatCount="indefinite"</prototype>
+  </svgElement>
+  <svgElement id="stop">
+    <docref>pservers.html#StopElement</docref>
+    <prototype>stop offset="25%" stop-color="#00ff00"</prototype>
+  </svgElement>
+  <svgElement id="style">
+    <docref>styling.html#StyleElement</docref>
+    <prototype>style</prototype>
+  </svgElement>
+  <svgElement id="svg">
+    <docref>struct.html#SVGElement</docref>
+    <prototype>svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" cursor="crosshair" height="50px" id="svg_document" width="320px" version="1.1" preserveAspectRatio="none" viewBox="0 0 320 50"</prototype>
+  </svgElement>
+  <svgElement id="switch">
+    <docref>struct.html#SwitchElement</docref>
+    <prototype>switch</prototype>
+  </svgElement>
+  <svgElement id="symbol">
+    <docref>struct.html#SymbolElement</docref>
+    <prototype>symbol</prototype>
+  </svgElement>
+  <svgElement id="text">
+    <docref>text.html#TextElement</docref>
+    <prototype>text x="150" y="150" font-family="Verdana" font-size="55" text-anchor="middle" transform=""</prototype>
+  </svgElement>
+  <svgElement id="textPath">
+    <docref>text.html#TextPathElement</docref>
+    <prototype>textPath startOffset="0" xlink:href="#aPathID"</prototype>
+  </svgElement>
+  <svgElement id="title">
+    <docref>struct.html#DescriptionAndTitleElements</docref>
+    <prototype>title</prototype>
+  </svgElement>
+  <svgElement id="tref">
+    <docref>text.html#TRefElement</docref>
+    <prototype>tref</prototype>
+  </svgElement>
+  <svgElement id="tspan">
+    <docref>text.html#TSpanElement</docref>
+    <prototype>tspan dx="0" dy="0" rotate="0" style=""</prototype>
+  </svgElement>
+  <svgElement id="use">
+    <docref>struct.html#UseElement</docref>
+    <prototype>use x="100" y="100" width="100" height="100" transform="" xlink:href="#aElementID"</prototype>
+  </svgElement>
+  <svgElement id="view">
+    <docref>linking.html#ViewElement</docref>
+    <prototype>view</prototype>
+  </svgElement>
+  <svgElement id="vkern">
+    <docref>fonts.html#KernElements</docref>
+    <prototype>vkern</prototype>
+  </svgElement>
+</svgElementsDictionary>

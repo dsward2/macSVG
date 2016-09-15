@@ -1,0 +1,286 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red100\green56\blue32;\red196\green26\blue22;\red92\green38\blue153;
+\red0\green0\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ==================================================================================\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 Version 2 plans:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b0 \cf0 	More usage of XPath for XML search\
+	Handle namespaces properly\
+	Persistent XML/DOM dictionaries with macsvgid keys\
+	Plugin callbacks have single function call with parameters passed and returned by dictionary\
+	Support external plugins directory in ~/Library/ApplicationSupport/macSVG/Plugins\
+	App store support -\
+		Mac App Store receipt validation\
+		code obfuscation\
+		sandbox support\
+\
+Current plugins:\
+AnimateMotionElement\
+ColorAttribute\
+CoordinatesAttribute\
+ImageElement\
+PathAttribute\
+PathElement\
+PathElementShapeAnimation\
+SVGAttribute\
+SVGElement\
+TextElement\
+TransformAttribute\
+\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 To-do list:\
+\pard\pardeftab720\partightenfactor0
+
+\b0 \cf0 \
+	Needed Plugins:\
+		AnimateElement\
+		AnimateColorElement\
+		AnimateMotion\
+		AnimateTransformElement\
+		ClipPathElement\
+		FilterElement\
+		MaskElement\
+		MarkerElement\
+		LinearGradientElement\
+		RadialGradientElement\
+		PatternElement\
+		ScriptElement\
+\
+	New menu-based Plug-ins\
+		Pie chart generator\
+		Text clip path and image\
+\
+	Group items button\
+\
+	Metadata\
+\
+	Open files with network connection - http, scp, sftp\
+	Save files with network connection - scp, sftp\
+	Compress/Decompress svgz\
+\
+	Possible path element plugin functions:\
+		Convert to absolute coordinates - Done\
+		Convert to relative coordinates - Done\
+		Insert Point\
+		Remove Point\
+		Extend Path\
+		Split path\
+		Join paths\
+		Flip path - Partial work done\
+		Mirror path - Done\
+		Reverse path\
+		Close path - Done\
+\
+		Transform path points\
+		Transform selected path points\
+\
+		Scale path coordinates\
+		Subdivide path segment\
+		Delete path segment\
+		Duplicate path\
+		Radial duplicate path\
+		Multiple endpoint select and move\
+\
+	Clip-path\
+	Use path in AnimateMotion\
+	Use path in Text animate - Mostly done\
+	Use path in shape morphing animate - Done\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Revision 5, August 2013\
+\
+\pard\pardeftab720\partightenfactor0
+
+\b\fs48 \cf0 macSVG Technical Specifications
+\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \
+macSVG is an OS X application for creating and editing Scalable Vector Graphics (SVG) documents.\'a0 It is useful for general graphic design purposes, and is especially for efficient production of ads for mobile devices.\
+\
+The XML SVG graphics format is part of the new HTML5 standard for web design, so macSVG files can be viewed on any modern web browser, including mobile devices for iOS and Android.\
+\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 Document model and view:
+\b0 \
+	SVG document stored in an XML DOM structure as the master copy for editing purposes.\
+		The application will automatically enforce the rules for proper XML structure, based on the standard SVG DTD.\
+	The structure and content of the SVG file are represented in a hierarchical outline view.\
+		Elements can be added and re-arranged in the outline view with mouse dragging operations.\
+		Attributes for a selected element are displayed in an editable table view.\
+		Plug-in editor modules will assist the user in setting attribute values, e.g., displaying a color wheel to set color values.\
+	The image is rendered on-screen with a Cocoa WebView, based on the WebKit rendering engine.\
+		The WebView is interactive for drawing and editing graphic elements.\
+		The WebView supports the standard WebKit developer tools for Javascript debugging.\
+	A timeline view will assist the user in animation scripting.\
+		Animation events can be adjusted interactively in the timeline.\
+\
+
+\b Drawing tools:
+\b0 \
+	Rectangle\
+	Circle\
+	Ellipse\
+	Line\
+	Polyline\
+	Polygon\
+	Path, see below\
+	Text\
+	Images\
+\
+
+\b Path functions:
+\b0 \
+	Moveto\
+	Lineto\
+	Horizontal lineto\
+	Vertical lineto\
+	Cubic curves\
+	Smooth cubic curves\
+	Quadratic curves\
+	Smooth quadratic curves\
+	Elliptical arcs\
+	Freestyle path\
+\
+\
+
+\b Live preview:
+\b0 \
+	The frontmost document can be previewed instantly via a desktop web browser, a mobile device web browser, or the iPhone/iPad Simulator.\
+	SVG document access examples:\
+		http://localhost:8080  (To view on the same Mac running macSVG)\
+		http://192.168.1.3:8080 (To view from a remote device, e.g. the iPhone Safari browser.  Substitute the correct IP address for the Mac in the example - but use :8080 as the port number)\
+\
+\
+\
+\
+\
+
+\b Plug-in Development Process:\
+\pard\pardeftab720\partightenfactor0
+
+\b0 \cf0 	In XCode, create a new Cocoa Bundle project from the Bundle template in the Framework & Bundle category.  \
+	For this example, the plugin project product name is "XyzElementEditor" for an element editor, or "XyzAttributeEditor" for an attribute editor.\
+		Company identifier: "com.arkphone"\
+		Framework: Cocoa\
+	Add the "MacSVGPlugin.framework" to the project.\
+	In the plugin target's Build Settings, changer the Wrapper Extension from "bundle" to "plugin".\
+	Create a new Objective-C class as a subclass of MacSVGPlugin, name the class like "XyzElementEditor" or "XyzAttributeEditor".\
+	In XyzElementEditor.h or XyzAttributeEditor.h, verify or add import directive -
+\f1\fs22 \cf2 \CocoaLigature0 \
+\pard\tx560\pardeftab560\pardirnatural\partightenfactor0
+\cf2 			#import \cf3 <MacSVGPlugin/MacSVGPlugin.h>
+\f0\fs24 \cf0 \CocoaLigature1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 	Create a new empty NIB file for the plugin view, named like "XyzElementEditor.xib".\
+	In Interface Builder, set the NIB File's Owner object to your plugin object, e.g. "XyzElementEditor" or "XyzAttributeEditor".\
+	In the NIB's File Inspector, remove the checkbox setting for "Use Auto-Layout".\
+	For element or attribute editors -\
+		In the NIB editor, create a new NSView custom view for the plug-in main view.\
+		In the NIB's Size Inspector, set the dimensions for the plug-in's main view for width=270 and height=346, and enable all of the struts and springs for autosizing the view.\
+		Select File's Owner and use the Connection Inspector to connect the "pluginView" outlet to the main view.\
+		In the main code unit (e.g. XyzPlugin.m), implement one of these mandatory methods, and return a string for valid plug-in for the context, or NULL -\
+\pard\tx560\pardeftab560\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf0 \CocoaLigature0 				For element editors: - (\cf4 NSString\cf0  *)isEditorForElement:(NSXMLElement *)aElement elementName:(\cf4 NSString\cf0  *)elementName\
+				For attribute editors- (\cf4 NSString\cf0  *)isEditorForElement:(NSXMLElement *)aElement elementName:(\cf4 NSString\cf0  *)elementName attribute:(\cf4 NSString\cf0  *)attributeName\
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf0 \CocoaLigature1 	For menu plug-ins -\
+		Implement  
+\f1\fs22 \CocoaLigature0 - (\cf5 BOOL\cf0 )beginMenuPlugIn
+\f0\fs24 \CocoaLigature1 \
+			If needed, in the NIB editor, create a new NSPanel modal window for the plug-in main view\
+			Menu plug-ins are responsible for opening and closing their windows.\
+	The plugin is now ready for your custom implementation.\
+\
+	Element editors should return a string in the 
+\f1\fs22 \CocoaLigature0 isEditorForElement:elementName:
+\f0\fs24 \CocoaLigature1  method, and return null in the 
+\f1\fs22 \CocoaLigature0 isEditorForElement:elementName:attribute:
+\f0\fs24 \CocoaLigature1  method.\
+	Attribute editors should return a string in the 
+\f1\fs22 \CocoaLigature0 isEditorForElement:attribute:
+\f0\fs24 \CocoaLigature1  method, and return null in the 
+\f1\fs22 \CocoaLigature0 isEditorForElement:elementName:
+\f0\fs24 \CocoaLigature1  method.\
+\
+	If the plugin is to be embedded in the app, add the plugin bundle to the main app's  file list in the Plugins group.\
+	Then, add the plugin to the target's Build Phase, Copy Files section for the Plugins destination.\
+\
+	\
+=================================================================================================\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Old notes about using a custom WebKit framework.  The current version uses the standard WebKit , so not currently relevant -\
+\
+If linker error about cannot link directly to custom WebKit/WebCore and use WebKit umbrella framework instead, check these things -\
+\
+In Build Settings -> Linking -> Runpath Search Paths, set - \
+	@executable_path/../Frameworks \
+	@executable_path/../../../Frameworks\
+\
+In Build Phase - Copy Files -\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 	JavaScriptCore.framework\
+	MacSVGPlugin.framework\
+	WebKit.framework\
+	WebCore.framework\
+\
+Also, run the installNameTool.sh script- \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+#!/bin/bash\
+\
+# For embedding custom WebKit frameworks in a Mac app\
+# usage: install_name_tool -id  [name] file\
+# usage: install_name_tool -change [oldPath] [oldPath] file\
+# to verify changes, use: otool -L [pathToExecutable]\
+\
+echo "updating WebKit..."\
+\
+install_name_tool -id \\\
+  @executable_path/../Frameworks/WebKit.framework/Versions/A/WebKit \\\
+  ./WebKit/WebKitBuild/Release/WebKit.framework/Versions/A/WebKit\
+\
+install_name_tool -change \\\
+  /System/Library/Frameworks/JavaScriptCore.framework/Versions/A/JavaScriptCore \\\
+  @loader_path/../../../JavaScriptCore.framework/Versions/A/JavaScriptCore \\\
+  ./WebKit/WebKitBuild/Release/WebKit.framework/Versions/A/WebKit\
+\
+install_name_tool -change \\\
+  /System/Library/Frameworks/WebKit.framework/Versions/A/Frameworks/WebCore.framework/Versions/A/WebCore \\\
+  @loader_path/../../../WebCore.framework/Versions/A/WebCore \\\
+  ./WebKit/WebKitBuild/Release/WebKit.framework/Versions/A/WebKit\
+\
+\
+echo "updating WebCore..."\
+\
+install_name_tool -id \\\
+  @executable_path/../Frameworks/WebCore.framework/Versions/A/WebCore \\\
+  ./WebKit/WebKitBuild/Release/WebCore.framework/Versions/A/WebCore\
+\
+install_name_tool -change \\\
+  /System/Library/Frameworks/JavaScriptCore.framework/Versions/A/JavaScriptCore \\\
+  @loader_path/../../../JavaScriptCore.framework/Versions/A/JavaScriptCore \\\
+  ./WebKit/WebKitBuild/Release/WebCore.framework/Versions/A/WebCore\
+\
+echo "updating JavaScriptCore..."\
+install_name_tool -id \\\
+  @executable_path/../Frameworks/JavaScriptCore.framework/Versions/A/JavaScriptCore \\\
+  ./WebKit/WebKitBuild/Release/JavaScriptCore.framework/Versions/A/JavaScriptCore\
+\
+}

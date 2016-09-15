@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:cc="http://web.resource.org/cc/"
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+version="1.1" baseProfile="full" width="480px" height="360px"
+viewBox="0 0 480 360" preserveAspectRatio="none" id="svg_document"
+style="zoom: 1;"
+xml:base="http://www.w3.org/Graphics/SVG/Test/20110816/svg/"
+macsvgid="0C28D55E-835A-41EA-86C0-A3F6E12B517F-24826-00007DBF3E5BEE86">
+
+  <title id="svg_document_title"
+  macsvgid="DE8884B2-18D8-4D80-9EB6-63CF298F0D8B-24826-00007DBF3E5C2900">radialGradient element</title>
+  <desc id="desc1"
+  macsvgid="62D23315-87A4-44C9-9F19-6B92A3C69759-24826-00007DBF3E5C5288">
+  This example contains a couple of radialGradient elements - rainbow
+  and grayscale.</desc>
+  <defs id="svg_document_defs"
+  macsvgid="668AD8D3-4836-40D7-AF7C-865AECFD864C-24826-00007DBF3E5C75A6">
+
+    <radialGradient id="rainbowGradient"
+    macsvgid="88805B79-FEC6-4650-B288-778D0B0DE8EF-24826-00007DD3FEC5392B">
+
+      <stop offset="0.0" stop-color="#f22" id="stop1"
+      macsvgid="3BD1BF8A-EB9C-4F6E-B996-EC90DFFB4D06-24826-00007DFE9ED4308C">
+      </stop>
+      <stop offset="0.15" stop-color="#f2f" id="stop1"
+      macsvgid="B9BC10FF-501B-4FCE-869C-2F079088C25A-24826-00007DFE9ED4617F">
+      </stop>
+      <stop offset="0.3" stop-color="#22f" id="stop1"
+      macsvgid="43EE9BD9-70AF-40A6-905A-F82D8A6D63F4-24826-00007DFE9ED48D42">
+      </stop>
+      <stop offset="0.45" stop-color="#2ff" id="stop1"
+      macsvgid="EAC485FB-3DDE-44ED-AE99-BF69E38E46ED-24826-00007DFE9ED4B90A">
+      </stop>
+      <stop offset="0.6" stop-color="#2f2" id="stop1"
+      macsvgid="4099F6C7-EF7D-4BBB-BACE-CD48CB001674-24826-00007DFE9ED4E450">
+      </stop>
+      <stop offset="0.75" stop-color="#2f2" id="stop1"
+      macsvgid="177ACA30-EFF0-4741-A4CC-7D41B3233A5B-24826-00007DFE9ED50EC3">
+      </stop>
+      <stop offset="0.9" stop-color="#ff2" id="stop1"
+      macsvgid="FD4551B1-C61F-4F69-A5B0-D0E29B1E0056-24826-00007DFE9ED53931">
+      </stop>
+      <stop offset="1.0" stop-color="#f22" id="stop1"
+      macsvgid="8D90ECE7-8969-4086-9DE5-29CB019949D3-24826-00007DFE9ED563FA">
+      </stop>
+    </radialGradient>
+    <radialGradient id="grayscaleGradient"
+    macsvgid="D97D8BC1-4207-42AC-A04C-02E24C341A45-24826-00007DDE2FC22A9D">
+
+      <stop id="stop2" stop-color="#000000" offset="0.0"
+      macsvgid="0787BA47-9E24-48BA-BDA7-ECAE440FAFB3-24826-00007E0ADE0889C3">
+      </stop>
+      <stop id="stop2" stop-color="#ffffff" offset="1.0"
+      macsvgid="AE9EEB2C-5328-4F62-8E40-DC972793028E-24826-00007E0ADE08BA1D">
+      </stop>
+      <stop id="stop2" stop-color="#000000" offset="0.0"
+      macsvgid="0834EA52-A18F-474C-8376-9DB67B489CB9-24826-00007DBF3E5E05B1">
+      </stop>
+    </radialGradient>
+  </defs>
+  <g id="main_group"
+  macsvgid="CF9C2DF3-B520-488A-91E0-1C84954DCFA4-24826-00007DBF3E5E4D17">
+
+    <rect id="background_rect" fill="white" x="0px" y="0px"
+    width="640px" height="744px"
+    macsvgid="9363FFDC-B0E4-4E99-9CEE-106292396269-24826-00007DBF3E5E734D">
+    </rect>
+    <text stroke="none" style="outline-style:none;" id="text1"
+    stroke-width="1px" x="247px" y="54px" font-family="Helvetica"
+    fill="#000000" font-size="32px" transform="" text-anchor="middle"
+    macsvgid="26BFE773-3435-4D87-9483-8C7C211D7357-24826-00007DBF3E5E9D45">
+    radialGradient element</text>
+    <rect stroke="#000000" x="36px" height="83px" y="101px" id="rect1"
+    stroke-width="3px" width="290px" fill="url(#rainbowGradient)"
+    transform=""
+    macsvgid="B708575A-6BA1-4E81-ACD9-A591A51105CD-24826-00007DBF3E5ECECA">
+    </rect>
+    <text stroke="none" style="outline-style:none;" id="text2"
+    stroke-width="1px" x="183px" y="215px" font-family="Helvetica"
+    fill="#000000" font-size="16px" transform="" text-anchor="middle"
+    macsvgid="13555A4F-0068-46C3-9A22-DC6864BBAFF6-24826-00007DBF3E5EFA51">
+    radialGradient id='rainbow'</text>
+    <rect stroke="#000000" height="245px" x="384px" id="rect2"
+    stroke-width="3px" width="82px" y="103px"
+    fill="url(#grayscaleGradient)" transform=""
+    macsvgid="A979B452-7B93-49D7-AB7D-06E6CB16E766-24826-00007DBF3E5F2A2B">
+    </rect>
+    <text stroke="none" style="outline-style:none;" id="text3"
+    stroke-width="1px" x="266px" y="308px" font-family="Helvetica"
+    fill="#000000" font-size="16px" transform="" text-anchor="middle"
+    macsvgid="E9BD0015-7EF8-4D43-B00A-86C5537A48C4-24826-00007DBF3E5F5549">
+    radialGradient id='grayscale'</text>
+  </g>
+</svg>

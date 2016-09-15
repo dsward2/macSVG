@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Filter Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.FilterValue.datatype">
+ <text/>
+</define>
+
+<define name="SVG.NumberOptionalNumber.datatype">
+ <text/>
+</define>
+
+<!-- contents -->
+
+<define name="SVG.Filter.extra.class">
+ <empty/>
+</define> 
+
+<define name="SVG.Filter.class">
+ <choice>
+  <ref name="SVG.filter"/>
+  <ref name="SVG.Filter.extra.class"/>
+ </choice>
+</define>
+
+<define name="SVG.FilterPrimitive.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.FilterPrimitive.class">
+ <choice>
+  <ref name="SVG.feBlend"/>
+  <ref name="SVG.feColorMatrix"/>
+  <ref name="SVG.feComponentTransfer"/>
+  <ref name="SVG.feComposite"/>
+  <ref name="SVG.feConvolveMatrix"/>
+  <ref name="SVG.feDiffuseLighting"/>
+  <ref name="SVG.feDisplacementMap"/>
+  <ref name="SVG.feFlood"/>
+  <ref name="SVG.feGaussianBlur"/>
+  <ref name="SVG.feImage"/>
+  <ref name="SVG.feMerge"/>
+  <ref name="SVG.feMorphology"/>
+  <ref name="SVG.feOffset"/>
+  <ref name="SVG.feSpecularLighting"/>
+  <ref name="SVG.feTile"/>
+  <ref name="SVG.feTurbulence"/>
+  <ref name="SVG.FilterPrimitive.extra.class"/>
+ </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.Filter.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Filter.attrib" combine="interleave">
+ <optional>
+  <attribute name="filter">
+   <ref name="SVG.FilterValue.datatype"/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Filter.extra.attrib"/>
+</define>
+
+<define name="SVG.FilterColor.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.FilterColor.attrib" combine="interleave">
+ <optional>
+  <attribute name="color-interpolation-filters">
+   <choice>
+    <value>auto</value>
+    <value>sRGB</value>
+    <value>linearRGB</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+ <ref name="SVG.FilterColor.extra.attrib"/>
+</define>
+
+<define name="SVG.FilterPrimitive.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.FilterPrimitive.attrib">
+ <optional>
+  <attribute name="x">
+   <ref name="SVG.Coordinate.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="y">
+   <ref name="SVG.Coordinate.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="width">
+   <ref name="SVG.Length.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="height">
+   <ref name="SVG.Length.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="result">
+   <text/>
+  </attribute>
+ </optional>
+ <ref name="SVG.FilterPrimitive.extra.attrib"/>
+</define>
+
+<define name="SVG.FilterPrimitiveWithIn.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.FilterPrimitiveWithIn.attrib">
+ <ref name="SVG.FilterPrimitive.attrib"/>
+ <optional>
+  <attribute name="in">
+   <text/>
+  </attribute>
+ </optional>
+ <ref name="SVG.FilterPrimitiveWithIn.extra.attrib"/>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.filter">
+ <element name="filter">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.FilterPrimitive.class"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Presentation.attrib"/>
+  <ref name="SVG.XLink.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="width">
+    <ref name="SVG.Length.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="height">
+    <ref name="SVG.Length.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="filterRes">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="filterUnits">
+    <choice>
+     <value>userSpaceOnUse</value>
+     <value>objectBoundingBox</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="primitiveUnits">
+    <choice>
+     <value>userSpaceOnUse</value>
+     <value>objectBoundingBox</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feBlend">
+ <element name="feBlend">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <attribute name="in2">
+   <text/>
+  </attribute>
+  <optional>
+   <attribute name="mode">
+    <choice>
+     <value>normal</value>
+     <value>multiply</value>
+     <value>screen</value>
+     <value>darken</value>
+     <value>lighten</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feColorMatrix">
+ <element name="feColorMatrix">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="type">
+    <choice>
+     <value>matrix</value>
+     <value>saturate</value>
+     <value>hueRotate</value>
+     <value>luminanceToAlpha</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="values">
+    <text/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feComponentTransfer">
+ <element name="feComponentTransfer">
+  <optional>
+   <ref name="SVG.feFuncR"/>
+  </optional>
+  <optional>
+   <ref name="SVG.feFuncG"/>
+  </optional>
+  <optional>
+   <ref name="SVG.feFuncB"/>
+  </optional>
+  <optional>
+   <ref name="SVG.feFuncA"/>
+  </optional>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+ </element>
+</define>
+
+<define name="SVG.feComposite">
+ <element name="feComposite">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <attribute name="in2">
+   <text/>
+  </attribute>
+  <optional>
+   <attribute name="operator">
+    <choice>
+     <value>over</value>
+     <value>in</value>
+     <value>out</value>
+     <value>atop</value>
+     <value>xor</value>
+     <value>arithmetic</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="k1">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="k2">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="k3">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="k4">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feConvolveMatrix">
+ <element name="feConvolveMatrix">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <attribute name="order">
+   <ref name="SVG.NumberOptionalNumber.datatype"/>
+  </attribute>
+  <attribute name="kernelMatrix">
+   <text/>
+  </attribute>
+  <optional>
+   <attribute name="divisor">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="bias">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="targetX">
+    <ref name="SVG.Integer.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="targetY">
+    <ref name="SVG.Integer.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="edgeMode">
+    <choice>
+     <value>duplicate</value>
+     <value>wrap</value>
+     <value>none</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="kernelUnitLength">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="preserveAlpha">
+    <ref name="SVG.Boolean.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feDiffuseLighting">
+ <element name="feDiffuseLighting">
+  <choice>
+   <ref name="SVG.feDistantLight"/>
+   <ref name="SVG.fePointLight"/>
+   <ref name="SVG.feSpotLight"/>
+  </choice>
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.animateColor"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Color.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="lighting-color">
+    <ref name="SVG.SVGColor.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="surfaceScale">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="diffuseConstant">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="kernelUnitLength">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feDisplacementMap">
+ <element name="feDisplacementMap">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <attribute name="in2">
+   <text/>
+  </attribute>
+  <optional>
+   <attribute name="scale">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name=" xChannelSelector">
+    <choice>
+     <value>R</value>
+     <value>G</value>
+     <value>B</value>
+     <value>A</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name=" yChannelSelector">
+    <choice>
+     <value>R</value>
+     <value>G</value>
+     <value>B</value>
+     <value>A</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feFlood">
+ <element name="feFlood">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.animateColor"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Color.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="flood-color">
+    <ref name="SVG.SVGColor.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="flood-opacity">
+    <ref name="SVG.OpacityValue.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feGaussianBlur">
+ <element name="feGaussianBlur">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="stdDeviation">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feImage">
+ <element name="feImage">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.animateTransform"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Presentation.attrib"/>
+  <ref name="SVG.FilterPrimitive.attrib"/>
+  <ref name="SVG.XLinkEmbed.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="preserveAspectRatio">
+    <ref name="SVG.PreserveAspectRatioSpec.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feMerge">
+ <element name="feMerge">
+  <zeroOrMore>
+   <ref name="SVG.feMergeNode"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitive.attrib"/>
+ </element>
+</define>
+
+<define name="SVG.feMergeNode">
+ <element name="feMergeNode">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="in">
+    <text/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feMorphology">
+ <element name="feMorphology">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="operator">
+    <choice>
+     <value>erode</value>
+     <value>dilate</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="radius">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feOffset">
+ <element name="feOffset">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="dx">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="dy">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feSpecularLighting">
+ <element name="feSpecularLighting">
+  <choice>
+   <ref name="SVG.feDistantLight"/>
+   <ref name="SVG.fePointLight"/>
+   <ref name="SVG.feSpotLight"/>
+  </choice>
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.animateColor"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Color.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+  <optional>
+   <attribute name="lighting-color">
+    <ref name="SVG.SVGColor.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="surfaceScale">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="specularConstant">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="specularExponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="kernelUnitLength">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feTile">
+ <element name="feTile">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitiveWithIn.attrib"/>
+ </element>
+</define>
+
+<define name="SVG.feTurbulence">
+ <element name="feTurbulence">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.FilterColor.attrib"/>
+  <ref name="SVG.FilterPrimitive.attrib"/>
+  <optional>
+   <attribute name="baseFrequency">
+    <ref name="SVG.NumberOptionalNumber.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="numOctaves">
+    <ref name="SVG.Integer.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="seed">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="stitchTiles">
+    <choice>
+     <value>stitch</value>
+     <value>noStitch</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="type">
+    <choice>
+     <value>fractalNoise</value>
+     <value>turbulence</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feDistantLight">
+ <element name="feDistantLight">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="azimuth">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="elevation">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.fePointLight">
+ <element name="fePointLight">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="z">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feSpotLight">
+ <element name="feSpotLight">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="z">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="pointsAtX">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="pointsAtY">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="pointsAtZ">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="specularExponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="limitingConeAngle">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feFuncR">
+ <element name="feFuncR">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <attribute name="type">
+   <choice>
+    <value>identity</value>
+    <value>table</value>
+    <value>discrete</value>
+    <value>linear</value>
+    <value>gamma</value>
+   </choice>
+  </attribute>
+  <optional>
+   <attribute name="tableValues">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="slope">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="intercept">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="amplitude">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="exponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="offset">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feFuncG">
+ <element name="feFuncG">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <attribute name="type">
+   <choice>
+    <value>identity</value>
+    <value>table</value>
+    <value>discrete</value>
+    <value>linear</value>
+    <value>gamma</value>
+   </choice>
+  </attribute>
+  <optional>
+   <attribute name="tableValues">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="slope">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="intercept">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="amplitude">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="exponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="offset">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feFuncB">
+ <element name="feFuncB">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <attribute name="type">
+   <choice>
+    <value>identity</value>
+    <value>table</value>
+    <value>discrete</value>
+    <value>linear</value>
+    <value>gamma</value>
+   </choice>
+  </attribute>
+  <optional>
+   <attribute name="tableValues">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="slope">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="intercept">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="amplitude">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="exponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="offset">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.feFuncA">
+ <element name="feFuncA">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <attribute name="type">
+   <choice>
+    <value>identity</value>
+    <value>table</value>
+    <value>discrete</value>
+    <value>linear</value>
+    <value>gamma</value>
+   </choice>
+  </attribute>
+  <optional>
+   <attribute name="tableValues">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="slope">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="intercept">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="amplitude">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="exponent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="offset">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

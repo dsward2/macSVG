@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0EF29D8B1D791B4200267844 /* AnimateTransformElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */; };
+		0EF29D8F1D791B9700267844 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */; };
+		0EF29D911D7927FC00267844 /* AnimateTransformElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */; };
+		0EF29D961D794D2600267844 /* AnimateTransformKeySplinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D931D794D2600267844 /* AnimateTransformKeySplinesView.m */; };
+		0EF29D971D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */; };
+		0EF29D9F1D7AA2A100267844 /* AnimateTransformTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D9E1D7AA2A100267844 /* AnimateTransformTableRowView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0EF29D801D791ACB00267844 /* AnimateTransformElementEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimateTransformElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EF29D831D791ACB00267844 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EF29D891D791B4200267844 /* AnimateTransformElementEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformElementEditor.h; sourceTree = "<group>"; };
+		0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformElementEditor.m; sourceTree = "<group>"; };
+		0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimateTransformElementEditor.xib; sourceTree = "<group>"; };
+		0EF29D921D794D2600267844 /* AnimateTransformKeySplinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformKeySplinesView.h; sourceTree = "<group>"; };
+		0EF29D931D794D2600267844 /* AnimateTransformKeySplinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformKeySplinesView.m; sourceTree = "<group>"; };
+		0EF29D941D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformKeyValuesPopoverViewController.h; sourceTree = "<group>"; };
+		0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformKeyValuesPopoverViewController.m; sourceTree = "<group>"; };
+		0EF29D9D1D7AA2A100267844 /* AnimateTransformTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformTableRowView.h; sourceTree = "<group>"; };
+		0EF29D9E1D7AA2A100267844 /* AnimateTransformTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformTableRowView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0EF29D7D1D791ACB00267844 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EF29D8F1D791B9700267844 /* MacSVGPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0EF29D771D791ACB00267844 = {
+			isa = PBXGroup;
+			children = (
+				0EF29D821D791ACB00267844 /* AnimateTransformElementEditor */,
+				0EF29D8D1D791B7000267844 /* Frameworks */,
+				0EF29D811D791ACB00267844 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0EF29D811D791ACB00267844 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EF29D801D791ACB00267844 /* AnimateTransformElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0EF29D821D791ACB00267844 /* AnimateTransformElementEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0EF29D891D791B4200267844 /* AnimateTransformElementEditor.h */,
+				0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */,
+				0EF29D921D794D2600267844 /* AnimateTransformKeySplinesView.h */,
+				0EF29D931D794D2600267844 /* AnimateTransformKeySplinesView.m */,
+				0EF29D941D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.h */,
+				0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */,
+				0EF29D9D1D7AA2A100267844 /* AnimateTransformTableRowView.h */,
+				0EF29D9E1D7AA2A100267844 /* AnimateTransformTableRowView.m */,
+				0EF29D8C1D791B5300267844 /* Supporting Files */,
+			);
+			path = AnimateTransformElementEditor;
+			sourceTree = "<group>";
+		};
+		0EF29D8C1D791B5300267844 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0EF29D831D791ACB00267844 /* Info.plist */,
+				0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0EF29D8D1D791B7000267844 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */,
+			);
+			name = Frameworks;
+			path = AnimateTransformElementEditor;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0EF29D7F1D791ACB00267844 /* AnimateTransformElementEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0EF29D861D791ACB00267844 /* Build configuration list for PBXNativeTarget "AnimateTransformElementEditor" */;
+			buildPhases = (
+				0EF29D7C1D791ACB00267844 /* Sources */,
+				0EF29D7D1D791ACB00267844 /* Frameworks */,
+				0EF29D7E1D791ACB00267844 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AnimateTransformElementEditor;
+			productName = AnimateTransformElementEditor;
+			productReference = 0EF29D801D791ACB00267844 /* AnimateTransformElementEditor.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0EF29D781D791ACB00267844 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0EF29D7F1D791ACB00267844 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 0EF29D7B1D791ACB00267844 /* Build configuration list for PBXProject "AnimateTransformElementEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0EF29D771D791ACB00267844;
+			productRefGroup = 0EF29D811D791ACB00267844 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0EF29D7F1D791ACB00267844 /* AnimateTransformElementEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0EF29D7E1D791ACB00267844 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EF29D911D7927FC00267844 /* AnimateTransformElementEditor.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EF29D7C1D791ACB00267844 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EF29D8B1D791B4200267844 /* AnimateTransformElementEditor.m in Sources */,
+				0EF29D961D794D2600267844 /* AnimateTransformKeySplinesView.m in Sources */,
+				0EF29D971D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m in Sources */,
+				0EF29D9F1D7AA2A100267844 /* AnimateTransformTableRowView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0EF29D841D791ACB00267844 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0EF29D851D791ACB00267844 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0EF29D871D791ACB00267844 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.AnimateTransformElementEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0EF29D881D791ACB00267844 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.AnimateTransformElementEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0EF29D7B1D791ACB00267844 /* Build configuration list for PBXProject "AnimateTransformElementEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EF29D841D791ACB00267844 /* Debug */,
+				0EF29D851D791ACB00267844 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0EF29D861D791ACB00267844 /* Build configuration list for PBXNativeTarget "AnimateTransformElementEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EF29D871D791ACB00267844 /* Debug */,
+				0EF29D881D791ACB00267844 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0EF29D781D791ACB00267844 /* Project object */;
+}

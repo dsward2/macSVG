@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--  Mask Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.MaskValue.datatype">
+ <text/> <!--'mask' property/attribute value (e.g., 'none', <uri>) -->
+</define>
+
+<!-- classes -->
+
+<define name="SVG.Mask.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Mask.class">
+ <choice>
+  <ref name="SVG.mask"/>
+  <ref name="SVG.Mask.extra.class"/>
+ </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.Mask.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Mask.attrib" combine="interleave">
+ <optional>
+  <attribute name="mask">
+   <ref name="SVG.MaskValue.datatype"/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Mask.extra.attrib"/>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.mask">
+ <element name="mask">
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.Description.class"/>
+    <ref name="SVG.Animation.class"/>
+    <ref name="SVG.Structure.class"/>
+    <ref name="SVG.Conditional.class"/>
+    <ref name="SVG.Image.class"/>
+    <ref name="SVG.Style.class"/>
+    <ref name="SVG.Shape.class"/>
+    <ref name="SVG.Text.class"/>
+    <ref name="SVG.Marker.class"/>
+    <ref name="SVG.Profile.class"/>
+    <ref name="SVG.Gradient.class"/>
+    <ref name="SVG.Pattern.class"/>
+    <ref name="SVG.Clip.class"/>
+    <ref name="SVG.Mask.class"/>
+    <ref name="SVG.Filter.class"/>
+    <ref name="SVG.Cursor.class"/>
+    <ref name="SVG.Hyperlink.class"/>
+    <ref name="SVG.View.class"/>
+    <ref name="SVG.Script.class"/>
+    <ref name="SVG.Font.class"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Conditional.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Presentation.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="width">
+    <ref name="SVG.Length.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="height">
+    <ref name="SVG.Length.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="maskUnits">
+    <choice>
+     <value>userSpaceOnUse</value>
+     <value>objectBoundingBox</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="maskContentUnits">
+    <choice>
+     <value>userSpaceOnUse</value>
+     <value>objectBoundingBox</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

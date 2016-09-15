@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E31630B17A871230030D657 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E31630A17A871230030D657 /* Cocoa.framework */; };
+		0E31631517A871230030D657 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E31631317A871230030D657 /* InfoPlist.strings */; };
+		0E31632117A873230030D657 /* CoordinatesAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */; };
+		0EC2E93E17A88B7A00AFFFDC /* CoordinatesAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */; };
+		0EFA42EA1D7114DC001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E31630717A871230030D657 /* CoordinatesAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinatesAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E31630A17A871230030D657 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		0E31631217A871230030D657 /* CoordinatesAttributeEditor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoordinatesAttributeEditor-Info.plist"; sourceTree = "<group>"; };
+		0E31631417A871230030D657 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0E31631617A871230030D657 /* CoordinatesAttributeEditor-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoordinatesAttributeEditor-Prefix.pch"; sourceTree = "<group>"; };
+		0E31631F17A873230030D657 /* CoordinatesAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinatesAttributeEditor.h; sourceTree = "<group>"; };
+		0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatesAttributeEditor.m; sourceTree = "<group>"; };
+		0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoordinatesAttributeEditor.xib; sourceTree = "<group>"; };
+		0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0E31630417A871230030D657 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EFA42EA1D7114DC001FDE91 /* MacSVGPlugin.framework in Frameworks */,
+				0E31630B17A871230030D657 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E3162FE17A871230030D657 = {
+			isa = PBXGroup;
+			children = (
+				0E31631017A871230030D657 /* CoordinatesAttributeEditor */,
+				0E31630917A871230030D657 /* Frameworks */,
+				0E31630817A871230030D657 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0E31630817A871230030D657 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E31630717A871230030D657 /* CoordinatesAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E31630917A871230030D657 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */,
+				0E31630A17A871230030D657 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0E31631017A871230030D657 /* CoordinatesAttributeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0E31631F17A873230030D657 /* CoordinatesAttributeEditor.h */,
+				0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */,
+				0E31631117A871230030D657 /* Supporting Files */,
+			);
+			path = CoordinatesAttributeEditor;
+			sourceTree = "<group>";
+		};
+		0E31631117A871230030D657 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */,
+				0E31631217A871230030D657 /* CoordinatesAttributeEditor-Info.plist */,
+				0E31631317A871230030D657 /* InfoPlist.strings */,
+				0E31631617A871230030D657 /* CoordinatesAttributeEditor-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E31630617A871230030D657 /* CoordinatesAttributeEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0E31631917A871230030D657 /* Build configuration list for PBXNativeTarget "CoordinatesAttributeEditor" */;
+			buildPhases = (
+				0E31630317A871230030D657 /* Sources */,
+				0E31630417A871230030D657 /* Frameworks */,
+				0E31630517A871230030D657 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoordinatesAttributeEditor;
+			productName = CoordinatesAttributeEditor;
+			productReference = 0E31630717A871230030D657 /* CoordinatesAttributeEditor.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0E3162FF17A871230030D657 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+			};
+			buildConfigurationList = 0E31630217A871230030D657 /* Build configuration list for PBXProject "CoordinatesAttributeEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0E3162FE17A871230030D657;
+			productRefGroup = 0E31630817A871230030D657 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E31630617A871230030D657 /* CoordinatesAttributeEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0E31630517A871230030D657 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E31631517A871230030D657 /* InfoPlist.strings in Resources */,
+				0EC2E93E17A88B7A00AFFFDC /* CoordinatesAttributeEditor.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0E31630317A871230030D657 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E31632117A873230030D657 /* CoordinatesAttributeEditor.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0E31631317A871230030D657 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0E31631417A871230030D657 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0E31631717A871230030D657 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0E31631817A871230030D657 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0E31631A17A871230030D657 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
+				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0E31631B17A871230030D657 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
+				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E31630217A871230030D657 /* Build configuration list for PBXProject "CoordinatesAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E31631717A871230030D657 /* Debug */,
+				0E31631817A871230030D657 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0E31631917A871230030D657 /* Build configuration list for PBXNativeTarget "CoordinatesAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E31631A17A871230030D657 /* Debug */,
+				0E31631B17A871230030D657 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0E3162FF17A871230030D657 /* Project object */;
+}

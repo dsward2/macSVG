@@ -1,0 +1,337 @@
+<html>
+	<tr>
+		<td>
+      		<a href="text.html#AlignmentBaselineProperty">
+				<span class="attr-name" title="Presentation attribute for property alignment-baseline">alignment-baseline</span>
+			</a> 
+			<a href="text.html#BaselineShiftProperty">
+				<span class="attr-name" title="Presentation attribute for property baseline-shift">baseline-shift</span>
+			</a> 
+			<a href="masking.html#ClipPathProperty">
+				<span class="attr-name" title="Presentation attribute for property clip-path">clip-path</span>
+			</a> 
+			<a href="masking.html#ClipRuleProperty">
+				<span class="attr-name" title="Presentation attribute for property clip-rule">clip-rule</span>
+			</a> 
+			<a href="masking.html#ClipProperty">
+				<span class="attr-name" title="Presentation attribute for property clip">clip</span>
+			</a> 
+			<a href="painting.html#ColorInterpolationFiltersProperty">
+				<span class="attr-name" title="Presentation attribute for property color-interpolation-filters">color-interpolation-filters</span>
+			</a> 
+			<a href="painting.html#ColorInterpolationProperty">
+				<span class="attr-name" title="Presentation attribute for property color-interpolation">color-interpolation</span>
+			</a> 
+			<a href="color.html#ColorProfileProperty">
+				<span class="attr-name" title="Presentation attribute for property color-profile">color-profile</span>
+			</a> 
+			<a href="painting.html#ColorRenderingProperty">
+				<span class="attr-name" title="Presentation attribute for property color-rendering">color-rendering</span>
+			</a> 
+			<a href="color.html#ColorProperty">
+				<span class="attr-name" title="Presentation attribute for property color">color</span>
+			</a> 
+			<a href="interact.html#CursorProperty">
+				<span class="attr-name" title="Presentation attribute for property cursor">cursor</span>
+			</a> 
+			<a href="text.html#DirectionProperty">
+				<span class="attr-name" title="Presentation attribute for property direction">direction</span>
+			</a> 
+			<a href="painting.html#DisplayProperty">
+				<span class="attr-name" title="Presentation attribute for property display">display</span>
+			</a> 
+			<a href="text.html#DominantBaselineProperty">
+				<span class="attr-name" title="Presentation attribute for property dominant-baseline">dominant-baseline</span>
+			</a> 
+			<a href="filters.html#EnableBackgroundProperty">
+				<span class="attr-name" title="Presentation attribute for property enable-background">enable-background</span>
+			</a> 
+			<a href="painting.html#FillOpacityProperty">
+				<span class="attr-name" title="Presentation attribute for property fill-opacity">fill-opacity</span>
+			</a> 
+			<a href="painting.html#FillRuleProperty">
+				<span class="attr-name" title="Presentation attribute for property fill-rule">fill-rule</span>
+			</a> 
+			<a href="painting.html#FillProperty">
+				<span class="attr-name" title="Presentation attribute for property fill">fill</span>
+			</a> 
+			<a href="filters.html#FilterProperty">
+				<span class="attr-name" title="Presentation attribute for property filter">filter</span>
+			</a> 
+			<a href="filters.html#FloodColorProperty">
+				<span class="attr-name" title="Presentation attribute for property flood-color">flood-color</span>
+			</a> 
+			<a href="filters.html#FloodOpacityProperty">
+				<span class="attr-name" title="Presentation attribute for property flood-opacity">flood-opacity</span>
+			</a> 
+			<a href="text.html#FontFamilyProperty">
+				<span class="attr-name" title="Presentation attribute for property font-family">font-family</span>
+			</a> 
+			<a href="text.html#FontSizeAdjustProperty">
+				<span class="attr-name" title="Presentation attribute for property font-size-adjust">font-size-adjust</span>
+			</a> 
+			<a href="text.html#FontSizeProperty">
+				<span class="attr-name" title="Presentation attribute for property font-size">font-size</span>
+			</a> 
+			<a href="text.html#FontStretchProperty">
+				<span class="attr-name" title="Presentation attribute for property font-stretch">font-stretch</span>
+			</a> 
+			<a href="text.html#FontStyleProperty">
+				<span class="attr-name" title="Presentation attribute for property font-style">font-style</span>
+			</a> 
+			<a href="text.html#FontVariantProperty">
+				<span class="attr-name" title="Presentation attribute for property font-variant">font-variant</span>
+			</a> 
+			<a href="text.html#FontWeightProperty">
+				<span class="attr-name" title="Presentation attribute for property font-weight">font-weight</span>
+			</a> 
+			<a href="text.html#GlyphOrientationHorizontalProperty">
+				<span class="attr-name" title="Presentation attribute for property glyph-orientation-horizontal">glyph-orientation-horizontal</span>
+			</a> 
+			<a href="text.html#GlyphOrientationVerticalProperty">
+				<span class="attr-name" title="Presentation attribute for property glyph-orientation-vertical">glyph-orientation-vertical</span>
+			</a> 
+			<a href="painting.html#ImageRenderingProperty">
+				<span class="attr-name" title="Presentation attribute for property image-rendering">image-rendering</span>
+			</a> 
+			<a href="text.html#KerningProperty">
+				<span class="attr-name" title="Presentation attribute for property kerning">kerning</span>
+			</a> 
+			<a href="text.html#LetterSpacingProperty">
+				<span class="attr-name" title="Presentation attribute for property letter-spacing">letter-spacing</span>
+			</a> 
+			<a href="filters.html#LightingColorProperty">
+				<span class="attr-name" title="Presentation attribute for property lighting-color">lighting-color</span>
+			</a> 
+			<a href="painting.html#MarkerEndProperty">
+				<span class="attr-name" title="Presentation attribute for property marker-end">marker-end</span>
+			</a> 
+			<a href="painting.html#MarkerMidProperty">
+				<span class="attr-name" title="Presentation attribute for property marker-mid">marker-mid</span>
+			</a> 
+			<a href="painting.html#MarkerStartProperty">
+				<span class="attr-name" title="Presentation attribute for property marker-start">marker-start</span>
+			</a> 
+			<a href="masking.html#MaskProperty">
+				<span class="attr-name" title="Presentation attribute for property mask">mask</span>
+			</a> 
+			<a href="masking.html#OpacityProperty">
+				<span class="attr-name" title="Presentation attribute for property opacity">opacity</span>
+			</a> 
+			<a href="masking.html#OverflowProperty">
+				<span class="attr-name" title="Presentation attribute for property overflow">overflow</span>
+			</a> 
+			<a href="interact.html#PointerEventsProperty">
+				<span class="attr-name" title="Presentation attribute for property pointer-events">pointer-events</span>
+			</a> 
+			<a href="painting.html#ShapeRenderingProperty">
+				<span class="attr-name" title="Presentation attribute for property shape-rendering">shape-rendering</span>
+			</a> 
+			<a href="pservers.html#StopColorProperty">
+				<span class="attr-name" title="Presentation attribute for property stop-color">stop-color</span>
+			</a> 
+			<a href="pservers.html#StopOpacityProperty">
+				<span class="attr-name" title="Presentation attribute for property stop-opacity">stop-opacity</span>
+			</a> 
+			<a href="painting.html#StrokeDasharrayProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-dasharray">stroke-dasharray</span>
+			</a> 
+			<a href="painting.html#StrokeDashoffsetProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-dashoffset">stroke-dashoffset</span>
+			</a> 
+			<a href="painting.html#StrokeLinecapProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-linecap">stroke-linecap</span>
+			</a> 
+			<a href="painting.html#StrokeLinejoinProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-linejoin">stroke-linejoin</span>
+			</a> 
+			<a href="painting.html#StrokeMiterlimitProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-miterlimit">stroke-miterlimit</span>
+			</a> 
+			<a href="painting.html#StrokeOpacityProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-opacity">stroke-opacity</span>
+			</a> 
+			<a href="painting.html#StrokeWidthProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke-width">stroke-width</span>
+			</a> 
+			<a href="painting.html#StrokeProperty">
+				<span class="attr-name" title="Presentation attribute for property stroke">stroke</span>
+			</a> 
+			<a href="text.html#TextAnchorProperty">
+				<span class="attr-name" title="Presentation attribute for property text-anchor">text-anchor</span>
+			</a> 
+			<a href="text.html#TextDecorationProperty">
+				<span class="attr-name" title="Presentation attribute for property text-decoration">text-decoration</span>
+			</a> 
+			<a href="painting.html#TextRenderingProperty">
+				<span class="attr-name" title="Presentation attribute for property text-rendering">text-rendering</span>
+			</a> 
+			<a href="text.html#UnicodeBidiProperty">
+				<span class="attr-name" title="Presentation attribute for property unicode-bidi">unicode-bidi</span>
+			</a> 
+			<a href="painting.html#VisibilityProperty">
+				<span class="attr-name" title="Presentation attribute for property visibility">visibility</span>
+			</a> 
+			<a href="text.html#WordSpacingProperty">
+				<span class="attr-name" title="Presentation attribute for property word-spacing">word-spacing</span>
+			</a>
+			<a href="text.html#WritingModeProperty">
+				<span class="attr-name" title="Presentation attribute for property writing-mode">writing-mode</span>
+			</a>
+        </td>
+    </tr>
+    
+    <elements>
+		<a href="linking.html#AElement">
+			<span class="element-name">a</span>
+		</a> 
+		<a href="text.html#AltGlyphElement">
+			<span class="element-name">altGlyph</span>
+		</a> 
+		<a href="animate.html#AnimateElement">
+			<span class="element-name">animate</span>
+		</a> 
+		<a href="animate.html#AnimateColorElement">
+			<span class="element-name">animateColor</span>
+		</a> 
+		<a href="shapes.html#CircleElement">
+			<span class="element-name">circle</span>
+		</a> 
+		<a href="masking.html#ClipPathElement">
+			<span class="element-name">clipPath</span>
+		</a> 
+		<a href="struct.html#DefsElement">
+			<span class="element-name">defs</span>
+		</a> 
+		<a href="shapes.html#EllipseElement">
+			<span class="element-name">ellipse</span>
+		</a> 
+		<a href="filters.html#feBlendElement">
+			<span class="element-name">feBlend</span>
+		</a> 
+		<a href="filters.html#feColorMatrixElement">
+			<span class="element-name">feColorMatrix</span>
+		</a> 
+		<a href="filters.html#feComponentTransferElement">
+			<span class="element-name">feComponentTransfer</span>
+		</a> 
+		<a href="filters.html#feCompositeElement">
+			<span class="element-name">feComposite</span>
+		</a> 
+		<a href="filters.html#feConvolveMatrixElement">
+			<span class="element-name">feConvolveMatrix</span>
+		</a> 
+		<a href="filters.html#feDiffuseLightingElement">
+			<span class="element-name">feDiffuseLighting</span>
+		</a> 
+		<a href="filters.html#feDisplacementMapElement">
+			<span class="element-name">feDisplacementMap</span>
+		</a> 
+		<a href="filters.html#feFloodElement">
+			<span class="element-name">feFlood</span>
+		</a> 
+		<a href="filters.html#feGaussianBlurElement">
+			<span class="element-name">feGaussianBlur</span>
+		</a> 
+		<a href="filters.html#feImageElement">
+			<span class="element-name">feImage</span>
+		</a> 
+		<a href="filters.html#feMergeElement">
+			<span class="element-name">feMerge</span>
+		</a> 
+		<a href="filters.html#feMorphologyElement">
+			<span class="element-name">feMorphology</span>
+		</a> 
+		<a href="filters.html#feOffsetElement">
+			<span class="element-name">feOffset</span>
+		</a> 
+		<a href="filters.html#feSpecularLightingElement">
+			<span class="element-name">feSpecularLighting</span>
+		</a> 
+		<a href="filters.html#feTileElement">
+			<span class="element-name">feTile</span>
+		</a> 
+		<a href="filters.html#feTurbulenceElement">
+			<span class="element-name">feTurbulence</span>
+		</a> 
+		<a href="filters.html#FilterElement">
+			<span class="element-name">filter</span>
+		</a> 
+		<a href="fonts.html#FontElement">
+			<span class="element-name">font</span>
+		</a> 
+		<a href="extend.html#ForeignObjectElement">
+			<span class="element-name">foreignObject</span>
+		</a> 
+		<a href="struct.html#GElement">
+			<span class="element-name">g</span>
+		</a> 
+		<a href="fonts.html#GlyphElement">
+			<span class="element-name">glyph</span>
+		</a> 
+		<a href="text.html#GlyphRefElement">
+			<span class="element-name">glyphRef</span>
+		</a> 
+		<a href="struct.html#ImageElement">
+			<span class="element-name">image</span>
+		</a> 
+		<a href="shapes.html#LineElement">
+			<span class="element-name">line</span>
+		</a> 
+		<a href="pservers.html#LinearGradientElement">
+			<span class="element-name">linearGradient</span>
+		</a> 
+		<a href="painting.html#MarkerElement">
+			<span class="element-name">marker</span>
+		</a> 
+		<a href="masking.html#MaskElement">
+			<span class="element-name">mask</span>
+		</a> 
+		<a href="fonts.html#MissingGlyphElement">
+			<span class="element-name">missing-glyph</span>
+		</a> 
+		<a href="paths.html#PathElement">
+			<span class="element-name">path</span>
+		</a> 
+		<a href="pservers.html#PatternElement">
+			<span class="element-name">pattern</span>
+		</a> 
+		<a href="shapes.html#PolygonElement">
+			<span class="element-name">polygon</span>
+		</a> 
+		<a href="shapes.html#PolylineElement">
+			<span class="element-name">polyline</span>
+		</a> 
+		<a href="pservers.html#RadialGradientElement">
+			<span class="element-name">radialGradient</span>
+		</a> 
+		<a href="shapes.html#RectElement">
+			<span class="element-name">rect</span>
+		</a> 
+		<a href="pservers.html#StopElement">
+			<span class="element-name">stop</span>
+		</a> 
+		<a href="struct.html#SVGElement">
+			<span class="element-name">svg</span>
+		</a> 
+		<a href="struct.html#SwitchElement">
+			<span class="element-name">switch</span>
+		</a> 
+		<a href="struct.html#SymbolElement">
+			<span class="element-name">symbol</span>
+		</a> 
+		<a href="text.html#TextElement">
+			<span class="element-name">text</span>
+		</a> 
+		<a href="text.html#TextPathElement">
+			<span class="element-name">textPath</span>
+		</a> 
+		<a href="text.html#TRefElement">
+			<span class="element-name">tref</span>
+		</a> 
+		<a href="text.html#TSpanElement">
+			<span class="element-name">tspan</span></a> and <a href="struct.html#UseElement">
+			<span class="element-name">use</span>
+		</a>
+	</elements>
+</html>

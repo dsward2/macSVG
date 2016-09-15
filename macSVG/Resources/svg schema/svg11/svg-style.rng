@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Style Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.ClassList.datatype">
+ <text/> <!-- list of classes -->
+</define>
+
+<define name="SVG.MediaDesc.datatype">
+ <text/> <!-- comma-separated list of media descriptors. -->
+</define>
+
+<define name="SVG.StyleSheet.datatype">
+ <text/> <!-- style sheet data -->
+</define>
+
+<!-- classes -->
+
+<define name="SVG.Style.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Style.class">
+ <choice>
+  <ref name="SVG.style"/>
+  <ref name="SVG.Style.extra.class"/>
+ </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.Style.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Style.attrib" combine="interleave">
+ <optional>
+  <attribute name="style">
+   <ref name="SVG.StyleSheet.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="class">
+   <ref name="SVG.ClassList.datatype"/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Style.extra.attrib"/>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.style">
+ <element name="style">
+  <text/>
+  <ref name="SVG.Core.attrib"/>
+  <attribute name="type">
+   <ref name="SVG.ContentType.datatype"/>
+  </attribute>
+  <optional>
+   <attribute name="media">
+    <ref name="SVG.MediaDesc.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="title">
+    <ref name="SVG.Text.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

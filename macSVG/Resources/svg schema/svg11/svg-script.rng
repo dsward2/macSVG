@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Scripting Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- classes -->
+
+<define name="SVG.Script.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Script.class">
+ <choice>
+  <ref name="SVG.script"/>
+  <ref name="SVG.Script.extra.class"/>
+ </choice>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.script">
+ <element name="script">
+  <text/>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.XLink.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <attribute name="type">
+   <ref name="SVG.ContentType.datatype"/>
+  </attribute>
+ </element>
+</define>
+
+</grammar>

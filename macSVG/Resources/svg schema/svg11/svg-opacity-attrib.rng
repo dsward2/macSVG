@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Paint Opacity Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.opacity.attrib">
+ <optional>
+  <attribute name="opacity">
+   <ref name="SVG.OpacityValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.fill-opacity.attrib">
+ <optional>
+  <attribute name="fill-opacity">
+   <ref name="SVG.OpacityValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-opacity.attrib">
+ <optional>
+  <attribute name="stroke-opacity">
+   <ref name="SVG.OpacityValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.Opacity.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Opacity.attrib" combine="interleave">
+ <ref name="SVG.opacity.attrib"/>
+ <ref name="SVG.fill-opacity.attrib"/>
+ <ref name="SVG.stroke-opacity.attrib"/>
+ <ref name="SVG.Opacity.extra.attrib"/>
+</define>
+
+</grammar>

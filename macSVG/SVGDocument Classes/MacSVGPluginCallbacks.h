@@ -1,0 +1,104 @@
+//
+//  MacSVGPluginCallbacks.h
+//  macSVG
+//
+//  Created by Douglas Ward on 3/8/12.
+//  Copyright © 2016 ArkPhone LLC. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class DOMElement;
+
+@interface MacSVGPluginCallbacks : NSObject
+{
+}
+@property (strong)id macSVGDocument;
+
+//- (void)setMacSVGDocumentObject:(id)aMacSVGDocument;
+
+- (id)svgXmlDocument;                           // returns NSXMLDocument
+- (id)macSVGDocumentWindowController;      // returns MacSVGDocumentWindowController
+- (id)svgWebKitController;                      // returns SVGWebKitController
+- (id)svgWebView;                               // returns SVGWebView
+- (CGFloat)zoomFactor;
+- (id)svgPathEditorSelectedPathElement;           // returns NSXMLElement
+- (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
+- (id)mouseEventsControllerActiveDOMElement;    // returns DOMElement
+- (NSMutableArray *)pathSegmentsArray;          // array of dictionaries for path segments
+- (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
+- (void)setPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)aPathSegmentsArray;
+- (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex
+        pathSegmentsArray:(NSArray *)aPathSegmentsArray;
+- (void)beginPluginEditorToolMode;
+- (void)reloadAllViews;
+- (void)updateSelections;                       // redraw selection rectangles and handles
+- (void)updateActivePathInDOM;
+- (void)updateSelectedPathInDOM;
+- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
+- (void)assignElementIDIfUnassigned:(NSXMLNode *)aNode;
+- (NSString *)uniqueIDForElementTagName:(NSString *)elementTagName pendingIDs:(NSArray *)pendingIDs;
+- (NSString *)newMacsvgid;
+- (void)pushUndoRedoDocumentChanges;
+
+- (NSMutableArray *)selectedElementsArray;
+- (void)setToolMode:(NSInteger)newToolMode;
+- (void)selectXMLElement:(NSXMLElement *)aXMLElement;
+- (void)setActiveXMLElement:(NSXMLElement *)aXMLElement;
+- (void)updateDOMSelectionRectsAndHandles;
+
+- (NSString *) selectedPathMode;
+- (void) setSelectedPathMode:(NSString *)newValue;
+
+// elliptical arc parameters
+- (BOOL) useRelativePathCoordinates;
+- (void) setUseRelativePathCoordinates:(BOOL)newValue;
+    
+- (BOOL) closePathAutomatically;
+- (void) setClosePathAutomatically:(BOOL)newValue;
+
+- (BOOL) curveSegmentContinuity;
+- (void) setCurveSegmentContinuity:(BOOL)newValue;
+
+- (NSString *)largeArcFlagString;
+- (void)setLargeArcFlagString:(NSString *)newValue;
+
+- (NSString *)sweepFlagString;
+- (void)setSweepFlagString:(NSString *)newValue;
+
+- (NSString *)xAxisRotationString;
+- (void)setXAxisRotationString:(NSString *)newValue;
+
+- (NSString *)pathRadiusXString;
+- (void)setPathRadiusXString:(NSString *)newValue;
+
+- (NSString *)pathRadiusYString;
+- (void)setPathRadiusYString:(NSString *)newValue;
+
+- (NSMutableDictionary *)imageDictionary;
+- (void)setImageDictionary:(NSMutableDictionary *)newImageDictionary;
+
+- (void)restartLastPathSegment;
+
+- (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toXMLElement:(NSXMLElement *)targetElement;
+- (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toDOMElement:(DOMElement *)targetElement;
+
+- (NSMutableArray *)convertToAbsoluteCoordinates:(NSXMLElement *)pathElement;
+- (NSMutableArray *)convertCurvesToAbsoluteCubicBezier:(NSXMLElement *)pathElement;
+- (NSMutableArray *)convertCurvesToAbsoluteCubicBezierWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)reversePathWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)mirrorPathHorizontallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)mirrorPathVerticallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)flipPathHorizontallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)flipPathVerticallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)translateX y:(CGFloat)translateY;
+- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(CGFloat)scaleX scaleY:(CGFloat)scaleY;
+- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)rotateX y:(CGFloat)rotateY degrees:(CGFloat)degrees;
+- (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
+        cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry;
+- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
+        rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise;
+
+@end
+

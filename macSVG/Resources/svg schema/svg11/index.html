@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "ISO/IEC 15445:2000//DTD HyperText Markup Language//EN">
+<html lang="en">
+<head profile="http://dublincore.org/documents/dcq-html/">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="DC.description" lang="en" content="SVG 1.1 (Basic/Tiny) Schemas based on RELAX-NG.">
+<meta name="DCTERMS.issued" content="2002-08-01">
+<meta name="DCTERMS.modified" content="2006-06-04">
+<link rel="DC.creator" href="mailto:info&#64;yupotan&#46;sppd&#46;ne&#46;jp" title="Yutaka Furubayashi">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<link rel="schema.DCTERMS" href="http://purl.org/dc/terms/">
+<link rel="index" href="../index.html" title="RELAX-NG Factory(Japanese)">
+<link rel="contents" href="../schemata.html" title="RELAX-NG schemata">
+<link rel="stylesheet" type="text/css" href="../../main.css" media="screen,print">
+<link rel="stylesheet" type="text/css" href="../../mobile.css" media="handheld">
+<title>SVG 1.1 (Basic/Tiny) Schemas on RELAX-NG</title>
+</head>
+
+<body>
+
+<h1>SVG 1.1 Schemata on RELAX-NG</h1>
+
+<h2>Introduction</h2>
+
+<p>This site provides the SVG 1.1 (and SVG 1.1 Basic and Tiny) schemata based on RELAX-NG. Now the status of the specification of SVG 1.1 is Recommendation in W3C.</p>
+
+<h2>Usage</h2>
+
+<h3>Basic usage</h3>
+
+<ol>
+<li>Get the zip-archive from this site.
+
+<ul>
+<li><a href="svg11-relaxng-20060604.zip">svg11-relaxng-20060604.zip</a></li>
+</ul></li>
+
+<li>Unzip it(the directory "<code>svg11</code>" will be generated).</li>
+
+<li>Validate SVG 1.1 documents with the set of schemata. For example, if you want to validate it with Jing, you can type the following command in the console window (such as MS-DOS prompt):
+<dl>
+<dt>Java Version</dt>
+<dd><code>java -jar jing.jar svg11.rng svgSample.svg</code></dd>
+
+<dt>.EXE version, MS-Java VM is required</dt>
+<dd><code>jing svg11.rng svgSample.svg</code></dd>
+</dl>
+assuming that jing.jar, SVG documents and RELAX-NG schema exist in the same directory <code>svg11</code>.</li>
+
+</ol>
+
+<h3>Using RELAX-NG Schema as a module</h3>
+
+<p>You can use these schemata as one of the modules in your own RELAX-NG Schema. Simply include <code>svg11.rng</code> with <code>&lt;include&gt;</code> element. You do not have to specify the namespace of SVG 1.1.</p>
+
+<h2>Problems</h2>
+
+<ul>
+<li>Some of the datatypes of the elements and the attributes are <em>not</em> specified. Some of the datatypes are regarded as a simple "text".</li>
+</ul>
+
+<h2>Copyright and License</h2>
+
+<p>Copyright (c)  2002-2006  Yutaka Furubayashi (Poka-poka Dream Factory)</p>
+<p>This RELAX-NG Schema on SVG 1.1 is available to be redistributed and/or modified under the terms of MIT (X11) Licence.</p>
+
+<h2>Updates</h2>
+
+<dl>
+<dt>2006-06-04</dt>
+<dd><ul>
+<li>Modified a licence under the term of MIT (X11) Licence.</li>
+</ul></dd>
+
+<dt>2006-05-06</dt>
+<dd><ul>
+<li>Added a licence term of GNU FDL.</li>
+</ul></dd>
+
+<dt>2003-01-17</dt>
+<dd><ul>
+<li>Modified descriptions based on the specification of W3C Recommendation.</li>
+<!--<li>Included SVG 1.1 Basic and Tiny schemata.</li>-->
+</ul></dd>
+
+<dt>2002-12-06</dt>
+<dd><ul>
+<li>Made a zip-archive for a convinience.</li>
+<li>Made this information document.</li>
+</ul></dd>
+
+<dt>2002-08-01</dt>
+<dd>Converted all of the modules of SVG 1.1 into RELAX-NG version.</dd>
+</dl>
+
+
+<h2 class="footer">additional</h2>
+
+<ul id="NAV">
+<li><a href="../schemata.html">RELAX-NG Schemata</a></li>
+</ul>
+
+</body>
+</html>

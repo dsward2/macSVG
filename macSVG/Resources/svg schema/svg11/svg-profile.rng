@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Color Profile Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- classes -->
+
+<define name="SVG.Profile.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Profile.class">
+ <choice>
+  <ref name="SVG.color-profile"/>
+  <ref name="SVG.Profile.extra.class"/>
+ </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.Profile.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Profile.attrib" combine="interleave">
+ <optional>
+  <attribute name="color-profile">
+   <text/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Profile.extra.attrib"/>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.color-profile">
+ <element name="color-profile">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.XLink.attrib"/>
+  <optional>
+   <attribute name="local">
+    <text/>
+   </attribute>
+  </optional>
+  <attribute name="name">
+   <text/>
+  </attribute>
+  <optional>
+   <attribute name="rendering-intent">
+    <choice>
+     <value>auto</value>
+     <value>perceptual</value>
+     <value>relative-colorimetric</value>
+     <value>saturation</value>
+     <value>absolute-colorimetric</value>
+    </choice>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

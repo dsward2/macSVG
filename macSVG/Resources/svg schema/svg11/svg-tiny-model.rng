@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- SVG 1.1 Tiny Document Model Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1 (Tiny)
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" ns="http://www.w3.org/2000/svg">
+
+
+<!-- Content Models (Default)  -->
+
+<define name="SVG.Cursor.class">
+ <empty/>
+</define>
+
+<define name="SVG.Pattern.class">
+ <empty/>
+</define>
+
+<define name="SVG.Mask.class">
+ <empty/>
+</define>
+
+<define name="SVG.Marker.class">
+ <empty/>
+</define>
+
+<define name="SVG.Profile.class">
+ <empty/>
+</define>
+
+<define name="SVG.Gradient.class">
+ <empty/>
+</define>
+
+<define name="SVG.Filter.class">
+ <empty/>
+</define>
+
+<define name="SVG.Clip.class">
+ <empty/>
+</define>
+
+<define name="SVG.DocumentEvents.attrib">
+ <empty/>
+</define>
+
+
+
+
+
+</grammar>

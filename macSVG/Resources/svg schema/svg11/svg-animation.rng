@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Animation Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!--  definition of attributes -->
+
+<define name="SVG.Animation.extra.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Animation.attrib" combine="interleave">
+    <ref name="SVG.XLink.attrib"/>
+    <ref name="SVG.Animation.extra.attrib"/>
+</define>
+
+<define name="SVG.AnimationAttribute.extra.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.AnimationAttribute.attrib" combine="interleave">
+   <attribute name="attributeName">
+    <text/>
+   </attribute>
+   <optional>
+    <attribute name="attributeType">
+     <text/>
+    </attribute>
+   </optional>
+   <ref name="SVG.AnimationAttribute.extra.attrib"/>
+</define>
+
+<define name="SVG.AnimationTiming.extra.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.AnimationTiming.attrib" combine="interleave">
+   <optional>
+    <attribute name="begin">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="dur">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="end">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="min">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="max">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="restart">
+     <choice>
+       <value>always</value>
+       <value>never</value>
+       <value>whenNotActive</value>
+     </choice>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="repeatCount">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="repeatDur">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="fill">
+     <choice>
+       <value>remove</value>
+       <value>freeze</value>
+     </choice>
+    </attribute>
+   </optional>
+   <ref name="SVG.AnimationTiming.extra.attrib"/>
+</define>
+
+<define name="SVG.AnimationValue.extra.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.AnimationValue.attrib" combine="interleave">
+   <optional>
+    <attribute name="calcMode">
+     <choice>
+       <value>discrete</value>
+       <value>linear</value>
+       <value>paced</value>
+       <value>spline</value>
+     </choice>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="values">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="keyTimes">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="keySplines">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="from">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="to">
+     <text/>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="by">
+     <text/>
+    </attribute>
+   </optional>
+   <ref name="SVG.AnimationValue.extra.attrib"/>
+</define>
+
+<define name="SVG.AnimationAddition.extra.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.AnimationAddtion.attrib" combine="interleave">
+   <optional>
+    <attribute name="additive">
+     <choice>
+       <value>replace</value>
+       <value>sum</value>
+     </choice>
+    </attribute>
+   </optional>
+   <optional>
+    <attribute name="accumulate">
+     <choice>
+       <value>none</value>
+       <value>sum</value>
+     </choice>
+    </attribute>
+   </optional>
+   <ref name="SVG.AnimationAddition.extra.attrib"/>
+</define>
+
+
+<!-- definition of element sets -->
+
+<define name="SVG.Animation.extra.class" combine="choice">
+  <choice>
+   <empty/>
+  </choice>
+</define>
+
+<define name="SVG.Animation.class">
+  <choice>
+    <ref name="SVG.animate"/>
+    <ref name="SVG.set"/>
+    <ref name="SVG.animateMotion"/>
+    <ref name="SVG.animateColor"/>
+    <ref name="SVG.animateTransform"/>
+    <ref name="SVG.Animation.extra.class"/>
+  </choice>
+</define>
+
+
+<!-- definition of elements -->
+
+<define name="SVG.animate">
+  <element name="animate">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.AnimationEvents.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <ref name="SVG.Animation.attrib"/>
+    <ref name="SVG.AnimationAttribute.attrib"/>
+    <ref name="SVG.AnimationTiming.attrib"/>
+    <ref name="SVG.AnimationValue.attrib"/>
+    <ref name="SVG.AnimationAddtion.attrib"/>
+  </element>
+</define>
+
+<define name="SVG.set">
+  <element name="set">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.AnimationEvents.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <ref name="SVG.Animation.attrib"/>
+    <ref name="SVG.AnimationAttribute.attrib"/>
+    <ref name="SVG.AnimationTiming.attrib"/>
+    <optional>
+     <attribute name="to">
+      <text/>
+     </attribute>
+    </optional>
+  </element>
+</define>
+
+<define name="SVG.animateMotion">
+  <element name="animateMotion">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <optional>
+     <ref name="SVG.mpath"/>
+    </optional>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.AnimationEvents.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <ref name="SVG.Animation.attrib"/>
+    <ref name="SVG.AnimationTiming.attrib"/>
+    <ref name="SVG.AnimationAddtion.attrib"/>
+    <optional>
+     <attribute name="calcMode">
+      <choice>
+       <value>discrete</value>
+       <value>linear</value>
+       <value>paced</value>
+       <value>spline</value>
+      </choice>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="values">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="keyTimes">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="Splines">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="from">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="to">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="by">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="path">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="keyPoints">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="rotate">
+      <text/>
+     </attribute>
+    </optional>
+    <optional>
+     <attribute name="origin">
+      <text/>
+     </attribute>
+    </optional>
+  </element>
+</define>
+
+<define name="SVG.animateColor">
+  <element name="animateColor">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.AnimationEvents.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <ref name="SVG.Animation.attrib"/>
+    <ref name="SVG.AnimationAttribute.attrib"/>
+    <ref name="SVG.AnimationTiming.attrib"/>
+    <ref name="SVG.AnimationValue.attrib"/>
+    <ref name="SVG.AnimationAddtion.attrib"/>
+  </element>
+</define>
+
+<define name="SVG.animateTransform">
+  <element name="animateTransform">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.Conditional.attrib"/>
+    <ref name="SVG.AnimationEvents.attrib"/>
+    <ref name="SVG.External.attrib"/>
+    <ref name="SVG.Animation.attrib"/>
+    <ref name="SVG.AnimationAttribute.attrib"/>
+    <ref name="SVG.AnimationTiming.attrib"/>
+    <ref name="SVG.AnimationValue.attrib"/>
+    <ref name="SVG.AnimationAddtion.attrib"/>
+    <optional>
+     <attribute name="type">
+      <choice>
+       <value>translate</value>
+       <value>scale</value>
+       <value>rotate</value>
+       <value>skewX</value>
+       <value>skewY</value>
+      </choice>
+     </attribute>
+    </optional>
+  </element>
+</define>
+
+<define name="SVG.mpath">
+  <element name="mpath">
+    <zeroOrMore>
+     <ref name="SVG.Description.class"/>
+    </zeroOrMore>
+    <ref name="SVG.Core.attrib"/>
+    <ref name="SVG.XLinkRequired.attrib"/>
+    <ref name="SVG.External.attrib"/>
+  </element>
+</define>
+
+</grammar>

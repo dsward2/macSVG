@@ -1,0 +1,287 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E5AE5FD1D5BD62D000C1643 /* TransformElementsDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5AE5FC1D5BD62D000C1643 /* TransformElementsDialog.m */; };
+		0E5AE6001D5BD8C8000C1643 /* TransformElementsDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */; };
+		0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */; };
+		0E693CFE1D70551300006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E5AE5F21D5BD57F000C1643 /* TransformElementsDialog.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformElementsDialog.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E5AE5F51D5BD57F000C1643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E5AE5FB1D5BD62D000C1643 /* TransformElementsDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformElementsDialog.h; sourceTree = "<group>"; };
+		0E5AE5FC1D5BD62D000C1643 /* TransformElementsDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformElementsDialog.m; sourceTree = "<group>"; };
+		0E5AE5FE1D5BD8C8000C1643 /* TransformElementsDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformElementsDialogWindowController.h; sourceTree = "<group>"; };
+		0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformElementsDialogWindowController.m; sourceTree = "<group>"; };
+		0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransformElementsDialog.xib; sourceTree = "<group>"; };
+		0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0E5AE5EF1D5BD57F000C1643 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E693CFE1D70551300006B21 /* MacSVGPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E5AE5E91D5BD57F000C1643 = {
+			isa = PBXGroup;
+			children = (
+				0E5AE5F41D5BD57F000C1643 /* TransformElementsDialog */,
+				0E5AE5F31D5BD57F000C1643 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0E5AE5F31D5BD57F000C1643 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E5AE5F21D5BD57F000C1643 /* TransformElementsDialog.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E5AE5F41D5BD57F000C1643 /* TransformElementsDialog */ = {
+			isa = PBXGroup;
+			children = (
+				0E5AE5F51D5BD57F000C1643 /* Info.plist */,
+				0E5AE5FB1D5BD62D000C1643 /* TransformElementsDialog.h */,
+				0E5AE5FC1D5BD62D000C1643 /* TransformElementsDialog.m */,
+				0E5AE5FE1D5BD8C8000C1643 /* TransformElementsDialogWindowController.h */,
+				0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */,
+				0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */,
+				0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */,
+			);
+			path = TransformElementsDialog;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E5AE5F11D5BD57F000C1643 /* TransformElementsDialog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0E5AE5F81D5BD57F000C1643 /* Build configuration list for PBXNativeTarget "TransformElementsDialog" */;
+			buildPhases = (
+				0E5AE5EE1D5BD57F000C1643 /* Sources */,
+				0E5AE5EF1D5BD57F000C1643 /* Frameworks */,
+				0E5AE5F01D5BD57F000C1643 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TransformElementsDialog;
+			productName = TransformElementsDialog;
+			productReference = 0E5AE5F21D5BD57F000C1643 /* TransformElementsDialog.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0E5AE5EA1D5BD57F000C1643 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0E5AE5F11D5BD57F000C1643 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 0E5AE5ED1D5BD57F000C1643 /* Build configuration list for PBXProject "TransformElementsDialog" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0E5AE5E91D5BD57F000C1643;
+			productRefGroup = 0E5AE5F31D5BD57F000C1643 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E5AE5F11D5BD57F000C1643 /* TransformElementsDialog */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0E5AE5F01D5BD57F000C1643 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0E5AE5EE1D5BD57F000C1643 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E5AE5FD1D5BD62D000C1643 /* TransformElementsDialog.m in Sources */,
+				0E5AE6001D5BD8C8000C1643 /* TransformElementsDialogWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0E5AE5F61D5BD57F000C1643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0E5AE5F71D5BD57F000C1643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0E5AE5F91D5BD57F000C1643 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../macSVG/Application Classes\"",
+					"\"$(SRCROOT)/../../../macSVG/SVGDocument Classes\"",
+				);
+				INFOPLIST_FILE = TransformElementsDialog/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.TransformElementsDialog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0E5AE5FA1D5BD57F000C1643 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../macSVG/Application Classes\"",
+					"\"$(SRCROOT)/../../../macSVG/SVGDocument Classes\"",
+				);
+				INFOPLIST_FILE = TransformElementsDialog/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.TransformElementsDialog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E5AE5ED1D5BD57F000C1643 /* Build configuration list for PBXProject "TransformElementsDialog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E5AE5F61D5BD57F000C1643 /* Debug */,
+				0E5AE5F71D5BD57F000C1643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0E5AE5F81D5BD57F000C1643 /* Build configuration list for PBXNativeTarget "TransformElementsDialog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E5AE5F91D5BD57F000C1643 /* Debug */,
+				0E5AE5FA1D5BD57F000C1643 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0E5AE5EA1D5BD57F000C1643 /* Project object */;
+}

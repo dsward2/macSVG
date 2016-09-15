@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Common Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- default attributes -->
+
+<define name="SVG.AnimationEvents.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Clip.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Color.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Conditional.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Container.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Core.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.Cursor.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.External.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Filter.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.FilterColor.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Font.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Gradient.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.GraphicalEvents.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Graphics.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Marker.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Mask.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Opacity.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Paint.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Profile.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Style.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Text.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.TextContent.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.Viewport.attrib">
+   <empty/>
+</define>
+
+<define name="SVG.XLink.attrib">
+   <empty/>
+</define>
+
+<define name="XLinkEmbed.attrib">
+   <empty/>
+</define>
+
+<define name="XLinkRequired.attrib">
+   <empty/>
+</define>
+
+<!-- Presentation attributes -->
+
+<define name="SVG.Presentation.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Presentation.attrib">
+ <ref name="SVG.Container.attrib"/>
+ <ref name="SVG.Viewport.attrib"/>
+ <ref name="SVG.Text.attrib"/>
+ <ref name="SVG.TextContent.attrib"/>
+ <ref name="SVG.Font.attrib"/>
+ <ref name="SVG.Paint.attrib"/>
+ <ref name="SVG.Color.attrib"/>
+ <ref name="SVG.Opacity.attrib"/>
+ <ref name="SVG.Graphics.attrib"/>
+ <ref name="SVG.Marker.attrib"/>
+ <ref name="SVG.Profile.attrib"/>
+ <ref name="SVG.Gradient.attrib"/>
+ <ref name="SVG.Clip.attrib"/>
+ <ref name="SVG.Mask.attrib"/>
+ <ref name="SVG.Filter.attrib"/>
+ <ref name="SVG.FilterColor.attrib"/>
+ <ref name="SVG.Cursor.attrib"/>
+ <optional>
+  <attribute name="flood-color">
+   <ref name="SVG.SVGColor.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="flood-opacity">
+   <ref name="SVG.OpacityValue.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="lighting-color">
+   <ref name="SVG.SVGColor.datatype"/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Presentation.extra.attrib"/>
+</define>
+
+
+</grammar>

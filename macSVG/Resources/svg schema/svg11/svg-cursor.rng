@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Cursor Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.CursorValue.datatype">
+ <text/>
+</define>
+
+<!-- define contents -->
+
+<define name="SVG.Cursor.extra.class">
+  <empty/>
+</define>
+
+<define name="SVG.Cursor.class">
+ <choice>
+  <ref name="SVG.cursor"/>
+  <ref name="SVG.Cursor.extra.class"/>
+ </choice>
+</define>
+
+<define name="SVG.cursor">
+ <element name="cursor">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Conditional.attrib"/>
+  <ref name="SVG.XLinkRequired.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

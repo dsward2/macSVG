@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Container Attribute Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.EnableBackgroundValue.datatype">
+ <text/>
+</define>
+
+<define name="SVG.enable-background.attrib">
+ <optional>
+  <attribute name="enable-background">
+   <ref name="SVG.EnableBackgroundValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.Container.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Container.attrib" combine="interleave">
+ <ref name="%SVG.enable-background.attrib"/>
+ <ref name="SVG.Container.extra.attrib"/>
+</define>
+
+</grammar>

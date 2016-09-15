@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'MacSVGPlugin' target in the 'MacSVGPlugin' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

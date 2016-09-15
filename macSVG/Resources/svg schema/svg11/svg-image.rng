@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Image Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- classes -->
+
+<define name="SVG.Image.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Image.class">
+ <choice>
+  <ref name="SVG.image"/>
+  <ref name="SVG.Image.extra.class"/>
+ </choice>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.image">
+ <element name="image">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <zeroOrMore>
+   <ref name="SVG.Animation.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Conditional.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.Viewport.attrib"/>
+  <ref name="SVG.Color.attrib"/>
+  <ref name="SVG.Opacity.attrib"/>
+  <ref name="SVG.Graphics.attrib"/>
+  <ref name="SVG.Profile.attrib"/>
+  <ref name="SVG.Clip.attrib"/>
+  <ref name="SVG.Mask.attrib"/>
+  <ref name="SVG.Filter.attrib"/>
+  <ref name="SVG.GraphicalEvents.attrib"/>
+  <ref name="SVG.Cursor.attrib"/>
+  <ref name="SVG.XLinkEmbed.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Coordinate.datatype"/>
+   </attribute>
+  </optional>
+  <attribute name="width">
+   <ref name="SVG.Length.datatype"/>
+  </attribute>
+  <attribute name="height">
+   <ref name="SVG.Length.datatype"/>
+  </attribute>
+  <optional>
+   <attribute name="preserveAspectRatio">
+    <ref name="SVG.PreserveAspectRatioSpec.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="transform">
+    <ref name="SVG.TransformList.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

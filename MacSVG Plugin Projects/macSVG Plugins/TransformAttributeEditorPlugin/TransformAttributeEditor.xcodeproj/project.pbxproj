@@ -1,0 +1,348 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E4CF18F14D9182500A94168 /* skewY.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4CF18E14D9182500A94168 /* skewY.png */; };
+		0E693CFC1D7054FE00006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */; };
+		0EDF158714D1FCD000E872DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDF158614D1FCD000E872DA /* Cocoa.framework */; };
+		0EDF159114D1FCD000E872DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF158F14D1FCD000E872DA /* InfoPlist.strings */; };
+		0EDF159C14D1FEC900E872DA /* TransformAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDF159B14D1FEC900E872DA /* TransformAttributeEditor.m */; };
+		0EDF159E14D1FFB000E872DA /* TransformAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF159D14D1FFB000E872DA /* TransformAttributeEditor.xib */; };
+		0EDF15A414D2078300E872DA /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF15A014D2078300E872DA /* rotate.png */; };
+		0EDF15A514D2078300E872DA /* scale.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF15A114D2078300E872DA /* scale.png */; };
+		0EDF15A614D2078300E872DA /* skewX.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF15A214D2078300E872DA /* skewX.png */; };
+		0EDF15A714D2078300E872DA /* translate.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF15A314D2078300E872DA /* translate.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E4CF18E14D9182500A94168 /* skewY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = skewY.png; path = TransformAttributeEditorPlugin/Icons/skewY.png; sourceTree = SOURCE_ROOT; };
+		0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EDF158314D1FCD000E872DA /* TransformAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EDF158614D1FCD000E872DA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		0EDF158914D1FCD000E872DA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		0EDF158B14D1FCD000E872DA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0EDF159014D1FCD000E872DA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0EDF159A14D1FEC900E872DA /* TransformAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformAttributeEditor.h; sourceTree = "<group>"; };
+		0EDF159B14D1FEC900E872DA /* TransformAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformAttributeEditor.m; sourceTree = "<group>"; };
+		0EDF159D14D1FFB000E872DA /* TransformAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransformAttributeEditor.xib; sourceTree = "<group>"; };
+		0EDF15A014D2078300E872DA /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
+		0EDF15A114D2078300E872DA /* scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scale.png; sourceTree = "<group>"; };
+		0EDF15A214D2078300E872DA /* skewX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skewX.png; sourceTree = "<group>"; };
+		0EDF15A314D2078300E872DA /* translate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = translate.png; sourceTree = "<group>"; };
+		0EDF15BC14D20BBE00E872DA /* TransformAttributeEditor-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TransformAttributeEditor-Info.plist"; sourceTree = "<group>"; };
+		0EDF15BD14D20BBE00E872DA /* TransformAttributeEditor-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TransformAttributeEditor-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0EDF158014D1FCD000E872DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E693CFC1D7054FE00006B21 /* MacSVGPlugin.framework in Frameworks */,
+				0EDF158714D1FCD000E872DA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0EDF157814D1FCCF00E872DA = {
+			isa = PBXGroup;
+			children = (
+				0EDF158C14D1FCD000E872DA /* TransformAttributeEditor */,
+				0EDF158514D1FCD000E872DA /* Frameworks */,
+				0EDF158414D1FCD000E872DA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0EDF158414D1FCD000E872DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EDF158314D1FCD000E872DA /* TransformAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0EDF158514D1FCD000E872DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */,
+				0EDF158614D1FCD000E872DA /* Cocoa.framework */,
+				0EDF158814D1FCD000E872DA /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0EDF158814D1FCD000E872DA /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EDF158914D1FCD000E872DA /* AppKit.framework */,
+				0EDF158B14D1FCD000E872DA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		0EDF158C14D1FCD000E872DA /* TransformAttributeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0EDF159A14D1FEC900E872DA /* TransformAttributeEditor.h */,
+				0EDF159B14D1FEC900E872DA /* TransformAttributeEditor.m */,
+				0EDF158D14D1FCD000E872DA /* Supporting Files */,
+			);
+			name = TransformAttributeEditor;
+			path = TransformAttributeEditorPlugin;
+			sourceTree = "<group>";
+		};
+		0EDF158D14D1FCD000E872DA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0EDF159F14D2078300E872DA /* Icons */,
+				0EDF158F14D1FCD000E872DA /* InfoPlist.strings */,
+				0EDF159D14D1FFB000E872DA /* TransformAttributeEditor.xib */,
+				0EDF15BC14D20BBE00E872DA /* TransformAttributeEditor-Info.plist */,
+				0EDF15BD14D20BBE00E872DA /* TransformAttributeEditor-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0EDF159F14D2078300E872DA /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				0EDF15A014D2078300E872DA /* rotate.png */,
+				0EDF15A114D2078300E872DA /* scale.png */,
+				0EDF15A214D2078300E872DA /* skewX.png */,
+				0E4CF18E14D9182500A94168 /* skewY.png */,
+				0EDF15A314D2078300E872DA /* translate.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0EDF158214D1FCD000E872DA /* TransformAttributeEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0EDF159514D1FCD000E872DA /* Build configuration list for PBXNativeTarget "TransformAttributeEditor" */;
+			buildPhases = (
+				0EDF157F14D1FCD000E872DA /* Sources */,
+				0EDF158014D1FCD000E872DA /* Frameworks */,
+				0EDF158114D1FCD000E872DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TransformAttributeEditor;
+			productName = transformEditorPlugin;
+			productReference = 0EDF158314D1FCD000E872DA /* TransformAttributeEditor.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0EDF157A14D1FCCF00E872DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+			};
+			buildConfigurationList = 0EDF157D14D1FCCF00E872DA /* Build configuration list for PBXProject "TransformAttributeEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0EDF157814D1FCCF00E872DA;
+			productRefGroup = 0EDF158414D1FCD000E872DA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0EDF158214D1FCD000E872DA /* TransformAttributeEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0EDF158114D1FCD000E872DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EDF159114D1FCD000E872DA /* InfoPlist.strings in Resources */,
+				0EDF159E14D1FFB000E872DA /* TransformAttributeEditor.xib in Resources */,
+				0EDF15A414D2078300E872DA /* rotate.png in Resources */,
+				0EDF15A514D2078300E872DA /* scale.png in Resources */,
+				0EDF15A614D2078300E872DA /* skewX.png in Resources */,
+				0EDF15A714D2078300E872DA /* translate.png in Resources */,
+				0E4CF18F14D9182500A94168 /* skewY.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EDF157F14D1FCD000E872DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EDF159C14D1FEC900E872DA /* TransformAttributeEditor.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0EDF158F14D1FCD000E872DA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EDF159014D1FCD000E872DA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0EDF159314D1FCD000E872DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		0EDF159414D1FCD000E872DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
+		0EDF159614D1FCD000E872DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TransformAttributeEditorPlugin/TransformAttributeEditor-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = "TransformAttributeEditorPlugin/TransformAttributeEditor-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = TransformAttributeEditor;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0EDF159714D1FCD000E872DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TransformAttributeEditorPlugin/TransformAttributeEditor-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = "TransformAttributeEditorPlugin/TransformAttributeEditor-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = TransformAttributeEditor;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0EDF157D14D1FCCF00E872DA /* Build configuration list for PBXProject "TransformAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EDF159314D1FCD000E872DA /* Debug */,
+				0EDF159414D1FCD000E872DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0EDF159514D1FCD000E872DA /* Build configuration list for PBXNativeTarget "TransformAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EDF159614D1FCD000E872DA /* Debug */,
+				0EDF159714D1FCD000E872DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0EDF157A14D1FCCF00E872DA /* Project object */;
+}

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Basic Font Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- class -->
+
+<define name="SVG.Font.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Font.class">
+ <choice>
+  <ref name="SVG.font"/>
+  <ref name="SVG.font-face"/>
+  <ref name="SVG.Font.extra.class"/>
+ </choice>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.font">
+ <element name="font">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.font-face"/>
+  <ref name="SVG.missing-glyph"/>
+  <zeroOrMore>
+   <choice>
+    <ref name="SVG.glyph"/>
+    <ref name="SVG.hkern"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="horiz-origin-x">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <attribute name="horiz-adv-x">
+    <ref name="SVG.Number.datatype"/>
+  </attribute>
+ </element>
+</define>
+
+<define name="SVG.font-face">
+ <element name="font-face">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <optional>
+   <ref name="SVG.font-face-src"/>
+  </optional>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="font-family">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="font-style">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="font-variant">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="font-weight">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="font-stretch">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="font-size">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="unicode-range">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="units-per-em">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="panose-1">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="stemv">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="stemh">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="slope">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="cap-height">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="x-height">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="accent-height">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="ascent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="descent">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="widths">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="bbox">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="ideographic">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="alphabetic">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="mathematical">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="hanging">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="underline-position">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="underline-thickness">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="strikethrough-position">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="strikethrough-thickness">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="overline-position">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="overline-thickness">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.glyph">
+ <element name="glyph">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <optional>
+   <attribute name="unicode">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="glyph-name">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="d">
+    <ref name="SVG.PathData.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="arabic-form">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="lang">
+    <ref name="SVG.LanguageCodes.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="horiz-adv-x">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.missing-glyph">
+ <element name="missing-glyph">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <optional>
+   <attribute name="d">
+    <ref name="SVG.PathData.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="horiz-adv-x">
+    <ref name="SVG.Number.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+<define name="SVG.hkern">
+ <element name="hkern">
+  <empty/>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="u1">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="g1">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="u2">
+    <text/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="g2">
+    <text/>
+   </attribute>
+  </optional>
+  <attribute name="k">
+   <ref name="SVG.Number.datatype"/>
+  </attribute>
+ </element>
+</define>
+
+<define name="SVG.font-face-src">
+ <element name="font-face-src">
+  <oneOrMore>
+   <ref name="SVG.font-face-name"/>
+  </oneOrMore>
+  <ref name="SVG.Core.attrib"/>
+ </element>
+</define>
+
+<define name="SVG.font-face-name">
+ <element name="font-face-name">
+  <empty/>
+  <ref name="SVG.Core.attrib"/>
+  <optional>
+   <attribute name="name">
+    <text/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

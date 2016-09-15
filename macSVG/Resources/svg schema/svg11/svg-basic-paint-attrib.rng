@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Basic Paint Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.Paint.datatype">
+ <text/> <!-- a 'fill' or 'stroke' property/attribute value: <paint> -->
+</define>
+
+<define name="SVG.StrokeDashArrayValue.datatype">
+ <text/> <!-- 'stroke-dasharray' property/attribute value (e.g., 'none', list of <number>s) -->
+</define>
+
+<define name="SVG.StrokeDashOffsetValue.datatype">
+ <text/> <!-- 'stroke-dashoffset' property/attribute value (e.g., 'none', <legnth>) -->
+</define>
+
+<define name="SVG.StrokeMiterLimitValue.datatype">
+ <text/> <!-- 'stroke-miterlimit' property/attribute value (e.g., <number>) -->
+</define>
+
+<define name="SVG.StrokeWidthValue.datatype">
+ <text/> <!-- 'stroke-width' property/attribute value (e.g., <length>) -->
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.fill.attrib">
+ <optional>
+  <attribute name="fill">
+   <ref name="SVG.Paint.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.fill-rule.attrib">
+ <optional>
+  <attribute name="fill-rule">
+   <ref name="SVG.ClipFillRule.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke.attrib">
+ <optional>
+  <attribute name="stroke">
+   <ref name="SVG.Paint.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-dasharray.attrib">
+ <optional>
+  <attribute name="stroke-dasharray">
+   <ref name="SVG.StrokeDashArrayValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-dashoffset.attrib">
+ <optional>
+  <attribute name="stroke-dashoffset">
+   <ref name="SVG.StrokeDashOffsetValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-linecap.attrib">
+ <optional>
+  <attribute name="stroke-linecap">
+   <choice>
+    <value>butt</value>
+    <value>round</value>
+    <value>square</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-linejoin.attrib">
+ <optional>
+  <attribute name="stroke-linejoin">
+   <choice>
+    <value>miter</value>
+    <value>round</value>
+    <value>bevel</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-miterlimit.attrib">
+ <optional>
+  <attribute name="stroke-miterlimit">
+   <ref name="SVG.StrokeMiterLimitValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.stroke-width.attrib">
+ <optional>
+  <attribute name="stroke-width">
+   <ref name="SVG.StrokeWidthValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.Paint.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Paint.attrib" combine="interleave">
+ <ref name="SVG.fill.attrib"/>
+ <ref name="SVG.fill-rule.attrib"/>
+ <ref name="SVG.stroke.attrib"/>
+ <ref name="SVG.stroke-dasharray.attrib"/>
+ <ref name="SVG.stroke-dashoffset.attrib"/>
+ <ref name="SVG.stroke-linecap.attrib"/>
+ <ref name="SVG.stroke-linejoin.attrib"/>
+ <ref name="SVG.stroke-miterlimit.attrib"/>
+ <ref name="SVG.stroke-width.attrib"/>
+ <ref name="SVG.Paint.extra.attrib"/>
+</define>
+
+<define name="SVG.color.attrib">
+ <optional>
+  <attribute name="color">
+   <ref name="SVG.Color.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.color-rendering.attrib">
+ <optional>
+  <attribute name="color-rendering">
+   <choice>
+    <value>auto</value>
+    <value>optimizeSpeed</value>
+    <value>optimizeQuality</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.Color.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Color.attrib" combine="interleave">
+ <ref name="SVG.color.attrib"/>
+ <ref name="SVG.color-rendering.attrib"/>
+ <ref name="SVG.Color.extra.attrib"/>
+</define>
+
+</grammar>

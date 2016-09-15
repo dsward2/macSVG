@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>macSVG Website</key>
+	<string>http://macsvg.org/</string>
+	<key>W3C SVG Website</key>
+	<string>http://www.w3.org/Graphics/SVG/</string>
+	<key>W3C SVG Specification Website</key>
+	<string>http://www.w3.org/TR/SVG11/expanded-toc.html</string>
+	<key>W3C SVG Specification PDF</key>
+	<string>http://www.w3.org/TR/SVG/REC-SVG11-20110816.pdf</string>
+	<key>W3C SVG Primer Website</key>
+	<string>http://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html</string>
+	<key>W3C SVG Test Suite Overview Website</key>
+	<string>http://www.w3.org/Graphics/SVG/WG/wiki/Test_Suite_Overview</string>
+	<key>W3C SVG Test Suite Index Website</key>
+	<string>http://www.w3.org/Graphics/SVG/Test/20110816/harness/htmlObjectApproved/index.html</string>
+	<key>O&apos;Reilly Commons: SVG Essentials Website</key>
+	<string>http://commons.oreilly.com/wiki/index.php/SVG_Essentials</string>
+	<key>W3Schools.com SVG Tutorial</key>
+	<string>http://www.w3schools.com/svg/default.asp</string>
+	<key>SRU.edu SVG Animation with Javascript</key>
+	<string>http://srufaculty.sru.edu/david.dailey/svg/</string>
+	<key>OpenClipArt.org Website</key>
+	<string>http://openclipart.org/</string>
+	<key>Clker.com Website</key>
+	<string>http://www.clker.com/</string>
+	<key>Google SVG Search Website</key>
+	<string>http://images.google.com/advanced_image_search?as_filetype=svg</string>
+	<key>Google Web Fonts Website</key>
+	<string>http://www.google.com/webfonts</string>
+</dict>
+</plist>

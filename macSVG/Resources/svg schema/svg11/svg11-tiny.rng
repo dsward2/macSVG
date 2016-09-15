@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+RELAX NG Schema on SVG 1.1 (Tiny)
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" ns="http://www.w3.org/2000/svg">
+
+<!-- datatypes -->
+
+<include href="svg-datatypes.rng"/>
+
+<!-- attriutes -->
+
+<include href="svg-default-attrib.rng"/>
+<include href="svg-core-attrib.rng"/>
+<include href="svg-basic-paint-attrib.rng"/>
+<include href="svg-basic-graphics-attrib.rng"/>
+<include href="svg-xlink-attrib.rng"/>
+<include href="svg-extresources-attrib.rng"/>
+
+<!-- elements -->
+
+<include href="svg-tiny-model.rng"/>
+<include href="svg-basic-structure.rng"/>
+<include href="svg-conditional.rng"/>
+<include href="svg-image.rng"/>
+<include href="svg-style.rng"/>
+<include href="svg-shape.rng"/>
+<include href="svg-basic-text.rng"/>
+<include href="svg-hyperlink.rng"/>
+<include href="svg-view.rng"/>
+<include href="svg-script.rng"/>
+<include href="svg-animation.rng"/>
+<include href="svg-basic-font.rng"/>
+<include href="svg-extensibility.rng"/>
+
+</grammar>

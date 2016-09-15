@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Conditional Processing Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- define datatypes -->
+
+<define name="SVG.ExtensionList.datatype">
+ <text/>
+</define>
+
+<define name="SVG.FeatureList.datatype">
+ <text/>
+</define>
+
+<!-- define contents -->
+
+<define name="SVG.Conditional.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Conditional.class">
+ <choice>
+  <ref name="SVG.switch"/>
+  <ref name="SVG.Conditional.extra.class"/>
+ </choice>
+</define>
+
+<define name="SVG.Conditional.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Conditional.attrib" combine="interleave">
+ <optional>
+  <attribute name="requiredFeatures">
+   <ref name="SVG.FeatureList.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="requiredExtensions">
+   <ref name="SVG.ExtensionList.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="systemLanguage">
+   <ref name="SVG.LanguageCodes.datatype"/>
+  </attribute>
+ </optional>
+ <ref name="SVG.Conditional.extra.attrib"/>
+</define>
+
+<define name="SVG.switch">
+ <element name="switch">
+ <zeroOrMore>
+  <ref name="SVG.Description.class"/>
+ </zeroOrMore>
+ <zeroOrMore>
+  <choice>
+   <ref name="SVG.svg"/>
+   <ref name="SVG.g"/>
+   <ref name="SVG.use"/>
+   <ref name="SVG.text"/>
+   <ref name="SVG.text"/>
+   <ref name="SVG.Animation.class"/>
+   <ref name="SVG.Conditional.class"/>
+   <ref name="SVG.Image.class"/>
+   <ref name="SVG.Shape.class"/>
+   <ref name="SVG.Hyperlink.class"/>
+   <ref name="SVG.Extensibility.class"/>
+  </choice>
+ </zeroOrMore>
+ <ref name="SVG.Core.attrib"/>
+ <ref name="SVG.Conditional.attrib"/>
+ <ref name="SVG.Style.attrib"/>
+ <ref name="SVG.Presentation.attrib"/>
+ <ref name="SVG.GraphicalEvents.attrib"/>
+ <ref name="SVG.External.attrib"/>
+ <optional>
+  <attribute name="transform">
+   <ref name="SVG.TransformList.datatype"/>
+  </attribute>
+ </optional>
+ </element>
+</define>
+
+
+</grammar>

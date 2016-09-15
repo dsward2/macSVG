@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Basic Text Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.FontFamilyValue.datatype">
+ <text/> <!-- 'font-family' property/attribute value (i.e., list of fonts) -->
+</define>
+
+<define name="SVG.FontSizeValue.datatype">
+ <text/> <!-- 'font-size' property/attribute value -->
+</define>
+
+<!-- classes -->
+
+<define name="SVG.Text.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.Text.class">
+ <choice>
+  <ref name="SVG.text"/>
+  <ref name="SVG.Text.extra.class"/>
+ </choice>
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.TextContent.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.TextContent.attrib" combine="interleave">
+ <optional>
+  <attribute name="text-anchor">
+   <choice>
+    <value>start</value>
+    <value>middle</value>
+    <value>end</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+ <ref name="SVG.TextContent.extra.attrib"/>
+</define>
+
+<define name="SVG.Font.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Font.attrib" combine="interleave">
+ <optional>
+  <attribute name="font-family">
+   <ref name="SVG.FontFamilyValue.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="font-size">
+   <ref name="SVG.FontSizeValue.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="font-style">
+   <choice>
+    <value>normal</value>
+    <value>italic</value>
+    <value>oblique</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="font-weight">
+   <choice>
+    <value>normal</value>
+    <value>bold</value>
+    <value>bolder</value>
+    <value>lighter</value>
+    <value>100</value>
+    <value>200</value>
+    <value>300</value>
+    <value>400</value>
+    <value>500</value>
+    <value>600</value>
+    <value>700</value>
+    <value>800</value>
+    <value>900</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+ <ref name="SVG.Font.extra.attrib"/>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.text">
+ <element name="text">
+  <zeroOrMore>
+   <choice>
+    <text/>
+    <ref name="SVG.Description.class"/>
+    <ref name="SVG.Animation.class"/>
+    <ref name="SVG.Hyperlink.class"/>
+   </choice>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.Conditional.attrib"/>
+  <ref name="SVG.Style.attrib"/>
+  <ref name="SVG.TextContent.attrib"/>
+  <ref name="SVG.Font.attrib"/>
+  <ref name="SVG.Paint.attrib"/>
+  <ref name="SVG.Color.attrib"/>
+  <ref name="SVG.Opacity.attrib"/>
+  <ref name="SVG.Graphics.attrib"/>
+  <ref name="SVG.Clip.attrib"/>
+  <ref name="SVG.Mask.attrib"/>
+  <ref name="SVG.Filter.attrib"/>
+  <ref name="SVG.GraphicalEvents.attrib"/>
+  <ref name="SVG.Cursor.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="x">
+    <ref name="SVG.Coordinates.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="y">
+    <ref name="SVG.Coordinates.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="rotate">
+    <ref name="SVG.Numbers.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="transform">
+    <ref name="SVG.TransformList.datatype"/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- View Module  -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- classes -->
+
+<define name="SVG.View.extra.class">
+ <empty/>
+</define>
+
+<define name="SVG.View.class">
+ <choice>
+  <ref name="SVG.view"/>
+  <ref name="SVG.View.extra.class"/>
+ </choice>
+</define>
+
+<!-- elements -->
+
+<define name="SVG.view">
+ <element name="view">
+  <zeroOrMore>
+   <ref name="SVG.Description.class"/>
+  </zeroOrMore>
+  <ref name="SVG.Core.attrib"/>
+  <ref name="SVG.External.attrib"/>
+  <optional>
+   <attribute name="viewBox">
+    <ref name="SVG.ViewBoxSpec.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="preserveAspectRatio">
+    <ref name="SVG.PreserveAspectRatioSpec.datatype"/>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="zoomAndPan">
+    <choice>
+     <value>disable</value>
+     <value>magnify</value>
+    </choice>
+   </attribute>
+  </optional>
+  <optional>
+   <attribute name="viewTarget">
+    <text/>
+   </attribute>
+  </optional>
+ </element>
+</define>
+
+</grammar>

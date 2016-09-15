@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Animation Events Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.onbegin.attrib">
+   <optional>
+    <attribute name="onbegin">
+     <ref name="SVG.Script.datatype"/>
+    </attribute>
+   </optional>
+</define>
+
+<define name="SVG.onend.attrib">
+   <optional>
+    <attribute name="onend">
+     <ref name="SVG.Script.datatype"/>
+    </attribute>
+   </optional>
+</define>
+
+<define name="SVG.onrepeat.attrib">
+   <optional>
+    <attribute name="onrepeat">
+     <ref name="SVG.Script.datatype"/>
+    </attribute>
+   </optional>
+</define>
+
+<define name="SVG.AnimationEvents.extra.attrib">
+  <empty/>
+</define>
+
+<define name="SVG.AnimationEvents.attrib" combine="interleave">
+   <ref name="SVG.onbegin.attrib"/>
+   <ref name="SVG.onend.attrib"/>
+   <ref name="SVG.onrepeat.attrib"/>
+   <ref name="SVG.AnimationEvents.extra.attrib"/>
+</define>
+
+</grammar>

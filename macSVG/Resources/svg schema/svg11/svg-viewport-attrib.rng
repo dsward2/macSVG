@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Viewport Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<!-- datatypes -->
+
+<define name="SVG.ClipValue.datatype">
+ <text/> <!-- 'clip' property/attribute value (e.g., 'auto', rect(...)) -->
+</define>
+
+<!-- attributes -->
+
+<define name="SVG.clip.attrib">
+ <optional>
+  <attribute name="clip">
+   <ref name="SVG.ClipValue.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.overflow.attrib">
+ <optional>
+  <attribute name="overflow">
+   <choice>
+    <value>visible</value>
+    <value>hidden</value>
+    <value>scroll</value>
+    <value>auto</value>
+    <value>inherit</value>
+   </choice>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.Viewport.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.Viewport.attrib" combine="interleave">
+ <ref name="SVG.clip.attrib"/>
+ <ref name="SVG.overflow.attrib"/>
+ <ref name="SVG.Viewport.extra.attrib"/>
+</define>
+
+</grammar>

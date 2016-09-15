@@ -1,0 +1,297 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0EA78C191D84106D00C9D4C8 /* PointsAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA78C181D84106D00C9D4C8 /* PointsAttributeEditor.m */; };
+		0EA78C1C1D8410DC00C9D4C8 /* PointsAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */; };
+		0EA78C1F1D84142A00C9D4C8 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */; };
+		0EA78C391D84165A00C9D4C8 /* PointsTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0EA78C0E1D840FA900C9D4C8 /* PointsAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PointsAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EA78C111D840FA900C9D4C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EA78C171D84106D00C9D4C8 /* PointsAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsAttributeEditor.h; sourceTree = "<group>"; };
+		0EA78C181D84106D00C9D4C8 /* PointsAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointsAttributeEditor.m; sourceTree = "<group>"; };
+		0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PointsAttributeEditor.xib; sourceTree = "<group>"; };
+		0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EA78C371D84165A00C9D4C8 /* PointsTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsTableRowView.h; sourceTree = "<group>"; };
+		0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointsTableRowView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0EA78C0B1D840FA900C9D4C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EA78C1F1D84142A00C9D4C8 /* MacSVGPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0EA78C051D840FA900C9D4C8 = {
+			isa = PBXGroup;
+			children = (
+				0EA78C101D840FA900C9D4C8 /* PointsAttributeEditor */,
+				0EA78C1D1D84140E00C9D4C8 /* Frameworks */,
+				0EA78C0F1D840FA900C9D4C8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0EA78C0F1D840FA900C9D4C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EA78C0E1D840FA900C9D4C8 /* PointsAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0EA78C101D840FA900C9D4C8 /* PointsAttributeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0EA78C171D84106D00C9D4C8 /* PointsAttributeEditor.h */,
+				0EA78C181D84106D00C9D4C8 /* PointsAttributeEditor.m */,
+				0EA78C371D84165A00C9D4C8 /* PointsTableRowView.h */,
+				0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */,
+				0EA78C1A1D8410A800C9D4C8 /* Supporting Files */,
+			);
+			path = PointsAttributeEditor;
+			sourceTree = "<group>";
+		};
+		0EA78C1A1D8410A800C9D4C8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */,
+				0EA78C111D840FA900C9D4C8 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0EA78C1D1D84140E00C9D4C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0EA78C0D1D840FA900C9D4C8 /* PointsAttributeEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0EA78C141D840FA900C9D4C8 /* Build configuration list for PBXNativeTarget "PointsAttributeEditor" */;
+			buildPhases = (
+				0EA78C0A1D840FA900C9D4C8 /* Sources */,
+				0EA78C0B1D840FA900C9D4C8 /* Frameworks */,
+				0EA78C0C1D840FA900C9D4C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PointsAttributeEditor;
+			productName = PointsAttributeEditor;
+			productReference = 0EA78C0E1D840FA900C9D4C8 /* PointsAttributeEditor.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0EA78C061D840FA900C9D4C8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0EA78C0D1D840FA900C9D4C8 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 0EA78C091D840FA900C9D4C8 /* Build configuration list for PBXProject "PointsAttributeEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0EA78C051D840FA900C9D4C8;
+			productRefGroup = 0EA78C0F1D840FA900C9D4C8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0EA78C0D1D840FA900C9D4C8 /* PointsAttributeEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0EA78C0C1D840FA900C9D4C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EA78C1C1D8410DC00C9D4C8 /* PointsAttributeEditor.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EA78C0A1D840FA900C9D4C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EA78C191D84106D00C9D4C8 /* PointsAttributeEditor.m in Sources */,
+				0EA78C391D84165A00C9D4C8 /* PointsTableRowView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0EA78C121D840FA900C9D4C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0EA78C131D840FA900C9D4C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0EA78C151D840FA900C9D4C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = PointsAttributeEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PointsAttributeEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0EA78C161D840FA900C9D4C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = PointsAttributeEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PointsAttributeEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0EA78C091D840FA900C9D4C8 /* Build configuration list for PBXProject "PointsAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EA78C121D840FA900C9D4C8 /* Debug */,
+				0EA78C131D840FA900C9D4C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0EA78C141D840FA900C9D4C8 /* Build configuration list for PBXNativeTarget "PointsAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EA78C151D840FA900C9D4C8 /* Debug */,
+				0EA78C161D840FA900C9D4C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0EA78C061D840FA900C9D4C8 /* Project object */;
+}

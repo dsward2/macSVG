@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- External Resources Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+<define name="SVG.externalResourcesRequired.attrib">
+ <optional>
+  <attribute name="externalResourcesRequired">
+   <ref name="SVG.Boolean.datatype"/>
+  </attribute>
+ </optional>
+</define>
+
+<define name="SVG.External.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.External.attrib" combine="interleave">
+ <ref name="SVG.externalResourcesRequired.attrib"/>
+ <ref name="SVG.External.extra.attrib"/>
+</define>
+
+</grammar>

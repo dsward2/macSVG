@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- XLink Attribute Module -->
+
+<!--
+
+RELAX NG Schema on SVG 1.1
+
+See COPYING for the status of this software.
+Yutaka Furubayashi (Poka-Poka Dream Factory) <info@yupotan.sppd.ne.jp>
+
+-->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<define name="SVG.XLink.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.XLink.attrib" combine="interleave">
+ <optional>
+  <attribute name="xlink:type">
+   <value>simple</value>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:href">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:role">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:arcrole">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:title">
+   <text/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:show">
+   <value>other</value>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:actuate">
+   <value>onLoad</value>
+  </attribute>
+ </optional>
+ <ref name="SVG.XLink.extra.attrib"/>
+</define>
+
+<define name="SVG.XLinkRequired.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.XLinkRequired.attrib" combine="interleave">
+ <optional>
+  <attribute name="xlink:type">
+   <value>simple</value>
+  </attribute>
+ </optional>
+ <attribute name="xlink:href">
+   <ref name="SVG.URI.datatype"/>
+ </attribute>
+ <optional>
+  <attribute name="xlink:role">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:arcrole">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:title">
+   <text/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:show">
+   <value>other</value>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:actuate">
+   <value>onLoad</value>
+  </attribute>
+ </optional>
+ <ref name="SVG.XLinkRequired.extra.attrib"/>
+</define>
+
+<define name="SVG.XLinkEmbed.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.XLinkEmbed.attrib" combine="interleave">
+ <optional>
+  <attribute name="xlink:type">
+   <value>simple</value>
+  </attribute>
+ </optional>
+ <attribute name="xlink:href">
+   <ref name="SVG.URI.datatype"/>
+ </attribute>
+ <optional>
+  <attribute name="xlink:role">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:arcrole">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:title">
+   <text/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:show">
+   <value>embed</value>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:actuate">
+   <value>onLoad</value>
+  </attribute>
+ </optional>
+ <ref name="SVG.XLinkEmbed.extra.attrib"/>
+</define>
+
+<define name="SVG.XLinkReplace.extra.attrib">
+ <empty/>
+</define>
+
+<define name="SVG.XLinkReplace.attrib" combine="interleave">
+ <optional>
+  <attribute name="xlink:type">
+   <value>simple</value>
+  </attribute>
+ </optional>
+ <attribute name="xlink:href">
+   <ref name="SVG.URI.datatype"/>
+ </attribute>
+ <optional>
+  <attribute name="xlink:role">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:arcrole">
+   <ref name="SVG.URI.datatype"/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:title">
+   <text/>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:show">
+   <choice>
+    <value>new</value>
+    <value>replace</value>
+   </choice>
+  </attribute>
+ </optional>
+ <optional>
+  <attribute name="xlink:actuate">
+   <value>onRequest</value>
+  </attribute>
+ </optional>
+ <ref name="SVG.XLinkReplace.extra.attrib"/>
+</define>
+
+</grammar>

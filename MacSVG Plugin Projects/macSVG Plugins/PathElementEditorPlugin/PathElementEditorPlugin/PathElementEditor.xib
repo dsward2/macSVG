@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment version="101000" identifier="macosx"/>
+        <development version="6300" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PathElementEditor">
+            <connections>
+                <outlet property="arcSettingsButton" destination="d3V-75-BxJ" id="SMm-5f-BSO"/>
+                <outlet property="arcSettingsPopover" destination="5MA-0m-lkR" id="2Gs-wF-jLT"/>
+                <outlet property="arcSettingsPopoverViewController" destination="VIV-xH-PXy" id="t8D-ZT-sPe"/>
+                <outlet property="closePathAutomaticallyCheckbox" destination="20" id="54"/>
+                <outlet property="curveSegmentContinuityCheckbox" destination="dG0-K1-eEZ" id="ZMP-Em-r1w"/>
+                <outlet property="deleteSegmentButton" destination="PJt-Nd-XxF" id="xAp-KY-dTU"/>
+                <outlet property="editSegmentButton" destination="xRV-x1-p9u" id="aaI-dx-n0z"/>
+                <outlet property="highlightColorWell" destination="NjM-iM-305" id="hCP-tC-RuH"/>
+                <outlet property="highlightSelectedSegmentCheckbox" destination="hA0-DD-KnF" id="chA-n0-q1W"/>
+                <outlet property="highlightStrokeWidthTextField" destination="8yI-dl-IxV" id="7uF-Xu-gg2"/>
+                <outlet property="highlightUseCustomStrokeWidthCheckbox" destination="j2b-bZ-AVj" id="dJq-SA-9Az"/>
+                <outlet property="insertSegmentButton" destination="bsI-0N-bVC" id="ceN-F3-tFV"/>
+                <outlet property="pathFunctionLabel1" destination="MWh-gj-pu2" id="ftS-TT-sEl"/>
+                <outlet property="pathFunctionLabel2" destination="h1U-Na-Abz" id="2em-4h-KvA"/>
+                <outlet property="pathFunctionLabel3" destination="7YA-vt-0qx" id="5cF-O6-Dsn"/>
+                <outlet property="pathFunctionValue1" destination="50W-ty-8ol" id="sKr-L2-q80"/>
+                <outlet property="pathFunctionValue2" destination="IkF-TX-ER2" id="YwR-0e-W8g"/>
+                <outlet property="pathFunctionValue3" destination="oWr-Jq-eyE" id="1Q3-lX-NK0"/>
+                <outlet property="pathFunctions" destination="rls-gh-kK3" id="y1U-af-INS"/>
+                <outlet property="pathFunctionsPopupButton" destination="5" id="UKv-G5-i3E"/>
+                <outlet property="pathLengthTextField" destination="Pk3-am-SYS" id="Npq-ph-woo"/>
+                <outlet property="pathModePopupButton" destination="28" id="56"/>
+                <outlet property="pathSegmentEditorPopover" destination="RCf-xU-4VR" id="0GB-zA-nto"/>
+                <outlet property="pathSegmentEditorPopoverViewController" destination="RPi-1N-3AS" id="xEH-bF-EDX"/>
+                <outlet property="pathTableView" destination="sdj-TR-HTE" id="kSB-Ku-4el"/>
+                <outlet property="pluginView" destination="1" id="2"/>
+                <outlet property="subdivideSegmentButton" destination="Atu-dJ-207" id="Lp0-BQ-UuF"/>
+                <outlet property="useRelativePathCoordinatesButton" destination="19" id="60"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="1" userLabel="PathElementEditorView" customClass="FlippedView">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="270"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+            <subviews>
+                <customView id="DYz-1O-gpp">
+                    <rect key="frame" x="0.0" y="0.0" width="270" height="270"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <textField verticalHuggingPriority="750" id="52">
+                            <rect key="frame" x="8" y="253" width="87" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Path Controls" id="53">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <tabView controlSize="small" initialItem="e2z-rx-xLZ" id="EHq-d2-JuN">
+                            <rect key="frame" x="3" y="0.0" width="264" height="248"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <tabViewItems>
+                                <tabViewItem label="Drawing" identifier="1" id="e2z-rx-xLZ">
+                                    <view key="view" id="ocq-fe-6CR">
+                                        <rect key="frame" x="10" y="25" width="244" height="210"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <button id="19">
+                                                <rect key="frame" x="16" y="162" width="213" height="18"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="check" title="Relative Path Coordinates" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="51">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="updateSVGPathEditorAction:" target="-2" id="Gw3-mE-WEv"/>
+                                                </connections>
+                                            </button>
+                                            <button id="dG0-K1-eEZ">
+                                                <rect key="frame" x="16" y="126" width="213" height="18"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="check" title="Curve Segment Continuity" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="POQ-5m-83M">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="updateSVGPathEditorAction:" target="-2" id="WQG-bP-l8I"/>
+                                                </connections>
+                                            </button>
+                                            <button id="20">
+                                                <rect key="frame" x="16" y="144" width="213" height="18"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="check" title="Close Path Automatically" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="50">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="updateSVGPathEditorAction:" target="-2" id="7LS-rf-I9l"/>
+                                                </connections>
+                                            </button>
+                                            <popUpButton verticalHuggingPriority="750" id="28">
+                                                <rect key="frame" x="75" y="183" width="155" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="31">
+                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <menu key="menu" title="Path Segment" id="32">
+                                                        <items>
+                                                            <menuItem title="Move To" id="40">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Line To" id="41">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Horizontal Line" id="39">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Vertical Line" id="38">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Cubic Curve" id="37">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Smooth Cubic Curve" id="33">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Quadratic Curve" id="34">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Smooth Quadratic Curve" id="35">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Elliptical Arc" id="36"/>
+                                                            <menuItem title="Freestyle Path" id="42"/>
+                                                        </items>
+                                                    </menu>
+                                                    <connections>
+                                                        <action selector="updateSVGPathEditorAction:" target="-2" id="KMg-Cp-lyF"/>
+                                                    </connections>
+                                                </popUpButtonCell>
+                                            </popUpButton>
+                                            <button verticalHuggingPriority="750" id="29">
+                                                <rect key="frame" x="14" y="97" width="83" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Close Path" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="30">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="closePathNowButtonAction:" target="-2" id="moR-MQ-5w7"/>
+                                                </connections>
+                                            </button>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="LXz-LU-Eik">
+                                                <rect key="frame" x="17" y="188" width="55" height="14"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment:" id="KtN-Ur-Qws">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button verticalHuggingPriority="750" id="46f-hu-Gdc">
+                                                <rect key="frame" x="95" y="97" width="89" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Extend Path" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bcb-CI-yGa">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="closePathNowButtonAction:" target="-2" id="Kj8-GG-LhW"/>
+                                                </connections>
+                                            </button>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gqz-Vx-3vx">
+                                                <rect key="frame" x="17" y="81" width="71" height="14"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Path Length:" id="LYV-58-hNp">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Pk3-am-SYS">
+                                                <rect key="frame" x="92" y="81" width="143" height="14"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="drg-AL-l6h">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button verticalHuggingPriority="750" id="d3V-75-BxJ">
+                                                <rect key="frame" x="182" y="97" width="44" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Arc" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UK6-se-Fdd">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="arcSettingsButtonAction:" target="-2" id="skT-lM-0GB"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </view>
+                                </tabViewItem>
+                                <tabViewItem label="Segments" identifier="2" id="0aj-zS-2gy">
+                                    <view key="view" id="rCx-Lt-eWY">
+                                        <rect key="frame" x="10" y="25" width="244" height="210"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="fQm-q8-1TC">
+                                                <rect key="frame" x="5" y="85" width="237" height="119"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <clipView key="contentView" drawsBackground="NO" id="ciu-Ye-VYV">
+                                                    <rect key="frame" x="1" y="0.0" width="235" height="118"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="hzu-X7-I7g" id="sdj-TR-HTE">
+                                                            <rect key="frame" x="0.0" y="0.0" width="235" height="95"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <size key="intercellSpacing" width="3" height="2"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                            <tableColumns>
+                                                                <tableColumn identifier="segmentIndex" editable="NO" width="35" minWidth="10" maxWidth="3.4028234663852886e+38" id="uaU-8Q-eTZ">
+                                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="#">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                    </tableHeaderCell>
+                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="YvM-92-KPP">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                </tableColumn>
+                                                                <tableColumn identifier="segmentCommand" editable="NO" width="84" minWidth="40" maxWidth="1000" id="nzL-dW-QqW">
+                                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Segment Kind">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </tableHeaderCell>
+                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="R4U-ac-lLL">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                </tableColumn>
+                                                                <tableColumn identifier="segmentData" editable="NO" width="107" minWidth="40" maxWidth="1000" id="7KE-Ew-T3S">
+                                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Path Data">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </tableHeaderCell>
+                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="87L-9O-qOD">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                </tableColumn>
+                                                            </tableColumns>
+                                                            <connections>
+                                                                <outlet property="dataSource" destination="-2" id="y4E-P8-Awe"/>
+                                                                <outlet property="delegate" destination="-2" id="WWB-OQ-ytm"/>
+                                                            </connections>
+                                                        </tableView>
+                                                    </subviews>
+                                                    <nil key="backgroundColor"/>
+                                                </clipView>
+                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.25" horizontal="YES" id="WNh-lp-rUQ">
+                                                    <rect key="frame" x="1" y="136" width="235" height="15"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </scroller>
+                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="DxX-6Q-mme">
+                                                    <rect key="frame" x="-100" y="-100" width="15" height="70"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </scroller>
+                                                <tableHeaderView key="headerView" id="hzu-X7-I7g">
+                                                    <rect key="frame" x="0.0" y="0.0" width="235" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableHeaderView>
+                                            </scrollView>
+                                            <button verticalHuggingPriority="750" id="xRV-x1-p9u">
+                                                <rect key="frame" x="0.0" y="53" width="47" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Edit" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UoS-oS-cdS">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="editPathSegmentButtonAction:" target="-2" id="pZD-9h-jH3"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" id="bsI-0N-bVC">
+                                                <rect key="frame" x="45" y="53" width="47" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7kx-PJ-H8i">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="addPathSegmentButtonAction:" target="-2" id="f4q-e8-ft3"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" id="PJt-Nd-XxF">
+                                                <rect key="frame" x="90" y="53" width="60" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kmj-RS-xCW">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="deletePathSegmentButtonAction:" target="-2" id="Vzl-rT-Jus"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" id="Atu-dJ-207">
+                                                <rect key="frame" x="148" y="53" width="78" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Subdivide" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NNY-m6-3lv">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="subdivideSegmentButtonAction:" target="-2" id="FBW-hC-2Qp"/>
+                                                </connections>
+                                            </button>
+                                            <button id="hA0-DD-KnF">
+                                                <rect key="frame" x="2" y="27" width="167" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="check" title="Highlight selected segment" bezelStyle="regularSquare" imagePosition="left" controlSize="small" inset="2" id="oex-21-nnz">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="highlightSelectedSegmentCheckboxAction:" target="-2" id="Y3i-QB-8Mf"/>
+                                                </connections>
+                                            </button>
+                                            <colorWell id="NjM-iM-305">
+                                                <rect key="frame" x="175" y="26" width="44" height="23"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <color key="color" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </colorWell>
+                                            <button id="j2b-bZ-AVj">
+                                                <rect key="frame" x="2" y="5" width="144" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="check" title="Highlight stroke width: " bezelStyle="regularSquare" imagePosition="left" controlSize="small" inset="2" id="xgm-hs-cXa">
+                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                            </button>
+                                            <textField verticalHuggingPriority="750" id="8yI-dl-IxV">
+                                                <rect key="frame" x="153" y="5" width="66" height="19"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="5.0" drawsBackground="YES" id="wtj-iA-7rY">
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                    </view>
+                                </tabViewItem>
+                                <tabViewItem label="Functions" identifier="" id="ugG-6y-3Dk">
+                                    <view key="view" id="giG-QJ-oOd">
+                                        <rect key="frame" x="10" y="25" width="244" height="210"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <popUpButton verticalHuggingPriority="750" id="5">
+                                                <rect key="frame" x="15" y="160" width="214" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <popUpButtonCell key="cell" type="push" title="Convert to Absolute Coordinates" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="iGu-r8-aa1" id="6">
+                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                    <menu key="menu" title="OtherViews" autoenablesItems="NO" id="7">
+                                                        <items>
+                                                            <menuItem title="Convert to Absolute Coordinates" state="on" id="iGu-r8-aa1">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Convert to Relative Coordinates" enabled="NO" id="QAN-y5-03o">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Convert Curves to Absolute Cubic Bezier" id="8kc-PW-QH7">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem isSeparatorItem="YES" id="3uU-XA-RVH"/>
+                                                            <menuItem title="Scale Path Coordinates" id="04y-lp-11C"/>
+                                                            <menuItem title="Rotate Path Coordinates" id="Of6-w9-av0">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem isSeparatorItem="YES" id="Ukp-vo-6CA"/>
+                                                            <menuItem title="Reverse Path" id="pLv-fX-GmA">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Flip Path Horizontally" id="10"/>
+                                                            <menuItem title="Flip Path Vertically" id="rjg-fk-zcd"/>
+                                                            <menuItem title="Mirror Path Horizontally" id="sK0-vv-scW">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Mirror Path Vertically" id="rt3-6c-JUk">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem isSeparatorItem="YES" id="PXw-9N-vOW"/>
+                                                            <menuItem title="Join Paths" enabled="NO" id="8"/>
+                                                            <menuItem title="Split Path" enabled="NO" id="9"/>
+                                                            <menuItem isSeparatorItem="YES" id="wol-1c-OpJ"/>
+                                                            <menuItem title="Radial Duplicate Path" enabled="NO" id="epc-dI-hZ9">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Transform Path Points" enabled="NO" id="5FY-n1-dcJ">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Multi-Vertex Select" enabled="NO" id="ZBQ-f4-PPo">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Transform Selected Path Points" enabled="NO" id="q7i-Xh-zZr">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Use Path in Clip-Path" enabled="NO" id="Jby-Oe-j9Z">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Use Path in AnimateMotion" enabled="NO" id="4Xb-VU-ovd">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                        </items>
+                                                    </menu>
+                                                </popUpButtonCell>
+                                                <connections>
+                                                    <action selector="pathFunctionPopUpButtonAction:" target="-2" id="k4O-z4-xTa"/>
+                                                </connections>
+                                            </popUpButton>
+                                            <textField verticalHuggingPriority="750" id="17">
+                                                <rect key="frame" x="15" y="187" width="151" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Path Element Functions" id="18">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <button verticalHuggingPriority="750" id="3">
+                                                <rect key="frame" x="113" y="131" width="118" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Perform Function" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="performPathFunctionButtonAction:" target="-2" id="bHO-lR-8tY"/>
+                                                </connections>
+                                            </button>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MWh-gj-pu2">
+                                                <rect key="frame" x="16" y="102" width="98" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label1:" id="Vby-cI-q8F">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField verticalHuggingPriority="750" id="50W-ty-8ol">
+                                                <rect key="frame" x="120" y="99" width="96" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Value1" drawsBackground="YES" id="HpY-uY-Lqw">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="h1U-Na-Abz">
+                                                <rect key="frame" x="16" y="75" width="98" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label2:" id="ap5-fp-xKB">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField verticalHuggingPriority="750" id="IkF-TX-ER2">
+                                                <rect key="frame" x="120" y="72" width="96" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Value2" drawsBackground="YES" id="OhJ-Mf-QYB">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="7YA-vt-0qx">
+                                                <rect key="frame" x="16" y="48" width="98" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label3:" id="ZsE-Jf-NzA">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField verticalHuggingPriority="750" id="oWr-Jq-eyE">
+                                                <rect key="frame" x="120" y="45" width="96" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Value3" drawsBackground="YES" id="jFi-t7-JQm">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                    </view>
+                                </tabViewItem>
+                            </tabViewItems>
+                        </tabView>
+                    </subviews>
+                </customView>
+            </subviews>
+            <accessibility description="PathElementEditorView"/>
+            <point key="canvasLocation" x="466" y="344"/>
+        </customView>
+        <customView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koh-iS-iHt" userLabel="PathSegmentEditorView">
+            <rect key="frame" x="0.0" y="0.0" width="259" height="412"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" id="OTI-ww-0pZ">
+                    <rect key="frame" x="134" y="311" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Han-WV-X7o">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="LDZ-q4-Op6">
+                    <rect key="frame" x="134" y="289" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Arn-ie-0KJ">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="m4Y-vm-Xdn">
+                    <rect key="frame" x="134" y="267" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="9hz-zr-JYY">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="Nv5-uQ-Epc">
+                    <rect key="frame" x="134" y="245" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Wcg-pq-3NV">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="8sj-6c-gTE">
+                    <rect key="frame" x="134" y="223" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="vic-iv-qKR">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="uTe-SG-9Er">
+                    <rect key="frame" x="134" y="201" width="91" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Gaf-oT-aMM">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="4hF-aQ-iTi">
+                    <rect key="frame" x="18" y="313" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="rx:" id="al0-cv-fdW">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="f8X-VZ-nIa">
+                    <rect key="frame" x="18" y="291" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="ry:" id="JYu-G5-FcR">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="lkH-2R-KEs">
+                    <rect key="frame" x="18" y="269" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="x-axis-rotation:" id="b90-X5-qNb">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="Uiy-RX-X6v">
+                    <rect key="frame" x="18" y="247" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="large-arc-flag:" id="1VJ-sk-CiB">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="zi9-XI-5RQ">
+                    <rect key="frame" x="18" y="225" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="sweep-flag:" id="aIJ-ay-C5I">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="vbr-vE-dD2">
+                    <rect key="frame" x="18" y="203" width="111" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="x:" id="A4E-Ku-ssg">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="JB2-D1-cQ3">
+                    <rect key="frame" x="18" y="159" width="113" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Absolute start x:" id="yek-hh-f9p">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="48F-a1-3vL">
+                    <rect key="frame" x="139" y="159" width="88" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="fqA-9Z-xee">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="UiQ-nK-kDs">
+                    <rect key="frame" x="18" y="140" width="113" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Absolute start y:" id="43d-GF-IZE">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="wo0-fE-rag">
+                    <rect key="frame" x="137" y="140" width="90" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="k6R-3L-TSy">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" id="yNV-G2-SC4">
+                    <rect key="frame" x="17" y="342" width="211" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Moveto" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="y35-s7-j7I" id="JIo-s4-fqP">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                        <menu key="menu" title="Segment Types" id="t7s-Mn-BTI">
+                            <items>
+                                <menuItem title="Moveto" state="on" keyEquivalent="`" id="y35-s7-j7I">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="Lineto" id="T8u-Fq-zs8"/>
+                                <menuItem title="Horizontal Lineto" id="FcU-hw-Fb1"/>
+                                <menuItem title="Vertical Lineto" id="ViZ-9Q-lmp"/>
+                                <menuItem title="Cubic Curveto" id="fNG-9F-HCB"/>
+                                <menuItem title="Cubic Curveto Smooth" id="49i-WM-aye"/>
+                                <menuItem title="Quadratic Curveto" id="3nK-NV-FlE"/>
+                                <menuItem title="Quadratic Curveto Smooth" id="l4v-LR-LoP"/>
+                                <menuItem title="Elliptical Arc" id="KCB-Vo-HI2"/>
+                                <menuItem title="Close Path" id="fDh-Bu-Kcd"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="segmentTypePopUpButtonAction:" target="RPi-1N-3AS" id="ozw-ha-oi8"/>
+                    </connections>
+                </popUpButton>
+                <button id="xgK-2y-Tgf">
+                    <rect key="frame" x="18" y="72" width="132" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Relative Coordinates" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="QME-jm-mvD">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="segmentTypePopUpButtonAction:" target="RPi-1N-3AS" id="WfM-Zj-mdF"/>
+                    </connections>
+                </button>
+                <button id="f6G-6J-RKM">
+                    <rect key="frame" x="18" y="54" width="165" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Curve Segment Continuity" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="irS-Jc-ns3">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="segmentTypePopUpButtonAction:" target="RPi-1N-3AS" id="zMe-Qv-Spi"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="eBV-Ft-WJ8">
+                    <rect key="frame" x="18" y="371" width="59" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment" id="nJ4-9h-f0l">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="bmP-Bc-sQW">
+                    <rect key="frame" x="81" y="371" width="41" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1" id="JPX-cg-e5t">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="jY6-5m-jwG">
+                    <rect key="frame" x="72" y="13" width="82" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WXL-cn-G5e">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cancelButtonAction:" target="RPi-1N-3AS" id="2if-SW-PA0"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" id="KD3-0f-Upf">
+                    <rect key="frame" x="135" y="179" width="90" height="19"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="qCb-f2-vPp">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="p5f-Pq-n0K">
+                    <rect key="frame" x="18" y="181" width="112" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="y:" id="1Cu-xl-eng">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="Xtb-lh-b9S">
+                    <rect key="frame" x="18" y="122" width="113" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Absolute x:" id="hev-bq-h68">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="Fth-wz-SIC">
+                    <rect key="frame" x="137" y="122" width="90" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="Ydi-Su-4lm">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="8OH-X3-Ago">
+                    <rect key="frame" x="18" y="103" width="113" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Absolute y:" id="nNz-FA-ehj">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="bGY-YN-PLo">
+                    <rect key="frame" x="137" y="103" width="90" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="aMN-ZT-sVD">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="Nki-vE-hvS">
+                    <rect key="frame" x="156" y="13" width="75" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wAr-i4-zjR">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="applyButtonAction:" target="RPi-1N-3AS" id="nbb-Ei-i7u"/>
+                    </connections>
+                </button>
+            </subviews>
+            <accessibility description="PathSegmentEditorPopoverView"/>
+            <point key="canvasLocation" x="234.5" y="307"/>
+        </customView>
+        <viewController id="RPi-1N-3AS" userLabel="PathSegmentEditorPopoverViewController" customClass="PathSegmentEditorPopoverViewController">
+            <connections>
+                <outlet property="absoluteStartXTextField" destination="48F-a1-3vL" id="w7g-HY-7mf"/>
+                <outlet property="absoluteStartYTextField" destination="wo0-fE-rag" id="Ser-oH-RUm"/>
+                <outlet property="absoluteXTextField" destination="Fth-wz-SIC" id="zic-RK-Lym"/>
+                <outlet property="absoluteYTextField" destination="bGY-YN-PLo" id="8qN-sh-QWw"/>
+                <outlet property="applyButton" destination="Nki-vE-hvS" id="uKx-aJ-pl7"/>
+                <outlet property="cancelButton" destination="jY6-5m-jwG" id="szv-Q5-MbG"/>
+                <outlet property="curveSegmentContinuityCheckboxButton" destination="f6G-6J-RKM" id="EfI-ez-qte"/>
+                <outlet property="label1" destination="4hF-aQ-iTi" id="UrF-Dc-wky"/>
+                <outlet property="label2" destination="f8X-VZ-nIa" id="gut-aP-tES"/>
+                <outlet property="label3" destination="lkH-2R-KEs" id="iWS-yb-GLn"/>
+                <outlet property="label4" destination="Uiy-RX-X6v" id="UgT-J7-sHA"/>
+                <outlet property="label5" destination="zi9-XI-5RQ" id="Y6B-ef-SXD"/>
+                <outlet property="label6" destination="vbr-vE-dD2" id="a7f-Ww-ciq"/>
+                <outlet property="label7" destination="p5f-Pq-n0K" id="K9Y-Zn-TP7"/>
+                <outlet property="pathElementEditor" destination="-2" id="hAL-HS-zFo"/>
+                <outlet property="pathSegmentEditorPopover" destination="RCf-xU-4VR" id="bWc-2D-RQA"/>
+                <outlet property="relativeCoordinatesCheckboxButton" destination="xgK-2y-Tgf" id="6qR-yd-Dl3"/>
+                <outlet property="segmentTypePopUpButton" destination="yNV-G2-SC4" id="Scr-m5-pV3"/>
+                <outlet property="textfield1" destination="OTI-ww-0pZ" id="Fky-EO-p3w"/>
+                <outlet property="textfield2" destination="LDZ-q4-Op6" id="P6j-Vp-Wne"/>
+                <outlet property="textfield3" destination="m4Y-vm-Xdn" id="EfY-QQ-Eph"/>
+                <outlet property="textfield4" destination="Nv5-uQ-Epc" id="BBZ-Kq-KhQ"/>
+                <outlet property="textfield5" destination="8sj-6c-gTE" id="ims-jT-UVg"/>
+                <outlet property="textfield6" destination="uTe-SG-9Er" id="pbC-d2-1m2"/>
+                <outlet property="textfield7" destination="KD3-0f-Upf" id="dO1-ct-8pF"/>
+                <outlet property="view" destination="koh-iS-iHt" id="pnb-Ju-aOB"/>
+            </connections>
+        </viewController>
+        <popover id="RCf-xU-4VR" userLabel="Path Segment Editor Popover">
+            <connections>
+                <outlet property="contentViewController" destination="RPi-1N-3AS" id="1Jt-7d-jUf"/>
+                <outlet property="delegate" destination="RPi-1N-3AS" id="eoe-an-K4M"/>
+            </connections>
+        </popover>
+        <viewController id="VIV-xH-PXy" userLabel="ArcSettingsPopoverViewController" customClass="ArcSettingsPopoverViewController">
+            <connections>
+                <outlet property="applyButton" destination="4hd-uU-nZk" id="A5V-vm-d12"/>
+                <outlet property="arcSettingsPopover" destination="5MA-0m-lkR" id="f8n-TN-ojm"/>
+                <outlet property="cancelButton" destination="pRT-OI-j1K" id="ERM-Oh-acN"/>
+                <outlet property="pathLargeArcCheckbox" destination="21" id="LLe-IY-yCb"/>
+                <outlet property="pathRadiusXTextField" destination="23" id="ybk-Rq-Wnd"/>
+                <outlet property="pathRadiusYTextField" destination="26" id="CKh-HP-ATF"/>
+                <outlet property="pathSweepCheckbox" destination="22" id="JyU-be-2jc"/>
+                <outlet property="view" destination="7Mj-tk-f8Q" id="f3W-0h-psd"/>
+                <outlet property="xAxisRotationTextField" destination="24" id="5xv-j2-v9R"/>
+            </connections>
+        </viewController>
+        <popover id="5MA-0m-lkR" userLabel="ArcSettingsPopover">
+            <connections>
+                <outlet property="contentViewController" destination="VIV-xH-PXy" id="2AY-VH-8hL"/>
+                <outlet property="delegate" destination="VIV-xH-PXy" id="sCJ-ON-QSD"/>
+            </connections>
+        </popover>
+        <customObject id="rls-gh-kK3" customClass="PathElementEditorFunctions">
+            <connections>
+                <outlet property="pathElementEditor" destination="-2" id="hP3-yi-8mZ"/>
+            </connections>
+        </customObject>
+        <customView id="7Mj-tk-f8Q">
+            <rect key="frame" x="0.0" y="0.0" width="198" height="185"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button id="21">
+                    <rect key="frame" x="17" y="51" width="73" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Large Arc" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="49">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <button id="22">
+                    <rect key="frame" x="110" y="51" width="78" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Sweep Arc" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="48">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField verticalHuggingPriority="750" id="23">
+                    <rect key="frame" x="113" y="127" width="56" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="20" drawsBackground="YES" id="47">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="24">
+                    <rect key="frame" x="113" y="78" width="56" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="0" drawsBackground="YES" id="46">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="25">
+                    <rect key="frame" x="55" y="129" width="52" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Radius x:" id="45">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="hJO-oT-GER">
+                    <rect key="frame" x="55" y="105" width="52" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Radius y:" id="bkl-nW-Vr7">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="26">
+                    <rect key="frame" x="113" y="103" width="56" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="20" drawsBackground="YES" id="44">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="27">
+                    <rect key="frame" x="18" y="80" width="89" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="X-Axis Rotation:" id="43">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="4hd-uU-nZk">
+                    <rect key="frame" x="104" y="14" width="79" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FBd-9G-r62">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="applyButtonAction:" target="VIV-xH-PXy" id="IXm-eh-dFL"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="pRT-OI-j1K">
+                    <rect key="frame" x="25" y="14" width="79" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1hH-bs-KxW">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cancelButtonAction:" target="VIV-xH-PXy" id="usU-On-B65"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3KM-Km-45H">
+                    <rect key="frame" x="28" y="164" width="146" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Arc Path Segment Settings" id="Emg-y5-8kT">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="430" y="711.5"/>
+        </customView>
+    </objects>
+</document>
