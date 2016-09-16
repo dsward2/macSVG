@@ -1829,7 +1829,7 @@
                         {
                             break;
                         }
-                        otherwise:
+                        default:
                         {
                             controlPoint = currentPoint;
                         }

@@ -87,8 +87,6 @@
 
 - (IBAction)pathFunctionPopUpButtonAction:(id)sender;
 
--(IBAction)highlightSelectedSegmentCheckboxAction;
-
 - (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray;
 
 - (NSMutableArray * )pathSegmentsArray;

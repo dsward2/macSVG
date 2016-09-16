@@ -539,7 +539,7 @@
     
     if ([prototypeElementName isEqualToString:@"animateTransform"] == YES)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         
@@ -590,7 +590,7 @@
     
     if ([prototypeElementName isEqualToString:@"animateMotion"])
     {
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         
@@ -2954,7 +2954,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         
         if (checkDTDRules == YES)
         {
-            MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
             SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
             NSDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
 

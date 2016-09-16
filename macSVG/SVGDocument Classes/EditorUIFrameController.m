@@ -260,7 +260,7 @@
 
 - (IBAction)setEditorFrameContent:(id)sender
 {
-    NSInteger * selectedItemIndex = [self.editorPanelPopUpButton indexOfSelectedItem];
+    NSInteger selectedItemIndex = [self.editorPanelPopUpButton indexOfSelectedItem];
     
     NSDictionary * selectedItemDictionary = [self.editorPanelsArray objectAtIndex:selectedItemIndex];
 

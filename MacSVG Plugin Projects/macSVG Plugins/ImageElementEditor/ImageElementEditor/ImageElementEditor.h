@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 
 
-@interface ImageElementEditor : MacSVGPlugin
+@interface ImageElementEditor : MacSVGPlugin <WebUIDelegate, WebPolicyDelegate, WebEditingDelegate, WebDownloadDelegate, WebFrameLoadDelegate, WebResourceLoadDelegate>
 {
     IBOutlet WebView * imageWebView;
     IBOutlet NSButton * chooseFileButton;

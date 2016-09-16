@@ -257,7 +257,7 @@
         DOMNode * svgElementNode = [svgElementsList item:0];
         DOMElement * svgElement = (DOMElement *)svgElementNode;
 
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
         resultPoint = [webKitInterface transformPoint:aMousePoint fromElement:svgElement toElement:targetElement];
@@ -485,8 +485,6 @@
         {
             self.mouseMode = MOUSE_DISENGAGED;
 
-            DOMElement * polylineElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-            
             [self syncSelectedElementsToXMLDocument];
             
             [macSVGDocumentWindowController reloadAttributesTableData];
@@ -2145,7 +2143,7 @@
             DOMNode * selectedRectNode = [selectedRectsGroup.childNodes item:0];
             selectedRectElement = (id)selectedRectNode;
 
-            MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
             NSRect selectionRect = NSMakeRect(objectOriginX, objectOriginY, objectWidth, objectHeight);
             [webKitInterface setRect:selectionRect forElement:selectedRectElement];

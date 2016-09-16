@@ -2878,7 +2878,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     // work-around webkit bug to fix bounding rect, replace existing DOM path element
     DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
     DOMElement * newPathElement = [webKitInterface replaceDOMElement:pathElement domDocument:domDocument];
 

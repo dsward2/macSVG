@@ -461,8 +461,6 @@
     {
         if (highlightSelectedPointCheckbox.state == YES)
         {
-            NSMutableDictionary * pointDictionary = [self.pointsArray objectAtIndex:rowIndex];
-                
             svgPolylineEditor.polylinePointIndex = rowIndex;
             
             domSelectionRectsAndHandlesManager.segmentStrokeWidth =

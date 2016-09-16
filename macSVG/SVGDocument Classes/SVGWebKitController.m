@@ -136,7 +136,7 @@
             
             DOMElement * svgElement = (DOMElement *)svgElementNode;
             
-            MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
             if ([webKitInterface animationsPausedForSvgElement:svgElement] == NO)
@@ -380,7 +380,7 @@
             
             DOMElement * svgElement = (DOMElement *)svgElementNode;
 
-            MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
             if ([webKitInterface animationsPausedForSvgElement:svgElement] == NO)
@@ -1065,7 +1065,7 @@
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
         DOMNode * svgElementNode = [svgElementsList item:0];

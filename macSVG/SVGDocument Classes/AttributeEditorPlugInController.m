@@ -213,7 +213,7 @@
                         
         if (xmlElementForAttributes != NULL)
         {
-            MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
             SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
             NSMutableDictionary * elementsDictionary = svgDtdData.elementsDictionary;
             NSMutableDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;

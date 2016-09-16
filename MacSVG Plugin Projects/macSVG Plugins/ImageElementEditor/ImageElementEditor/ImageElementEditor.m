@@ -207,15 +207,10 @@
     }
     else
     {
-        //contentRect = documentView.frame;
-        //vScale = (webFrameViewRect.size.height / contentRect.size.height);
-        //hScale = (webFrameViewRect.size.width / contentRect.size.width);
-        
         WebDataSource * dataSource = [mainFrame dataSource];
         
         //WebResource * webResource = [dataSource mainResource];
         //NSString * mimeType = [webResource MIMEType];       // e.g. image/jpeg
-        
         
         NSData * previewOriginalData = [dataSource data];
         NSImage * previewOriginalImage = [[NSImage alloc] initWithData:previewOriginalData];
@@ -348,6 +343,19 @@
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
     // an image was dragged into the preview box
+    
+    [self scalePreviewContentToFit];
+    
+    [self updateDocumentImageDictionary];
+}
+
+//==================================================================================
+//	webView:resource:didFinishLoadingFromDataSource:
+//==================================================================================
+
+- (void)webView:(WebView *)sender resource:(id)identifier didFinishLoadingFromDataSource:(WebDataSource *)dataSource
+{
+    //NSLog(@"webView didFinishLoadingFromDataSource");
     
     [self scalePreviewContentToFit];
     
@@ -607,10 +615,14 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         NSDictionary * propertiesDictionary = [NSDictionary dictionary];
         NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
+
+        [imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set JPEG image embed option
         
         [[imageWebView mainFrame] loadData:pngImageData MIMEType:@"image/png" textEncodingName:nil baseURL:nil];
 
-        [imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set JPEG image embed option
+        //[self scalePreviewContentToFit];
+        
+        //[self updateDocumentImageDictionary];
     }
 }
 

@@ -1858,9 +1858,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     id draggingSource = [info draggingSource];
     NSPasteboard * draggingPasteboard = [info draggingPasteboard];
     
-    NSArray * pasteboardItems = [draggingPasteboard pasteboardItems];
-    
     /*
+    NSArray * pasteboardItems = [draggingPasteboard pasteboardItems];
     {
         for (NSPasteboardItem * aPasteboardItem in pasteboardItems)
         {

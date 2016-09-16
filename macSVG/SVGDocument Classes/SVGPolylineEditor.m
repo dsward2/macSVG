@@ -564,7 +564,7 @@
 - (NSInteger)didBeginPolylineEditingWithTargetXMLElement:(NSXMLElement *)targetXmlElement
         handleDOMElement:(DOMElement *)handleDOMElement
 {
-    int result = kPolylineEditingModeNotActive;
+    NSInteger result = kPolylineEditingModeNotActive;
     
     editingMode = kPolylineEditingModeNotActive;
     
@@ -572,8 +572,6 @@
     {
         if ([self.polylinePointsArray count] > 0)
         {
-            //result = [self shouldBeginPolylineEditing:event];
-            //result = [self findClickedPolylinePointHandle];
             result = [self setActiveDOMHandle:handleDOMElement];
         }
         else

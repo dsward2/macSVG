@@ -868,7 +868,7 @@
                         {
                             break;
                         }
-                        otherwise:
+                        default:
                         {
                             controlPoint = currentPoint;
                         }
@@ -2407,9 +2407,6 @@
                 NSString * x2String = [cubicSegmentDictionary objectForKey:@"x2"];
                 NSString * y2String = [cubicSegmentDictionary objectForKey:@"y2"];
                 
-                //NSString * cubicXString = [cubicSegmentDictionary objectForKey:@"x"];
-                //NSString * cubicYString = [cubicSegmentDictionary objectForKey:@"y"];
-
                 CGFloat x1Float = [x1String floatValue];
                 CGFloat y1Float = [y1String floatValue];
                 CGFloat x2Float = [x2String floatValue];
@@ -2419,22 +2416,12 @@
                 CGFloat deltaY1 = currentPoint.y - y2Float;
                 CGFloat deltaY2 = currentPoint.y - y1Float;
                 
-                /*
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
-                */
-                
                 CGFloat newXFloat = absoluteStartXFloat;
                 CGFloat newYFloat = currentPoint.y + deltaY;
                 CGFloat newX1Float = x2Float;
                 CGFloat newY1Float = currentPoint.y + deltaY1;
                 CGFloat newX2Float = x1Float;
                 CGFloat newY2Float = currentPoint.y + deltaY2;
-
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
                 [pathSegmentDictionary setObject:newXString forKey:@"x"];
@@ -2458,10 +2445,7 @@
 
                 break;
             }
-            
-            
-            
-            
+                
             case 'A':     // elliptical arc
             {
                 CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
@@ -3037,19 +3021,16 @@
             CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
             CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
             CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
-            //NSString * oldXString = [self.pathElementEditor allocFloatString:oldXFloat];
 
             CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
             CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
             CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-            //NSString * oldX1String = [self.pathElementEditor allocFloatString:oldX1Float];
 
             CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
             CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
             CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-            //NSString * oldX2String = [self.pathElementEditor allocFloatString:oldX2Float];
 
             CGFloat newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXFloat];
@@ -3306,19 +3287,16 @@
             CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
             CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
             CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
-            //NSString * oldXString = [self.pathElementEditor allocFloatString:oldXFloat];
 
             CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
             CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
             CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-            //NSString * oldX1String = [self.pathElementEditor allocFloatString:oldX1Float];
 
             CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
             CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
             CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-            //NSString * oldX2String = [self.pathElementEditor allocFloatString:oldX2Float];
 
             CGFloat newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXFloat];
@@ -3594,9 +3572,6 @@
 
     if ([pathSegmentsArray count] > 0)
     {
-        //NSPoint pathOriginPoint = [self.macSVGDocumentWindowController.svgWebKitController
-        //        endPointForSegmentIndex:0 pathSegmentsArray:pathSegmentsArray];
-        
         NSInteger currentIndex = 0;
         
         CGPoint centerPoint = CGPointMake(rotateX, rotateY);
@@ -3605,25 +3580,16 @@
         {
             CGFloat oldAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
-            //CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
-            //CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
 
             CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
-            //CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
-            //CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
 
             CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
             CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
-            //CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
-            //CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
 
             CGPoint oldAbsoluteXYPoint = CGPointMake(oldAbsoluteXFloat, oldAbsoluteYFloat);
-            //CGPoint oldXYPoint = CGPointMake(oldXFloat, oldYFloat);
             CGPoint oldAbsoluteXY1Point = CGPointMake(oldAbsoluteX1Float, oldAbsoluteY1Float);
-            //CGPoint oldXY1Point = CGPointMake(oldX1Float, oldY1Float);
             CGPoint oldAbsoluteXY2Point = CGPointMake(oldAbsoluteX2Float, oldAbsoluteY2Float);
-            //CGPoint oldXY2Point = CGPointMake(oldX2Float, oldY2Float);
             
             CGPoint newAbsoluteXYPoint = [self rotatePoint:oldAbsoluteXYPoint centerPoint:centerPoint degrees:degrees];
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXYPoint.x];

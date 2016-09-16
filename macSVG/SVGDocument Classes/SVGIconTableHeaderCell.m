@@ -69,7 +69,7 @@
             [self drawPadlockIcon:cellFrame];
             break;
         }
-        otherwise:
+        default:
         {
             [self drawFolderIcon:cellFrame];
             break;

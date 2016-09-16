@@ -53,7 +53,7 @@
 
     if (selectedElementsArrayCount > 0)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         
         CGRect unionRect = CGRectNull;
         

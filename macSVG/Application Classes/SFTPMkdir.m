@@ -60,7 +60,7 @@
     const char *username="username";
     const char *password="password";
     const char *sftppath="/tmp/sftp_mkdir_nonblock";
-    int rc;
+    int rc = 0;
     LIBSSH2_SFTP *sftp_session;
 
     NSError * resultError = NULL;

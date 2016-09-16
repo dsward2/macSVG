@@ -136,7 +136,7 @@
             [self drawTransformSkewYIcon:dirtyRect];
             break;
         }
-        otherwise:
+        default:
         {
             [self drawArrowCursorIcon:dirtyRect];
             break;

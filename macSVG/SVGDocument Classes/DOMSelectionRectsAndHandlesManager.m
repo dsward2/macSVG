@@ -502,7 +502,7 @@
 
 -(void) makeDOMSelectionRects
 {
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
     [svgXMLDOMSelectionManager resyncDOMElementsInSelectedElementsArray];
@@ -880,7 +880,7 @@
             {
                 DOMElement * originalElement = [svgWebKitController domElementForMacsvgid:shadow_Macsvgid];
                 
-                MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+                MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
                 WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
                 
                 NSRect boundingBox = [webKitInterface bBoxForDOMElement:originalElement];
@@ -1177,7 +1177,7 @@
             }
         }
 
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
         NSRect boundingBox = [webKitInterface bBoxForDOMElement:aDomElement];

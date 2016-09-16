@@ -130,7 +130,7 @@
 {
     [self.svgElementsArray removeAllObjects];
     
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
 
     if ([category isEqualToString:@"All SVG Elements"] == YES)
