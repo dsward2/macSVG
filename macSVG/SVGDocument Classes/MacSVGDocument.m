@@ -541,6 +541,10 @@ style=\"zoom: 1;\">";
 
     // add some attributes
     NSXMLElement * rootElement = [xmlDoc rootElement];
+    
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    [macSVGAppDelegate applyNewSVGDocumentSettings:xmlDoc];
+    
     [self assignMacsvgidsForNode:rootElement];
 	
 	return xmlDoc;

@@ -109,7 +109,7 @@
 - (IBAction)loadPlugins:(id)sender
 {
     // Load plugins
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
 
     NSString * plugInsPath = [[NSBundle mainBundle] builtInPlugInsPath];
     
@@ -165,13 +165,125 @@
     [pluginMenuItem setEnabled:NO];
 }
 
+
+// ================================================================
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem 
+{
+    /*
+    if ([menuItem action] == @selector(Open:))
+    {
+        // The delete selection item should be disabled if nothing is selected.
+        if ([[self selectedNodes] count] > 0) 
+        {
+            return YES;
+        } 
+        else 
+        {
+            return NO;
+        }
+    }   
+    */
+    return YES;
+}
+
 //==================================================================================
-//	windowDidBecomeMain
+//	windowDidResignKey:
 //==================================================================================
 
-- (void)windowDidBecomeMain:(NSNotification *)aNotification
+- (void)windowDidResignKey:(NSNotification *)notification
 {
+    NSWindow * aWindow = [notification object];
+    
+    NSLog(@"MacSVGDocumentWindowController - windowDidResignKey %@", aWindow);
+}
+
+//==================================================================================
+//	windowDidBecomeKey:
+//==================================================================================
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    NSWindow * aWindow = [notification object];
+    
+    NSLog(@"MacSVGDocumentWindowController - windowDidBecomeKey %@", aWindow);
+}
+
+//==================================================================================
+//	windowDidResignMain
+//==================================================================================
+
+- (void)windowDidResignMain:(NSNotification *)notification
+{
+    // Deactivate menu command targets and actions
+    NSWindow * aWindow = [notification object];
+    
+    NSLog(@"MacSVGDocumentWindowController - windowDidResignMain %@", aWindow);
+
+    NSMenu * mainMenu = [NSApp mainMenu];
+
+    NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
+    NSMenuItem * fileMenuItem = [mainMenu itemAtIndex:fileMenuIndex];
+    NSMenu * fileMenu = [fileMenuItem submenu];
+
+	NSMenuItem * saveWithNetworkConnectionMenuItem = [fileMenu itemWithTitle:@"Save With Network Connection…"];
+    [saveWithNetworkConnectionMenuItem setTarget:NULL];
+    [saveWithNetworkConnectionMenuItem setAction:NULL];
+
+    NSUInteger svgMenuIndex = [mainMenu indexOfItemWithTitle:@"SVG"];
+    NSMenuItem * svgMenuItem = [mainMenu itemAtIndex:svgMenuIndex];
+    NSMenu * svgMenu = [svgMenuItem submenu]; 
+
+	NSMenuItem * showSvgXmlTextMenuItem = [svgMenu itemWithTitle:@"Show SVG XML Text"];
+    [showSvgXmlTextMenuItem setTarget:NULL];
+    [showSvgXmlTextMenuItem setAction:NULL];
+
+
+    NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
+    NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
+    NSMenu * editMenu = [editMenuItem submenu];
+
+	NSUInteger findMenuIndex = [editMenu indexOfItemWithTitle:@"Find"];
+    NSMenuItem * findMenuItem = [editMenu itemAtIndex:findMenuIndex];
+    NSMenu * findMenu = [findMenuItem submenu];
+
+	NSMenuItem * findElementMenuItem = [findMenu itemWithTitle:@"Find…"];
+    [findElementMenuItem setTarget:NULL];
+    [findElementMenuItem setAction:NULL];
+
+	NSMenuItem * findNextElementMenuItem = [findMenu itemWithTitle:@"Find Next"];
+    [findNextElementMenuItem setTarget:NULL];
+    [findNextElementMenuItem setAction:NULL];
+
+
+    NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
+    NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
+    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
+    [plugInsMenu setAutoenablesItems:NO];
+    [plugInsMenu removeAllItems];
+
+    NSString * itemTitle = @"No Plug-Ins Enabled";
+    NSMenuItem * newPluginMenuItem = [plugInsMenu addItemWithTitle:itemTitle action:NULL keyEquivalent:@""];
+    [newPluginMenuItem setEnabled:NO];
+}
+
+
+//==================================================================================
+//	windowDidBecomeMain:
+//==================================================================================
+
+- (void)windowDidBecomeMain:(NSNotification *)notification
+{
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+
+    NSWindow * aWindow = [notification object];
+    
+    NSLog(@"MacSVGDocumentWindowController - windowDidBecomeMain %@", aWindow);
+
     // Set the menu command targets and actions
+    NSWindow * keyWindow = [NSApp keyWindow];
+    NSWindow * mainWindow = [NSApp mainWindow];
+    
     NSMenu * mainMenu = [NSApp mainMenu];
 
     NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
@@ -623,66 +735,12 @@
 }
 
 //==================================================================================
-//	windowDidResignMain
-//==================================================================================
-
-- (void)windowDidResignMain:(NSNotification *)aNotification
-{
-    // Deactivate menu command targets and actions
-    NSMenu * mainMenu = [NSApp mainMenu];
-
-    NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
-    NSMenuItem * fileMenuItem = [mainMenu itemAtIndex:fileMenuIndex];
-    NSMenu * fileMenu = [fileMenuItem submenu];
-
-	NSMenuItem * saveWithNetworkConnectionMenuItem = [fileMenu itemWithTitle:@"Save With Network Connection…"];
-    [saveWithNetworkConnectionMenuItem setTarget:NULL];
-    [saveWithNetworkConnectionMenuItem setAction:NULL];
-
-    NSUInteger svgMenuIndex = [mainMenu indexOfItemWithTitle:@"SVG"];
-    NSMenuItem * svgMenuItem = [mainMenu itemAtIndex:svgMenuIndex];
-    NSMenu * svgMenu = [svgMenuItem submenu]; 
-
-	NSMenuItem * showSvgXmlTextMenuItem = [svgMenu itemWithTitle:@"Show SVG XML Text"];
-    [showSvgXmlTextMenuItem setTarget:NULL];
-    [showSvgXmlTextMenuItem setAction:NULL];
-
-
-    NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
-    NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
-    NSMenu * editMenu = [editMenuItem submenu];
-
-	NSUInteger findMenuIndex = [editMenu indexOfItemWithTitle:@"Find"];
-    NSMenuItem * findMenuItem = [editMenu itemAtIndex:findMenuIndex];
-    NSMenu * findMenu = [findMenuItem submenu];
-
-	NSMenuItem * findElementMenuItem = [findMenu itemWithTitle:@"Find…"];
-    [findElementMenuItem setTarget:NULL];
-    [findElementMenuItem setAction:NULL];
-
-	NSMenuItem * findNextElementMenuItem = [findMenu itemWithTitle:@"Find Next"];
-    [findNextElementMenuItem setTarget:NULL];
-    [findNextElementMenuItem setAction:NULL];
-
-
-    NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
-    NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
-    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
-    [plugInsMenu setAutoenablesItems:NO];
-    [plugInsMenu removeAllItems];
-
-    NSString * itemTitle = @"No Plug-Ins Enabled";
-    NSMenuItem * newPluginMenuItem = [plugInsMenu addItemWithTitle:itemTitle action:NULL keyEquivalent:@""];
-    [newPluginMenuItem setEnabled:NO];
-}
-
-//==================================================================================
 //	saveWithNetworkConnection
 //==================================================================================
 
 - (IBAction)saveWithNetworkConnection:(id)sender
 {
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     NetworkConnectionManager * networkConnectionManager =
             [macSVGAppDelegate networkConnectionManager];
     
@@ -1018,6 +1076,8 @@
     [aNotificationCenter addObserver:self selector:@selector(windowResized:)
             name:NSWindowDidResizeNotification object:self.window];
 
+    [self.window makeKeyWindow];
+    [self.window makeMainWindow];
 }
 
 // ================================================================
@@ -1203,7 +1263,7 @@
     
     //id parentElement = [aElement parent];
     
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
     
     BOOL animationsPaused = YES;
@@ -1941,7 +2001,7 @@
 
 - (NSString *)portString
 {
-    MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
     WebServerController * webServerController = [macSVGAppDelegate webServerController];
 
     NSUInteger webHostPort = webServerController.webServerPort;

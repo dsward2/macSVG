@@ -60,28 +60,6 @@
 }
 
 //==================================================================================
-//	tableView:objectValueForTableColumn:rowIndex
-//==================================================================================
-
-/*
-- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
-{
-    id objectValue = @"File Name";
-    
-    if (aTableView == networkFileBrowserTableView)
-    {
-        objectValue = [self openFileBrowserObjectValueForTableColumn:aTableColumn row:rowIndex];
-    }
-    else if (aTableView == saveNetworkDirectoryBrowserTableView)
-    {
-        objectValue = [self saveAsDirectoryBrowserObjectValueForTableColumn:aTableColumn row:rowIndex];
-    }
-    
-    return objectValue;
-}
-*/
-
-//==================================================================================
 //	tableView:viewForTableColumn:row:
 //==================================================================================
 

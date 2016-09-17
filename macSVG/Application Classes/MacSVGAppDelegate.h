@@ -15,7 +15,7 @@
 @class WebView;
 @class MacSVGDocumentController;
 
-@interface MacSVGAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource>
+@interface MacSVGAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource, NSWindowDelegate, NSMenuDelegate>
 {
     WebKitInterface * webKitInterface;
     IBOutlet NetworkConnectionManager * networkConnectionManager;
@@ -47,6 +47,16 @@
 @property (strong) NSMutableArray * macSVGExamplesArray;
 @property (strong) NSMutableArray * filteredSvgExamplesArray;
 
+@property (weak) IBOutlet NSWindow * createNewDocumentWindow;
+@property (weak) IBOutlet NSPopUpButton * documentKindPopUpButton;
+@property (weak) IBOutlet NSPopUpButton * presetSizesPopUpButton;
+@property (weak) IBOutlet NSTextField * widthTextField;
+@property (weak) IBOutlet NSTextField * heightTextField;
+@property (weak) IBOutlet NSButton * includeBackgroundRectCheckBoxButton;
+@property (weak) IBOutlet NSColorWell * backgroundRectColorWell;
+@property (weak) IBOutlet NSButton * cancelCreateNewDocumentButton;
+@property (weak) IBOutlet NSButton * createNewDocumentButton;
+
 - (IBAction)openUntitledMacSVGDocument:(id)sender;
 - (IBAction)openUntitledSVGBannerDocument:(id)sender;
 - (IBAction)openUntitledMacSVGXHTMLDocument:(id)sender;
@@ -72,5 +82,13 @@
 - (IBAction)cancelUntitledSVGExample:(id)sender;
 - (IBAction)svgExampleSearchFieldAction:(id)sender;
 - (IBAction)svgExamplePopUpButtonAction:(id)sender;
+
+- (IBAction)createNewMacSVGDocument:(id)sender;
+- (IBAction)cancelCreateNewDocumentButtonAction:(id)sender;
+- (IBAction)createNewDocumentButtonAction:(id)sender;
+- (IBAction)presetSizesPopUpButtonAction:(id)sender;
+- (void)applyNewSVGDocumentSettings:(NSXMLDocument *)svgXmlDocument;
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 
 @end

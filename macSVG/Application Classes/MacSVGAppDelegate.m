@@ -1,4 +1,4 @@
-//
+    //
 //  MacSVGAppDelegate.m
 //  macSVG
 //
@@ -54,9 +54,67 @@
 
         self.svgDocumentPrototypeName = @"Untitled";
         self.svgDocumentPrototypeExtension = @"svg";
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(windowDidResignKeyNotification:)
+                name:NSWindowDidResignKeyNotification
+                object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(windowDidResignMainNotification:)
+                name:NSWindowDidResignMainNotification
+                object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(windowDidBecomeKeyNotification:)
+                name:NSWindowDidBecomeKeyNotification
+                object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(windowDidBecomeMainNotification:)
+                name:NSWindowDidBecomeMainNotification
+                object:nil];
     }
     return self;
 }
+
+//==================================================================================
+//	windowDidResignKeyNotification:
+//==================================================================================
+
+- (void) windowDidResignKeyNotification:(NSNotification *)aNotification
+{
+    NSWindow * aWindow = [aNotification object];
+    NSLog(@"MacSVGAppDelegate windowDidResignKeyNotification - %@", aWindow);
+}
+
+//==================================================================================
+//	windowDidResignMainNotification:
+//==================================================================================
+
+- (void) windowDidResignMainNotification:(NSNotification *)aNotification
+{
+    NSWindow * aWindow = [aNotification object];
+    NSLog(@"MacSVGAppDelegate windowDidResignMainNotification - %@", aWindow);
+}
+
+//==================================================================================
+//	windowDidBecomeKeyNotification:
+//==================================================================================
+
+- (void) windowDidBecomeKeyNotification:(NSNotification *)aNotification
+{
+    NSWindow * aWindow = [aNotification object];
+    NSLog(@"MacSVGAppDelegate windowDidBecomeKeyNotification - %@", aWindow);
+}
+
+//==================================================================================
+//	windowDidBecomeMainNotification:
+//==================================================================================
+
+- (void) windowDidBecomeMainNotification:(NSNotification *)aNotification
+{
+    NSWindow * aWindow = [aNotification object];
+    NSLog(@"MacSVGAppDelegate windowDidBecomeMainNotification - %@", aWindow);
+}
+
 
 //==================================================================================
 //	applicationWillFinishLaunching
@@ -74,6 +132,8 @@
 {
     //NSString * localizedName = [[NSHost currentHost] localizedName];
 }
+
+
 
 //==================================================================================
 //	awakeFromNib
@@ -316,7 +376,10 @@
 
 - (BOOL)applicationOpenUntitledFile:(NSApplication *)theApplication
 {
-    [self openUntitledMacSVGDocument:theApplication];
+    //[self openUntitledMacSVGDocument:theApplication];
+    
+    [self createNewMacSVGDocument:self];
+    
     return YES;
 }
 
@@ -389,7 +452,7 @@
 
         if (urlString != NULL)
         {
-            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];        // launch default web browser, usually Safari
         }
     }
 }
@@ -1213,6 +1276,406 @@
     [self showSelectedSVGExample];
 }
 
+- (void)menuWillOpen:(NSMenu *)menu
+{
 
+}
+
+// ================================================================
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem 
+{
+    /*
+    if ([menuItem action] == @selector(Open:))
+    {
+        // The delete selection item should be disabled if nothing is selected.
+        if ([[self selectedNodes] count] > 0) 
+        {
+            return YES;
+        } 
+        else 
+        {
+            return NO;
+        }
+    }   
+    */
+    return YES;
+}
+
+
+//==================================================================================
+//	createNewMacSVGDocument:
+//==================================================================================
+
+- (IBAction)createNewMacSVGDocument:(id)sender
+{
+    NSModalSession modalSession = [NSApp beginModalSessionForWindow:self.createNewDocumentWindow];
+    NSInteger resultCode = [NSApp runModalForWindow: self.createNewDocumentWindow];
+    
+    [NSApp endModalSession:modalSession];
+    [self.createNewDocumentWindow orderOut: self];
+
+    NSString * documentKindString = [self.documentKindPopUpButton titleOfSelectedItem];
+    
+    if (resultCode == 1)
+    {
+        if ([documentKindString isEqualToString:@"SVG XML"] == YES)
+        {
+            NSError * docError = NULL;
+            
+            self.svgDocumentPrototypeName = @"Untitled";
+            self.svgDocumentPrototypeExtension = @"svg";
+            
+            MacSVGDocumentController * svgDocumentController = [NSDocumentController sharedDocumentController];
+            
+            MacSVGDocument * macSVGDocument = [svgDocumentController
+                    openUntitledDocumentAndDisplay:YES error:&docError];
+
+            if (macSVGDocument == NULL)
+            {
+                NSLog(@"createNewMacSVGDocument SVG failed");
+            }
+            else
+            {
+                NSWindow * newDocumentWindow = macSVGDocument.macSVGDocumentWindowController.window;
+
+                [macSVGDocument.macSVGDocumentWindowController showWindow:self];
+
+                [newDocumentWindow makeKeyWindow];
+                [newDocumentWindow makeMainWindow];
+            }
+        }
+        else if ([documentKindString isEqualToString:@"XHTML"] == YES)
+        {
+            NSError * docError = NULL;
+
+            self.svgDocumentPrototypeName = @"Untitled";
+            self.svgDocumentPrototypeExtension = @"xhtml";
+            
+            MacSVGDocument * macSVGDocument = [[NSDocumentController sharedDocumentController]
+                    openUntitledDocumentAndDisplay:YES error:&docError];
+
+            if (macSVGDocument == NULL)
+            {
+                NSLog(@"createNewMacSVGDocument XHTML failed");
+            }
+            else
+            {
+                NSWindow * newDocumentWindow = macSVGDocument.macSVGDocumentWindowController.window;
+
+                [macSVGDocument.macSVGDocumentWindowController showWindow:self];
+
+                [newDocumentWindow makeKeyWindow];
+                [newDocumentWindow makeMainWindow];
+            }
+        }
+    }
+}
+
+
+- (void)applyNewSVGDocumentSettings:(NSXMLDocument *)svgXmlDocument
+{
+    CGFloat widthFloat = [self.widthTextField floatValue];
+    CGFloat heightFloat = [self.heightTextField floatValue];
+    BOOL includeBackgroundRect = [self.includeBackgroundRectCheckBoxButton state];
+    
+    NSString * widthPxString = [self allocPxString:widthFloat];
+    NSString * heightPxString = [self allocPxString:heightFloat];
+    NSString * widthString = [self allocFloatString:widthFloat];
+    NSString * heightString = [self allocFloatString:heightFloat];
+    NSString * viewBoxString = [NSString stringWithFormat:@"0 0 %@ %@", widthString, heightString];
+
+    NSXMLElement * rootElement = [svgXmlDocument rootElement];
+
+    NSXMLNode * svgWidthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+    [svgWidthAttributeNode setName:@"width"];
+    [svgWidthAttributeNode setStringValue:widthPxString];
+    [rootElement addAttribute:svgWidthAttributeNode];
+
+    NSXMLNode * svgHeightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+    [svgHeightAttributeNode setName:@"height"];
+    [svgHeightAttributeNode setStringValue:heightPxString];
+    [rootElement addAttribute:svgHeightAttributeNode];
+    
+    NSXMLNode * svgViewBoxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+    [svgViewBoxAttributeNode setName:@"viewBox"];
+    [svgViewBoxAttributeNode setStringValue:viewBoxString];
+    [rootElement addAttribute:svgViewBoxAttributeNode];
+    
+    NSString * xpathQuery = @".//rect[@id=\"background_rect\"]";
+    
+    NSError * error = NULL;
+    NSArray * backgroundRectResultArray = [rootElement nodesForXPath:xpathQuery error:&error];
+    
+    if ([backgroundRectResultArray count] > 0)
+    {
+        NSXMLElement * backgroundRectElement = [backgroundRectResultArray firstObject];
+        
+        if (includeBackgroundRect == YES)
+        {
+            NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+            [widthAttributeNode setName:@"width"];
+            [widthAttributeNode setStringValue:widthPxString];
+            [backgroundRectElement addAttribute:widthAttributeNode];
+
+            NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+            [heightAttributeNode setName:@"height"];
+            [heightAttributeNode setStringValue:heightPxString];
+            [backgroundRectElement addAttribute:heightAttributeNode];
+            
+            NSString * fillString = [self hexColorFromColorWell:self.backgroundRectColorWell];
+            
+            NSXMLNode * fillAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+            [fillAttributeNode setName:@"fill"];
+            [fillAttributeNode setStringValue:fillString];
+            [backgroundRectElement addAttribute:fillAttributeNode];
+        }
+        else
+        {
+            [backgroundRectElement detach];
+        }
+    }
+
+    NSString * sampleTextXpathQuery = @".//text[@id=\"sample_text_element\"]";
+    
+    NSArray * sampleTextResultArray = [rootElement nodesForXPath:sampleTextXpathQuery error:&error];
+    
+    if ([sampleTextResultArray count] > 0)
+    {
+        NSXMLElement * sampleTextElement = [sampleTextResultArray firstObject];
+        
+        CGFloat xFloat = widthFloat / 2.0f;
+        CGFloat yFloat = heightFloat / 2.0f;
+        
+        NSString * xPxString = [self allocPxString:xFloat];
+        NSString * yPxString = [self allocPxString:yFloat];
+        
+        NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+        [xAttributeNode setName:@"x"];
+        [xAttributeNode setStringValue:xPxString];
+        [sampleTextElement addAttribute:xAttributeNode];
+
+        NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+        [yAttributeNode setName:@"y"];
+        [yAttributeNode setStringValue:yPxString];
+        [sampleTextElement addAttribute:yAttributeNode];
+    }
+    
+    //[macSVGDocument.macSVGDocumentWindowController reloadAllViews];
+}
+
+//==================================================================================
+//	hexadecimalValueOfAnNSColor
+//==================================================================================
+
+-(NSString *)hexadecimalValueOfAnNSColor:(NSColor *)aColor
+{
+    CGFloat redFloatValue, greenFloatValue, blueFloatValue;
+    int redIntValue, greenIntValue, blueIntValue;
+    NSString *redHexValue, *greenHexValue, *blueHexValue;
+
+    // Convert the NSColor to the RGB color space before we can access its components
+    NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+
+    if(convertedColor)
+    {
+        // Get the red, green, and blue components of the color
+        [convertedColor getRed:&redFloatValue green:&greenFloatValue blue:&blueFloatValue alpha:NULL];
+
+        // Convert the components to numbers (unsigned decimal integer) between 0 and 255
+        redIntValue = redFloatValue * 255.99999f;
+        greenIntValue = greenFloatValue * 255.99999f;
+        blueIntValue = blueFloatValue * 255.99999f;
+
+        // Convert the numbers to hex strings
+        redHexValue=[NSString stringWithFormat:@"%02x", redIntValue]; 
+        greenHexValue=[NSString stringWithFormat:@"%02x", greenIntValue];
+        blueHexValue=[NSString stringWithFormat:@"%02x", blueIntValue];
+
+        // Concatenate the red, green, and blue components' hex strings together with a "#"
+        return [NSString stringWithFormat:@"#%@%@%@", redHexValue, greenHexValue, blueHexValue];
+    }
+    return nil;
+}
+
+//==================================================================================
+//	numericStringWithFloat
+//==================================================================================
+
+- (NSString *)numericStringWithFloat:(float)attributeFloat
+{
+    NSString * numericString = @"0";
+
+    numericString = [NSString stringWithFormat:@"%f", attributeFloat];
+    
+    NSRange decimalPointRange = [numericString rangeOfString:@"."];
+    if (decimalPointRange.location != NSNotFound)
+    {
+        NSInteger index = [numericString length] - 1;
+        BOOL continueTrim = YES;
+        while (continueTrim == YES)
+        {
+            if ([numericString characterAtIndex:index] == '0')
+            {
+                index--;
+            }
+            else if ([numericString characterAtIndex:index] == '.')
+            {
+                index--;
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+            
+            if (index < decimalPointRange.location)
+            {
+                continueTrim = NO;
+            }
+        }
+        
+        numericString = [numericString substringToIndex:index + 1];
+    }
+    
+
+    return numericString;
+}
+
+//==================================================================================
+//	allocFloatString:
+//==================================================================================
+
+- (NSMutableString *)allocFloatString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = [aString length];
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    return aString;
+}
+
+
+//==================================================================================
+//	hexColorFromColorWell
+//==================================================================================
+
+- (NSString *)hexColorFromColorWell:(NSColorWell *)aColorWell
+{
+    NSColor * aColor = [aColorWell color];
+    
+    NSString * hexColor = [self hexadecimalValueOfAnNSColor:aColor];
+    
+    return hexColor;
+}
+
+//==================================================================================
+//	allocPxString:
+//==================================================================================
+
+- (NSMutableString *)allocPxString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = [aString length];
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    
+    [aString appendString:@"px"];
+    
+    return aString;
+}
+
+//==================================================================================
+//	cancelCreateNewDocumentButtonAction:
+//==================================================================================
+
+- (IBAction)cancelCreateNewDocumentButtonAction:(id)sender
+{
+    [NSApp stopModalWithCode:0];
+}
+
+//==================================================================================
+//	createNewDocumentButtonAction:
+//==================================================================================
+
+- (IBAction)createNewDocumentButtonAction:(id)sender
+{
+    [NSApp stopModalWithCode:1];
+}
+
+//==================================================================================
+//	presetSizesPopUpButtonAction:
+//==================================================================================
+
+- (IBAction)presetSizesPopUpButtonAction:(id)sender
+{
+    NSString * titleOfSelectedItem = [self.presetSizesPopUpButton titleOfSelectedItem];
+    
+    NSArray * titleComponentsArray = [titleOfSelectedItem componentsSeparatedByString:@" "];
+    
+    NSInteger titleComponentsArrayCount = [titleComponentsArray count];
+    
+    NSString * widthString = [titleComponentsArray objectAtIndex:(titleComponentsArrayCount - 3)];
+    NSString * heightString = [titleComponentsArray objectAtIndex:(titleComponentsArrayCount - 1)];
+    
+    self.widthTextField.stringValue = widthString;
+    self.heightTextField.stringValue = heightString;
+}
 
 @end

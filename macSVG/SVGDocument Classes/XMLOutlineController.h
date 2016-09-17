@@ -17,7 +17,7 @@
 
 #define XML_OUTLINE_PBOARD_TYPE      @"XMLOutlineViewPboardType"
 
-@interface XMLOutlineController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource>
+@interface XMLOutlineController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSMenuDelegate>
 {
     IBOutlet DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager;
     IBOutlet ToolSettingsPopoverViewController * toolSettingsPopoverViewController;

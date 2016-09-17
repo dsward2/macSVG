@@ -167,7 +167,7 @@
     {
         [self.processedElementsSet addObject:svgElement];
 
-        MacSVGAppDelegate * macSVGAppDelegate = [NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         NSXMLNode * MacsvgidNode = [svgElement attributeForName:@"macsvgid"];
         if (MacsvgidNode != NULL)
