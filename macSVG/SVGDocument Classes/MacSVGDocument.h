@@ -82,4 +82,7 @@
 
 - (NSMutableString *)allocFloatString:(float)aFloat;
 
+- (void)saveDocument:(id)sender;
+- (void)saveDocumentAs:(id)sender;
+
 @end

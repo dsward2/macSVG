@@ -310,6 +310,15 @@
 
 - (void)calculateEmbedImageSize:(NSDictionary *)imageDictionary
 {
+    [self performSelectorOnMainThread:@selector(displayImageSize:) withObject:imageDictionary waitUntilDone:NO];
+}
+    
+ //==================================================================================
+//	displayImageSizeWithData:
+//==================================================================================
+
+- (void)displayImageSize:(NSDictionary *)imageDictionary
+{
     [linkImageSizeTextField setStringValue:@"N/A"];
     
     NSData * previewImageData = [imageDictionary objectForKey:@"previewImageData"];

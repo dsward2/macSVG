@@ -11,5 +11,7 @@
 @interface MacSVGDocumentController : NSDocumentController <NSOpenSavePanelDelegate>
 
 
+- (IBAction)saveDocument:(id)sender;
+- (IBAction)saveDocumentAs:(id)sender;
 
 @end

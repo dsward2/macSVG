@@ -275,9 +275,9 @@
             DOMElement * svgElement = (DOMElement *)svgElementNode;
             
             NSArray * setCurrentTimeArgumentsArray = [NSArray arrayWithObject:newTimeValueNumber];
-            [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];
+            [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
 
-            [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];
+            [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
             
             NSString * currentTimeString = [[NSString alloc] initWithFormat:@"%.2f", newTimeValue];
             

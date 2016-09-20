@@ -906,30 +906,33 @@
     
     DOMNode * targetNode = event.target;    // either a document node, or an editing handle node
     
-    if ([targetNode isKindOfClass:[DOMHTMLElement class]] == YES)
+    if ([macSVGDocument.fileNameExtension isEqualToString:@"svg"] == YES)
     {
-        // user clicked on an HTML-class element, is it contained within a foreignObject element?
-        id parentElement = targetNode;    // either a document element, or an editing handle element
-        BOOL continueSearch = YES;
-        while (continueSearch == YES)
+        if ([targetNode isKindOfClass:[DOMHTMLElement class]] == YES)
         {
-            if (parentElement == NULL)
+            // user clicked on an HTML-class element, is it contained within a foreignObject element?
+            id parentElement = targetNode;    // either a document element, or an editing handle element
+            BOOL continueSearch = YES;
+            while (continueSearch == YES)
             {
-                continueSearch = NO;
-            }
-            else
-            {
-                NSString * parentElementName = [parentElement tagName];
-                if ([parentElementName isEqualToString:@"foreignObject"] == YES)
+                if (parentElement == NULL)
                 {
                     continueSearch = NO;
-                    targetNode = parentElement;     // change selection to the parent SVG-class foreignObject element
                 }
-            }
-            
-            if (continueSearch == YES)
-            {
-                parentElement = [parentElement parentElement];
+                else
+                {
+                    NSString * parentElementName = [parentElement tagName];
+                    if ([parentElementName isEqualToString:@"foreignObject"] == YES)
+                    {
+                        continueSearch = NO;
+                        targetNode = parentElement;     // change selection to the parent SVG-class foreignObject element
+                    }
+                }
+                
+                if (continueSearch == YES)
+                {
+                    parentElement = [parentElement parentElement];
+                }
             }
         }
     }

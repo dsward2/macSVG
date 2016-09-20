@@ -193,9 +193,8 @@
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
-    NSWindow * aWindow = [notification object];
-    
-    NSLog(@"MacSVGDocumentWindowController - windowDidResignKey %@", aWindow);
+    //NSWindow * aWindow = [notification object];
+    //NSLog(@"MacSVGDocumentWindowController - windowDidResignKey %@", aWindow);
 }
 
 //==================================================================================
@@ -204,9 +203,8 @@
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-    NSWindow * aWindow = [notification object];
-    
-    NSLog(@"MacSVGDocumentWindowController - windowDidBecomeKey %@", aWindow);
+    //NSWindow * aWindow = [notification object];
+    //NSLog(@"MacSVGDocumentWindowController - windowDidBecomeKey %@", aWindow);
 }
 
 //==================================================================================
@@ -218,7 +216,7 @@
     // Deactivate menu command targets and actions
     NSWindow * aWindow = [notification object];
     
-    NSLog(@"MacSVGDocumentWindowController - windowDidResignMain %@", aWindow);
+    //NSLog(@"MacSVGDocumentWindowController - windowDidResignMain %@", aWindow);
 
     NSMenu * mainMenu = [NSApp mainMenu];
 
@@ -278,7 +276,7 @@
 
     NSWindow * aWindow = [notification object];
     
-    NSLog(@"MacSVGDocumentWindowController - windowDidBecomeMain %@", aWindow);
+    //NSLog(@"MacSVGDocumentWindowController - windowDidBecomeMain %@", aWindow);
 
     // Set the menu command targets and actions
     NSWindow * keyWindow = [NSApp keyWindow];
@@ -1339,7 +1337,8 @@
         [webKitInterface unpauseAnimationsForSvgElement:svgElement];
     }
     
-    [[self document] updateChangeCount:(NSChangeDone | NSChangeDiscardable)];       // 20160810
+    //[[self document] updateChangeCount:(NSChangeDone | NSChangeDiscardable)];       // 20160810
+    [[self document] updateChangeCount:NSChangeDone];       // 20160919
 }
 
 // ================================================================

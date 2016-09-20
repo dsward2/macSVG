@@ -740,6 +740,13 @@ style=\"zoom: 1;\">";
 
 // ================================================================
 
+- (void)saveDocumentAs:(id)sender
+{
+    [super saveDocumentAs:sender];
+}
+
+// ================================================================
+
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
     // Insert code here to write your document to data of the specified type. If the given outError != NULL, ensure that you set *outError when returning nil.
@@ -1534,8 +1541,6 @@ style=\"zoom: 1;\">";
     
     [self updateChangeCount:NSChangeDone];
 }
-
-
 
 //==================================================================================
 //	close

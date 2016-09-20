@@ -736,10 +736,14 @@
         {
             if (aDOMElement == NULL)
             {
-                NSLog(@"SVGXMLDOMSelectionManager selectXMLElement aDOMElement is NULL");
                 if (aXMLElement != NULL)
                 {
                     aDOMElement = [self createTemporaryDOMElementForXMLElement:aXMLElement];
+
+                    if (aDOMElement == NULL)
+                    {
+                        NSLog(@"SVGXMLDOMSelectionManager selectXMLElement aDOMElement is NULL");
+                    }
                 }
             }
         

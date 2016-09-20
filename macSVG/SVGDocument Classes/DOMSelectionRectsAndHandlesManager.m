@@ -8,6 +8,7 @@
 
 #import "DOMSelectionRectsAndHandlesManager.h"
 #import <WebKit/WebKit.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 #import "MacSVGDocumentWindowController.h"
 #import "MacSVGDocument.h"
 #import "SVGXMLDOMSelectionManager.h"
@@ -191,7 +192,7 @@
 }
 
 //==================================================================================
-//	macsvgControlsGroupElement
+//	macsvgTopGroupElement
 //==================================================================================
 
 - (DOMElement *)macsvgTopGroupElement
@@ -203,48 +204,67 @@
     
     DOMElement * domDocumentElement = [domDocument documentElement];
     
-    DOMNodeList * childNodes = [domDocumentElement childNodes];
-
-    unsigned int childCount = [childNodes length];
-    
-    NSInteger foundIndex = -1;
-    
-    for (int i = childCount - 1; i >= 0; i--)
+    if ([domDocumentElement isKindOfClass:[DOMHTMLElement class]] == YES)
     {
-        DOMNode * aChildNode = [childNodes item:i];
-        unsigned short childNodeType = [aChildNode nodeType];
+        // this is an XHTML element - search for an SVG element inside
         
-		if (childNodeType == DOM_ELEMENT_NODE) 
+        DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+        
+        if (svgElementsList.length > 0)
         {
-            DOMElement * aChildElement = (DOMElement *)aChildNode;
-            
-            NSString * idString = [aChildElement getAttribute:@"id"];
-            
-            if ([idString isEqualToString:@"_macsvg_top_group"] == YES)
-            {
-                macsvgTopGroupElement = aChildElement;
-                foundIndex = i;
-                break;
-            }
+            domDocumentElement = (DOMElement *)[svgElementsList item:0];
+        }
+        else
+        {
+            domDocumentElement = NULL;
         }
     }
     
-    if (macsvgTopGroupElement == NULL)
+    if (domDocumentElement != NULL)
     {
-        macsvgTopGroupElement = [domDocument createElementNS:svgNamespace
-                qualifiedName:@"g"];
-        [macsvgTopGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_top_group"];
-        [macsvgTopGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_top_group"];
+        DOMNodeList * childNodes = [domDocumentElement childNodes];
+
+        unsigned int childCount = [childNodes length];
         
-        [domDocumentElement appendChild:macsvgTopGroupElement];
-    }
-    else
-    {
-        if (foundIndex != (childCount - 1))
+        NSInteger foundIndex = -1;
+        
+        for (int i = childCount - 1; i >= 0; i--)
         {
-            // move macsvgTopGroupElement to final child element in document
-            [domDocumentElement removeChild:macsvgTopGroupElement];
+            DOMNode * aChildNode = [childNodes item:i];
+            unsigned short childNodeType = [aChildNode nodeType];
+            
+            if (childNodeType == DOM_ELEMENT_NODE) 
+            {
+                DOMElement * aChildElement = (DOMElement *)aChildNode;
+                
+                NSString * idString = [aChildElement getAttribute:@"id"];
+                
+                if ([idString isEqualToString:@"_macsvg_top_group"] == YES)
+                {
+                    macsvgTopGroupElement = aChildElement;
+                    foundIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        if (macsvgTopGroupElement == NULL)
+        {
+            macsvgTopGroupElement = [domDocument createElementNS:svgNamespace
+                    qualifiedName:@"g"];
+            [macsvgTopGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_top_group"];
+            [macsvgTopGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_top_group"];
+            
             [domDocumentElement appendChild:macsvgTopGroupElement];
+        }
+        else
+        {
+            if (foundIndex != (childCount - 1))
+            {
+                // move macsvgTopGroupElement to final child element in document
+                [domDocumentElement removeChild:macsvgTopGroupElement];
+                [domDocumentElement appendChild:macsvgTopGroupElement];
+            }
         }
     }
     
@@ -547,19 +567,11 @@
         svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     }
     
-    //DOMNode * svgElementNode = [svgElementsList item:0];
-    //DOMElement * topSvgElement = (DOMElement *)svgElementNode;
-    
-    DOMElement * newSelectedRectsGroup = [domDocument createElementNS:svgNamespace 
+    DOMElement * newSelectedRectsGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
     [newSelectedRectsGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_selectedRectsGroup"];
     [newSelectedRectsGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectedRectsGroup"];
 
-    // inject new selectedRectsGroup into DOM
-    //[topSvgElement appendChild:newSelectedRectsGroup];
-    //[self setMacsvgTopGroupChild:newSelectedRectsGroup];
-
-    
     NSMutableArray * commonParentElementsArray = [[NSMutableArray alloc] init];
     
     // create bounding boxes for selected items
@@ -571,33 +583,72 @@
         NSRect boundingBox = NSZeroRect;
         
         NSString * elementName = [aSelectedSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
-        {
-            //[aSelectedSvgElement focus];
-            
         
+        id validElement = [self.validElementsForTransformDictionary objectForKey:elementName];
+        
+        MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+        
+        if ([macSVGDocument.fileNameExtension isEqualToString:@"xhtml"] == YES)
+        {
+            if ([aSelectedSvgElement isKindOfClass:[DOMElement class]] == YES)
+            {
+                validElement = elementName;
+            }
+        }
+        
+        if (validElement != NULL)
+        {
             boundingBox = [webKitInterface bBoxForDOMElement:aSelectedSvgElement];
-            //boundingBox = [webKitInterface bBoxForDOMElement:aSelectedSvgElement globalContext:[[svgWebView mainFrame] globalContext]];
 
-            /*
             if (NSIsEmptyRect(boundingBox) == YES)
             {
-                boundingBox = [webKitInterface bBoxForDOMElement:aSelectedSvgElement webView:svgWebView];
+                if ([macSVGDocument.fileNameExtension isEqualToString:@"xhtml"] == YES)
+                {
+                    /*
+                    int xResult = [aSelectedSvgElement offsetTop];
+                    int yResult = [aSelectedSvgElement offsetLeft];
+                    int widthResult = [aSelectedSvgElement offsetWidth];
+                    int heightResult = [aSelectedSvgElement offsetHeight];
+
+                    boundingBox = NSMakeRect(xResult, yResult, widthResult, heightResult);
+                    */
+                    
+                    /*
+                    WebScriptObject * result = [domHTMLElement callWebScriptMethod:@"getBoundingClientRect" withArguments:NULL];
+
+                    id clientRectFunction = [NSString stringWithFormat:
+                            @"function f() {var element = document.getElementById('%@'); return element.getBoundingClientRect();} f();",
+                            @"text1"];
+
+                    NSString * clientRect = [svgWebView stringByEvaluatingJavaScriptFromString:clientRectFunction];
+                    
+                    NSLog(@"%@", clientRect);
+                    */
+                    
+                    /*
+                    JSPropertyNameArrayRef properties =
+                            JSObjectCopyPropertyNames([[svgWebView mainFrame] globalContext],
+                            [aSelectedSvgElement JSObject]);
+
+                    size_t count = JSPropertyNameArrayGetCount(properties);
+
+                    for (NSInteger i = 0; i < count; i++)
+                    {
+                        JSStringRef property = JSPropertyNameArrayGetNameAtIndex(properties, i);
+                        // ... etc. as above
+                        NSString * propertyString = CFBridgingRelease(JSStringCopyCFString( kCFAllocatorDefault, property ));
+                        NSString * valueString = [aSelectedSvgElement valueForKey:propertyString];
+                        NSLog(@"%@=%@", propertyString, valueString);
+                    }
+                    */
+                    
+                    // TODO: FIXME: Currently, we can select HTML elements, but cannot get the client rect or offset rect
+                    // not sure that information is available for inline layouts
+                }
             }
-            */
-            
+
             if ([elementName isEqualToString:@"use"])
             {
-                /*
-                NSString * xAttributeString = [aSelectedSvgElement getAttribute:@"x"];
-                NSString * yAttributeString = [aSelectedSvgElement getAttribute:@"y"];
-                
-                CGFloat xAttributeFloat = [xAttributeString floatValue];
-                CGFloat yAttributeFloat = [yAttributeString floatValue];
-                
-                boundingBox.origin.x += xAttributeFloat;
-                boundingBox.origin.y += yAttributeFloat;
-                */
                 NSString * xAttributeString = [aSelectedSvgElement getAttribute:@"x"];
                 NSString * yAttributeString = [aSelectedSvgElement getAttribute:@"y"];
                 NSString * widthAttributeString = [aSelectedSvgElement getAttribute:@"width"];
@@ -733,7 +784,7 @@
                         {
                             continueCreatingParents = NO;
                         }
-                        if ([nextParentTagName isEqualToString:@"#document"] == YES)
+                        else if ([nextParentTagName isEqualToString:@"#document"] == YES)
                         {
                             continueCreatingParents = NO;
                         }
@@ -1074,240 +1125,260 @@
     //DOMElement * svgElement = (DOMElement *)svgElementNode;
     
     DOMElement * svgElement = [domDocument documentElement];
-    DOMNode * svgElementNode = (DOMNode *)svgElement;
     
-    [self removeMacsvgTopGroupChildByID:@"_macsvg_selectionHandlesGroup"];
-    
-    self.domElementForHandles = NULL;
-    self.domElementForHandlesCreationTime = 0;
-    
-    NSString * key_Macsvgid = [aDomElement getAttribute:@"macsvgid"];
-
-    DOMElement * newSelectionHandlesGroup = [domDocument createElementNS:svgNamespace 
-            qualifiedName:@"g"];
-    [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_selectionHandlesGroup"];
-    [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandlesGroup"];
-    [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"key_Macsvgid" value:key_Macsvgid];
-
-    // inject new selectionHandlesGroup into DOM
-    //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
-    
-    if (aDomElement != NULL)
+    if ([svgElement isKindOfClass:[DOMHTMLElement class]] == YES)
     {
-        DOMElement * handleParentElement = NULL;
-
-        NSString * elementName = [aDomElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        // this is an XHTML element - search for an SVG element inside
+        
+        DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+        
+        if (svgElementsList.length > 0)
         {
-            //DOMElement * parentElement = (id)[aDomElement parentNode];
-            DOMElement * parentElement = aDomElement;   // 20160703
-            
-            // replicate the DOM path of selected item
-            NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
-            
-            BOOL continueCreatingParents = YES;
+            svgElement = (DOMElement *)[svgElementsList item:0];
+        }
+        else
+        {
+            svgElement = NULL;
+        }
+    }
+    
+    if (svgElement != NULL)
+    {
+        DOMNode * svgElementNode = (DOMNode *)svgElement;
+        
+        [self removeMacsvgTopGroupChildByID:@"_macsvg_selectionHandlesGroup"];
+        
+        self.domElementForHandles = NULL;
+        self.domElementForHandlesCreationTime = 0;
+        
+        NSString * key_Macsvgid = [aDomElement getAttribute:@"macsvgid"];
 
-            if (parentElement == NULL)
+        DOMElement * newSelectionHandlesGroup = [domDocument createElementNS:svgNamespace 
+                qualifiedName:@"g"];
+        [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_selectionHandlesGroup"];
+        [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandlesGroup"];
+        [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"key_Macsvgid" value:key_Macsvgid];
+
+        // inject new selectionHandlesGroup into DOM
+        //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
+        
+        if (aDomElement != NULL)
+        {
+            DOMElement * handleParentElement = NULL;
+
+            NSString * elementName = [aDomElement nodeName];
+            if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
             {
-                continueCreatingParents = NO;
-            }
-            else
-            {
-                NSString * firstParentTagName = [parentElement nodeName];
-                if ([firstParentTagName isEqualToString:@"svg"] == YES)
-                {
-                    continueCreatingParents = NO;
-                }
-                if ([firstParentTagName isEqualToString:@"#document"] == YES)
-                {
-                    continueCreatingParents = NO;
-                }
-            }
-            
-            while (continueCreatingParents == YES)
-            {
-                NSString * parentTagName = [parentElement nodeName];
+                //DOMElement * parentElement = (id)[aDomElement parentNode];
+                DOMElement * parentElement = aDomElement;   // 20160703
                 
-                if (parentElement == aDomElement)
-                {
-                    parentTagName = @"g";
-                }
-
-                DOMElement * newHandleParentElement = [domDocument createElementNS:svgNamespace
-                        qualifiedName:parentTagName];
-
-                NSString * parent_Macsvgid = [parentElement getAttribute:@"macsvgid"];
-                [newHandleParentElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:parent_Macsvgid];
-                [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandlesParent"];
-
-                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newHandleParentElement];
+                // replicate the DOM path of selected item
+                NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
                 
-                [newParentsArray insertObject:newHandleParentElement atIndex:0];
-                
-                if ([parentElement parentNode] == NULL) 
+                BOOL continueCreatingParents = YES;
+
+                if (parentElement == NULL)
                 {
                     continueCreatingParents = NO;
                 }
                 else
                 {
-                    DOMNode * nextParentNode = [parentElement parentNode];
-                    if (nextParentNode == svgElementNode)
+                    NSString * firstParentTagName = [parentElement nodeName];
+                    if ([firstParentTagName isEqualToString:@"svg"] == YES)
                     {
                         continueCreatingParents = NO;
                     }
-                    else if ([[nextParentNode nodeName] isEqualToString:@"#document"] == YES)
+                    if ([firstParentTagName isEqualToString:@"#document"] == YES)
+                    {
+                        continueCreatingParents = NO;
+                    }
+                }
+                
+                while (continueCreatingParents == YES)
+                {
+                    NSString * parentTagName = [parentElement nodeName];
+                    
+                    if (parentElement == aDomElement)
+                    {
+                        parentTagName = @"g";
+                    }
+
+                    DOMElement * newHandleParentElement = [domDocument createElementNS:svgNamespace
+                            qualifiedName:parentTagName];
+
+                    NSString * parent_Macsvgid = [parentElement getAttribute:@"macsvgid"];
+                    [newHandleParentElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:parent_Macsvgid];
+                    [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandlesParent"];
+
+                    [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newHandleParentElement];
+                    
+                    [newParentsArray insertObject:newHandleParentElement atIndex:0];
+                    
+                    if ([parentElement parentNode] == NULL) 
                     {
                         continueCreatingParents = NO;
                     }
                     else
                     {
-                        parentElement = (id)nextParentNode;
+                        DOMNode * nextParentNode = [parentElement parentNode];
+                        if (nextParentNode == svgElementNode)
+                        {
+                            continueCreatingParents = NO;
+                        }
+                        else if ([[nextParentNode nodeName] isEqualToString:@"#document"] == YES)
+                        {
+                            continueCreatingParents = NO;
+                        }
+                        else
+                        {
+                            parentElement = (id)nextParentNode;
+                        }
                     }
                 }
-            }
 
-            // inject new elements into DOM from the top down, starting as child of 'newSelectionHandlesGroup'
-            handleParentElement = (id)newSelectionHandlesGroup;
-            
-            for (DOMElement * aElement in newParentsArray)
-            {
-                [handleParentElement appendChild:aElement];
+                // inject new elements into DOM from the top down, starting as child of 'newSelectionHandlesGroup'
+                handleParentElement = (id)newSelectionHandlesGroup;
                 
-                handleParentElement = (id)aElement;
+                for (DOMElement * aElement in newParentsArray)
+                {
+                    [handleParentElement appendChild:aElement];
+                    
+                    handleParentElement = (id)aElement;
+                }
+            }
+
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
+
+            NSRect boundingBox = [webKitInterface bBoxForDOMElement:aDomElement];
+            //boundingBox = [webKitInterface bBoxForDOMElement:aSelectedSvgElement globalContext:[[svgWebView mainFrame] globalContext]];
+
+
+            if ([[aDomElement nodeName] isEqualToString:@"use"])
+            {
+                NSString * xAttributeString = [aDomElement getAttribute:@"x"];
+                NSString * yAttributeString = [aDomElement getAttribute:@"y"];
+                
+                CGFloat xAttributeFloat = [xAttributeString floatValue];
+                CGFloat yAttributeFloat = [yAttributeString floatValue];
+                
+                boundingBox.origin.x += xAttributeFloat;
+                boundingBox.origin.y += yAttributeFloat;
+            }
+
+            if ([[aDomElement nodeName] isEqualToString:@"foreignObject"])
+            {
+                NSString * xAttributeString = [aDomElement getAttribute:@"x"];
+                NSString * yAttributeString = [aDomElement getAttribute:@"y"];
+                NSString * widthAttributeString = [aDomElement getAttribute:@"width"];
+                NSString * heightAttributeString = [aDomElement getAttribute:@"height"];
+                
+                CGFloat xAttributeFloat = [xAttributeString floatValue];
+                CGFloat yAttributeFloat = [yAttributeString floatValue];
+                CGFloat widthAttributeFloat = [widthAttributeString floatValue];
+                CGFloat heightAttributeFloat = [heightAttributeString floatValue];
+                
+                boundingBox.origin.x = xAttributeFloat;
+                boundingBox.origin.y = yAttributeFloat;
+                boundingBox.size.width = widthAttributeFloat;
+                boundingBox.size.height = heightAttributeFloat;
+            }
+            
+            if (NSIsEmptyRect(boundingBox) == NO)
+            {
+                NSString * macsvgid = [aDomElement getAttribute:@"macsvgid"];
+                
+                if (macsvgid == NULL)
+                {
+                    NSLog(@"makeDOMSelectionHandles - macsvgid = NULL");
+                }
+                else
+                {
+                    if ([macsvgid isEqualToString:@""] == YES)
+                    {
+                        NSLog(@"makeDOMSelectionHandles - macsvgid empty");
+                    }
+                }
+                
+                NSString * transformAttribute = [aDomElement getAttribute:@"transform"];
+                if (transformAttribute != NULL)
+                {
+                    if ([transformAttribute length] > 0)
+                    {
+                        [handleParentElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
+                    }
+                }
+                
+                NSString * elementName = [aDomElement nodeName];
+                if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+                {
+                    NSPoint handlePoint = NSZeroPoint;
+
+                    handlePoint.x = boundingBox.origin.x;
+                    handlePoint.y = boundingBox.origin.y;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"topLeft"];
+
+                    handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
+                    handlePoint.y = boundingBox.origin.y;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"topRight"];
+
+                    handlePoint.x = boundingBox.origin.x;
+                    handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"bottomLeft"];
+
+                    handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
+                    handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"bottomRight"];
+
+                    handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
+                    handlePoint.y = boundingBox.origin.y;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"top"];
+
+                    handlePoint.x = boundingBox.origin.x;
+                    handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"left"];
+
+                    handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
+                    handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"bottom"];
+
+                    handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
+                    handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
+                    [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                            handleOwnerElement:aDomElement
+                            handleParentElement:handleParentElement orientation:@"right"];
+
+                    [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:handleParentElement];
+                    
+                    self.domElementForHandles = aDomElement;
+                    self.domElementForHandlesCreationTime = time(NULL);
+                }
             }
         }
-
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
-        WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
-
-        NSRect boundingBox = [webKitInterface bBoxForDOMElement:aDomElement];
-        //boundingBox = [webKitInterface bBoxForDOMElement:aSelectedSvgElement globalContext:[[svgWebView mainFrame] globalContext]];
-
-
-        if ([[aDomElement nodeName] isEqualToString:@"use"])
+        else
         {
-            NSString * xAttributeString = [aDomElement getAttribute:@"x"];
-            NSString * yAttributeString = [aDomElement getAttribute:@"y"];
-            
-            CGFloat xAttributeFloat = [xAttributeString floatValue];
-            CGFloat yAttributeFloat = [yAttributeString floatValue];
-            
-            boundingBox.origin.x += xAttributeFloat;
-            boundingBox.origin.y += yAttributeFloat;
+            //NSLog(@"makeDOMSelectionHandles aDomElement is NULL");
         }
 
-        if ([[aDomElement nodeName] isEqualToString:@"foreignObject"])
-        {
-            NSString * xAttributeString = [aDomElement getAttribute:@"x"];
-            NSString * yAttributeString = [aDomElement getAttribute:@"y"];
-            NSString * widthAttributeString = [aDomElement getAttribute:@"width"];
-            NSString * heightAttributeString = [aDomElement getAttribute:@"height"];
-            
-            CGFloat xAttributeFloat = [xAttributeString floatValue];
-            CGFloat yAttributeFloat = [yAttributeString floatValue];
-            CGFloat widthAttributeFloat = [widthAttributeString floatValue];
-            CGFloat heightAttributeFloat = [heightAttributeString floatValue];
-            
-            boundingBox.origin.x = xAttributeFloat;
-            boundingBox.origin.y = yAttributeFloat;
-            boundingBox.size.width = widthAttributeFloat;
-            boundingBox.size.height = heightAttributeFloat;
-        }
+        // inject new selectionHandlesGroup into DOM
         
-        if (NSIsEmptyRect(boundingBox) == NO)
-        {
-            NSString * macsvgid = [aDomElement getAttribute:@"macsvgid"];
-            
-            if (macsvgid == NULL)
-            {
-                NSLog(@"makeDOMSelectionHandles - macsvgid = NULL");
-            }
-            else
-            {
-                if ([macsvgid isEqualToString:@""] == YES)
-                {
-                    NSLog(@"makeDOMSelectionHandles - macsvgid empty");
-                }
-            }
-            
-            NSString * transformAttribute = [aDomElement getAttribute:@"transform"];
-            if (transformAttribute != NULL)
-            {
-                if ([transformAttribute length] > 0)
-                {
-                    [handleParentElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
-                }
-            }
-            
-            NSString * elementName = [aDomElement nodeName];
-            if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
-            {
-                NSPoint handlePoint = NSZeroPoint;
-
-                handlePoint.x = boundingBox.origin.x;
-                handlePoint.y = boundingBox.origin.y;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"topLeft"];
-
-                handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
-                handlePoint.y = boundingBox.origin.y;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"topRight"];
-
-                handlePoint.x = boundingBox.origin.x;
-                handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"bottomLeft"];
-
-                handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
-                handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"bottomRight"];
-
-                handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
-                handlePoint.y = boundingBox.origin.y;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"top"];
-
-                handlePoint.x = boundingBox.origin.x;
-                handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"left"];
-
-                handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
-                handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"bottom"];
-
-                handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
-                handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
-                [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
-                        handleOwnerElement:aDomElement
-                        handleParentElement:handleParentElement orientation:@"right"];
-
-                [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:handleParentElement];
-                
-                self.domElementForHandles = aDomElement;
-                self.domElementForHandlesCreationTime = time(NULL);
-            }
-        }
+        //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
+        [self setMacsvgTopGroupChild:newSelectionHandlesGroup];
     }
-    else
-    {
-        //NSLog(@"makeDOMSelectionHandles aDomElement is NULL");
-    }
-
-    // inject new selectionHandlesGroup into DOM
-    
-    //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
-    [self setMacsvgTopGroupChild:newSelectionHandlesGroup];
 }
 
 //==================================================================================

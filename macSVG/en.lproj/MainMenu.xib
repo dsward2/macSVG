@@ -182,13 +182,13 @@
                             </menuItem>
                             <menuItem title="Save" keyEquivalent="s" id="75">
                                 <connections>
-                                    <action selector="saveDocument:" target="-1" id="362"/>
+                                    <action selector="saveDocument:" target="QIN-cf-Env" id="okj-QO-e7D"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Save As…" keyEquivalent="S" id="80">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
-                                    <action selector="saveDocumentAs:" target="-1" id="363"/>
+                                    <action selector="saveDocumentAs:" target="QIN-cf-Env" id="Qqi-Lz-g8n"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Save With Network Connection…" enabled="NO" keyEquivalent="s" id="gd1-vr-Yhq">
@@ -653,7 +653,7 @@
             <connections>
                 <outlet property="delegate" destination="530" id="wXt-Fe-m9E"/>
             </connections>
-            <point key="canvasLocation" x="-93" y="-250"/>
+            <point key="canvasLocation" x="-296" y="-325"/>
         </menu>
         <menuItem title="Format" id="374">
             <modifierMask key="keyEquivalentModifierMask"/>
@@ -2076,23 +2076,12 @@ Gw
         </window>
         <window title="Create New MacSVG Document" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="IkZ-Nv-kEM" userLabel="CreateNewDocumentWindow">
             <windowStyleMask key="styleMask" titled="YES"/>
-            <rect key="contentRect" x="196" y="240" width="584" height="237"/>
+            <rect key="contentRect" x="196" y="240" width="527" height="237"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" misplaced="YES" id="kaO-dn-Uej">
-                <rect key="frame" x="0.0" y="0.0" width="584" height="237"/>
+                <rect key="frame" x="0.0" y="0.0" width="527" height="237"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" misplaced="YES" id="6fU-3N-AgC">
-                        <rect key="frame" x="509" y="125" width="61" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Set" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5tC-lN-ZBm">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-Gw
-</string>
-                        </buttonCell>
-                    </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="LFn-7w-he3">
                         <rect key="frame" x="18" y="198" width="101" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -2166,7 +2155,6 @@ Gw
                                 <items>
                                     <menuItem title="SVG XML" state="on" id="Jtp-8v-RlY"/>
                                     <menuItem title="XHTML" id="PVp-jq-fus"/>
-                                    <menuItem title="Item 3" id="yWl-fL-XHf"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
@@ -2174,13 +2162,22 @@ Gw
                     <popUpButton verticalHuggingPriority="750" misplaced="YES" id="0b4-EA-gLz">
                         <rect key="frame" x="123" y="162" width="387" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="MacSVG Example 480 x 640" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="I1K-3t-2jW" id="Zyz-Ay-mIP">
+                        <popUpButtonCell key="cell" type="push" title="MacSVG Example 480 x 360" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="I1K-3t-2jW" id="Zyz-Ay-mIP">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="iaP-iA-jtz">
                                 <items>
-                                    <menuItem title="MacSVG Example 480 x 640" state="on" id="I1K-3t-2jW"/>
+                                    <menuItem title="MacSVG Example 480 x 360" state="on" id="I1K-3t-2jW"/>
                                     <menuItem title="MacSVG Full Page 640 x 744" id="874-4r-bQs"/>
+                                    <menuItem title="WordPress Thumbnail 150 x 150" id="YrL-VM-Kxj">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="WordPress Medium 300 x 300" id="2h7-lB-Ra1">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="WordPress Large 1024 x 1024" id="y6B-D5-U9g">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
                                     <menuItem title="Billboard 970 x 250" id="wq2-6X-KxG"/>
                                     <menuItem title="Filmstrip 300 x 600" id="HRR-wk-zLI">
                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -2323,18 +2320,21 @@ Gw
                         <color key="color" red="0.56470588235294117" green="0.93333333333333335" blue="0.56470588235294117" alpha="1" colorSpace="calibratedRGB"/>
                     </colorWell>
                     <button verticalHuggingPriority="750" misplaced="YES" id="gqn-4f-Pfj">
-                        <rect key="frame" x="393" y="13" width="177" height="32"/>
+                        <rect key="frame" x="336" y="13" width="177" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Create New Document" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3FE-3o-39v">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                         </buttonCell>
                         <connections>
                             <action selector="createNewDocumentButtonAction:" target="530" id="Mpc-8d-wZ5"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" misplaced="YES" id="lHT-t5-gil">
-                        <rect key="frame" x="311" y="13" width="82" height="32"/>
+                        <rect key="frame" x="254" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b9R-hZ-1TH">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2349,7 +2349,7 @@ Gw
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="510" y="1176.5"/>
+            <point key="canvasLocation" x="481.5" y="1176.5"/>
         </window>
     </objects>
     <resources>

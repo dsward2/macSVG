@@ -140,12 +140,12 @@
     self.currentTimeTextLabel.stringValue = currentTimeString;
     NSNumber * newTimeValueNumber = [NSNumber numberWithFloat:self.currentTime];
 
-    [svgElement callWebScriptMethod:@"pauseAnimations" withArguments:NULL];
+    [svgElement callWebScriptMethod:@"pauseAnimations" withArguments:NULL];  // call JavaScript function
     
     NSArray * setCurrentTimeArgumentsArray = [NSArray arrayWithObject:newTimeValueNumber];
-    [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];
+    [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
 
-    [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];
+    [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
 
     [self.hiddenWebView setNeedsDisplay:YES];
     

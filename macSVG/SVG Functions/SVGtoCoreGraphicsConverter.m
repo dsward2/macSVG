@@ -246,7 +246,7 @@
             DOMElement * domElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:macsvgid];
             if (domElement != NULL)
             {
-                id ctmMatrix = [domElement callWebScriptMethod:@"getCTM" withArguments:NULL];
+                id ctmMatrix = [domElement callWebScriptMethod:@"getCTM" withArguments:NULL];  // call JavaScript function
                 
                 if (ctmMatrix != NULL)
                 {

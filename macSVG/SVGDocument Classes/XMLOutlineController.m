@@ -1413,6 +1413,8 @@
             
         [macSVGDocument pushUndoRedoDocumentChanges];
 
+        [macSVGDocument assignNewMacsvgidsForNode:xmlElement];
+
         NSXMLElement * parentElement = (NSXMLElement *)[self.editElement parent];
         
         if (parentElement != NULL)

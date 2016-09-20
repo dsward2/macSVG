@@ -969,7 +969,7 @@
     bool val = NO; // this value is to enable/disable scrollbars
     id scrollbarResult = [[self.svgWebView windowScriptObject] evaluateWebScript:
             [NSString stringWithFormat:@"document.body.style.overflow='%@';",
-            val?@"visible":@"hidden"]];
+            val?@"visible":@"hidden"]];  // call JavaScript function
     #pragma unused(scrollbarResult)
 
     [self setEventHandlers];

@@ -9,6 +9,7 @@
 #import "MacSVGDocumentController.h"
 #import "MacSVGDocument.h"
 #import "TextDocument.h"
+#import "MacSVGDocumentWindowController.h"
 
 /*
 
@@ -285,5 +286,120 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
     return YES;
 }
 */
+
+//==================================================================================
+//	validateMenuItem:
+//==================================================================================
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem 
+{
+    BOOL result = NO;
+
+    MacSVGDocumentWindowController * frontmostMacSVGDocumentWindowController =
+            [self findFrontmostMacSVGWindowController];
+    
+    if (frontmostMacSVGDocumentWindowController != NULL)
+    {
+        if ([[menuItem title] isEqualToString:@"Save As…"] == YES)
+        {
+            result = YES;
+        }
+
+        if ([[menuItem title] isEqualToString:@"Save"] == YES)
+        {
+            MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+        
+            if ([macSVGDocument hasUnautosavedChanges]  == YES)
+            {
+                result = YES;
+            }
+        }
+        else
+        {
+            result = YES;
+        }
+    }
+    else
+    {
+        if ([[menuItem title] isEqualToString:@"Open…"] == YES)
+        {
+            result = YES;
+        }
+        else if ([[menuItem title] isEqualToString:@"Open Recent"] == YES)
+        {
+            result = YES;
+        }
+        else
+        {
+            NSMenuItem * parentMenuItem = [menuItem parentItem];
+            if ([[parentMenuItem title] isEqualToString:@"Open Recent"] == YES)
+            {
+                result = YES;
+            }
+        }
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//	saveDocument:
+//==================================================================================
+
+
+- (IBAction)saveDocument:(id)sender
+{
+    MacSVGDocumentWindowController * frontmostMacSVGDocumentWindowController =
+            [self findFrontmostMacSVGWindowController];
+    
+    if (frontmostMacSVGDocumentWindowController != NULL)
+    {
+        MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+        
+        [macSVGDocument saveDocument:sender];
+    }
+}
+
+//==================================================================================
+//	saveDocumentAs:
+//==================================================================================
+
+- (IBAction)saveDocumentAs:(id)sender
+{
+    MacSVGDocumentWindowController * frontmostMacSVGDocumentWindowController =
+            [self findFrontmostMacSVGWindowController];
+    
+    if (frontmostMacSVGDocumentWindowController != NULL)
+    {
+        MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+        
+        [macSVGDocument saveDocumentAs:sender];
+    }
+}
+
+//==================================================================================
+//	findFrontmostMacSVGWindowController
+//==================================================================================
+
+- (MacSVGDocumentWindowController *)findFrontmostMacSVGWindowController
+{
+    MacSVGDocumentWindowController * result = NULL;
+    
+    NSArray * windowsArray = [[NSApplication sharedApplication] orderedWindows];
+    
+    for (NSWindow * aWindow in windowsArray)
+    {
+        NSWindowController * aWindowController = aWindow.windowController;
+        
+        if ([aWindowController isKindOfClass:[MacSVGDocumentWindowController class]] == YES)
+        {
+            result = (MacSVGDocumentWindowController *)aWindowController;
+            break;
+        }
+    }
+    
+    return result;
+}
+
 
 @end

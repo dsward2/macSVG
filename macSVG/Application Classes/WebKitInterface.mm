@@ -49,7 +49,7 @@
     NSRect resultRect = NSZeroRect;
     
     id bBox = [aDOMElement callWebScriptMethod:@"getBBox"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
     
     if (bBox != NULL)
     {
@@ -154,17 +154,17 @@
     
     // current transform matrix
     id ctmMatrix = [targetElement callWebScriptMethod:@"getCTM"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
     
     if (ctmMatrix != NULL)
     {
         id inverseCtmMatrix = [ctmMatrix callWebScriptMethod:@"inverse"
-                withArguments:NULL];
+                withArguments:NULL];  // call JavaScript function
         
         if (inverseCtmMatrix != NULL)
         {
             id svgMousePoint = [sourceElement callWebScriptMethod:@"createSVGPoint"
-                    withArguments:NULL];
+                    withArguments:NULL];  // call JavaScript function
             
             NSNumber * xNumber = [NSNumber numberWithFloat:aMousePoint.x];
             [svgMousePoint setValue:xNumber forKey:@"x"];
@@ -173,7 +173,7 @@
         
             NSArray * xformArray = [NSArray arrayWithObject:inverseCtmMatrix];
             id transformCTMMousePoint = [svgMousePoint callWebScriptMethod:@"matrixTransform"
-                    withArguments:xformArray];
+                    withArguments:xformArray];  // call JavaScript function
             
             if (transformCTMMousePoint != [WebUndefined undefined])
             {
@@ -263,7 +263,7 @@
     NSRect resultRect = NSZeroRect;
     
     id boundingBox = [aDOMElement callWebScriptMethod:@"getBBox"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
 
     if (boundingBox != NULL)
     {
@@ -275,12 +275,12 @@
         NSRect elementRect = NSMakeRect([xResult floatValue], [yResult floatValue], [widthResult floatValue], [heightResult floatValue]);
 
         id elementCtmMatrix = [aDOMElement callWebScriptMethod:@"getCTM"
-                withArguments:NULL];
+                withArguments:NULL];  // call JavaScript function
 
         if (elementCtmMatrix != NULL)
         {
             id topLeftSvgMousePoint = [svgRootElement callWebScriptMethod:@"createSVGPoint"
-                    withArguments:NULL];
+                    withArguments:NULL];  // call JavaScript function
             
             NSNumber * xNumber = [NSNumber numberWithFloat:elementRect.origin.x];
             NSNumber * yNumber = [NSNumber numberWithFloat:elementRect.origin.y];
@@ -290,7 +290,7 @@
             
             NSArray * topleftMatrixArray = [NSArray arrayWithObject:elementCtmMatrix];
             id topLeftCTMPoint = [topLeftSvgMousePoint callWebScriptMethod:@"matrixTransform"
-                    withArguments:topleftMatrixArray];
+                    withArguments:topleftMatrixArray];  // call JavaScript function
             
             if (topLeftCTMPoint != [WebUndefined undefined])
             {
@@ -300,7 +300,7 @@
                 resultRect.origin.y = [topLeftY floatValue];
 
                 id bottomRightSvgMousePoint = [svgRootElement callWebScriptMethod:@"createSVGPoint"
-                        withArguments:NULL];
+                        withArguments:NULL];  // call JavaScript function
 
                 NSNumber * bottomRightX = [NSNumber numberWithFloat:elementRect.origin.x + elementRect.size.width];
                 NSNumber * bottomRightY = [NSNumber numberWithFloat:elementRect.origin.y + elementRect.size.height];
@@ -311,7 +311,7 @@
 
                 NSArray * bottomRightMatrixArray = [NSArray arrayWithObject:elementCtmMatrix];
                 id bottomRightCTMPoint = [bottomRightSvgMousePoint callWebScriptMethod:@"matrixTransform"
-                        withArguments:bottomRightMatrixArray];
+                        withArguments:bottomRightMatrixArray];  // call JavaScript function
                 
                 NSNumber * topLeftCTMXNumber = [topLeftCTMPoint valueForKey:@"x"];
                 NSNumber * topLeftCTMYNumber = [topLeftCTMPoint valueForKey:@"y"];
@@ -339,7 +339,7 @@
 - (BOOL)animationsPausedForSvgElement:(DOMNode *)svgElement
 {
     NSNumber * animationsPaused = [svgElement callWebScriptMethod:@"animationsPaused"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
     
     BOOL result = [animationsPaused boolValue];
     
@@ -354,7 +354,7 @@
 {
     //id currentScale = [svgElement getValueForKey:@"currentScale"];
     id currentScale = [svgElement callWebScriptMethod:@"currentScale"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
 
     float result = [currentScale floatValue];
     
@@ -369,7 +369,7 @@
 {
     //NSLog(@"will pauseAnimations");
     [svgElement callWebScriptMethod:@"pauseAnimations"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
 
     //NSLog(@"did pauseAnimations");
 }
@@ -383,7 +383,7 @@
     //NSLog(@"will unpauseAnimations");
 
     [svgElement callWebScriptMethod:@"unpauseAnimations"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
 
     //NSLog(@"did unpauseAnimations");
 }
@@ -395,7 +395,7 @@
 - (float)getCurrentTimeForSvgElement:(DOMElement *)svgElement
 {
     NSNumber * currentTime = [svgElement callWebScriptMethod:@"getCurrentTime"
-            withArguments:NULL];
+            withArguments:NULL];  // call JavaScript function
 
     float result = [currentTime floatValue];
     
@@ -464,13 +464,13 @@
     */
     
     NSNumber * xNumber = [aElement callWebScriptMethod:@"x.baseVal.value"
-        withArguments:NULL];
+        withArguments:NULL];  // call JavaScript function
     NSNumber * yNumber = [aElement callWebScriptMethod:@"y.baseVal.value"
-        withArguments:NULL];
+        withArguments:NULL];  // call JavaScript function
     NSNumber * widthNumber = [aElement callWebScriptMethod:@"width.baseVal.value"
-        withArguments:NULL];
+        withArguments:NULL];  // call JavaScript function
     NSNumber * heightNumber = [aElement callWebScriptMethod:@"height"
-        withArguments:NULL];
+        withArguments:NULL];  // call JavaScript function
 
     resultRect = NSMakeRect([xNumber floatValue], [yNumber floatValue], [widthNumber floatValue], [heightNumber floatValue]);
     

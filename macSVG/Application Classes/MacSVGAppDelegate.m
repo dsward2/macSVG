@@ -81,8 +81,8 @@
 
 - (void) windowDidResignKeyNotification:(NSNotification *)aNotification
 {
-    NSWindow * aWindow = [aNotification object];
-    NSLog(@"MacSVGAppDelegate windowDidResignKeyNotification - %@", aWindow);
+    //NSWindow * aWindow = [aNotification object];
+    //NSLog(@"MacSVGAppDelegate windowDidResignKeyNotification - %@", aWindow);
 }
 
 //==================================================================================
@@ -91,8 +91,8 @@
 
 - (void) windowDidResignMainNotification:(NSNotification *)aNotification
 {
-    NSWindow * aWindow = [aNotification object];
-    NSLog(@"MacSVGAppDelegate windowDidResignMainNotification - %@", aWindow);
+    //NSWindow * aWindow = [aNotification object];
+    //NSLog(@"MacSVGAppDelegate windowDidResignMainNotification - %@", aWindow);
 }
 
 //==================================================================================
@@ -101,8 +101,8 @@
 
 - (void) windowDidBecomeKeyNotification:(NSNotification *)aNotification
 {
-    NSWindow * aWindow = [aNotification object];
-    NSLog(@"MacSVGAppDelegate windowDidBecomeKeyNotification - %@", aWindow);
+    //NSWindow * aWindow = [aNotification object];
+    //NSLog(@"MacSVGAppDelegate windowDidBecomeKeyNotification - %@", aWindow);
 }
 
 //==================================================================================
@@ -111,8 +111,8 @@
 
 - (void) windowDidBecomeMainNotification:(NSNotification *)aNotification
 {
-    NSWindow * aWindow = [aNotification object];
-    NSLog(@"MacSVGAppDelegate windowDidBecomeMainNotification - %@", aWindow);
+    //NSWindow * aWindow = [aNotification object];
+    //NSLog(@"MacSVGAppDelegate windowDidBecomeMainNotification - %@", aWindow);
 }
 
 
