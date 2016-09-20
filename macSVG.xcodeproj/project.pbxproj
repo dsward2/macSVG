@@ -706,6 +706,7 @@
 		0EEE3ABD17BA8B1E0040846F /* CheckeredBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3ABC17BA8B1E0040846F /* CheckeredBackgroundView.m */; };
 		0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3B1017BD4EDB0040846F /* XMLOutlineRowView.m */; };
 		0EEECD261D911D290050AC2F /* Installer.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD251D911D290050AC2F /* Installer.pdf */; };
+		0EEECD281D913A090050AC2F /* macSVG.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD271D913A090050AC2F /* macSVG.svg */; };
 		0EF29D991D7955BC00267844 /* AnimateTransformElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EF29DBC1D7B9FD000267844 /* IRIReferenceAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29DBB1D7B9FBA00267844 /* IRIReferenceAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EF420D91D751EB100A667D9 /* animate_stroke-dasharray_on_path.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E82B1391D733527005D0634 /* animate_stroke-dasharray_on_path.svg */; };
@@ -2552,6 +2553,7 @@
 		0EEECD0A1D91106B0050AC2F /* Installer.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Installer.svg; sourceTree = "<group>"; };
 		0EEECD0B1D91106B0050AC2F /* Installer.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Installer.tiff; sourceTree = "<group>"; };
 		0EEECD251D911D290050AC2F /* Installer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Installer.pdf; sourceTree = "<group>"; };
+		0EEECD271D913A090050AC2F /* macSVG.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = macSVG.svg; sourceTree = "<group>"; };
 		0EEFBB2417EA2C03006887CA /* AnimateMotionElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimateMotionElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEFBB2517EA2C03006887CA /* ColorAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ColorAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEFBB2617EA2C03006887CA /* CoordinatesAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoordinatesAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4468,6 +4470,7 @@
 				0EEECD0A1D91106B0050AC2F /* Installer.svg */,
 				0EEECD0B1D91106B0050AC2F /* Installer.tiff */,
 				0EEECD251D911D290050AC2F /* Installer.pdf */,
+				0EEECD271D913A090050AC2F /* macSVG.svg */,
 				0EE997D617ED3C2F00F833D1 /* update_executable_path.sh */,
 			);
 			path = Resources;
@@ -4980,6 +4983,7 @@
 				0E1F751F1D83C132008AFEAB /* crosshair.png in Resources */,
 				0E1F751E1D83C132008AFEAB /* circle.png in Resources */,
 				0EE22BB817F7539E00B58D6D /* Untitled-Banner.xhtml in Resources */,
+				0EEECD281D913A090050AC2F /* macSVG.svg in Resources */,
 				0E1F752E1D83C132008AFEAB /* rect.png in Resources */,
 				0E10814814C7264300908087 /* TextDocument.xib in Resources */,
 				0E10816F14C7691C00908087 /* SVG Logo2.svg in Resources */,
