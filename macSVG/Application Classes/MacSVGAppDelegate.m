@@ -1124,6 +1124,11 @@
         
         NSArray * examplePathsArray = [NSBundle pathsForResourcesOfType:@"svg"
                 inDirectory:examplesPath];
+        
+        NSArray * xhtmlExamplesArray = [NSBundle pathsForResourcesOfType:@"xhtml"
+                inDirectory:examplesPath];
+        
+        examplePathsArray = [examplePathsArray arrayByAddingObjectsFromArray:xhtmlExamplesArray];
 
         NSFont * textFont = [NSFont systemFontOfSize:13];
 
@@ -1143,14 +1148,53 @@
             NSString * svgString = [NSString stringWithContentsOfFile:pathToExample encoding:NSUTF8StringEncoding error:&fileError];
         
             NSError * xmlError = NULL;
-            NSXMLDocument * xmlDocument = [[NSXMLDocument alloc] initWithXMLString:svgString options:0 error:&xmlError];
+            NSXMLDocument * xmlDocument = NULL;
+            
+            xmlDocument = [[NSXMLDocument alloc] initWithXMLString:svgString options:0 error:&xmlError];
+            
+            if (xmlError != NULL)
+            {
+                NSLog(@"NSXMLDocument document error %@", xmlError);
+            }
 
             NSXMLElement * rootElement = [xmlDocument rootElement];
+            
+            NSString * originalRootElementName = [rootElement name];
+            
+            if ([originalRootElementName isEqualToString:@"html"] == YES)
+            {
+                /*
+                NSString * svgXpathQuery = @"//svg";
+                NSError * svgXpathQueryError;
+                NSArray * svgResultArray = [rootElement nodesForXPath:svgXpathQuery error:&svgXpathQueryError];
+                
+                if ([svgResultArray count] > 0)
+                {
+                    NSXMLElement * svgRootElement = [svgResultArray firstObject];
+                    
+                    NSXMLDocument * documentElement = [svgRootElement rootDocument];
+                    
+                    rootElement = [documentElement rootElement];
+                }
+                */
+                
+                rootElement = [self findSVGElementInElement:rootElement];
+            }
 
             NSString * xpathQuery = @".//title";
             
-            NSError * error = NULL;
-            NSArray * resultArray = [rootElement nodesForXPath:xpathQuery error:&error];
+            NSError * xPathError = NULL;
+            NSArray * resultArray = [rootElement nodesForXPath:xpathQuery error:&xPathError];
+
+            if (xmlError != NULL)
+            {
+                NSLog(@"NSXMLDocument XPath error %@", xPathError);
+            }
+
+            if ([resultArray count] == 0)
+            {
+            
+            }
             
             if ([resultArray count] > 0)
             {
@@ -1169,7 +1213,8 @@
                 [descriptionString appendAttributedString:descriptionTitleAttributedString];
 
                 NSString * descriptionXpathQuery = @"//desc";
-                NSArray * descriptionResultArray = [rootElement nodesForXPath:descriptionXpathQuery error:&error];
+                NSError * xpathNodesError;
+                NSArray * descriptionResultArray = [rootElement nodesForXPath:descriptionXpathQuery error:&xpathNodesError];
                 if ([descriptionResultArray count] > 0)
                 {
                     NSXMLElement * descriptionElement = [descriptionResultArray firstObject];
@@ -1184,6 +1229,10 @@
                     
                     [descriptionString appendAttributedString:descriptionAttributedString];
                 }
+                else
+                {
+                    NSLog(@"Example file %@ is missing desc attribute.", pathToExample);
+                }
                 
                 NSDictionary * exampleDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                     titleString, @"title",
@@ -1193,6 +1242,10 @@
                 
                 [self.macSVGExamplesArray addObject:exampleDictionary];
             }
+            else
+            {
+                NSLog(@"Example file %@ is missing title attribute.", pathToExample);
+            }
         }
     }
     
@@ -1200,7 +1253,40 @@
 }
 
 
-
+- (NSXMLElement *) findSVGElementInElement:(NSXMLElement *)aXMLElement
+{
+    NSString * elementName = [aXMLElement name];
+    
+    if ([elementName isEqualToString:@"svg"])
+    {
+        return aXMLElement;
+    }
+    else
+    {
+        NSInteger childCount = [aXMLElement childCount];
+        
+        for (NSInteger i = 0; i < childCount; i++)
+        {
+            NSXMLNode * childNode = [aXMLElement childAtIndex:i];
+            
+            NSInteger childNodeKind = [childNode kind];
+            
+            if (childNodeKind == NSXMLElementKind)
+            {
+                NSXMLElement * childXMLElement = (NSXMLElement *)childNode;
+            
+                NSXMLElement * childResult = [self findSVGElementInElement:childXMLElement];
+                
+                if (childResult != NULL)
+                {
+                    return childResult;
+                }
+            }
+        }
+    }
+    
+    return NULL;
+}
 
 - (IBAction)svgExampleSearchFieldAction:(id)sender
 {

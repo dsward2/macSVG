@@ -14,7 +14,9 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>svg-logo-v</string>
 			<key>CFBundleTypeMIMETypes</key>
-			<array/>
+			<array>
+				<string>com.arkphone.macsvg.svg</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>SVG Document</string>
 			<key>CFBundleTypeRole</key>
@@ -23,6 +25,8 @@
 			<array>
 				<string>com.arkphone.macsvg.svg</string>
 			</array>
+			<key>LSRankHandler</key>
+			<string>Owner</string>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
 			<key>NSDocumentClass</key>
@@ -37,7 +41,9 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>text</string>
 			<key>CFBundleTypeMIMETypes</key>
-			<array/>
+			<array>
+				<string>com.arkphone.macsvg.text</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>Text Document</string>
 			<key>CFBundleTypeRole</key>
@@ -55,6 +61,12 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>xhtml</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string></string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>com.arkphone.macsvg.xhtml</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>XHTML Document</string>

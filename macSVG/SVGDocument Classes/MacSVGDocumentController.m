@@ -346,7 +346,6 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
 //	saveDocument:
 //==================================================================================
 
-
 - (IBAction)saveDocument:(id)sender
 {
     MacSVGDocumentWindowController * frontmostMacSVGDocumentWindowController =

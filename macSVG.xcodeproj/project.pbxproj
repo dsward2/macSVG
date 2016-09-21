@@ -707,6 +707,7 @@
 		0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3B1017BD4EDB0040846F /* XMLOutlineRowView.m */; };
 		0EEECD261D911D290050AC2F /* Installer.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD251D911D290050AC2F /* Installer.pdf */; };
 		0EEECD281D913A090050AC2F /* macSVG.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD271D913A090050AC2F /* macSVG.svg */; };
+		0EEECD2A1D923BD80050AC2F /* xhtml_with_javascript.xhtml in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */; };
 		0EF29D991D7955BC00267844 /* AnimateTransformElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EF29DBC1D7B9FD000267844 /* IRIReferenceAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29DBB1D7B9FBA00267844 /* IRIReferenceAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EF420D91D751EB100A667D9 /* animate_stroke-dasharray_on_path.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E82B1391D733527005D0634 /* animate_stroke-dasharray_on_path.svg */; };
@@ -937,6 +938,7 @@
 				0E8C6E981D5758B90088CA7B /* text_on_an_animated_path.svg in CopyFiles */,
 				0E1C056A1D5722AE004E7B62 /* text_on_a_path.svg in CopyFiles */,
 				0EADC6B91D7C3DCD00A61333 /* viewbox_pan_and_zoom_animation.svg in CopyFiles */,
+				0EEECD2A1D923BD80050AC2F /* xhtml_with_javascript.xhtml in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2554,6 +2556,7 @@
 		0EEECD0B1D91106B0050AC2F /* Installer.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Installer.tiff; sourceTree = "<group>"; };
 		0EEECD251D911D290050AC2F /* Installer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Installer.pdf; sourceTree = "<group>"; };
 		0EEECD271D913A090050AC2F /* macSVG.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = macSVG.svg; sourceTree = "<group>"; };
+		0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = xhtml_with_javascript.xhtml; sourceTree = "<group>"; };
 		0EEFBB2417EA2C03006887CA /* AnimateMotionElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimateMotionElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEFBB2517EA2C03006887CA /* ColorAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ColorAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEFBB2617EA2C03006887CA /* CoordinatesAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoordinatesAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2670,6 +2673,7 @@
 				0E8C6E971D5758AD0088CA7B /* text_on_an_animated_path.svg */,
 				0E1C05691D57222B004E7B62 /* text_on_a_path.svg */,
 				0EADC6B81D7C3DC200A61333 /* viewbox_pan_and_zoom_animation.svg */,
+				0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */,
 			);
 			path = svg;
 			sourceTree = "<group>";

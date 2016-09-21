@@ -1357,7 +1357,6 @@
             MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
             self.editElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
-            //NSUInteger xmlStringOptions = NSXMLDocumentTidyXML | NSXMLNodePrettyPrint | NSXMLNodePreserveAll;
             NSUInteger xmlStringOptions = NSXMLNodePrettyPrint | NSXMLNodePreserveCDATA;
             
             NSString * xmlString = [self.editElement XMLStringWithOptions:xmlStringOptions];
@@ -1366,8 +1365,9 @@
             
             [hostWindow beginSheet:self.xmlTextEditSheet  completionHandler:^(NSModalResponse returnCode)
             {
-               
-            }];
+            
+            
+            }];            
         }
         else
         {
@@ -1390,8 +1390,6 @@
     
     NSError * xmlError = NULL;
     
-    //NSXMLElement * xmlElement = [[NSXMLElement alloc] initWithXMLString:xmlString error:&xmlError];
-
     NSXMLDocument * xmlDocument = [[NSXMLDocument alloc] initWithXMLString:xmlString options:NSXMLNodePreserveCDATA error:&xmlError];
     NSXMLElement * xmlElement = [xmlDocument rootElement];
     [xmlElement detach];
@@ -1427,13 +1425,15 @@
         {
             [svgXmlDocument setRootElement:xmlElement];
         }
-
-        [self.macSVGDocumentWindowController reloadAllViews];
     
-        [NSApp endSheet:self.xmlTextEditSheet];
+        NSWindow * hostWindow = [self.macSVGDocumentWindowController window];
+        [hostWindow endSheet:self.xmlTextEditSheet returnCode:NSModalResponseContinue];
+
         [self.xmlTextEditSheet orderOut:sender];
         
         self.editElement = NULL;
+        
+        [self.macSVGDocumentWindowController reloadAllViews];
     }
 }
 
@@ -1443,7 +1443,9 @@
 
 - (IBAction) cancelEditXMLText:(id)sender
 {
-    [NSApp endSheet:self.xmlTextEditSheet];
+    NSWindow * hostWindow = [self.macSVGDocumentWindowController window];
+    [hostWindow endSheet:self.xmlTextEditSheet returnCode:NSModalResponseCancel];
+
     [self.xmlTextEditSheet orderOut:sender];
 
     self.editElement = NULL;
