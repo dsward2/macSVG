@@ -72,7 +72,7 @@
             [self drawTextIcon:cellFrame];
             break;
         }
-        otherwise:
+        default:
         {
             [self drawFolderIcon:cellFrame];
             break;

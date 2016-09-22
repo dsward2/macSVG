@@ -1139,8 +1139,10 @@
 {
     id result = NULL;
     
+    /*
     DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+    
     if (svgElementsList.length > 0)
     {
         DOMNode * svgElementNode = [svgElementsList item:0];
@@ -1148,8 +1150,37 @@
     
         result = [self findDomElementForMacsvgid:macsvgid inElement:svgElement];
     }
+    */
+
+    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMElement * svgElement = [domDocument documentElement];
     
+    NSString * originalElementName = [svgElement tagName];
+
+    result = [self findDomElementForMacsvgid:macsvgid inElement:svgElement];
+
+    if (result == NULL)
+    {
+        if ([originalElementName isEqualToString:@"html"] == YES)
+        {
+            svgElement = [self findSVGElementInHTMLElement:svgElement];
+            result = [self findDomElementForMacsvgid:macsvgid inElement:svgElement];
+        }
+    }
+   
     return result;
+}
+
+//==================================================================================
+//	findSVGElementInElement:
+//==================================================================================
+
+- (DOMElement *) findSVGElementInHTMLElement:(DOMElement *)htmlElement
+{
+    // for finding svg element embedded in html
+    DOMElement * svgElement = [htmlElement callWebScriptMethod:@"getSVGDocument" withArguments:NULL];
+    
+    return svgElement;
 }
 
 //==================================================================================
@@ -1379,7 +1410,54 @@
 {
     DOMElement * domElement = [self domElementForMacsvgid:macsvgid];
     
-    [domElement setAttribute:@"visibility" value:visibility];
+    NSString * domElementName = [domElement tagName];
+    
+    if ([domElementName isEqualToString:@"rect"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"circle"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"circle"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"line"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"polyline"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"polygon"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"image"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"text"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else if ([domElementName isEqualToString:@"path"] == YES)
+    {
+        [domElement setAttribute:@"visibility" value:visibility];
+    }
+    else
+    {
+        if ([domElementName isEqualToString:@"g"] == NO)
+        {
+            if ([visibility isEqualToString:@"visible"] == NO)
+            {
+                [[domElement parentElement] removeChild:domElement];
+            }
+        }
+    }
 }
 
 // ================================================================

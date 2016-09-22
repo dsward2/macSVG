@@ -1255,6 +1255,7 @@
 
 - (NSXMLElement *) findSVGElementInElement:(NSXMLElement *)aXMLElement
 {
+    // for finding svg element embedded in html
     NSString * elementName = [aXMLElement name];
     
     if ([elementName isEqualToString:@"svg"])
@@ -1275,7 +1276,7 @@
             {
                 NSXMLElement * childXMLElement = (NSXMLElement *)childNode;
             
-                NSXMLElement * childResult = [self findSVGElementInElement:childXMLElement];
+                NSXMLElement * childResult = [self findSVGElementInElement:childXMLElement];    // recursive call
                 
                 if (childResult != NULL)
                 {
