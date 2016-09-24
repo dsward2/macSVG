@@ -287,6 +287,7 @@
     
     NSParameterAssert(pxdata != NULL);
 
+    /*
     CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
     
     CGColorSpaceRef calibratedRGBColorSpace = NULL;
@@ -300,13 +301,17 @@
         const CGFloat matrix[] = {0.449695, 0.244634, 0.0251829, 0.316251, 0.672034, 0.141184, 0.18452, 0.0833318, 0.922602 };
         calibratedRGBColorSpace = CGColorSpaceCreateCalibratedRGB(whitePoint, blackPoint, gamma, matrix);
     }
+    */
+    
+    CGColorSpaceRef genericRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
     
     //CGColorSpaceRef platformRGBColorSpace = CGColorSpaceCreateWithPlatformColorSpace(ref);
     
     CGContextRef context = CGBitmapContextCreate(pxdata, frameSize.width,
             frameSize.height, 8, 4 * frameSize.width,
             //rgbColorSpace,
-            calibratedRGBColorSpace,
+            //calibratedRGBColorSpace,
+            genericRGBColorSpace,
             kCGImageAlphaNoneSkipFirst);
     
     NSParameterAssert(context);
@@ -318,8 +323,9 @@
     CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), 
             CGImageGetHeight(image)), image);
     
-    CGColorSpaceRelease(rgbColorSpace);
-    CGColorSpaceRelease(calibratedRGBColorSpace);
+    //CGColorSpaceRelease(rgbColorSpace);
+    //CGColorSpaceRelease(calibratedRGBColorSpace);
+    CGColorSpaceRelease(genericRGBColorSpace);
     
     CGContextRelease(context);
 

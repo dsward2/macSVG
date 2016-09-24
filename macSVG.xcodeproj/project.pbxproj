@@ -11,6 +11,7 @@
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
 		0E0AEDB51D8AE6A9004D82C3 /* pattern_example2.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */; };
+		0E0E0B121D96AC5F0027DCAB /* AppIcons.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */; };
 		0E10814814C7264300908087 /* TextDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E10814614C7264300908087 /* TextDocument.xib */; };
 		0E10814C14C727A600908087 /* TextDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814B14C727A600908087 /* TextDocumentWindowController.m */; };
 		0E10815014C7320D00908087 /* TextDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814E14C7320D00908087 /* TextDocument.m */; };
@@ -1497,6 +1498,7 @@
 		0E0AED991D8A932F004D82C3 /* path_markers_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_markers_example.svg; sourceTree = "<group>"; };
 		0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example.svg; sourceTree = "<group>"; };
 		0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example2.svg; sourceTree = "<group>"; };
+		0E0E0B111D96AC5F0027DCAB /* en */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = en; path = AppIcons.iconset; sourceTree = "<group>"; };
 		0E10814714C7264300908087 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = TextDocument.xib; sourceTree = "<group>"; };
 		0E10814A14C727A600908087 /* TextDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDocumentWindowController.h; sourceTree = "<group>"; };
 		0E10814B14C727A600908087 /* TextDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextDocumentWindowController.m; sourceTree = "<group>"; };
@@ -4446,6 +4448,7 @@
 		0EB663B01428662B003723F0 /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */,
 				0EB663B11428662B003723F0 /* Credits.rtf */,
 				0EB663B31428662B003723F0 /* InfoPlist.strings */,
 				0EB663B51428662B003723F0 /* MainMenu.xib */,
@@ -4968,6 +4971,7 @@
 				0E1F75281D83C132008AFEAB /* polyline.png in Resources */,
 				0EB663BD1428662B003723F0 /* MainMenu.xib in Resources */,
 				0EB663BE1428662B003723F0 /* MacSVGDocument.xib in Resources */,
+				0E0E0B121D96AC5F0027DCAB /* AppIcons.iconset in Resources */,
 				0EB663DE1428666B003723F0 /* SvgElementsDictionary.xml in Resources */,
 				0E1F75321D83FDFD008AFEAB /* PlayHeadSelected-Graphite.tiff in Resources */,
 				0EB663DF1428666B003723F0 /* Untitled.svg in Resources */,
@@ -5101,6 +5105,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0E0E0B111D96AC5F0027DCAB /* en */,
+			);
+			name = AppIcons.iconset;
+			sourceTree = "<group>";
+		};
 		0E10814614C7264300908087 /* TextDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

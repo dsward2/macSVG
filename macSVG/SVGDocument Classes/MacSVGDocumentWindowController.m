@@ -215,6 +215,7 @@
 {
     // Deactivate menu command targets and actions
     NSWindow * aWindow = [notification object];
+    #pragma unused(aWindow)
     
     //NSLog(@"MacSVGDocumentWindowController - windowDidResignMain %@", aWindow);
 
@@ -272,16 +273,12 @@
 
 - (void)windowDidBecomeMain:(NSNotification *)notification
 {
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
-
     NSWindow * aWindow = [notification object];
+    #pragma unused(aWindow)
     
     //NSLog(@"MacSVGDocumentWindowController - windowDidBecomeMain %@", aWindow);
 
     // Set the menu command targets and actions
-    NSWindow * keyWindow = [NSApp keyWindow];
-    NSWindow * mainWindow = [NSApp mainWindow];
-    
     NSMenu * mainMenu = [NSApp mainMenu];
 
     NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
