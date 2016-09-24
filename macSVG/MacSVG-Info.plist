@@ -16,6 +16,7 @@
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>com.arkphone.macsvg.svg</string>
+				<string>svg</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>SVG Document</string>
@@ -67,6 +68,7 @@
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>com.arkphone.macsvg.xhtml</string>
+				<string>xhtml</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>XHTML Document</string>

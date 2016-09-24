@@ -413,14 +413,14 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 		success = [asyncSocket acceptOnInterface:interface port:port error:&err];
 		if (success)
 		{
-			HTTPLogInfo(@"%@: macSVG.app started HTTP server on local port %hu", THIS_FILE, [asyncSocket localPort]);
+			HTTPLogInfo(@"%@: macSVG.app started HTTP server on host %@, port %hu", THIS_FILE, [asyncSocket localHost], [asyncSocket localPort]);   // dsward - modified message
 			
 			isRunning = YES;
 			[self publishBonjour];
 		}
 		else
 		{
-			HTTPLogError(@"%@: Failed to start HTTP Server: %@", THIS_FILE, err);
+			HTTPLogError(@"%@: macSVG.app failed to start HTTP Server: %@", THIS_FILE, err);   // dsward - modified message
 		}
 	}});
 	

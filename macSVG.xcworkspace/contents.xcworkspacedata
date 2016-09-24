@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:/Users/dsward/Documents/ArkPhone_LLC_Projects/macSVG_Project/macSVG.xcworkspace">
+      location = "container:macSVG.xcworkspace">
    </FileRef>
    <FileRef
       location = "container:/Users/dsward/Documents/ArkPhone_LLC_Projects/macSVG_Project/macSVG.xcodeproj">

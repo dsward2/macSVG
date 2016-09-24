@@ -108,19 +108,60 @@
     
     NSParameterAssert(self.videoWriter);
 
+    NSMutableDictionary *compressionSettings = NULL;
+    compressionSettings = [NSMutableDictionary dictionary];
+
+    /*
+    Specify the HD output color space for the video color properties
+    key (AVVideoColorPropertiesKey). During export, AV Foundation
+    will perform a color match from the input color space to the HD
+    output color space.
+     
+	Most clients will want to specify HD, which consists of:
+ 
+		AVVideoColorPrimaries_ITU_R_709_2
+		AVVideoTransferFunction_ITU_R_709_2
+		AVVideoYCbCrMatrix_ITU_R_709_2
+ 
+	If you require SD colorimetry use:
+ 
+		AVVideoColorPrimaries_SMPTE_C
+		AVVideoTransferFunction_ITU_R_709_2
+		AVVideoYCbCrMatrix_ITU_R_601_4
+
+	If you require wide gamut HD colorimetry, you can use:
+ 
+		 AVVideoColorPrimaries_P3_D65
+		 AVVideoTransferFunction_ITU_R_709_2
+		 AVVideoYCbCrMatrix_ITU_R_709_2
+    */
+
+    //[compressionSettings setObject:AVVideoColorPrimaries_P3_D65   // TODO: requires macOS 10.12
+    [compressionSettings setObject:AVVideoColorPrimaries_ITU_R_709_2
+              forKey:AVVideoColorPrimariesKey];
+    [compressionSettings setObject:AVVideoTransferFunction_ITU_R_709_2
+              forKey:AVVideoTransferFunctionKey];
+    [compressionSettings setObject:AVVideoYCbCrMatrix_ITU_R_709_2
+              forKey:AVVideoYCbCrMatrixKey];
+    
     self.videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
             AVVideoCodecH264, AVVideoCodecKey,
             [NSNumber numberWithInteger:self.movieWidth], AVVideoWidthKey,
             [NSNumber numberWithInteger:self.movieHeight], AVVideoHeightKey,
+            compressionSettings, AVVideoColorPropertiesKey,
             nil];
     
     self.writerInput = [AVAssetWriterInput
             assetWriterInputWithMediaType:AVMediaTypeVideo
             outputSettings:self.videoSettings];
 
+    NSDictionary* bufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+            [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
+            kCVPixelBufferPixelFormatTypeKey, nil];
+
     self.adaptor = [AVAssetWriterInputPixelBufferAdaptor
         assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.writerInput
-        sourcePixelBufferAttributes:nil];
+        sourcePixelBufferAttributes:bufferAttributes];
 
     NSParameterAssert(self.writerInput);
     NSParameterAssert([self.videoWriter canAddInput:self.writerInput]);
@@ -150,13 +191,6 @@
     [self.hiddenWebView setNeedsDisplay:YES];
     
     CGFloat delay = 0.1f;
-    
-    /*
-    if (self.frameCount == 0)
-    {
-        delay = 1.0f;   // allow extra time for first frame, in case of external image references, etc.
-    }
-    */
     
     [self performSelector:@selector(webViewDidFinishLoad) withObject:NULL afterDelay:delay];
 }
@@ -255,11 +289,29 @@
 
     CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
     
+    CGColorSpaceRef calibratedRGBColorSpace = NULL;
+    CMProfileRef systemMonitorProfile = NULL;
+    CMError getProfileErr = CMGetSystemProfile(&systemMonitorProfile);
+    if (getProfileErr == noErr)
+    {
+        const CGFloat whitePoint[] = {0.95047, 1.0, 1.08883};
+        const CGFloat blackPoint[] = {0, 0, 0};
+        const CGFloat gamma[] = {1, 1, 1};
+        const CGFloat matrix[] = {0.449695, 0.244634, 0.0251829, 0.316251, 0.672034, 0.141184, 0.18452, 0.0833318, 0.922602 };
+        calibratedRGBColorSpace = CGColorSpaceCreateCalibratedRGB(whitePoint, blackPoint, gamma, matrix);
+    }
+    
+    //CGColorSpaceRef platformRGBColorSpace = CGColorSpaceCreateWithPlatformColorSpace(ref);
+    
     CGContextRef context = CGBitmapContextCreate(pxdata, frameSize.width,
-            frameSize.height, 8, 4 * frameSize.width, rgbColorSpace,
+            frameSize.height, 8, 4 * frameSize.width,
+            //rgbColorSpace,
+            calibratedRGBColorSpace,
             kCGImageAlphaNoneSkipFirst);
     
     NSParameterAssert(context);
+    
+    CGContextSetRenderingIntent(context, kCGRenderingIntentAbsoluteColorimetric);
     
     CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
     
@@ -267,6 +319,7 @@
             CGImageGetHeight(image)), image);
     
     CGColorSpaceRelease(rgbColorSpace);
+    CGColorSpaceRelease(calibratedRGBColorSpace);
     
     CGContextRelease(context);
 
@@ -287,6 +340,8 @@
 	[self.hiddenWebView lockFocus];
     NSBitmapImageRep * bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:webViewBounds];
 	[self.hiddenWebView unlockFocus];
+
+    bitmapRep.colorSpaceName = NSDeviceRGBColorSpace;
     
     // crop the view to document size
     NSImage * webImage = [[NSImage alloc] initWithSize:imageBounds.size];
@@ -294,6 +349,18 @@
     NSRect srcImageBounds = imageBounds;
     srcImageBounds.origin.y = webViewBounds.size.height - self.movieHeight;
     
+    // draw to create bitmapImageRep
+    [webImage lockFocus];
+    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
+            fraction:1.0f respectFlipped:YES hints:NULL];
+    [webImage unlockFocus];
+
+    NSArray * destinationRepresentations = [webImage representations];
+    NSBitmapImageRep * destinationBitmapImageRep = [destinationRepresentations firstObject];
+    destinationBitmapImageRep.colorSpaceName = NSCalibratedRGBColorSpace;
+    //destinationBitmapImageRep.colorSpaceName = NSDeviceRGBColorSpace;
+
+    // redraw after color space setting
     [webImage lockFocus];
     [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
             fraction:1.0f respectFlipped:YES hints:NULL];
