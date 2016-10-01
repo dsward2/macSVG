@@ -446,7 +446,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Ig5-Db-Ivz"/>
-                            <menuItem title="Generate HTML5 Video" id="CTK-T4-2Vv">
+                            <menuItem title="Export Images…" id="VlS-zc-1gi">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="exportImages:" target="530" id="XTe-fk-fLa"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Generate HTML5 Video…" id="CTK-T4-2Vv">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="generateHTML5Video:" target="530" id="4QM-wd-tLT"/>
@@ -2169,6 +2175,7 @@ Gw
                                 <items>
                                     <menuItem title="MacSVG Example 480 x 360" state="on" id="I1K-3t-2jW"/>
                                     <menuItem title="MacSVG Full Page 640 x 744" id="874-4r-bQs"/>
+                                    <menuItem title="macOS/iOS Application Icon 512 x 512" id="8C6-No-NJA"/>
                                     <menuItem title="WordPress Thumbnail 150 x 150" id="YrL-VM-Kxj">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                     </menuItem>

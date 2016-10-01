@@ -105,6 +105,35 @@
 @property(weak) IBOutlet NSTextField * generatingVideoFramesPerSecondTextField;
 @property(weak) IBOutlet NSButton * generatingVideoCancelButton;
 
+@property(weak) IBOutlet NSWindow * exportImagesSheet;
+@property(weak) IBOutlet NSPopUpButton * exportImagesFormatPopUpButton;
+@property(weak) IBOutlet NSPopUpButton * exportImagesOutputOptionsPopUpButton;
+@property(weak) IBOutlet NSButton * exportImagesAlphaChannelCheckBoxButton;
+@property(weak) IBOutlet NSTextField * exportImagesWidthTextField;
+@property(weak) IBOutlet NSTextField * exportImagesHeightTextField;
+@property(weak) IBOutlet NSTextField * exportImagesStartTimeTextField;
+@property(weak) IBOutlet NSTextField * exportImagesStartTimeLabelTextField;
+@property(weak) IBOutlet NSTextField * exportImagesEndTimeTextField;
+@property(weak) IBOutlet NSTextField * exportImagesEndTimeLabelTextField;
+@property(weak) IBOutlet NSTextField * exportImagesFramesPerSecondTextField;
+@property(weak) IBOutlet NSTextField * exportImagesFramesPerSecondLabelTextField;
+@property(weak) IBOutlet NSButton * exportImagesOKButton;
+@property(weak) IBOutlet NSButton * exportImagesCancelButton;
+
+@property(weak) IBOutlet NSWindow * exportingImagesSheet;
+@property(weak) IBOutlet NSTextField * exportingImagesFormatTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesOutputOptionsTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesPathTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesWidthTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesHeightTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesStartTimeTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesEndTimeTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesCurrentTimeTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesFramesPerSecondTextField;
+@property(weak) IBOutlet NSTextField * exportingImagesAlphaChannelTextField;
+@property(weak) IBOutlet NSButton * exportingImagesCancelButton;
+
+
 
 @property(strong) NSMutableDictionary * imageDictionary; // see ImageElementEditor plugin for description
 
@@ -237,8 +266,6 @@
 - (IBAction)launchWebBrowserPreview:(id)sender;
 - (IBAction)showPopoverAction:(id)sender;
 
-//- (IBAction)launchWebBrowserDocument:(id)sender;
-
 - (IBAction)strokeCheckboxButtonAction:(id)sender;
 - (IBAction)fillCheckboxButtonAction:(id)sender;
 - (IBAction)strokeColorWellAction:(id)sender;
@@ -249,6 +276,7 @@
 
 - (IBAction)svgSearchFieldAction:(id)sender;
 
+- (IBAction)exportImages:(id)sender;
 - (IBAction)generateCoreGraphicsCode:(id)sender;
 - (IBAction)generateHTML5Video:(id)sender;
 
@@ -257,13 +285,6 @@
 - (NSString *)strokeWidthString;
 
 - (void)selectXMLElement:(NSXMLElement *)selectedElement;
-
-//- (IBAction)pathModePopUpButtonAction:(id)sender;
-
-//- (NSString *)strokeColorString;
-//- (NSString *)fillColorString;
-
-//- (NSString *) selectedPathMode;
 
 - (void) endPathDrawing;
 - (void) endPolylineDrawing;
@@ -290,7 +311,15 @@
 - (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toXMLElement:(NSXMLElement *)targetElement;
 - (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toDOMElement:(DOMElement *)targetElement;
 
+- (IBAction) exportImagesButtonAction:(id)sender;
+- (IBAction) cancelExportImagesButtonAction:(id)sender;
+
 - (void)setWebViewCursor;
+
+- (IBAction)updateExportImageUI:(id)sender;
+
+- (IBAction) cancelExportingImagesButtonAction:(id)sender;
+- (IBAction) exportingImagesDoneAction:(id)sender;
 
 @end
 

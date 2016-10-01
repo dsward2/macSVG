@@ -712,6 +712,17 @@
 }
 
 //==================================================================================
+// exportImages:
+//==================================================================================
+
+- (IBAction)exportImages:(id)sender;
+
+{
+    MacSVGDocumentWindowController * aMacSVGDocumentWindowController = [self findFrontmostMacSVGWindowController];
+    [aMacSVGDocumentWindowController exportImages:sender];
+}
+
+//==================================================================================
 //	openUntitledSVGExample:
 //==================================================================================
 

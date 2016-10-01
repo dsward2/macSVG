@@ -11,8 +11,7 @@
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
 		0E0AEDB51D8AE6A9004D82C3 /* pattern_example2.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */; };
-		0E0E0B121D96AC5F0027DCAB /* AppIcons.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */; };
-		0E10814814C7264300908087 /* TextDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E10814614C7264300908087 /* TextDocument.xib */; };
+		0E0E0B151D9718A40027DCAB /* SVGtoImagesConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0E0B141D9718A40027DCAB /* SVGtoImagesConverter.m */; };
 		0E10814C14C727A600908087 /* TextDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814B14C727A600908087 /* TextDocumentWindowController.m */; };
 		0E10815014C7320D00908087 /* TextDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814E14C7320D00908087 /* TextDocument.m */; };
 		0E10816F14C7691C00908087 /* SVG Logo2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E10816A14C7691C00908087 /* SVG Logo2.svg */; };
@@ -52,6 +51,7 @@
 		0E27FF7A1D7783D600277F03 /* drop_shadow_filter.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E27FF621D7783C400277F03 /* drop_shadow_filter.svg */; };
 		0E27FF7E1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E27FF7C1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m */; };
 		0E346CD31794E0720041560C /* ToolSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E346CD21794CD850041560C /* ToolSettingsPopoverViewController.m */; };
+		0E3568161D9BC5B000AEEEE2 /* macSVG-Icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E3568151D9BC5B000AEEEE2 /* macSVG-Icon.svg */; };
 		0E363BD6181328EE004715A7 /* SFTPUploadWithBlocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E363BD5181328EE004715A7 /* SFTPUploadWithBlocking.m */; };
 		0E3B72F61D8272E700B10ECE /* SVGtoVideoConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B72F51D8272E700B10ECE /* SVGtoVideoConverter.m */; };
 		0E3B72F81D82964B00B10ECE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3B72F71D82964B00B10ECE /* AVFoundation.framework */; };
@@ -649,6 +649,15 @@
 		0E9C05FB1449582B0011EE06 /* XMLAttributesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C05FA1449582B0011EE06 /* XMLAttributesTableView.m */; };
 		0E9C42AD145414330090C649 /* svg11-flat-20110816.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C42AC145414330090C649 /* svg11-flat-20110816.dtd */; };
 		0E9CC4291475A9A600F285ED /* SVGElementsTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CC4281475A9A500F285ED /* SVGElementsTableController.m */; };
+		0EA2B4C71D9C96FC00100631 /* AppIcons.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4B51D9C96FC00100631 /* AppIcons.iconset */; };
+		0EA2B4C81D9C96FC00100631 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4B71D9C96FC00100631 /* Credits.rtf */; };
+		0EA2B4C91D9C96FC00100631 /* DocumentationLinks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4B91D9C96FC00100631 /* DocumentationLinks.plist */; };
+		0EA2B4CA1D9C96FC00100631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4BB1D9C96FC00100631 /* InfoPlist.strings */; };
+		0EA2B4CB1D9C96FC00100631 /* MacSVGDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */; };
+		0EA2B4CC1D9C96FC00100631 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4BF1D9C96FC00100631 /* MainMenu.xib */; };
+		0EA2B4CD1D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4C11D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */; };
+		0EA2B4CE1D9C96FC00100631 /* TextDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4C31D9C96FC00100631 /* TextDocument.xib */; };
+		0EA2B4CF1D9C96FC00100631 /* ToolPaletteWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA2B4C51D9C96FC00100631 /* ToolPaletteWindow.xib */; };
 		0EA47BED1D886B9C005B2FF3 /* SVGLineEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA47BEC1D886B9C005B2FF3 /* SVGLineEditor.m */; };
 		0EA78C3B1D84180900C9D4C8 /* PointsAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EA78C3A1D8417E600C9D4C8 /* PointsAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EA9DF25149D3100001672D1 /* AnimationTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9DF24149D3100001672D1 /* AnimationTimelineView.m */; };
@@ -665,10 +674,6 @@
 		0EB663A8142865EB003723F0 /* MacSVGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663A7142865EB003723F0 /* MacSVGAppDelegate.m */; };
 		0EB663AE142865F4003723F0 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663AB142865F4003723F0 /* ImageAndTextCell.m */; };
 		0EB663AF142865F4003723F0 /* NSOutlineView_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */; };
-		0EB663BB1428662B003723F0 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663B11428662B003723F0 /* Credits.rtf */; };
-		0EB663BC1428662B003723F0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663B31428662B003723F0 /* InfoPlist.strings */; };
-		0EB663BD1428662B003723F0 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663B51428662B003723F0 /* MainMenu.xib */; };
-		0EB663BE1428662B003723F0 /* MacSVGDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663B71428662B003723F0 /* MacSVGDocument.xib */; };
 		0EB663DE1428666B003723F0 /* SvgElementsDictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663D01428666B003723F0 /* SvgElementsDictionary.xml */; };
 		0EB663DF1428666B003723F0 /* Untitled.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663D21428666B003723F0 /* Untitled.svg */; };
 		0EB663E01428666B003723F0 /* Untitled.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663D31428666B003723F0 /* Untitled.xhtml */; };
@@ -716,8 +721,6 @@
 		0EF420E31D7561CE00A667D9 /* gaussian_blur_filter_element.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF420E01D75618400A667D9 /* gaussian_blur_filter_element.svg */; };
 		0EF420E51D758E4100A667D9 /* clipPath_element_and_clip-path_attribute.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF420E41D758E3400A667D9 /* clipPath_element_and_clip-path_attribute.svg */; };
 		0EF62C2D1783F1AF00AAD355 /* SelectedElementsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF62C2C1783F1AF00AAD355 /* SelectedElementsManager.m */; };
-		0EF6EBAD17CD0B9200A0A90B /* DocumentationLinks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EF6EBAB17CD0B9200A0A90B /* DocumentationLinks.plist */; };
-		0EFA43181D7234B0001FDE91 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EFA43161D7234B0001FDE91 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1498,8 +1501,8 @@
 		0E0AED991D8A932F004D82C3 /* path_markers_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_markers_example.svg; sourceTree = "<group>"; };
 		0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example.svg; sourceTree = "<group>"; };
 		0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example2.svg; sourceTree = "<group>"; };
-		0E0E0B111D96AC5F0027DCAB /* en */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = en; path = AppIcons.iconset; sourceTree = "<group>"; };
-		0E10814714C7264300908087 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = TextDocument.xib; sourceTree = "<group>"; };
+		0E0E0B131D9718A40027DCAB /* SVGtoImagesConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVGtoImagesConverter.h; path = "SVG Functions/SVGtoImagesConverter.h"; sourceTree = "<group>"; };
+		0E0E0B141D9718A40027DCAB /* SVGtoImagesConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVGtoImagesConverter.m; path = "SVG Functions/SVGtoImagesConverter.m"; sourceTree = "<group>"; };
 		0E10814A14C727A600908087 /* TextDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDocumentWindowController.h; sourceTree = "<group>"; };
 		0E10814B14C727A600908087 /* TextDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextDocumentWindowController.m; sourceTree = "<group>"; };
 		0E10814D14C7320D00908087 /* TextDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDocument.h; sourceTree = "<group>"; };
@@ -1533,6 +1536,7 @@
 		0E3426731780F786009D7DCF /* Pause16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pause16.png; path = ../Images/Pause16.png; sourceTree = "<group>"; };
 		0E346CD11794CD850041560C /* ToolSettingsPopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolSettingsPopoverViewController.h; sourceTree = "<group>"; };
 		0E346CD21794CD850041560C /* ToolSettingsPopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolSettingsPopoverViewController.m; sourceTree = "<group>"; };
+		0E3568151D9BC5B000AEEEE2 /* macSVG-Icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "macSVG-Icon.svg"; sourceTree = "<group>"; };
 		0E363BD4181328EE004715A7 /* SFTPUploadWithBlocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SFTPUploadWithBlocking.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E363BD5181328EE004715A7 /* SFTPUploadWithBlocking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SFTPUploadWithBlocking.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E3B72F41D8272E700B10ECE /* SVGtoVideoConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVGtoVideoConverter.h; path = "SVG Functions/SVGtoVideoConverter.h"; sourceTree = "<group>"; };
@@ -2413,6 +2417,15 @@
 		0E9CC4271475A9A500F285ED /* SVGElementsTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGElementsTableController.h; sourceTree = "<group>"; };
 		0E9CC4281475A9A500F285ED /* SVGElementsTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGElementsTableController.m; sourceTree = "<group>"; };
 		0E9CC42A147609E900F285ED /* DTD Analysis.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "DTD Analysis.txt"; sourceTree = "<group>"; };
+		0EA2B4B61D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = en; path = AppIcons.iconset; sourceTree = "<group>"; };
+		0EA2B4B81D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = Credits.rtf; sourceTree = "<group>"; };
+		0EA2B4BA1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = DocumentationLinks.plist; sourceTree = "<group>"; };
+		0EA2B4BC1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		0EA2B4BE1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MacSVGDocument.xib; sourceTree = "<group>"; };
+		0EA2B4C01D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MainMenu.xib; sourceTree = "<group>"; };
+		0EA2B4C21D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = en; path = "Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"; sourceTree = "<group>"; };
+		0EA2B4C41D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = TextDocument.xib; sourceTree = "<group>"; };
+		0EA2B4C61D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ToolPaletteWindow.xib; sourceTree = "<group>"; };
 		0EA47BEB1D886B9C005B2FF3 /* SVGLineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGLineEditor.h; sourceTree = "<group>"; };
 		0EA47BEC1D886B9C005B2FF3 /* SVGLineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGLineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EA78C3A1D8417E600C9D4C8 /* PointsAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = PointsAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2441,10 +2454,6 @@
 		0EB663AB142865F4003723F0 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutlineView_Extensions.h; sourceTree = "<group>"; };
 		0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NSOutlineView_Extensions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		0EB663B21428662B003723F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = Credits.rtf; sourceTree = "<group>"; };
-		0EB663B41428662B003723F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		0EB663B61428662B003723F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MainMenu.xib; sourceTree = "<group>"; };
-		0EB663B81428662B003723F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MacSVGDocument.xib; sourceTree = "<group>"; };
 		0EB663D01428666B003723F0 /* SvgElementsDictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SvgElementsDictionary.xml; sourceTree = "<group>"; };
 		0EB663D21428666B003723F0 /* Untitled.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Untitled.svg; sourceTree = "<group>"; };
 		0EB663D31428666B003723F0 /* Untitled.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Untitled.xhtml; sourceTree = "<group>"; };
@@ -2576,8 +2585,6 @@
 		0EF420E41D758E3400A667D9 /* clipPath_element_and_clip-path_attribute.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "clipPath_element_and_clip-path_attribute.svg"; sourceTree = "<group>"; };
 		0EF62C2B1783F1AF00AAD355 /* SelectedElementsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SelectedElementsManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0EF62C2C1783F1AF00AAD355 /* SelectedElementsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SelectedElementsManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		0EF6EBAC17CD0B9200A0A90B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = DocumentationLinks.plist; sourceTree = "<group>"; };
-		0EFA43171D7234B0001FDE91 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = en; path = "Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2617,6 +2624,7 @@
 		0E10816714C7691C00908087 /* File Icons */ = {
 			isa = PBXGroup;
 			children = (
+				0E3568151D9BC5B000AEEEE2 /* macSVG-Icon.svg */,
 				0E10816814C7691C00908087 /* SVG logo combined with the W3C logo, set horizontally.svg */,
 				0E10816914C7691C00908087 /* SVG Logo.svg */,
 				0E10816A14C7691C00908087 /* SVG Logo2.svg */,
@@ -2708,6 +2716,8 @@
 				0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */,
 				0E3B72F41D8272E700B10ECE /* SVGtoVideoConverter.h */,
 				0E3B72F51D8272E700B10ECE /* SVGtoVideoConverter.m */,
+				0E0E0B131D9718A40027DCAB /* SVGtoImagesConverter.h */,
+				0E0E0B141D9718A40027DCAB /* SVGtoImagesConverter.m */,
 			);
 			name = "SVG Functions";
 			sourceTree = "<group>";
@@ -4333,6 +4343,23 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
+		0EA2B4B41D9C96FC00100631 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				0EA2B4B51D9C96FC00100631 /* AppIcons.iconset */,
+				0EA2B4B71D9C96FC00100631 /* Credits.rtf */,
+				0EA2B4B91D9C96FC00100631 /* DocumentationLinks.plist */,
+				0EA2B4BB1D9C96FC00100631 /* InfoPlist.strings */,
+				0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */,
+				0EA2B4BF1D9C96FC00100631 /* MainMenu.xib */,
+				0EA2B4C11D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */,
+				0EA2B4C31D9C96FC00100631 /* TextDocument.xib */,
+				0EA2B4C51D9C96FC00100631 /* ToolPaletteWindow.xib */,
+			);
+			name = en.lproj;
+			path = macSVG/en.lproj;
+			sourceTree = SOURCE_ROOT;
+		};
 		0EB6636D14286398003723F0 = {
 			isa = PBXGroup;
 			children = (
@@ -4445,26 +4472,10 @@
 			path = "Cocoa Extensions";
 			sourceTree = "<group>";
 		};
-		0EB663B01428662B003723F0 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */,
-				0EB663B11428662B003723F0 /* Credits.rtf */,
-				0EB663B31428662B003723F0 /* InfoPlist.strings */,
-				0EB663B51428662B003723F0 /* MainMenu.xib */,
-				0EB663B71428662B003723F0 /* MacSVGDocument.xib */,
-				0E10814614C7264300908087 /* TextDocument.xib */,
-				0EFA43161D7234B0001FDE91 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */,
-				0EF6EBAB17CD0B9200A0A90B /* DocumentationLinks.plist */,
-			);
-			name = en.lproj;
-			path = ../en.lproj;
-			sourceTree = "<group>";
-		};
 		0EB663C31428666B003723F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0EB663B01428662B003723F0 /* en.lproj */,
+				0EA2B4B41D9C96FC00100631 /* en.lproj */,
 				0E10816714C7691C00908087 /* File Icons */,
 				0E526EB11D5566F1002AB772 /* macsvg_examples */,
 				0E5276F21D55C419002AB772 /* svg_test_suite */,
@@ -4957,35 +4968,37 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA2B4C91D9C96FC00100631 /* DocumentationLinks.plist in Resources */,
 				0E1F75271D83C132008AFEAB /* polygon.png in Resources */,
 				0E1F75261D83C132008AFEAB /* plugin.png in Resources */,
-				0EFA43181D7234B0001FDE91 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg in Resources */,
 				0E4EA2E61D40999A00C5145C /* svg_attributes_help.txt in Resources */,
 				0E1F75231D83C132008AFEAB /* line.png in Resources */,
+				0EA2B4CC1D9C96FC00100631 /* MainMenu.xib in Resources */,
 				0E4EA2E91D40ADAB00C5145C /* svg_presentation_attributes_help.txt in Resources */,
-				0EF6EBAD17CD0B9200A0A90B /* DocumentationLinks.plist in Resources */,
-				0EB663BB1428662B003723F0 /* Credits.rtf in Resources */,
 				0E1F75251D83C132008AFEAB /* path-pdf.pdf in Resources */,
 				0E1F75221D83C132008AFEAB /* image.png in Resources */,
-				0EB663BC1428662B003723F0 /* InfoPlist.strings in Resources */,
 				0E1F75281D83C132008AFEAB /* polyline.png in Resources */,
-				0EB663BD1428662B003723F0 /* MainMenu.xib in Resources */,
-				0EB663BE1428662B003723F0 /* MacSVGDocument.xib in Resources */,
-				0E0E0B121D96AC5F0027DCAB /* AppIcons.iconset in Resources */,
+				0EA2B4CA1D9C96FC00100631 /* InfoPlist.strings in Resources */,
 				0EB663DE1428666B003723F0 /* SvgElementsDictionary.xml in Resources */,
 				0E1F75321D83FDFD008AFEAB /* PlayHeadSelected-Graphite.tiff in Resources */,
 				0EB663DF1428666B003723F0 /* Untitled.svg in Resources */,
 				0E1F752B1D83C132008AFEAB /* shear.png in Resources */,
+				0EA2B4CB1D9C96FC00100631 /* MacSVGDocument.xib in Resources */,
 				0E1F752A1D83C132008AFEAB /* scale.png in Resources */,
+				0EA2B4C81D9C96FC00100631 /* Credits.rtf in Resources */,
 				0EB663E01428666B003723F0 /* Untitled.xhtml in Resources */,
 				0E1F75291D83C132008AFEAB /* rotate.png in Resources */,
 				0E1F752C1D83C132008AFEAB /* text.png in Resources */,
+				0EA2B4CE1D9C96FC00100631 /* TextDocument.xib in Resources */,
 				0EEECD261D911D290050AC2F /* Installer.pdf in Resources */,
 				0E1F751C1D83C028008AFEAB /* Pause16.png in Resources */,
+				0EA2B4C71D9C96FC00100631 /* AppIcons.iconset in Resources */,
 				0E1F75201D83C132008AFEAB /* ellipse.png in Resources */,
 				0E9C42AD145414330090C649 /* svg11-flat-20110816.dtd in Resources */,
 				0E1F75211D83C132008AFEAB /* freehand.png in Resources */,
+				0EA2B4CD1D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg in Resources */,
 				0EE22BBA17F7A0CC00B58D6D /* Untitled-Banner.svg in Resources */,
+				0EA2B4CF1D9C96FC00100631 /* ToolPaletteWindow.xib in Resources */,
 				0E1F75191D83BD79008AFEAB /* SVG Logo.svg in Resources */,
 				0E1F752D1D83C132008AFEAB /* translate.png in Resources */,
 				0E1F751F1D83C132008AFEAB /* crosshair.png in Resources */,
@@ -4993,10 +5006,10 @@
 				0EE22BB817F7539E00B58D6D /* Untitled-Banner.xhtml in Resources */,
 				0EEECD281D913A090050AC2F /* macSVG.svg in Resources */,
 				0E1F752E1D83C132008AFEAB /* rect.png in Resources */,
-				0E10814814C7264300908087 /* TextDocument.xib in Resources */,
 				0E10816F14C7691C00908087 /* SVG Logo2.svg in Resources */,
 				0E1F75301D83FDCC008AFEAB /* PlayHead.tiff in Resources */,
 				0E1F75241D83C132008AFEAB /* path.png in Resources */,
+				0E3568161D9BC5B000AEEEE2 /* macSVG-Icon.svg in Resources */,
 				0E10817014C7691C00908087 /* svg-logo-v.png in Resources */,
 				0E1F751D1D83C132008AFEAB /* arrow.png in Resources */,
 				0E10817114C7691C00908087 /* svg-logo.png in Resources */,
@@ -5052,6 +5065,7 @@
 				0E9CC4291475A9A600F285ED /* SVGElementsTableController.m in Sources */,
 				0EEE3A7F17B9E3AA0040846F /* DFSSHConnectionType.m in Sources */,
 				0E4072F217F23A4A0050C32F /* SSHCommand.m in Sources */,
+				0E0E0B151D9718A40027DCAB /* SVGtoImagesConverter.m in Sources */,
 				0EE22BC017FB1FEE00B58D6D /* SFTPDownload.m in Sources */,
 				0E9637AA178689520011861A /* HTTPRedirectResponse.m in Sources */,
 				0EA9DF25149D3100001672D1 /* AnimationTimelineView.m in Sources */,
@@ -5105,22 +5119,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		0E0E0B101D96AC5F0027DCAB /* AppIcons.iconset */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E0E0B111D96AC5F0027DCAB /* en */,
-			);
-			name = AppIcons.iconset;
-			sourceTree = "<group>";
-		};
-		0E10814614C7264300908087 /* TextDocument.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E10814714C7264300908087 /* en */,
-			);
-			name = TextDocument.xib;
-			sourceTree = "<group>";
-		};
 		0E82AF871D730810005D0634 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -5481,60 +5479,84 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
+		0EA2B4B51D9C96FC00100631 /* AppIcons.iconset */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4B61D9C96FC00100631 /* en */,
+			);
+			name = AppIcons.iconset;
+			sourceTree = "<group>";
+		};
+		0EA2B4B71D9C96FC00100631 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4B81D9C96FC00100631 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		0EA2B4B91D9C96FC00100631 /* DocumentationLinks.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4BA1D9C96FC00100631 /* en */,
+			);
+			name = DocumentationLinks.plist;
+			sourceTree = "<group>";
+		};
+		0EA2B4BB1D9C96FC00100631 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4BC1D9C96FC00100631 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4BE1D9C96FC00100631 /* en */,
+			);
+			name = MacSVGDocument.xib;
+			sourceTree = "<group>";
+		};
+		0EA2B4BF1D9C96FC00100631 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4C01D9C96FC00100631 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		0EA2B4C11D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4C21D9C96FC00100631 /* en */,
+			);
+			name = "Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg";
+			sourceTree = "<group>";
+		};
+		0EA2B4C31D9C96FC00100631 /* TextDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4C41D9C96FC00100631 /* en */,
+			);
+			name = TextDocument.xib;
+			sourceTree = "<group>";
+		};
+		0EA2B4C51D9C96FC00100631 /* ToolPaletteWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0EA2B4C61D9C96FC00100631 /* en */,
+			);
+			name = ToolPaletteWindow.xib;
+			sourceTree = "<group>";
+		};
 		0EB6638514286398003723F0 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				0EB6638614286398003723F0 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		0EB663B11428662B003723F0 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EB663B21428662B003723F0 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		0EB663B31428662B003723F0 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EB663B41428662B003723F0 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		0EB663B51428662B003723F0 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EB663B61428662B003723F0 /* en */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		0EB663B71428662B003723F0 /* MacSVGDocument.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EB663B81428662B003723F0 /* en */,
-			);
-			name = MacSVGDocument.xib;
-			sourceTree = "<group>";
-		};
-		0EF6EBAB17CD0B9200A0A90B /* DocumentationLinks.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EF6EBAC17CD0B9200A0A90B /* en */,
-			);
-			name = DocumentationLinks.plist;
-			sourceTree = "<group>";
-		};
-		0EFA43161D7234B0001FDE91 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EFA43171D7234B0001FDE91 /* en */,
-			);
-			name = "Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

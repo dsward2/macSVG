@@ -31,6 +31,8 @@
     self.hiddenWindow = NULL;
 }
 
+
+
 - (instancetype)init
 {
     self = [super init];
@@ -39,6 +41,7 @@
     }
     return self;
 }
+
 
 
 - (void) writeSVGAnimationAsMovie:(NSString*)path svgXmlString:(NSString *)svgXmlString
@@ -66,7 +69,6 @@
 
     NSString * currentTimeString = [NSString stringWithFormat:@"%f", self.currentTime];
     self.currentTimeTextLabel.stringValue = currentTimeString;
-    //NSNumber * newTimeValueNumber = [NSNumber numberWithFloat:self.currentTime];
 
     NSRect webViewFrame = NSMakeRect(0, 0, self.movieWidth, self.movieHeight);
 
@@ -197,48 +199,42 @@
 
 
 
-//- (void)webViewDidFinishLoad:(NSNotification *)notification
 - (void)webViewDidFinishLoad
 {
-    //if (notification.object == self.webView)
-    //{
-        NSImage * webImage = [self imageFromWebView];
+    NSImage * webImage = [self imageFromWebView];
 
-        if (self.currentTime == self.startTime)
+    if (self.currentTime == self.startTime)
+    {
+        [self initVideoWriter:webImage];
+    }
+
+    CGImageSourceRef webCGImageSourceRef = CGImageSourceCreateWithData((CFDataRef)[webImage TIFFRepresentation], NULL);
+    CGImageRef webCGImageRef =  CGImageSourceCreateImageAtIndex(webCGImageSourceRef, 0, NULL);
+
+    CVPixelBufferRef buffer = [self newPixelBufferFromCGImage:webCGImageRef andFrameSize:self.webFrameSize];
+
+    if (self.adaptor.assetWriterInput.readyForMoreMediaData)
+    {
+        CMTime frameTime = CMTimeMake(self.frameCount,(int32_t) self.framesPerSecond);
+        [self.adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
+
+        if (buffer)
         {
-            [self initVideoWriter:webImage];
+            CVBufferRelease(buffer);
         }
-
-        CGImageSourceRef webCGImageSourceRef = CGImageSourceCreateWithData((CFDataRef)[webImage TIFFRepresentation], NULL);
-        CGImageRef webCGImageRef =  CGImageSourceCreateImageAtIndex(webCGImageSourceRef, 0, NULL);
-
-        CVPixelBufferRef buffer = [self newPixelBufferFromCGImage:webCGImageRef andFrameSize:self.webFrameSize];
-
-        if (self.adaptor.assetWriterInput.readyForMoreMediaData)
-        {
-            CMTime frameTime = CMTimeMake(self.frameCount,(int32_t) self.framesPerSecond);
-            [self.adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
-
-            if (buffer)
-            {
-                CVBufferRelease(buffer);
-            }
-        }
-        
-        self.frameCount++;
-        self.currentTime += self.frameTimeInterval;
-        
-        if (self.currentTime > self.endTime)
-        {
-            [self finishWritingVideo];
-        }
-        else
-        {
-            //[NSThread detachNewThreadSelector:@selector(getNextFrameImage)
-            //        toTarget:self withObject:NULL];
-            [self getNextFrameImage];
-        }
-    //}
+    }
+    
+    self.frameCount++;
+    self.currentTime += self.frameTimeInterval;
+    
+    if (self.currentTime > self.endTime)
+    {
+        [self finishWritingVideo];
+    }
+    else
+    {
+        [self getNextFrameImage];
+    }
 }
 
 
@@ -247,8 +243,6 @@
 {
     [self.writerInput markAsFinished];
     
-    //[videoWriter finishWriting];
-
     [self.videoWriter finishWritingWithCompletionHandler:^
     {
         if (self.videoWriter.status != AVAssetWriterStatusFailed && self.videoWriter.status == AVAssetWriterStatusCompleted)
@@ -287,30 +281,10 @@
     
     NSParameterAssert(pxdata != NULL);
 
-    /*
-    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    CGColorSpaceRef calibratedRGBColorSpace = NULL;
-    CMProfileRef systemMonitorProfile = NULL;
-    CMError getProfileErr = CMGetSystemProfile(&systemMonitorProfile);
-    if (getProfileErr == noErr)
-    {
-        const CGFloat whitePoint[] = {0.95047, 1.0, 1.08883};
-        const CGFloat blackPoint[] = {0, 0, 0};
-        const CGFloat gamma[] = {1, 1, 1};
-        const CGFloat matrix[] = {0.449695, 0.244634, 0.0251829, 0.316251, 0.672034, 0.141184, 0.18452, 0.0833318, 0.922602 };
-        calibratedRGBColorSpace = CGColorSpaceCreateCalibratedRGB(whitePoint, blackPoint, gamma, matrix);
-    }
-    */
-    
     CGColorSpaceRef genericRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-    
-    //CGColorSpaceRef platformRGBColorSpace = CGColorSpaceCreateWithPlatformColorSpace(ref);
     
     CGContextRef context = CGBitmapContextCreate(pxdata, frameSize.width,
             frameSize.height, 8, 4 * frameSize.width,
-            //rgbColorSpace,
-            //calibratedRGBColorSpace,
             genericRGBColorSpace,
             kCGImageAlphaNoneSkipFirst);
     
@@ -323,8 +297,6 @@
     CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), 
             CGImageGetHeight(image)), image);
     
-    //CGColorSpaceRelease(rgbColorSpace);
-    //CGColorSpaceRelease(calibratedRGBColorSpace);
     CGColorSpaceRelease(genericRGBColorSpace);
     
     CGContextRelease(context);
@@ -364,7 +336,6 @@
     NSArray * destinationRepresentations = [webImage representations];
     NSBitmapImageRep * destinationBitmapImageRep = [destinationRepresentations firstObject];
     destinationBitmapImageRep.colorSpaceName = NSCalibratedRGBColorSpace;
-    //destinationBitmapImageRep.colorSpaceName = NSDeviceRGBColorSpace;
 
     // redraw after color space setting
     [webImage lockFocus];

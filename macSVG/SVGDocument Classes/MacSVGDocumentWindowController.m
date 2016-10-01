@@ -40,6 +40,7 @@
 #import "XMLAttributesTableController.h"
 #import "XMLAttributesTableView.h"
 #import "SVGtoVideoConverter.h"
+#import "SVGtoImagesConverter.h"
 
 #import <stdio.h>
 #import <string.h>
@@ -2929,6 +2930,370 @@
 }
 
 //==================================================================================
+// exportImages:
+//==================================================================================
+
+- (IBAction)exportImages:(id)sender
+{
+    NSWindow * hostWindow = [self window];
+
+    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMElement * documentElement = [domDocument documentElement];
+    
+    NSString * imageWidthString = [documentElement getAttribute:@"width"];
+    NSString * imageHeightString = [documentElement getAttribute:@"height"];
+    
+    NSInteger imageWidth = [imageWidthString integerValue];
+    NSInteger imageHeight = [imageHeightString integerValue];
+    
+    imageWidthString = [NSString stringWithFormat:@"%ld", imageWidth];
+    imageHeightString = [NSString stringWithFormat:@"%ld", imageHeight];
+    
+    self.exportImagesWidthTextField.stringValue = imageWidthString;
+    self.exportImagesHeightTextField.stringValue = imageHeightString;
+    
+    self.exportImagesStartTimeTextField.stringValue = @"0.0";
+    self.exportImagesEndTimeTextField.stringValue = @"5.0";
+    
+    self.exportImagesFramesPerSecondTextField.stringValue = @"30";
+    
+    [self.exportImagesFormatPopUpButton selectItemWithTitle:@"PNG"];
+    [self.exportImagesOutputOptionsPopUpButton selectItemWithTitle:@"Current Image Only"];
+    
+    [self updateExportImageUI:self];
+
+    [hostWindow beginSheet:self.exportImagesSheet  completionHandler:^(NSModalResponse returnCode)
+    {
+        if (returnCode == NSModalResponseContinue)
+        {
+            NSString * outputOptionsString = self.exportImagesOutputOptionsPopUpButton.titleOfSelectedItem;
+            
+            if ([outputOptionsString isEqualToString:@"Current Image Only"] == YES)
+            {
+                [self exportImagesLocationWithDefaultName:@"Untitled" toType:@"public.png"]; // kUTTypePNG ?
+            }
+            else if ([outputOptionsString isEqualToString:@"Animation Images"] == YES)
+            {
+                [self exportImagesLocationWithDefaultName:@"Untitled" toType:@"public.png"]; // kUTTypePNG ?
+            }
+            else if ([outputOptionsString isEqualToString:@"iOS .iconset"] == YES)
+            {
+                [self exportImagesLocationWithDefaultName:@"Untitled" toType:@"public.png"]; // kUTTypePNG ?
+            }
+            else if ([outputOptionsString isEqualToString:@"macOS .iconset"] == YES)
+            {
+                [self exportImagesLocationToType:@"public.png"]; // kUTTypePNG ?
+            }
+        }
+    }];
+}
+
+//==================================================================================
+//	exportImagesButtonAction:
+//==================================================================================
+
+- (IBAction) exportImagesButtonAction:(id)sender
+{
+    [[self window] endSheet:self.exportImagesSheet returnCode:NSModalResponseContinue];
+    [self.exportImagesSheet orderOut:sender];
+}
+
+//==================================================================================
+//	cancelExportImagesButtonAction:
+//==================================================================================
+
+- (IBAction) cancelExportImagesButtonAction:(id)sender
+{
+    [[self window] endSheet:self.exportImagesSheet returnCode:NSModalResponseCancel];
+    [self.exportImagesSheet orderOut:sender];
+}
+
+//==================================================================================
+//	exportImagesLocationWithDefaultName:toType:
+//==================================================================================
+
+- (void)exportImagesLocationWithDefaultName:(NSString*)name toType:(NSString *)typeUTI
+{
+   // Build a new name for the file using the current name and
+   // the filename extension associated with the specified UTI.
+   CFStringRef newExtension = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)typeUTI,
+                                   kUTTagClassFilenameExtension);
+   NSString * newName = [[name stringByDeletingPathExtension]
+                       stringByAppendingPathExtension:(__bridge NSString*)newExtension];
+   CFRelease(newExtension);
+ 
+   // Set the default name for the file and show the panel.
+   NSSavePanel*    panel = [NSSavePanel savePanel];
+   [panel setNameFieldStringValue:newName];
+   [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton)
+        {
+            NSURL *  theFile = [panel URL];
+ 
+            // Write the contents in the new format.
+            
+            NSString * filePath = [theFile path];
+            
+            self.exportingImagesPathTextField.stringValue = filePath;
+            self.exportingImagesWidthTextField.stringValue = self.exportImagesWidthTextField.stringValue;
+            self.exportingImagesHeightTextField.stringValue = self.exportImagesHeightTextField.stringValue;
+            self.exportingImagesFramesPerSecondTextField.stringValue = self.exportImagesFramesPerSecondTextField.stringValue;
+            self.exportingImagesStartTimeTextField.stringValue = self.exportImagesStartTimeTextField.stringValue;
+            self.exportingImagesEndTimeTextField.stringValue = self.exportImagesEndTimeTextField.stringValue;
+            self.exportingImagesCurrentTimeTextField.stringValue = self.exportImagesStartTimeTextField.stringValue;
+        
+            self.exportingImagesFormatTextField.stringValue = self.exportImagesFormatPopUpButton.titleOfSelectedItem;
+            self.exportingImagesOutputOptionsTextField.stringValue = self.exportImagesOutputOptionsPopUpButton.titleOfSelectedItem;
+            if (self.exportImagesAlphaChannelCheckBoxButton.state == YES)
+            {
+                self.exportingImagesAlphaChannelTextField.stringValue = @"Yes";
+            }
+            else
+            {
+                self.exportingImagesAlphaChannelTextField.stringValue = @"No";
+            }
+
+            [[self window] beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
+            {
+                if (returnCode == NSModalResponseContinue)
+                {
+                }
+            }];
+
+            [self exportImagesWithPath:filePath];
+        }
+    }];
+}
+
+//==================================================================================
+//	exportImagesLocationWithDefaultName:toType:
+//==================================================================================
+
+- (void)exportImagesLocationToType:(NSString *)typeUTI
+{
+    // Use NSOpenPanel to select a directory for output
+
+    NSOpenPanel * panel = [NSOpenPanel openPanel];
+
+    panel.canChooseFiles = NO;
+    panel.canChooseDirectories = YES;
+    panel.canCreateDirectories = YES;
+    panel.message = @"Choose a folder for the icon image output files.";
+    panel.prompt = @"Save Icon Image Files";
+
+    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton)
+        {
+            NSURL *  directoryURL = [panel URL];
+ 
+            // Write the contents in the new format.
+            
+            NSString * directoryPath = [directoryURL path];
+            
+            self.exportingImagesPathTextField.stringValue = directoryPath;
+            self.exportingImagesWidthTextField.stringValue = self.exportImagesWidthTextField.stringValue;
+            self.exportingImagesHeightTextField.stringValue = self.exportImagesHeightTextField.stringValue;
+            self.exportingImagesFramesPerSecondTextField.stringValue = self.exportImagesFramesPerSecondTextField.stringValue;
+            self.exportingImagesStartTimeTextField.stringValue = self.exportImagesStartTimeTextField.stringValue;
+            self.exportingImagesEndTimeTextField.stringValue = self.exportImagesEndTimeTextField.stringValue;
+            self.exportingImagesCurrentTimeTextField.stringValue = self.exportImagesStartTimeTextField.stringValue;
+        
+            self.exportingImagesFormatTextField.stringValue = self.exportImagesFormatPopUpButton.titleOfSelectedItem;
+            self.exportingImagesOutputOptionsTextField.stringValue = self.exportImagesOutputOptionsPopUpButton.titleOfSelectedItem;
+            if (self.exportImagesAlphaChannelCheckBoxButton.state == YES)
+            {
+                self.exportingImagesAlphaChannelTextField.stringValue = @"Yes";
+            }
+            else
+            {
+                self.exportingImagesAlphaChannelTextField.stringValue = @"No";
+            }
+
+            [[self window] beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
+            {
+                if (returnCode == NSModalResponseContinue)
+                {
+                    //[self exportImagesLocationWithDefaultName:@"Untitled" toType:@"public.png"]; // kUTTypePNG?
+                }
+            }];
+
+            [self exportImagesWithPath:directoryPath];
+        }
+    }];
+}
+
+//==================================================================================
+//	cancelExportingImagesButtonAction:
+//==================================================================================
+
+- (IBAction) cancelExportingImagesButtonAction:(id)sender
+{
+    [[self window] endSheet:self.exportingImagesSheet returnCode:NSModalResponseCancel];
+    [self.exportingImagesSheet orderOut:sender];
+}
+
+//==================================================================================
+//	exportingImagesDoneAction:
+//==================================================================================
+
+- (IBAction) exportingImagesDoneAction:(id)sender
+{
+    [[self window] endSheet:self.exportingImagesSheet returnCode:NSModalResponseStop];
+    [self.exportingImagesSheet orderOut:sender];
+}
+
+//==================================================================================
+// exportImagesWithPath
+//==================================================================================
+
+- (IBAction)exportImagesWithPath:(NSString *)filePath
+{
+    SVGtoImagesConverter * svgToImagesConverter = [[SVGtoImagesConverter alloc] init];
+    svgToImagesConverter.macSVGDocumentWindowController = self;
+    
+    NSInteger imageWidth = [self.exportImagesWidthTextField.stringValue integerValue];
+    NSInteger imageHeight = [self.exportImagesHeightTextField.stringValue integerValue];
+    
+    CGFloat startTime = [self.exportImagesStartTimeTextField.stringValue floatValue];
+    CGFloat endTime = [self.exportImagesEndTimeTextField.stringValue floatValue];
+    NSInteger framesPerSecond = [self.exportImagesFramesPerSecondTextField.stringValue integerValue];
+    
+    if (imageWidth == 0)
+    {
+        imageWidth = 320;
+    }
+
+    if (imageHeight == 0)
+    {
+        imageHeight = 240;
+    }
+    
+    MacSVGDocument * macSVGDocument = self.document;
+    NSString * svgXmlString = [macSVGDocument.svgXmlDocument XMLStringWithOptions:NSXMLNodePreserveCDATA];
+    
+    NSString * outputFormatString = self.exportingImagesFormatTextField.stringValue;
+    NSString * outputOptionsString = self.exportingImagesOutputOptionsTextField.stringValue;
+    
+    BOOL includeAlpha = NO;
+    
+    if ([self.exportingImagesAlphaChannelTextField.stringValue isEqualToString:@"Yes"] == YES)
+    {
+        includeAlpha = YES;
+    }
+
+    [svgToImagesConverter writeSVGAnimationAsImages:filePath
+            svgXmlString:svgXmlString
+            width:imageWidth height:imageHeight
+            startTime:startTime endTime:endTime
+            framesPerSecond:framesPerSecond
+            outputFormat:outputFormatString
+            outputOptions:outputOptionsString
+            includeAlpha:includeAlpha
+            currentTimeTextLabel:self.exportingImagesCurrentTimeTextField
+            exportingImagesSheet:self.exportingImagesSheet
+            hostWindow:[self window]];
+}
+
+//==================================================================================
+// updateExportImageUI:
+//==================================================================================
+
+- (IBAction)updateExportImageUI:(id)sender
+{
+    NSString * outputOptionsString = self.exportImagesOutputOptionsPopUpButton.titleOfSelectedItem;
+    NSString * outputFormatString = self.exportImagesFormatPopUpButton.titleOfSelectedItem;
+
+    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMElement * documentElement = [domDocument documentElement];
+    
+    NSString * imageWidthString = [documentElement getAttribute:@"width"];
+    NSString * imageHeightString = [documentElement getAttribute:@"height"];
+    
+    NSInteger imageWidth = [imageWidthString integerValue];
+    NSInteger imageHeight = [imageHeightString integerValue];
+    
+    imageWidthString = [NSString stringWithFormat:@"%ld", imageWidth];
+    imageHeightString = [NSString stringWithFormat:@"%ld", imageHeight];
+    
+    BOOL hideStartEndTimes = NO;
+    BOOL hideAlpha = NO;
+    BOOL sizeIsEditable = YES;
+    
+    NSString * formatString = self.exportImagesFormatPopUpButton.titleOfSelectedItem;
+    
+    BOOL includeAlpha = self.exportImagesAlphaChannelCheckBoxButton.state;
+    
+    // evaluate user options first
+    if ([outputOptionsString isEqualToString:@"Current Image Only"] == YES)
+    {
+        hideStartEndTimes = YES;
+    }
+    else if ([outputOptionsString isEqualToString:@"Animation Images"] == YES)
+    {
+        hideStartEndTimes = NO;
+    }
+    else if ([outputOptionsString isEqualToString:@"macOS .iconset"] == YES)
+    {
+        hideStartEndTimes = YES;
+        hideAlpha = YES;
+        includeAlpha = YES;
+        sizeIsEditable = NO;
+        formatString = @"PNG";
+        imageWidthString = @"512";
+        imageHeightString = @"512";
+    }
+    else if ([outputOptionsString isEqualToString:@"iOS .iconset"] == YES)
+    {
+        hideStartEndTimes = YES;
+        hideAlpha = YES;
+        includeAlpha = YES;
+        sizeIsEditable = NO;
+        formatString = @"PNG";
+        imageWidthString = @"512";
+        imageHeightString = @"512";
+    }
+
+    // evaluate user output format after options
+    if ([outputFormatString isEqualToString:@"PNG"] == YES)
+    {
+        hideAlpha = NO;
+    }
+    else if ([outputFormatString isEqualToString:@"JPEG"] == YES)
+    {
+        hideAlpha = YES;
+
+        [self.exportImagesAlphaChannelCheckBoxButton setState:NO];
+    }
+    else if ([outputFormatString isEqualToString:@"TIFF"] == YES)
+    {
+        hideAlpha = NO;
+    }
+
+    self.exportImagesWidthTextField.stringValue = imageWidthString;
+    self.exportImagesHeightTextField.stringValue = imageHeightString;
+    
+    self.exportImagesWidthTextField.editable = sizeIsEditable;
+    self.exportImagesHeightTextField.editable = sizeIsEditable;
+
+    self.exportImagesWidthTextField.enabled = sizeIsEditable;
+    self.exportImagesHeightTextField.enabled = sizeIsEditable;
+
+    [self.exportImagesFormatPopUpButton selectItemWithTitle:formatString];
+
+    [self.exportImagesStartTimeTextField setHidden:hideStartEndTimes];
+    [self.exportImagesStartTimeLabelTextField setHidden:hideStartEndTimes];
+
+    [self.exportImagesEndTimeTextField setHidden:hideStartEndTimes];
+    [self.exportImagesEndTimeLabelTextField setHidden:hideStartEndTimes];
+
+    [self.exportImagesFramesPerSecondTextField setHidden:hideStartEndTimes];
+    [self.exportImagesFramesPerSecondLabelTextField setHidden:hideStartEndTimes];
+    
+    [self.exportImagesAlphaChannelCheckBoxButton setHidden:hideAlpha];
+    self.exportImagesAlphaChannelCheckBoxButton.state = includeAlpha;
+}
+
+//==================================================================================
 // generateCoreGraphicsCode:
 //==================================================================================
 
@@ -2972,7 +3337,7 @@
     {
         if (returnCode == NSModalResponseContinue)
         {
-            [self saveLocationWithDefaultName:@"Untitled" toType:@"public.mpeg-4"]; // kUTTypeMPEG4
+            [self saveVideoLocationWithDefaultName:@"Untitled" toType:@"public.mpeg-4"]; // kUTTypeMPEG4
         }
     }];
 }
@@ -3001,7 +3366,7 @@
 //	saveLocationWithDefaultName:toType:
 //==================================================================================
 
-- (void)saveLocationWithDefaultName:(NSString*)name toType:(NSString *)typeUTI
+- (void)saveVideoLocationWithDefaultName:(NSString*)name toType:(NSString *)typeUTI
 {
    // Build a new name for the file using the current name and
    // the filename extension associated with the specified UTI.
@@ -3033,13 +3398,15 @@
 
             [[self window] beginSheet:self.generatingHTML5VideoSheet  completionHandler:^(NSModalResponse returnCode)
             {
+                /*
                 if (returnCode == NSModalResponseContinue)
                 {
-                    [self saveLocationWithDefaultName:@"Untitled" toType:@"public.mpeg-4"]; // kUTTypeMPEG4
+                    [self saveVideoLocationWithDefaultName:@"Untitled" toType:@"public.mpeg-4"]; // kUTTypeMPEG4
                 }
+                */
+                
+                [self exportHTML5Video:filePath];
             }];
-            
-            [self exportHTML5Video:filePath];
         }
     }];
 }

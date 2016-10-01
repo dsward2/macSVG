@@ -75,6 +75,7 @@
 - (IBAction)deselectAll:(id)sender;
 - (IBAction)selectNone:(id)sender;
 
+- (IBAction)exportImages:(id)sender;
 - (IBAction)generateHTML5Video:(id)sender;
 - (IBAction)generateCoreGraphicsCode:(id)sender;
 
