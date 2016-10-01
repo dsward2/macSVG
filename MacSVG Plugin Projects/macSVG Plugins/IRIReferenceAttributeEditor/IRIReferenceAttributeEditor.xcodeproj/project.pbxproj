@@ -18,7 +18,7 @@
 		0EF29DB31D7B7E9C00267844 /* IRIReferenceAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRIReferenceAttributeEditor.h; sourceTree = "<group>"; };
 		0EF29DB41D7B7E9C00267844 /* IRIReferenceAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRIReferenceAttributeEditor.m; sourceTree = "<group>"; };
 		0EF29DB71D7B829200267844 /* IRIReferenceAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IRIReferenceAttributeEditor.xib; sourceTree = "<group>"; };
-		0EF29DB91D7B9F8500267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EF29DB91D7B9F8500267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

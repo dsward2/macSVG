@@ -21,7 +21,7 @@
 		0E81A96C1D34F00B00EA824A /* BezierCircleGeneratorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierCircleGeneratorWindowController.h; sourceTree = "<group>"; };
 		0E81A96D1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BezierCircleGeneratorWindowController.m; sourceTree = "<group>"; };
 		0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BezierCircleGenerator.xib; sourceTree = "<group>"; };
-		0EFA42E51D711497001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EFA42E51D711497001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

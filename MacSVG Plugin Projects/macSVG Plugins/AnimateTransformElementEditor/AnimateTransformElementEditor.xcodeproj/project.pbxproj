@@ -20,7 +20,7 @@
 		0EF29D831D791ACB00267844 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EF29D891D791B4200267844 /* AnimateTransformElementEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformElementEditor.h; sourceTree = "<group>"; };
 		0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformElementEditor.m; sourceTree = "<group>"; };
-		0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimateTransformElementEditor.xib; sourceTree = "<group>"; };
 		0EF29D921D794D2600267844 /* AnimateTransformKeySplinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformKeySplinesView.h; sourceTree = "<group>"; };
 		0EF29D931D794D2600267844 /* AnimateTransformKeySplinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformKeySplinesView.m; sourceTree = "<group>"; };

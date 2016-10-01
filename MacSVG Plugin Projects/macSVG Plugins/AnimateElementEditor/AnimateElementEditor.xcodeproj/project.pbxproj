@@ -27,7 +27,7 @@
 		0EADC6AD1D7C1FAD00A61333 /* AnimateElementTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementTableRowView.h; sourceTree = "<group>"; };
 		0EADC6AE1D7C1FAD00A61333 /* AnimateElementTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementTableRowView.m; sourceTree = "<group>"; };
 		0EADC6B01D7C1FF100A61333 /* AnimateElementEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimateElementEditor.xib; sourceTree = "<group>"; };
-		0EADC6B31D7C271E00A61333 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EADC6B31D7C271E00A61333 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

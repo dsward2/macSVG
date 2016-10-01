@@ -21,7 +21,7 @@
 		0E5AE5FE1D5BD8C8000C1643 /* TransformElementsDialogWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransformElementsDialogWindowController.h; sourceTree = "<group>"; };
 		0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformElementsDialogWindowController.m; sourceTree = "<group>"; };
 		0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransformElementsDialog.xib; sourceTree = "<group>"; };
-		0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

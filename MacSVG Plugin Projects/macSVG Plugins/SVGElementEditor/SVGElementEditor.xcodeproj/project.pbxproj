@@ -26,7 +26,7 @@
 		0E25EEDF1796877A00EFC1EF /* SVGElementEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVGElementEditor.h; sourceTree = "<group>"; };
 		0E25EEE01796877A00EFC1EF /* SVGElementEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVGElementEditor.m; sourceTree = "<group>"; };
 		0E25EEE2179688B100EFC1EF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SVGElementEditor.xib; sourceTree = "<group>"; };
-		0E693CF71D7054C600006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0E693CF71D7054C600006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

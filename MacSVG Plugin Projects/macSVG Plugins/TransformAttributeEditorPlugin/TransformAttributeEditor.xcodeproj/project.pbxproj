@@ -21,7 +21,7 @@
 
 /* Begin PBXFileReference section */
 		0E4CF18E14D9182500A94168 /* skewY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = skewY.png; path = TransformAttributeEditorPlugin/Icons/skewY.png; sourceTree = SOURCE_ROOT; };
-		0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDF158314D1FCD000E872DA /* TransformAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDF158614D1FCD000E872DA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0EDF158914D1FCD000E872DA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };

@@ -19,7 +19,7 @@
 		0EA78C171D84106D00C9D4C8 /* PointsAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsAttributeEditor.h; sourceTree = "<group>"; };
 		0EA78C181D84106D00C9D4C8 /* PointsAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointsAttributeEditor.m; sourceTree = "<group>"; };
 		0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PointsAttributeEditor.xib; sourceTree = "<group>"; };
-		0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA78C371D84165A00C9D4C8 /* PointsTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsTableRowView.h; sourceTree = "<group>"; };
 		0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointsTableRowView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */

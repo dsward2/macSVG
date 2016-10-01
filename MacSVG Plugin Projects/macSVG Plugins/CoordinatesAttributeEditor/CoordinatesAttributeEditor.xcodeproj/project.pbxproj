@@ -23,7 +23,7 @@
 		0E31631F17A873230030D657 /* CoordinatesAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinatesAttributeEditor.h; sourceTree = "<group>"; };
 		0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatesAttributeEditor.m; sourceTree = "<group>"; };
 		0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoordinatesAttributeEditor.xib; sourceTree = "<group>"; };
-		0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

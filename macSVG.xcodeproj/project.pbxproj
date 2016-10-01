@@ -2111,7 +2111,7 @@
 		0E71455F142C2FB3002F8E1F /* PanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PanelView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E71459F142C302B002F8E1F /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		0E7145A0142C302B002F8E1F /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
-		0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "/Users/dsward/Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<absolute>"; };
+		0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E770CDA1D7FCE52000401C9 /* SVGPolylineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPolylineEditor.h; sourceTree = "<group>"; };
 		0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGPolylineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E7967C814A425080070B099 /* TimelineLabelsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLabelsTableViewDelegate.h; sourceTree = "<group>"; };
@@ -4380,10 +4380,10 @@
 		0EB6637B14286398003723F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
 				0E3B72FB1D8296DE00B10ECE /* CoreMedia.framework */,
 				0E3B72F91D82966A00B10ECE /* CoreVideo.framework */,
 				0E3B72F71D82964B00B10ECE /* AVFoundation.framework */,
-				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
 				0EB6637C14286398003723F0 /* Cocoa.framework */,
 				0E9A70CF1D0181340018CA53 /* WebKit.framework */,
 				0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */,
