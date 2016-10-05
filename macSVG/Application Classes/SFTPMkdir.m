@@ -191,7 +191,7 @@
         int want_buf = 0;
         int errorInt = libssh2_session_last_error(session, &errorMsg,
                 &errorMsgLength, want_buf);
-        NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+        NSString * sshErrorString = @(errorMsg);
         
         NSLog(@"Unable to open SFTP session: %@, %d",
                 sshErrorString, errorInt);

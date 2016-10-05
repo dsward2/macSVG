@@ -39,7 +39,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -70,11 +70,11 @@
 
     if ([elementName isEqualToString:@"polyline"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
     else if ([elementName isEqualToString:@"polygon"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
 
     return result;
@@ -93,14 +93,14 @@
     {
         if ([attributeName isEqualToString:@"points"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
     else if ([elementName isEqualToString:@"polygon"] == YES)
     {
         if ([attributeName isEqualToString:@"points"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
     
@@ -185,14 +185,14 @@
 {
     self.pointsArray = [NSMutableArray array];
 
-    [pointsTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    pointsTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
 
-    while([[pointsTableView tableColumns] count] > 0)
+    while(pointsTableView.tableColumns.count > 0)
     {
-        [pointsTableView removeTableColumn:[[pointsTableView tableColumns] lastObject]];
+        [pointsTableView removeTableColumn:pointsTableView.tableColumns.lastObject];
     }
     
-    [pointsTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    pointsTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
     
     NSTableColumn * indexTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"#"];
     indexTableColumn.title = @"#";
@@ -224,9 +224,9 @@
     NSXMLNode * pointsAttributeNode = [animateMotionElement attributeForName:@"points"];
     if (pointsAttributeNode != NULL)
     {
-        NSString * pointsAttributeString = [pointsAttributeNode stringValue];
+        NSString * pointsAttributeString = pointsAttributeNode.stringValue;
         
-        if ([pointsAttributeString length] > 0)
+        if (pointsAttributeString.length > 0)
         {
             NSCharacterSet * whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
             pointsAttributeString = [pointsAttributeString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
@@ -239,12 +239,12 @@
             NSCharacterSet * pointsDelimitersCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@", ;\n\r"];
             NSArray * pointsValuesArray = [pointsAttributeString componentsSeparatedByCharactersInSet:pointsDelimitersCharacterSet];
 
-            NSInteger pointsValuesArrayCount = [pointsValuesArray count];
+            NSInteger pointsValuesArrayCount = pointsValuesArray.count;
             
             for (NSInteger i = 0; i < pointsValuesArrayCount; i+=2)
             {
-                NSString * xString = [pointsValuesArray objectAtIndex:i];
-                NSString * yString = [pointsValuesArray objectAtIndex:i + 1];
+                NSString * xString = pointsValuesArray[i];
+                NSString * yString = pointsValuesArray[i + 1];
                 
                 NSMutableDictionary * pointDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                         xString, @"x",
@@ -267,7 +267,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.pointsArray count];
+    return (self.pointsArray).count;
 }
 
 //==================================================================================
@@ -283,17 +283,17 @@
     
     stringValue = [stringValue copy];
     
-    if (rowIndex <= ([self.pointsArray count] - 1))
+    if (rowIndex <= ((self.pointsArray).count - 1))
     {
-        NSMutableDictionary * pointDictionary = [self.pointsArray objectAtIndex:rowIndex];
+        NSMutableDictionary * pointDictionary = (self.pointsArray)[rowIndex];
         
         if (columnIndex == 1)   // x column
         {
-            [pointDictionary setObject:stringValue forKey:@"x"];
+            pointDictionary[@"x"] = stringValue;
         }
         else if (columnIndex == 2)  // y column
         {
-            [pointDictionary setObject:stringValue forKey:@"y"];
+            pointDictionary[@"y"] = stringValue;
         }
         
         NSTextField * textField = sender;
@@ -385,16 +385,16 @@
 
     if (resultView == nil)
     {
-        resultView = [[NSTextField alloc] initWithFrame:[tableView frame]];
-        resultView.identifier = [tableColumn identifier];
+        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
+        resultView.identifier = tableColumn.identifier;
         resultView.font = [NSFont systemFontOfSize:10];
         resultView.bordered = NO;
-        [resultView setBackgroundColor:[NSColor clearColor]];
+        resultView.backgroundColor = [NSColor clearColor];
     }
 
     NSString * resultString = @"";
 
-    if (row < [self.pointsArray count])
+    if (row < (self.pointsArray).count)
     {
         NSString * tableColumnIdentifier = tableColumn.identifier;
         
@@ -408,15 +408,15 @@
             resultView.editable = YES;
             resultView.delegate = self;
         
-            NSMutableDictionary * pointDictionary = [self.pointsArray objectAtIndex:row];
+            NSMutableDictionary * pointDictionary = (self.pointsArray)[row];
 
             if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
             {
-                resultString = [pointDictionary objectForKey:@"x"];
+                resultString = pointDictionary[@"x"];
             }
             else if ([tableColumnIdentifier isEqualToString:@"y"] == YES)
             {
-                resultString = [pointDictionary objectForKey:@"y"];
+                resultString = pointDictionary[@"y"];
             }
         }
     }
@@ -432,7 +432,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == pointsTableView)
 	{
         [self refreshSelectedRow];
@@ -445,7 +445,7 @@
 
 - (void)refreshSelectedRow
 {
-    NSInteger rowIndex = [pointsTableView selectedRow];
+    NSInteger rowIndex = pointsTableView.selectedRow;
 
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
@@ -453,7 +453,7 @@
     DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
             macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
     
-    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
     id domMouseEventsController = [svgWebKitController domMouseEventsController];
     SVGPolylineEditor * svgPolylineEditor = [domMouseEventsController svgPolylineEditor];
     
@@ -464,7 +464,7 @@
             svgPolylineEditor.polylinePointIndex = rowIndex;
             
             domSelectionRectsAndHandlesManager.segmentStrokeWidth =
-                    [highlightStrokeWidthTextField.stringValue floatValue];
+                    (highlightStrokeWidthTextField.stringValue).floatValue;
             domSelectionRectsAndHandlesManager.segmentStrokeHexColor =
                     [self hexColorFromColorWell:highlightColorWell];
 
@@ -491,12 +491,12 @@
 {
     if (highlightSelectedPointCheckbox.state == YES)
     {
-        NSInteger selectedRow = [pointsTableView selectedRow];
+        NSInteger selectedRow = pointsTableView.selectedRow;
         
         if (selectedRow != -1)
         {
-            NSWindow * keyWindow = [NSApp keyWindow];
-            id firstResponder = [keyWindow firstResponder];
+            NSWindow * keyWindow = NSApp.keyWindow;
+            id firstResponder = keyWindow.firstResponder;
             if (firstResponder != pointsTableView)
             {
                 [keyWindow makeFirstResponder:pointsTableView];
@@ -510,7 +510,7 @@
             domSelectionRectsAndHandlesManager.segmentStrokeWidth = 0;
             if (highlightUseCustomStrokeWidthCheckbox.state == YES)
             {
-                domSelectionRectsAndHandlesManager.segmentStrokeWidth = [highlightStrokeWidthTextField.stringValue floatValue];
+                domSelectionRectsAndHandlesManager.segmentStrokeWidth = (highlightStrokeWidthTextField.stringValue).floatValue;
             }
     
             domSelectionRectsAndHandlesManager.segmentStrokeHexColor = [self hexColorFromColorWell:highlightColorWell];
@@ -526,7 +526,7 @@
 
 - (void)removeHighlightPolylinePoint
 {
-    NSInteger selectedRow = [pointsTableView selectedRow];
+    NSInteger selectedRow = pointsTableView.selectedRow;
 
     if (selectedRow != -1)
     {
@@ -546,7 +546,7 @@
 
 - (NSString *)hexColorFromColorWell:(NSColorWell *)aColorWell
 {
-    NSColor * aColor = [aColorWell color];
+    NSColor * aColor = aColorWell.color;
     
     NSString * hexColor = [self hexadecimalValueOfAnNSColor:aColor];
     
@@ -623,8 +623,8 @@
     NSInteger indexOfObject = 0;
     for (NSMutableDictionary * pointDictionary in self.pointsArray)
     {
-        NSString * xString = [pointDictionary objectForKey:@"x"];
-        NSString * yString = [pointDictionary objectForKey:@"y"];
+        NSString * xString = pointDictionary[@"x"];
+        NSString * yString = pointDictionary[@"y"];
 
         if (indexOfObject > 0)
         {
@@ -650,7 +650,7 @@
 - (void)setAttributeName:(NSString *)attributeName value:(NSString *)attributeValue element:(NSXMLElement *)aElement
 {
     NSXMLNode * attributeNode = [aElement attributeForName:attributeName];
-    if ([attributeValue length] == 0)
+    if (attributeValue.length == 0)
     {
         if (attributeNode != NULL)
         {
@@ -662,11 +662,11 @@
         if (attributeNode == NULL)
         {
             attributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [attributeNode setName:attributeName];
-            [attributeNode setStringValue:@""];
+            attributeNode.name = attributeName;
+            attributeNode.stringValue = @"";
             [aElement addAttribute:attributeNode];
         }
-        [attributeNode setStringValue:attributeValue];
+        attributeNode.stringValue = attributeValue;
     }
 }
 
@@ -676,13 +676,13 @@
 
 - (IBAction)addPointsRow:(id)sender
 {
-    NSInteger selectedRow = [pointsTableView selectedRow];
+    NSInteger selectedRow = pointsTableView.selectedRow;
     
     NSMutableDictionary * newPointDictionary = NULL;
     
     if (selectedRow >= 0)
     {
-        newPointDictionary = [self.pointsArray objectAtIndex:selectedRow];
+        newPointDictionary = (self.pointsArray)[selectedRow];
     }
     else
     {
@@ -706,7 +706,7 @@
 
 - (IBAction)deletePointsRow:(id)sender
 {
-    NSInteger selectedRow = [pointsTableView selectedRow];
+    NSInteger selectedRow = pointsTableView.selectedRow;
 
     if (selectedRow >= 0)
     {
@@ -725,7 +725,7 @@
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
 
-    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
     id domMouseEventsController = [svgWebKitController domMouseEventsController];
     SVGPolylineEditor * svgPolylineEditor = [domMouseEventsController svgPolylineEditor];
     

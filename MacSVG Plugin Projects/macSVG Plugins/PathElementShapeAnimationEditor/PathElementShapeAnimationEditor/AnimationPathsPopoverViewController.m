@@ -63,7 +63,7 @@
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -83,15 +83,15 @@
     self.animationPathStringsArray = [NSMutableArray array];
     self.eligiblePathElementsArray = [NSMutableArray array];
     
-    [[[eligiblePathWebView mainFrame] frameView] setAllowsScrolling:NO];
-    [[[animatePathWebView mainFrame] frameView] setAllowsScrolling:NO];
-    [[[animationPreviewWebView mainFrame] frameView] setAllowsScrolling:NO];
+    [eligiblePathWebView.mainFrame.frameView setAllowsScrolling:NO];
+    [animatePathWebView.mainFrame.frameView setAllowsScrolling:NO];
+    [animationPreviewWebView.mainFrame.frameView setAllowsScrolling:NO];
     
     [eligiblePathsTableView registerForDraggedTypes:
-            [NSArray arrayWithObject:PathElementDataType]];
+            @[PathElementDataType]];
     
     [animationPathsTableView registerForDraggedTypes:
-            [NSArray arrayWithObjects:PathElementDataType, PathDataStringDataType, NULL]];
+            @[PathElementDataType, PathDataStringDataType]];
 }
 
 
@@ -105,12 +105,12 @@
 
     NSString * pathString = @"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"M363,185 C440,188 519,259 515,324 C511,389 476,519 343,518 C210,517 150,407 150,351 C150,295 279,185 362,185  Z \" fill=\"none\" transform=\"\" visibility=\"visible\" />";
     
-    NSInteger rowIndex = [eligiblePathsTableView selectedRow];
+    NSInteger rowIndex = eligiblePathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSXMLElement * selectedPathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+        NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
 
-        NSString * previewPathString = [selectedPathElement XMLString];
+        NSString * previewPathString = selectedPathElement.XMLString;
         
         NSError * error = NULL;
         NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
@@ -118,22 +118,22 @@
         NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
         if (visibilityNode != NULL)
         {
-            [visibilityNode setStringValue:@"visible"];
+            visibilityNode.stringValue = @"visible";
         }
         
-        NSArray * childNodes = [previewPathElement children];
-        NSInteger childNodeCount = [childNodes count];
+        NSArray * childNodes = previewPathElement.children;
+        NSInteger childNodeCount = childNodes.count;
         for (NSInteger i = childNodeCount - 1; i >= 0; i--)
         {
-            NSXMLNode * aChildNode = [childNodes objectAtIndex:i];
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNode * aChildNode = childNodes[i];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
                 [previewPathElement removeChildAtIndex:i];
             }
         }
 
-        pathString = [previewPathElement XMLString];
+        pathString = previewPathElement.XMLString;
     }
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>", pathString];
@@ -158,10 +158,10 @@
 
     NSString * pathString = @"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"M363,185 C440,188 519,259 515,324 C511,389 476,519 343,518 C210,517 150,407 150,351 C150,295 279,185 362,185  Z \" fill=\"none\" transform=\"\" visibility=\"visible\" />";
     
-    NSInteger rowIndex = [animationPathsTableView selectedRow];
+    NSInteger rowIndex = animationPathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSString * previewPathStringData = [self.animationPathStringsArray objectAtIndex:rowIndex];
+        NSString * previewPathStringData = (self.animationPathStringsArray)[rowIndex];
 
         NSString * previewPathString = [NSString stringWithFormat:@"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"%@\" fill=\"none\" transform=\"\" visibility=\"visible\" />", previewPathStringData];
         
@@ -171,22 +171,22 @@
         NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
         if (visibilityNode != NULL)
         {
-            [visibilityNode setStringValue:@"visible"];
+            visibilityNode.stringValue = @"visible";
         }
         
-        NSArray * childNodes = [previewPathElement children];
-        NSInteger childNodeCount = [childNodes count];
+        NSArray * childNodes = previewPathElement.children;
+        NSInteger childNodeCount = childNodes.count;
         for (NSInteger i = childNodeCount - 1; i >= 0; i--)
         {
-            NSXMLNode * aChildNode = [childNodes objectAtIndex:i];
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNode * aChildNode = childNodes[i];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
                 [previewPathElement removeChildAtIndex:i];
             }
         }
 
-        pathString = [previewPathElement XMLString];
+        pathString = previewPathElement.XMLString;
     }
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>", pathString];
@@ -211,7 +211,7 @@
 
     NSString * pathString = @"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"M363,185 C440,188 519,259 515,324 C511,389 476,519 343,518 C210,517 150,407 150,351 C150,295 279,185 362,185  Z \" fill=\"none\" transform=\"\" visibility=\"visible\" />";
     
-    NSString * previewPathString = [self.masterPathElement XMLString];
+    NSString * previewPathString = (self.masterPathElement).XMLString;
     
     NSError * error = NULL;
     NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
@@ -219,32 +219,32 @@
     NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
     if (visibilityNode != NULL)
     {
-        [visibilityNode setStringValue:@"visible"];
+        visibilityNode.stringValue = @"visible";
     }
 
     [previewPathElement removeAttributeForName:@"macsvgid"];
     
-    NSArray * pathChildNodes = [previewPathElement children];
-    NSInteger pathChildNodeCount = [pathChildNodes count];
+    NSArray * pathChildNodes = previewPathElement.children;
+    NSInteger pathChildNodeCount = pathChildNodes.count;
     for (NSInteger i = pathChildNodeCount - 1; i >= 0; i--)
     {
-        NSXMLNode * aChildNode = [pathChildNodes objectAtIndex:i];
-        NSXMLNodeKind nodeKind = [aChildNode kind];
+        NSXMLNode * aChildNode = pathChildNodes[i];
+        NSXMLNodeKind nodeKind = aChildNode.kind;
         if (nodeKind == NSXMLElementKind)
         {
             [previewPathElement removeChildAtIndex:i];
         }
     }
 
-    NSString * previewAnimationString = [self.masterAnimateElement XMLString];
+    NSString * previewAnimationString = (self.masterAnimateElement).XMLString;
     NSXMLElement * previewAnimateElement = [[NSXMLElement alloc] initWithXMLString:previewAnimationString error:&error];
     
-    NSArray * animateChildNodes = [previewAnimateElement children];
-    NSInteger animateChildNodesCount = [animateChildNodes count];
+    NSArray * animateChildNodes = previewAnimateElement.children;
+    NSInteger animateChildNodesCount = animateChildNodes.count;
     for (NSInteger i = animateChildNodesCount - 1; i >= 0; i--)
     {
-        NSXMLNode * aChildNode = [animateChildNodes objectAtIndex:i];
-        NSXMLNodeKind nodeKind = [aChildNode kind];
+        NSXMLNode * aChildNode = animateChildNodes[i];
+        NSXMLNodeKind nodeKind = aChildNode.kind;
         if (nodeKind == NSXMLElementKind)
         {
             [previewAnimateElement removeChildAtIndex:i];
@@ -265,36 +265,36 @@
     if (valuesNode == NULL)
     {
         valuesNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [valuesNode setName:@"values"];
-        [valuesNode setStringValue:@""];
+        valuesNode.name = @"values";
+        valuesNode.stringValue = @"";
         [previewAnimateElement addAttribute:valuesNode];
     }
-    [valuesNode setStringValue:animationPathsString];
+    valuesNode.stringValue = animationPathsString;
     
     NSXMLNode * beginNode = [previewAnimateElement attributeForName:@"begin"];
     if (beginNode == NULL)
     {
         beginNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [beginNode setName:@"begin"];
-        [beginNode setStringValue:@""];
+        beginNode.name = @"begin";
+        beginNode.stringValue = @"";
         [previewAnimateElement addAttribute:beginNode];
     }
-    [beginNode setStringValue:@"0s"];
+    beginNode.stringValue = @"0s";
     
     NSXMLNode * repeatCountNode = [previewAnimateElement attributeForName:@"repeatCount"];
     if (repeatCountNode == NULL)
     {
         repeatCountNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [repeatCountNode setName:@"repeatCount"];
-        [repeatCountNode setStringValue:@""];
+        repeatCountNode.name = @"repeatCount";
+        repeatCountNode.stringValue = @"";
         [previewAnimateElement addAttribute:repeatCountNode];
     }
-    [repeatCountNode setStringValue:@"indefinite"];
+    repeatCountNode.stringValue = @"indefinite";
     
     
     [previewPathElement addChild:previewAnimateElement];
 
-    pathString = [previewPathElement XMLString];
+    pathString = previewPathElement.XMLString;
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>", pathString];
     
@@ -307,7 +307,7 @@
     self.animationPreviewXMLDocument = [[NSXMLDocument alloc]
             initWithXMLString:xmlDocString options:0 error:&docError];
     
-    [pathElementTextView setString:pathString];
+    pathElementTextView.string = pathString;
 }
 
 // ================================================================
@@ -339,8 +339,8 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     self.originalPathElement = masterPathElement;
     self.originalAnimateElement = animateElement;
 
-    NSString * originalPathElementXMLString = [self.originalPathElement XMLString];
-    NSString * originalAnimateElementXMLString = [self.originalAnimateElement XMLString];
+    NSString * originalPathElementXMLString = (self.originalPathElement).XMLString;
+    NSString * originalAnimateElementXMLString = (self.originalAnimateElement).XMLString;
 
     NSError * pathError;
     self.masterPathElement = [[NSXMLElement alloc] initWithXMLString:originalPathElementXMLString error:&pathError];
@@ -359,16 +359,16 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [animationPathsTableView selectRowIndexes:firstRowIndexSet byExtendingSelection:NO];
     
     [self makeEligiblePathSVG];
-    NSString * eligiblePathXmlString = [self.eligiblePathXMLDocument XMLString];
-    [[eligiblePathWebView mainFrame] loadHTMLString:eligiblePathXmlString baseURL:NULL];
+    NSString * eligiblePathXmlString = (self.eligiblePathXMLDocument).XMLString;
+    [eligiblePathWebView.mainFrame loadHTMLString:eligiblePathXmlString baseURL:NULL];
 
     [self makeAnimatePathSVG];
-    NSString * animatePathXmlString = [self.animatePathXMLDocument XMLString];
-    [[animatePathWebView mainFrame] loadHTMLString:animatePathXmlString baseURL:NULL];
+    NSString * animatePathXmlString = (self.animatePathXMLDocument).XMLString;
+    [animatePathWebView.mainFrame loadHTMLString:animatePathXmlString baseURL:NULL];
 
     [self makeAnimationPreviewSVG];
-    NSString * animationPreviewXmlString = [self.animationPreviewXMLDocument XMLString];
-    [[animationPreviewWebView mainFrame] loadHTMLString:animationPreviewXmlString baseURL:NULL];
+    NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
+    [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
 
 }
 
@@ -382,11 +382,11 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     
     if (aTableView == eligiblePathsTableView)
     {
-        result = [self.eligiblePathElementsArray count];
+        result = (self.eligiblePathElementsArray).count;
     }
     else if (aTableView == animationPathsTableView)
     {
-        result = [self.animationPathStringsArray count];
+        result = (self.animationPathStringsArray).count;
     }
     
     return result;
@@ -400,7 +400,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 {
     NSString * result = @"Missing Result";
     
-    NSString * tableColumnTitle= [aTableColumn identifier];
+    NSString * tableColumnTitle= aTableColumn.identifier;
     
     if ([tableColumnTitle isEqualToString:@"PathIndex"] == YES)
     {
@@ -409,7 +409,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     }
     else if ([tableColumnTitle isEqualToString:@"PathData"] == YES)
     {
-        NSString * pathString = [self.animationPathStringsArray objectAtIndex:rowIndex];
+        NSString * pathString = (self.animationPathStringsArray)[rowIndex];
         result = pathString;
     }
     
@@ -426,7 +426,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     
     if (aTableView == eligiblePathsTableView)
     {
-        NSString * tableColumnTitle= [aTableColumn identifier];
+        NSString * tableColumnTitle= aTableColumn.identifier;
         
         if ([tableColumnTitle isEqualToString:@"PathIndex"] == YES)
         {
@@ -435,20 +435,20 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         }
         else if ([tableColumnTitle isEqualToString:@"PathID"] == YES)
         {
-            NSXMLElement * pathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
 
             if (pathElement != NULL)
             {
                 NSXMLNode * idAttributeNode = [pathElement attributeForName:@"id"];
-                NSString * idAttributeString = [idAttributeNode stringValue];
+                NSString * idAttributeString = idAttributeNode.stringValue;
                 result = idAttributeString;
             }
         }
         else if ([tableColumnTitle isEqualToString:@"PathLocation"] == YES)
         {
-            NSXMLElement * pathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
 
-            NSString * pathXPath = [pathElement XPath];
+            NSString * pathXPath = pathElement.XPath;
             result = pathXPath;
         }
     }
@@ -466,18 +466,18 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == eligiblePathsTableView)
     {
         [self makeEligiblePathSVG];
-        NSString * pathXmlString = [self.eligiblePathXMLDocument XMLString];
-        [[eligiblePathWebView mainFrame] loadHTMLString:pathXmlString baseURL:NULL];
+        NSString * pathXmlString = (self.eligiblePathXMLDocument).XMLString;
+        [eligiblePathWebView.mainFrame loadHTMLString:pathXmlString baseURL:NULL];
     }
     else if (aTableView == animationPathsTableView)
     {
         [self makeAnimatePathSVG];
-        NSString * animatePathXmlString = [self.animatePathXMLDocument XMLString];
-        [[animatePathWebView mainFrame] loadHTMLString:animatePathXmlString baseURL:NULL];
+        NSString * animatePathXmlString = (self.animatePathXMLDocument).XMLString;
+        [animatePathWebView.mainFrame loadHTMLString:animatePathXmlString baseURL:NULL];
     }
 }
 
@@ -487,18 +487,18 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (IBAction)addAnimationPathButtonAction:(id)sender
 {
-    NSInteger eligibleRowIndex = [eligiblePathsTableView selectedRow];
+    NSInteger eligibleRowIndex = eligiblePathsTableView.selectedRow;
     if (eligibleRowIndex != -1)
     {
         NSXMLElement * eligiblePathElement =
-                [self.eligiblePathElementsArray objectAtIndex:eligibleRowIndex];
+                (self.eligiblePathElementsArray)[eligibleRowIndex];
         NSXMLNode * aPathStringNode = [eligiblePathElement attributeForName:@"d"];
-        NSString * aPathString = [aPathStringNode stringValue];
+        NSString * aPathString = aPathStringNode.stringValue;
     
-        NSInteger animationRowIndex = [animationPathsTableView selectedRow];
+        NSInteger animationRowIndex = animationPathsTableView.selectedRow;
         if (animationRowIndex == -1)
         {
-            animationRowIndex = [self.animationPathStringsArray count];
+            animationRowIndex = (self.animationPathStringsArray).count;
         }
         else
         {
@@ -513,12 +513,12 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         [animationPathsTableView selectRowIndexes:indexSet byExtendingSelection:NO];
 
         [self makeAnimatePathSVG];
-        NSString * animatePathXmlString = [self.animatePathXMLDocument XMLString];
-        [[animatePathWebView mainFrame] loadHTMLString:animatePathXmlString baseURL:NULL];
+        NSString * animatePathXmlString = (self.animatePathXMLDocument).XMLString;
+        [animatePathWebView.mainFrame loadHTMLString:animatePathXmlString baseURL:NULL];
 
         [self makeAnimationPreviewSVG];
-        NSString * animationPreviewXmlString = [self.animationPreviewXMLDocument XMLString];
-        [[animationPreviewWebView mainFrame] loadHTMLString:animationPreviewXmlString baseURL:NULL];
+        NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
+        [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
     }
 }
 
@@ -528,7 +528,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (IBAction)deleteAnimationPathButtonAction:(id)sender
 {
-    NSInteger rowIndex = [animationPathsTableView selectedRow];
+    NSInteger rowIndex = animationPathsTableView.selectedRow;
     if (rowIndex != -1)
     {
         [self.animationPathStringsArray removeObjectAtIndex:rowIndex];
@@ -537,12 +537,12 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [animationPathsTableView reloadData];
 
     [self makeAnimatePathSVG];
-    NSString * animatePathXmlString = [self.animatePathXMLDocument XMLString];
-    [[animatePathWebView mainFrame] loadHTMLString:animatePathXmlString baseURL:NULL];
+    NSString * animatePathXmlString = (self.animatePathXMLDocument).XMLString;
+    [animatePathWebView.mainFrame loadHTMLString:animatePathXmlString baseURL:NULL];
 
     [self makeAnimationPreviewSVG];
-    NSString * animationPreviewXmlString = [self.animationPreviewXMLDocument XMLString];
-    [[animationPreviewWebView mainFrame] loadHTMLString:animationPreviewXmlString baseURL:NULL];
+    NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
+    [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -557,9 +557,9 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [eligiblePathsTableView reloadData];
     [animationPathsTableView reloadData];
 
-    [[eligiblePathWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
-    [[animatePathWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
-    [[animationPreviewWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [eligiblePathWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
+    [animatePathWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
+    [animationPreviewWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
 
     self.eligiblePathXMLDocument = NULL;
     self.animatePathXMLDocument = NULL;
@@ -587,9 +587,9 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [eligiblePathsTableView reloadData];
     [animationPathsTableView reloadData];
 
-    [[eligiblePathWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
-    [[animatePathWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
-    [[animationPreviewWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [eligiblePathWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
+    [animatePathWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
+    [animationPreviewWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
 
     self.eligiblePathXMLDocument = NULL;
     self.animatePathXMLDocument = NULL;
@@ -630,14 +630,14 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     if (valuesAttributeNode == NULL)
     {
         valuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [valuesAttributeNode setName:@"values"];
+        valuesAttributeNode.name = @"values";
     }
     else
     {
         attributeFound = YES;
     }
     
-    [valuesAttributeNode setStringValue:animationPathsString];
+    valuesAttributeNode.stringValue = animationPathsString;
     
     if (attributeFound == NO)
     {
@@ -653,8 +653,8 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 {
     BOOL result = YES;
     
-    NSInteger pathArray1Count = [pathArray1 count];
-    NSInteger pathArray2Count = [pathArray2 count];
+    NSInteger pathArray1Count = pathArray1.count;
+    NSInteger pathArray2Count = pathArray2.count;
     
     if (pathArray1Count != pathArray2Count)
     {
@@ -664,11 +664,11 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     {
         for (NSInteger i = 0; i < pathArray1Count; i++)
         {
-            NSDictionary * pathArray1Dictionary = [pathArray1 objectAtIndex:i];
-            NSDictionary * pathArray2Dictionary = [pathArray2 objectAtIndex:i];
+            NSDictionary * pathArray1Dictionary = pathArray1[i];
+            NSDictionary * pathArray2Dictionary = pathArray2[i];
             
-            NSString * path1Command = [pathArray1Dictionary objectForKey:@"command"];
-            NSString * path2Command = [pathArray2Dictionary objectForKey:@"command"];
+            NSString * path1Command = pathArray1Dictionary[@"command"];
+            NSString * path2Command = pathArray2Dictionary[@"command"];
             
             if ([path1Command isEqualToString:path2Command] == NO)
             {
@@ -688,7 +688,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 - (NSArray *)makePathSegmentsArray:(NSString *)aPathString
 {
     MacSVGPluginCallbacks * macSVGPluginCallbacks =
-            [pathElementShapeAnimationEditor macSVGPluginCallbacks];
+            pathElementShapeAnimationEditor.macSVGPluginCallbacks;
 
     NSMutableArray * pathSegmentsArray = [macSVGPluginCallbacks
             buildPathSegmentsArrayWithPathString:aPathString];
@@ -707,7 +707,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
     NSXMLNode * masterPathNode = [self.masterPathElement attributeForName:@"d"];
-    NSString * masterPathString = [masterPathNode stringValue];
+    NSString * masterPathString = masterPathNode.stringValue;
 
     NSString * trimmedMasterPathString = [masterPathString stringByTrimmingCharactersInSet:whitespaceSet];
 
@@ -720,19 +720,19 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     NSXMLNode * valuesAttributeNode = [self.masterAnimateElement attributeForName:@"values"];
     if (valuesAttributeNode != NULL)
     {
-        valuesAttributeString = [valuesAttributeNode stringValue];
+        valuesAttributeString = valuesAttributeNode.stringValue;
     }
 
     NSXMLNode * fromAttributeNode = [self.masterAnimateElement attributeForName:@"from"];
     if (fromAttributeNode != NULL)
     {
-        fromAttributeString = [fromAttributeNode stringValue];
+        fromAttributeString = fromAttributeNode.stringValue;
     }
 
     NSXMLNode * toAttributeNode = [self.masterAnimateElement attributeForName:@"to"];
     if (toAttributeNode != NULL)
     {
-        toAttributeString = [toAttributeNode stringValue];
+        toAttributeString = toAttributeNode.stringValue;
     }
     
     if (valuesAttributeString == NULL)
@@ -781,7 +781,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [pathElementShapeAnimationEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = pathElementShapeAnimationEditor.svgXmlDocument;
     
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -802,7 +802,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     NSMutableArray * resultArray = [NSMutableArray array];
 
     NSXMLNode * masterPathStringNode = [self.masterPathElement attributeForName:@"d"];
-    NSString * masterPathString = [masterPathStringNode stringValue];
+    NSString * masterPathString = masterPathStringNode.stringValue;
 
     NSArray * masterPathArray = [self makePathSegmentsArray:masterPathString];
 
@@ -811,7 +811,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     for (NSXMLElement * aPathElement in allPathsArray)
     {
         NSXMLNode * aPathStringNode = [aPathElement attributeForName:@"d"];
-        NSString * aPathString = [aPathStringNode stringValue];
+        NSString * aPathString = aPathStringNode.stringValue;
         NSArray * aPathArray = [self makePathSegmentsArray:aPathString];
         
         BOOL pathMatchesMasterPath = [self pathArray:aPathArray matchesPathArray:masterPathArray];
@@ -845,7 +845,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         sourceDataType = PathDataStringDataType;
     }
 
-    [pboard declareTypes:[NSArray arrayWithObject:sourceDataType] owner:self];
+    [pboard declareTypes:@[sourceDataType] owner:self];
 
     [pboard setData:data forType:sourceDataType];
     
@@ -888,7 +888,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     {
         NSPasteboard * pboard = [info draggingPasteboard];
 
-        NSArray * pboardArray  = [NSArray arrayWithObjects:PathDataStringDataType, PathElementDataType, NULL];
+        NSArray * pboardArray  = @[PathDataStringDataType, PathElementDataType];
         NSString * availableType = [pboard availableTypeFromArray:pboardArray];
         
         if ([availableType isEqualToString:PathElementDataType])
@@ -896,13 +896,13 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
             // drag from path elements list to path strings list
             NSData * sourceRowData = [pboard dataForType:PathElementDataType];
             NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
-            NSUInteger from = [sourceRowIndex firstIndex];
+            NSUInteger from = sourceRowIndex.firstIndex;
             
-            NSXMLElement * sourcePathElement = [self.eligiblePathElementsArray objectAtIndex:from];
+            NSXMLElement * sourcePathElement = (self.eligiblePathElementsArray)[from];
             NSXMLNode * pathDataAttribute = [sourcePathElement attributeForName:@"d"];
             if (pathDataAttribute != NULL)
             {
-                NSString * pathDataString = [pathDataAttribute stringValue];
+                NSString * pathDataString = pathDataAttribute.stringValue;
                 [self.animationPathStringsArray insertObject:pathDataString atIndex:to];
                 result = YES;
             }
@@ -912,11 +912,11 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
             // rearrange items in path strings list
             NSData * sourceRowData = [pboard dataForType:PathDataStringDataType];
             NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
-            NSUInteger from = [sourceRowIndex firstIndex];
+            NSUInteger from = sourceRowIndex.firstIndex;
 
-            NSString * traveller = [self.animationPathStringsArray objectAtIndex:from];
+            NSString * traveller = (self.animationPathStringsArray)[from];
 
-            NSInteger length = [self.animationPathStringsArray count];
+            NSInteger length = (self.animationPathStringsArray).count;
 
             int i;
             for (i = 0; i <= length; i++)
@@ -943,8 +943,8 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [animationPathsTableView reloadData];
 
     [self makeAnimationPreviewSVG];
-    NSString * animationPreviewXmlString = [self.animationPreviewXMLDocument XMLString];
-    [[animationPreviewWebView mainFrame] loadHTMLString:animationPreviewXmlString baseURL:NULL];
+    NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
+    [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
     
     return result;
 }

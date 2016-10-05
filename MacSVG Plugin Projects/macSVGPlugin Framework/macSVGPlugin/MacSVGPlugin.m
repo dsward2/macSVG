@@ -37,7 +37,7 @@
     
     // load the MacSVGPlugin.framework from the application bundle
     NSBundle * mainBundle = [NSBundle mainBundle];
-    NSString * mainBundlePath = [mainBundle bundlePath];
+    NSString * mainBundlePath = mainBundle.bundlePath;
 
     NSString * frameworkPathExtension = 
             @"Contents/Frameworks/MacSVGPlugin.framework";
@@ -68,7 +68,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -105,7 +105,7 @@
     [self setMacSVGDocumentObject:aMacSVGDocument];
     self.svgXmlOutlineView = aSvgXmlOutlineView;
     self.svgWebView = aSvgWebView;
-    self.globalContext = [[aSvgWebView mainFrame] globalContext];
+    self.globalContext = [aSvgWebView mainFrame].globalContext;
     self.webKitInterface = aWebKitInterface;
     self.elementsDictionary = aElementsDictionary;
     self.elementContentsDictionary = aElementsContentsDictionary;
@@ -149,21 +149,21 @@
         
     if (self.pluginView == NULL)
     {
-        NSString * pluginNameString = [self className];
+        NSString * pluginNameString = self.className;
         NSArray * topLevelObjects = NULL;
 
-        NSString * bundlePath = [[NSBundle bundleForClass:[self class]] bundlePath];
+        NSString * bundlePath = [NSBundle bundleForClass:[self class]].bundlePath;
 
         NSBundle * pluginBundle = [NSBundle bundleWithPath:bundlePath];
 
         result = [pluginBundle loadNibNamed:pluginNameString owner:self topLevelObjects:&topLevelObjects];
     }
 
-    [scrollView setDocumentView:self.pluginView];
+    scrollView.documentView = self.pluginView;
 
     [self resizePluginViewSizeForScrollView:scrollView];
     
-    [[scrollView verticalScroller] setFloatValue:0];
+    scrollView.verticalScroller.floatValue = 0;
     
     return result;
 }
@@ -388,7 +388,7 @@
     viewFrame.size.height = self.pluginView.frame.size.height;
     viewBounds.size.height = self.pluginView.bounds.size.height;
     
-    NSScroller * verticalScroller = [scrollView verticalScroller];
+    NSScroller * verticalScroller = scrollView.verticalScroller;
     NSRect verticalScrollerBounds = verticalScroller.bounds;
     
     viewFrame.size.width -= verticalScrollerBounds.size.width;
@@ -404,19 +404,19 @@
 
 -(void)assignMacsvgidsForNode:(NSXMLNode *)aNode
 {
-    if ([aNode kind] == NSXMLElementKind)
+    if (aNode.kind == NSXMLElementKind)
     {
         NSXMLElement * aXmlElement = (NSXMLElement *)aNode;
         NSXMLNode * macsvgid = [aXmlElement attributeForName:@"macsvgid"];
         if (macsvgid == NULL)
         {
-            NSString * guid = [[NSProcessInfo processInfo] globallyUniqueString];
+            NSString * guid = [NSProcessInfo processInfo].globallyUniqueString;
             macsvgid = [NSXMLNode attributeWithName:@"macsvgid" stringValue:guid];
             [aXmlElement addAttribute:macsvgid];
         }
     }
     
-    NSArray * children = [aNode children];
+    NSArray * children = aNode.children;
     for (id childNode in children)
     {
         [self assignMacsvgidsForNode:childNode];   // recursive call
@@ -434,7 +434,7 @@
     
     NSMutableString * trimmedString = [[NSMutableString alloc] init];
     
-    NSUInteger inputLength = [valueString length];
+    NSUInteger inputLength = valueString.length;
     for (int i = 0; i < inputLength; i++)
     {
         unichar aChar = [valueString characterAtIndex:i];
@@ -457,7 +457,7 @@
         
     }
     
-    floatValue = [trimmedString floatValue];
+    floatValue = trimmedString.floatValue;
     
         
     return floatValue;
@@ -474,7 +474,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -515,7 +515,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {

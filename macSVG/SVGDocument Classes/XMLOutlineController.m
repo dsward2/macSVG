@@ -59,7 +59,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -108,13 +108,13 @@
     //[[visibleColumn headerCell] setImage:visibleEyeImage];
     SVGIconTableHeaderCell * visibleEyeCell = [[SVGIconTableHeaderCell alloc] init];
     visibleEyeCell.iconIndex = 0;
-    [visibleColumn setHeaderCell:visibleEyeCell];
+    visibleColumn.headerCell = visibleEyeCell;
 
     //NSImage * padlockImage = [NSImage imageNamed:@"padlock.png"];
     //[[lockColumn headerCell] setImage:padlockImage];
     SVGIconTableHeaderCell * padlockCell = [[SVGIconTableHeaderCell alloc] init];
     padlockCell.iconIndex = 1;
-    [lockColumn setHeaderCell:padlockCell];
+    lockColumn.headerCell = padlockCell;
 }
 
 // ================================================================
@@ -122,10 +122,10 @@
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem 
 {
     //if ([menuItem action] == @selector(deleteSelections:))
-    if ([menuItem action] == @selector(deleteElementAction:))
+    if (menuItem.action == @selector(deleteElementAction:))
     {
         // The delete selection item should be disabled if nothing is selected.
-        if ([[self selectedNodes] count] > 0) 
+        if ([self selectedNodes].count > 0) 
         {
             return YES;
         } 
@@ -141,13 +141,11 @@
 
 - (void)registerDragTypes
 {
-    NSArray * draggedTypesArray = [NSArray arrayWithObjects:
-            XML_OUTLINE_PBOARD_TYPE, 
+    NSArray * draggedTypesArray = @[XML_OUTLINE_PBOARD_TYPE, 
             NSStringPboardType, 
             NSURLPboardType, 
             NSFilenamesPboardType, 
-            NSTIFFPboardType, 
-            nil];
+            NSTIFFPboardType];
     
     [self.xmlOutlineView registerForDraggedTypes:draggedTypesArray];
     
@@ -198,23 +196,23 @@
         selectionIndexes:(NSMutableIndexSet *)selectionIndexes
 {
     // recursively select child elements
-	NSArray * childNodesArray = [parentNode children];
+	NSArray * childNodesArray = parentNode.children;
     
     for (NSXMLNode * childNode in childNodesArray)
     {
         BOOL selectChildNode = NO;
     
-        if ([childNode kind] ==  NSXMLElementKind) 
+        if (childNode.kind ==  NSXMLElementKind) 
         {
             selectChildNode = YES;
         }
     
-        if ([childNode kind] ==  NSXMLTextKind) 
+        if (childNode.kind ==  NSXMLTextKind) 
         {
             selectChildNode = YES;
         }
         
-        if ([childNode kind] ==  NSXMLCommentKind)
+        if (childNode.kind ==  NSXMLCommentKind)
         {
             selectChildNode = YES;
         }
@@ -254,7 +252,7 @@
     
         NSXMLNode * aXMLNode = [self.xmlOutlineView itemAtRow:indexRow];
 
-        if ([aXMLNode kind] ==  NSXMLElementKind) 
+        if (aXMLNode.kind ==  NSXMLElementKind) 
         {
             [self addSelectionIndexesForChildNodes:aXMLNode selectionIndexes:modifiedSelectionIndexes];
         }
@@ -262,9 +260,9 @@
         if ((modifiers & flags) == 0)
         {
             // option key not pressed
-            if ([aXMLNode kind] ==  NSXMLTextKind)
+            if (aXMLNode.kind ==  NSXMLTextKind)
             {
-                NSXMLNode * parentElement = [aXMLNode parent];
+                NSXMLNode * parentElement = aXMLNode.parent;
 
                 NSInteger parentRow = [self.xmlOutlineView rowForItem:parentElement];
 
@@ -323,18 +321,18 @@
     {
         for (NSXMLElement * aElement in selectedItemsArray)
         {
-            if ([aElement kind] ==  NSXMLElementKind) 
+            if (aElement.kind ==  NSXMLElementKind) 
             {
                 NSXMLNode * MacsvgidNode = [aElement attributeForName:@"macsvgid"];
                 
                 if (MacsvgidNode == NULL)
                 {
-                    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+                    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
                     [macSVGDocument assignNewMacsvgidsForNode:aElement];
                     MacsvgidNode = [aElement attributeForName:@"macsvgid"];
                 }
                 
-                NSString * macsvgid = [MacsvgidNode stringValue];
+                NSString * macsvgid = MacsvgidNode.stringValue;
                 [resultArray addObject:macsvgid];
             }
         }
@@ -374,7 +372,7 @@
     
     for (NSMutableDictionary * xmlDOMDictionary in selectedXMLDOMElements)
     {
-        NSXMLElement * aXMLElement = [xmlDOMDictionary objectForKey:@"xmlElement"];
+        NSXMLElement * aXMLElement = xmlDOMDictionary[@"xmlElement"];
         
         NSInteger rowIdx = [self.xmlOutlineView rowForItem:aXMLElement];
         
@@ -383,11 +381,11 @@
             [rowIndexSet addIndex:rowIdx];
         }
         
-        NSArray * childNodesArray = [aXMLElement children];
+        NSArray * childNodesArray = aXMLElement.children;
         {
             for (NSXMLNode * aChildNode in childNodesArray)
             {
-                if ([aChildNode kind] == NSXMLTextKind)
+                if (aChildNode.kind == NSXMLTextKind)
                 {
                     NSInteger textRowIdx = [self.xmlOutlineView rowForItem:aChildNode];
                     
@@ -416,7 +414,7 @@
     SVGElementsTableController * svgElementsTableController = 
             self.macSVGDocumentWindowController.svgElementsTableController;
             
-    NSInteger selectedRow = [svgElementsTableController.elementsTableView selectedRow];
+    NSInteger selectedRow = (svgElementsTableController.elementsTableView).selectedRow;
     
     if (selectedRow == -1)
     {
@@ -425,11 +423,11 @@
     }
     else
     {
-        NSString * elementTag = [svgElementsTableController.svgElementsArray objectAtIndex:selectedRow];
+        NSString * elementTag = (svgElementsTableController.svgElementsArray)[selectedRow];
         
-        NSDictionary * elementDictionary = [svgElementsTableController.svgElementsDictionary objectForKey:elementTag];
+        NSDictionary * elementDictionary = (svgElementsTableController.svgElementsDictionary)[elementTag];
 
-        NSString * prototypeElement = [elementDictionary objectForKey:@"prototype"];
+        NSString * prototypeElement = elementDictionary[@"prototype"];
 
         elementXML = [NSMutableString stringWithFormat:@"<%@ />", prototypeElement];
     }
@@ -443,30 +441,30 @@
 
 - (IBAction)addElementAction:(id)sender
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
     //NSArray * selectedElementIDs = [macSVGDocumentWindowController.svgXMLDOMSelectionManager selectedElementIDs];
     NSArray * selectedElementIDs = [self selectedElementIDs];
     
-    if ([selectedElementIDs count] > 0) 
+    if (selectedElementIDs.count > 0) 
     {
         SVGElementsTableController * svgElementsTableController = 
                 self.macSVGDocumentWindowController.svgElementsTableController;
 
-        NSInteger selectedRow = [svgElementsTableController.elementsTableView selectedRow];
+        NSInteger selectedRow = (svgElementsTableController.elementsTableView).selectedRow;
         
         if (selectedRow != -1)
         {
-            NSInteger selectedOutlineRow = [self.xmlOutlineView selectedRow];
+            NSInteger selectedOutlineRow = (self.xmlOutlineView).selectedRow;
         
             NSXMLNode * itemNode = [self.xmlOutlineView itemAtRow:selectedOutlineRow];
             
-            if ([itemNode kind] != NSXMLElementKind)
+            if (itemNode.kind != NSXMLElementKind)
             {
-                itemNode = [itemNode parent];
+                itemNode = itemNode.parent;
             }
             
-            if ([itemNode kind] == NSXMLElementKind)
+            if (itemNode.kind == NSXMLElementKind)
             {
                 NSXMLElement * item = (NSXMLElement *)itemNode;
             
@@ -496,7 +494,7 @@
     NSError * error = NULL;
     NSXMLElement * prototypeElement = [[NSXMLElement alloc] initWithXMLString:xmlElementPrototypeString error:&error];
     
-    NSString * prototypeElementName = [prototypeElement name];
+    NSString * prototypeElementName = prototypeElement.name;
     
     if ([prototypeElementName isEqualToString:@"animateTransform"])
     {
@@ -509,14 +507,14 @@
     else if ([prototypeElementName isEqualToString:@"script"])
     {
         NSXMLNode *cdataNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind  options:NSXMLNodeIsCDATA];
-        [cdataNode setStringValue:@"//JavaScript goes here"];
+        cdataNode.stringValue = @"//JavaScript goes here";
         [prototypeElement addChild:cdataNode];
         resultString = [prototypeElement XMLStringWithOptions:NSXMLNodePreserveCDATA];
     }
     else if ([prototypeElementName isEqualToString:@"style"])
     {
         NSXMLNode *cdataNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind  options:NSXMLNodeIsCDATA];
-        [cdataNode setStringValue:@"/* CSS style goes here */"];
+        cdataNode.stringValue = @"/* CSS style goes here */";
         [prototypeElement addChild:cdataNode];
         resultString = [prototypeElement XMLStringWithOptions:NSXMLNodePreserveCDATA];
     }
@@ -535,16 +533,16 @@
     NSError * error = NULL;
     NSXMLElement * prototypeElement = [[NSXMLElement alloc] initWithXMLString:xmlElementPrototypeString error:&error];
     
-    NSString * prototypeElementName = [prototypeElement name];
+    NSString * prototypeElementName = prototypeElement.name;
     
     if ([prototypeElementName isEqualToString:@"animateTransform"] == YES)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         
         NSXMLNode * xmlParentMacsvgidNode = [parentElement attributeForName:@"macsvgid"];
-        NSString * parentMacsvgid = [xmlParentMacsvgidNode stringValue];
+        NSString * parentMacsvgid = xmlParentMacsvgidNode.stringValue;
         
         DOMElement * domParentElement = [self.macSVGDocumentWindowController.svgWebKitController
                 domElementForMacsvgid:parentMacsvgid];
@@ -565,9 +563,9 @@
             NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
             if (valuesNode != NULL)
             {
-                [valuesNode setStringValue:rotateValuesString];
+                valuesNode.stringValue = rotateValuesString;
                 
-                resultString = [prototypeElement XMLString];
+                resultString = prototypeElement.XMLString;
             }
         }
     }
@@ -586,16 +584,16 @@
     NSError * error = NULL;
     NSXMLElement * prototypeElement = [[NSXMLElement alloc] initWithXMLString:xmlElementPrototypeString error:&error];
     
-    NSString * prototypeElementName = [prototypeElement name];
+    NSString * prototypeElementName = prototypeElement.name;
     
     if ([prototypeElementName isEqualToString:@"animateMotion"])
     {
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         
         NSXMLNode * xmlParentMacsvgidNode = [parentElement attributeForName:@"macsvgid"];
-        NSString * parentMacsvgid = [xmlParentMacsvgidNode stringValue];
+        NSString * parentMacsvgid = xmlParentMacsvgidNode.stringValue;
         
         DOMElement * domParentElement = [self.macSVGDocumentWindowController.svgWebKitController
                 domElementForMacsvgid:parentMacsvgid];
@@ -607,7 +605,7 @@
             CGFloat x = boundingBox.origin.x;
             CGFloat y = boundingBox.origin.y;
             
-            NSString * parentElementName = [parentElement name];
+            NSString * parentElementName = parentElement.name;
             if (([parentElementName isEqualToString:@"circle"] == YES) ||
                     ([parentElementName isEqualToString:@"ellipse"] == YES))
             {
@@ -620,9 +618,9 @@
             NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
             if (valuesNode != NULL)
             {
-                [valuesNode setStringValue:motionValuesString];
+                valuesNode.stringValue = motionValuesString;
                 
-                resultString = [prototypeElement XMLString];
+                resultString = prototypeElement.XMLString;
             }
         }
     }
@@ -644,11 +642,11 @@
     
     if (styleAttributeNode != NULL)
     {
-        NSString * styleAttributeString = [styleAttributeNode stringValue];
+        NSString * styleAttributeString = styleAttributeNode.stringValue;
 
         BOOL itemWasFound = NO;
 
-        if ([styleAttributeString length] > 0)
+        if (styleAttributeString.length > 0)
         {
             NSArray * styleItemsArray = [styleAttributeString componentsSeparatedByString:@";"];
             
@@ -658,9 +656,9 @@
             
                 NSArray * styleExpressionArray = [styleExpression componentsSeparatedByString:@":"];
                 
-                if ([styleExpressionArray count] == 2)
+                if (styleExpressionArray.count == 2)
                 {
-                    NSString * aStyleName = [styleExpressionArray firstObject];
+                    NSString * aStyleName = styleExpressionArray.firstObject;
 
                     aStyleName = [aStyleName stringByTrimmingCharactersInSet:whitespaceSet];
                     
@@ -671,7 +669,7 @@
                     }
                 }
                 
-                if ([copyStyleExpression length] > 0)
+                if (copyStyleExpression.length > 0)
                 {
                     [newAttributesArray addObject: copyStyleExpression];
                 }
@@ -694,7 +692,7 @@
 
     NSString * newStyleAttributeString = [newAttributesArray componentsJoinedByString:@";"];
     
-    if ([newStyleAttributeString length] > 0)
+    if (newStyleAttributeString.length > 0)
     {
         newStyleAttributeString = [newStyleAttributeString stringByAppendingString:@";"];
     }
@@ -716,7 +714,7 @@
     
     if (styleAttributeNode != NULL)
     {
-        NSString * styleAttributeString = [styleAttributeNode nodeValue];
+        NSString * styleAttributeString = styleAttributeNode.nodeValue;
         
         NSArray * styleItemsArray = [styleAttributeString componentsSeparatedByString:@";"];
         
@@ -728,9 +726,9 @@
         
             NSArray * styleExpressionArray = [styleExpression componentsSeparatedByString:@":"];
             
-            if ([styleExpressionArray count] == 2)
+            if (styleExpressionArray.count == 2)
             {
-                NSString * aStyleName = [styleExpressionArray firstObject];
+                NSString * aStyleName = styleExpressionArray.firstObject;
 
                 aStyleName = [aStyleName stringByTrimmingCharactersInSet:whitespaceSet];
                 
@@ -741,7 +739,7 @@
                 }
             }
             
-            if ([copyStyleExpression length] > 0)
+            if (copyStyleExpression.length > 0)
             {
                 [newAttributesArray addObject: copyStyleExpression];
             }
@@ -763,7 +761,7 @@
 
     NSString * newStyleAttributeString = [newAttributesArray componentsJoinedByString:@";"];
     
-    if ([newStyleAttributeString length] > 0)
+    if (newStyleAttributeString.length > 0)
     {
         newStyleAttributeString = [newStyleAttributeString stringByAppendingString:@";"];
     }
@@ -782,7 +780,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -823,7 +821,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -863,12 +861,12 @@
 
 - (IBAction)deleteElementAction:(id)sender
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     
     NSMutableArray * deletedNodesArray = [NSMutableArray array];
     NSMutableArray * parentNodesArray = [NSMutableArray array];
 
-    NSIndexSet * selectedIndexSet = [self.xmlOutlineView selectedRowIndexes];
+    NSIndexSet * selectedIndexSet = (self.xmlOutlineView).selectedRowIndexes;
 
     // Save Undo/Redo information
     NSMutableArray * deletedElementsArray = [NSMutableArray array];
@@ -876,7 +874,7 @@
     {
         // only nodes with an unselected parent need to be kept
         NSXMLNode * aXMLNode = [self.xmlOutlineView itemAtRow:indexRow];
-        NSXMLNode * parentNode = [aXMLNode parent];
+        NSXMLNode * parentNode = aXMLNode.parent;
         NSInteger parentRow = [self.xmlOutlineView rowForItem:parentNode];
         if ([selectedIndexSet containsIndex:parentRow] == NO)
         {
@@ -891,16 +889,16 @@
     [selectedIndexSet enumerateIndexesUsingBlock:^(NSUInteger indexRow, BOOL *stop)
     {
         NSXMLNode * aXMLNode = [self.xmlOutlineView itemAtRow:indexRow];
-        NSXMLNode * parentNode = [aXMLNode parent];
+        NSXMLNode * parentNode = aXMLNode.parent;
         
         [deletedNodesArray addObject:aXMLNode];
         [parentNodesArray addObject:parentNode];
  
-        if ([aXMLNode kind] ==  NSXMLTextKind) 
+        if (aXMLNode.kind ==  NSXMLTextKind) 
         {
             NSXMLElement * parentElement = (NSXMLElement *)parentNode;
             
-            NSUInteger childCount = [parentNode childCount];
+            NSUInteger childCount = parentNode.childCount;
             
             for (NSUInteger i = 0; i < childCount; i++)
             {
@@ -950,11 +948,11 @@
 
 - (IBAction)duplicateElementAction:(id)sender
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
     NSArray * selectedElementIDs = [self selectedElementIDs];
     
-    if ([selectedElementIDs count] > 0) 
+    if (selectedElementIDs.count > 0) 
     {
         [macSVGDocument pushUndoRedoDocumentChanges];
 
@@ -965,7 +963,7 @@
         
         //NSXMLElement * sourceXMLElement = [xmlOutlineView itemAtRow:selectedRow];
         
-        NSString * macsvgid = [selectedElementIDs objectAtIndex:0];
+        NSString * macsvgid = selectedElementIDs[0];
         
         NSXMLElement * sourceXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
         
@@ -980,7 +978,7 @@
 
 - (void) expandAllNodes
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     XMLOutlineView * xmlOutlineView = self.xmlOutlineView;
     NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
     [xmlOutlineView expandItem:rootElement expandChildren:YES];
@@ -992,13 +990,13 @@
 
 - (void) expandElementInOutline:(NSXMLElement *)aElement
 {
-    NSXMLElement * parentElement = (id)[aElement parent];
+    NSXMLElement * parentElement = (id)aElement.parent;
     
     [self.xmlOutlineView expandItem:parentElement expandChildren:YES];    
     
     [self.xmlOutlineView expandItem:aElement expandChildren:YES];
 
-    NSArray * selectedItems = [NSArray arrayWithObject:aElement];
+    NSArray * selectedItems = @[aElement];
 
     [self.xmlOutlineView setSelectedItems:selectedItems];
 }
@@ -1017,41 +1015,41 @@
 
 - (IBAction)addGroupElementAction:(id)sender
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     
     NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
     
     NSArray * selectedElementIDsArray = [self selectedElementIDs];
     
-    if ([selectedElementIDsArray count] > 0)
+    if (selectedElementIDsArray.count > 0)
     {
         // enclose selected elements within new group element
 
         SVGElementsTableController * svgElementsTableController =
                 self.macSVGDocumentWindowController.svgElementsTableController;
 
-        NSDictionary * elementDictionary = [svgElementsTableController.svgElementsDictionary objectForKey:@"g"];
+        NSDictionary * elementDictionary = (svgElementsTableController.svgElementsDictionary)[@"g"];
 
-        NSString * prototypeElement = [elementDictionary objectForKey:@"prototype"];
+        NSString * prototypeElement = elementDictionary[@"prototype"];
 
         NSString * xmlElementString = [NSMutableString stringWithFormat:@"<%@ />", prototypeElement];
         
         //NSInteger selectedRow = [self.xmlOutlineView selectedRow];
         
-        NSIndexSet * selectedIndexSet = [self.xmlOutlineView selectedRowIndexes];
+        NSIndexSet * selectedIndexSet = (self.xmlOutlineView).selectedRowIndexes;
 
-        NSUInteger selectedRow = [selectedIndexSet firstIndex];
+        NSUInteger selectedRow = selectedIndexSet.firstIndex;
         
         if (selectedRow != NSNotFound)
         {
             NSXMLNode * selectedNode = [self.xmlOutlineView itemAtRow:selectedRow];
             
-            if ([selectedNode kind] == NSXMLElementKind)
+            if (selectedNode.kind == NSXMLElementKind)
             {
                 NSXMLElement * selectedElement = (NSXMLElement *)selectedNode;
-                NSXMLElement * parentElement = (NSXMLElement *)[selectedNode parent];
+                NSXMLElement * parentElement = (NSXMLElement *)selectedNode.parent;
                 
-                NSInteger insertElementIndex = [selectedElement index];
+                NSInteger insertElementIndex = selectedElement.index;
                 
                 NSXMLElement * groupElement = [self insertGroupElementToXmlDocument:xmlElementString
                         item:parentElement childIndex:insertElementIndex selectedElementIDsArray:selectedElementIDsArray];
@@ -1082,9 +1080,9 @@
         SVGElementsTableController * svgElementsTableController =
                 self.macSVGDocumentWindowController.svgElementsTableController;
 
-        NSDictionary * elementDictionary = [svgElementsTableController.svgElementsDictionary objectForKey:@"g"];
+        NSDictionary * elementDictionary = (svgElementsTableController.svgElementsDictionary)[@"g"];
 
-        NSString * prototypeElement = [elementDictionary objectForKey:@"prototype"];
+        NSString * prototypeElement = elementDictionary[@"prototype"];
 
         NSString * xmlElementString = [NSMutableString stringWithFormat:@"<%@ />", prototypeElement];
         
@@ -1118,7 +1116,7 @@
 
     NSString * xmlString = xmlElementString;
         
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
 
     //NSArray * oldSelectedNodes = [self selectedNodes];
@@ -1134,7 +1132,7 @@
     }
     
     // Determine the parent to insert into and the child index to insert at.
-    if ([targetNode kind] != NSXMLElementKind)
+    if (targetNode.kind != NSXMLElementKind)
    {
         // If our target is a leaf, and we are dropping on it
         if (childIndex == NSOutlineViewDropOnItemIndex) 
@@ -1146,8 +1144,8 @@
         {
             // We will be dropping on the item's parent at the target index of this child, plus one
             NSXMLNode * oldTargetNode = targetNode;
-            targetNode = [targetNode parent];
-            childIndex = [[targetNode children] indexOfObject:oldTargetNode] + 1;
+            targetNode = targetNode.parent;
+            childIndex = [targetNode.children indexOfObject:oldTargetNode] + 1;
         }
     } 
     else 
@@ -1194,7 +1192,7 @@
     [self.xmlOutlineView expandItem:newGroupElement expandChildren:YES];
     
     // Select new Group.
-    NSArray * newSelectionArray = [NSArray arrayWithObject:newGroupElement];
+    NSArray * newSelectionArray = @[newGroupElement];
     [self.xmlOutlineView setSelectedItems:newSelectionArray];
     
     return newGroupElement;
@@ -1206,7 +1204,7 @@
 
 - (void) moveSelectedElementIDs:(NSArray *)selectedElementIDsArray toGroupElement:groupElement
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
     //NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
 
@@ -1216,26 +1214,26 @@
     {
         NSXMLElement * aSelectedElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
         
-        [selectedElementsDictionary setObject:aSelectedElement forKey:macsvgid];
+        selectedElementsDictionary[macsvgid] = aSelectedElement;
     }
     
     NSMutableArray * groupedElementsArray = [NSMutableArray array];
 
     for (NSString * macsvgid in selectedElementIDsArray)
     {
-        NSXMLElement * aXMLElement = [selectedElementsDictionary objectForKey:macsvgid];
+        NSXMLElement * aXMLElement = selectedElementsDictionary[macsvgid];
         
-        NSXMLNode * parentXMLNode = [aXMLElement parent];
+        NSXMLNode * parentXMLNode = aXMLElement.parent;
         
-        if ([parentXMLNode kind] == NSXMLElementKind)
+        if (parentXMLNode.kind == NSXMLElementKind)
         {
             NSXMLElement * parentXMLElement = (NSXMLElement *)parentXMLNode;
         
             NSXMLNode * parentMacsvgidAttribute = [parentXMLElement attributeForName:@"macsvgid"];
             
-            NSString * parentMacsvgid = [parentMacsvgidAttribute stringValue];
+            NSString * parentMacsvgid = parentMacsvgidAttribute.stringValue;
                 
-            NSXMLElement * existingParentElement = [selectedElementsDictionary objectForKey:parentMacsvgid];
+            NSXMLElement * existingParentElement = selectedElementsDictionary[parentMacsvgid];
             
             if (existingParentElement == NULL)
             {
@@ -1251,17 +1249,17 @@
     
     for (NSXMLElement * aXMLElement in groupedElementsArray)
     {
-        NSXMLNode * parentXMLNode = [aXMLElement parent];
+        NSXMLNode * parentXMLNode = aXMLElement.parent;
         
-        if ([parentXMLNode kind] == NSXMLElementKind)
+        if (parentXMLNode.kind == NSXMLElementKind)
         {
             NSXMLElement * parentXMLElement = (NSXMLElement *)parentXMLNode;
         
             NSXMLNode * parentMacsvgidAttribute = [parentXMLElement attributeForName:@"macsvgid"];
             
-            NSString * parentMacsvgid = [parentMacsvgidAttribute stringValue];
+            NSString * parentMacsvgid = parentMacsvgidAttribute.stringValue;
                 
-            NSXMLElement * existingParentElement = [selectedElementsDictionary objectForKey:parentMacsvgid];
+            NSXMLElement * existingParentElement = selectedElementsDictionary[parentMacsvgid];
             
             if (existingParentElement == NULL)
             {
@@ -1283,7 +1281,7 @@
 {
     NSArray * selectedItems = [self.xmlOutlineView selectedItems];
     
-    NSInteger selectedItemsCount = [selectedItems count];
+    NSInteger selectedItemsCount = selectedItems.count;
 
     if (selectedItemsCount > 0)
     {
@@ -1304,7 +1302,7 @@
                 
                 while (parentNode != NULL)
                 {
-                    parentNode = [parentNode parent];
+                    parentNode = parentNode.parent;
                     
                     for (NSXMLElement * editItem in editItemArray)
                     {
@@ -1328,7 +1326,7 @@
             }
         }
         
-        if ([editItemArray count] == 1)
+        if (editItemArray.count == 1)
         {
             NSFont * courierFont = [NSFont fontWithName:@"Courier New" size:14];
 
@@ -1344,24 +1342,24 @@
             [self.xmlTextEditView setAutomaticSpellingCorrectionEnabled:NO];
             [self.xmlTextEditView setAutomaticTextReplacementEnabled:NO];
         
-            [self.xmlTextEditView setFont:courierFont];
+            (self.xmlTextEditView).font = courierFont;
         
-            NSWindow * hostWindow = [self.macSVGDocumentWindowController window];
+            NSWindow * hostWindow = (self.macSVGDocumentWindowController).window;
             
-            NSXMLElement * firstElement = [editItemArray objectAtIndex:0];
+            NSXMLElement * firstElement = editItemArray[0];
             
             NSXMLNode * MacsvgidNode = [firstElement attributeForName:@"macsvgid"];
             
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
 
-            MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
             self.editElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
             NSUInteger xmlStringOptions = NSXMLNodePrettyPrint | NSXMLNodePreserveCDATA;
             
             NSString * xmlString = [self.editElement XMLStringWithOptions:xmlStringOptions];
             
-            [self.xmlTextEditView setString:xmlString];
+            (self.xmlTextEditView).string = xmlString;
             
             [hostWindow beginSheet:self.xmlTextEditSheet  completionHandler:^(NSModalResponse returnCode)
             {
@@ -1386,7 +1384,7 @@
 
 - (IBAction) applyEditXMLText:(id)sender
 {
-    NSString * xmlString = [self.xmlTextEditView string];
+    NSString * xmlString = (self.xmlTextEditView).string;
     
     NSError * xmlError = NULL;
     
@@ -1396,28 +1394,28 @@
     
     if (xmlError != NULL)
     {
-        NSString * errorString = [xmlError localizedDescription];
+        NSString * errorString = xmlError.localizedDescription;
         
         NSString * errorMessageString = [NSString stringWithFormat:@"Error: %@", errorString];
         
-        [self.editErrorTextField setStringValue:errorMessageString];
+        (self.editErrorTextField).stringValue = errorMessageString;
         
         NSBeep();
     }
     else
     {
-        MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
             
         [macSVGDocument pushUndoRedoDocumentChanges];
 
         [macSVGDocument assignNewMacsvgidsForNode:xmlElement];
 
-        NSXMLElement * parentElement = (NSXMLElement *)[self.editElement parent];
+        NSXMLElement * parentElement = (NSXMLElement *)(self.editElement).parent;
         
         if (parentElement != NULL)
         {
-            NSInteger childIndex = [self.editElement index];
+            NSInteger childIndex = (self.editElement).index;
             
             [parentElement replaceChildAtIndex:childIndex withNode:xmlElement];
         }
@@ -1426,7 +1424,7 @@
             [svgXmlDocument setRootElement:xmlElement];
         }
     
-        NSWindow * hostWindow = [self.macSVGDocumentWindowController window];
+        NSWindow * hostWindow = (self.macSVGDocumentWindowController).window;
         [hostWindow endSheet:self.xmlTextEditSheet returnCode:NSModalResponseContinue];
 
         [self.xmlTextEditSheet orderOut:sender];
@@ -1443,7 +1441,7 @@
 
 - (IBAction) cancelEditXMLText:(id)sender
 {
-    NSWindow * hostWindow = [self.macSVGDocumentWindowController window];
+    NSWindow * hostWindow = (self.macSVGDocumentWindowController).window;
     [hostWindow endSheet:self.xmlTextEditSheet returnCode:NSModalResponseCancel];
 
     [self.xmlTextEditSheet orderOut:sender];
@@ -1460,22 +1458,22 @@
     NSButton *targetButton = (NSButton *)sender;
     
     // configure the preferred position of the popover
-    [self.selectedElementsInfoPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [self.selectedElementsInfoPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 // ================================================================
 
 - (IBAction)visibilityCheckboxAction:(id)sender
 {
-    NSInteger clickedCol = [self.xmlOutlineView clickedColumn];
-    NSInteger clickedRow = [self.xmlOutlineView clickedRow];
+    NSInteger clickedCol = (self.xmlOutlineView).clickedColumn;
+    NSInteger clickedRow = (self.xmlOutlineView).clickedRow;
     if ((clickedRow >= 0) && (clickedCol >= 0)) 
     {
         NSCell * cell = [self.xmlOutlineView preparedCellAtColumn:clickedCol row:clickedRow];
-        if ([cell isKindOfClass:[NSButtonCell class]] && [cell isEnabled]) 
+        if ([cell isKindOfClass:[NSButtonCell class]] && cell.enabled) 
         {
             NSButtonCell * buttonCell = (id)cell;
-            NSInteger newState = [buttonCell state];
+            NSInteger newState = buttonCell.state;
             #pragma unused(newState)
 
             NSTableColumn * aTableColumn = [self.xmlOutlineView tableColumnWithIdentifier:COLUMNID_IS_VISIBLE];
@@ -1484,7 +1482,7 @@
             id item = [self.xmlOutlineView itemAtRow:clickedRow];
             
             NSXMLNode * nodeData = item;
-            NSXMLNodeKind nodeKind = [nodeData kind];
+            NSXMLNodeKind nodeKind = nodeData.kind;
             
             if (nodeKind ==  NSXMLElementKind)
             {
@@ -1492,25 +1490,25 @@
 
                 NSXMLElement * rowElement = (id)nodeData;
                 NSXMLNode * visibilityAttributeNode = [rowElement attributeForName:@"visibility"];
-                NSString * visibilityAttributeString = [visibilityAttributeNode stringValue];
+                NSString * visibilityAttributeString = visibilityAttributeNode.stringValue;
                 if (visibilityAttributeString != NULL)
                 {
                     if ([visibilityAttributeString isEqualToString:@"hidden"])
                     {
                         visibility = @"visible";
                     }
-                    [visibilityAttributeNode setStringValue:visibility];
+                    visibilityAttributeNode.stringValue = visibility;
                 }
                 else
                 {
                     visibilityAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [visibilityAttributeNode setName:@"visibility"];
-                    [visibilityAttributeNode setStringValue:visibility];
+                    visibilityAttributeNode.name = @"visibility";
+                    visibilityAttributeNode.stringValue = visibility;
                     [rowElement addAttribute:visibilityAttributeNode];
                 }
                 
                 NSXMLNode * MacsvgidNode = [rowElement attributeForName:@"macsvgid"];
-                NSString * macsvgid = [MacsvgidNode stringValue];
+                NSString * macsvgid = MacsvgidNode.stringValue;
                 
                 [self.macSVGDocumentWindowController setDOMVisibility:visibility forMacsvgid:macsvgid];
                 
@@ -1534,7 +1532,7 @@
     {
         [self.xmlOutlineView deselectRow:rowForItem];
     
-        NSArray * childNodesArray = [aXMLNode children];
+        NSArray * childNodesArray = aXMLNode.children;
         
         for (NSXMLNode * childXMLNode in childNodesArray)
         {
@@ -1592,10 +1590,10 @@
     
     for (NSMutableDictionary * elementDictionary in selectedElementsDictionariesArray)
     {
-        NSXMLElement * aXMLElement = [elementDictionary objectForKey:@"xmlElement"];
-        DOMElement * aDOMElement = [elementDictionary objectForKey:@"domElement"];
+        NSXMLElement * aXMLElement = elementDictionary[@"xmlElement"];
+        DOMElement * aDOMElement = elementDictionary[@"domElement"];
     
-        NSString * elementName = [aXMLElement name];
+        NSString * elementName = aXMLElement.name;
         
         BOOL nudgeXY = NO;
         BOOL nudgeX1Y1 = NO;
@@ -1649,18 +1647,18 @@
         if (nudgeXY == YES)
         {
             NSXMLNode * xAttributeNode = [aXMLElement attributeForName:@"x"];
-            NSString * xAttributeString = [xAttributeNode stringValue];
-            CGFloat xAttributeFloat = [xAttributeString floatValue];
+            NSString * xAttributeString = xAttributeNode.stringValue;
+            CGFloat xAttributeFloat = xAttributeString.floatValue;
             xAttributeFloat += deltaX;
             xAttributeString = [self allocPxString:xAttributeFloat];
-            [xAttributeNode setStringValue:xAttributeString];
+            xAttributeNode.stringValue = xAttributeString;
             
             NSXMLNode * yAttributeNode = [aXMLElement attributeForName:@"y"];
-            NSString * yAttributeString = [yAttributeNode stringValue];
-            CGFloat yAttributeFloat = [yAttributeString floatValue];
+            NSString * yAttributeString = yAttributeNode.stringValue;
+            CGFloat yAttributeFloat = yAttributeString.floatValue;
             yAttributeFloat += deltaY;
             yAttributeString = [self allocPxString:yAttributeFloat];
-            [yAttributeNode setStringValue:yAttributeString];
+            yAttributeNode.stringValue = yAttributeString;
             
             [aDOMElement setAttribute:@"x" value:xAttributeString];
             [aDOMElement setAttribute:@"y" value:yAttributeString];
@@ -1669,18 +1667,18 @@
         if (nudgeCxCy == YES)
         {
             NSXMLNode * cxAttributeNode = [aXMLElement attributeForName:@"cx"];
-            NSString * cxAttributeString = [cxAttributeNode stringValue];
-            CGFloat cxAttributeFloat = [cxAttributeString floatValue];
+            NSString * cxAttributeString = cxAttributeNode.stringValue;
+            CGFloat cxAttributeFloat = cxAttributeString.floatValue;
             cxAttributeFloat += deltaX;
             cxAttributeString = [self allocPxString:cxAttributeFloat];
-            [cxAttributeNode setStringValue:cxAttributeString];
+            cxAttributeNode.stringValue = cxAttributeString;
             
             NSXMLNode * cyAttributeNode = [aXMLElement attributeForName:@"cy"];
-            NSString * cyAttributeString = [cyAttributeNode stringValue];
-            CGFloat cyAttributeFloat = [cyAttributeString floatValue];
+            NSString * cyAttributeString = cyAttributeNode.stringValue;
+            CGFloat cyAttributeFloat = cyAttributeString.floatValue;
             cyAttributeFloat += deltaY;
             cyAttributeString = [self allocPxString:cyAttributeFloat];
-            [cyAttributeNode setStringValue:cyAttributeString];
+            cyAttributeNode.stringValue = cyAttributeString;
             
             [aDOMElement setAttribute:@"cx" value:cxAttributeString];
             [aDOMElement setAttribute:@"cy" value:cyAttributeString];
@@ -1689,18 +1687,18 @@
         if (nudgeX1Y1 == YES)
         {
             NSXMLNode * x1AttributeNode = [aXMLElement attributeForName:@"x1"];
-            NSString * x1AttributeString = [x1AttributeNode stringValue];
-            CGFloat x1AttributeFloat = [x1AttributeString floatValue];
+            NSString * x1AttributeString = x1AttributeNode.stringValue;
+            CGFloat x1AttributeFloat = x1AttributeString.floatValue;
             x1AttributeFloat += deltaX;
             x1AttributeString = [self allocPxString:x1AttributeFloat];
-            [x1AttributeNode setStringValue:x1AttributeString];
+            x1AttributeNode.stringValue = x1AttributeString;
             
             NSXMLNode * y1AttributeNode = [aXMLElement attributeForName:@"y1"];
-            NSString * y1AttributeString = [y1AttributeNode stringValue];
-            CGFloat y1AttributeFloat = [y1AttributeString floatValue];
+            NSString * y1AttributeString = y1AttributeNode.stringValue;
+            CGFloat y1AttributeFloat = y1AttributeString.floatValue;
             y1AttributeFloat += deltaY;
             y1AttributeString = [self allocPxString:y1AttributeFloat];
-            [y1AttributeNode setStringValue:y1AttributeString];
+            y1AttributeNode.stringValue = y1AttributeString;
             
             [aDOMElement setAttribute:@"x1" value:x1AttributeString];
             [aDOMElement setAttribute:@"y1" value:y1AttributeString];
@@ -1709,18 +1707,18 @@
         if (nudgeX2Y2 == YES)
         {
             NSXMLNode * x2AttributeNode = [aXMLElement attributeForName:@"x2"];
-            NSString * x2AttributeString = [x2AttributeNode stringValue];
-            CGFloat x2AttributeFloat = [x2AttributeString floatValue];
+            NSString * x2AttributeString = x2AttributeNode.stringValue;
+            CGFloat x2AttributeFloat = x2AttributeString.floatValue;
             x2AttributeFloat += deltaX;
             x2AttributeString = [self allocPxString:x2AttributeFloat];
-            [x2AttributeNode setStringValue:x2AttributeString];
+            x2AttributeNode.stringValue = x2AttributeString;
             
             NSXMLNode * y2AttributeNode = [aXMLElement attributeForName:@"y2"];
-            NSString * y2AttributeString = [y2AttributeNode stringValue];
-            CGFloat y2AttributeFloat = [y2AttributeString floatValue];
+            NSString * y2AttributeString = y2AttributeNode.stringValue;
+            CGFloat y2AttributeFloat = y2AttributeString.floatValue;
             y2AttributeFloat += deltaY;
             y2AttributeString = [self allocPxString:y2AttributeFloat];
-            [y2AttributeNode setStringValue:y2AttributeString];
+            y2AttributeNode.stringValue = y2AttributeString;
             
             [aDOMElement setAttribute:@"x2" value:x2AttributeString];
             [aDOMElement setAttribute:@"y2" value:y2AttributeString];
@@ -1743,18 +1741,18 @@
 
 - (void)nudgePathElement:(NSMutableDictionary *)pathElementDictionary deltaX:(CGFloat)deltaX deltaY:(CGFloat)deltaY
 {
-        NSXMLElement * aXMLElement = [pathElementDictionary objectForKey:@"xmlElement"];
-        DOMElement * aDOMElement = [pathElementDictionary objectForKey:@"domElement"];
+        NSXMLElement * aXMLElement = pathElementDictionary[@"xmlElement"];
+        DOMElement * aDOMElement = pathElementDictionary[@"domElement"];
 
         NSXMLNode * dAttributeNode = [aXMLElement attributeForName:@"d"];
-        NSString * dAttributeString = [dAttributeNode stringValue];
+        NSString * dAttributeString = dAttributeNode.stringValue;
 
         NSMutableArray * pathSegmentsArray = [self.macSVGDocumentWindowController.svgWebKitController
                 buildPathSegmentsArrayWithPathString:dAttributeString];
     
         for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
         {
-            NSString * commandString = [pathSegmentDictionary objectForKey:@"command"];
+            NSString * commandString = pathSegmentDictionary[@"command"];
             
             unichar commandCharacter = [commandString characterAtIndex:0];
 
@@ -1762,17 +1760,17 @@
             {
                 case 'M':     // moveto
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
                     break;    // no changes required
                 }
                 case 'm':     // moveto
@@ -1782,17 +1780,17 @@
                 
                 case 'L':     // lineto
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
                     break;
                 }
                 case 'l':     // lineto
@@ -1802,11 +1800,11 @@
 
                 case 'H':     // horizontal lineto
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
                     break;
                 }
                 case 'h':     // horizontal lineto
@@ -1816,11 +1814,11 @@
 
                 case 'V':     // vertical lineto
                 {
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
                     break;
                 }
                 case 'v':     // vertical lineto
@@ -1830,41 +1828,41 @@
 
                 case 'C':     // curveto
 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
 
-                    NSString * x1String = [pathSegmentDictionary objectForKey:@"x1"];
-                    CGFloat x1Float = [x1String floatValue];
+                    NSString * x1String = pathSegmentDictionary[@"x1"];
+                    CGFloat x1Float = x1String.floatValue;
                     x1Float += deltaX;
                     NSString * newX1String = [self allocFloatString:x1Float];
-                    [pathSegmentDictionary setObject:newX1String forKey:@"x1"];
+                    pathSegmentDictionary[@"x1"] = newX1String;
 
-                    NSString * y1String = [pathSegmentDictionary objectForKey:@"y1"];
-                    CGFloat y1Float = [y1String floatValue];
+                    NSString * y1String = pathSegmentDictionary[@"y1"];
+                    CGFloat y1Float = y1String.floatValue;
                     y1Float += deltaY;
                     NSString * newY1String = [self allocFloatString:y1Float];
-                    [pathSegmentDictionary setObject:newY1String forKey:@"y1"];
+                    pathSegmentDictionary[@"y1"] = newY1String;
 
-                    NSString * x2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    CGFloat x2Float = [x2String floatValue];
+                    NSString * x2String = pathSegmentDictionary[@"x2"];
+                    CGFloat x2Float = x2String.floatValue;
                     x2Float += deltaX;
                     NSString * newX2String = [self allocFloatString:x2Float];
-                    [pathSegmentDictionary setObject:newX2String forKey:@"x2"];
+                    pathSegmentDictionary[@"x2"] = newX2String;
 
-                    NSString * y2String = [pathSegmentDictionary objectForKey:@"y2"];
-                    CGFloat y2Float = [y2String floatValue];
+                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    CGFloat y2Float = y2String.floatValue;
                     y2Float += deltaY;
                     NSString * newY2String = [self allocFloatString:y2Float];
-                    [pathSegmentDictionary setObject:newY2String forKey:@"y2"];
+                    pathSegmentDictionary[@"y2"] = newY2String;
                     break;
                 }
                 case 'c':     // curveto
@@ -1874,29 +1872,29 @@
 
                 case 'S':     // smooth curveto
 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
 
-                    NSString * x2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    CGFloat x2Float = [x2String floatValue];
+                    NSString * x2String = pathSegmentDictionary[@"x2"];
+                    CGFloat x2Float = x2String.floatValue;
                     x2Float += deltaX;
                     NSString * newX2String = [self allocFloatString:x2Float];
-                    [pathSegmentDictionary setObject:newX2String forKey:@"x2"];
+                    pathSegmentDictionary[@"x2"] = newX2String;
 
-                    NSString * y2String = [pathSegmentDictionary objectForKey:@"y2"];
-                    CGFloat y2Float = [y2String floatValue];
+                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    CGFloat y2Float = y2String.floatValue;
                     y2Float += deltaY;
                     NSString * newY2String = [self allocFloatString:y2Float];
-                    [pathSegmentDictionary setObject:newY2String forKey:@"y2"];
+                    pathSegmentDictionary[@"y2"] = newY2String;
                     break;
                 }
                 case 's':     // smooth curveto
@@ -1906,29 +1904,29 @@
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
 
-                    NSString * x1String = [pathSegmentDictionary objectForKey:@"x1"];
-                    CGFloat x1Float = [x1String floatValue];
+                    NSString * x1String = pathSegmentDictionary[@"x1"];
+                    CGFloat x1Float = x1String.floatValue;
                     x1Float += deltaX;
                     NSString * newX1String = [self allocFloatString:x1Float];
-                    [pathSegmentDictionary setObject:newX1String forKey:@"x1"];
+                    pathSegmentDictionary[@"x1"] = newX1String;
 
-                    NSString * y1String = [pathSegmentDictionary objectForKey:@"y1"];
-                    CGFloat y1Float = [y1String floatValue];
+                    NSString * y1String = pathSegmentDictionary[@"y1"];
+                    CGFloat y1Float = y1String.floatValue;
                     y1Float += deltaY;
                     NSString * newY1String = [self allocFloatString:y1Float];
-                    [pathSegmentDictionary setObject:newY1String forKey:@"y1"];
+                    pathSegmentDictionary[@"y1"] = newY1String;
                     break;
                 }
                 case 'q':     // quadratic Bezier curve
@@ -1938,17 +1936,17 @@
 
                 case 'T':     // smooth quadratic Bezier curve
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
                     break;
                 }
 
@@ -1959,17 +1957,17 @@
 
                 case 'A':     // elliptical arc
                 {
-                    NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                    CGFloat xFloat = [xString floatValue];
+                    NSString * xString = pathSegmentDictionary[@"x"];
+                    CGFloat xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    [pathSegmentDictionary setObject:newXString forKey:@"x"];
+                    pathSegmentDictionary[@"x"] = newXString;
 
-                    NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
-                    CGFloat yFloat = [yString floatValue];
+                    NSString * yString = pathSegmentDictionary[@"y"];
+                    CGFloat yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    [pathSegmentDictionary setObject:newYString forKey:@"y"];
+                    pathSegmentDictionary[@"y"] = newYString;
                     break;
                 }
 
@@ -1987,7 +1985,7 @@
     NSString * newDAttributeString =
             [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController.svgPathEditor buildPathStringWithPathSegmentsArray:pathSegmentsArray];
     
-    [dAttributeNode setStringValue:newDAttributeString];
+    dAttributeNode.stringValue = newDAttributeString;
     
     [aDOMElement setAttribute:@"d" value:newDAttributeString];
 }
@@ -2011,10 +2009,10 @@
     id result = nil;
     if (item == nil) 
     {
-		MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+		MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
         NSXMLElement * rootElement = [svgXmlDocument rootElement];
-        result = [rootElement children];
+        result = rootElement.children;
     } 
     else 
     {
@@ -2039,7 +2037,7 @@
         NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
         nodeItem = [svgXmlDocument rootElement];
         
-        children = [NSArray arrayWithObject:nodeItem];
+        children = @[nodeItem];
     }
     else
     {
@@ -2047,7 +2045,7 @@
     }    
     
     // return NSXMLNode 
-    return [children objectAtIndex:index];
+    return children[index];
 }
 
 // ================================================================
@@ -2067,7 +2065,7 @@
     //if ([item isKindOfClass:[NSXMLElement class]])
     
     NSXMLNode * nodeItem = item;
-    if ([nodeItem kind] == NSXMLElementKind)
+    if (nodeItem.kind == NSXMLElementKind)
     {
         result = YES;
     }
@@ -2105,66 +2103,66 @@
     if (item == NULL)
     {
         // The return value from this method is used to configure the state of the items cell via setObjectValue:
-        if ((tableColumn == nil) || [[tableColumn identifier] isEqualToString:COLUMNID_ELEMENT_NAME]) 
+        if ((tableColumn == nil) || [tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME]) 
         {
             objectValue = @"svg";
         } 
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_IS_VISIBLE]) 
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE]) 
         {
             // set the state of a check box.
-            objectValue = [NSNumber numberWithBool:YES];
+            objectValue = @YES;
         } 
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_IS_LOCKED])
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_LOCKED])
         {
             // set the state of the check box.
-            objectValue = [NSNumber numberWithBool:NO];
+            objectValue = @NO;
         }
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_ICON]) 
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
         {
             //NSImage * iconImage = [NSImage imageNamed:@"folder.png"];
             
             //objectValue = iconImage;
             
-            objectValue = [NSNumber numberWithInteger:0];
+            objectValue = @0;
         }
     }
     else
     {
         NSXMLNode * nodeData = item;
-        NSXMLNodeKind nodeKind = [nodeData kind];
+        NSXMLNodeKind nodeKind = nodeData.kind;
         
         // The return value from this method is used to configure the state of the items cell via setObjectValue:
-        if ((tableColumn == nil) || [[tableColumn identifier] isEqualToString:COLUMNID_ELEMENT_NAME]) 
+        if ((tableColumn == nil) || [tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME]) 
         {
             if (nodeKind ==  NSXMLElementKind)
             {
-                NSString * elementName = [nodeData localName];
+                NSString * elementName = nodeData.localName;
                 NSString * idString = @"";
                 NSXMLElement * elementItem = item;
                 NSXMLNode * idNode = [elementItem attributeForName:@"id"];
                 if (idNode != NULL)
                 {
-                    NSString * idValue = [idNode stringValue];
+                    NSString * idValue = idNode.stringValue;
                     idString = [NSString stringWithFormat:@"id=\"%@\"", idValue];
                 }
                 objectValue = [NSString stringWithFormat:@"%@ %@", elementName, idString];
             }
             else if (nodeKind ==  NSXMLTextKind)
             {
-                NSString * stringValue = [nodeData stringValue];
+                NSString * stringValue = nodeData.stringValue;
                 NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
                         [NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
             }
             else if (nodeKind ==  NSXMLCommentKind)
             {
-                NSString * stringValue = [nodeData stringValue];
+                NSString * stringValue = nodeData.stringValue;
                 NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
                         [NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
             }
         } 
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_IS_VISIBLE]) 
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE]) 
         {
             // Here, object value will be used to set the state of a check box.
             BOOL visibility = YES;
@@ -2173,7 +2171,7 @@
             {
                 NSXMLElement * rowElement = (id)nodeData;
                 NSXMLNode * visibilityAttributeNode = [rowElement attributeForName:@"visibility"];
-                NSString * visibilityAttributeString = [visibilityAttributeNode stringValue];
+                NSString * visibilityAttributeString = visibilityAttributeNode.stringValue;
                 if (visibilityAttributeString != NULL)
                 {
                     if ([visibilityAttributeString isEqualToString:@"hidden"])
@@ -2189,10 +2187,10 @@
                         // Update the visibility checkboxes in child NSXMLNodes to match parent
                         // don't perform this part if dragging is active
                         // due to reloadItem: call will cancel dragging
-                        NSArray * childNodes = [rowElement children];
+                        NSArray * childNodes = rowElement.children;
                         for (NSXMLNode * aChildNode in childNodes)
                         {
-                            NSXMLNodeKind childNodeKind = [aChildNode kind];
+                            NSXMLNodeKind childNodeKind = aChildNode.kind;
                             
                             if (childNodeKind != NSXMLElementKind)
                             {
@@ -2209,13 +2207,13 @@
             }
             else
             {
-                NSXMLNode * parentNode = [nodeData parent];
-                NSXMLNodeKind parentNodeKind = [parentNode kind];
+                NSXMLNode * parentNode = nodeData.parent;
+                NSXMLNodeKind parentNodeKind = parentNode.kind;
                 if (parentNodeKind == NSXMLElementKind)
                 {
                     NSXMLElement * parentElement = (NSXMLElement *)parentNode;
                     NSXMLNode * parentVisibilityAttributeNode = [parentElement attributeForName:@"visibility"];
-                    NSString * parentVisibilityAttributeString = [parentVisibilityAttributeNode stringValue];
+                    NSString * parentVisibilityAttributeString = parentVisibilityAttributeNode.stringValue;
                     if (parentVisibilityAttributeString != NULL)
                     {
                         if ([parentVisibilityAttributeString isEqualToString:@"hidden"])
@@ -2226,18 +2224,18 @@
                 }
             }
 
-            objectValue = [NSNumber numberWithBool:visibility];
+            objectValue = @(visibility);
         } 
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_IS_LOCKED])
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_LOCKED])
         {
             // Again -- this object value will set the state of the check box.
-            objectValue = [NSNumber numberWithBool:NO];
+            objectValue = @NO;
         }
-        else if ([[tableColumn identifier] isEqualToString:COLUMNID_ICON]) 
+        else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
         {
             // Again -- this object value will set the state of the check box.
             NSXMLNode * nodeData = item;
-            NSXMLNodeKind nodeKind = [nodeData kind];
+            NSXMLNodeKind nodeKind = nodeData.kind;
             
             //NSImage * iconImage = NULL;
             
@@ -2245,39 +2243,39 @@
             {
                 //iconImage = [NSImage imageNamed:@"texticon.png"];
 
-                objectValue = [NSNumber numberWithInteger:2];
+                objectValue = @2;
             }
             else if (nodeKind == NSXMLCommentKind)
             {
                 //iconImage = [NSImage imageNamed:@"texticon.png"];
 
-                objectValue = [NSNumber numberWithInteger:2];
+                objectValue = @2;
             }
             else
             {
                 NSArray * selectedItems = [self.xmlOutlineView selectedItems];
-                if ([selectedItems count] > 0)
+                if (selectedItems.count > 0)
                 {
-                    NSXMLNode * firstSelectedItem = [selectedItems objectAtIndex:0];
+                    NSXMLNode * firstSelectedItem = selectedItems[0];
                     
                     if (firstSelectedItem == nodeData)
                     {
                         //iconImage = [NSImage imageNamed:@"target.png"];
 
-                        objectValue = [NSNumber numberWithInteger:1];
+                        objectValue = @1;
                     }
                     else
                     {
                         //iconImage = [NSImage imageNamed:@"folder.png"];
 
-                        objectValue = [NSNumber numberWithInteger:0];
+                        objectValue = @0;
                     }
                 }
                 else
                 {
                     //iconImage = [NSImage imageNamed:@"folder.png"];
 
-                    objectValue = [NSNumber numberWithInteger:0];
+                    objectValue = @0;
                 }
             }
             
@@ -2297,13 +2295,13 @@
 { 
     // If ImageAnTextCell class used, set image here
 
-    if ([[tableColumn identifier] isEqualToString:COLUMNID_IS_VISIBLE])
+    if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE])
     {
         BOOL checkboxVisibility = YES;
         
         NSXMLNode * xmlNode = item;
         
-        NSXMLNodeKind nodeKind = [xmlNode kind];
+        NSXMLNodeKind nodeKind = xmlNode.kind;
         
         if (nodeKind == NSXMLTextKind)
         {
@@ -2314,7 +2312,7 @@
              checkboxVisibility = NO;
         }
 
-        [cell setEnabled:checkboxVisibility];
+        cell.enabled = checkboxVisibility;
     }
 }
 
@@ -2330,12 +2328,12 @@
     
     // Control selection of a particular item. 
     BOOL result = YES;
-    NSInteger clickedCol = [self.xmlOutlineView clickedColumn];
-    NSInteger clickedRow = [self.xmlOutlineView clickedRow];
+    NSInteger clickedCol = (self.xmlOutlineView).clickedColumn;
+    NSInteger clickedRow = (self.xmlOutlineView).clickedRow;
     if (clickedRow >= 0 && clickedCol >= 0) 
     {
         NSCell * cell = [self.xmlOutlineView preparedCellAtColumn:clickedCol row:clickedRow];
-        if ([cell isKindOfClass:[NSButtonCell class]] && [cell isEnabled])
+        if ([cell isKindOfClass:[NSButtonCell class]] && cell.enabled)
         {
             result = NO;
         }            
@@ -2371,9 +2369,9 @@
         {
             // We can also take a peek and make sure that the part of the cell clicked is an area that is normally tracked. Otherwise, clicking outside of the checkbox may make it check the checkbox
             
-            NSRect cellFrame = [self.xmlOutlineView frameOfCellAtColumn:[[self.xmlOutlineView tableColumns] 
+            NSRect cellFrame = [self.xmlOutlineView frameOfCellAtColumn:[(self.xmlOutlineView).tableColumns 
                     indexOfObject:tableColumn] row:rowIdx];
-            NSUInteger hitTestResult = [cell hitTestForEvent:[NSApp currentEvent] inRect:cellFrame ofView:self.xmlOutlineView];
+            NSUInteger hitTestResult = [cell hitTestForEvent:NSApp.currentEvent inRect:cellFrame ofView:self.xmlOutlineView];
             if ((hitTestResult & NSCellHitTrackableArea) != 0) 
             {
                 result = YES;
@@ -2433,13 +2431,13 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 - (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items 
 {
     NSLog(@"XMLOutlineController - namesOfPromisedFilesDroppedAtDestination");
-    NSMutableArray *result = nil;
+    NSMutableArray *result = [NSMutableArray array];
     
-    for (NSInteger i = 0; i < [items count]; i++) 
+    for (NSInteger i = 0; i < items.count; i++) 
     {
-        NSString *filepath  = GenerateUniqueFileNameAtPath([dropDestination path], @"PromiseTestFile", @"txt");
+        NSString *filepath  = GenerateUniqueFileNameAtPath(dropDestination.path, @"PromiseTestFile", @"txt");
         // We write out the tree node's description
-        NSXMLNode *xmlNode = [items objectAtIndex:i];
+        NSXMLNode *xmlNode = items[i];
         
         NSString *itemString = [xmlNode XMLStringWithOptions:NSXMLNodePreserveCDATA];
         
@@ -2461,7 +2459,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     self.draggedNodes = items;
 
     // Provide data for our custom type, and simple NSStrings.
-    [pboard declareTypes:[NSArray arrayWithObjects:XML_OUTLINE_PBOARD_TYPE, NSStringPboardType, NSFilesPromisePboardType, nil] owner:self];
+    [pboard declareTypes:@[XML_OUTLINE_PBOARD_TYPE, NSStringPboardType, NSFilesPromisePboardType] owner:self];
 
     // the actual data doesn't matter since XML_OUTLINE_PBOARD_TYPE drags aren't recognized by anyone but us!.
     [pboard setData:[NSData data] forType:XML_OUTLINE_PBOARD_TYPE]; 
@@ -2475,7 +2473,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     [pboard setString:nodesString forType:NSStringPboardType];
             
     // Put the promised type we handle on the pasteboard.
-    [pboard setPropertyList:[NSArray arrayWithObjects:@"txt", nil] forType:NSFilesPromisePboardType];
+    [pboard setPropertyList:@[@"txt"] forType:NSFilesPromisePboardType];
 
     return YES;
 }
@@ -2493,7 +2491,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         {
             return YES;
         }
-        currentNode = [currentNode parent];
+        currentNode = currentNode.parent;
     }
     return NO;
 }
@@ -2520,10 +2518,10 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     
     NSMutableArray * pasteboardTypesArray = [NSMutableArray array];
     
-    NSArray * pasteboardItems = [draggingPasteboard pasteboardItems];
+    NSArray * pasteboardItems = draggingPasteboard.pasteboardItems;
     for (NSPasteboardItem * aPasteboardItem in pasteboardItems)
     {
-        NSArray * pasteboardTypes = [aPasteboardItem types];
+        NSArray * pasteboardTypes = aPasteboardItem.types;
         #pragma unused(pasteboardTypes)
         
         [pasteboardTypesArray addObjectsFromArray:pasteboardTypes];
@@ -2550,7 +2548,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     NSLog(@"numberOfValidItemsForDrop = %ld", numberOfValidItemsForDrop);
     */
 
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
 
@@ -2564,7 +2562,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     
     //NSLog(@"enter validateDrop - proposedParentTagName = %@", proposedParentTagName);
 
-    NSUInteger targetNodeKind = [targetNode kind];
+    NSUInteger targetNodeKind = targetNode.kind;
 
     BOOL destinationIsBetweenItems = NO;
     if (targetNodeKind == NSXMLElementKind)
@@ -2576,9 +2574,9 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         }
         else
         {
-            NSXMLNode * targetParent = [targetNode parent];
+            NSXMLNode * targetParent = targetNode.parent;
             
-            NSInteger newTargetChildIndex = [targetNode index] + 1;
+            NSInteger newTargetChildIndex = targetNode.index + 1;
             
             targetNode = targetParent;
             targetChildIndex = newTargetChildIndex;
@@ -2588,10 +2586,10 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     }
     else
     {
-        NSXMLNode * targetParent = [targetNode parent];
-        NSXMLNode * targetGrandparent = [targetParent parent];
+        NSXMLNode * targetParent = targetNode.parent;
+        NSXMLNode * targetGrandparent = targetParent.parent;
         
-        NSInteger newTargetChildIndex = [targetParent index] + 1;
+        NSInteger newTargetChildIndex = targetParent.index + 1;
     
         targetNode = targetGrandparent;
         targetChildIndex = newTargetChildIndex;
@@ -2607,7 +2605,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     {
         // Drag is originating from ourselves
         NSString * availableType = [draggingPasteboard
-                availableTypeFromArray:[NSArray arrayWithObject:XML_OUTLINE_PBOARD_TYPE]];
+                availableTypeFromArray:@[XML_OUTLINE_PBOARD_TYPE]];
         
         if ((targetNode != rootElement) && (availableType != nil)) 
         {
@@ -2629,7 +2627,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         NSString * xmlString = NULL;
         NSString * pasteboardType = NULL;
         
-        NSArray * pboardArray  = [NSArray arrayWithObject:XML_OUTLINE_PBOARD_TYPE];
+        NSArray * pboardArray  = @[XML_OUTLINE_PBOARD_TYPE];
         NSString * availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
         if ((draggingSource == self.xmlOutlineView) && (availableType != NULL))
@@ -2643,7 +2641,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             // Check for several types of pasteboard data, convert to XML string, then create nodes for insertion
         
             // Try for an pasteboard string, possibly an XML string
-            pboardArray  = [NSArray arrayWithObject:NSStringPboardType];
+            pboardArray  = @[NSStringPboardType];
             availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
             NSString * pasteboardString = [draggingPasteboard stringForType:NSStringPboardType];
 
@@ -2697,11 +2695,11 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                         
                         if (urlString != NULL)
                         {
-                            NSString * filename  = [urlString lastPathComponent];
+                            NSString * filename  = urlString.lastPathComponent;
                             
                             if (filename != nil) 
                             {
-                                NSUInteger filenameLength = [filename length];
+                                NSUInteger filenameLength = filename.length;
                                 
                                 NSRange suffixRange = [filename rangeOfString:@".svg"];
                                 if (suffixRange.location == filenameLength - 4)
@@ -2758,17 +2756,17 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (xmlString == nil) 
             {
                 // Try for an array of URL references to images or TrueType fonts
-                NSArray * pboardArray  = [NSArray arrayWithObject:NSURLPboardType];
+                NSArray * pboardArray  = @[NSURLPboardType];
                 NSString * availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
                 if (availableType != NULL)
                 {
                     NSString * filepath = [[draggingPasteboard propertyListForType:NSURLPboardType] lastObject];
-                    NSString * filename = [filepath lastPathComponent];
+                    NSString * filename = filepath.lastPathComponent;
                         
                     if (filename != nil) 
                     {
-                        NSUInteger filenameLength = [filename length];
+                        NSUInteger filenameLength = filename.length;
                         
                         NSRange suffixRange = [filename rangeOfString:@".svg"];
                         if (suffixRange.location == filenameLength - 4)
@@ -2823,17 +2821,17 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (xmlString == nil) 
             {
                 // Try for an array of filenames, perhaps dragged from finder, so we just grab one.
-                pboardArray  = [NSArray arrayWithObject:NSFilenamesPboardType];
+                pboardArray  = @[NSFilenamesPboardType];
                 availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
                 if (availableType != NULL)
                 {
                     NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-                    NSString * filename = [filepath lastPathComponent];
+                    NSString * filename = filepath.lastPathComponent;
                         
                     if (filename != nil) 
                     {
-                        NSUInteger filenameLength = [filename length];
+                        NSUInteger filenameLength = filename.length;
                         
                         NSRange suffixRange = [filename rangeOfString:@".svg"];
                         if (suffixRange.location == filenameLength - 4)
@@ -2888,7 +2886,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (xmlString == nil) 
             {
                 // Try for a TIFF image on the pasteboard, typically dragged from another app like a web browser window
-                pboardArray  = [NSArray arrayWithObject:NSTIFFPboardType];
+                pboardArray  = @[NSTIFFPboardType];
                 availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
                 if (availableType != NULL)
@@ -2933,7 +2931,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                 [macSVGDocument assignNewMacsvgidsForNode:newNode];
                         
                 // Finally, add it to the array of dragged items to insert
-                sourceNodes = [NSArray arrayWithObject:newNode];
+                sourceNodes = @[newNode];
             }
         }
     }
@@ -2958,18 +2956,18 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         
         if (checkDTDRules == YES)
         {
-            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
             NSDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
 
-            NSString * proposedParentTagName = [targetNode name];
+            NSString * proposedParentTagName = targetNode.name;
             
             for (NSXMLNode * aNode in sourceNodes) 
             {
-                NSString * sourceTagName = [aNode name];
+                NSString * sourceTagName = aNode.name;
                 
-                NSDictionary * allowedChildrenDictionary = [elementContentsDictionary objectForKey:proposedParentTagName];
-                NSDictionary * childTagDictionary = [allowedChildrenDictionary objectForKey:sourceTagName];
+                NSDictionary * allowedChildrenDictionary = elementContentsDictionary[proposedParentTagName];
+                NSDictionary * childTagDictionary = allowedChildrenDictionary[sourceTagName];
                 
                 if (childTagDictionary == NULL)
                 {
@@ -3049,7 +3047,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 {
     acceptingDrop = YES;
     
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     
     [macSVGDocument pushUndoRedoDocumentChanges];
 
@@ -3101,7 +3099,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             rowForItem:aXMLNode];
     [indexSet addIndex:itemIndex];
 
-    NSArray * childNodesArray = [aXMLNode children];
+    NSArray * childNodesArray = aXMLNode.children;
     for (NSXMLNode * aChildNode in childNodesArray)
     {
         [self recursiveAddIndex:indexSet forXMLNode:aChildNode];
@@ -3150,7 +3148,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aOutlineView = [aNotification object];
+	id aOutlineView = aNotification.object;
 	if (aOutlineView == self.xmlOutlineView)
 	{
         if (self.macSVGDocumentWindowController.creatingNewElement == NO)
@@ -3163,7 +3161,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         // moved from outlineViewAction
         // Usually a click to select an element or node
         NSArray * selectedNodes = [self selectedNodes];
-        unsigned long selectedNodesCount = [selectedNodes count];
+        unsigned long selectedNodesCount = selectedNodes.count;
 
         if (selectedNodesCount > 1) 
         {
@@ -3173,18 +3171,18 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
             // update attributes table view
             //id selectedNode = [selectedNodes objectAtIndex:0];
-            NSXMLNode * selectedNode = [selectedNodes objectAtIndex:0];
+            NSXMLNode * selectedNode = selectedNodes[0];
             
             NSString * context = @"element";
-            NSXMLNodeKind selectedNodeKind = [selectedNode kind];
+            NSXMLNodeKind selectedNodeKind = selectedNode.kind;
             if (selectedNodeKind == NSXMLTextKind)
             {
-                selectedNode = [selectedNode parent];
+                selectedNode = selectedNode.parent;
                 context = @"text";
             }
             [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
             
-            NSString * elementName = [selectedNode name];
+            NSString * elementName = selectedNode.name;
 
             //[self selectElement:selectedNode];
 
@@ -3201,19 +3199,19 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                     setSelectedXMLElements:selectedNodes];
 
             // update attributes table view
-            NSXMLNode * selectedNode = [selectedNodes objectAtIndex:0];
+            NSXMLNode * selectedNode = selectedNodes[0];
 
             NSString * context = @"element";
-            NSXMLNodeKind selectedNodeKind = [selectedNode kind];
+            NSXMLNodeKind selectedNodeKind = selectedNode.kind;
             if (selectedNodeKind == NSXMLTextKind)
             {
-                selectedNode = [selectedNode parent];
+                selectedNode = selectedNode.parent;
                 context = @"text";
             }
             
             [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
 
-            NSString * elementName = [selectedNode name];
+            NSString * elementName = selectedNode.name;
 
             //[self selectElement:selectedNode];
 
@@ -3336,7 +3334,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         
         result = NO;
         
-        MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         NSMutableArray * insertedXMLNodes = macSVGDocument.insertedXMLNodes;
         for (NSXMLNode * aXMLNode in insertedXMLNodes)
         {
@@ -3349,7 +3347,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                     break;
                 }
                 
-                parentNode = [parentNode parent];
+                parentNode = parentNode.parent;
             }
             
             if (result == YES)

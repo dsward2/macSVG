@@ -18,7 +18,7 @@
 
 
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -57,7 +57,7 @@
         [thePath moveToPoint:NSMakePoint(frameRect.size.width, y + 0.5)];
         [thePath lineToPoint:NSMakePoint(frameRect.size.width - markHeight, y + 0.5)];
 
-        [thePath setLineWidth:1.0];
+        thePath.lineWidth = 1.0;
 
         [thePath stroke];
     }

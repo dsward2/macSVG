@@ -22,7 +22,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -125,7 +125,7 @@
     
     if (iriReferenceFound == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
     
     return result;
@@ -152,12 +152,12 @@
 
 - (IBAction)setValueButtonAction:(id)sender
 {
-    NSString * attributeValueString = [iriReferenceComboBox stringValue];
+    NSString * attributeValueString = iriReferenceComboBox.stringValue;
 
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
     if (attributeNode != NULL)
     {
-        [attributeNode setStringValue:attributeValueString];
+        attributeNode.stringValue = attributeValueString;
     }
     
     [self updateDocumentViews];
@@ -176,7 +176,7 @@
             domElement:newPluginTargetDOMElement attributeName:newAttributeName
             existingValue:existingValue];
 
-    NSString * tagName = [newPluginTargetXMLElement name];
+    NSString * tagName = newPluginTargetXMLElement.name;
     
     NSString * elementName = NULL;
     
@@ -184,7 +184,7 @@
     NSXMLNode * idAttributeNode = [newPluginTargetXMLElement attributeForName:@"id"];
     if (idAttributeNode != NULL)
     {
-        idAttributeString = [idAttributeNode stringValue];
+        idAttributeString = idAttributeNode.stringValue;
     }
     
     if (idAttributeString != NULL)
@@ -196,11 +196,11 @@
         elementName = tagName;
     }
 
-    [elementNameTextField setStringValue:elementName];
+    elementNameTextField.stringValue = elementName;
 
-    [attributeNameTextField setStringValue:newAttributeName];
+    attributeNameTextField.stringValue = newAttributeName;
     
-    [iriReferenceComboBox setStringValue:existingValue];
+    iriReferenceComboBox.stringValue = existingValue;
     
     [self buildIRIReferencesArrayForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement
             attributeName:newAttributeName existingValue:existingValue];
@@ -219,7 +219,7 @@
 {
     NSString * xpathQuery = @"*";
 
-    NSString * elementName = [newPluginTargetXMLElement name];
+    NSString * elementName = newPluginTargetXMLElement.name;
 
     // check elements first
     if ([elementName isEqualToString:@"a"] == YES)
@@ -359,9 +359,9 @@
         
         if (idAttributeNode != NULL)
         {
-            NSString * idAttributeString = [idAttributeNode stringValue];
+            NSString * idAttributeString = idAttributeNode.stringValue;
             
-            if ([idAttributeString length] > 0)
+            if (idAttributeString.length > 0)
             {
                 [self.iriReferencesArray addObject:aXMLElement];
             }
@@ -375,7 +375,7 @@
 
 - (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
 {
-    NSInteger result = [self.iriReferencesArray count];
+    NSInteger result = (self.iriReferencesArray).count;
     
     return result;
 }
@@ -386,10 +386,10 @@
 
 - (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index
 {
-    NSXMLElement * validElement = [self.iriReferencesArray objectAtIndex:index];
+    NSXMLElement * validElement = (self.iriReferencesArray)[index];
     
     NSXMLNode * idAttributeNode = [validElement attributeForName:@"id"];
-    NSString * idAttributeString = [idAttributeNode stringValue];
+    NSString * idAttributeString = idAttributeNode.stringValue;
     
     NSString * result = [NSString stringWithFormat:@"url(#%@)", idAttributeString];
     

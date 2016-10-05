@@ -28,7 +28,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -46,7 +46,7 @@
 - (void)reloadData 
 {
     [timelineLabelsTableView reloadData];
-    [timelineLabelsTableView setNeedsDisplay:YES];
+    timelineLabelsTableView.needsDisplay = - 2;
 }
 
 //==================================================================================
@@ -64,7 +64,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [animationTimelineView.timelineElementsArray count];
+    return animationTimelineView.timelineElementsArray.count;
 }
 
 //==================================================================================
@@ -84,14 +84,14 @@
 {
     NSMutableArray * timelineElementsArray = animationTimelineView.timelineElementsArray;
     
-    AnimationTimelineElement * timelineElement = [timelineElementsArray objectAtIndex:rowIndex];
+    AnimationTimelineElement * timelineElement = timelineElementsArray[rowIndex];
     
     NSString * labelString = 
             [[NSString alloc] initWithFormat:@"%@ id=\"%@\"", timelineElement.tagName, timelineElement.elementID];
     
-    NSNumber * baselineOffset = [[NSNumber alloc] initWithFloat:-2.0f];
+    NSNumber * baselineOffset = @-2.0f;
     
-    NSDictionary * attributesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:baselineOffset, NSBaselineOffsetAttributeName, nil];
+    NSDictionary * attributesDictionary = @{NSBaselineOffsetAttributeName: baselineOffset};
     
     NSAttributedString * attributedString = 
             [[NSAttributedString alloc] initWithString:labelString attributes:attributesDictionary];
@@ -115,16 +115,15 @@
 
 - (void)syncToElementSelection
 {
-    NSInteger rowIndex = [timelineLabelsTableView selectedRow];
+    NSInteger rowIndex = timelineLabelsTableView.selectedRow;
 
     if (rowIndex != -1)
     {
-        AnimationTimelineElement * timelineElement = [animationTimelineView.timelineElementsArray 
-                objectAtIndex:rowIndex];
+        AnimationTimelineElement * timelineElement = (animationTimelineView.timelineElementsArray)[rowIndex];
 
         NSString * macsvgid = timelineElement.macsvgid;
         
-        MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
         
         NSXMLElement * xmlElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
         
@@ -133,7 +132,7 @@
         while (parentXMLElement != NULL)
         {
             [expandElementsArray insertObject:parentXMLElement atIndex:0];
-            parentXMLElement = (NSXMLElement *)[parentXMLElement parent];
+            parentXMLElement = (NSXMLElement *)parentXMLElement.parent;
         }
         
         for (NSXMLElement * expandElement in expandElementsArray)
@@ -143,7 +142,7 @@
         
         [macSVGDocumentWindowController.xmlOutlineController selectElement:xmlElement]; 
      
-        NSUInteger outlineRowIndex = [macSVGDocumentWindowController.xmlOutlineController.xmlOutlineView selectedRow];
+        NSUInteger outlineRowIndex = (macSVGDocumentWindowController.xmlOutlineController.xmlOutlineView).selectedRow;
         
         if (outlineRowIndex != -1)
         {
@@ -160,7 +159,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == timelineLabelsTableView)
 	{
 		[self syncToElementSelection];

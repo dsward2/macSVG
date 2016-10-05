@@ -89,7 +89,7 @@
 
 - (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray;
 
-- (NSMutableArray * )pathSegmentsArray;
+@property (readonly, copy) NSMutableArray *pathSegmentsArray;
 
 
 @end

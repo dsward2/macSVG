@@ -246,9 +246,9 @@
 - (void) reloadAttributesTableData;
 - (void) setAttributesForXMLNode:(NSXMLNode *)newSelectedNode;
 - (void) expandElementInOutline:(NSXMLElement *)aElement;
-- (NSMutableArray *)selectedElementsArray;
+@property (readonly, copy) NSMutableArray *selectedElementsArray;
 
-- (NSArray *)selectedItemsInOutlineView;
+@property (readonly, copy) NSArray *selectedItemsInOutlineView;
 
 - (void) updateXMLOutlineViewSelections;
 - (void) updateXMLTextContent:(NSString *)textContent macsvgid:(NSString *)macsvgid;
@@ -280,9 +280,9 @@
 - (IBAction)generateCoreGraphicsCode:(id)sender;
 - (IBAction)generateHTML5Video:(id)sender;
 
-- (NSString *)strokeColorString;
-- (NSString *)fillColorString;
-- (NSString *)strokeWidthString;
+@property (readonly, copy) NSString *strokeColorString;
+@property (readonly, copy) NSString *fillColorString;
+@property (readonly, copy) NSString *strokeWidthString;
 
 - (void)selectXMLElement:(NSXMLElement *)selectedElement;
 
@@ -301,7 +301,7 @@
 - (void)enableEditMenuItems;
 
 - (void) assignElementIDIfUnassigned:(NSXMLNode *)aNode;
-- (NSString *)newMacsvgid;
+@property (readonly, copy) NSString *newMacsvgid;
 
 - (void) revealElementInXMLOutline:(NSXMLElement *)aElement;
 

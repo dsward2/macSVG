@@ -212,7 +212,7 @@
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SFTP session: %@, %d",
                     sshErrorString, errorInt);
@@ -239,7 +239,7 @@
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SFTP output file: %@, %d",
                     sshErrorString, errorInt);
@@ -252,7 +252,7 @@
     
     fprintf(stderr, "libssh2_sftp_open() is done, now send data!\n");
 
-    NSInteger dataSize = [fileData length];
+    NSInteger dataSize = fileData.length;
     NSLog(@"dataSize = %ld", dataSize);
     off_t got=0;
 

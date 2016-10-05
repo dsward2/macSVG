@@ -22,7 +22,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -74,7 +74,7 @@
 {   
     NSString * result = NULL;
     
-    result = [self pluginName];
+    result = self.pluginName;
     
     return result;
 }
@@ -94,10 +94,10 @@
 
 - (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
+    NSString * attributeString = attributeNode.stringValue;
 
     NSString * resultUnit = NULL;
-    NSInteger attributeStringLength = [attributeString length];
+    NSInteger attributeStringLength = attributeString.length;
 
     NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
     
@@ -201,18 +201,18 @@
 
 - (IBAction)setValueButtonAction:(id)sender
 {
-    NSString * attributeValueString = [attributeValueTextField stringValue];
+    NSString * attributeValueString = attributeValueTextField.stringValue;
 
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
     if (attributeNode != NULL)
     {
-        NSString * attributeUnitString = [attributeUnitPopUpButton titleOfSelectedItem];
+        NSString * attributeUnitString = attributeUnitPopUpButton.titleOfSelectedItem;
         
         if (attributeUnitString == NULL) attributeUnitString = @"";
         
         NSString * valueAndUnitString = [NSString stringWithFormat:@"%@%@",
                 attributeValueString, attributeUnitString];
-        [attributeNode setStringValue:valueAndUnitString];
+        attributeNode.stringValue = valueAndUnitString;
     }
     
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
@@ -220,8 +220,8 @@
     
     if (aNumber != NULL)
     {
-        float attributeValueFloat = [attributeValueString floatValue];
-        [attributeStepper setFloatValue:attributeValueFloat];
+        float attributeValueFloat = attributeValueString.floatValue;
+        attributeStepper.floatValue = attributeValueFloat;
     }
 
     [self updateDocumentViews];
@@ -233,14 +233,14 @@
 
 - (IBAction)setDefinedValueButtonAction:(id)sender
 {
-    NSString * definedValueString = [definedValuePopUpButton titleOfSelectedItem];
+    NSString * definedValueString = definedValuePopUpButton.titleOfSelectedItem;
     
-    [attributeValueTextField setStringValue:definedValueString];
+    attributeValueTextField.stringValue = definedValueString;
 
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
     if (attributeNode != NULL)
     {
-        [attributeNode setStringValue:definedValueString];
+        attributeNode.stringValue = definedValueString;
     }
 
     [self updateDocumentViews];
@@ -252,9 +252,9 @@
 
 - (IBAction)definedValuePopUpButtonAction:(id)sender
 {
-    NSMenuItem * selectedItem = [definedValuePopUpButton selectedItem];
-    BOOL selectedItemIsEnabled = [selectedItem isEnabled];
-    [setDefinedValueButton setEnabled:selectedItemIsEnabled];
+    NSMenuItem * selectedItem = definedValuePopUpButton.selectedItem;
+    BOOL selectedItemIsEnabled = selectedItem.enabled;
+    setDefinedValueButton.enabled = selectedItemIsEnabled;
 }
 
 //==================================================================================
@@ -283,11 +283,11 @@
         stepperIncrement = 0.5f;
     }
     
-    [attributeStepper setMinValue:minStepperValue];
-    [attributeStepper setMaxValue:maxStepperValue];
-    [attributeStepper setIncrement:stepperIncrement];
+    attributeStepper.minValue = minStepperValue;
+    attributeStepper.maxValue = maxStepperValue;
+    attributeStepper.increment = stepperIncrement;
     
-    [attributeStepper setFloatValue:stepperFloatValue];
+    attributeStepper.floatValue = stepperFloatValue;
 }
 
 //==================================================================================
@@ -305,7 +305,7 @@
 
     [definedValuePopUpButton setAutoenablesItems:NO];
 
-    NSString * tagName = [newPluginTargetXMLElement name];
+    NSString * tagName = newPluginTargetXMLElement.name;
     
     NSString * elementName = NULL;
     
@@ -313,7 +313,7 @@
     NSXMLNode * idAttributeNode = [newPluginTargetXMLElement attributeForName:@"id"];
     if (idAttributeNode != NULL)
     {
-        idAttributeString = [idAttributeNode stringValue];
+        idAttributeString = idAttributeNode.stringValue;
     }
     
     if (idAttributeString != NULL)
@@ -325,9 +325,9 @@
         elementName = tagName;
     }
 
-    [elementNameTextField setStringValue:elementName];
+    elementNameTextField.stringValue = elementName;
 
-    [attributeNameTextField setStringValue:newAttributeName];
+    attributeNameTextField.stringValue = newAttributeName;
     
     NSMutableString * textFieldValue = [NSMutableString stringWithString:existingValue];
     
@@ -340,16 +340,16 @@
         if ([valueUnit isEqualToString:@""] == NO)
         {
             NSRange lastCharactersRange = NSMakeRange(NSNotFound, NSNotFound);
-            NSInteger attributeStringLength = [textFieldValue length];
+            NSInteger attributeStringLength = textFieldValue.length;
             if (attributeStringLength >= 2)
             {
-                NSInteger valueUnitLength = [valueUnit length];
+                NSInteger valueUnitLength = valueUnit.length;
                 lastCharactersRange = NSMakeRange(attributeStringLength - valueUnitLength, valueUnitLength);
                 [textFieldValue deleteCharactersInRange:lastCharactersRange];
             }
         }
         
-        float existingValueFloat = [textFieldValue floatValue];
+        float existingValueFloat = textFieldValue.floatValue;
         [self setStepperFloatValue:existingValueFloat attributeName:newAttributeName];
     }
     else
@@ -358,30 +358,30 @@
         //NSLog(@"beginEditForXMLElement:domElement:attributeName:existingValue: - missing attribute node");
     }
     
-    [attributeValueTextField setStringValue:textFieldValue];
+    attributeValueTextField.stringValue = textFieldValue;
     
     [definedValuePopUpButton removeAllItems];
     
     BOOL definedItemsFound = NO;
     
-    NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:tagName];
+    NSDictionary * aElementDictionary = (self.elementsDictionary)[tagName];
     if (aElementDictionary != NULL)
     {
-        NSDictionary * elementAttributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * elementAttributesDictionary = aElementDictionary[@"attributes"];
         
         if (elementAttributesDictionary != NULL)
         {
-            NSDictionary * aAttributeDictionary = [elementAttributesDictionary objectForKey:newAttributeName];
+            NSDictionary * aAttributeDictionary = elementAttributesDictionary[newAttributeName];
             
             if (aAttributeDictionary != NULL)
             {
-                NSArray * defaultValuesArray = [aAttributeDictionary objectForKey:@"default_value"];
+                NSArray * defaultValuesArray = aAttributeDictionary[@"default_value"];
                 
                 if (defaultValuesArray != NULL)
                 {
                     for (NSString * aDefaultValue in defaultValuesArray)
                     {
-                        if ([aDefaultValue length] > 0)
+                        if (aDefaultValue.length > 0)
                         {
                             NSMenuItem * existingMenuItem = [definedValuePopUpButton itemWithTitle:aDefaultValue];
                             
@@ -416,16 +416,16 @@
                     }
                 }
 
-                NSArray * definedValuesArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                NSArray * definedValuesArray = aAttributeDictionary[@"attribute_type"];
                 if (definedValuesArray != NULL)
                 {
-                    NSInteger definedValuesArrayCount = [definedValuesArray count];
+                    NSInteger definedValuesArrayCount = definedValuesArray.count;
                     
                     if (definedValuesArrayCount > 0)
                     {
                         for (NSString * valueString in definedValuesArray)
                         {
-                            if ([valueString length] > 0)
+                            if (valueString.length > 0)
                             {
                                 NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:valueString];
                                 
@@ -481,9 +481,9 @@
         [aMenuItem setEnabled:NO];
     }
     
-    NSMenuItem * selectedItem = [definedValuePopUpButton selectedItem];
-    BOOL selectedItemIsEnabled = [selectedItem isEnabled];
-    [setDefinedValueButton setEnabled:selectedItemIsEnabled];
+    NSMenuItem * selectedItem = definedValuePopUpButton.selectedItem;
+    BOOL selectedItemIsEnabled = selectedItem.enabled;
+    setDefinedValueButton.enabled = selectedItemIsEnabled;
 
     return result;
 }
@@ -494,14 +494,14 @@
 
 - (IBAction)attributeStepperAction:(id)sender
 {
-    NSString * attributeValueString = [attributeValueTextField stringValue];
+    NSString * attributeValueString = attributeValueTextField.stringValue;
     
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     NSNumber * aNumber = [numberFormatter numberFromString:attributeValueString];
     
     if (aNumber != NULL)
     {
-        [attributeValueTextField setStringValue:[attributeStepper stringValue]];
+        attributeValueTextField.stringValue = attributeStepper.stringValue;
 
         [self setValueButtonAction:self];
     }

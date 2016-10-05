@@ -12,14 +12,13 @@
     NSColor * color2 = [NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0];
     NSColor * color3 = [NSColor colorWithCalibratedRed:0.8 green:0.8 blue:0.8 alpha:1.0];
     NSColor * color4 = [NSColor colorWithCalibratedRed:0.85 green:0.85 blue:0.85 alpha:1.0];
-    NSArray * colorArray = [NSArray arrayWithObjects: 
-            color1, color2, color3, color4, color4, color3, color2, color1, nil];
+    NSArray * colorArray = @[color1, color2, color3, color4, color4, color3, color2, color1];
     gradient = [[NSGradient alloc] initWithColors:colorArray];
 }
 
 // ============================================================================
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {    
     self = [super initWithCoder:decoder];
     if (self) 
@@ -31,7 +30,7 @@
 
 // ============================================================================
 
-- (id)initWithFrame:(NSRect)frame 
+- (instancetype)initWithFrame:(NSRect)frame 
 {
     self = [super initWithFrame:frame];
     if (self) 
@@ -70,7 +69,7 @@
 
 - (void)drawRect:(NSRect)rect 
 {
-    [gradient drawInRect:[self bounds] angle:angle];
+    [gradient drawInRect:self.bounds angle:angle];
 }
 
 // ============================================================================

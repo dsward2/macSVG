@@ -33,7 +33,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -64,7 +64,7 @@
 
     if ([elementName isEqualToString:@"animateMotion"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
 
     return result;
@@ -83,15 +83,15 @@
     {
         if ([attributeName isEqualToString:@"values"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
         else if ([attributeName isEqualToString:@"from"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
         else if ([attributeName isEqualToString:@"to"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
     
@@ -153,7 +153,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -190,14 +190,14 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = [NSString stringWithFormat:@"%f", attributeFloat];
     
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -239,7 +239,7 @@
     NSXMLNode * aAttributeNode = [aElement attributeForName:attributeName];
     if (aAttributeNode != NULL)
     {
-        attributeValue = [aAttributeNode stringValue];
+        attributeValue = aAttributeNode.stringValue;
     }
     
     id popUpButtonItem = [aPopUpButton itemWithTitle:attributeValue];
@@ -262,10 +262,10 @@
     NSXMLNode * aAttributeNode = [aElement attributeForName:attributeName];
     if (aAttributeNode != NULL)
     {
-        attributeValue = [aAttributeNode stringValue];
+        attributeValue = aAttributeNode.stringValue;
     }
     
-    [aComboBox setStringValue:attributeValue];
+    aComboBox.stringValue = attributeValue;
 }
 
 //==================================================================================
@@ -279,10 +279,10 @@
     NSXMLNode * aAttributeNode = [aElement attributeForName:attributeName];
     if (aAttributeNode != NULL)
     {
-        attributeValue = [aAttributeNode stringValue];
+        attributeValue = aAttributeNode.stringValue;
     }
     
-    [aTextField setStringValue:attributeValue];
+    aTextField.stringValue = attributeValue;
 }
 
 //==================================================================================
@@ -302,35 +302,35 @@
 
     [self setAttribute:@"begin" element:animateMotionElement textField:beginTextField];
 
-    [fromXTextField setStringValue:@""];
-    [fromYTextField setStringValue:@""];
+    fromXTextField.stringValue = @"";
+    fromYTextField.stringValue = @"";
     NSXMLNode * fromAttributeNode = [animateMotionElement attributeForName:@"from"];
     if (fromAttributeNode != NULL)
     {
-        NSString * fromAttributeValue = [fromAttributeNode stringValue];
+        NSString * fromAttributeValue = fromAttributeNode.stringValue;
         NSArray * fromAttributeArray = [fromAttributeValue componentsSeparatedByString:@" "];
-        if ([fromAttributeArray count] > 1)
+        if (fromAttributeArray.count > 1)
         {
-            NSString * fromXAttributeValue = [fromAttributeArray objectAtIndex:0];
-            NSString * fromYAttributeValue = [fromAttributeArray objectAtIndex:1];
-            [fromXTextField setStringValue:fromXAttributeValue];
-            [fromYTextField setStringValue:fromYAttributeValue];
+            NSString * fromXAttributeValue = fromAttributeArray[0];
+            NSString * fromYAttributeValue = fromAttributeArray[1];
+            fromXTextField.stringValue = fromXAttributeValue;
+            fromYTextField.stringValue = fromYAttributeValue;
         }
     }
 
-    [toXTextField setStringValue:@""];
-    [toYTextField setStringValue:@""];
+    toXTextField.stringValue = @"";
+    toYTextField.stringValue = @"";
     NSXMLNode * toAttributeNode = [animateMotionElement attributeForName:@"to"];
     if (toAttributeNode != NULL)
     {
-        NSString * toAttributeValue = [toAttributeNode stringValue];
+        NSString * toAttributeValue = toAttributeNode.stringValue;
         NSArray * toAttributeArray = [toAttributeValue componentsSeparatedByString:@" "];
-        if ([toAttributeArray count] > 1)
+        if (toAttributeArray.count > 1)
         {
-            NSString * toXAttributeValue = [toAttributeArray objectAtIndex:0];
-            NSString * toYAttributeValue = [toAttributeArray objectAtIndex:1];
-            [toXTextField setStringValue:toXAttributeValue];
-            [toYTextField setStringValue:toYAttributeValue];
+            NSString * toXAttributeValue = toAttributeArray[0];
+            NSString * toYAttributeValue = toAttributeArray[1];
+            toXTextField.stringValue = toXAttributeValue;
+            toYTextField.stringValue = toYAttributeValue;
             
             [animateMotionTabView selectTabViewItemAtIndex:0];
         }
@@ -348,39 +348,39 @@
         [animateMotionTabView selectTabViewItemAtIndex:1];
     }
 
-    [pathTextField setStringValue:@""];
+    pathTextField.stringValue = @"";
     NSXMLNode * pathAttributeNode = [animateMotionElement attributeForName:@"path"];
     if (pathAttributeNode != NULL)
     {
-        NSString * pathAttributeValue = [pathAttributeNode stringValue];
-        [pathTextField setStringValue:pathAttributeValue];
+        NSString * pathAttributeValue = pathAttributeNode.stringValue;
+        pathTextField.stringValue = pathAttributeValue;
         
         [animateMotionTabView selectTabViewItemAtIndex:2];
     }
 
-    [pathRotateComboBox setStringValue:@""];
-    [mpathRotateComboBox setStringValue:@""];
+    pathRotateComboBox.stringValue = @"";
+    mpathRotateComboBox.stringValue = @"";
     NSXMLNode * rotateAttributeNode = [animateMotionElement attributeForName:@"rotate"];
     if (rotateAttributeNode != NULL)
     {
-        NSString * rotateAttributeValue = [rotateAttributeNode stringValue];
-        [pathRotateComboBox setStringValue:rotateAttributeValue];
-        [mpathRotateComboBox setStringValue:rotateAttributeValue];
+        NSString * rotateAttributeValue = rotateAttributeNode.stringValue;
+        pathRotateComboBox.stringValue = rotateAttributeValue;
+        mpathRotateComboBox.stringValue = rotateAttributeValue;
     }
 
     [self loadMpathOptions];
     [mpathPopUpButton selectItemWithTitle:@""];
     NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
-    if ([mpathElementsArray count] == 1)
+    if (mpathElementsArray.count == 1)
     {
-        NSXMLElement * mpathElement = [mpathElementsArray objectAtIndex:0];
+        NSXMLElement * mpathElement = mpathElementsArray[0];
         NSXMLNode * mpathXlinkHrefAttributeNode = [mpathElement attributeForName:@"xlink:href"];
         if (mpathXlinkHrefAttributeNode != NULL)
         {
-            NSString * mpathXlinkHrefAttributeValue = [mpathXlinkHrefAttributeNode stringValue];
+            NSString * mpathXlinkHrefAttributeValue = mpathXlinkHrefAttributeNode.stringValue;
             
             NSMutableString * xlinkHrefString = [NSMutableString stringWithString:mpathXlinkHrefAttributeValue];
-            NSInteger xlinkHrefStringLength = [xlinkHrefString length];
+            NSInteger xlinkHrefStringLength = xlinkHrefString.length;
             
             NSRange startURLRange = [xlinkHrefString rangeOfString:@"url("];
             if (startURLRange.location == 0)
@@ -396,7 +396,7 @@
                 }
             }
             
-            xlinkHrefStringLength = [xlinkHrefString length];
+            xlinkHrefStringLength = xlinkHrefString.length;
             if (xlinkHrefStringLength > 1)
             {
                 unichar firstCharacter = [xlinkHrefString characterAtIndex:0];
@@ -428,14 +428,14 @@
 {
     self.valuesArray = [NSMutableArray array];
 
-    [valuesTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    valuesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
 
-    while([[valuesTableView tableColumns] count] > 0)
+    while(valuesTableView.tableColumns.count > 0)
     {
-        [valuesTableView removeTableColumn:[[valuesTableView tableColumns] lastObject]];
+        [valuesTableView removeTableColumn:valuesTableView.tableColumns.lastObject];
     }
     
-    [valuesTableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    valuesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
     
     NSTableColumn * indexTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"#"];
     indexTableColumn.title = @"#";
@@ -467,7 +467,7 @@
     NSXMLNode * valuesAttributeNode = [animateMotionElement attributeForName:@"values"];
     if (valuesAttributeNode != NULL)
     {
-        NSString * valuesAttributeString = [valuesAttributeNode stringValue];
+        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
         
         NSArray * valueRowsArray = [valuesAttributeString componentsSeparatedByString:@";"];
         
@@ -476,7 +476,7 @@
             NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
             NSString * trimmedValuesString = [aValuesString stringByTrimmingCharactersInSet:whitespaceSet];
 
-            NSInteger aValuesStringLength = [trimmedValuesString length];
+            NSInteger aValuesStringLength = trimmedValuesString.length;
         
             if (aValuesStringLength > 0)
             {
@@ -522,7 +522,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.valuesArray count];
+    return (self.valuesArray).count;
 }
 
 //==================================================================================
@@ -538,11 +538,11 @@
     
     stringValue = [stringValue copy];
     
-    if (rowIndex <= ([self.valuesArray count] - 1))
+    if (rowIndex <= ((self.valuesArray).count - 1))
     {
-        NSMutableArray * rowArray = [self.valuesArray objectAtIndex:rowIndex];
+        NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
         
-        [rowArray replaceObjectAtIndex:(columnIndex - 1) withObject:stringValue];
+        rowArray[(columnIndex - 1)] = stringValue;
         
         NSTextField * textField = sender;
         textField.backgroundColor = [NSColor clearColor];
@@ -633,11 +633,11 @@
 
     if (resultView == nil)
     {
-        resultView = [[NSTextField alloc] initWithFrame:[tableView frame]];
-        resultView.identifier = [tableColumn identifier];
+        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
+        resultView.identifier = tableColumn.identifier;
         resultView.font = [NSFont systemFontOfSize:10];
         resultView.bordered = NO;
-        [resultView setBackgroundColor:[NSColor clearColor]];
+        resultView.backgroundColor = [NSColor clearColor];
     }
 
     NSString * resultString = @"";
@@ -654,21 +654,21 @@
         resultView.editable = YES;
         resultView.delegate = self;
         
-        NSArray * rowArray = [self.valuesArray objectAtIndex:row];
-        NSInteger rowArrayCount = [rowArray count];
+        NSArray * rowArray = (self.valuesArray)[row];
+        NSInteger rowArrayCount = rowArray.count;
 
         if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
         {
             if (rowArrayCount > 0)
             {
-                resultString = [rowArray objectAtIndex:0];
+                resultString = rowArray[0];
             }
         }
         else if ([tableColumnIdentifier isEqualToString:@"y"] == YES)
         {
             if (rowArrayCount > 1)
             {
-                resultString = [rowArray objectAtIndex:1];
+                resultString = rowArray[1];
             }
         }
     }
@@ -694,8 +694,8 @@
         NSXMLNode * pathIDAttributeNode = [aPathElement attributeForName:@"id"];
         if (pathIDAttributeNode != NULL)
         {
-            NSString * pathIDString = [pathIDAttributeNode stringValue];
-            if ([pathIDString length] > 0)
+            NSString * pathIDString = pathIDAttributeNode.stringValue;
+            if (pathIDString.length > 0)
             {
                 [mpathPopUpButton addItemWithTitle:pathIDString];
             }
@@ -859,7 +859,7 @@
 - (void)setAttributeName:(NSString *)attributeName value:(NSString *)attributeValue element:(NSXMLElement *)aElement
 {
     NSXMLNode * attributeNode = [aElement attributeForName:attributeName];
-    if ([attributeValue length] == 0)
+    if (attributeValue.length == 0)
     {
         if (attributeNode != NULL)
         {
@@ -871,11 +871,11 @@
         if (attributeNode == NULL)
         {
             attributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [attributeNode setName:attributeName];
-            [attributeNode setStringValue:@""];
+            attributeNode.name = attributeName;
+            attributeNode.stringValue = @"";
             [aElement addAttribute:attributeNode];
         }
-        [attributeNode setStringValue:attributeValue];
+        attributeNode.stringValue = attributeValue;
     }
 }
 
@@ -887,23 +887,23 @@
 {
     NSXMLElement * animateMotionElement = self.pluginTargetXMLElement;
     
-    NSString * calcModeString = [calcModePopUpButton titleOfSelectedItem];
-    NSString * beginString = [beginTextField stringValue];
-    NSString * durString = [durTextField stringValue];
-    NSString * repeatCountString = [repeatCountComboBox stringValue];
+    NSString * calcModeString = calcModePopUpButton.titleOfSelectedItem;
+    NSString * beginString = beginTextField.stringValue;
+    NSString * durString = durTextField.stringValue;
+    NSString * repeatCountString = repeatCountComboBox.stringValue;
     
-    NSTabViewItem * animateMotionTabViewItem = [animateMotionTabView selectedTabViewItem];
+    NSTabViewItem * animateMotionTabViewItem = animateMotionTabView.selectedTabViewItem;
     NSInteger animateMotionTabIndex = [animateMotionTabView indexOfTabViewItem:animateMotionTabViewItem];
     
-    NSString * fromXString = [fromXTextField stringValue];
-    NSString * fromYString = [fromYTextField stringValue];
-    NSString * toXString = [toXTextField stringValue];
-    NSString * toYString = [toYTextField stringValue];
+    NSString * fromXString = fromXTextField.stringValue;
+    NSString * fromYString = fromYTextField.stringValue;
+    NSString * toXString = toXTextField.stringValue;
+    NSString * toYString = toYTextField.stringValue;
     
     NSMutableString * valuesString = [NSMutableString string];
     for (NSArray * rowArray in self.valuesArray)
     {
-        NSInteger rowArrayCount = [rowArray count];
+        NSInteger rowArrayCount = rowArray.count;
         NSInteger indexOfObject = 0;
         for (NSString * columnString in rowArray)
         {
@@ -922,10 +922,10 @@
         }
     }
 
-    NSString * pathString = [pathTextField stringValue];
-    NSString * pathRotateString = [pathRotateComboBox stringValue];
-    NSString * mpathString = [mpathPopUpButton titleOfSelectedItem];
-    NSString * mpathRotateString = [mpathRotateComboBox stringValue];
+    NSString * pathString = pathTextField.stringValue;
+    NSString * pathRotateString = pathRotateComboBox.stringValue;
+    NSString * mpathString = mpathPopUpButton.titleOfSelectedItem;
+    NSString * mpathRotateString = mpathRotateComboBox.stringValue;
     
     [self setAttributeName:@"calcMode" value:calcModeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"begin" value:beginString element:self.pluginTargetXMLElement];
@@ -946,7 +946,7 @@
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
             {
-                [animateMotionElement removeChildAtIndex:[aMpathElement index]];
+                [animateMotionElement removeChildAtIndex:aMpathElement.index];
             }
             break;
         }
@@ -960,7 +960,7 @@
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
             {
-                [animateMotionElement removeChildAtIndex:[aMpathElement index]];
+                [animateMotionElement removeChildAtIndex:aMpathElement.index];
             }
             break;
         }
@@ -974,7 +974,7 @@
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
             {
-                [animateMotionElement removeChildAtIndex:[aMpathElement index]];
+                [animateMotionElement removeChildAtIndex:aMpathElement.index];
             }
             break;
         }
@@ -987,15 +987,15 @@
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
             {
-                [animateMotionElement removeChildAtIndex:[aMpathElement index]];
+                [animateMotionElement removeChildAtIndex:aMpathElement.index];
             }
             NSXMLElement * newMpathElement = [[NSXMLElement alloc] init];
-            [newMpathElement setName:@"mpath"];
+            newMpathElement.name = @"mpath";
             [self assignMacsvgidsForNode:newMpathElement];
             NSXMLNode * newXlinkHrefAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [newXlinkHrefAttribute setName:@"xlink:href"];
+            newXlinkHrefAttribute.name = @"xlink:href";
             NSString * mpathXlinkHrefString = [NSString stringWithFormat:@"#%@", mpathString];
-            [newXlinkHrefAttribute setStringValue:mpathXlinkHrefString];
+            newXlinkHrefAttribute.stringValue = mpathXlinkHrefString;
             [newMpathElement addAttribute:newXlinkHrefAttribute];
             [animateMotionElement addChild:newMpathElement];
             [self setAttributeName:@"rotate" value:mpathRotateString element:self.pluginTargetXMLElement];
@@ -1013,26 +1013,26 @@
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
-        NSString * keyTimesString = [keyValuesDictionary objectForKey:@"keyTimes"];
-        NSString * keySplinesString = [keyValuesDictionary objectForKey:@"keySplines"];
-        NSString * keyPointsString = [keyValuesDictionary objectForKey:@"keyPoints"];
+        NSString * keyTimesString = keyValuesDictionary[@"keyTimes"];
+        NSString * keySplinesString = keyValuesDictionary[@"keySplines"];
+        NSString * keyPointsString = keyValuesDictionary[@"keyPoints"];
         
-        if ([keyTimesString length] > 0)
+        if (keyTimesString.length > 0)
         {
             [keyTimesAttributeString appendFormat:@"%@;", keyTimesString];
         }
         
-        if ([keySplinesString length] > 0)
+        if (keySplinesString.length > 0)
         {
             // apparent webkit bug - don't end last spline with semicolon
-            if ([keySplinesAttributeString length] > 0)
+            if (keySplinesAttributeString.length > 0)
             {
                 [keySplinesAttributeString appendString:@";"];
             }
             [keySplinesAttributeString appendString:keySplinesString];
         }
         
-        if ([keyPointsString length] > 0)
+        if (keyPointsString.length > 0)
         {
             [keyPointsAttributeString appendFormat:@"%@;", keyPointsString];
         }
@@ -1057,7 +1057,7 @@
     [keyValuesPopoverViewController loadKeyValuesData];
     
     // configure the preferred position of the popover
-    [keyValuesPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 //==================================================================================
@@ -1066,13 +1066,13 @@
 
 - (IBAction)addValuesRow:(id)sender
 {
-    NSInteger selectedRow = [valuesTableView selectedRow];
+    NSInteger selectedRow = valuesTableView.selectedRow;
     
     NSMutableArray * selectedRowArray = NULL;
     
     if (selectedRow >= 0)
     {
-        selectedRowArray = [self.valuesArray objectAtIndex:selectedRow];
+        selectedRowArray = (self.valuesArray)[selectedRow];
     }
     else
     {
@@ -1102,7 +1102,7 @@
 
 - (IBAction)deleteValuesRow:(id)sender
 {
-    NSInteger selectedRow = [valuesTableView selectedRow];
+    NSInteger selectedRow = valuesTableView.selectedRow;
 
     if (selectedRow >= 0)
     {

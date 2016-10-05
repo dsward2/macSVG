@@ -28,8 +28,7 @@
 
 - (void)buildAttributesTableForElement;
 
-- (NSXMLElement *)xmlElementForAttributesTable;
-- (void)setXmlElementForAttributesTable:(NSXMLElement *)selectedElement;
+@property (copy) NSXMLElement *xmlElementForAttributesTable;
 - (void)unsetXmlElementForAttributesTable;
 
 @end

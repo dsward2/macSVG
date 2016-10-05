@@ -14,7 +14,7 @@
 {
 	//HTTPLogTrace();
     
-	return [NSDictionary dictionaryWithObject:@"image/svg+xml" forKey:@"Content-Type"];
+	return @{@"Content-Type": @"image/svg+xml"};
 }
 
 

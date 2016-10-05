@@ -15,7 +15,7 @@
 
 @implementation BezierCircleGeneratorWindowController
 
-- (id)initWithWindow:(NSWindow *)window
+- (instancetype)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
     if (self) {
@@ -34,15 +34,15 @@
 
 - (IBAction)generateBezierCircleButtonAction:(id)sender
 {
-    NSString * centerXString = [centerXTextField stringValue];
-    NSString * centerYString = [centerYTextField stringValue];
-    NSString * radiusString = [radiusTextField stringValue];
-    NSString * segmentsString = [segmentsTextField stringValue];
+    NSString * centerXString = centerXTextField.stringValue;
+    NSString * centerYString = centerYTextField.stringValue;
+    NSString * radiusString = radiusTextField.stringValue;
+    NSString * segmentsString = segmentsTextField.stringValue;
     
-    CGFloat centerX = [centerXString floatValue];
-    CGFloat centerY = [centerYString floatValue];
-    CGFloat radius = [radiusString floatValue];
-    CGFloat segments = [segmentsString floatValue];
+    CGFloat centerX = centerXString.floatValue;
+    CGFloat centerY = centerYString.floatValue;
+    CGFloat radius = radiusString.floatValue;
+    CGFloat segments = segmentsString.floatValue;
     
     [[NSApplication sharedApplication] stopModalWithCode:NSModalResponseOK];
     

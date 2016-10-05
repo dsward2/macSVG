@@ -91,7 +91,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -114,8 +114,6 @@
     [super awakeFromNib];
 }
 
-
-
 //==================================================================================
 //	updateTimerInfo:
 //==================================================================================
@@ -126,7 +124,9 @@
 
     if (animationEnabled != 0)
     {
-        DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+        [self updateSelections];
+        
+        DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
         
         DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
         
@@ -136,7 +136,7 @@
             
             DOMElement * svgElement = (DOMElement *)svgElementNode;
             
-            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
             if ([webKitInterface animationsPausedForSvgElement:svgElement] == NO)
@@ -145,7 +145,7 @@
                 
                 NSString * currentTimeString = [[NSString alloc] initWithFormat:@"%.2f", currentTime];
                 
-                [self.currentTimeTextField setStringValue:currentTimeString];
+                (self.currentTimeTextField).stringValue = currentTimeString;
                 
                 self.macSVGDocumentWindowController.currentTimeString = currentTimeString;
                 
@@ -154,12 +154,12 @@
         }
         else
         {
-            [self.currentTimeTextField setStringValue:@"N/A"];
+            (self.currentTimeTextField).stringValue = @"N/A";
         }
     }
     else
     {
-        [self.currentTimeTextField setStringValue:@"0.00"];
+        (self.currentTimeTextField).stringValue = @"0.00";
     }
 }
 
@@ -203,11 +203,11 @@
     {
         NSURL * baseURL = NULL;
         
-        MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         
-        NSString * fileName = [macSVGDocument lastComponentOfFileName];
+        NSString * fileName = macSVGDocument.lastComponentOfFileName;
         
-        NSString * fileTypeExtension = [fileName pathExtension];
+        NSString * fileTypeExtension = fileName.pathExtension;
         
         NSString * fileType = @"svg";
         if (fileTypeExtension != NULL)
@@ -224,7 +224,7 @@
         
         NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
         
-        NSData * xmlData = [svgXmlDocument XMLData];
+        NSData * xmlData = svgXmlDocument.XMLData;
 
         BOOL getXmlString = NO;
         
@@ -234,7 +234,7 @@
             mimeType = @"application/xhtml+xml";
         }
 
-        [[self.svgWebView mainFrame] loadData:xmlData 
+        [(self.svgWebView).mainFrame loadData:xmlData 
                 MIMEType:mimeType	
                 textEncodingName:@"UTF-8" 
                 baseURL:baseURL];
@@ -263,17 +263,17 @@
 {
     //NSLog(@"removeXMLAnimationElements");
 
-    NSArray * childrenArray = [aElement children];
+    NSArray * childrenArray = aElement.children;
     
     for (NSXMLNode * childNode in childrenArray)
     {
-        if ([childNode kind] == NSXMLElementKind)
+        if (childNode.kind == NSXMLElementKind)
         {
             NSXMLElement * childElement = (id)childNode;
             
             BOOL isAnimationElement = NO;
             
-            NSString * tagName = [childElement name];
+            NSString * tagName = childElement.name;
             
             if ([tagName isEqualToString:@"animate"]) isAnimationElement = YES;
             if ([tagName isEqualToString:@"animateMotion"]) isAnimationElement = YES;
@@ -284,7 +284,7 @@
             if (isAnimationElement == YES)
             {
                 //[childElement detach];
-                NSInteger childElementIndex = [childElement index];
+                NSInteger childElementIndex = childElement.index;
                 [aElement removeChildAtIndex:childElementIndex];
             }
             else
@@ -305,11 +305,11 @@
 
     NSURL * baseURL = NULL;
     
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     
-    NSString * fileName = [macSVGDocument lastComponentOfFileName];
+    NSString * fileName = macSVGDocument.lastComponentOfFileName;
     
-    NSString * fileTypeExtension = [fileName pathExtension];
+    NSString * fileTypeExtension = fileName.pathExtension;
     
     NSString * fileType = @"svg";
     if (fileTypeExtension != NULL)
@@ -326,14 +326,14 @@
     
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     
-    NSData * originalXmlData = [[NSData alloc] initWithData:[svgXmlDocument XMLData]];
+    NSData * originalXmlData = [[NSData alloc] initWithData:svgXmlDocument.XMLData];
     
     NSError * xmlError;
     NSXMLDocument * tempXMLDocument = [[NSXMLDocument alloc] initWithData:originalXmlData options:0 error:&xmlError];
     
     [self removeXMLAnimationElements:[tempXMLDocument rootElement]];
 
-    NSData * finalXmlData = [tempXMLDocument XMLData];
+    NSData * finalXmlData = tempXMLDocument.XMLData;
 
     NSString * mimeType = @"image/svg+xml";
     if ([fileType isEqualToString:@"xhtml"] == YES)
@@ -341,7 +341,7 @@
         mimeType = @"application/xhtml+xml";
     }
 
-    [[self.svgWebView mainFrame] loadData:finalXmlData 
+    [(self.svgWebView).mainFrame loadData:finalXmlData 
             MIMEType:mimeType	
             textEncodingName:@"UTF-8" 
             baseURL:baseURL];
@@ -357,7 +357,7 @@
 
 - (void)reloadView
 {
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * xmlSvgElement = [svgXmlDocument rootElement];
     
@@ -372,7 +372,7 @@
     }
     else
     {
-        DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+        DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
         DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
         if (svgElementsList.length > 0)
         {
@@ -380,7 +380,7 @@
             
             DOMElement * svgElement = (DOMElement *)svgElementNode;
 
-            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
             if ([webKitInterface animationsPausedForSvgElement:svgElement] == NO)
@@ -394,7 +394,7 @@
         [self.macSVGDocumentWindowController.animationTimelineView setPlayHeadPosition:0.0];
 
         NSImage * buttonImage = [NSImage imageNamed:@"NSGoRightTemplate"];
-        [self.macSVGDocumentWindowController.pausePlayAnimationButton setImage:buttonImage];
+        (self.macSVGDocumentWindowController.pausePlayAnimationButton).image = buttonImage;
     }
     
     // remove temporary copy of selection rects from XML
@@ -412,22 +412,22 @@
 - (void)removeXMLElements:(NSString *)elementID
 {
     // delete specified elements from top level svg element
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * xmlSvgElement = [svgXmlDocument rootElement];
 
-    NSArray * parentChildren = [xmlSvgElement children];
-    NSInteger childCount = [parentChildren count];
+    NSArray * parentChildren = xmlSvgElement.children;
+    NSInteger childCount = parentChildren.count;
     for (NSInteger i = 0; i < childCount; i++)
     {
-        NSXMLNode * childNode = [parentChildren objectAtIndex:i];
-        if ([childNode kind] == NSXMLElementKind)
+        NSXMLNode * childNode = parentChildren[i];
+        if (childNode.kind == NSXMLElementKind)
         {
             NSXMLElement * childElement = (NSXMLElement *)childNode;
             NSXMLNode * childIDNode = [childElement attributeForName:@"id"];
             if (childIDNode != NULL)
             {
-                NSString * childIDString = [childIDNode stringValue];
+                NSString * childIDString = childIDNode.stringValue;
                 if ([childIDString isEqualToString:elementID] == YES)
                 {
                     [xmlSvgElement removeChildAtIndex:i];
@@ -447,7 +447,7 @@
 {
     //NSString * parentTagName = [domParentElement tagName];
     
-    int domChildCount = [domParentElement childElementCount];
+    int domChildCount = domParentElement.childElementCount;
     
     for (unsigned int i = 0; i < domChildCount; i++)
     {
@@ -457,20 +457,20 @@
         {
             DOMElement * domChildElement = (DOMElement *)domChildNode;
             
-            NSString * domChildElementName = [domChildElement tagName];
+            NSString * domChildElementName = domChildElement.tagName;
 
             NSXMLElement * xmlChildElement = [[NSXMLElement alloc] initWithName:domChildElementName];
 
-            DOMNamedNodeMap * domAttributes = [domChildElement attributes];
-            NSInteger attCount = [domAttributes length];
+            DOMNamedNodeMap * domAttributes = domChildElement.attributes;
+            NSInteger attCount = domAttributes.length;
 
             NSMutableDictionary * newAttributesDictionary = [[NSMutableDictionary alloc] init];
             
             for (unsigned int a = 0; a < attCount; a++) 
             {
                 DOMNode * attributes = [domAttributes item:a];
-                NSString * attributeName = [attributes nodeName];
-                NSString * attributeValue = [attributes nodeValue];
+                NSString * attributeName = attributes.nodeName;
+                NSString * attributeValue = attributes.nodeValue;
 
                 NSRange xmlnsRange = [attributeName rangeOfString:@"xmlns"];
                 if (xmlnsRange.location != NSNotFound)
@@ -478,12 +478,12 @@
                     NSLog(@"copyDOMParent:toXMLParent: - xmlns namespace found as attribute");
                 }
                 
-                if ([attributeName length] > 0)
+                if (attributeName.length > 0)
                 {
                     unichar firstChar = [attributeName characterAtIndex:0];
                     if (firstChar != '_')
                     {
-                        [newAttributesDictionary setObject:attributeValue forKey:attributeName];
+                        newAttributesDictionary[attributeName] = attributeValue;
                     }
                 }
             }
@@ -514,7 +514,7 @@
 
 -(NSXMLElement *) copyDOMElementsToXML:(NSString *)elementID
 {
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 
     DOMElement * domSelectedRectsGroup = [domDocument getElementById:elementID];
     
@@ -524,16 +524,16 @@
     {
         xmlSelectedRectsGroup = [[NSXMLElement alloc] initWithName:@"g"];
 
-        DOMNamedNodeMap * domAttributes = [domSelectedRectsGroup attributes];
-        NSInteger attCount = [domAttributes length];
+        DOMNamedNodeMap * domAttributes = domSelectedRectsGroup.attributes;
+        NSInteger attCount = domAttributes.length;
 
         NSMutableDictionary * newAttributesDictionary = [[NSMutableDictionary alloc] init];
         
         for (unsigned int a = 0; a < attCount; a++) 
         {
             DOMNode * attributes = [domAttributes item:a];
-            NSString * attributeName = [attributes nodeName];
-            NSString * attributeValue = [attributes nodeValue];
+            NSString * attributeName = attributes.nodeName;
+            NSString * attributeValue = attributes.nodeValue;
 
             NSRange xmlnsRange = [attributeName rangeOfString:@"xmlns"];
             if (xmlnsRange.location != NSNotFound)
@@ -541,9 +541,9 @@
                 NSLog(@"copyDOMSelectionRectsToXML - xmlns namespace found as attribute");
             }
             
-            if ([attributeName length] > 0)
+            if (attributeName.length > 0)
             {
-                [newAttributesDictionary setObject:attributeValue forKey:attributeName];
+                newAttributesDictionary[attributeName] = attributeValue;
             }
         }
 
@@ -562,26 +562,26 @@
 
 - (void)walkDOMNodeTree:(DOMNode *)parent level:(unsigned int)level
 {
-	DOMNodeList *nodeList = [parent childNodes];
-	unsigned i, length = [nodeList length];
+	DOMNodeList *nodeList = parent.childNodes;
+	unsigned i, length = nodeList.length;
     
 	for (i = 0; i < length; i++) 
     {
 		DOMNode *node = [nodeList item:i];
         
-		DOMNamedNodeMap *attributes = [node attributes];
-		unsigned int a, attCount = [attributes length];
+		DOMNamedNodeMap *attributes = node.attributes;
+		unsigned int a, attCount = attributes.length;
 		NSMutableString *nodeInfo = [NSMutableString stringWithCapacity:0];
-		NSString *nodeName = [node nodeName];
-		NSString *nodeValue = [node nodeValue];
+		NSString *nodeName = node.nodeName;
+		NSString *nodeValue = node.nodeValue;
 		[nodeInfo appendFormat:@"=========================\nnode[%i,%i]:\nname: %@\nvalue: %@\nattributes:\n", 
                 level, i, nodeName, nodeValue];
                                 
 		for (a = 0; a < attCount; a++) 
         {
 			DOMNode *att = [attributes item:a];
-			NSString *attName = [att nodeName];
-			NSString *attValue = [att nodeValue];
+			NSString *attName = att.nodeName;
+			NSString *attValue = att.nodeValue;
 			[nodeInfo appendFormat:@"\tatt[%i] name: %@ value: %@\n", a, attName, attValue];
 		}
         	
@@ -638,7 +638,7 @@
     #pragma unused(isContentEditable)
     
     // Get target node attributes
-    int attributeCount = [attributes length];
+    int attributeCount = attributes.length;
     for (int i = 0; i < attributeCount; i++)
     {
         DOMNode * attributeItem = [attributes item:i];
@@ -699,7 +699,7 @@
     
     NSString * coordinatesString = [NSString stringWithFormat:@"x: %@ \ny: %@", xString, yString];
     
-    [self.macSVGDocumentWindowController.liveCoordinatesTextField setStringValue:coordinatesString];
+    (self.macSVGDocumentWindowController.liveCoordinatesTextField).stringValue = coordinatesString;
 }
 
 //==================================================================================
@@ -713,7 +713,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -761,7 +761,7 @@
 
         DOMNode * targetNode = event.target;
         DOMElement * targetElement = (DOMElement *)targetNode;
-        NSString * tagName = [targetElement tagName];
+        NSString * tagName = targetElement.tagName;
         #pragma unused(tagName)
 
         if ([eventType isEqualToString:@"dblclick"] == YES)
@@ -813,7 +813,7 @@
 
 - (void)setEventHandlers 
 {                
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 
     [domDocument.documentElement addEventListener:@"mousedown" listener:(id)self useCapture:NO];
     [domDocument.documentElement addEventListener:@"mousemove" listener:(id)self useCapture:NO];
@@ -877,15 +877,15 @@
 
     BOOL ignoreRequest = NO;
 
-    BOOL usingMainThread = [[NSThread currentThread] isMainThread];
+    BOOL usingMainThread = [NSThread currentThread].isMainThread;
 
-    WebFrame * webMainFrame = [self.svgWebView mainFrame];
+    WebFrame * webMainFrame = (self.svgWebView).mainFrame;
     
-    id webActionModifierFlags = [actionInformation objectForKey:WebActionModifierFlagsKey];
-    id webActionNavigationType = [actionInformation objectForKey:WebActionNavigationTypeKey];
-    id webActionOriginalURL = [actionInformation objectForKey:WebActionOriginalURLKey];
-    id webActionElement = [actionInformation objectForKey:WebActionElementKey];
-    id webActionButton = [actionInformation objectForKey:WebActionButtonKey];
+    id webActionModifierFlags = actionInformation[WebActionModifierFlagsKey];
+    id webActionNavigationType = actionInformation[WebActionNavigationTypeKey];
+    id webActionOriginalURL = actionInformation[WebActionOriginalURLKey];
+    id webActionElement = actionInformation[WebActionElementKey];
+    id webActionButton = actionInformation[WebActionButtonKey];
         
     #pragma unused(webActionModifierFlags)
     #pragma unused(webActionNavigationType)
@@ -938,7 +938,7 @@
 {
     //[self logStackSymbols:@"webView:didStartProvisionalLoadForFrame:"];   // enable this line to diagnose double-update problems
 
-    WebFrame * mainFrame = [self.svgWebView mainFrame];
+    WebFrame * mainFrame = (self.svgWebView).mainFrame;
     if (frame == mainFrame)
     {
         if (self.mainFrameIsLoading == YES)
@@ -958,7 +958,7 @@
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame 
 {
-    WebFrame * mainFrame = [self.svgWebView mainFrame];
+    WebFrame * mainFrame = (self.svgWebView).mainFrame;
     if (frame == mainFrame)
     {
         self.mainFrameIsLoading = NO;
@@ -977,15 +977,15 @@
 
     [self setEventHandlers];
 
-	WebDataSource *dataSource = [frame dataSource];
-	NSArray *subresources = [dataSource subresources];
+	WebDataSource *dataSource = frame.dataSource;
+	NSArray *subresources = dataSource.subresources;
     #pragma unused(subresources)
-	DOMDocument *svgDomDocument = [frame DOMDocument];
+	DOMDocument *svgDomDocument = frame.DOMDocument;
     #pragma unused(svgDomDocument)
     
     [self.macSVGDocumentWindowController setWebViewCursor];
 
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
     DOMElement * svgElement = NULL;
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
@@ -1026,7 +1026,7 @@
 - (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame
 {
     //NSLog(@"webView didFailLoadWithError:%@", error);
-    WebFrame * mainFrame = [self.svgWebView mainFrame];
+    WebFrame * mainFrame = (self.svgWebView).mainFrame;
     if (frame == mainFrame)
     {
         if (self.mainFrameIsLoading == NO)
@@ -1046,7 +1046,7 @@
 
 - (void)willCloseSVGWebView 
 {
-    [[self.svgWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [(self.svgWebView).mainFrame loadHTMLString:@"" baseURL:NULL];
 }
 
 //==================================================================================
@@ -1064,11 +1064,11 @@
 
 - (IBAction)pausePlayAnimationButtonClicked:(id)sender
 {
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
         DOMNode * svgElementNode = [svgElementsList item:0];
@@ -1083,7 +1083,7 @@
             [webKitInterface unpauseAnimationsForSvgElement:svgElement];
             
             NSImage * buttonImage = [NSImage imageNamed:@"Pause16"];
-            [self.macSVGDocumentWindowController.pausePlayAnimationButton setImage:buttonImage];
+            (self.macSVGDocumentWindowController.pausePlayAnimationButton).image = buttonImage;
         }
         else
         {
@@ -1091,7 +1091,7 @@
             [webKitInterface pauseAnimationsForSvgElement:svgElement];
             
             NSImage * buttonImage = [NSImage imageNamed:@"NSGoRightTemplate"];
-            [self.macSVGDocumentWindowController.pausePlayAnimationButton setImage:buttonImage];
+            (self.macSVGDocumentWindowController.pausePlayAnimationButton).image = buttonImage;
         }
     }
 }
@@ -1112,7 +1112,7 @@
         }
         else
         {
-            DOMNodeList * domNodeList = [currentElement childNodes];
+            DOMNodeList * domNodeList = currentElement.childNodes;
             
             int domNodeListCount = domNodeList.length;
             
@@ -1152,10 +1152,10 @@
     }
     */
 
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
-    DOMElement * svgElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
+    DOMElement * svgElement = domDocument.documentElement;
     
-    NSString * originalElementName = [svgElement tagName];
+    NSString * originalElementName = svgElement.tagName;
 
     result = [self findDomElementForMacsvgid:macsvgid inElement:svgElement];
 
@@ -1192,19 +1192,19 @@
     // set new attribute values in rendered DOM
     
     NSXMLNode * MacsvgidNode = [aElement attributeForName:@"macsvgid"];
-    NSString * macsvgid = [MacsvgidNode stringValue];
+    NSString * macsvgid = MacsvgidNode.stringValue;
 
     DOMElement * domElement = [self domElementForMacsvgid:macsvgid];
     
-    NSArray * xmlAttributes = [aElement attributes];
+    NSArray * xmlAttributes = aElement.attributes;
     
     for (NSXMLNode * xmlNode in xmlAttributes)
     {
-        NSString * attributeName = [xmlNode localName];
-        NSString * attributeValue = [xmlNode stringValue];
-        NSString * attributeURI = [xmlNode URI];
+        NSString * attributeName = xmlNode.localName;
+        NSString * attributeValue = xmlNode.stringValue;
+        NSString * attributeURI = xmlNode.URI;
         
-        if ([attributeName length] == 0)
+        if (attributeName.length == 0)
         {
             NSLog(@"SVGWebKitController updateElementAttributes empty attributeName found, set to xlmns - but that is probably wrong thing to do");
             attributeName = @"xmlns";
@@ -1223,7 +1223,7 @@
     // removed deleted attributes from rendered DOM
     NSMutableArray * deletedAttributes = [[NSMutableArray alloc] init];
     
-    DOMNamedNodeMap * domAttributes = [domElement attributes];
+    DOMNamedNodeMap * domAttributes = domElement.attributes;
     int domAttributeCount = domAttributes.length;
     for (int i = 0; i < domAttributeCount; i++)
     {
@@ -1236,12 +1236,12 @@
         
         for (NSXMLNode * xmlNode in xmlAttributes)
         {
-            NSString * attributeName = [xmlNode localName];
+            NSString * attributeName = xmlNode.localName;
             if ([attributeName isEqualToString:domAttributeName] == YES)
             {
-                NSString * attributeURI = [xmlNode URI];
+                NSString * attributeURI = xmlNode.URI;
                 
-                if ([namespaceURI length] == 0)
+                if (namespaceURI.length == 0)
                 {
                     namespaceURI = NULL;
                 }
@@ -1290,34 +1290,34 @@
 - (void) addDOMElementForXMLElement:(NSXMLElement *)aXMLElement
 {
     // currently not recursive
-    NSString * tagName = [aXMLElement name];
-    NSXMLElement * xmlParentElement = (NSXMLElement *)[aXMLElement parent];
+    NSString * tagName = aXMLElement.name;
+    NSXMLElement * xmlParentElement = (NSXMLElement *)aXMLElement.parent;
     
     NSXMLNode * xmlParentMacsvgidNode = [xmlParentElement attributeForName:@"macsvgid"];
-    NSString * parentMacsvgid = [xmlParentMacsvgidNode stringValue];
+    NSString * parentMacsvgid = xmlParentMacsvgidNode.stringValue;
         
     DOMElement * domParentElement = [self domElementForMacsvgid:parentMacsvgid];
     
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 
     DOMElement * newDOMElement = [domDocument createElementNS:svgNamespace
             qualifiedName:tagName];
 
-    NSArray * xmlAttributeNodes = [aXMLElement attributes];
+    NSArray * xmlAttributeNodes = aXMLElement.attributes;
     
     for (NSXMLNode * aXMLAttributeNode in xmlAttributeNodes)
     {
-        NSString * attributeName = [aXMLAttributeNode name];
-        NSString * attributeValue = [aXMLAttributeNode stringValue];
+        NSString * attributeName = aXMLAttributeNode.name;
+        NSString * attributeValue = aXMLAttributeNode.stringValue;
         
         [newDOMElement setAttribute:attributeName value:attributeValue];
     }
     
-    NSString * stringValue = [aXMLElement stringValue];
+    NSString * stringValue = aXMLElement.stringValue;
     
     NSString * copyStringValue = [[NSString alloc] initWithString:stringValue];
     
-    [newDOMElement setTextContent:copyStringValue];
+    newDOMElement.textContent = copyStringValue;
     
     [domParentElement appendChild:newDOMElement];
 }
@@ -1383,7 +1383,7 @@
     self.domMouseEventsController.svgPathEditor.pathSegmentsArray = pathSegmentsArray;
     
     self.domMouseEventsController.svgPathEditor.pathSegmentIndex =
-            [pathSegmentsArray count] - 1;
+            pathSegmentsArray.count - 1;
 }
 
 // ================================================================
@@ -1410,7 +1410,7 @@
 {
     DOMElement * domElement = [self domElementForMacsvgid:macsvgid];
     
-    NSString * domElementName = [domElement tagName];
+    NSString * domElementName = domElement.tagName;
     
     if ([domElementName isEqualToString:@"rect"] == YES)
     {
@@ -1454,7 +1454,7 @@
         {
             if ([visibility isEqualToString:@"visible"] == NO)
             {
-                [[domElement parentElement] removeChild:domElement];
+                [domElement.parentElement removeChild:domElement];
             }
         }
     }
@@ -1533,7 +1533,7 @@
         {
             result = YES;
 
-            if ([text length] == 1) 
+            if (text.length == 1) 
             {
                 unichar aChar = [text characterAtIndex:0];
                 if (aChar == 13)
@@ -1744,11 +1744,11 @@
 - (NSURLRequest *)webView:(WebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request
         redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(WebDataSource *)dataSource
 {
-    NSString * urlRequestString = [[request URL] absoluteString];
+    NSString * urlRequestString = request.URL.absoluteString;
     if ([urlRequestString isEqualToString:@"about:blank"] == NO)
     {
-        request = [NSURLRequest requestWithURL:[request URL]
-                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:[request timeoutInterval]];
+        request = [NSURLRequest requestWithURL:request.URL
+                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:request.timeoutInterval];
     }
     //NSLog(@"webView willSendRequest");
     return request;
@@ -1777,9 +1777,9 @@
     {
         NSDictionary * userInfo = error.userInfo;
         
-        NSURL * failingURL = [userInfo objectForKey:NSURLErrorFailingURLErrorKey];
+        NSURL * failingURL = userInfo[NSURLErrorFailingURLErrorKey];
         
-        NSString * failingURLString = [failingURL absoluteString];
+        NSString * failingURLString = failingURL.absoluteString;
         
         if ([failingURLString isEqualToString:@"about:blank"] == YES)
         {
@@ -2281,7 +2281,7 @@
 
 - (void)configureWebKitMenu
 {
-    MacSVGAppDelegate * appDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    MacSVGAppDelegate * appDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     NSMenuItem * showWebKitInspectorMenuItem = appDelegate.showWebKitInspectorMenuItem;
     NSMenuItem * detachWebKitInspectorMenuItem = appDelegate.detachWebKitInspectorMenuItem;
     NSMenuItem * enableJavaScriptProfilingMenuItem = appDelegate.enableJavaScriptProfilingMenuItem;
@@ -2291,7 +2291,7 @@
     
     if (self.webKitInspectorIsOpen == YES)
     {
-        [showWebKitInspectorMenuItem setTitle:@"Close WebKit Inspector"];
+        showWebKitInspectorMenuItem.title = @"Close WebKit Inspector";
         
         [detachWebKitInspectorMenuItem setEnabled:YES];
         [enableJavaScriptProfilingMenuItem setEnabled:YES];
@@ -2301,7 +2301,7 @@
     }
     else
     {
-        [showWebKitInspectorMenuItem setTitle:@"Open WebKit Inspector"];
+        showWebKitInspectorMenuItem.title = @"Open WebKit Inspector";
         
         [detachWebKitInspectorMenuItem setEnabled:NO];
         [enableJavaScriptProfilingMenuItem setEnabled:NO];
@@ -2312,47 +2312,47 @@
     
     if (self.webKitInspectorIsAttached == YES)
     {
-        [detachWebKitInspectorMenuItem setTitle:@"Detach WebKit Inspector"];
+        detachWebKitInspectorMenuItem.title = @"Detach WebKit Inspector";
     }
     else
     {
-        [detachWebKitInspectorMenuItem setTitle:@"Attach WebKit Inspector"];
+        detachWebKitInspectorMenuItem.title = @"Attach WebKit Inspector";
     }
     
     if ([self webInspectorIsJavaScriptProfilingEnabled] == YES)
     {
-        [enableJavaScriptProfilingMenuItem setTitle:@"Disable JavaScript Profiling"];
+        enableJavaScriptProfilingMenuItem.title = @"Disable JavaScript Profiling";
     }
     else
     {
-        [enableJavaScriptProfilingMenuItem setTitle:@"Enable JavaScript Profiling"];
+        enableJavaScriptProfilingMenuItem.title = @"Enable JavaScript Profiling";
     }
     
     if ([self webInspectorIsTimelineProfilingEnabled] == YES)
     {
-        [enableTimelineProfilingMenuItem setTitle:@"Disable Timeline Profiling"];
+        enableTimelineProfilingMenuItem.title = @"Disable Timeline Profiling";
     }
     else
     {
-        [enableTimelineProfilingMenuItem setTitle:@"Enable Timeline Profiling"];
+        enableTimelineProfilingMenuItem.title = @"Enable Timeline Profiling";
     }
 
     if (self.webInspectorIsDebuggingJavaScript == YES)
     {
-        [startDebuggingJavaScriptMenuItem setTitle:@"Stop Debugging JavaScript"];
+        startDebuggingJavaScriptMenuItem.title = @"Stop Debugging JavaScript";
     }
     else
     {
-        [startDebuggingJavaScriptMenuItem setTitle:@"Start Debugging JavaScript"];
+        startDebuggingJavaScriptMenuItem.title = @"Start Debugging JavaScript";
     }
 
     if (self.webInspectorIsProfilingJavaScript == YES)
     {
-        [startProfilingJavaScriptMenuItem setTitle:@"Stop Profiling JavaScript"];
+        startProfilingJavaScriptMenuItem.title = @"Stop Profiling JavaScript";
     }
     else
     {
-        [startProfilingJavaScriptMenuItem setTitle:@"Start Profiling JavaScript"];
+        startProfilingJavaScriptMenuItem.title = @"Start Profiling JavaScript";
     }
 }
 

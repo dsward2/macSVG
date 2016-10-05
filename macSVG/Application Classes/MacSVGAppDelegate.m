@@ -38,19 +38,18 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];	// change to nil if an error occurs during initialization
     if (self)
     {
-		[NSApp setDelegate:self];
+		NSApp.delegate = self;
 
         self.svgDtdData = [[SVGDTDData alloc] init];
 
         webKitInterface = [[WebKitInterface alloc] init];
         
-        [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObject: 
-        [NSNumber numberWithBool:YES] forKey:@"WebKitDeveloperExtras"]];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"WebKitDeveloperExtras": @YES}];
 
         self.svgDocumentPrototypeName = @"Untitled";
         self.svgDocumentPrototypeExtension = @"svg";
@@ -324,7 +323,7 @@
 {
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self findFrontmostMacSVGWindowController];
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
     
     NSMutableDictionary * networkConnectionDictionary = [NSMutableDictionary dictionary];
 
@@ -359,7 +358,7 @@
     TextDocumentWindowController * aTextDocumentWindowController = 
             textDocument.textDocumentWindowController;
 
-    NSWindow * aWindow = [aTextDocumentWindowController window];
+    NSWindow * aWindow = aTextDocumentWindowController.window;
     #pragma unused(aWindow)
     [aTextDocumentWindowController showWindow:self];
     
@@ -426,7 +425,7 @@
     
     if (!tempDictionary)
     {
-        NSString * errorDesc = [plistError localizedDescription];
+        NSString * errorDesc = plistError.localizedDescription;
     
         NSLog(@"Error reading plist: %@, format: %lu", errorDesc, format);
     }
@@ -446,9 +445,9 @@
     {
         NSMenuItem * menuItem = sender;
         
-        NSString * itemTitle = [menuItem title];
+        NSString * itemTitle = menuItem.title;
         
-        NSString * urlString = [self.documentationDictionary objectForKey:itemTitle];
+        NSString * urlString = (self.documentationDictionary)[itemTitle];
 
         if (urlString != NULL)
         {
@@ -463,14 +462,14 @@
 
 - (IBAction)selectAll:(id)sender
 {
-    NSWindow * keyWindow = [NSApp keyWindow];
-    NSWindowController * windowController = [keyWindow windowController];
+    NSWindow * keyWindow = NSApp.keyWindow;
+    NSWindowController * windowController = keyWindow.windowController;
     
     if ([windowController isKindOfClass:[MacSVGDocumentWindowController class]] == YES)
     {
         MacSVGDocumentWindowController * svgDocumentWindowController =
                 (MacSVGDocumentWindowController *)windowController;
-        id firstReponder = [keyWindow firstResponder];
+        id firstReponder = keyWindow.firstResponder;
         
         BOOL svgWebViewFound = NO;
         NSView * findSuperView = [firstReponder superview];
@@ -483,7 +482,7 @@
             }
             else
             {
-                findSuperView = [findSuperView superview];
+                findSuperView = findSuperView.superview;
             }
         }
         
@@ -495,7 +494,7 @@
     }
     else
     {
-        id firstReponder = [keyWindow firstResponder];
+        id firstReponder = keyWindow.firstResponder;
         [firstReponder selectAll:sender];
     }
 }
@@ -515,14 +514,14 @@
 
 - (IBAction)selectNone:(id)sender
 {
-    NSWindow * keyWindow = [NSApp keyWindow];
-    NSWindowController * windowController = [keyWindow windowController];
+    NSWindow * keyWindow = NSApp.keyWindow;
+    NSWindowController * windowController = keyWindow.windowController;
     
     if ([windowController isKindOfClass:[MacSVGDocumentWindowController class]] == YES)
     {
         MacSVGDocumentWindowController * svgDocumentWindowController =
                 (MacSVGDocumentWindowController *)windowController;
-        id firstReponder = [keyWindow firstResponder];
+        id firstReponder = keyWindow.firstResponder;
         
         BOOL svgWebViewFound = NO;
 
@@ -539,7 +538,7 @@
                 }
                 else
                 {
-                    findSuperView = [findSuperView superview];
+                    findSuperView = findSuperView.superview;
                 }
             }
         }
@@ -557,7 +556,7 @@
     }
     else
     {
-        id firstReponder = [keyWindow firstResponder];
+        id firstReponder = keyWindow.firstResponder;
         //[firstReponder selectNone:sender];
         if ([firstReponder respondsToSelector:@selector(selectNone:)] == YES)
         {
@@ -574,7 +573,7 @@
 {
     MacSVGDocumentWindowController * result = NULL;
     
-    NSArray * windowsArray = [[NSApplication sharedApplication] orderedWindows];
+    NSArray * windowsArray = [NSApplication sharedApplication].orderedWindows;
     
     for (NSWindow * aWindow in windowsArray)
     {
@@ -737,7 +736,7 @@
     
     [self.svgExampleTableView reloadData];
     
-    if ([self.filteredSvgExamplesArray count] > 0)
+    if ((self.filteredSvgExamplesArray).count > 0)
     {
         NSIndexSet * firstRowIndexSet = [NSIndexSet indexSetWithIndex:0];
         [self.svgExampleTableView selectRowIndexes:firstRowIndexSet byExtendingSelection:NO];
@@ -763,7 +762,7 @@
 
     [NSApp endModalSession:session];
 
-    [[self.svgExampleWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [(self.svgExampleWebView).mainFrame loadHTMLString:@"" baseURL:NULL];
 
     [self.browseSVGExamplesWindow orderOut:self];
 }
@@ -795,9 +794,9 @@
     MacSVGDocument * macSVGDocument = [macSVGDocumentController
             openUntitledDocumentAndDisplay:NO error:&docError];
 
-    NSInteger selectedRow = [self.svgExampleTableView selectedRow];
+    NSInteger selectedRow = (self.svgExampleTableView).selectedRow;
     
-    NSDictionary * exampleDictionary = [self.filteredSvgExamplesArray objectAtIndex:selectedRow];
+    NSDictionary * exampleDictionary = (self.filteredSvgExamplesArray)[selectedRow];
 
     NSString * popUpTitle = self.svgExamplePopUpButton.title;
     NSArray * selectedExamplesArray = self.macSVGExamplesArray;
@@ -806,7 +805,7 @@
         selectedExamplesArray = self.testSuiteArray;
     }
     
-    NSString * pathString = [exampleDictionary objectForKey:@"path"];
+    NSString * pathString = exampleDictionary[@"path"];
     
     NSData * svgXmlData = [NSData dataWithContentsOfFile:pathString];
 
@@ -822,18 +821,18 @@
         if (selectedExamplesArray == self.testSuiteArray)
         {
             NSXMLNode * xrefBaseAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [xrefBaseAttributeNode setName:@"xml:base"];
-            [xrefBaseAttributeNode setStringValue:@"http://www.w3.org/Graphics/SVG/Test/20110816/svg/"];
+            xrefBaseAttributeNode.name = @"xml:base";
+            xrefBaseAttributeNode.stringValue = @"http://www.w3.org/Graphics/SVG/Test/20110816/svg/";
             [rootElement addAttribute:xrefBaseAttributeNode];
             
             NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [widthAttributeNode setName:@"width"];
-            [widthAttributeNode setStringValue:@"480px"];
+            widthAttributeNode.name = @"width";
+            widthAttributeNode.stringValue = @"480px";
             [rootElement addAttribute:widthAttributeNode];
 
             NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [heightAttributeNode setName:@"height"];
-            [heightAttributeNode setStringValue:@"360px"];
+            heightAttributeNode.name = @"height";
+            heightAttributeNode.stringValue = @"360px";
             [rootElement addAttribute:heightAttributeNode];
 
             NSString * xpathQuery = @"//font-face-uri[@xlink:href=\"../resources/SVGFreeSans.svg#ascii\"]";
@@ -842,8 +841,8 @@
             for (NSXMLElement * resultElement in resultArray)
             {
                 NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [xlinkHrefAttributeNode setName:@"xlink:href"];
-                [xlinkHrefAttributeNode setStringValue:@"http://www.w3.org/Graphics/SVG/Test/20110816/resources/SVGFreeSans.svg"];
+                xlinkHrefAttributeNode.name = @"xlink:href";
+                xlinkHrefAttributeNode.stringValue = @"http://www.w3.org/Graphics/SVG/Test/20110816/resources/SVGFreeSans.svg";
                 [resultElement addAttribute:xlinkHrefAttributeNode];
             }
         }
@@ -872,7 +871,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.filteredSvgExamplesArray count];
+    return (self.filteredSvgExamplesArray).count;
 }
 
 //==================================================================================
@@ -881,9 +880,9 @@
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    NSDictionary * exampleDictionary = [self.filteredSvgExamplesArray objectAtIndex:rowIndex];
+    NSDictionary * exampleDictionary = (self.filteredSvgExamplesArray)[rowIndex];
     
-    id objectValue = [exampleDictionary objectForKey:@"title"];
+    id objectValue = exampleDictionary[@"title"];
 
     return objectValue;
 }
@@ -894,7 +893,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-    id notificationObject = [aNotification object];
+    id notificationObject = aNotification.object;
     
     if (notificationObject == self.svgExampleTableView)
     {
@@ -915,18 +914,18 @@
         selectedExamplesArray = self.testSuiteArray;
     }
 
-    NSInteger selectedRow = [self.svgExampleTableView selectedRow];
+    NSInteger selectedRow = (self.svgExampleTableView).selectedRow;
     
     if (selectedRow >= 0)
     {
-        if (selectedRow < [self.filteredSvgExamplesArray count])
+        if (selectedRow < (self.filteredSvgExamplesArray).count)
         {
             [self.svgExampleWebView setMaintainsBackForwardList:NO];
 
-            NSDictionary * exampleDictionary = [self.filteredSvgExamplesArray objectAtIndex:selectedRow];
+            NSDictionary * exampleDictionary = (self.filteredSvgExamplesArray)[selectedRow];
 
-            NSString * pathString = [exampleDictionary objectForKey:@"path"];
-            NSAttributedString * descriptionString = [exampleDictionary objectForKey:@"description"];
+            NSString * pathString = exampleDictionary[@"path"];
+            NSAttributedString * descriptionString = exampleDictionary[@"description"];
             
             NSData * xmlData = [NSData dataWithContentsOfFile:pathString];
 
@@ -942,19 +941,19 @@
                 [rootElement addNamespace:namespace];
                 
                 NSXMLNode * xrefBaseAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [xrefBaseAttributeNode setName:@"xml:base"];
-                [xrefBaseAttributeNode setStringValue:@"http://www.w3.org/Graphics/SVG/Test/20110816/svg/"];
+                xrefBaseAttributeNode.name = @"xml:base";
+                xrefBaseAttributeNode.stringValue = @"http://www.w3.org/Graphics/SVG/Test/20110816/svg/";
                 [rootElement addAttribute:xrefBaseAttributeNode];
             }
             
-            NSData * xmlData2 = [xmlDocument XMLData];
+            NSData * xmlData2 = xmlDocument.XMLData;
 
-            [[self.svgExampleWebView mainFrame] loadData:xmlData2
+            [(self.svgExampleWebView).mainFrame loadData:xmlData2
                     MIMEType:@"image/svg+xml"
                     textEncodingName:@"UTF-8" 
                     baseURL:NULL];
             
-            [[self.svgExampleTextView textStorage] setAttributedString:descriptionString];
+            [(self.svgExampleTextView).textStorage setAttributedString:descriptionString];
         }
     }
 }
@@ -979,7 +978,7 @@
     
     [self.svgExampleTableView reloadData];
     
-    if ([self.filteredSvgExamplesArray count] > 0)
+    if ((self.filteredSvgExamplesArray).count > 0)
     {
         NSIndexSet * firstRowIndexSet = [NSIndexSet indexSetWithIndex:0];
         [self.svgExampleTableView selectRowIndexes:firstRowIndexSet byExtendingSelection:NO];
@@ -998,7 +997,7 @@
     {
         self.testSuiteArray = [NSMutableArray array];
         
-        NSString * resourcePath = [[NSBundle mainBundle] resourcePath];
+        NSString * resourcePath = [NSBundle mainBundle].resourcePath;
         
         NSString * examplesPath = [resourcePath stringByAppendingPathComponent:@"svg_test_suite/svg"];
         
@@ -1007,15 +1006,11 @@
 
         NSFont * textFont = [NSFont systemFontOfSize:13];
 
-        NSDictionary * textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                textFont, NSFontAttributeName,
-                NULL];
+        NSDictionary * textAttributes = @{NSFontAttributeName: textFont};
         
         NSFont * boldFont = [NSFont boldSystemFontOfSize:13];
         
-        NSDictionary * boldTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                boldFont, NSFontAttributeName,
-                NULL];
+        NSDictionary * boldTextAttributes = @{NSFontAttributeName: boldFont};
         
         for (NSString * pathToExample in examplePathsArray)
         {
@@ -1032,8 +1027,8 @@
             [rootElement addNamespace:namespace];
             
             NSXMLNode * xrefBaseAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [xrefBaseAttributeNode setName:@"xml:base"];
-            [xrefBaseAttributeNode setStringValue:@"http://www.w3.org/Graphics/SVG/Test/20110816/svg/"];
+            xrefBaseAttributeNode.name = @"xml:base";
+            xrefBaseAttributeNode.stringValue = @"http://www.w3.org/Graphics/SVG/Test/20110816/svg/";
             [rootElement addAttribute:xrefBaseAttributeNode];
 
             NSString * xpathQuery = @".//title";
@@ -1041,11 +1036,11 @@
             NSError * error = NULL;
             NSArray * resultArray = [rootElement nodesForXPath:xpathQuery error:&error];
             
-            if ([resultArray count] > 0)
+            if (resultArray.count > 0)
             {
-                NSXMLElement * titleElement = [resultArray firstObject];
+                NSXMLElement * titleElement = resultArray.firstObject;
                 
-                NSString * titleString = [titleElement stringValue];
+                NSString * titleString = titleElement.stringValue;
                 
                 titleString = [titleString stringByReplacingOccurrencesOfString:@"$RCSfile: " withString:@""];
                 titleString = [titleString stringByReplacingOccurrencesOfString:@",v $" withString:@""];
@@ -1062,10 +1057,10 @@
 
                 NSString * testSuiteDescriptionXpathQuery = @"//d:testDescription";
                 NSArray * testSuiteDescriptionResultArray = [rootElement nodesForXPath:testSuiteDescriptionXpathQuery error:&error];
-                if ([testSuiteDescriptionResultArray count] > 0)
+                if (testSuiteDescriptionResultArray.count > 0)
                 {
-                    NSXMLElement * testSuiteDescriptionElement = [testSuiteDescriptionResultArray firstObject];
-                    NSString * testSuiteDescriptionString = [testSuiteDescriptionElement stringValue];
+                    NSXMLElement * testSuiteDescriptionElement = testSuiteDescriptionResultArray.firstObject;
+                    NSString * testSuiteDescriptionString = testSuiteDescriptionElement.stringValue;
 
                     testSuiteDescriptionString = [testSuiteDescriptionString stringByReplacingOccurrencesOfString:@"   " withString:@" "];
                     testSuiteDescriptionString = [testSuiteDescriptionString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
@@ -1085,10 +1080,10 @@
 
                 NSString * testSuitePassCriteriaXpathQuery = @"//d:passCriteria";
                 NSArray * testSuitePassCriteriaResultArray = [rootElement nodesForXPath:testSuitePassCriteriaXpathQuery error:&error];
-                if ([testSuitePassCriteriaResultArray count] > 0)
+                if (testSuitePassCriteriaResultArray.count > 0)
                 {
-                    NSXMLElement * testSuitePassCriteriaElement = [testSuitePassCriteriaResultArray firstObject];
-                    NSString * testSuitePassCriteriaString = [testSuitePassCriteriaElement stringValue];
+                    NSXMLElement * testSuitePassCriteriaElement = testSuitePassCriteriaResultArray.firstObject;
+                    NSString * testSuitePassCriteriaString = testSuitePassCriteriaElement.stringValue;
                     
                     testSuitePassCriteriaString = [testSuitePassCriteriaString stringByReplacingOccurrencesOfString:@"   " withString:@" "];
                     testSuitePassCriteriaString = [testSuitePassCriteriaString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
@@ -1103,11 +1098,9 @@
 
 
 
-                NSDictionary * exampleDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                    titleString, @"title",
-                    pathToExample, @"path",
-                    descriptionString, @"description",
-                    nil];
+                NSDictionary * exampleDictionary = @{@"title": titleString,
+                    @"path": pathToExample,
+                    @"description": descriptionString};
                 
                 [self.testSuiteArray addObject:exampleDictionary];
             }
@@ -1129,7 +1122,7 @@
     {
         self.macSVGExamplesArray = [NSMutableArray array];
         
-        NSString * resourcePath = [[NSBundle mainBundle] resourcePath];
+        NSString * resourcePath = [NSBundle mainBundle].resourcePath;
         
         NSString * examplesPath = [resourcePath stringByAppendingPathComponent:@"macsvg_examples/svg"];
         
@@ -1143,15 +1136,11 @@
 
         NSFont * textFont = [NSFont systemFontOfSize:13];
 
-        NSDictionary * textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                textFont, NSFontAttributeName,
-                NULL];
+        NSDictionary * textAttributes = @{NSFontAttributeName: textFont};
         
         NSFont * boldFont = [NSFont boldSystemFontOfSize:13];
         
-        NSDictionary * boldTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                boldFont, NSFontAttributeName,
-                NULL];
+        NSDictionary * boldTextAttributes = @{NSFontAttributeName: boldFont};
         
         for (NSString * pathToExample in examplePathsArray)
         {
@@ -1170,7 +1159,7 @@
 
             NSXMLElement * rootElement = [xmlDocument rootElement];
             
-            NSString * originalRootElementName = [rootElement name];
+            NSString * originalRootElementName = rootElement.name;
             
             if ([originalRootElementName isEqualToString:@"html"] == YES)
             {
@@ -1202,16 +1191,16 @@
                 NSLog(@"NSXMLDocument XPath error %@", xPathError);
             }
 
-            if ([resultArray count] == 0)
+            if (resultArray.count == 0)
             {
             
             }
             
-            if ([resultArray count] > 0)
+            if (resultArray.count > 0)
             {
-                NSXMLElement * titleElement = [resultArray firstObject];
+                NSXMLElement * titleElement = resultArray.firstObject;
                 
-                NSString * titleString = [titleElement stringValue];
+                NSString * titleString = titleElement.stringValue;
                 
                 NSMutableAttributedString * descriptionString = [[NSMutableAttributedString alloc] init];
 
@@ -1226,10 +1215,10 @@
                 NSString * descriptionXpathQuery = @"//desc";
                 NSError * xpathNodesError;
                 NSArray * descriptionResultArray = [rootElement nodesForXPath:descriptionXpathQuery error:&xpathNodesError];
-                if ([descriptionResultArray count] > 0)
+                if (descriptionResultArray.count > 0)
                 {
-                    NSXMLElement * descriptionElement = [descriptionResultArray firstObject];
-                    NSString * descriptionElementString = [descriptionElement stringValue];
+                    NSXMLElement * descriptionElement = descriptionResultArray.firstObject;
+                    NSString * descriptionElementString = descriptionElement.stringValue;
 
                     descriptionElementString = [descriptionElementString stringByReplacingOccurrencesOfString:@"   " withString:@" "];
                     descriptionElementString = [descriptionElementString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
@@ -1245,11 +1234,9 @@
                     NSLog(@"Example file %@ is missing desc attribute.", pathToExample);
                 }
                 
-                NSDictionary * exampleDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                    titleString, @"title",
-                    pathToExample, @"path",
-                    descriptionString, @"description",
-                    nil];
+                NSDictionary * exampleDictionary = @{@"title": titleString,
+                    @"path": pathToExample,
+                    @"description": descriptionString};
                 
                 [self.macSVGExamplesArray addObject:exampleDictionary];
             }
@@ -1267,7 +1254,7 @@
 - (NSXMLElement *) findSVGElementInElement:(NSXMLElement *)aXMLElement
 {
     // for finding svg element embedded in html
-    NSString * elementName = [aXMLElement name];
+    NSString * elementName = aXMLElement.name;
     
     if ([elementName isEqualToString:@"svg"])
     {
@@ -1275,13 +1262,13 @@
     }
     else
     {
-        NSInteger childCount = [aXMLElement childCount];
+        NSInteger childCount = aXMLElement.childCount;
         
         for (NSInteger i = 0; i < childCount; i++)
         {
             NSXMLNode * childNode = [aXMLElement childAtIndex:i];
             
-            NSInteger childNodeKind = [childNode kind];
+            NSInteger childNodeKind = childNode.kind;
             
             if (childNodeKind == NSXMLElementKind)
             {
@@ -1302,7 +1289,7 @@
 
 - (IBAction)svgExampleSearchFieldAction:(id)sender
 {
-    NSString * popUpTitle = [self.svgExamplePopUpButton titleOfSelectedItem];
+    NSString * popUpTitle = (self.svgExamplePopUpButton).titleOfSelectedItem;
     if ([popUpTitle isEqualToString:@"SVG Test Suite"])
     {
         [self searchSVGExamplesInArray:self.testSuiteArray];
@@ -1321,14 +1308,14 @@
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSString * trimmedString = [filterString stringByTrimmingCharactersInSet:whitespaceSet];
     
-    if ([trimmedString length] > 0)
+    if (trimmedString.length > 0)
     {
         NSMutableArray * newFilteredSvgExamplesArray = [NSMutableArray array];
         
         for (NSDictionary * exampleDictionary in masterArray)
         {
-            NSString * titleString = [exampleDictionary objectForKey:@"title"];
-            NSAttributedString * descriptionString = [exampleDictionary objectForKey:@"description"];
+            NSString * titleString = exampleDictionary[@"title"];
+            NSAttributedString * descriptionString = exampleDictionary[@"description"];
             
             BOOL matchFound = NO;
             
@@ -1340,7 +1327,7 @@
             
             if (matchFound == NO)
             {
-                NSString * nonattributedDescriptionString = [descriptionString string];
+                NSString * nonattributedDescriptionString = descriptionString.string;
                 matchFoundRange = [nonattributedDescriptionString rangeOfString:filterString options:NSCaseInsensitiveSearch];
                 if (matchFoundRange.location != NSNotFound)
                 {
@@ -1365,7 +1352,7 @@
     
     [self.svgExampleTableView reloadData];
     
-    if ([self.filteredSvgExamplesArray count] > 0)
+    if ((self.filteredSvgExamplesArray).count > 0)
     {
         NSIndexSet * firstRowIndexSet = [NSIndexSet indexSetWithIndex:0];
         [self.svgExampleTableView selectRowIndexes:firstRowIndexSet byExtendingSelection:NO];
@@ -1413,7 +1400,7 @@
     [NSApp endModalSession:modalSession];
     [self.createNewDocumentWindow orderOut: self];
 
-    NSString * documentKindString = [self.documentKindPopUpButton titleOfSelectedItem];
+    NSString * documentKindString = (self.documentKindPopUpButton).titleOfSelectedItem;
     
     if (resultCode == 1)
     {
@@ -1473,9 +1460,9 @@
 
 - (void)applyNewSVGDocumentSettings:(NSXMLDocument *)svgXmlDocument
 {
-    CGFloat widthFloat = [self.widthTextField floatValue];
-    CGFloat heightFloat = [self.heightTextField floatValue];
-    BOOL includeBackgroundRect = [self.includeBackgroundRectCheckBoxButton state];
+    CGFloat widthFloat = (self.widthTextField).floatValue;
+    CGFloat heightFloat = (self.heightTextField).floatValue;
+    BOOL includeBackgroundRect = (self.includeBackgroundRectCheckBoxButton).state;
     
     NSString * widthPxString = [self allocPxString:widthFloat];
     NSString * heightPxString = [self allocPxString:heightFloat];
@@ -1486,18 +1473,18 @@
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
 
     NSXMLNode * svgWidthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [svgWidthAttributeNode setName:@"width"];
-    [svgWidthAttributeNode setStringValue:widthPxString];
+    svgWidthAttributeNode.name = @"width";
+    svgWidthAttributeNode.stringValue = widthPxString;
     [rootElement addAttribute:svgWidthAttributeNode];
 
     NSXMLNode * svgHeightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [svgHeightAttributeNode setName:@"height"];
-    [svgHeightAttributeNode setStringValue:heightPxString];
+    svgHeightAttributeNode.name = @"height";
+    svgHeightAttributeNode.stringValue = heightPxString;
     [rootElement addAttribute:svgHeightAttributeNode];
     
     NSXMLNode * svgViewBoxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [svgViewBoxAttributeNode setName:@"viewBox"];
-    [svgViewBoxAttributeNode setStringValue:viewBoxString];
+    svgViewBoxAttributeNode.name = @"viewBox";
+    svgViewBoxAttributeNode.stringValue = viewBoxString;
     [rootElement addAttribute:svgViewBoxAttributeNode];
     
     NSString * xpathQuery = @".//rect[@id=\"background_rect\"]";
@@ -1505,27 +1492,27 @@
     NSError * error = NULL;
     NSArray * backgroundRectResultArray = [rootElement nodesForXPath:xpathQuery error:&error];
     
-    if ([backgroundRectResultArray count] > 0)
+    if (backgroundRectResultArray.count > 0)
     {
-        NSXMLElement * backgroundRectElement = [backgroundRectResultArray firstObject];
+        NSXMLElement * backgroundRectElement = backgroundRectResultArray.firstObject;
         
         if (includeBackgroundRect == YES)
         {
             NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [widthAttributeNode setName:@"width"];
-            [widthAttributeNode setStringValue:widthPxString];
+            widthAttributeNode.name = @"width";
+            widthAttributeNode.stringValue = widthPxString;
             [backgroundRectElement addAttribute:widthAttributeNode];
 
             NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [heightAttributeNode setName:@"height"];
-            [heightAttributeNode setStringValue:heightPxString];
+            heightAttributeNode.name = @"height";
+            heightAttributeNode.stringValue = heightPxString;
             [backgroundRectElement addAttribute:heightAttributeNode];
             
             NSString * fillString = [self hexColorFromColorWell:self.backgroundRectColorWell];
             
             NSXMLNode * fillAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fillAttributeNode setName:@"fill"];
-            [fillAttributeNode setStringValue:fillString];
+            fillAttributeNode.name = @"fill";
+            fillAttributeNode.stringValue = fillString;
             [backgroundRectElement addAttribute:fillAttributeNode];
         }
         else
@@ -1538,9 +1525,9 @@
     
     NSArray * sampleTextResultArray = [rootElement nodesForXPath:sampleTextXpathQuery error:&error];
     
-    if ([sampleTextResultArray count] > 0)
+    if (sampleTextResultArray.count > 0)
     {
-        NSXMLElement * sampleTextElement = [sampleTextResultArray firstObject];
+        NSXMLElement * sampleTextElement = sampleTextResultArray.firstObject;
         
         CGFloat xFloat = widthFloat / 2.0f;
         CGFloat yFloat = heightFloat / 2.0f;
@@ -1549,13 +1536,13 @@
         NSString * yPxString = [self allocPxString:yFloat];
         
         NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [xAttributeNode setName:@"x"];
-        [xAttributeNode setStringValue:xPxString];
+        xAttributeNode.name = @"x";
+        xAttributeNode.stringValue = xPxString;
         [sampleTextElement addAttribute:xAttributeNode];
 
         NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [yAttributeNode setName:@"y"];
-        [yAttributeNode setStringValue:yPxString];
+        yAttributeNode.name = @"y";
+        yAttributeNode.stringValue = yPxString;
         [sampleTextElement addAttribute:yAttributeNode];
     }
     
@@ -1609,7 +1596,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -1651,7 +1638,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -1688,7 +1675,7 @@
 
 - (NSString *)hexColorFromColorWell:(NSColorWell *)aColorWell
 {
-    NSColor * aColor = [aColorWell color];
+    NSColor * aColor = aColorWell.color;
     
     NSString * hexColor = [self hexadecimalValueOfAnNSColor:aColor];
     
@@ -1706,7 +1693,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -1763,14 +1750,14 @@
 
 - (IBAction)presetSizesPopUpButtonAction:(id)sender
 {
-    NSString * titleOfSelectedItem = [self.presetSizesPopUpButton titleOfSelectedItem];
+    NSString * titleOfSelectedItem = (self.presetSizesPopUpButton).titleOfSelectedItem;
     
     NSArray * titleComponentsArray = [titleOfSelectedItem componentsSeparatedByString:@" "];
     
-    NSInteger titleComponentsArrayCount = [titleComponentsArray count];
+    NSInteger titleComponentsArrayCount = titleComponentsArray.count;
     
-    NSString * widthString = [titleComponentsArray objectAtIndex:(titleComponentsArrayCount - 3)];
-    NSString * heightString = [titleComponentsArray objectAtIndex:(titleComponentsArrayCount - 1)];
+    NSString * widthString = titleComponentsArray[(titleComponentsArrayCount - 3)];
+    NSString * heightString = titleComponentsArray[(titleComponentsArrayCount - 1)];
     
     self.widthTextField.stringValue = widthString;
     self.heightTextField.stringValue = heightString;

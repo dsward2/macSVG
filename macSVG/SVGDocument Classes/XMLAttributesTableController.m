@@ -40,7 +40,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -59,8 +59,8 @@
 
 NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
-    NSString * name1 = [attribute1 objectForKey:@"name"];
-    NSString * name2 = [attribute2 objectForKey:@"name"];
+    NSString * name1 = attribute1[@"name"];
+    NSString * name2 = attribute2[@"name"];
 
     return [name1 compare:name2];
 }
@@ -97,21 +97,26 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     
     if (self.currentXmlElementForAttributesTable != NULL)
     {
-        if ([self.currentXmlElementForAttributesTable kind] == NSXMLElementKind)
+        if ((self.currentXmlElementForAttributesTable).kind == NSXMLElementKind)
         {
             NSXMLElement * selectedXmlElement = self.currentXmlElementForAttributesTable;
             
             //this loop misses the 'xmlns' attributes in svg element
-            NSArray * attributesArray = [selectedXmlElement attributes];
+            NSArray * attributesArray = selectedXmlElement.attributes;
             
             for (NSXMLNode * attributeItem in attributesArray) 
             {
-                NSString * attributeName =  [attributeItem name];
-                NSString * attributeLocalName =  [attributeItem localName];
-                NSString * attributeValue = [attributeItem stringValue];
-                NSString * attributeURI = [attributeItem URI];
+                NSString * attributeName =  attributeItem.name;
+                NSString * attributeLocalName =  attributeItem.localName;
+                NSString * attributeValue = attributeItem.stringValue;
+                NSString * attributeURI = attributeItem.URI;
                 
-                NSXMLNodeKind nodeKind = [attributeItem kind];
+                if (attributeURI == NULL)
+                {
+                    attributeURI = @"";
+                }
+                
+                NSXMLNodeKind nodeKind = attributeItem.kind;
                 
                 BOOL omitAttribute = NO;
                 
@@ -143,13 +148,11 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
                 
                 if (omitAttribute == NO)
                 {
-                    NSDictionary * attributeRecordDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-                            @"NSXMLAttributeKind", @"kind",
-                            attributeName, @"name",
-                            attributeLocalName, @"localName",
-                            attributeValue, @"value",
-                            attributeURI, @"uri",
-                            nil];
+                    NSDictionary * attributeRecordDictionary = @{@"kind": @"NSXMLAttributeKind",
+                            @"name": attributeName,
+                            @"localName": attributeLocalName,
+                            @"value": attributeValue,
+                            @"uri": attributeURI};
                     
                     [buildArray addObject:attributeRecordDictionary];
                 }
@@ -249,7 +252,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     }
     else
     {
-        if ([selectedElement kind] != NSXMLElementKind)
+        if (selectedElement.kind != NSXMLElementKind)
         {
             NSLog(@"setXmlElementForAttributesTable selectedElement != NSXMLElementKind");
         }
@@ -292,7 +295,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.xmlAttributesArray count];
+    return (self.xmlAttributesArray).count;
 }
 
 //==================================================================================
@@ -302,17 +305,17 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     id objectValue = NULL;
-    NSDictionary * attributeRecordDictionary = [self.xmlAttributesArray objectAtIndex:rowIndex];
+    NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
     
     if (attributeRecordDictionary != NULL)
     {
-        if ([[aTableColumn identifier] isEqualToString:@"AttributeColumn"] == YES)
+        if ([aTableColumn.identifier isEqualToString:@"AttributeColumn"] == YES)
         {
-            objectValue = [attributeRecordDictionary objectForKey:@"name"];
+            objectValue = attributeRecordDictionary[@"name"];
         } 
-        else if ([[aTableColumn identifier] isEqualToString:@"ValueColumn"] == YES)
+        else if ([aTableColumn.identifier isEqualToString:@"ValueColumn"] == YES)
         {
-            objectValue = [attributeRecordDictionary objectForKey:@"value"];
+            objectValue = attributeRecordDictionary[@"value"];
         } 
     } 
     
@@ -325,16 +328,16 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    NSDictionary * oldAttributeRecordDictionary = [self.xmlAttributesArray objectAtIndex:rowIndex];
+    NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
     
-    NSString * newName = [oldAttributeRecordDictionary objectForKey:@"name"];
-    NSString * newValue = [oldAttributeRecordDictionary objectForKey:@"value"];
+    NSString * newName = oldAttributeRecordDictionary[@"name"];
+    NSString * newValue = oldAttributeRecordDictionary[@"value"];
 
-    if ([[aTableColumn identifier] isEqualToString:@"AttributeColumn"] == YES)
+    if ([aTableColumn.identifier isEqualToString:@"AttributeColumn"] == YES)
     {
         newName = anObject;
     } 
-    else if ([[aTableColumn identifier] isEqualToString:@"ValueColumn"] == YES)
+    else if ([aTableColumn.identifier isEqualToString:@"ValueColumn"] == YES)
     {
         newValue = anObject;
     } 
@@ -344,7 +347,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
             newValue, @"value",
             nil];
 
-    [self.xmlAttributesArray replaceObjectAtIndex:rowIndex withObject:newAttributeRecordDictionary];
+    (self.xmlAttributesArray)[rowIndex] = newAttributeRecordDictionary;
 
     [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable attributes:self.xmlAttributesArray];
 }
@@ -357,7 +360,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     //NSLog(@"XMLAttributesTableController tableViewSelectionDidChange");
     
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == self.xmlAttributesTableView)
 	{
 		[self buildAttributesTableForElement];
@@ -370,16 +373,16 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         
         if (self.currentXmlElementForAttributesTable != NULL)
         {
-            elementName = [self.currentXmlElementForAttributesTable name];
+            elementName = (self.currentXmlElementForAttributesTable).name;
         
-            NSInteger rowIndex = [self.xmlAttributesTableView selectedRow];
+            NSInteger rowIndex = (self.xmlAttributesTableView).selectedRow;
         
             if (rowIndex != -1)
             {
                 NSMutableDictionary * attributeRecordDictionary =
-                        [self.xmlAttributesArray objectAtIndex:rowIndex];
+                        (self.xmlAttributesArray)[rowIndex];
                 
-                attributeName = [attributeRecordDictionary objectForKey:@"name"];
+                attributeName = attributeRecordDictionary[@"name"];
             }
         }
         
@@ -405,7 +408,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     NSString * newAttributeName = NULL;
     NSString * defaultValue = @"0";
 
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     #pragma unused(rootElement)
@@ -420,45 +423,45 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
             
     NSTableView * validAttributesTableView = validAttributesController.validAttributesTableView;
     
-    if ([validAttributesTableView superview] != NULL)
+    if (validAttributesTableView.superview != NULL)
     {
         // Valid Attributes list is visible, check for a selection there
-        NSInteger selectedRow = [validAttributesTableView selectedRow];
+        NSInteger selectedRow = validAttributesTableView.selectedRow;
 
         if (selectedRow != -1)
         {
             NSArray * attributeKeysArray = validAttributesController.attributeKeysArray;
             NSMutableDictionary * attributesDictionary = validAttributesController.attributesDictionary;
             
-            NSString * aAttributeName = [attributeKeysArray objectAtIndex:selectedRow];
-            NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:aAttributeName];
+            NSString * aAttributeName = attributeKeysArray[selectedRow];
+            NSMutableDictionary * aAttributeDictionary = attributesDictionary[aAttributeName];
             
             if (aAttributeName != NULL)
             {
                 // match was found for attribute name
                 newAttributeName = aAttributeName;
 
-                MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+                MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
                                 
-                NSArray * aDefaultValueArray = [aAttributeDictionary objectForKey:@"default_value"];
+                NSArray * aDefaultValueArray = aAttributeDictionary[@"default_value"];
                 if (aDefaultValueArray != NULL)
                 {
-                    if ([aDefaultValueArray count] > 0)
+                    if (aDefaultValueArray.count > 0)
                     {
-                        NSString * aDefaultValue = [aDefaultValueArray objectAtIndex:0];
+                        NSString * aDefaultValue = aDefaultValueArray[0];
                                                 
                         if ([aDefaultValue isEqualToString:@"#IMPLIED"] == YES)
                         {
-                            NSArray * valuesArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                            NSArray * valuesArray = aAttributeDictionary[@"attribute_type"];
                             
-                            if ([valuesArray count] > 0)
+                            if (valuesArray.count > 0)
                             {
                                 // first item from list of valid values
-                                defaultValue = [valuesArray objectAtIndex:0];
+                                defaultValue = valuesArray[0];
                                 
                                 if ([defaultValue isEqualToString:@"ID"] == YES)
                                 {
-                                    NSString * elementName = [self.currentXmlElementForAttributesTable name];
+                                    NSString * elementName = (self.currentXmlElementForAttributesTable).name;
                                     defaultValue = [macSVGDocument uniqueIDForElementTagName:elementName pendingIDs:NULL];
                                 }
                             }
@@ -490,7 +493,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         
         for (NSDictionary * aAttributeDictionary in self.xmlAttributesArray)
         {
-            NSString * aAttributeName= [aAttributeDictionary objectForKey:@"name"];
+            NSString * aAttributeName= aAttributeDictionary[@"name"];
         
             if ([newAttributeName isEqualToString:aAttributeName] == YES)
             {
@@ -523,13 +526,13 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     [self.xmlAttributesArray setArray:sortedArray];
     
-    NSUInteger newRowIndex = [self.xmlAttributesArray count] - 1;
+    NSUInteger newRowIndex = (self.xmlAttributesArray).count - 1;
     
-    NSUInteger attributesArrayCount = [self.xmlAttributesArray count];
+    NSUInteger attributesArrayCount = (self.xmlAttributesArray).count;
     for (int i = 0; i < attributesArrayCount; i++)
     {
-        NSMutableDictionary * attributeDictionary = [self.xmlAttributesArray objectAtIndex:i];
-        NSString * aAttributeName = [attributeDictionary objectForKey:@"name"];
+        NSMutableDictionary * attributeDictionary = (self.xmlAttributesArray)[i];
+        NSString * aAttributeName = attributeDictionary[@"name"];
         if ([aAttributeName isEqualToString:newAttributeName] == YES)
         {
             newRowIndex = i;
@@ -550,27 +553,27 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     
     NSMutableArray * deletedAttributes = [[NSMutableArray alloc] init];
     
-    NSIndexSet * selectedRows = [self.xmlAttributesTableView selectedRowIndexes];
+    NSIndexSet * selectedRows = (self.xmlAttributesTableView).selectedRowIndexes;
     //NSUInteger indexCount = [selectedRows count];
 
     if (selectedRows != nil) 
     {
-        for (NSInteger row = [selectedRows firstIndex]; row != NSNotFound; row = [selectedRows indexGreaterThanIndex:row]) 
+        for (NSInteger row = selectedRows.firstIndex; row != NSNotFound; row = [selectedRows indexGreaterThanIndex:row]) 
         {
-            NSDictionary * attributeRecordDictionary = [self.xmlAttributesArray objectAtIndex:row];
-            NSString * attributeName = [attributeRecordDictionary objectForKey:@"name"];
+            NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[row];
+            NSString * attributeName = attributeRecordDictionary[@"name"];
             [deletedAttributes addObject:attributeName];
         }
     }
     
     for (NSString * deletedAttributeName in deletedAttributes)
     {
-        NSUInteger attributesCount = [self.xmlAttributesArray count];
+        NSUInteger attributesCount = (self.xmlAttributesArray).count;
          
         for (int i = (int)attributesCount - 1; i >= 0; i--)
         {
-            NSDictionary * aAttributeRecordDictionary = [self.xmlAttributesArray objectAtIndex:i];
-            NSString * aAttributeName = [aAttributeRecordDictionary objectForKey:@"name"];
+            NSDictionary * aAttributeRecordDictionary = (self.xmlAttributesArray)[i];
+            NSString * aAttributeName = aAttributeRecordDictionary[@"name"];
             if ([deletedAttributeName isEqualToString:aAttributeName] == YES)
             {
                 [self.xmlAttributesArray removeObjectAtIndex:i];

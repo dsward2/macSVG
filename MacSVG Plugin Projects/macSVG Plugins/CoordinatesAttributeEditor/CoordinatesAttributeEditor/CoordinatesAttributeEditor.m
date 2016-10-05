@@ -32,7 +32,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -165,14 +165,14 @@
     if (validAttribute == YES)
     {
         NSDictionary * elementsWithAttribute = [self elementsWithAttribute:attributeName];
-        if ([elementsWithAttribute objectForKey:elementName] != NULL)
+        if (elementsWithAttribute[elementName] != NULL)
         {
             validElement = YES;
         }
         
         if (validElement == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
 
@@ -194,7 +194,7 @@
 
 - (void)updateXMLAttributes
 {
-    NSString * elementName = [self.pluginTargetXMLElement name];
+    NSString * elementName = (self.pluginTargetXMLElement).name;
 
     if ([elementName isEqualToString:@"rect"] == YES)
     {
@@ -251,19 +251,19 @@
 
 - (void)updateRectXMLElement
 {
-    float x = [attribute1 floatValue];
-    float y = [attribute2 floatValue];
-    float width = [attribute3 floatValue];
-    float height = [attribute4 floatValue];
-    float rx = [attribute5 floatValue];
-    float ry = [attribute6 floatValue];
+    float x = attribute1.floatValue;
+    float y = attribute2.floatValue;
+    float width = attribute3.floatValue;
+    float height = attribute4.floatValue;
+    float rx = attribute5.floatValue;
+    float ry = attribute6.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
-    NSString * unit5String = [unit5 titleOfSelectedItem];
-    NSString * unit6String = [unit6 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
+    NSString * unit5String = unit5.titleOfSelectedItem;
+    NSString * unit6String = unit6.titleOfSelectedItem;
     
     if (unit1String == NULL)
     {
@@ -290,10 +290,10 @@
         unit6String = @"";
     }
     
-    if ([proportionalWidthHeightCheckboxButton state] != 0)
+    if (proportionalWidthHeightCheckboxButton.state != 0)
     {
-        float previousWidth = [self.previousValue3 floatValue];
-        float previousHeight = [self.previousValue4 floatValue];
+        float previousWidth = (self.previousValue3).floatValue;
+        float previousHeight = (self.previousValue4).floatValue;
         
         BOOL widthChanged = (width != previousWidth);
         BOOL heightChanged = (height != previousHeight);
@@ -306,16 +306,16 @@
                 float ratio = width / previousWidth;
                 height = height * ratio;
                 NSString * newHeightString = [self numericStringWithFloat:height];
-                [attribute4 setStringValue:newHeightString];
-                [stepper4 setFloatValue:height];
+                attribute4.stringValue = newHeightString;
+                stepper4.floatValue = height;
             }
             else if (heightChanged == YES)
             {
                 float ratio = height / previousHeight;
                 width = width * ratio;
                 NSString * newWidthString = [self numericStringWithFloat:width];
-                [attribute3 setStringValue:newWidthString];
-                [stepper3 setFloatValue:width];
+                attribute3.stringValue = newWidthString;
+                stepper3.floatValue = width;
             }
         }
     }
@@ -348,22 +348,22 @@
     NSString * xString = [self numericStringWithFloat:x];
     NSString * xValue = [NSString stringWithFormat:@"%@%@", xString, unit1String];
     NSXMLNode * xAttributeNode = [self.pluginTargetXMLElement attributeForName:@"x"];
-    [xAttributeNode setStringValue:xValue];
+    xAttributeNode.stringValue = xValue;
 
     NSString * yString = [self numericStringWithFloat:y];
     NSString * yValue = [NSString stringWithFormat:@"%@%@", yString, unit2String];
     NSXMLNode * yAttributeNode = [self.pluginTargetXMLElement attributeForName:@"y"];
-    [yAttributeNode setStringValue:yValue];
+    yAttributeNode.stringValue = yValue;
 
     NSString * widthString = [self numericStringWithFloat:width];
     NSString * widthValue = [NSString stringWithFormat:@"%@%@", widthString, unit3String];
     NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
-    [widthAttributeNode setStringValue:widthValue];
+    widthAttributeNode.stringValue = widthValue;
 
     NSString * heightString = [self numericStringWithFloat:height];
     NSString * heightValue = [NSString stringWithFormat:@"%@%@", heightString, unit4String];
     NSXMLNode * heightAttributeNode = [self.pluginTargetXMLElement attributeForName:@"height"];
-    [heightAttributeNode setStringValue:heightValue];
+    heightAttributeNode.stringValue = heightValue;
     
     if ((rx == 0) && (ry == 0))
     {
@@ -375,12 +375,12 @@
         NSString * rxString = [self numericStringWithFloat:rx];
         NSString * rxValue = [NSString stringWithFormat:@"%@%@", rxString, unit5String];
         NSXMLNode * rxAttributeNode = [self.pluginTargetXMLElement attributeForName:@"rx"];
-        [rxAttributeNode setStringValue:rxValue];
+        rxAttributeNode.stringValue = rxValue;
 
         NSString * ryString = [self numericStringWithFloat:ry];
         NSString * ryValue = [NSString stringWithFormat:@"%@%@", ryString, unit6String];
         NSXMLNode * ryAttributeNode = [self.pluginTargetXMLElement attributeForName:@"ry"];
-        [ryAttributeNode setStringValue:ryValue];
+        ryAttributeNode.stringValue = ryValue;
     }
 }
 
@@ -390,13 +390,13 @@
 
 - (void)updateCircleXMLElement
 {
-    float cx = [attribute1 floatValue];
-    float cy = [attribute2 floatValue];
-    float r = [attribute3 floatValue];
+    float cx = attribute1.floatValue;
+    float cy = attribute2.floatValue;
+    float r = attribute3.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -414,17 +414,17 @@
     NSString * cxString = [self numericStringWithFloat:cx];
     NSString * cxValue = [NSString stringWithFormat:@"%@%@", cxString, unit1String];
     NSXMLNode * cxAttributeNode = [self.pluginTargetXMLElement attributeForName:@"cx"];
-    [cxAttributeNode setStringValue:cxValue];
+    cxAttributeNode.stringValue = cxValue;
 
     NSString * cyString = [self numericStringWithFloat:cy];
     NSString * cyValue = [NSString stringWithFormat:@"%@%@", cyString, unit2String];
     NSXMLNode * cyAttributeNode = [self.pluginTargetXMLElement attributeForName:@"cy"];
-    [cyAttributeNode setStringValue:cyValue];
+    cyAttributeNode.stringValue = cyValue;
 
     NSString * rString = [self numericStringWithFloat:r];
     NSString * rValue = [NSString stringWithFormat:@"%@%@", rString, unit3String];
     NSXMLNode * rAttributeNode = [self.pluginTargetXMLElement attributeForName:@"r"];
-    [rAttributeNode setStringValue:rValue];
+    rAttributeNode.stringValue = rValue;
 
 }
 
@@ -434,15 +434,15 @@
 
 - (void)updateEllipseXMLElement
 {
-    float cx = [attribute1 floatValue];
-    float cy = [attribute2 floatValue];
-    float rx = [attribute3 floatValue];
-    float ry = [attribute4 floatValue];
+    float cx = attribute1.floatValue;
+    float cy = attribute2.floatValue;
+    float rx = attribute3.floatValue;
+    float ry = attribute4.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -461,10 +461,10 @@
         unit4String = @"";
     }
 
-    if ([proportionalWidthHeightCheckboxButton state] != 0)
+    if (proportionalWidthHeightCheckboxButton.state != 0)
     {
-        float previousRx = [self.previousValue3 floatValue];
-        float previousRy = [self.previousValue4 floatValue];
+        float previousRx = (self.previousValue3).floatValue;
+        float previousRy = (self.previousValue4).floatValue;
         
         BOOL rxChanged = (rx != previousRx);
         BOOL ryChanged = (ry != previousRy);
@@ -477,16 +477,16 @@
                 float ratio = rx / previousRx;
                 ry = ry * ratio;
                 NSString * newRyString = [self numericStringWithFloat:ry];
-                [attribute4 setStringValue:newRyString];
-                [stepper4 setFloatValue:ry];
+                attribute4.stringValue = newRyString;
+                stepper4.floatValue = ry;
             }
             else if (ryChanged == YES)
             {
                 float ratio = ry / previousRy;
                 rx = rx * ratio;
                 NSString * newRxString = [self numericStringWithFloat:rx];
-                [attribute3 setStringValue:newRxString];
-                [stepper3 setFloatValue:rx];
+                attribute3.stringValue = newRxString;
+                stepper3.floatValue = rx;
             }
         }
     }
@@ -494,22 +494,22 @@
     NSString * cxString = [self numericStringWithFloat:cx];
     NSString * cxValue = [NSString stringWithFormat:@"%@%@", cxString, unit1String];
     NSXMLNode * cxAttributeNode = [self.pluginTargetXMLElement attributeForName:@"cx"];
-    [cxAttributeNode setStringValue:cxValue];
+    cxAttributeNode.stringValue = cxValue;
 
     NSString * cyString = [self numericStringWithFloat:cy];
     NSString * cyValue = [NSString stringWithFormat:@"%@%@", cyString, unit2String];
     NSXMLNode * cyAttributeNode = [self.pluginTargetXMLElement attributeForName:@"cy"];
-    [cyAttributeNode setStringValue:cyValue];
+    cyAttributeNode.stringValue = cyValue;
 
     NSString * rxString = [self numericStringWithFloat:rx];
     NSString * rxValue = [NSString stringWithFormat:@"%@%@", rxString, unit3String];
     NSXMLNode * rxAttributeNode = [self.pluginTargetXMLElement attributeForName:@"rx"];
-    [rxAttributeNode setStringValue:rxValue];
+    rxAttributeNode.stringValue = rxValue;
 
     NSString * ryString = [self numericStringWithFloat:ry];
     NSString * ryValue = [NSString stringWithFormat:@"%@%@", ryString, unit4String];
     NSXMLNode * ryAttributeNode = [self.pluginTargetXMLElement attributeForName:@"ry"];
-    [ryAttributeNode setStringValue:ryValue];
+    ryAttributeNode.stringValue = ryValue;
 }
 
 //==================================================================================
@@ -518,15 +518,15 @@
 
 - (void)updateLineXMLElement
 {
-    float x1 = [attribute1 floatValue];
-    float y1 = [attribute2 floatValue];
-    float x2 = [attribute3 floatValue];
-    float y2 = [attribute4 floatValue];
+    float x1 = attribute1.floatValue;
+    float y1 = attribute2.floatValue;
+    float x2 = attribute3.floatValue;
+    float y2 = attribute4.floatValue;
     
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -547,19 +547,19 @@
 
     NSString * x1Value = [NSString stringWithFormat:@"%f%@", x1, unit1String];
     NSXMLNode * x1AttributeNode = [self.pluginTargetXMLElement attributeForName:@"x1"];
-    [x1AttributeNode setStringValue:x1Value];
+    x1AttributeNode.stringValue = x1Value;
 
     NSString * y1Value = [NSString stringWithFormat:@"%f%@", y1, unit2String];
     NSXMLNode * y1AttributeNode = [self.pluginTargetXMLElement attributeForName:@"y1"];
-    [y1AttributeNode setStringValue:y1Value];
+    y1AttributeNode.stringValue = y1Value;
 
     NSString * x2Value = [NSString stringWithFormat:@"%f%@", x2, unit3String];
     NSXMLNode * x2AttributeNode = [self.pluginTargetXMLElement attributeForName:@"x2"];
-    [x2AttributeNode setStringValue:x2Value];
+    x2AttributeNode.stringValue = x2Value;
 
     NSString * y2Value = [NSString stringWithFormat:@"%f%@", y2, unit4String];
     NSXMLNode * y2AttributeNode = [self.pluginTargetXMLElement attributeForName:@"y2"];
-    [y2AttributeNode setStringValue:y2Value];
+    y2AttributeNode.stringValue = y2Value;
 }
 
 //==================================================================================
@@ -568,11 +568,11 @@
 
 - (void)updateTextXMLElement
 {
-    float x = [attribute1 floatValue];
-    float y = [attribute2 floatValue];
+    float x = attribute1.floatValue;
+    float y = attribute2.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -586,12 +586,12 @@
     NSString * xString = [self numericStringWithFloat:x];
     NSString * xValue = [NSString stringWithFormat:@"%@%@", xString, unit1String];
     NSXMLNode * xAttributeNode = [self.pluginTargetXMLElement attributeForName:@"x"];
-    [xAttributeNode setStringValue:xValue];
+    xAttributeNode.stringValue = xValue;
 
     NSString * yString = [self numericStringWithFloat:y];
     NSString * yValue = [NSString stringWithFormat:@"%@%@", yString, unit2String];
     NSXMLNode * yAttributeNode = [self.pluginTargetXMLElement attributeForName:@"y"];
-    [yAttributeNode setStringValue:yValue];
+    yAttributeNode.stringValue = yValue;
 }
 
 //==================================================================================
@@ -600,15 +600,15 @@
 
 - (void)updateImageXMLElement
 {
-    float x = [attribute1 floatValue];
-    float y = [attribute2 floatValue];
-    float width = [attribute3 floatValue];
-    float height = [attribute4 floatValue];
+    float x = attribute1.floatValue;
+    float y = attribute2.floatValue;
+    float width = attribute3.floatValue;
+    float height = attribute4.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -627,10 +627,10 @@
         unit4String = @"";
     }
 
-    if ([proportionalWidthHeightCheckboxButton state] != 0)
+    if (proportionalWidthHeightCheckboxButton.state != 0)
     {
-        float previousWidth = [self.previousValue3 floatValue];
-        float previousHeight = [self.previousValue4 floatValue];
+        float previousWidth = (self.previousValue3).floatValue;
+        float previousHeight = (self.previousValue4).floatValue;
         
         BOOL widthChanged = (width != previousWidth);
         BOOL heightChanged = (height != previousHeight);
@@ -643,16 +643,16 @@
                 float ratio = width / previousWidth;
                 height = height * ratio;
                 NSString * newHeightString = [self numericStringWithFloat:height];
-                [attribute4 setStringValue:newHeightString];
-                [stepper4 setFloatValue:height];
+                attribute4.stringValue = newHeightString;
+                stepper4.floatValue = height;
             }
             else if (heightChanged == YES)
             {
                 float ratio = height / previousHeight;
                 width = width * ratio;
                 NSString * newWidthString = [self numericStringWithFloat:width];
-                [attribute3 setStringValue:newWidthString];
-                [stepper3 setFloatValue:width];
+                attribute3.stringValue = newWidthString;
+                stepper3.floatValue = width;
             }
         }
     }
@@ -660,22 +660,22 @@
     NSString * xString = [self numericStringWithFloat:x];
     NSString * xValue = [NSString stringWithFormat:@"%@%@", xString, unit1String];
     NSXMLNode * xAttributeNode = [self.pluginTargetXMLElement attributeForName:@"x"];
-    [xAttributeNode setStringValue:xValue];
+    xAttributeNode.stringValue = xValue;
 
     NSString * yString = [self numericStringWithFloat:y];
     NSString * yValue = [NSString stringWithFormat:@"%@%@", yString, unit2String];
     NSXMLNode * yAttributeNode = [self.pluginTargetXMLElement attributeForName:@"y"];
-    [yAttributeNode setStringValue:yValue];
+    yAttributeNode.stringValue = yValue;
 
     NSString * widthString = [self numericStringWithFloat:width];
     NSString * widthValue = [NSString stringWithFormat:@"%@%@", widthString, unit3String];
     NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
-    [widthAttributeNode setStringValue:widthValue];
+    widthAttributeNode.stringValue = widthValue;
 
     NSString * heightString = [self numericStringWithFloat:height];
     NSString * heightValue = [NSString stringWithFormat:@"%@%@", heightString, unit4String];
     NSXMLNode * heightAttributeNode = [self.pluginTargetXMLElement attributeForName:@"height"];
-    [heightAttributeNode setStringValue:heightValue];
+    heightAttributeNode.stringValue = heightValue;
 
 }
 
@@ -685,15 +685,15 @@
 
 - (void)updateUseXMLElement
 {
-    float x = [attribute1 floatValue];
-    float y = [attribute2 floatValue];
-    float width = [attribute3 floatValue];
-    float height = [attribute4 floatValue];
+    float x = attribute1.floatValue;
+    float y = attribute2.floatValue;
+    float width = attribute3.floatValue;
+    float height = attribute4.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -712,10 +712,10 @@
         unit4String = @"";
     }
 
-    if ([proportionalWidthHeightCheckboxButton state] != 0)
+    if (proportionalWidthHeightCheckboxButton.state != 0)
     {
-        float previousWidth = [self.previousValue3 floatValue];
-        float previousHeight = [self.previousValue4 floatValue];
+        float previousWidth = (self.previousValue3).floatValue;
+        float previousHeight = (self.previousValue4).floatValue;
         
         BOOL widthChanged = (width != previousWidth);
         BOOL heightChanged = (height != previousHeight);
@@ -728,16 +728,16 @@
                 float ratio = width / previousWidth;
                 height = height * ratio;
                 NSString * newHeightString = [self numericStringWithFloat:height];
-                [attribute4 setStringValue:newHeightString];
-                [stepper4 setFloatValue:height];
+                attribute4.stringValue = newHeightString;
+                stepper4.floatValue = height;
             }
             else if (heightChanged == YES)
             {
                 float ratio = height / previousHeight;
                 width = width * ratio;
                 NSString * newWidthString = [self numericStringWithFloat:width];
-                [attribute3 setStringValue:newWidthString];
-                [stepper3 setFloatValue:width];
+                attribute3.stringValue = newWidthString;
+                stepper3.floatValue = width;
             }
         }
     }
@@ -745,22 +745,22 @@
     NSString * xString = [self numericStringWithFloat:x];
     NSString * xValue = [NSString stringWithFormat:@"%@%@", xString, unit1String];
     NSXMLNode * xAttributeNode = [self.pluginTargetXMLElement attributeForName:@"x"];
-    [xAttributeNode setStringValue:xValue];
+    xAttributeNode.stringValue = xValue;
 
     NSString * yString = [self numericStringWithFloat:y];
     NSString * yValue = [NSString stringWithFormat:@"%@%@", yString, unit2String];
     NSXMLNode * yAttributeNode = [self.pluginTargetXMLElement attributeForName:@"y"];
-    [yAttributeNode setStringValue:yValue];
+    yAttributeNode.stringValue = yValue;
 
     NSString * widthString = [self numericStringWithFloat:width];
     NSString * widthValue = [NSString stringWithFormat:@"%@%@", widthString, unit3String];
     NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
-    [widthAttributeNode setStringValue:widthValue];
+    widthAttributeNode.stringValue = widthValue;
 
     NSString * heightString = [self numericStringWithFloat:height];
     NSString * heightValue = [NSString stringWithFormat:@"%@%@", heightString, unit4String];
     NSXMLNode * heightAttributeNode = [self.pluginTargetXMLElement attributeForName:@"height"];
-    [heightAttributeNode setStringValue:heightValue];
+    heightAttributeNode.stringValue = heightValue;
 }
 
 //==================================================================================
@@ -769,15 +769,15 @@
 
 - (void)updateSVGXMLElement
 {
-    float x = [attribute1 floatValue];
-    float y = [attribute2 floatValue];
-    float width = [attribute3 floatValue];
-    float height = [attribute4 floatValue];
+    float x = attribute1.floatValue;
+    float y = attribute2.floatValue;
+    float width = attribute3.floatValue;
+    float height = attribute4.floatValue;
 
-    NSString * unit1String = [unit1 titleOfSelectedItem];
-    NSString * unit2String = [unit2 titleOfSelectedItem];
-    NSString * unit3String = [unit3 titleOfSelectedItem];
-    NSString * unit4String = [unit4 titleOfSelectedItem];
+    NSString * unit1String = unit1.titleOfSelectedItem;
+    NSString * unit2String = unit2.titleOfSelectedItem;
+    NSString * unit3String = unit3.titleOfSelectedItem;
+    NSString * unit4String = unit4.titleOfSelectedItem;
 
     if (unit1String == NULL)
     {
@@ -796,10 +796,10 @@
         unit4String = @"";
     }
 
-    if ([proportionalWidthHeightCheckboxButton state] != 0)
+    if (proportionalWidthHeightCheckboxButton.state != 0)
     {
-        float previousWidth = [self.previousValue3 floatValue];
-        float previousHeight = [self.previousValue4 floatValue];
+        float previousWidth = (self.previousValue3).floatValue;
+        float previousHeight = (self.previousValue4).floatValue;
         
         BOOL widthChanged = (width != previousWidth);
         BOOL heightChanged = (height != previousHeight);
@@ -812,16 +812,16 @@
                 float ratio = width / previousWidth;
                 height = height * ratio;
                 NSString * newHeightString = [self numericStringWithFloat:height];
-                [attribute4 setStringValue:newHeightString];
-                [stepper4 setFloatValue:height];
+                attribute4.stringValue = newHeightString;
+                stepper4.floatValue = height;
             }
             else if (heightChanged == YES)
             {
                 float ratio = height / previousHeight;
                 width = width * ratio;
                 NSString * newWidthString = [self numericStringWithFloat:width];
-                [attribute3 setStringValue:newWidthString];
-                [stepper3 setFloatValue:width];
+                attribute3.stringValue = newWidthString;
+                stepper3.floatValue = width;
             }
         }
     }
@@ -829,22 +829,22 @@
     NSString * xString = [self numericStringWithFloat:x];
     NSString * xValue = [NSString stringWithFormat:@"%@%@", xString, unit1String];
     NSXMLNode * xAttributeNode = [self.pluginTargetXMLElement attributeForName:@"x"];
-    [xAttributeNode setStringValue:xValue];
+    xAttributeNode.stringValue = xValue;
 
     NSString * yString = [self numericStringWithFloat:y];
     NSString * yValue = [NSString stringWithFormat:@"%@%@", yString, unit2String];
     NSXMLNode * yAttributeNode = [self.pluginTargetXMLElement attributeForName:@"y"];
-    [yAttributeNode setStringValue:yValue];
+    yAttributeNode.stringValue = yValue;
 
     NSString * widthString = [self numericStringWithFloat:width];
     NSString * widthValue = [NSString stringWithFormat:@"%@%@", widthString, unit3String];
     NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
-    [widthAttributeNode setStringValue:widthValue];
+    widthAttributeNode.stringValue = widthValue;
 
     NSString * heightString = [self numericStringWithFloat:height];
     NSString * heightValue = [NSString stringWithFormat:@"%@%@", heightString, unit4String];
     NSXMLNode * heightAttributeNode = [self.pluginTargetXMLElement attributeForName:@"height"];
-    [heightAttributeNode setStringValue:heightValue];
+    heightAttributeNode.stringValue = heightValue;
 
 }
 
@@ -855,8 +855,8 @@
 
 - (void)updateStepperValue:(NSStepper *)aStepper withTextField:(NSTextField *)aTextField
 {
-    float floatValue = [aTextField floatValue];
-    [aStepper setFloatValue:floatValue];
+    float floatValue = aTextField.floatValue;
+    aStepper.floatValue = floatValue;
 }
 
 //==================================================================================
@@ -881,9 +881,9 @@
 
 - (void)incrementAttributeTextField:(NSTextField *)aTextField withStepper:(NSStepper *)stepper
 {
-    double stepperValue = [stepper floatValue];
+    double stepperValue = stepper.floatValue;
     
-    [aTextField setFloatValue:stepperValue];
+    aTextField.floatValue = stepperValue;
 
     [self updateXMLAttributes];
 }
@@ -948,12 +948,12 @@
 
 - (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
+    NSString * attributeString = attributeNode.stringValue;
 
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     attributeString = [attributeString stringByTrimmingCharactersInSet:whitespaceSet];
 
-    NSInteger attributeStringLength = [attributeString length];
+    NSInteger attributeStringLength = attributeString.length;
 
     NSString * resultUnit = @"";
     NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
@@ -1025,7 +1025,7 @@
     viewBoxWidth = 640;
     viewBoxHeight = 744;
 
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
     {
@@ -1037,22 +1037,22 @@
         {
             NSArray * viewBoxValuesArray = [viewBoxAttribute componentsSeparatedByString:@" "];
 
-            if ([viewBoxValuesArray count] == 4)
+            if (viewBoxValuesArray.count == 4)
             {
-                NSString * viewBoxMinXString = [viewBoxValuesArray objectAtIndex:0];
-                NSString * viewBoxMinYString = [viewBoxValuesArray objectAtIndex:1];
-                NSString * viewBoxWidthString = [viewBoxValuesArray objectAtIndex:2];
-                NSString * viewBoxHeightString = [viewBoxValuesArray objectAtIndex:3];
+                NSString * viewBoxMinXString = viewBoxValuesArray[0];
+                NSString * viewBoxMinYString = viewBoxValuesArray[1];
+                NSString * viewBoxWidthString = viewBoxValuesArray[2];
+                NSString * viewBoxHeightString = viewBoxValuesArray[3];
                 
-                viewBoxMinX = [viewBoxMinXString floatValue];
-                viewBoxMinY = [viewBoxMinYString floatValue];
-                viewBoxWidth = [viewBoxWidthString floatValue];
-                viewBoxHeight = [viewBoxHeightString floatValue];
+                viewBoxMinX = viewBoxMinXString.floatValue;
+                viewBoxMinY = viewBoxMinYString.floatValue;
+                viewBoxWidth = viewBoxWidthString.floatValue;
+                viewBoxHeight = viewBoxHeightString.floatValue;
             }
         }
     }
     
-    NSString * elementName = [newPluginTargetXMLElement name];
+    NSString * elementName = newPluginTargetXMLElement.name;
     
     if ([elementName isEqualToString:@"rect"] == YES)
     {
@@ -1116,7 +1116,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -1153,8 +1153,8 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = @"0";
 
     numericString = [NSString stringWithFormat:@"%f", attributeFloat];
@@ -1162,7 +1162,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -1199,9 +1199,9 @@
 
 - (void)setStepper:(NSStepper *)aStepper attributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
-    [aStepper setFloatValue:attributeFloat];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
+    aStepper.floatValue = attributeFloat;
 }
 
 //==================================================================================
@@ -1264,54 +1264,54 @@
         ryUnit = [self unitForAttributeNode:ryAttributeNode];
     }
     
-    [label1 setStringValue:@"x"];
+    label1.stringValue = @"x";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:xAttributeString];
+    attribute1.stringValue = xAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:xUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:xAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y"];
+    label2.stringValue = @"y";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:yAttributeString];
+    attribute2.stringValue = yAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:yUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:yAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"width"];
+    label3.stringValue = @"width";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:widthAttributeString];
+    attribute3.stringValue = widthAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:widthUnit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:widthAttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"height"];
+    label4.stringValue = @"height";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:heightAttributeString];
+    attribute4.stringValue = heightAttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:heightUnit];
     [unit4 setHidden:NO];
     [self setStepper:stepper4 attributeNode:heightAttributeNode];
     [stepper4 setHidden:NO];
 
-    [label5 setStringValue:@"rx"];
+    label5.stringValue = @"rx";
     [label5 setHidden:NO];
-    [attribute5 setStringValue:rxAttributeString];
+    attribute5.stringValue = rxAttributeString;
     [attribute5 setHidden:NO];
     [unit5 selectItemWithTitle:rxUnit];
     [unit5 setHidden:NO];
     [self setStepper:stepper5 attributeNode:rxAttributeNode];
     [stepper5 setHidden:NO];
     
-    [label6 setStringValue:@"ry"];
+    label6.stringValue = @"ry";
     [label6 setHidden:NO];
-    [attribute6 setStringValue:ryAttributeString];
+    attribute6.stringValue = ryAttributeString;
     [attribute6 setHidden:NO];
     [unit6 selectItemWithTitle:ryUnit];
     [unit6 setHidden:NO];
@@ -1352,27 +1352,27 @@
         rUnit = [self unitForAttributeNode:rAttributeNode];
     }
     
-    [label1 setStringValue:@"cx"];
+    label1.stringValue = @"cx";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:cxAttributeString];
+    attribute1.stringValue = cxAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:cxUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:cxAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"cy"];
+    label2.stringValue = @"cy";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:cyAttributeString];
+    attribute2.stringValue = cyAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:cyUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:cyAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"r"];
+    label3.stringValue = @"r";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:rAttributeString];
+    attribute3.stringValue = rAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:rUnit];
     [unit3 setHidden:NO];
@@ -1437,36 +1437,36 @@
         ryUnit = [self unitForAttributeNode:ryAttributeNode];
     }
     
-    [label1 setStringValue:@"cx"];
+    label1.stringValue = @"cx";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:cxAttributeString];
+    attribute1.stringValue = cxAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:cxUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:cxAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"cy"];
+    label2.stringValue = @"cy";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:cyAttributeString];
+    attribute2.stringValue = cyAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:cyUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:cyAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"rx"];
+    label3.stringValue = @"rx";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:rxAttributeString];
+    attribute3.stringValue = rxAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:rxUnit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:rxAttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"ry"];
+    label4.stringValue = @"ry";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:ryAttributeString];
+    attribute4.stringValue = ryAttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:ryUnit];
     [unit4 setHidden:NO];
@@ -1527,36 +1527,36 @@
         y2Unit = [self unitForAttributeNode:y2AttributeNode];
     }
     
-    [label1 setStringValue:@"x1"];
+    label1.stringValue = @"x1";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:x1AttributeString];
+    attribute1.stringValue = x1AttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:x1Unit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:x1AttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y1"];
+    label2.stringValue = @"y1";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:y1AttributeString];
+    attribute2.stringValue = y1AttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:y1Unit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:y1AttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"x2"];
+    label3.stringValue = @"x2";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:x2AttributeString];
+    attribute3.stringValue = x2AttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:x2Unit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:x2AttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"y2"];
+    label4.stringValue = @"y2";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:y2AttributeString];
+    attribute4.stringValue = y2AttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:y2Unit];
     [unit4 setHidden:NO];
@@ -1598,18 +1598,18 @@
         yUnit = [self unitForAttributeNode:yAttributeNode];
     }
     
-    [label1 setStringValue:@"x"];
+    label1.stringValue = @"x";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:xAttributeString];
+    attribute1.stringValue = xAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:xUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:xAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y"];
+    label2.stringValue = @"y";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:yAttributeString];
+    attribute2.stringValue = yAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:yUnit];
     [unit2 setHidden:NO];
@@ -1680,36 +1680,36 @@
     }
     
     
-    [label1 setStringValue:@"x"];
+    label1.stringValue = @"x";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:xAttributeString];
+    attribute1.stringValue = xAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:xUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:xAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y"];
+    label2.stringValue = @"y";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:yAttributeString];
+    attribute2.stringValue = yAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:yUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:yAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"width"];
+    label3.stringValue = @"width";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:widthAttributeString];
+    attribute3.stringValue = widthAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:widthUnit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:widthAttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"height"];
+    label4.stringValue = @"height";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:heightAttributeString];
+    attribute4.stringValue = heightAttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:heightUnit];
     [unit4 setHidden:NO];
@@ -1769,36 +1769,36 @@
         heightUnit = [self unitForAttributeNode:heightAttributeNode];
     }
     
-    [label1 setStringValue:@"x"];
+    label1.stringValue = @"x";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:xAttributeString];
+    attribute1.stringValue = xAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:xUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:xAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y"];
+    label2.stringValue = @"y";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:yAttributeString];
+    attribute2.stringValue = yAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:yUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:yAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"width"];
+    label3.stringValue = @"width";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:widthAttributeString];
+    attribute3.stringValue = widthAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:widthUnit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:widthAttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"height"];
+    label4.stringValue = @"height";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:heightAttributeString];
+    attribute4.stringValue = heightAttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:heightUnit];
     [unit4 setHidden:NO];
@@ -1859,36 +1859,36 @@
         heightUnit = [self unitForAttributeNode:heightAttributeNode];
     }
     
-    [label1 setStringValue:@"x"];
+    label1.stringValue = @"x";
     [label1 setHidden:NO];
-    [attribute1 setStringValue:xAttributeString];
+    attribute1.stringValue = xAttributeString;
     [attribute1 setHidden:NO];
     [unit1 selectItemWithTitle:xUnit];
     [unit1 setHidden:NO];
     [self setStepper:stepper1 attributeNode:xAttributeNode];
     [stepper1 setHidden:NO];
     
-    [label2 setStringValue:@"y"];
+    label2.stringValue = @"y";
     [label2 setHidden:NO];
-    [attribute2 setStringValue:yAttributeString];
+    attribute2.stringValue = yAttributeString;
     [attribute2 setHidden:NO];
     [unit2 selectItemWithTitle:yUnit];
     [unit2 setHidden:NO];
     [self setStepper:stepper2 attributeNode:yAttributeNode];
     [stepper2 setHidden:NO];
     
-    [label3 setStringValue:@"width"];
+    label3.stringValue = @"width";
     [label3 setHidden:NO];
-    [attribute3 setStringValue:widthAttributeString];
+    attribute3.stringValue = widthAttributeString;
     [attribute3 setHidden:NO];
     [unit3 selectItemWithTitle:widthUnit];
     [unit3 setHidden:NO];
     [self setStepper:stepper3 attributeNode:widthAttributeNode];
     [stepper3 setHidden:NO];
     
-    [label4 setStringValue:@"height"];
+    label4.stringValue = @"height";
     [label4 setHidden:NO];
-    [attribute4 setStringValue:heightAttributeString];
+    attribute4.stringValue = heightAttributeString;
     [attribute4 setHidden:NO];
     [unit4 selectItemWithTitle:heightUnit];
     [unit4 setHidden:NO];
@@ -1912,12 +1912,12 @@
 
 - (void)retainPreviousValues
 {
-    self.previousValue1 = [NSString stringWithString:[attribute1 stringValue]];
-    self.previousValue2 = [NSString stringWithString:[attribute2 stringValue]];
-    self.previousValue3 = [NSString stringWithString:[attribute3 stringValue]];
-    self.previousValue4 = [NSString stringWithString:[attribute4 stringValue]];
-    self.previousValue5 = [NSString stringWithString:[attribute5 stringValue]];
-    self.previousValue6 = [NSString stringWithString:[attribute6 stringValue]];
+    self.previousValue1 = [NSString stringWithString:attribute1.stringValue];
+    self.previousValue2 = [NSString stringWithString:attribute2.stringValue];
+    self.previousValue3 = [NSString stringWithString:attribute3.stringValue];
+    self.previousValue4 = [NSString stringWithString:attribute4.stringValue];
+    self.previousValue5 = [NSString stringWithString:attribute5.stringValue];
+    self.previousValue6 = [NSString stringWithString:attribute6.stringValue];
 }
 
 

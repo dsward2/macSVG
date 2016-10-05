@@ -32,7 +32,7 @@
 
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
         
-    NSData * svgData = [svgXmlDocument XMLData];
+    NSData * svgData = svgXmlDocument.XMLData;
     
     //HTTPDataResponse * httpDataResponse = [[HTTPDataResponse alloc] initWithData:svgData];
 	//[httpDataResponse setHeaderField:@"Content-Type" value:@"image/svg+xml"];
@@ -49,14 +49,14 @@
 - (MacSVGDocument *)findFrontmostMacSVGDocument
 {
     MacSVGDocument * result = NULL;
-    NSArray *orderedDocuments = [NSApp orderedDocuments];
-    NSUInteger documentCount = [orderedDocuments count];
+    NSArray *orderedDocuments = NSApp.orderedDocuments;
+    NSUInteger documentCount = orderedDocuments.count;
     int i;
     for (i = 0; i < documentCount; i++)
     {
         if (result == NULL)
         {
-            NSDocument *aDocument = (NSDocument *)[orderedDocuments objectAtIndex:i];
+            NSDocument *aDocument = (NSDocument *)orderedDocuments[i];
             if ([aDocument isMemberOfClass:[MacSVGDocument class]] == YES)
             {
                 result = (MacSVGDocument *)aDocument;

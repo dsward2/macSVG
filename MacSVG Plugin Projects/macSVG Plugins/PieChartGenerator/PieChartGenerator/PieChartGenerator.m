@@ -38,10 +38,10 @@
     // for menu plug-ins
     if (pieChartGeneratorWindowController.window == NULL)
     {
-        NSString * pluginNameString = [self className];
+        NSString * pluginNameString = self.className;
         NSArray * topLevelObjects = NULL;
 
-        NSString * bundlePath = [[NSBundle bundleForClass:[self class]] bundlePath];
+        NSString * bundlePath = [NSBundle bundleForClass:[self class]].bundlePath;
 
         NSBundle * pluginBundle = [NSBundle bundleWithPath:bundlePath];
 
@@ -69,7 +69,7 @@
     
     for (NSString * aValue in unfilteredValuesArray)
     {
-        if ([aValue floatValue] > 0.0f)
+        if (aValue.floatValue > 0.0f)
         {
             [valuesArray addObject:aValue];
         }
@@ -79,43 +79,43 @@
     
     for (NSString * aValue in valuesArray)
     {
-        valuesTotal += [aValue floatValue];
+        valuesTotal += aValue.floatValue;
     }
     
     NSMutableArray * anglesArray = [NSMutableArray array];
 
-    NSInteger valuesArrayCount = [valuesArray count];
+    NSInteger valuesArrayCount = valuesArray.count;
     for (NSInteger i = 0; i < valuesArrayCount; i++)
     {
-        NSString * aValue = [valuesArray objectAtIndex:i];
-        float aValueFloat = [aValue floatValue];
+        NSString * aValue = valuesArray[i];
+        float aValueFloat = aValue.floatValue;
         float angle = ceilf(360 * aValueFloat / valuesTotal);
-        NSNumber * angleNumber = [NSNumber numberWithFloat:angle];
+        NSNumber * angleNumber = @(angle);
         [anglesArray addObject:angleNumber];
     }
     
-    NSInteger anglesArrayCount = [anglesArray count];
+    NSInteger anglesArrayCount = anglesArray.count;
     
     
     float startAngle = 0;
     float endAngle = 0;
-    float centerX = [centerXString floatValue];
-    float centerY = [centerYString floatValue];
-    float radius = [radiusString floatValue];
+    float centerX = centerXString.floatValue;
+    float centerY = centerYString.floatValue;
+    float radius = radiusString.floatValue;
     
     NSXMLElement * pieChartGroupElement = [[NSXMLElement alloc] init];
-    [pieChartGroupElement setName:@"g"];
+    pieChartGroupElement.name = @"g";
     NSXMLNode * groupIdAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [groupIdAttribute setName:@"id"];
-    [groupIdAttribute setStringValue:@"pieChart"];
+    groupIdAttribute.name = @"id";
+    groupIdAttribute.stringValue = @"pieChart";
     [pieChartGroupElement addAttribute:groupIdAttribute];
     
     for (NSInteger i = 0; i < anglesArrayCount; i++)
     {
         startAngle = endAngle;
         
-        NSNumber * angleNumber = [anglesArray objectAtIndex:i];
-        float angleValue = [angleNumber floatValue];
+        NSNumber * angleNumber = anglesArray[i];
+        float angleValue = angleNumber.floatValue;
         
         endAngle = startAngle + angleValue;
         
@@ -126,32 +126,32 @@
         float y2 = centerY + radius * sinf(M_PI * endAngle / 180);
         
         NSXMLElement * pathElement = [[NSXMLElement alloc] init];
-        [pathElement setName:@"path"];
+        pathElement.name = @"path";
         
         NSXMLNode * strokeAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [strokeAttribute setName:@"stroke"];
-        [strokeAttribute setStringValue:@"black"];
+        strokeAttribute.name = @"stroke";
+        strokeAttribute.stringValue = @"black";
         [pathElement addAttribute:strokeAttribute];
 
         NSXMLNode * strokeWidthAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [strokeWidthAttribute setName:@"stroke-width"];
-        [strokeWidthAttribute setStringValue:@"1"];
+        strokeWidthAttribute.name = @"stroke-width";
+        strokeWidthAttribute.stringValue = @"1";
         [pathElement addAttribute:strokeWidthAttribute];
 
         NSXMLNode * fillAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [fillAttribute setName:@"fill"];
+        fillAttribute.name = @"fill";
         
         NSInteger colorIndex = i % 3;
         switch (colorIndex)
         {
             case 0:
-                [fillAttribute setStringValue:@"red"];
+                fillAttribute.stringValue = @"red";
                 break;
             case 1:
-                [fillAttribute setStringValue:@"green"];
+                fillAttribute.stringValue = @"green";
                 break;
             case 2:
-                [fillAttribute setStringValue:@"blue"];
+                fillAttribute.stringValue = @"blue";
                 break;
         }
 
@@ -160,16 +160,16 @@
         NSString * idString = [NSString stringWithFormat:@"chartSegment%ld", i];
 
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [idAttribute setName:@"id"];
-        [idAttribute setStringValue:idString];
+        idAttribute.name = @"id";
+        idAttribute.stringValue = idString;
         [pathElement addAttribute:idAttribute];
         
         NSString * segmentString = [NSString stringWithFormat:@"M%f,%f L%f,%f A%f,%f 0 0,1 %f,%f z",
                 centerX, centerY, x1, y1, radius, radius, x2, y2];
 
         NSXMLNode * dAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [dAttribute setName:@"d"];
-        [dAttribute setStringValue:segmentString];
+        dAttribute.name = @"d";
+        dAttribute.stringValue = segmentString;
         [pathElement addAttribute:dAttribute];
         
         [pieChartGroupElement addChild:pathElement];
@@ -177,7 +177,7 @@
 
     [self assignMacsvgidsForNode:pieChartGroupElement];
     
-    NSInteger selectedRow = [self.svgXmlOutlineView selectedRow];
+    NSInteger selectedRow = (self.svgXmlOutlineView).selectedRow;
     NSXMLElement * parentElement = NULL;
     NSInteger childIndex = -1;
     
@@ -185,14 +185,14 @@
     {
         NSXMLNode * selectedNode = [self.svgXmlOutlineView itemAtRow:selectedRow];
         NSXMLNode * parentNode = selectedNode;
-        childIndex = [parentNode index] + 1;
+        childIndex = parentNode.index + 1;
         
         BOOL continueSearch = YES;
         while (continueSearch == YES)
         {
-            if ([parentNode kind] == NSXMLElementKind)
+            if (parentNode.kind == NSXMLElementKind)
             {
-                NSString * selectedNodeName = [parentNode name];
+                NSString * selectedNodeName = parentNode.name;
                 
                 if ([selectedNodeName isEqualToString:@"g"] == YES)
                 {
@@ -208,8 +208,8 @@
             
             if (continueSearch == YES)
             {
-                childIndex = [parentNode index] + 1;
-                parentNode = [parentNode parent];
+                childIndex = parentNode.index + 1;
+                parentNode = parentNode.parent;
                 if (parentNode == NULL)
                 {
                     parentElement = [self.svgXmlOutlineView itemAtRow:0];

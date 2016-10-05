@@ -31,7 +31,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -60,8 +60,7 @@
 	{
 		isElementItem = YES;
 
-        NSString * idString = [self.currentElementAttributes 
-                objectForKey:@"id"];
+        NSString * idString = (self.currentElementAttributes)[@"id"];
         [self.recordElementName setString:idString]; 
 	}
 }
@@ -73,12 +72,12 @@
 	if (isElementItem == YES)
 	{
 		NSMutableString * dictionaryItem = 
-				[self.parserRecordDictionary objectForKey:self.currentElementName];
+				(self.parserRecordDictionary)[self.currentElementName];
 		
 		if (dictionaryItem == NULL) 
 		{
 			dictionaryItem = [[NSMutableString alloc] initWithString:string];
-			[self.parserRecordDictionary setObject:dictionaryItem forKey:self.currentElementName];
+			(self.parserRecordDictionary)[self.currentElementName] = dictionaryItem;
 		}
 		else 
 		{
@@ -101,16 +100,15 @@
 		NSEnumerator * keyEnumerator = [self.parserRecordDictionary keyEnumerator];
 		while ((aKey = [keyEnumerator nextObject]) != NULL)
 		{
-			NSString * aValue = [self.parserRecordDictionary objectForKey:aKey];
+			NSString * aValue = (self.parserRecordDictionary)[aKey];
 			NSMutableString * copyValue = [[NSMutableString alloc] initWithString:aValue];
-			[recordDictionary setObject:copyValue forKey:aKey];
+			recordDictionary[aKey] = copyValue;
 		}
         
-        [recordDictionary setObject:self.recordElementName forKey:@"svgElement"];
+        recordDictionary[@"svgElement"] = self.recordElementName;
         [recordDictionary removeObjectForKey:@""];
 	
-        [self.svgElementsDictionary setObject:recordDictionary 
-                forKey:self.recordElementName];
+        (self.svgElementsDictionary)[self.recordElementName] = recordDictionary;
 		
 		[self.parserRecordDictionary removeAllObjects];
 
@@ -130,20 +128,20 @@
 {
     [self.svgElementsArray removeAllObjects];
     
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
 
     if ([category isEqualToString:@"All SVG Elements"] == YES)
     {
         NSDictionary * entitiesDictionary = svgDtdData.entitiesDictionary;
         
-        NSArray * allCategoryKeys = [entitiesDictionary allKeys];
+        NSArray * allCategoryKeys = entitiesDictionary.allKeys;
 
-        unsigned long allCategoryKeysCount = [allCategoryKeys count];
+        unsigned long allCategoryKeysCount = allCategoryKeys.count;
         int j;
         for (j = 0; j < allCategoryKeysCount; j++) 
         {
-            NSString * categoryName =  [allCategoryKeys objectAtIndex:j];
+            NSString * categoryName =  allCategoryKeys[j];
             [self.svgElementsArray addObject:categoryName];
         }	
     }
@@ -151,17 +149,17 @@
     {
         NSDictionary * classesDictionary = svgDtdData.classesDictionary;
         
-        NSDictionary * classDictionary = [classesDictionary objectForKey:category];
+        NSDictionary * classDictionary = classesDictionary[category];
         
-        NSDictionary * classElements = [classDictionary objectForKey:@"class-elements"];
+        NSDictionary * classElements = classDictionary[@"class-elements"];
 
-        NSArray * allElementsKeys = [classElements allKeys];
+        NSArray * allElementsKeys = classElements.allKeys;
 
-        unsigned long allElementsKeysCount = [allElementsKeys count];
+        unsigned long allElementsKeysCount = allElementsKeys.count;
         int j;
         for (j = 0; j < allElementsKeysCount; j++) 
         {
-            NSString * elementName =  [allElementsKeys objectAtIndex:j];
+            NSString * elementName =  allElementsKeys[j];
             [self.svgElementsArray addObject:elementName];
         }	
     }
@@ -210,7 +208,7 @@
 	NSData * xmlData = [NSData dataWithContentsOfFile:filePath];
 
     NSXMLParser * parser = [[NSXMLParser alloc] initWithData:xmlData];
-    [parser setDelegate:self];
+    parser.delegate = self;
     isElementItem = NO;
     [parser parse];
 
@@ -245,7 +243,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.svgElementsArray count];
+    return (self.svgElementsArray).count;
 }
 
 //==================================================================================
@@ -254,7 +252,7 @@
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    return [self.svgElementsArray objectAtIndex:rowIndex];
+    return (self.svgElementsArray)[rowIndex];
 }
 
 //==================================================================================
@@ -264,16 +262,16 @@
 - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
     // Copy the row numbers to the pasteboard.
-    NSUInteger rowIndex = [rowIndexes firstIndex];
+    NSUInteger rowIndex = rowIndexes.firstIndex;
 
     // Provide data for our custom type, and simple NSStrings.
-    [pboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
+    [pboard declareTypes:@[NSStringPboardType] owner:self];
     
-    NSString * elementTag = [self.svgElementsArray objectAtIndex:rowIndex];
+    NSString * elementTag = (self.svgElementsArray)[rowIndex];
     
-    NSDictionary * elementDictionary = [self.svgElementsDictionary objectForKey:elementTag];
+    NSDictionary * elementDictionary = (self.svgElementsDictionary)[elementTag];
 
-    NSString * prototypeElement = [elementDictionary objectForKey:@"prototype"];
+    NSString * prototypeElement = elementDictionary[@"prototype"];
     
     NSMutableString * elementXML = [NSMutableString stringWithFormat:@"<%@ />", prototypeElement];
     

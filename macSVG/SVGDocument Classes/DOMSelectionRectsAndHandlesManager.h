@@ -43,7 +43,7 @@
 
 - (void) removeDOMSelectionRectsAndHandles;
 
-- (NSXMLElement *) keyXMLElement;
+@property (readonly, copy) NSXMLElement *keyXMLElement;
 
 -(void) removeDOMPathSegmentHighlight;
 -(void) removeDOMPolylinePointHighlight;
@@ -53,7 +53,7 @@
 - (IBAction)highlightPolylinePoint;
 - (IBAction)highlightLinePoint;
 
-- (DOMElement *)macsvgTopGroupElement;
+@property (readonly, copy) DOMElement *macsvgTopGroupElement;
 - (DOMElement *)getMacsvgTopGroupChildByID:(NSString *)idString createIfNew:(BOOL)createIfNew;
 - (void)setMacsvgTopGroupChild:(DOMElement *)childElement;
 - (void)removeMacsvgTopGroupChildByID:(NSString *)idString;

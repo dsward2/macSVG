@@ -49,12 +49,12 @@
 
 - (IBAction)outlineViewAction:(id)sender;
 
-- (NSArray *)selectedNodes;
+@property (readonly, copy) NSArray *selectedNodes;
 
 - (void)selectElement:(NSXMLElement *)aElement;
 
-- (NSArray *)selectedItems;
-- (NSArray *)selectedElementIDs;
+@property (readonly, copy) NSArray *selectedItems;
+@property (readonly, copy) NSArray *selectedElementIDs;
 
 - (void)setSelectedXMLElements:(NSArray *)selectedXMLElements;
 - (void)setSelectedXMLDOMElements:(NSArray *)selectedXMLDOMElements;

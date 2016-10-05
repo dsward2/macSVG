@@ -55,7 +55,7 @@ Printing description of aAttributeDictionary:
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -75,10 +75,10 @@ Printing description of aAttributeDictionary:
 {
     if (enabled == YES)
     {
-        if ([validAttributesFrameView superview] == NULL) 
+        if (validAttributesFrameView.superview == NULL) 
         {
             NSView * attributeEditorFrameView = editorUIFrameController.editorPanelFrameView;
-            NSRect frameRect = [attributeEditorFrameView frame];
+            NSRect frameRect = attributeEditorFrameView.frame;
             validAttributesFrameView.frame = frameRect;
             validAttributesFrameView.bounds = frameRect;
         
@@ -113,22 +113,22 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
     }
     else
     {
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
         NSDictionary * elementsDictionary = svgDtdData.elementsDictionary;
             
         if (elementsDictionary != NULL)
         {
-            NSString * elementTagName = [xmlElement name];
+            NSString * elementTagName = xmlElement.name;
             
-            NSDictionary * aElementDictionary = [elementsDictionary objectForKey:elementTagName];
+            NSDictionary * aElementDictionary = elementsDictionary[elementTagName];
             if (aElementDictionary != NULL)
             {
-                NSMutableDictionary * aAttributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+                NSMutableDictionary * aAttributesDictionary = aElementDictionary[@"attributes"];
                 
                 //NSLog(@"aAttributesDictionary = %@", aAttributesDictionary);
                 
-                NSArray * allKeys = [aAttributesDictionary allKeys];
+                NSArray * allKeys = aAttributesDictionary.allKeys;
 
                 NSArray * sortedArray = [allKeys sortedArrayUsingFunction:attributesSort context:NULL];
                 
@@ -167,7 +167,7 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
     NSUInteger rowCount = 0;
     if (self.attributeKeysArray != NULL)
     {
-        rowCount = [self.attributeKeysArray count];
+        rowCount = (self.attributeKeysArray).count;
     }
     return rowCount;
 }
@@ -182,7 +182,7 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
     
     for (NSString * aString in aArray)
     {
-        if ([resultString length] > 0)
+        if (resultString.length > 0)
         {
             [resultString appendString:@", "];
         }
@@ -202,38 +202,38 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
     
     if (self.attributeKeysArray != NULL)
     {
-        NSString * keyString = [self.attributeKeysArray objectAtIndex:rowIndex];
+        NSString * keyString = (self.attributeKeysArray)[rowIndex];
         
-        NSMutableDictionary * aAttributeDictionary = [self.attributesDictionary objectForKey:keyString];
+        NSMutableDictionary * aAttributeDictionary = (self.attributesDictionary)[keyString];
         
         if (aAttributeDictionary != NULL)
         {
-            if ([[aTableColumn identifier] isEqualToString:@"AttributeColumn"] == YES)
+            if ([aTableColumn.identifier isEqualToString:@"AttributeColumn"] == YES)
             {
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 objectValue = attributeName;
             }
-            else if ([[aTableColumn identifier] isEqualToString:@"DefaultColumn"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"DefaultColumn"] == YES)
             {
-                NSArray * default_valueArray = [aAttributeDictionary objectForKey:@"default_value"];
+                NSArray * default_valueArray = aAttributeDictionary[@"default_value"];
                 NSString * default_valueStringOriginal = [self stringFromArray:default_valueArray];
                 
                 NSMutableString * default_valueString = [NSMutableString stringWithString:default_valueStringOriginal];
                 
                 NSRange stringRange;
                 stringRange.location = 0; 
-                stringRange.length = [default_valueString length];
+                stringRange.length = default_valueString.length;
                 [default_valueString replaceOccurrencesOfString:@"#IMPLIED" withString:@"" options:0 range:stringRange];
-                stringRange.length = [default_valueString length];
+                stringRange.length = default_valueString.length;
                 [default_valueString replaceOccurrencesOfString:@"#REQUIRED" withString:@"" options:0 range:stringRange];
-                stringRange.length = [default_valueString length];
+                stringRange.length = default_valueString.length;
                 [default_valueString replaceOccurrencesOfString:@"#FIXED, " withString:@"" options:0 range:stringRange];
                 
                 objectValue = default_valueString;
             }
-            else if ([[aTableColumn identifier] isEqualToString:@"ValuesColumn"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"ValuesColumn"] == YES)
             {
-                NSArray * attribute_typeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                NSArray * attribute_typeArray = aAttributeDictionary[@"attribute_type"];
                 
                 NSString * attribute_typeString = [self stringFromArray:attribute_typeArray];
                 
@@ -244,9 +244,9 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
                 
                 objectValue = attribute_typeString;
             }
-            else if ([[aTableColumn identifier] isEqualToString:@"DescriptionColumn"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"DescriptionColumn"] == YES)
             {
-                NSString * descriptionOriginal = [aAttributeDictionary objectForKey:@"description"];
+                NSString * descriptionOriginal = aAttributeDictionary[@"description"];
                 
                 NSString * description = @"Unknown";
                 

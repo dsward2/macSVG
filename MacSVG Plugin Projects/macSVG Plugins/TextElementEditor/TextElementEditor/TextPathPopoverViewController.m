@@ -45,7 +45,7 @@
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
@@ -73,7 +73,7 @@
     
     self.masterAnimateElementsArray = [NSMutableArray array];
     
-    [[[textPathPreviewWebView mainFrame] frameView] setAllowsScrolling:NO];
+    [textPathPreviewWebView.mainFrame.frameView setAllowsScrolling:NO];
 }
 
 //==================================================================================
@@ -145,7 +145,7 @@
             }
         */
         
-        NSInteger fontDataStringLength = [fontFaceString length];
+        NSInteger fontDataStringLength = fontFaceString.length;
         NSInteger openBracePosition = NSNotFound;
         NSInteger closeBracePosition = NSNotFound;
         for (NSInteger charIndex = fontFaceRange.location  + fontFaceRange.length - 1;
@@ -178,17 +178,17 @@
             {
                 NSArray * aCSSArray = [aCSSString componentsSeparatedByString:@":"];
                 
-                if ([aCSSArray count] == 2)
+                if (aCSSArray.count == 2)
                 {
-                    NSString * aCSSFragment = [aCSSArray objectAtIndex:0];
+                    NSString * aCSSFragment = aCSSArray[0];
 
                     NSString * trimmedCSSFragment = [aCSSFragment stringByTrimmingCharactersInSet:whitespaceSet];
                     
                     if ([trimmedCSSFragment isEqualToString:@"font-family"])
                     {
-                        NSString * fontFamilyName = [aCSSArray objectAtIndex:1];
+                        NSString * fontFamilyName = aCSSArray[1];
                         
-                        if ([fontFamilyName length] > 0)
+                        if (fontFamilyName.length > 0)
                         {
                             fontFamilyName = [fontFamilyName stringByTrimmingCharactersInSet:whitespaceSet];
 
@@ -197,7 +197,7 @@
                             if ([firstCharacterString isEqualToString:@"'"] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"'" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -206,7 +206,7 @@
                             if ([firstCharacterString isEqualToString:@"\""] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"\"" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -288,14 +288,14 @@
     NSXMLNode * fontFamilyAttributeNode = [self.masterTextElement attributeForName:@"font-family"];
     if (fontFamilyAttributeNode != NULL)
     {
-        fontFamilyString = [fontFamilyAttributeNode stringValue];
+        fontFamilyString = fontFamilyAttributeNode.stringValue;
     }
 
     NSXMLElement * fontStyleElement = NULL;
     NSArray * styleElementsArray = [self findAllStyleElements];
     for (NSXMLElement * aStyleElement in styleElementsArray)
     {
-        NSString * styleElementTextContent = [aStyleElement stringValue];
+        NSString * styleElementTextContent = aStyleElement.stringValue;
         
         NSRange fontFaceRange = [styleElementTextContent rangeOfString:@"@font-face"];
         if (fontFaceRange.location != NSNotFound)
@@ -315,21 +315,21 @@
     NSString * fontStyleString = @"";
     if (fontStyleElement != NULL)
     {
-        NSString * fontStyleXMLString = [fontStyleElement XMLString];
+        NSString * fontStyleXMLString = fontStyleElement.XMLString;
         fontStyleString = [NSString stringWithFormat:@"<defs>%@</defs>", fontStyleXMLString];
     }
 
-    NSInteger rowIndex = [eligiblePathsTableView selectedRow];
+    NSInteger rowIndex = eligiblePathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSXMLElement * selectedPathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+        NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
         
         NSXMLNode * pathIDAttributeNode = [selectedPathElement attributeForName:@"id"];
         if (pathIDAttributeNode != NULL)
         {
-            NSString * pathIDString = [pathIDAttributeNode stringValue];
+            NSString * pathIDString = pathIDAttributeNode.stringValue;
         
-            NSString * pathString = [selectedPathElement XMLString];
+            NSString * pathString = selectedPathElement.XMLString;
             
             NSString * headerString = [self svgHeaderString];
 
@@ -338,14 +338,14 @@
             NSXMLNode * visibilityNode = [previewTextElement attributeForName:@"visibility"];
             if (visibilityNode != NULL)
             {
-                [visibilityNode setStringValue:@"visible"];
+                visibilityNode.stringValue = @"visible";
             }
 
             [self attachTextPathForTextElement:previewTextElement pathID:pathIDString];
             
             NSArray * textPathsElementArray = [previewTextElement elementsForName:@"textPath"];
             
-            NSXMLElement * previewTextPathElement = [textPathsElementArray objectAtIndex:0];
+            NSXMLElement * previewTextPathElement = textPathsElementArray[0];
 
             NSArray * tspanElementsArray = [self.originalTextElement elementsForName:@"tspan"];
             
@@ -358,7 +358,7 @@
             
             [self attachAnimateElementsForTextElement:previewTextElement];
             
-            NSString * textElementString = [previewTextElement XMLString];
+            NSString * textElementString = previewTextElement.XMLString;
             
             NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@%@</g>",
                     pathString, textElementString];
@@ -381,16 +381,16 @@
         NSXMLElement * previewTextElement = [self.masterTextElement copy];
         
         NSXMLNode * textContentNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-        [textContentNode setStringValue:self.masterTextContentString];
+        textContentNode.stringValue = self.masterTextContentString;
         [previewTextElement addChild:textContentNode];
         
         NSXMLNode * visibilityNode = [previewTextElement attributeForName:@"visibility"];
         if (visibilityNode != NULL)
         {
-            [visibilityNode setStringValue:@"visible"];
+            visibilityNode.stringValue = @"visible";
         }
 
-        NSString * textElementString = [previewTextElement XMLString];
+        NSString * textElementString = previewTextElement.XMLString;
         
         NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>",
                 textElementString];
@@ -420,16 +420,16 @@
     if (pathXlinkHrefAttributeNode == NULL)
     {
         pathXlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [pathXlinkHrefAttributeNode setName:@"xlink:href"];
-        [pathXlinkHrefAttributeNode setStringValue:@""];
+        pathXlinkHrefAttributeNode.name = @"xlink:href";
+        pathXlinkHrefAttributeNode.stringValue = @"";
         [textPathElement addAttribute:pathXlinkHrefAttributeNode];
     }
     NSString * pathXlinkHrefString = [NSString stringWithFormat:@"#%@", pathIDString];
-    [pathXlinkHrefAttributeNode setStringValue:pathXlinkHrefString];
+    pathXlinkHrefAttributeNode.stringValue = pathXlinkHrefString;
 
     NSXMLNode * textContentNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
     
-    [textContentNode setStringValue:self.masterTextContentString];
+    textContentNode.stringValue = self.masterTextContentString;
     
     [textPathElement addChild:textContentNode];
 
@@ -445,35 +445,35 @@
 - (void)attachAnimateElementsForTextElement:(NSXMLElement *)aTextElement
 {
     NSArray * textPathElementsArray = [aTextElement elementsForName:@"textPath"];
-    if ([textPathElementsArray count] > 0)
+    if (textPathElementsArray.count > 0)
     {
-        NSXMLElement * textPathElement = [textPathElementsArray objectAtIndex:0];
+        NSXMLElement * textPathElement = textPathElementsArray[0];
 
-        NSArray * textPathChildNodesArray = [textPathElement children];
+        NSArray * textPathChildNodesArray = textPathElement.children;
         for (NSXMLNode * aChildNode in textPathChildNodesArray)
         {
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
-                NSString * childNodeName = [aChildNode name];
+                NSString * childNodeName = aChildNode.name;
                 if ([childNodeName isEqualToString:@"tspan"] == NO)
                 {
-                    NSInteger childIndex = [aChildNode index];
+                    NSInteger childIndex = aChildNode.index;
                     [textPathElement removeChildAtIndex:childIndex];
                 }
             }
         }
         
         
-        NSInteger matrixChoice = [previewOptionsMatrix selectedColumn];
+        NSInteger matrixChoice = previewOptionsMatrix.selectedColumn;
         if (matrixChoice == 0)
         {
             // preview selected animate element only
-            NSInteger rowIndex = [animateElementsTableView selectedRow];
+            NSInteger rowIndex = animateElementsTableView.selectedRow;
             
             if (rowIndex != -1)
             {
-                NSXMLElement * aAnimateElement = [self.masterAnimateElementsArray objectAtIndex:rowIndex];
+                NSXMLElement * aAnimateElement = (self.masterAnimateElementsArray)[rowIndex];
                 [aAnimateElement detach];
                 [textPathElement addChild:aAnimateElement];
             }
@@ -541,18 +541,18 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     self.masterTextElement = [textElement copy];
     
     // remove all child elements and text data
-    NSArray * masterTextElementChildArray = [self.masterTextElement children];
-    NSInteger childCount = [masterTextElementChildArray count];
+    NSArray * masterTextElementChildArray = (self.masterTextElement).children;
+    NSInteger childCount = masterTextElementChildArray.count;
     for (NSInteger childIndex = childCount - 1; childIndex >= 0; childIndex--)
     {
         NSXMLNode * aChildNode = [self.masterTextElement childAtIndex:childIndex];
         
-        if ([aChildNode kind] == NSXMLTextKind)
+        if (aChildNode.kind == NSXMLTextKind)
         {
-            self.masterTextContentString = [aChildNode stringValue];
+            self.masterTextContentString = aChildNode.stringValue;
         }
         
-        if ([aChildNode kind] != NSXMLAttributeKind)
+        if (aChildNode.kind != NSXMLAttributeKind)
         {
             [self.masterTextElement removeChildAtIndex:childIndex];
         }
@@ -561,21 +561,21 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     self.masterTextPathElement = NULL;
     
     NSArray * textPathArray = [self.originalTextElement elementsForName:@"textPath"];
-    if ([textPathArray count] == 1)
+    if (textPathArray.count == 1)
     {
         // use existing textPath element from SVG document
-        self.masterTextPathElement = [textPathArray objectAtIndex:0];
+        self.masterTextPathElement = textPathArray[0];
     }
     else
     {
         // create a new textPath element
         NSXMLElement * newTextPathElement = [[NSXMLElement alloc] init];
-        [newTextPathElement setName:@"textPath"];
+        newTextPathElement.name = @"textPath";
 
         NSString * idString = [self newElementID:@"textPath"];
         NSXMLNode * idAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [idAttributeNode setName:@"id"];
-        [idAttributeNode setStringValue:idString];
+        idAttributeNode.name = @"id";
+        idAttributeNode.stringValue = idString;
         [newTextPathElement addAttribute:idAttributeNode];
         
         self.masterTextPathElement = newTextPathElement;
@@ -597,35 +597,35 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     NSXMLNode * xlinkHrefAttributeNode = [self.masterTextPathElement attributeForName:@"xlink:href"];
     if (xlinkHrefAttributeNode != NULL)
     {
-        NSString * xlinkHrefString = [xlinkHrefAttributeNode stringValue];
+        NSString * xlinkHrefString = xlinkHrefAttributeNode.stringValue;
         NSCharacterSet * parenthesisCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"()"];
         NSArray * xlinkHrefArray = [xlinkHrefString componentsSeparatedByCharactersInSet:parenthesisCharacterSet];
         
         NSString * currentPathIDString = NULL;
-        if ([xlinkHrefArray count] == 1)
+        if (xlinkHrefArray.count == 1)
         {
-            currentPathIDString = [xlinkHrefArray objectAtIndex:0];
+            currentPathIDString = xlinkHrefArray[0];
         }
         else
         {
             NSInteger openParenthesisIndex = 0;
             NSInteger closeParenthesisIndex = 0;
-            NSInteger xlinkHrefArrayCount = [xlinkHrefArray count];
+            NSInteger xlinkHrefArrayCount = xlinkHrefArray.count;
             for (NSInteger i = 0; i < xlinkHrefArrayCount; i++)
             {
-                NSString * componentString = [xlinkHrefArray objectAtIndex:i];
+                NSString * componentString = xlinkHrefArray[i];
                 if ([componentString isEqualToString:@"("] == YES) openParenthesisIndex = i;
                 if ([componentString isEqualToString:@")"] == YES) openParenthesisIndex = i;
             }
             if (closeParenthesisIndex == (openParenthesisIndex + 2))
             {
-                currentPathIDString = [xlinkHrefArray objectAtIndex:(openParenthesisIndex + 1)];
+                currentPathIDString = xlinkHrefArray[(openParenthesisIndex + 1)];
             }
         }
         
         if (currentPathIDString != NULL)
         {
-            NSInteger currentPathIDStringLength = [currentPathIDString length];
+            NSInteger currentPathIDStringLength = currentPathIDString.length;
             if (currentPathIDStringLength > 1)
             {
                 unichar firstIDCharacter = [currentPathIDString characterAtIndex:0];
@@ -633,14 +633,14 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                 {
                     currentPathIDString = [currentPathIDString substringFromIndex:1];
 
-                    NSInteger pathArrayCount = [self.eligiblePathElementsArray count];
+                    NSInteger pathArrayCount = (self.eligiblePathElementsArray).count;
                     for (NSInteger pathIndex = 0; pathIndex < pathArrayCount; pathIndex++)
                     {
-                        NSXMLElement * pathElement = [self.eligiblePathElementsArray objectAtIndex:pathIndex];
+                        NSXMLElement * pathElement = (self.eligiblePathElementsArray)[pathIndex];
                         NSXMLNode * pathIDAttributeNode = [pathElement attributeForName:@"id"];
                         if (pathIDAttributeNode != NULL)
                         {
-                            NSString * pathIDString = [pathIDAttributeNode stringValue];
+                            NSString * pathIDString = pathIDAttributeNode.stringValue;
                             if ([pathIDString isEqualToString:currentPathIDString] == YES)
                             {
                                 currentPathRowIndexSet = [NSIndexSet indexSetWithIndex:pathIndex];
@@ -657,8 +657,8 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [animateElementsTableView selectRowIndexes:firstRowIndexSet byExtendingSelection:NO];
 
     [self makeTextPathPreviewSVG];
-    NSString * textPathPreviewXmlString = [self.textPathPreviewXMLDocument XMLString];
-    [[textPathPreviewWebView mainFrame] loadHTMLString:textPathPreviewXmlString baseURL:NULL];
+    NSString * textPathPreviewXmlString = (self.textPathPreviewXMLDocument).XMLString;
+    [textPathPreviewWebView.mainFrame loadHTMLString:textPathPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -668,9 +668,9 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 - (void)convertTextPathAnimateValues
 {
     NSArray * textPathArray = [self.originalTextElement elementsForName:@"textPath"];
-    if ([textPathArray count] == 1)
+    if (textPathArray.count == 1)
     {
-        self.masterTextPathElement = [textPathArray objectAtIndex:0];
+        self.masterTextPathElement = textPathArray[0];
         
         NSArray * animateElementsArray = [self.masterTextPathElement elementsForName:@"animate"];
         
@@ -697,30 +697,30 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     
     if (fromAttributeNode != NULL)
     {
-        fromAttributeString = [fromAttributeNode stringValue];
+        fromAttributeString = fromAttributeNode.stringValue;
     }
 
     if (toAttributeNode != NULL)
     {
-        toAttributeString = [toAttributeNode stringValue];
+        toAttributeString = toAttributeNode.stringValue;
     }
 
     if (valuesAttributeNode != NULL)
     {
-        valuesAttributeString = [valuesAttributeNode stringValue];
+        valuesAttributeString = valuesAttributeNode.stringValue;
     }
     
     if (valuesAttributeNode != NULL)
     {
         if (fromAttributeNode != NULL)
         {
-            NSInteger fromAttributeIndex = [fromAttributeNode index];
+            NSInteger fromAttributeIndex = fromAttributeNode.index;
             [aAnimateElement removeChildAtIndex:fromAttributeIndex];
         }
         
         if (toAttributeNode != NULL)
         {
-            NSInteger toAttributeIndex = [toAttributeNode index];
+            NSInteger toAttributeIndex = toAttributeNode.index;
             [aAnimateElement removeChildAtIndex:toAttributeIndex];
         }
     }
@@ -732,7 +732,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         {
             [tempValuesAttributeString appendString:fromAttributeString];
             
-            NSInteger fromAttributeIndex = [fromAttributeNode index];
+            NSInteger fromAttributeIndex = fromAttributeNode.index;
             [aAnimateElement removeChildAtIndex:fromAttributeIndex];
         }
         
@@ -748,15 +748,15 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                 [tempValuesAttributeString appendString:@";"];
             }
             
-            NSInteger toAttributeIndex = [toAttributeNode index];
+            NSInteger toAttributeIndex = toAttributeNode.index;
             [aAnimateElement removeChildAtIndex:toAttributeIndex];
         }
         
         valuesAttributeString = [NSString stringWithString:tempValuesAttributeString];
         
         valuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [valuesAttributeNode setName:@"values"];
-        [valuesAttributeNode setStringValue:valuesAttributeString];
+        valuesAttributeNode.name = @"values";
+        valuesAttributeNode.stringValue = valuesAttributeString;
         [aAnimateElement addAttribute:valuesAttributeNode];
     }
 
@@ -775,11 +775,11 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     
     if (aTableView == eligiblePathsTableView)
     {
-        result = [self.eligiblePathElementsArray count];
+        result = (self.eligiblePathElementsArray).count;
     }
     else if (aTableView == animateElementsTableView)
     {
-        result = [self.masterAnimateElementsArray count];
+        result = (self.masterAnimateElementsArray).count;
     }
     
     return result;
@@ -793,7 +793,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 {
     NSString * result = @"Missing Result";
 
-    NSString * tableColumnTitle= [aTableColumn identifier];
+    NSString * tableColumnTitle= aTableColumn.identifier;
     
     if (aTableView == eligiblePathsTableView)
     {
@@ -804,17 +804,17 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         }
         else if ([tableColumnTitle isEqualToString:@"PathID"] == YES)
         {
-            NSXMLElement * pathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
             
             NSXMLNode * idAttributeNode = [pathElement attributeForName:@"id"];
-            NSString * idAttributeString = [idAttributeNode stringValue];
+            NSString * idAttributeString = idAttributeNode.stringValue;
             result = idAttributeString;
         }
         else if ([tableColumnTitle isEqualToString:@"PathLocation"] == YES)
         {
-            NSXMLElement * pathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
 
-            NSString * pathXPath = [pathElement XPath];
+            NSString * pathXPath = pathElement.XPath;
             result = pathXPath;
         }
     }
@@ -827,10 +827,10 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         }
         else if ([tableColumnTitle isEqualToString:@"AnimateID"] == YES)
         {
-            NSXMLElement * animateElement = [self.masterAnimateElementsArray objectAtIndex:rowIndex];
+            NSXMLElement * animateElement = (self.masterAnimateElementsArray)[rowIndex];
 
             NSXMLNode * idAttributeNode = [animateElement attributeForName:@"id"];
-            NSString * idAttributeString = [idAttributeNode stringValue];
+            NSString * idAttributeString = idAttributeNode.stringValue;
             result = idAttributeString;
         }
     }
@@ -844,33 +844,33 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 -(void)loadSettingsForAnimateElement
 {
-    NSInteger rowIndex = [animateElementsTableView selectedRow];
+    NSInteger rowIndex = animateElementsTableView.selectedRow;
     if (rowIndex == -1)
     {
-        [animateBeginValueTextField setStringValue:@""];
-        [animateDurationValueTextField setStringValue:@""];
-        [animateStartOffsetValuesTextField setStringValue:@""];
+        animateBeginValueTextField.stringValue = @"";
+        animateDurationValueTextField.stringValue = @"";
+        animateStartOffsetValuesTextField.stringValue = @"";
         
         [animateFillPopUpButton selectItemWithTitle:@""];
     }
     else
     {
-        NSXMLElement * animateElement = [self.masterAnimateElementsArray objectAtIndex:rowIndex];
+        NSXMLElement * animateElement = (self.masterAnimateElementsArray)[rowIndex];
         
         NSXMLNode * beginAttributeNode = [animateElement attributeForName:@"begin"];
-        NSString * beginAttributeString = [beginAttributeNode stringValue];
-        [animateBeginValueTextField setStringValue:beginAttributeString];
+        NSString * beginAttributeString = beginAttributeNode.stringValue;
+        animateBeginValueTextField.stringValue = beginAttributeString;
 
         NSXMLNode * durAttributeNode = [animateElement attributeForName:@"dur"];
-        NSString * durAttributeString = [durAttributeNode stringValue];
-        [animateDurationValueTextField setStringValue:durAttributeString];
+        NSString * durAttributeString = durAttributeNode.stringValue;
+        animateDurationValueTextField.stringValue = durAttributeString;
 
         NSXMLNode * valuesAttributeNode = [animateElement attributeForName:@"values"];
-        NSString * valuesAttributeString = [valuesAttributeNode stringValue];
-        [animateStartOffsetValuesTextField setStringValue:valuesAttributeString];
+        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
+        animateStartOffsetValuesTextField.stringValue = valuesAttributeString;
 
         NSXMLNode * fillAttributeNode = [animateElement attributeForName:@"fill"];
-        NSString * fillAttributeString = [fillAttributeNode stringValue];
+        NSString * fillAttributeString = fillAttributeNode.stringValue;
         [animateFillPopUpButton selectItemWithTitle:fillAttributeString];
     }
 }
@@ -881,20 +881,20 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == eligiblePathsTableView)
     {
         [self makeTextPathPreviewSVG];
-        NSString * textPathPreviewXmlString = [self.textPathPreviewXMLDocument XMLString];
-        [[textPathPreviewWebView mainFrame] loadHTMLString:textPathPreviewXmlString baseURL:NULL];
+        NSString * textPathPreviewXmlString = (self.textPathPreviewXMLDocument).XMLString;
+        [textPathPreviewWebView.mainFrame loadHTMLString:textPathPreviewXmlString baseURL:NULL];
     }
     else if (aTableView == animateElementsTableView)
     {
         [self loadSettingsForAnimateElement];
         
         [self makeTextPathPreviewSVG];
-        NSString * textPathPreviewXmlString = [self.textPathPreviewXMLDocument XMLString];
-        [[textPathPreviewWebView mainFrame] loadHTMLString:textPathPreviewXmlString baseURL:NULL];
+        NSString * textPathPreviewXmlString = (self.textPathPreviewXMLDocument).XMLString;
+        [textPathPreviewWebView.mainFrame loadHTMLString:textPathPreviewXmlString baseURL:NULL];
     }
 }
 
@@ -904,14 +904,14 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (void)getTotalPathLength
 {
-    NSInteger rowIndex = [eligiblePathsTableView selectedRow];
+    NSInteger rowIndex = eligiblePathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSXMLElement * selectedPathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+        NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
         NSXMLNode * pathIDAttributeNode = [selectedPathElement attributeForName:@"id"];
         if (pathIDAttributeNode != NULL)
         {
-            NSString * pathIDAttributeString = [pathIDAttributeNode stringValue];
+            NSString * pathIDAttributeString = pathIDAttributeNode.stringValue;
             
             NSString * pathLengthFunction = [NSString stringWithFormat:
                     @"function f() {var path = document.getElementById('%@'); return path.getTotalLength();} f();",
@@ -919,7 +919,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
             NSString * totalLengthString = [textPathPreviewWebView stringByEvaluatingJavaScriptFromString:pathLengthFunction];
             
-            float totalStringFloat = [totalLengthString floatValue];
+            float totalStringFloat = totalLengthString.floatValue;
             
             if (totalStringFloat == 0.0f)
             {
@@ -930,7 +930,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                 totalLengthString = [NSString stringWithFormat:@"%.2f", totalStringFloat];
             }
 
-            [pathLengthTextField setStringValue:totalLengthString];
+            pathLengthTextField.stringValue = totalLengthString;
         }
     }
     
@@ -939,7 +939,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     NSXMLNode * textPathIDAttributeNode = [textPathElement attributeForName:@"id"];
     if (textPathIDAttributeNode != NULL)
     {
-        textIDAttributeString = [textPathIDAttributeNode stringValue];
+        textIDAttributeString = textPathIDAttributeNode.stringValue;
     }
     else
     {
@@ -947,7 +947,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
         NSXMLNode * textIDAttributeNode = [textElement attributeForName:@"id"];
         if (textIDAttributeNode != NULL)
         {
-            textIDAttributeString = [textIDAttributeNode stringValue];
+            textIDAttributeString = textIDAttributeNode.stringValue;
         }
     }
     
@@ -959,7 +959,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
         NSString * textLengthString = [textPathPreviewWebView stringByEvaluatingJavaScriptFromString:textLengthFunction];
 
-        float textStringFloat = [textLengthString floatValue];
+        float textStringFloat = textLengthString.floatValue;
         
         if (textStringFloat == 0.0f)
         {
@@ -970,11 +970,11 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
             textLengthString = [NSString stringWithFormat:@"%.2f", textStringFloat];
         }
 
-        [textLengthTextField setStringValue:textLengthString];
+        textLengthTextField.stringValue = textLengthString;
     }
     else
     {
-        [textLengthTextField setStringValue:@"text element ID not set"];
+        textLengthTextField.stringValue = @"text element ID not set";
     }
 }
 
@@ -1005,7 +1005,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [eligiblePathsTableView reloadData];
     [animateElementsTableView reloadData];
 
-    [[textPathPreviewWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [textPathPreviewWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
 
     self.eligiblePathXMLDocument = NULL;
     self.textPathPreviewXMLDocument = NULL;
@@ -1033,7 +1033,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     [eligiblePathsTableView reloadData];
     [animateElementsTableView reloadData];
 
-    [[textPathPreviewWebView mainFrame] loadHTMLString:@"" baseURL:NULL];
+    [textPathPreviewWebView.mainFrame loadHTMLString:@"" baseURL:NULL];
 
     self.eligiblePathXMLDocument = NULL;
     self.textPathPreviewXMLDocument = NULL;
@@ -1054,29 +1054,29 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
 
 - (void)updateOriginalTextElement
 {
-    NSInteger rowIndex = [eligiblePathsTableView selectedRow];
+    NSInteger rowIndex = eligiblePathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSXMLElement * selectedPathElement = [self.eligiblePathElementsArray objectAtIndex:rowIndex];
+        NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
         NSXMLNode * pathIDAttributeNode = [selectedPathElement attributeForName:@"id"];
         if (pathIDAttributeNode != NULL)
         {
-            NSString * pathIDString = [pathIDAttributeNode stringValue];
+            NSString * pathIDString = pathIDAttributeNode.stringValue;
 
             NSXMLElement * originalTextPathElement = NULL;
             
             NSArray * textPathsArray = [self.originalTextElement elementsForName:@"textPath"];
 
-            NSInteger textPathsArrayCount = [textPathsArray count];
+            NSInteger textPathsArrayCount = textPathsArray.count;
 
             if (textPathsArrayCount == 1)
             {
-                originalTextPathElement = [textPathsArray objectAtIndex:0];
+                originalTextPathElement = textPathsArray[0];
             }
             else if (textPathsArrayCount == 0)
             {
                 originalTextPathElement = [[NSXMLElement alloc] init];
-                [originalTextPathElement setName:@"textPath"];
+                originalTextPathElement.name = @"textPath";
                 [textElementEditor assignMacsvgidsForNode:originalTextPathElement];
                 [self.originalTextElement addChild:originalTextPathElement];
             }
@@ -1088,36 +1088,36 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                 NSXMLNode * textNodeForOriginalTextPathElement = NULL;
                 
                 [self.originalTextElement normalizeAdjacentTextNodesPreservingCDATA:YES];
-                NSArray * textElementChildArray = [self.originalTextElement children];
+                NSArray * textElementChildArray = (self.originalTextElement).children;
                 for (NSXMLNode * aChildNode in textElementChildArray)
                 {
-                    if ([aChildNode kind] == NSXMLTextKind)
+                    if (aChildNode.kind == NSXMLTextKind)
                     {
                         textNodeForOriginalTextElement = aChildNode;
                     }
                 }
                 
-                NSArray * textPathElementChildArray = [originalTextPathElement children];
+                NSArray * textPathElementChildArray = originalTextPathElement.children;
                 for (NSXMLNode * aChildNode in textPathElementChildArray)
                 {
-                    if ([aChildNode kind] == NSXMLTextKind)
+                    if (aChildNode.kind == NSXMLTextKind)
                     {
                         textNodeForOriginalTextPathElement = aChildNode;
                     }
-                    else if ([aChildNode kind] == NSXMLElementKind)
+                    else if (aChildNode.kind == NSXMLElementKind)
                     {
                         NSXMLElement * aChildElement = (NSXMLElement *)aChildNode;
-                        NSString * elementTag = [aChildElement name];
+                        NSString * elementTag = aChildElement.name;
                         if ([elementTag isEqualToString:@"animate"] == YES)
                         {
                             NSXMLNode * attributeNameAttributeNode = [aChildElement attributeForName:@"attributeName"];
                             if (attributeNameAttributeNode != NULL)
                             {
-                                NSString * attributeNameAttributeString = [attributeNameAttributeNode stringValue];
+                                NSString * attributeNameAttributeString = attributeNameAttributeNode.stringValue;
                                 if ([attributeNameAttributeString isEqualToString:@"startOffset"] == YES)
                                 {
                                     // remove existing animate element from textPath element
-                                    NSInteger animateElementIndex = [aChildElement index];
+                                    NSInteger animateElementIndex = aChildElement.index;
                                     [originalTextPathElement removeChildAtIndex:animateElementIndex];
                                 }
                             }
@@ -1143,12 +1143,12 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                 if (pathXlinkHrefAttributeNode == NULL)
                 {
                     pathXlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [pathXlinkHrefAttributeNode setName:@"xlink:href"];
-                    [pathXlinkHrefAttributeNode setStringValue:@""];
+                    pathXlinkHrefAttributeNode.name = @"xlink:href";
+                    pathXlinkHrefAttributeNode.stringValue = @"";
                     [originalTextPathElement addAttribute:pathXlinkHrefAttributeNode];
                 }
                 NSString * pathXlinkHrefString = [NSString stringWithFormat:@"#%@", pathIDString];
-                [pathXlinkHrefAttributeNode setStringValue:pathXlinkHrefString];
+                pathXlinkHrefAttributeNode.stringValue = pathXlinkHrefString;
                 
                 for (NSXMLElement * aAnimateElement in self.masterAnimateElementsArray)
                 {
@@ -1158,14 +1158,14 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
                     NSXMLNode * fromAttributeNode = [newAnimateElement attributeForName:@"from"];
                     if (fromAttributeNode != NULL)
                     {
-                        NSInteger fromAttributeIndex = [fromAttributeNode index];
+                        NSInteger fromAttributeIndex = fromAttributeNode.index;
                         [newAnimateElement removeChildAtIndex:fromAttributeIndex];
                     }
                     
                     NSXMLNode * toAttributeNode = [newAnimateElement attributeForName:@"to"];
                     if (toAttributeNode != NULL)
                     {
-                        NSInteger toAttributeIndex = [toAttributeNode index];
+                        NSInteger toAttributeIndex = toAttributeNode.index;
                         [newAnimateElement removeChildAtIndex:toAttributeIndex];
                     }
                     
@@ -1186,7 +1186,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [textElementEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = textElementEditor.svgXmlDocument;
     
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -1206,7 +1206,7 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [textElementEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = textElementEditor.svgXmlDocument;
     
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -1231,9 +1231,9 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"none\">";
     for (NSXMLElement * aPathElement in allPathsArray)
     {
         NSXMLNode * aPathStringNode = [aPathElement attributeForName:@"d"];
-        NSString * aPathString = [aPathStringNode stringValue];
+        NSString * aPathString = aPathStringNode.stringValue;
 
-        if ([aPathString length] > 0)
+        if (aPathString.length > 0)
         {
             [resultArray addObject:aPathElement];
         }
@@ -1262,13 +1262,13 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
     NSXMLNode * pathIDAttribute1 = [pathElement1 attributeForName:@"id"];
     if (pathIDAttribute1 != NULL)
     {
-        pathIDString1 = [pathIDAttribute1 stringValue];
+        pathIDString1 = pathIDAttribute1.stringValue;
     }
     
     NSXMLNode * pathIDAttribute2 = [pathElement2 attributeForName:@"id"];
     if (pathIDAttribute2 != NULL)
     {
-        pathIDString2 = [pathIDAttribute2 stringValue];
+        pathIDString2 = pathIDAttribute2.stringValue;
     }
 
     sortResult = [pathIDString1 compare:pathIDString2];
@@ -1284,7 +1284,7 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [textElementEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = textElementEditor.svgXmlDocument;
     
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -1315,8 +1315,8 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
         
         if (animateIDNode != NULL)
         {
-            NSString * animateIDString = [animateIDNode stringValue];
-            [animateElementsDictionary setObject:@"exists" forKey:animateIDString];
+            NSString * animateIDString = animateIDNode.stringValue;
+            animateElementsDictionary[animateIDString] = @"exists";
         }
     }
 
@@ -1327,8 +1327,8 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
         
         if (animateIDNode != NULL)
         {
-            NSString * animateIDString = [animateIDNode stringValue];
-            [animateElementsDictionary setObject:@"exists" forKey:animateIDString];
+            NSString * animateIDString = animateIDNode.stringValue;
+            animateElementsDictionary[animateIDString] = @"exists";
         }
     }
     
@@ -1337,7 +1337,7 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
     while (continueSearch == YES)
     {
         newElementIDString = [NSString stringWithFormat:@"%@%ld", tagName, idIndex];
-        NSString * idExistsString = [animateElementsDictionary objectForKey:newElementIDString];
+        NSString * idExistsString = animateElementsDictionary[newElementIDString];
         {
             if (idExistsString == NULL)
             {
@@ -1360,20 +1360,20 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
 - (IBAction)addAnimateButtonAction:(id)sender
 {
     NSXMLElement * newAnimateElement = [[NSXMLElement alloc] init];
-    [newAnimateElement setName:@"animate"];
+    newAnimateElement.name = @"animate";
 
     [textElementEditor assignMacsvgidsForNode:newAnimateElement];
 
     NSInteger currentRowIndex = 0;
     NSInteger newRowIndex = 0;
     NSInteger masterAnimateElementsArrayCount =
-            [self.masterAnimateElementsArray count];
+            (self.masterAnimateElementsArray).count;
     if (masterAnimateElementsArrayCount > 0)
     {
-        currentRowIndex = [animateElementsTableView selectedRow];
+        currentRowIndex = animateElementsTableView.selectedRow;
         if (currentRowIndex == -1)
         {
-            currentRowIndex = [self.masterAnimateElementsArray count] - 1;
+            currentRowIndex = (self.masterAnimateElementsArray).count - 1;
         }
         newRowIndex = currentRowIndex + 1;
     }
@@ -1382,59 +1382,59 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
     
     if (masterAnimateElementsArrayCount > 0)
     {
-        previousAnimateElement = [self.masterAnimateElementsArray objectAtIndex:currentRowIndex];
+        previousAnimateElement = (self.masterAnimateElementsArray)[currentRowIndex];
     }
     
     //NSString * idString = [self newAnimateElementID];
     NSString * idString = [self newElementID:@"animate"];
     NSXMLNode * idAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [idAttributeNode setName:@"id"];
-    [idAttributeNode setStringValue:idString];
+    idAttributeNode.name = @"id";
+    idAttributeNode.stringValue = idString;
     [newAnimateElement addAttribute:idAttributeNode];
     
     NSXMLNode * beginAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [beginAttributeNode setName:@"begin"];
+    beginAttributeNode.name = @"begin";
     NSString * beginTime = @"0s";
     if (previousAnimateElement != NULL)
     {
         NSXMLNode * previousAnimateElementIDAttributeNode =
                 [previousAnimateElement attributeForName:@"id"];
         NSString * previousAnimateElementIDString =
-                [previousAnimateElementIDAttributeNode stringValue];
+                previousAnimateElementIDAttributeNode.stringValue;
         beginTime = [NSString stringWithFormat:@"%@.end",
                 previousAnimateElementIDString];
     }
-    [beginAttributeNode setStringValue:beginTime];
+    beginAttributeNode.stringValue = beginTime;
     [newAnimateElement addAttribute:beginAttributeNode];
 
     NSXMLNode * durAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [durAttributeNode setName:@"dur"];
-    [durAttributeNode setStringValue:@"5s"];
+    durAttributeNode.name = @"dur";
+    durAttributeNode.stringValue = @"5s";
     [newAnimateElement addAttribute:durAttributeNode];
 
     NSXMLNode * fillAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [fillAttributeNode setName:@"fill"];
-    [fillAttributeNode setStringValue:@"freeze"];
+    fillAttributeNode.name = @"fill";
+    fillAttributeNode.stringValue = @"freeze";
     [newAnimateElement addAttribute:fillAttributeNode];
 
     NSXMLNode * repeatCountAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [repeatCountAttributeNode setName:@"repeatCount"];
-    [repeatCountAttributeNode setStringValue:@"0"];
+    repeatCountAttributeNode.name = @"repeatCount";
+    repeatCountAttributeNode.stringValue = @"0";
     [newAnimateElement addAttribute:repeatCountAttributeNode];
 
     NSXMLNode * valuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [valuesAttributeNode setName:@"values"];
-    [valuesAttributeNode setStringValue:@"100; 200; 100;"];
+    valuesAttributeNode.name = @"values";
+    valuesAttributeNode.stringValue = @"100; 200; 100;";
     [newAnimateElement addAttribute:valuesAttributeNode];
 
     NSXMLNode * attributeNameAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [attributeNameAttributeNode setName:@"attributeName"];
-    [attributeNameAttributeNode setStringValue:@"startOffset"];
+    attributeNameAttributeNode.name = @"attributeName";
+    attributeNameAttributeNode.stringValue = @"startOffset";
     [newAnimateElement addAttribute:attributeNameAttributeNode];
 
     NSXMLNode * attributeTypeAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [attributeTypeAttributeNode setName:@"attributeType"];
-    [attributeTypeAttributeNode setStringValue:@"XML"];
+    attributeTypeAttributeNode.name = @"attributeType";
+    attributeTypeAttributeNode.stringValue = @"XML";
     [newAnimateElement addAttribute:attributeTypeAttributeNode];
 
     [self.masterAnimateElementsArray insertObject:newAnimateElement atIndex:newRowIndex];
@@ -1459,87 +1459,87 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
 
 - (IBAction)updateTextPathData:(id)sender
 {
-    NSString * startOffsetString = [startOffsetValueTextField stringValue];
+    NSString * startOffsetString = startOffsetValueTextField.stringValue;
     
     NSXMLNode * startOffsetAttributeNode = [self.masterTextPathElement attributeForName:@"startOffset"];
     if (startOffsetAttributeNode == NULL)
     {
         startOffsetAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [startOffsetAttributeNode setName:@"startOffset"];
-        [startOffsetAttributeNode setStringValue:@""];
+        startOffsetAttributeNode.name = @"startOffset";
+        startOffsetAttributeNode.stringValue = @"";
         [self.masterTextPathElement addAttribute:startOffsetAttributeNode];
     }
-    [startOffsetAttributeNode setStringValue:startOffsetString];
+    startOffsetAttributeNode.stringValue = startOffsetString;
     
-    NSString * animateBeginString = [animateBeginValueTextField stringValue];
-    NSString * animateDurationString = [animateDurationValueTextField stringValue];
-    NSString * animateStartOffsetValuesString = [animateStartOffsetValuesTextField stringValue];
-    NSString * animateFillString = [animateFillPopUpButton titleOfSelectedItem];
-    NSString * animateRepeatCountString = [animateRepeatCountComboBox stringValue];
+    NSString * animateBeginString = animateBeginValueTextField.stringValue;
+    NSString * animateDurationString = animateDurationValueTextField.stringValue;
+    NSString * animateStartOffsetValuesString = animateStartOffsetValuesTextField.stringValue;
+    NSString * animateFillString = animateFillPopUpButton.titleOfSelectedItem;
+    NSString * animateRepeatCountString = animateRepeatCountComboBox.stringValue;
 
-    NSInteger animateRowIndex = [animateElementsTableView selectedRow];
+    NSInteger animateRowIndex = animateElementsTableView.selectedRow;
     
     if (animateRowIndex != -1)
     {
-        NSXMLElement * selectedAnimateElement = [self.masterAnimateElementsArray objectAtIndex:animateRowIndex];
+        NSXMLElement * selectedAnimateElement = (self.masterAnimateElementsArray)[animateRowIndex];
         
         NSXMLNode * animateBeginAttributeNode = [selectedAnimateElement attributeForName:@"begin"];
         if (animateBeginAttributeNode == NULL)
         {
             animateBeginAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [animateBeginAttributeNode setName:@"begin"];
-            [animateBeginAttributeNode setStringValue:@""];
+            animateBeginAttributeNode.name = @"begin";
+            animateBeginAttributeNode.stringValue = @"";
             [selectedAnimateElement addAttribute:animateBeginAttributeNode];
         }
-        [animateBeginAttributeNode setStringValue:animateBeginString];
+        animateBeginAttributeNode.stringValue = animateBeginString;
         
         NSXMLNode * animateDurationAttributeNode = [selectedAnimateElement attributeForName:@"dur"];
         if (animateDurationAttributeNode == NULL)
         {
             animateDurationAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [animateDurationAttributeNode setName:@"dur"];
-            [animateDurationAttributeNode setStringValue:@""];
+            animateDurationAttributeNode.name = @"dur";
+            animateDurationAttributeNode.stringValue = @"";
             [selectedAnimateElement addAttribute:animateDurationAttributeNode];
         }
-        [animateDurationAttributeNode setStringValue:animateDurationString];
+        animateDurationAttributeNode.stringValue = animateDurationString;
         
         NSXMLNode * animateFillAttributeNode = [selectedAnimateElement attributeForName:@"fill"];
         if (animateFillAttributeNode == NULL)
         {
             animateFillAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [animateFillAttributeNode setName:@"fill"];
-            [animateFillAttributeNode setStringValue:@""];
+            animateFillAttributeNode.name = @"fill";
+            animateFillAttributeNode.stringValue = @"";
             [selectedAnimateElement addAttribute:animateFillAttributeNode];
         }
-        [animateFillAttributeNode setStringValue:animateFillString];
+        animateFillAttributeNode.stringValue = animateFillString;
         
         NSXMLNode * animateStartOffsetValuesAttributeNode = [selectedAnimateElement attributeForName:@"values"];
         if (animateStartOffsetValuesAttributeNode == NULL)
         {
             animateStartOffsetValuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [animateStartOffsetValuesAttributeNode setName:@"values"];
-            [animateStartOffsetValuesAttributeNode setStringValue:@""];
+            animateStartOffsetValuesAttributeNode.name = @"values";
+            animateStartOffsetValuesAttributeNode.stringValue = @"";
             [selectedAnimateElement addAttribute:animateStartOffsetValuesAttributeNode];
         }
-        [animateStartOffsetValuesAttributeNode setStringValue:animateStartOffsetValuesString];
+        animateStartOffsetValuesAttributeNode.stringValue = animateStartOffsetValuesString;
         
         NSXMLNode * animateRepeatCountAttributeNode = [selectedAnimateElement attributeForName:@"repeatCount"];
         if (animateRepeatCountAttributeNode == NULL)
         {
             animateRepeatCountAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [animateRepeatCountAttributeNode setName:@"repeatCount"];
-            [animateRepeatCountAttributeNode setStringValue:@""];
+            animateRepeatCountAttributeNode.name = @"repeatCount";
+            animateRepeatCountAttributeNode.stringValue = @"";
             [selectedAnimateElement addAttribute:animateRepeatCountAttributeNode];
         }
-        [animateRepeatCountAttributeNode setStringValue:animateRepeatCountString];
+        animateRepeatCountAttributeNode.stringValue = animateRepeatCountString;
     }
     
     [eligiblePathsTableView reloadData];
     [animateElementsTableView reloadData];
 
     [self makeTextPathPreviewSVG];
-    NSString * textPathPreviewXmlString = [self.textPathPreviewXMLDocument XMLString];
-    [[textPathPreviewWebView mainFrame] loadHTMLString:textPathPreviewXmlString baseURL:NULL];
+    NSString * textPathPreviewXmlString = (self.textPathPreviewXMLDocument).XMLString;
+    [textPathPreviewWebView.mainFrame loadHTMLString:textPathPreviewXmlString baseURL:NULL];
 }
 
 @end

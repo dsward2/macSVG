@@ -52,10 +52,10 @@
                 
                 NSMutableString * textString = [[NSMutableString alloc] init];
                 
-                NSArray * childrenArray = [xmlElementForAttributes children];
+                NSArray * childrenArray = xmlElementForAttributes.children;
                 for (NSXMLNode * childNode in childrenArray)
                 {
-                    NSXMLNodeKind nodeKind = [childNode kind];
+                    NSXMLNodeKind nodeKind = childNode.kind;
                     
                     switch (nodeKind) 
                     {
@@ -79,13 +79,13 @@
 
                         case NSXMLCommentKind:
                         {
-                            NSString * nodeString = [childNode stringValue];
+                            NSString * nodeString = childNode.stringValue;
                             [textString appendString:nodeString];
                             break;
                         }
                         case NSXMLTextKind:
                         {
-                            NSString * nodeString = [childNode stringValue];
+                            NSString * nodeString = childNode.stringValue;
                             [textString appendString:nodeString];
                             break;
                         }
@@ -113,7 +113,7 @@
                 
                 NSAttributedString * attributedTextString = [[NSAttributedString alloc] initWithString:textString];
                 
-                NSTextStorage *storage = [textEditorTextView textStorage];
+                NSTextStorage *storage = textEditorTextView.textStorage;
                 [storage beginEditing];
                 [storage setAttributedString:attributedTextString];
                 [storage endEditing];
@@ -125,7 +125,7 @@
     
     if (textContentFound == NO)
     {
-        [textEditorTextView setString:@""];
+        textEditorTextView.string = @"";
     }
 }
 
@@ -134,14 +134,14 @@
 {
     if (enabled == YES)
     {
-        if ([textEditorView superview] == NULL) 
+        if (textEditorView.superview == NULL) 
         {
             NSView * attributeEditorFrameView = editorUIFrameController.editorPanelFrameView;
-            NSRect frameRect = [attributeEditorFrameView frame];
+            NSRect frameRect = attributeEditorFrameView.frame;
             textEditorView.frame = frameRect;
             textEditorView.bounds = frameRect;
             
-            [[textEditorTextView textStorage] setFont:[NSFont fontWithName:@"Courier" size:11]];
+            textEditorTextView.textStorage.font = [NSFont fontWithName:@"Courier" size:11];
         
             [attributeEditorFrameView addSubview:textEditorView];
             
@@ -173,10 +173,10 @@
 
             if (xmlElementForAttributes != NULL)
             {
-                NSArray * childrenArray = [xmlElementForAttributes children];
+                NSArray * childrenArray = xmlElementForAttributes.children;
                 for (NSXMLNode * childNode in childrenArray)
                 {
-                    NSXMLNodeKind nodeKind = [childNode kind];
+                    NSXMLNodeKind nodeKind = childNode.kind;
                     
                     switch (nodeKind) 
                     {
@@ -226,27 +226,27 @@
                     }
                 }
                 
-                NSString * elementName = [xmlElementForAttributes name];
+                NSString * elementName = xmlElementForAttributes.name;
                 
                 if (([elementName isEqualToString:@"script"]) || ([elementName isEqualToString:@"style"]))
                 {
-                    NSString * newStringValue = [textEditorTextView string];
+                    NSString * newStringValue = textEditorTextView.string;
                     
                     NSXMLNode * cdataNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind  options:NSXMLNodeIsCDATA];
                     
-                    [cdataNode setStringValue:newStringValue];
+                    cdataNode.stringValue = newStringValue;
                     
-                    [xmlElementForAttributes setStringValue:@""];
+                    xmlElementForAttributes.stringValue = @"";
                     
                     [xmlElementForAttributes addChild:cdataNode];
                 }
                 else
                 {
-                    NSString * newStringValue = [textEditorTextView string];
+                    NSString * newStringValue = textEditorTextView.string;
                     
                     NSXMLNode * newTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
                     
-                    [newTextNode setStringValue:newStringValue];
+                    newTextNode.stringValue = newStringValue;
                     
                     [xmlElementForAttributes addChild:newTextNode];
 

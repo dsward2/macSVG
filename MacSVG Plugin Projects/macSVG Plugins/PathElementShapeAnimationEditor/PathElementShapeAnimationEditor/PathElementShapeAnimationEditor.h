@@ -35,6 +35,6 @@
 
 - (void) setAttributesWithDictionary:(NSMutableDictionary *)animateAttributesDictionary;
 
-- (NSXMLElement *)createNewAnimateElement;
+@property (readonly, copy) NSXMLElement *createNewAnimateElement;
 
 @end

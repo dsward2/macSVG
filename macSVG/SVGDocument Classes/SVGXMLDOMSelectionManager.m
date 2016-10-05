@@ -39,7 +39,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -59,18 +59,18 @@
 -(void) syncSelectedDOMElementsToXMLDocument
 {
     // copy attributes of selected elements from DOM to XML document
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
 
     NSArray * selectedElementsArray = self.selectedElementsManager.selectedElementsArray;
     
-    NSUInteger selectedItemsCount = [selectedElementsArray count];
+    NSUInteger selectedItemsCount = selectedElementsArray.count;
     for (int i = 0; i < selectedItemsCount; i++)
     {
-        NSMutableDictionary * selectedItemDictionary = [selectedElementsArray objectAtIndex:i];
+        NSMutableDictionary * selectedItemDictionary = selectedElementsArray[i];
 
         // update the selected elements
-        DOMElement * aSvgElement = [selectedItemDictionary objectForKey:@"domElement"];
-        NSXMLElement * aXmlElement = [selectedItemDictionary objectForKey:@"xmlElement"];
+        DOMElement * aSvgElement = selectedItemDictionary[@"domElement"];
+        NSXMLElement * aXmlElement = selectedItemDictionary[@"xmlElement"];
         
         //NSLog(@"syncSelectedElementsToXMLDocument - %@", aSvgElement);
         
@@ -78,16 +78,16 @@
         
         DOMNamedNodeMap * attributesNodeMap = aSvgElement.attributes;
         
-        int attributeCount = [attributesNodeMap length];
+        int attributeCount = attributesNodeMap.length;
         
         for (int j = 0; j < attributeCount; j++)
         {
             DOMNode * attributeNode = [attributesNodeMap item:j];
             
-            NSString * attributeName = [attributeNode nodeName];
-            NSString * attributeValue = [attributeNode nodeValue];
+            NSString * attributeName = attributeNode.nodeName;
+            NSString * attributeValue = attributeNode.nodeValue;
             
-            if ([attributeName length] > 0)
+            if (attributeName.length > 0)
             {
                 BOOL omitAttribute = NO;
             
@@ -106,14 +106,14 @@
 
                 if (omitAttribute == NO)
                 {
-                    [attributesDictionary setObject:attributeValue forKey:attributeName];
+                    attributesDictionary[attributeName] = attributeValue;
                 }
             }
         }
         
         //[macSVGDocument setAttributesForXMLElement:attributesDictionary];
         
-        if ([attributesDictionary count] == 0)
+        if (attributesDictionary.count == 0)
         {
             NSLog(@"syncSelectedDOMElementsToXMLDocument - attributesDictionary count is zero");
         }
@@ -134,7 +134,7 @@
     if (self.activeXMLElement != NULL)
     {
         NSXMLNode * xmlMacsvgidNode = [self.activeXMLElement attributeForName:@"macsvgid"];
-        NSString * xmlMacsvgid = [xmlMacsvgidNode stringValue];
+        NSString * xmlMacsvgid = xmlMacsvgidNode.stringValue;
         
         if (xmlMacsvgid != NULL)
         {
@@ -155,7 +155,7 @@
     
     BOOL continueSearch = NO;
     
-    NSUInteger selectedElementsCount = [selectedElements count];
+    NSUInteger selectedElementsCount = selectedElements.count;
     
     if (selectedElementsCount > 0)
     {
@@ -166,7 +166,7 @@
     
     while (continueSearch == YES)
     {
-        NSXMLElement * aComparisionElement = [selectedElements objectAtIndex:searchIdx];
+        NSXMLElement * aComparisionElement = selectedElements[searchIdx];
         
         if (aElement == aComparisionElement)
         {
@@ -195,38 +195,38 @@
     if (aXmlElement != NULL)
     {
         // also recursively creates temporary parents
-        NSString * tagName = [aXmlElement name];
+        NSString * tagName = aXmlElement.name;
 
-        DOMDocument * domDocument = [[macSVGDocumentWindowController.svgWebKitController.svgWebView mainFrame] DOMDocument];
+        DOMDocument * domDocument = (macSVGDocumentWindowController.svgWebKitController.svgWebView).mainFrame.DOMDocument;
         
         aDomElement = [domDocument createElementNS:svgNamespace
                 qualifiedName:tagName];
 
-        NSArray * xmlAttributeNodes = [aXmlElement attributes];
+        NSArray * xmlAttributeNodes = aXmlElement.attributes;
         
         for (NSXMLNode * aXMLAttributeNode in xmlAttributeNodes)
         {
-            NSString * attributeName = [aXMLAttributeNode name];
-            NSString * attributeValue = [aXMLAttributeNode stringValue];
+            NSString * attributeName = aXMLAttributeNode.name;
+            NSString * attributeValue = aXMLAttributeNode.stringValue;
             
             [aDomElement setAttribute:attributeName value:attributeValue];
         }
         
-        NSString * stringValue = [aXmlElement stringValue];
+        NSString * stringValue = aXmlElement.stringValue;
         
         NSString * copyStringValue = [[NSString alloc] initWithString:stringValue];
         
-        [aDomElement setTextContent:copyStringValue];
+        aDomElement.textContent = copyStringValue;
         
         // try to find matching parent element
         BOOL endParentSearch = NO;
         if ([tagName isEqualToString:@"svg"] == NO) endParentSearch = YES;
         if ([tagName isEqualToString:@"html"] == NO) endParentSearch = YES;
-        if ([aXmlElement parent] == NULL) endParentSearch = YES;
+        if (aXmlElement.parent == NULL) endParentSearch = YES;
         
         if (endParentSearch == NO)
         {
-            NSXMLElement * parentXmlElement = (NSXMLElement *)[aXmlElement parent];
+            NSXMLElement * parentXmlElement = (NSXMLElement *)aXmlElement.parent;
             if (parentXmlElement != NULL)
             {
                 DOMElement * parentDOMElement = NULL;
@@ -234,7 +234,7 @@
                 NSXMLNode * parentMacsvgidNode = [aXmlElement attributeForName:@"macsvgid"];
                 if (parentMacsvgidNode != NULL)
                 {
-                    NSString * parentMacsvgid = [parentMacsvgidNode stringValue];
+                    NSString * parentMacsvgid = parentMacsvgidNode.stringValue;
 
                     parentDOMElement = [svgWebKitController domElementForMacsvgid:parentMacsvgid];
                 }
@@ -268,35 +268,35 @@
     if (parent == NULL)
     {
         // if parent is NULL, use the xml root element as parent
-        MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
         NSXMLElement * xmlRootElement = [macSVGDocument.svgXmlDocument rootElement];
         NSXMLNode * MacsvgidNode = [xmlRootElement attributeForName:@"macsvgid"];
-        NSString * macsvgid = [MacsvgidNode stringValue];
+        NSString * macsvgid = MacsvgidNode.stringValue;
 
-        [xmlElementsDictionary setObject:xmlRootElement forKey:macsvgid];
+        xmlElementsDictionary[macsvgid] = xmlRootElement;
         
-        children = [xmlRootElement children];
-        childCount = [children count];
+        children = xmlRootElement.children;
+        childCount = children.count;
     }
     else
     {
-        children = [parent children];
-        childCount = [children count];
+        children = parent.children;
+        childCount = children.count;
     }
     
 	for (unsigned int i = 0; i < childCount; i++)
     {
-		NSXMLNode * aNode = [children objectAtIndex:i];
+		NSXMLNode * aNode = children[i];
         
-		if ([aNode kind] == NSXMLElementKind)
+		if (aNode.kind == NSXMLElementKind)
         {
             NSXMLElement * aXmlElement = (NSXMLElement *)aNode;
             NSXMLNode * MacsvgidNode = [aXmlElement attributeForName:@"macsvgid"];
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
             
-            [xmlElementsDictionary setObject:aXmlElement forKey:macsvgid];
+            xmlElementsDictionary[macsvgid] = aXmlElement;
 
-            NSUInteger grandchildCount = [aXmlElement childCount];
+            NSUInteger grandchildCount = aXmlElement.childCount;
             if (grandchildCount > 0)
             {
                 [self recursiveBuildXMLElementsDictionary:xmlElementsDictionary
@@ -319,7 +319,7 @@
     if (parent == NULL)
     {
         // if parent is NULL, use the dom root element as parent
-        DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+        DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
         DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
         
         if (svgElementsList.length > 0)
@@ -328,30 +328,30 @@
             
             NSString * macsvgid = [domRootElement getAttribute:@"macsvgid"];
 
-            [domElementsDictionary setObject:domRootElement forKey:macsvgid];
+            domElementsDictionary[macsvgid] = domRootElement;
 
-            childNodes = [domRootElement childNodes];
-            childCount = [childNodes length];
+            childNodes = domRootElement.childNodes;
+            childCount = childNodes.length;
         }
     }
     else
     {
-        childNodes = [parent childNodes];
-        childCount = [childNodes length];
+        childNodes = parent.childNodes;
+        childCount = childNodes.length;
     }
     
 	for (unsigned int i = 0; i < childCount; i++)
     {
 		DOMNode * aNode = [childNodes item:i];
         
-		if ([aNode nodeType] == DOM_ELEMENT_NODE)
+		if (aNode.nodeType == DOM_ELEMENT_NODE)
         {
             DOMElement * aDomElement = (DOMElement *)aNode;
             NSString * macsvgid = [aDomElement getAttribute:@"macsvgid"];
             
-            [domElementsDictionary setObject:aDomElement forKey:macsvgid];
+            domElementsDictionary[macsvgid] = aDomElement;
 
-            NSUInteger grandchildCount = [aDomElement childElementCount];
+            NSUInteger grandchildCount = aDomElement.childElementCount;
             if (grandchildCount > 0)
             {
                 [self recursiveBuildDOMElementsDictionary:domElementsDictionary
@@ -375,12 +375,12 @@
     if (parent == NULL)
     {
         // if parent is NULL, use the xml root element as parent
-        MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
         NSXMLElement * xmlRootElement = [macSVGDocument.svgXmlDocument rootElement];
         if ([self xmlElementIsSelected:xmlRootElement selectedElements:selectedElements] == YES)
         {
             NSXMLNode * MacsvgidNode = [xmlRootElement attributeForName:@"macsvgid"];
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
             DOMElement * aDomElement = [svgWebKitController domElementForMacsvgid:macsvgid];
             
             if (aDomElement == NULL)
@@ -391,20 +391,20 @@
             
             [self.selectedElementsManager addElementDictionaryWithXMLElement:xmlRootElement domElement:aDomElement];
         }
-        children = [xmlRootElement children];
-        childCount = [children count];
+        children = xmlRootElement.children;
+        childCount = children.count;
     }
     else
     {
-        children = [parent children];
-        childCount = [children count];
+        children = parent.children;
+        childCount = children.count;
     }
     
 	for (unsigned int i = 0; i < childCount; i++)
     {
-		NSXMLNode * aNode = [children objectAtIndex:i];
+		NSXMLNode * aNode = children[i];
         
-		if ([aNode kind] == NSXMLElementKind)
+		if (aNode.kind == NSXMLElementKind)
         {
             NSXMLElement * aXmlElement = (NSXMLElement *)aNode;
             //NSString * macsvgid = [aXmlElement getAttribute:@"macsvgid"];
@@ -412,7 +412,7 @@
             if ([self xmlElementIsSelected:aXmlElement selectedElements:selectedElements] == YES)
             {
                 NSXMLNode * MacsvgidNode = [aXmlElement attributeForName:@"macsvgid"];
-                NSString * macsvgid = [MacsvgidNode stringValue];
+                NSString * macsvgid = MacsvgidNode.stringValue;
                 DOMElement * aDomElement = [svgWebKitController domElementForMacsvgid:macsvgid];
                 
                 if (aDomElement == NULL)
@@ -439,14 +439,14 @@
 {
     for (NSXMLNode * aXmlNode in selectedXMLElements)
     {
-        if ([aXmlNode kind] == NSXMLElementKind)
+        if (aXmlNode.kind == NSXMLElementKind)
         {
             NSXMLElement * aXmlElement = (NSXMLElement *)aXmlNode;
             
             NSXMLNode * MacsvgidNode = [aXmlElement attributeForName:@"macsvgid"];
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
         
-            DOMElement * aDomElement = [domElementsDictionary objectForKey:macsvgid];
+            DOMElement * aDomElement = domElementsDictionary[macsvgid];
             
             if (aDomElement == NULL)
             {
@@ -469,7 +469,7 @@
     [self.selectedElementsManager removeAllElements];
     [self.domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
 
-    if ([selectedXMLElements count] <= 1)
+    if (selectedXMLElements.count <= 1)
     {
         [self recursiveXMLSelect:NULL
                 selectedXMLElements:selectedXMLElements depth:0];
@@ -512,11 +512,11 @@
 
 -(void) setSelectionsForChildNodes:(NSXMLElement *)aXMLElement selectionState:(BOOL)selectionState
 {
-    NSArray * childNodesArray = [aXMLElement children];
+    NSArray * childNodesArray = aXMLElement.children;
     for (NSXMLNode * aChildNode in childNodesArray)
     {
         BOOL itemIsSelected = NO;
-        NSXMLNodeKind nodeKind = [aChildNode kind];
+        NSXMLNodeKind nodeKind = aChildNode.kind;
         
         if (nodeKind == NSXMLElementKind)
         {
@@ -529,8 +529,7 @@
             
             for (NSMutableDictionary * selectedElementDictionary in selectedElementsArray)
             {
-                NSXMLElement * aSelectedXMLElement = [selectedElementDictionary
-                        objectForKey:@"xmlElement"];
+                NSXMLElement * aSelectedXMLElement = selectedElementDictionary[@"xmlElement"];
                 if (aChildXMLElement == aSelectedXMLElement)
                 {
                     targetDictionary = selectedElementDictionary;
@@ -555,7 +554,7 @@
                     NSXMLNode * MacsvgidNode = [aChildXMLElement attributeForName:@"macsvgid"];
                     if (MacsvgidNode != NULL)
                     {
-                        NSString * aMacsvgid = [MacsvgidNode stringValue];
+                        NSString * aMacsvgid = MacsvgidNode.stringValue;
                         DOMElement * aChildDomElement = [svgWebKitController domElementForMacsvgid:aMacsvgid];
                         [self.selectedElementsManager
                                 addElementDictionaryWithXMLElement:aChildXMLElement domElement:aChildDomElement];
@@ -581,8 +580,7 @@
     BOOL itemIsSelected = NO;
     for (NSMutableDictionary * selectedElementDictionary in selectedElementsArray)
     {
-        NSXMLElement * aSelectedXMLElement = [selectedElementDictionary
-                objectForKey:@"xmlElement"];
+        NSXMLElement * aSelectedXMLElement = selectedElementDictionary[@"xmlElement"];
         if (aXMLElement == aSelectedXMLElement)
         {
             itemIsSelected = YES;
@@ -607,7 +605,7 @@
     NSString * tagName = @"";
 
     NSXMLNode * MacsvgidNode = [aXMLElement attributeForName:@"macsvgid"];
-    NSString * macsvgid = [MacsvgidNode stringValue];
+    NSString * macsvgid = MacsvgidNode.stringValue;
 
     DOMElement * aDOMElement = [svgWebKitController domElementForMacsvgid:macsvgid];
 
@@ -671,7 +669,7 @@
         BOOL continueSearch = NO;
         BOOL selectedItemFound = NO;
         
-        tagName = [aXMLElement name];
+        tagName = aXMLElement.name;
         
         if (selectedItemsCount > 0)
         {
@@ -697,7 +695,7 @@
                 }
                 else
                 {
-                    NSString * elementTag = [aSelectedXMLElement name];
+                    NSString * elementTag = aSelectedXMLElement.name;
                     if ([elementTag isEqualToString:@"path"])
                     {
                         selectedItemFound = YES;
@@ -824,28 +822,28 @@
 
     [self recursiveBuildDOMElementsDictionary:domElementsDictionary parent:NULL depth:0];
 
-    NSUInteger selectedItemsCount = [selectedElementsDictionariesArray count];
+    NSUInteger selectedItemsCount = selectedElementsDictionariesArray.count;
     for (int i = 0; i < selectedItemsCount; i++) 
     {
-        NSMutableDictionary * selectedElementDictionary = [selectedElementsDictionariesArray objectAtIndex:i];
+        NSMutableDictionary * selectedElementDictionary = selectedElementsDictionariesArray[i];
         
-        NSXMLElement * aSelectedXmlElement = [selectedElementDictionary objectForKey:@"xmlElement"];
+        NSXMLElement * aSelectedXmlElement = selectedElementDictionary[@"xmlElement"];
         
         NSXMLNode * MacsvgidNode = [aSelectedXmlElement attributeForName:@"macsvgid"];
-        NSString * macsvgid = [MacsvgidNode stringValue];
+        NSString * macsvgid = MacsvgidNode.stringValue;
         
-        DOMElement * aSelectedDomElement = [domElementsDictionary objectForKey:macsvgid];
+        DOMElement * aSelectedDomElement = domElementsDictionary[macsvgid];
     
         if (aSelectedDomElement != NULL)
         {
-            [selectedElementDictionary setObject:aSelectedDomElement forKey:@"domElement"];
+            selectedElementDictionary[@"domElement"] = aSelectedDomElement;
         }
         else
         {
             // could happen with animation elements, when animation is disabled
             aSelectedDomElement = [self createTemporaryDOMElementForXMLElement:aSelectedXmlElement];
             
-            [selectedElementDictionary setObject:aSelectedDomElement forKey:@"domElement"];
+            selectedElementDictionary[@"domElement"] = aSelectedDomElement;
         }
     }
 }

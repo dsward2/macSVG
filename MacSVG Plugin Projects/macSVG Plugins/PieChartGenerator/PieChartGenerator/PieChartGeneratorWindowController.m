@@ -15,7 +15,7 @@
 
 @implementation PieChartGeneratorWindowController
 
-- (id)initWithWindow:(NSWindow *)window
+- (instancetype)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
     if (self) {
@@ -33,10 +33,10 @@
 
 - (IBAction)generatePieChartButtonAction:(id)sender
 {
-    NSString * pieChartValuesString = [pieChartValuesTextField stringValue];
-    NSString * centerXString = [centerXTextField stringValue];
-    NSString * centerYString = [centerYTextField stringValue];
-    NSString * radiusString = [radiusTextField stringValue];
+    NSString * pieChartValuesString = pieChartValuesTextField.stringValue;
+    NSString * centerXString = centerXTextField.stringValue;
+    NSString * centerYString = centerYTextField.stringValue;
+    NSString * radiusString = radiusTextField.stringValue;
 
     [[NSApplication sharedApplication] stopModalWithCode:NSModalResponseOK];
     

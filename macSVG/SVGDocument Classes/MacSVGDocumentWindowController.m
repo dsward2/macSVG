@@ -67,7 +67,7 @@
 //	initWithWindow
 //==================================================================================
 
-- (id)initWithWindow:(NSWindow *)window
+- (instancetype)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
     if (self) {
@@ -86,7 +86,7 @@
 //	initWithWindowNibName
 //==================================================================================
 
-- (id)initWithWindowNibName:(NSString *)windowNibName owner:(id)owner
+- (instancetype)initWithWindowNibName:(NSString *)windowNibName owner:(id)owner
 {
     //self = [super initWithWindowNibName:windowNibName owner:owner];
     self = [super initWithWindowNibName:windowNibName owner:self];
@@ -110,9 +110,9 @@
 - (IBAction)loadPlugins:(id)sender
 {
     // Load plugins
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
 
-    NSString * plugInsPath = [[NSBundle mainBundle] builtInPlugInsPath];
+    NSString * plugInsPath = [NSBundle mainBundle].builtInPlugInsPath;
     
     NSArray * bundlePaths = [NSBundle pathsForResourcesOfType:@"plugin"
             inDirectory:plugInsPath];
@@ -125,7 +125,7 @@
         NSBundle * bundlePlugin = [NSBundle bundleWithPath:pathToPlugin];
 
         // instantiate the principal class and call the method
-        Class principalClass = [bundlePlugin principalClass];
+        Class principalClass = bundlePlugin.principalClass;
         
         id principalClassObj = [[principalClass alloc] init];
         
@@ -147,17 +147,17 @@
                 elementsDictionary:elementsDictionary
                 elementContentsDictionary:elementContentsDictionary];
         
-        if ([macSVGPlugin isMenuPlugIn] == YES)
+        if (macSVGPlugin.menuPlugIn == YES)
         {
             [self.menuPlugInsArray addObject:macSVGPlugin];
         }
     }
 
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
 
     NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
     NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
-    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
+    NSMenu * plugInsMenu = plugInsMenuItem.submenu;
     [plugInsMenu setAutoenablesItems:NO];
     [plugInsMenu removeAllItems];
 
@@ -215,16 +215,16 @@
 - (void)windowDidResignMain:(NSNotification *)notification
 {
     // Deactivate menu command targets and actions
-    NSWindow * aWindow = [notification object];
+    NSWindow * aWindow = notification.object;
     #pragma unused(aWindow)
     
     //NSLog(@"MacSVGDocumentWindowController - windowDidResignMain %@", aWindow);
 
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
 
     NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
     NSMenuItem * fileMenuItem = [mainMenu itemAtIndex:fileMenuIndex];
-    NSMenu * fileMenu = [fileMenuItem submenu];
+    NSMenu * fileMenu = fileMenuItem.submenu;
 
 	NSMenuItem * saveWithNetworkConnectionMenuItem = [fileMenu itemWithTitle:@"Save With Network Connection…"];
     [saveWithNetworkConnectionMenuItem setTarget:NULL];
@@ -232,7 +232,7 @@
 
     NSUInteger svgMenuIndex = [mainMenu indexOfItemWithTitle:@"SVG"];
     NSMenuItem * svgMenuItem = [mainMenu itemAtIndex:svgMenuIndex];
-    NSMenu * svgMenu = [svgMenuItem submenu]; 
+    NSMenu * svgMenu = svgMenuItem.submenu; 
 
 	NSMenuItem * showSvgXmlTextMenuItem = [svgMenu itemWithTitle:@"Show SVG XML Text"];
     [showSvgXmlTextMenuItem setTarget:NULL];
@@ -241,11 +241,11 @@
 
     NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
     NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
-    NSMenu * editMenu = [editMenuItem submenu];
+    NSMenu * editMenu = editMenuItem.submenu;
 
 	NSUInteger findMenuIndex = [editMenu indexOfItemWithTitle:@"Find"];
     NSMenuItem * findMenuItem = [editMenu itemAtIndex:findMenuIndex];
-    NSMenu * findMenu = [findMenuItem submenu];
+    NSMenu * findMenu = findMenuItem.submenu;
 
 	NSMenuItem * findElementMenuItem = [findMenu itemWithTitle:@"Find…"];
     [findElementMenuItem setTarget:NULL];
@@ -258,7 +258,7 @@
 
     NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
     NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
-    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
+    NSMenu * plugInsMenu = plugInsMenuItem.submenu;
     [plugInsMenu setAutoenablesItems:NO];
     [plugInsMenu removeAllItems];
 
@@ -274,59 +274,59 @@
 
 - (void)windowDidBecomeMain:(NSNotification *)notification
 {
-    NSWindow * aWindow = [notification object];
+    NSWindow * aWindow = notification.object;
     #pragma unused(aWindow)
     
     //NSLog(@"MacSVGDocumentWindowController - windowDidBecomeMain %@", aWindow);
 
     // Set the menu command targets and actions
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
 
     NSUInteger fileMenuIndex = [mainMenu indexOfItemWithTitle:@"File"];
     NSMenuItem * fileMenuItem = [mainMenu itemAtIndex:fileMenuIndex];
-    NSMenu * fileMenu = [fileMenuItem submenu];
+    NSMenu * fileMenu = fileMenuItem.submenu;
 
 	NSMenuItem * saveWithNetworkConnectionMenuItem = [fileMenu itemWithTitle:@"Save With Network Connection…"];
-    [saveWithNetworkConnectionMenuItem setTarget:self];
-    [saveWithNetworkConnectionMenuItem setAction:@selector(saveWithNetworkConnection:)];
+    saveWithNetworkConnectionMenuItem.target = self;
+    saveWithNetworkConnectionMenuItem.action = @selector(saveWithNetworkConnection:);
 
     NSUInteger svgMenuIndex = [mainMenu indexOfItemWithTitle:@"SVG"];
     NSMenuItem * svgMenuItem = [mainMenu itemAtIndex:svgMenuIndex];
-    NSMenu * svgMenu = [svgMenuItem submenu]; 
+    NSMenu * svgMenu = svgMenuItem.submenu; 
 
 	NSMenuItem * showSvgXmlTextMenuItem = [svgMenu itemWithTitle:@"Show SVG XML Text"];
-    [showSvgXmlTextMenuItem setTarget:self];
-    [showSvgXmlTextMenuItem setAction:@selector(showSVGXMLTextDocument:)];
+    showSvgXmlTextMenuItem.target = self;
+    showSvgXmlTextMenuItem.action = @selector(showSVGXMLTextDocument:);
 
 	NSMenuItem * zoomInMenuItem = [svgMenu itemWithTitle:@"Zoom In"];
-    [zoomInMenuItem setTarget:self];
-    [zoomInMenuItem setAction:@selector(zoomIn:)];
+    zoomInMenuItem.target = self;
+    zoomInMenuItem.action = @selector(zoomIn:);
 
 	NSMenuItem * zoomOutMenuItem = [svgMenu itemWithTitle:@"Zoom Out"];
-    [zoomOutMenuItem setTarget:self];
-    [zoomOutMenuItem setAction:@selector(zoomOut:)];
+    zoomOutMenuItem.target = self;
+    zoomOutMenuItem.action = @selector(zoomOut:);
 
 	NSMenuItem * resetZoomMenuItem = [svgMenu itemWithTitle:@"Reset Zoom"];
-    [resetZoomMenuItem setTarget:self];
-    [resetZoomMenuItem setAction:@selector(resetZoom:)];
+    resetZoomMenuItem.target = self;
+    resetZoomMenuItem.action = @selector(resetZoom:);
 
     // Edit menu items
 
     NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
     NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
-    NSMenu * editMenu = [editMenuItem submenu];
+    NSMenu * editMenu = editMenuItem.submenu;
 
 	NSUInteger findMenuIndex = [editMenu indexOfItemWithTitle:@"Find"];
     NSMenuItem * findMenuItem = [editMenu itemAtIndex:findMenuIndex];
-    NSMenu * findMenu = [findMenuItem submenu];
+    NSMenu * findMenu = findMenuItem.submenu;
 
 	NSMenuItem * findElementMenuItem = [findMenu itemWithTitle:@"Find…"];
-    [findElementMenuItem setTarget:self];
-    [findElementMenuItem setAction:@selector(findElement:)];
+    findElementMenuItem.target = self;
+    findElementMenuItem.action = @selector(findElement:);
 
 	NSMenuItem * findNextElementMenuItem = [findMenu itemWithTitle:@"Find Next"];
-    [findNextElementMenuItem setTarget:self];
-    [findNextElementMenuItem setAction:@selector(findNextElement:)];
+    findNextElementMenuItem.target = self;
+    findNextElementMenuItem.action = @selector(findNextElement:);
     
     [self enableEditMenuItems];  // for cut/copy/paste elements
 
@@ -334,11 +334,11 @@
     
     NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
     NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
-    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
+    NSMenu * plugInsMenu = plugInsMenuItem.submenu;
     [plugInsMenu setAutoenablesItems:NO];
     [plugInsMenu removeAllItems];
 
-    if ([self.menuPlugInsArray count] == 0)
+    if ((self.menuPlugInsArray).count == 0)
     {
         NSString * itemTitle = @"No Plug-Ins Enabled";
         NSMenuItem * newPluginMenuItem = [plugInsMenu addItemWithTitle:itemTitle action:NULL keyEquivalent:@""];
@@ -348,10 +348,10 @@
     {
         for (MacSVGPlugin * macSVGPlugin in self.menuPlugInsArray)
         {
-            NSString * itemTitle = [macSVGPlugin pluginMenuTitle];
+            NSString * itemTitle = macSVGPlugin.pluginMenuTitle;
             NSMenuItem * newPluginMenuItem = [plugInsMenu addItemWithTitle:itemTitle
                     action:@selector(beginMenuPlugIn:) keyEquivalent:@""];
-            [newPluginMenuItem setTarget:self];
+            newPluginMenuItem.target = self;
         }
     }
 }
@@ -361,24 +361,24 @@
 
 - (void)enableEditMenuItems
 {
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
 
     NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
     NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
-    NSMenu * editMenu = [editMenuItem submenu];
+    NSMenu * editMenu = editMenuItem.submenu;
 
     NSArray * selectedItems = [self selectedItemsInOutlineView];
-    if ([selectedItems count] > 0)
+    if (selectedItems.count > 0)
     {
         // enable pasteboard functions for selected elements
         NSMenuItem * cutElementMenuItem = [editMenu itemWithTitle:@"Cut"];
-        [cutElementMenuItem setTarget:self];
-        [cutElementMenuItem setAction:@selector(cut:)];
+        cutElementMenuItem.target = self;
+        cutElementMenuItem.action = @selector(cut:);
         cutElementMenuItem.enabled = YES;
 
         NSMenuItem * copyElementMenuItem = [editMenu itemWithTitle:@"Copy"];
-        [copyElementMenuItem setTarget:self];
-        [copyElementMenuItem setAction:@selector(copy:)];
+        copyElementMenuItem.target = self;
+        copyElementMenuItem.action = @selector(copy:);
         copyElementMenuItem.enabled = YES;
     }
     else
@@ -410,10 +410,10 @@
 
 - (IBAction)copy:(id)sender
 {
-    BOOL isKeyWindow = [self.window isKeyWindow];
+    BOOL isKeyWindow = (self.window).keyWindow;
     if (isKeyWindow == YES)
     {
-        NSResponder * firstResponder = [self.window firstResponder];
+        NSResponder * firstResponder = (self.window).firstResponder;
         
         if ((firstResponder == self.xmlOutlineController.xmlOutlineView) || (firstResponder == self.svgWebKitController.svgWebView))
         {
@@ -453,7 +453,7 @@
     
     for (NSXMLNode * aXMLNode in selectedItems)
     {
-        NSXMLNodeKind nodeKind = [aXMLNode kind];
+        NSXMLNodeKind nodeKind = aXMLNode.kind;
         
         switch (nodeKind)
         {
@@ -530,8 +530,8 @@
 - (IBAction)paste:(id)sender
 {
     NSPasteboard * pasteboard = [NSPasteboard generalPasteboard];
-    NSArray * classes = [[NSArray alloc] initWithObjects:[NSString class], nil];
-    NSDictionary * options = [NSDictionary dictionary];
+    NSArray * classes = @[[NSString class]];
+    NSDictionary * options = @{};
     NSArray * copiedItems = [pasteboard readObjectsForClasses:classes options:options];
 
     if (copiedItems != nil)
@@ -592,12 +592,12 @@
         
         for (NSXMLNode * aSelectedNode in selectedNodes)
         {
-            if ([aSelectedNode kind] == NSXMLElementKind)
+            if (aSelectedNode.kind == NSXMLElementKind)
             {
                 if (targetNode == NULL)
                 {
                     lastSelectedNode = aSelectedNode;
-                    targetNode = (id)[aSelectedNode parent];
+                    targetNode = (id)aSelectedNode.parent;
                     if (targetNode == NULL)
                     {
                         targetNode = rootElement;
@@ -610,7 +610,7 @@
                     if (aNodeDepth <= minNodeDepth)
                     {
                         lastSelectedNode = aSelectedNode;
-                        targetNode = (id)[aSelectedNode parent];
+                        targetNode = (id)aSelectedNode.parent;
                         if (targetNode == NULL)
                         {
                             targetNode = rootElement;
@@ -624,13 +624,13 @@
         NSUInteger childIndex = 0;
         
         // Determine the parent to insert into and the child index to insert at.
-        if ([lastSelectedNode kind] == NSXMLElementKind)
+        if (lastSelectedNode.kind == NSXMLElementKind)
         {
-            NSUInteger indexOfSourceElement = [[targetNode children] indexOfObject:lastSelectedNode];
+            NSUInteger indexOfSourceElement = [targetNode.children indexOfObject:lastSelectedNode];
 
             if (indexOfSourceElement == NSNotFound) 
             {
-                childIndex = [[targetNode children] count];
+                childIndex = targetNode.children.count;
             }
             else
             {
@@ -641,7 +641,7 @@
             
             for (NSXMLElement * sourceXMLElement in xmlElementsArray)
             {
-                NSString * tagName = [sourceXMLElement name];
+                NSString * tagName = sourceXMLElement.name;
                 
                 NSXMLElement * newNode = [[NSXMLElement alloc] initWithName:tagName];
                 
@@ -688,13 +688,13 @@
 {
     NSInteger nodeDepth = 0;
 
-    NSXMLNode * nextParent = [aNode parent];
+    NSXMLNode * nextParent = aNode.parent;
     
     while (nextParent != NULL)
     {
         nodeDepth++;
         
-        nextParent = [nextParent parent];
+        nextParent = nextParent.parent;
     }
     
     return nodeDepth;
@@ -715,19 +715,20 @@
 
 - (IBAction)beginMenuPlugIn:(id)caller
 {
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
     NSUInteger plugInsMenuIndex = [mainMenu indexOfItemWithTitle:@"Plug-Ins"];
     NSMenuItem * plugInsMenuItem = [mainMenu itemAtIndex:plugInsMenuIndex];
-    NSMenu * plugInsMenu = [plugInsMenuItem submenu];
+    NSMenu * plugInsMenu = plugInsMenuItem.submenu;
     
     NSInteger plugInIndex = [plugInsMenu indexOfItem:caller];
     
-    MacSVGPlugin * macSVGPlugin = [self.menuPlugInsArray objectAtIndex:plugInIndex];
+    MacSVGPlugin * macSVGPlugin = (self.menuPlugInsArray)[plugInIndex];
     
-    NSString * plugInTitle = [macSVGPlugin pluginMenuTitle];
+    NSString * plugInTitle = macSVGPlugin.pluginMenuTitle;
     #pragma unused(plugInTitle)
     
-    [macSVGPlugin beginMenuPlugIn];
+    BOOL result = [macSVGPlugin beginMenuPlugIn];
+    #pragma unused(result)
 }
 
 //==================================================================================
@@ -736,7 +737,7 @@
 
 - (IBAction)saveWithNetworkConnection:(id)sender
 {
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     NetworkConnectionManager * networkConnectionManager =
             [macSVGAppDelegate networkConnectionManager];
     
@@ -895,11 +896,11 @@
         selectedElement = [self.svgXMLDOMSelectionManager.selectedElementsManager xmlElementAtIndex:0];
     }
     
-    if ([elementName length] == 0)
+    if (elementName.length == 0)
     {
         if (selectedElement != NULL)
         {
-            elementName = [selectedElement name];
+            elementName = selectedElement.name;
         }
     }
 
@@ -944,7 +945,7 @@
             aButton.state = NSOffState;            
         }
     }
-    [self.svgWebKitController.domMouseEventsController setMouseMode:MOUSE_DISENGAGED];
+    (self.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
 
     [self showSettingsForCurrentToolMode];
 }
@@ -1010,8 +1011,7 @@
     NSButton * dummyButton = [[NSButton alloc] initWithFrame:dummyButtonRect];
     
     // order of array items should correspond to toolMode defines in header
-    toolButtonsArray = [[NSArray alloc] initWithObjects:
-            dummyButton,    // dummy entry for item 0
+    toolButtonsArray = @[dummyButton,    // dummy entry for item 0
             arrowToolButton,
             rectToolButton,
             circleToolButton,
@@ -1023,8 +1023,7 @@
             pluginToolButton,
             textToolButton,
             imageToolButton,
-            pathToolButton,
-            NULL];
+            pathToolButton];
     
     [self updateRulers];
     
@@ -1097,11 +1096,11 @@
     [self.xmlOutlineController registerDragTypes];
     
     NSURL * requestURL = [NSURL URLWithString:@"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"];
-    NSString * pathExtension = [requestURL pathExtension];
+    NSString * pathExtension = requestURL.pathExtension;
     NSString * mimeType = @"image/jpeg";
     NSString * imageReferenceOptionString = @"Link to Image";
     NSImage * previewImage = [NSImage imageNamed:@"Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"];
-    NSNumber * jpegCompressionNumber = [NSNumber numberWithFloat:0.5];
+    NSNumber * jpegCompressionNumber = @0.5f;
     
     NSMutableDictionary * newImageDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
             requestURL, @"url",
@@ -1127,7 +1126,7 @@
 {
     if (newSelectedNode != NULL)
     {
-        if ([newSelectedNode kind] == NSXMLElementKind)
+        if (newSelectedNode.kind == NSXMLElementKind)
         {
             // get attributes, populate attributes table view
             NSXMLElement * aElement = (NSXMLElement *)newSelectedNode;
@@ -1224,7 +1223,7 @@
     {
         [self.xmlOutlineController.xmlOutlineView expandItem:parentElement];
         
-        parentElement = (NSXMLElement *)[parentElement parent];
+        parentElement = (NSXMLElement *)parentElement.parent;
     }
 }
 
@@ -1259,12 +1258,12 @@
     
     //id parentElement = [aElement parent];
     
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
     
     BOOL animationsPaused = YES;
 
-    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebKitController.svgWebView).mainFrame.DOMDocument;
     
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     
@@ -1289,10 +1288,10 @@
     
     for (NSDictionary * attributeDictionary in xmlAttributesArray)
     {
-        NSString * name = [attributeDictionary objectForKey:@"name"];
-        NSString * value = [attributeDictionary objectForKey:@"value"];
+        NSString * name = attributeDictionary[@"name"];
+        NSString * value = attributeDictionary[@"value"];
 
-        [newAttributesDictionary setObject:value forKey:name];
+        newAttributesDictionary[name] = value;
     }
     
     MacSVGDocument * macSVGDocument = self.document;
@@ -1300,7 +1299,7 @@
     
     [self.svgWebKitController updateElementAttributes:aElement];
     
-    NSString * elementName = [aElement name];
+    NSString * elementName = aElement.name;
     
     BOOL animationElementChanged = NO;
     
@@ -1336,7 +1335,7 @@
     }
     
     //[[self document] updateChangeCount:(NSChangeDone | NSChangeDiscardable)];       // 20160810
-    [[self document] updateChangeCount:NSChangeDone];       // 20160919
+    [self.document updateChangeCount:NSChangeDone];       // 20160919
 }
 
 // ================================================================
@@ -1501,7 +1500,7 @@
             aButton.state = NSOffState;            
         }
     }
-    [self.svgWebKitController.domMouseEventsController setMouseMode:MOUSE_DISENGAGED];
+    (self.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
 
     if (self.currentToolMode != toolModePlugin)
     {
@@ -1529,7 +1528,7 @@
             NSXMLElement * selectedElement = [self.svgXMLDOMSelectionManager.selectedElementsManager xmlElementAtIndex:0];
             [self.svgXMLDOMSelectionManager selectXMLElement:selectedElement];
             
-            NSString * elementName = [selectedElement name];
+            NSString * elementName = selectedElement.name;
             
             if ([elementName isEqualToString:@"path"] == YES)
             {
@@ -1573,7 +1572,7 @@
     
     NSOutlineView * svgXmlOutlineView = self.xmlOutlineController.xmlOutlineView;
     
-    [[svgXmlOutlineView window] makeFirstResponder:svgXmlOutlineView];
+    [svgXmlOutlineView.window makeFirstResponder:svgXmlOutlineView];
 
     [self setWebViewCursor];
 }
@@ -1611,7 +1610,7 @@
             break;
     }
 
-    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebKitController.svgWebView).mainFrame.DOMDocument;
     DOMElement * svgElement = NULL;
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
@@ -1658,7 +1657,7 @@
         proposedResult:(CGFloat)proposedResult
         result:(CGFloat)result
 {
-    NSString * splitViewName = [splitView description];
+    NSString * splitViewName = splitView.description;
     
     if (splitView == fullWindowTopBottomSplitView)
     {
@@ -1690,11 +1689,11 @@
 
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification
 {
-    NSSplitView * splitView = (NSSplitView *)[notification object];
+    NSSplitView * splitView = (NSSplitView *)notification.object;
     
     if (splitView == leftMiddleRightSplitView)
     {
-        NSView *leftSubview = (NSView *)[[splitView subviews] objectAtIndex:0];
+        NSView *leftSubview = (NSView *)splitView.subviews[0];
         NSRect leftSubviewFrame = leftSubview.frame;
 
         if (leftSubviewFrame.size.width < 188.0f)
@@ -1706,7 +1705,7 @@
     
     if (splitView == elementsTopBottomSplitView)
     {
-        NSView * topSubview = (NSView *)[[splitView subviews] objectAtIndex:0];
+        NSView * topSubview = (NSView *)splitView.subviews[0];
         NSRect topSubviewFrame = topSubview.frame;
 
         //if (topSubviewFrame.size.height < 226.0f)
@@ -1731,16 +1730,16 @@
 
 - (void)windowDidEndLiveResize:(NSNotification *)notification
 {
-    NSArray * lmrSubviews = [leftMiddleRightSplitView subviews];
-    NSView * leftSplitView = [lmrSubviews firstObject];
+    NSArray * lmrSubviews = leftMiddleRightSplitView.subviews;
+    NSView * leftSplitView = lmrSubviews.firstObject;
     NSRect leftSplitViewBounds = leftSplitView.bounds;
     if (leftSplitViewBounds.size.width < 188)
     {
         [leftMiddleRightSplitView setPosition:188 ofDividerAtIndex:0];
     }
     
-    NSArray * topBottomSubviews = [elementsTopBottomSplitView subviews];
-    NSView * topSplitView = [topBottomSubviews firstObject];
+    NSArray * topBottomSubviews = elementsTopBottomSplitView.subviews;
+    NSView * topSplitView = topBottomSubviews.firstObject;
     NSRect topBottomViewBounds = topSplitView.bounds;
     if (topBottomViewBounds.size.height < 226)
     {
@@ -1872,7 +1871,7 @@
 - (void)setElementsButtonPosition:(NSButton *)aButton
         position:(NSUInteger)position
 {
-    NSView * parentView = [aButton superview];
+    NSView * parentView = aButton.superview;
     NSRect parentFrame = parentView.frame;
     
     float buttonWidthFloat = parentFrame.size.width / 2.0f;
@@ -1889,7 +1888,7 @@
 - (void)setToolButtonPosition:(NSButton *)aButton row:(NSUInteger)row
         column:(NSUInteger)column
 {
-    NSView * parentView = [aButton superview];
+    NSView * parentView = aButton.superview;
     NSRect parentFrame = parentView.frame;
     
     float buttonWidthFloat = parentFrame.size.width / 4.0f;
@@ -1908,7 +1907,7 @@
 - (void)setColorWellPosition:(NSColorWell *)aColorWell row:(NSUInteger)row
         column:(NSUInteger)column
 {
-    NSView * parentView = [aColorWell superview];
+    NSView * parentView = aColorWell.superview;
     NSRect parentFrame = parentView.frame;
     
     float widthFloat = parentFrame.size.width / 4.0f;
@@ -1982,7 +1981,7 @@
             if(temp_addr->ifa_addr->sa_family == AF_INET)
             {
                     // Get NSString from C String
-                    hostString = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                    hostString = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr));
             }
             temp_addr = temp_addr->ifa_next;
         }
@@ -1998,8 +1997,8 @@
 
 - (NSString *)portString
 {
-    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
-    WebServerController * webServerController = [macSVGAppDelegate webServerController];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+    WebServerController * webServerController = macSVGAppDelegate.webServerController;
 
     NSUInteger webHostPort = webServerController.webServerPort;
     
@@ -2028,7 +2027,7 @@
 {
     NSString * urlString = [self webPreviewURLString];
 
-    [webBrowserPreviewButton setTitle:urlString];
+    webBrowserPreviewButton.title = urlString;
 }
 
 // ================================================================
@@ -2050,7 +2049,7 @@
     NSButton *targetButton = (NSButton *)sender;
     
     // configure the preferred position of the popover
-    [self.toolSettingsPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxXEdge];
+    [self.toolSettingsPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxXEdge];
 }
 
 // -------------------------------------------------------------------------------
@@ -2131,7 +2130,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -2168,7 +2167,7 @@
 
 - (NSString *)hexColorFromColorWell:(NSColorWell *)aColorWell
 {
-    NSColor * aColor = [aColorWell color];
+    NSColor * aColor = aColorWell.color;
     
     NSString * hexColor = [self hexadecimalValueOfAnNSColor:aColor];
     
@@ -2213,11 +2212,11 @@
 
 - (NSString *)strokeWidthString
 {
-    NSString * strokeWidthTextFieldValue = [self.strokeWidthTextField stringValue];
-    float strokeWidthFloat = [strokeWidthTextFieldValue floatValue];
+    NSString * strokeWidthTextFieldValue = (self.strokeWidthTextField).stringValue;
+    float strokeWidthFloat = strokeWidthTextFieldValue.floatValue;
     NSString * strokeWidthNumericString = [self numericStringWithFloat:strokeWidthFloat];
     
-    NSString * strokeWidthUnitString = [self.strokeWidthUnitPopUpButton titleOfSelectedItem];
+    NSString * strokeWidthUnitString = (self.strokeWidthUnitPopUpButton).titleOfSelectedItem;
     
     NSString * strokeWidthString = [NSString stringWithFormat:@"%@%@",
             strokeWidthNumericString, strokeWidthUnitString];
@@ -2294,12 +2293,12 @@
 
 - (void)preserveSettingsForTool
 {
-    BOOL strokeEnabled = [self.strokeCheckboxButton integerValue];
-    BOOL fillEnabled = [self.fillCheckboxButton integerValue];
-    float strokeWidth = [self.strokeWidthTextField floatValue];
-    NSString * unitString = [self.strokeWidthUnitPopUpButton titleOfSelectedItem];
-    NSColor * strokeColor = [self.strokeColorWell color];
-    NSColor * fillColor = [self.fillColorWell color];
+    BOOL strokeEnabled = (self.strokeCheckboxButton).integerValue;
+    BOOL fillEnabled = (self.fillCheckboxButton).integerValue;
+    float strokeWidth = (self.strokeWidthTextField).floatValue;
+    NSString * unitString = (self.strokeWidthUnitPopUpButton).titleOfSelectedItem;
+    NSColor * strokeColor = (self.strokeColorWell).color;
+    NSColor * fillColor = (self.fillColorWell).color;
 
     switch (self.currentToolMode)
     {
@@ -2418,12 +2417,12 @@
 
 - (void)restoreSettingsForTool
 {
-    BOOL strokeEnabled = [self.strokeCheckboxButton integerValue];
-    BOOL fillEnabled = [self.fillCheckboxButton integerValue];
-    float strokeWidth = [self.strokeWidthTextField floatValue];
-    NSString * unitString = [self.strokeWidthUnitPopUpButton titleOfSelectedItem];
-    NSColor * strokeColor = [self.strokeColorWell color];
-    NSColor * fillColor = [self.fillColorWell color];
+    BOOL strokeEnabled = (self.strokeCheckboxButton).integerValue;
+    BOOL fillEnabled = (self.fillCheckboxButton).integerValue;
+    float strokeWidth = (self.strokeWidthTextField).floatValue;
+    NSString * unitString = (self.strokeWidthUnitPopUpButton).titleOfSelectedItem;
+    NSColor * strokeColor = (self.strokeColorWell).color;
+    NSColor * fillColor = (self.fillColorWell).color;
 
     switch (self.currentToolMode)
     {
@@ -2535,12 +2534,12 @@
         }
     }
 
-    [self.strokeCheckboxButton setState:strokeEnabled];
-    [self.fillCheckboxButton setState:fillEnabled];
-    [self.strokeWidthTextField setFloatValue:strokeWidth];
+    (self.strokeCheckboxButton).state = strokeEnabled;
+    (self.fillCheckboxButton).state = fillEnabled;
+    (self.strokeWidthTextField).floatValue = strokeWidth;
     [self.strokeWidthUnitPopUpButton selectItemWithTitle:unitString];
-    [self.strokeColorWell setColor:strokeColor];
-    [self.fillColorWell setColor:fillColor];
+    (self.strokeColorWell).color = strokeColor;
+    (self.fillColorWell).color = fillColor;
 }
 
 //==================================================================================
@@ -2621,7 +2620,7 @@
 {
     //[svgSearchField becomeFirstResponder];
     
-    [[svgSearchField window] makeFirstResponder:svgSearchField];
+    [svgSearchField.window makeFirstResponder:svgSearchField];
 }
 
 //==================================================================================
@@ -2632,29 +2631,29 @@
 {
     //[svgSearchField becomeFirstResponder];
 
-    [[svgSearchField window] makeFirstResponder:svgSearchField];
+    [svgSearchField.window makeFirstResponder:svgSearchField];
 
 
-    NSString * svgSearchText = [svgSearchField stringValue];
+    NSString * svgSearchText = svgSearchField.stringValue;
     
     NSXMLElement * foundElement = NULL;
     
     MacSVGDocument * macSVGDocument = self.document;
     NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
     
-    NSInteger selectedRow = [self.xmlOutlineController.xmlOutlineView selectedRow];
+    NSInteger selectedRow = (self.xmlOutlineController.xmlOutlineView).selectedRow;
     NSXMLElement * findAfterElement = NULL;
     
     if (selectedRow != -1)
     {
         NSXMLNode * findAfterNode = [self.xmlOutlineController.xmlOutlineView itemAtRow:selectedRow];
-        if ([findAfterNode kind] == NSXMLElementKind)
+        if (findAfterNode.kind == NSXMLElementKind)
         {
             findAfterElement = (NSXMLElement *)findAfterNode;
         }
         else
         {
-            findAfterElement = (NSXMLElement *)[findAfterNode parent];
+            findAfterElement = (NSXMLElement *)findAfterNode.parent;
         }
     }
 
@@ -2678,7 +2677,7 @@
 
 - (IBAction)svgSearchFieldAction:(id)sender
 {
-    NSString * svgSearchText = [svgSearchField stringValue];
+    NSString * svgSearchText = svgSearchField.stringValue;
     
     NSXMLElement * foundElement = NULL;
     
@@ -2715,7 +2714,7 @@
 {
     BOOL result = NO;
     
-    NSString * tagName = [searchElement name];
+    NSString * tagName = searchElement.name;
     
     NSRange foundRange = [tagName rangeOfString:searchString options:NSCaseInsensitiveSearch];
     
@@ -2725,11 +2724,11 @@
     }
     else
     {
-        NSArray * attributesArray = [searchElement attributes];
+        NSArray * attributesArray = searchElement.attributes;
         
         for (NSXMLNode * aAttribute in attributesArray)
         {
-            NSString * attributeName = [aAttribute name];
+            NSString * attributeName = aAttribute.name;
             foundRange = [attributeName rangeOfString:searchString options:NSCaseInsensitiveSearch];
             if (foundRange.location != NSNotFound)
             {
@@ -2737,7 +2736,7 @@
                 break;
             }
 
-            NSString * attributeValue = [aAttribute stringValue];
+            NSString * attributeValue = aAttribute.stringValue;
             foundRange = [attributeValue rangeOfString:searchString options:NSCaseInsensitiveSearch];
             if (foundRange.location != NSNotFound)
             {
@@ -2770,10 +2769,10 @@
         previousElementWasFound = YES;
     }
     
-    NSArray * childNodes = [parentElement children];
+    NSArray * childNodes = parentElement.children;
     for (NSXMLNode * aChildNode in childNodes)
     {
-        if ([aChildNode kind] == NSXMLElementKind)
+        if (aChildNode.kind == NSXMLElementKind)
         {
             NSXMLElement * childElement = (NSXMLElement *)aChildNode;
             
@@ -2831,9 +2830,9 @@
 
 - (IBAction)showElementDocumentation:(id)sender
 {
-    NSInteger selectedRow = [self.svgElementsTableController.elementsTableView selectedRow];
+    NSInteger selectedRow = (self.svgElementsTableController.elementsTableView).selectedRow;
     
-    NSString * elementTag = [self.svgElementsTableController.svgElementsArray objectAtIndex:selectedRow];
+    NSString * elementTag = (self.svgElementsTableController.svgElementsArray)[selectedRow];
 
     [self.svgHelpManager showDocumentationForElement:elementTag];
 }
@@ -2844,24 +2843,24 @@
 
 - (IBAction)showAttributeDocumentation:(id)sender
 {
-    id firstResponder = [self.window firstResponder];
+    id firstResponder = (self.window).firstResponder;
     
     NSString * attributeName = NULL;
     
     if (self.xmlAttributesTableController.xmlAttributesTableView == firstResponder)
     {
-        NSInteger selectedRow = [self.xmlAttributesTableController.xmlAttributesTableView selectedRow];
+        NSInteger selectedRow = (self.xmlAttributesTableController.xmlAttributesTableView).selectedRow;
 
-        NSDictionary * attributeDictionary = [self.xmlAttributesTableController.xmlAttributesArray objectAtIndex:selectedRow];
+        NSDictionary * attributeDictionary = (self.xmlAttributesTableController.xmlAttributesArray)[selectedRow];
 
-        attributeName = [attributeDictionary objectForKey:@"name"];
+        attributeName = attributeDictionary[@"name"];
     }
     
     if (self.editorUIFrameController.validAttributesController.validAttributesTableView == firstResponder)
     {
-        NSInteger selectedRow = [self.editorUIFrameController.validAttributesController.validAttributesTableView selectedRow];
+        NSInteger selectedRow = (self.editorUIFrameController.validAttributesController.validAttributesTableView).selectedRow;
         
-        attributeName = [self.editorUIFrameController.validAttributesController.attributeKeysArray objectAtIndex:selectedRow];
+        attributeName = (self.editorUIFrameController.validAttributesController.attributeKeysArray)[selectedRow];
     }
 
     if (attributeName != NULL)
@@ -2935,16 +2934,16 @@
 
 - (IBAction)exportImages:(id)sender
 {
-    NSWindow * hostWindow = [self window];
+    NSWindow * hostWindow = self.window;
 
-    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
-    DOMElement * documentElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.svgWebKitController.svgWebView).mainFrame.DOMDocument;
+    DOMElement * documentElement = domDocument.documentElement;
     
     NSString * imageWidthString = [documentElement getAttribute:@"width"];
     NSString * imageHeightString = [documentElement getAttribute:@"height"];
     
-    NSInteger imageWidth = [imageWidthString integerValue];
-    NSInteger imageHeight = [imageHeightString integerValue];
+    NSInteger imageWidth = imageWidthString.integerValue;
+    NSInteger imageHeight = imageHeightString.integerValue;
     
     imageWidthString = [NSString stringWithFormat:@"%ld", imageWidth];
     imageHeightString = [NSString stringWithFormat:@"%ld", imageHeight];
@@ -2994,7 +2993,7 @@
 
 - (IBAction) exportImagesButtonAction:(id)sender
 {
-    [[self window] endSheet:self.exportImagesSheet returnCode:NSModalResponseContinue];
+    [self.window endSheet:self.exportImagesSheet returnCode:NSModalResponseContinue];
     [self.exportImagesSheet orderOut:sender];
 }
 
@@ -3004,7 +3003,7 @@
 
 - (IBAction) cancelExportImagesButtonAction:(id)sender
 {
-    [[self window] endSheet:self.exportImagesSheet returnCode:NSModalResponseCancel];
+    [self.window endSheet:self.exportImagesSheet returnCode:NSModalResponseCancel];
     [self.exportImagesSheet orderOut:sender];
 }
 
@@ -3018,21 +3017,21 @@
    // the filename extension associated with the specified UTI.
    CFStringRef newExtension = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)typeUTI,
                                    kUTTagClassFilenameExtension);
-   NSString * newName = [[name stringByDeletingPathExtension]
+   NSString * newName = [name.stringByDeletingPathExtension
                        stringByAppendingPathExtension:(__bridge NSString*)newExtension];
    CFRelease(newExtension);
  
    // Set the default name for the file and show the panel.
    NSSavePanel*    panel = [NSSavePanel savePanel];
-   [panel setNameFieldStringValue:newName];
+   panel.nameFieldStringValue = newName;
    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton)
         {
-            NSURL *  theFile = [panel URL];
+            NSURL *  theFile = panel.URL;
  
             // Write the contents in the new format.
             
-            NSString * filePath = [theFile path];
+            NSString * filePath = theFile.path;
             
             self.exportingImagesPathTextField.stringValue = filePath;
             self.exportingImagesWidthTextField.stringValue = self.exportImagesWidthTextField.stringValue;
@@ -3053,7 +3052,7 @@
                 self.exportingImagesAlphaChannelTextField.stringValue = @"No";
             }
 
-            [[self window] beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
+            [self.window beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
             {
                 if (returnCode == NSModalResponseContinue)
                 {
@@ -3084,11 +3083,11 @@
     [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton)
         {
-            NSURL *  directoryURL = [panel URL];
+            NSURL *  directoryURL = panel.URL;
  
             // Write the contents in the new format.
             
-            NSString * directoryPath = [directoryURL path];
+            NSString * directoryPath = directoryURL.path;
             
             self.exportingImagesPathTextField.stringValue = directoryPath;
             self.exportingImagesWidthTextField.stringValue = self.exportImagesWidthTextField.stringValue;
@@ -3109,7 +3108,7 @@
                 self.exportingImagesAlphaChannelTextField.stringValue = @"No";
             }
 
-            [[self window] beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
+            [self.window beginSheet:self.exportingImagesSheet  completionHandler:^(NSModalResponse returnCode)
             {
                 if (returnCode == NSModalResponseContinue)
                 {
@@ -3128,7 +3127,7 @@
 
 - (IBAction) cancelExportingImagesButtonAction:(id)sender
 {
-    [[self window] endSheet:self.exportingImagesSheet returnCode:NSModalResponseCancel];
+    [self.window endSheet:self.exportingImagesSheet returnCode:NSModalResponseCancel];
     [self.exportingImagesSheet orderOut:sender];
 }
 
@@ -3138,7 +3137,7 @@
 
 - (IBAction) exportingImagesDoneAction:(id)sender
 {
-    [[self window] endSheet:self.exportingImagesSheet returnCode:NSModalResponseStop];
+    [self.window endSheet:self.exportingImagesSheet returnCode:NSModalResponseStop];
     [self.exportingImagesSheet orderOut:sender];
 }
 
@@ -3151,12 +3150,12 @@
     SVGtoImagesConverter * svgToImagesConverter = [[SVGtoImagesConverter alloc] init];
     svgToImagesConverter.macSVGDocumentWindowController = self;
     
-    NSInteger imageWidth = [self.exportImagesWidthTextField.stringValue integerValue];
-    NSInteger imageHeight = [self.exportImagesHeightTextField.stringValue integerValue];
+    NSInteger imageWidth = (self.exportImagesWidthTextField.stringValue).integerValue;
+    NSInteger imageHeight = (self.exportImagesHeightTextField.stringValue).integerValue;
     
-    CGFloat startTime = [self.exportImagesStartTimeTextField.stringValue floatValue];
-    CGFloat endTime = [self.exportImagesEndTimeTextField.stringValue floatValue];
-    NSInteger framesPerSecond = [self.exportImagesFramesPerSecondTextField.stringValue integerValue];
+    CGFloat startTime = (self.exportImagesStartTimeTextField.stringValue).floatValue;
+    CGFloat endTime = (self.exportImagesEndTimeTextField.stringValue).floatValue;
+    NSInteger framesPerSecond = (self.exportImagesFramesPerSecondTextField.stringValue).integerValue;
     
     if (imageWidth == 0)
     {
@@ -3191,7 +3190,7 @@
             includeAlpha:includeAlpha
             currentTimeTextLabel:self.exportingImagesCurrentTimeTextField
             exportingImagesSheet:self.exportingImagesSheet
-            hostWindow:[self window]];
+            hostWindow:self.window];
 }
 
 //==================================================================================
@@ -3203,14 +3202,14 @@
     NSString * outputOptionsString = self.exportImagesOutputOptionsPopUpButton.titleOfSelectedItem;
     NSString * outputFormatString = self.exportImagesFormatPopUpButton.titleOfSelectedItem;
 
-    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
-    DOMElement * documentElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.svgWebKitController.svgWebView).mainFrame.DOMDocument;
+    DOMElement * documentElement = domDocument.documentElement;
     
     NSString * imageWidthString = [documentElement getAttribute:@"width"];
     NSString * imageHeightString = [documentElement getAttribute:@"height"];
     
-    NSInteger imageWidth = [imageWidthString integerValue];
-    NSInteger imageHeight = [imageHeightString integerValue];
+    NSInteger imageWidth = imageWidthString.integerValue;
+    NSInteger imageHeight = imageHeightString.integerValue;
     
     imageWidthString = [NSString stringWithFormat:@"%ld", imageWidth];
     imageHeightString = [NSString stringWithFormat:@"%ld", imageHeight];
@@ -3280,16 +3279,16 @@
 
     [self.exportImagesFormatPopUpButton selectItemWithTitle:formatString];
 
-    [self.exportImagesStartTimeTextField setHidden:hideStartEndTimes];
-    [self.exportImagesStartTimeLabelTextField setHidden:hideStartEndTimes];
+    (self.exportImagesStartTimeTextField).hidden = hideStartEndTimes;
+    (self.exportImagesStartTimeLabelTextField).hidden = hideStartEndTimes;
 
-    [self.exportImagesEndTimeTextField setHidden:hideStartEndTimes];
-    [self.exportImagesEndTimeLabelTextField setHidden:hideStartEndTimes];
+    (self.exportImagesEndTimeTextField).hidden = hideStartEndTimes;
+    (self.exportImagesEndTimeLabelTextField).hidden = hideStartEndTimes;
 
-    [self.exportImagesFramesPerSecondTextField setHidden:hideStartEndTimes];
-    [self.exportImagesFramesPerSecondLabelTextField setHidden:hideStartEndTimes];
+    (self.exportImagesFramesPerSecondTextField).hidden = hideStartEndTimes;
+    (self.exportImagesFramesPerSecondLabelTextField).hidden = hideStartEndTimes;
     
-    [self.exportImagesAlphaChannelCheckBoxButton setHidden:hideAlpha];
+    (self.exportImagesAlphaChannelCheckBoxButton).hidden = hideAlpha;
     self.exportImagesAlphaChannelCheckBoxButton.state = includeAlpha;
 }
 
@@ -3311,16 +3310,16 @@
 
 - (IBAction)generateHTML5Video:(id)sender
 {
-    NSWindow * hostWindow = [self window];
+    NSWindow * hostWindow = self.window;
 
-    DOMDocument * domDocument = [[self.svgWebKitController.svgWebView mainFrame] DOMDocument];
-    DOMElement * documentElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.svgWebKitController.svgWebView).mainFrame.DOMDocument;
+    DOMElement * documentElement = domDocument.documentElement;
     
     NSString * movieWidthString = [documentElement getAttribute:@"width"];
     NSString * movieHeightString = [documentElement getAttribute:@"height"];
     
-    NSInteger movieWidth = [movieWidthString integerValue];
-    NSInteger movieHeight = [movieHeightString integerValue];
+    NSInteger movieWidth = movieWidthString.integerValue;
+    NSInteger movieHeight = movieHeightString.integerValue;
     
     movieWidthString = [NSString stringWithFormat:@"%ld", movieWidth];
     movieHeightString = [NSString stringWithFormat:@"%ld", movieHeight];
@@ -3348,7 +3347,7 @@
 
 - (IBAction) saveVideoButtonAction:(id)sender
 {
-    [[self window] endSheet:self.generateHTML5VideoSheet returnCode:NSModalResponseContinue];
+    [self.window endSheet:self.generateHTML5VideoSheet returnCode:NSModalResponseContinue];
     [self.generateHTML5VideoSheet orderOut:sender];
 }
 
@@ -3358,7 +3357,7 @@
 
 - (IBAction) cancelVideoButtonAction:(id)sender
 {
-    [[self window] endSheet:self.generateHTML5VideoSheet returnCode:NSModalResponseCancel];
+    [self.window endSheet:self.generateHTML5VideoSheet returnCode:NSModalResponseCancel];
     [self.generateHTML5VideoSheet orderOut:sender];
 }
 
@@ -3372,21 +3371,21 @@
    // the filename extension associated with the specified UTI.
    CFStringRef newExtension = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)typeUTI,
                                    kUTTagClassFilenameExtension);
-   NSString* newName = [[name stringByDeletingPathExtension]
+   NSString* newName = [name.stringByDeletingPathExtension
                        stringByAppendingPathExtension:(__bridge NSString*)newExtension];
    CFRelease(newExtension);
  
    // Set the default name for the file and show the panel.
    NSSavePanel*    panel = [NSSavePanel savePanel];
-   [panel setNameFieldStringValue:newName];
+   panel.nameFieldStringValue = newName;
    [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton)
         {
-            NSURL *  theFile = [panel URL];
+            NSURL *  theFile = panel.URL;
  
             // Write the contents in the new format.
             
-            NSString * filePath = [theFile path];
+            NSString * filePath = theFile.path;
             
             self.generatingVideoPathTextField.stringValue = filePath;
             self.generatingVideoWidthTextField.stringValue = self.videoWidthTextField.stringValue;
@@ -3396,7 +3395,7 @@
             self.generatingVideoEndTimeTextField.stringValue = self.videoEndTimeTextField.stringValue;
             self.generatingVideoCurrentTimeTextField.stringValue = self.videoStartTimeTextField.stringValue;
 
-            [[self window] beginSheet:self.generatingHTML5VideoSheet  completionHandler:^(NSModalResponse returnCode)
+            [self.window beginSheet:self.generatingHTML5VideoSheet  completionHandler:^(NSModalResponse returnCode)
             {
                 /*
                 if (returnCode == NSModalResponseContinue)
@@ -3419,12 +3418,12 @@
 {
     SVGtoVideoConverter * svgToVideoConverter = [[SVGtoVideoConverter alloc] init];
     
-    NSInteger movieWidth = [self.videoWidthTextField.stringValue integerValue];
-    NSInteger movieHeight = [self.videoHeightTextField.stringValue integerValue];
+    NSInteger movieWidth = (self.videoWidthTextField.stringValue).integerValue;
+    NSInteger movieHeight = (self.videoHeightTextField.stringValue).integerValue;
     
-    CGFloat startTime = [self.videoStartTimeTextField.stringValue floatValue];
-    CGFloat endTime = [self.videoEndTimeTextField.stringValue floatValue];
-    NSInteger framesPerSecond = [self.videoFramesPerSecondTextField.stringValue integerValue];
+    CGFloat startTime = (self.videoStartTimeTextField.stringValue).floatValue;
+    CGFloat endTime = (self.videoEndTimeTextField.stringValue).floatValue;
+    NSInteger framesPerSecond = (self.videoFramesPerSecondTextField.stringValue).integerValue;
     
     if (movieWidth == 0)
     {
@@ -3446,7 +3445,7 @@
             framesPerSecond:framesPerSecond
             currentTimeTextLabel:self.generatingVideoCurrentTimeTextField
             generatingHTML5VideoSheet:self.generatingHTML5VideoSheet
-            hostWindow:[self window]];
+            hostWindow:self.window];
 }
 
 @end

@@ -44,7 +44,7 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -180,27 +180,27 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
 
     if ([documentTypeName isEqualToString:@"public.svg-image"])
     {
-        resultArray = [NSArray arrayWithObjects:@"svg", NULL];
+        resultArray = @[@"svg"];
     }
     else if ([documentTypeName isEqualToString:@"com.arkphone.macsvg.svg"])
     {
-        resultArray = [NSArray arrayWithObjects:@"svg", NULL];
+        resultArray = @[@"svg"];
     }
     else if ([documentTypeName isEqualToString:@"public.xhtml"])
     {
-        resultArray = [NSArray arrayWithObjects:@"xhtml", NULL];
+        resultArray = @[@"xhtml"];
     }
     else if ([documentTypeName isEqualToString:@"com.arkphone.macsvg.xhtml"])
     {
-        resultArray = [NSArray arrayWithObjects:@"xhtml", NULL];
+        resultArray = @[@"xhtml"];
     }
     else if ([documentTypeName isEqualToString:@"public.text"])
     {
-        resultArray = [NSArray arrayWithObjects:@"txt", NULL];
+        resultArray = @[@"txt"];
     }
     else if ([documentTypeName isEqualToString:@"com.arkphone.macsvg.text"])
     {
-        resultArray = [NSArray arrayWithObjects:@"txt", NULL];
+        resultArray = @[@"txt"];
     }
     
 	return resultArray;
@@ -300,16 +300,16 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
     
     if (frontmostMacSVGDocumentWindowController != NULL)
     {
-        if ([[menuItem title] isEqualToString:@"Save As…"] == YES)
+        if ([menuItem.title isEqualToString:@"Save As…"] == YES)
         {
             result = YES;
         }
 
-        if ([[menuItem title] isEqualToString:@"Save"] == YES)
+        if ([menuItem.title isEqualToString:@"Save"] == YES)
         {
-            MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = frontmostMacSVGDocumentWindowController.document;
         
-            if ([macSVGDocument hasUnautosavedChanges]  == YES)
+            if (macSVGDocument.hasUnautosavedChanges  == YES)
             {
                 result = YES;
             }
@@ -321,18 +321,18 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
     }
     else
     {
-        if ([[menuItem title] isEqualToString:@"Open…"] == YES)
+        if ([menuItem.title isEqualToString:@"Open…"] == YES)
         {
             result = YES;
         }
-        else if ([[menuItem title] isEqualToString:@"Open Recent"] == YES)
+        else if ([menuItem.title isEqualToString:@"Open Recent"] == YES)
         {
             result = YES;
         }
         else
         {
-            NSMenuItem * parentMenuItem = [menuItem parentItem];
-            if ([[parentMenuItem title] isEqualToString:@"Open Recent"] == YES)
+            NSMenuItem * parentMenuItem = menuItem.parentItem;
+            if ([parentMenuItem.title isEqualToString:@"Open Recent"] == YES)
             {
                 result = YES;
             }
@@ -353,7 +353,7 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
     
     if (frontmostMacSVGDocumentWindowController != NULL)
     {
-        MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = frontmostMacSVGDocumentWindowController.document;
         
         [macSVGDocument saveDocument:sender];
     }
@@ -370,7 +370,7 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
     
     if (frontmostMacSVGDocumentWindowController != NULL)
     {
-        MacSVGDocument * macSVGDocument = [frontmostMacSVGDocumentWindowController document];
+        MacSVGDocument * macSVGDocument = frontmostMacSVGDocumentWindowController.document;
         
         [macSVGDocument saveDocumentAs:sender];
     }
@@ -384,7 +384,7 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
 {
     MacSVGDocumentWindowController * result = NULL;
     
-    NSArray * windowsArray = [[NSApplication sharedApplication] orderedWindows];
+    NSArray * windowsArray = [NSApplication sharedApplication].orderedWindows;
     
     for (NSWindow * aWindow in windowsArray)
     {

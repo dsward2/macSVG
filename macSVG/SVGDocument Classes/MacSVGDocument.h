@@ -60,7 +60,7 @@
         
 - (BOOL) duplicateElement:(NSXMLElement *)sourceXMLElement;
 
-- (NSString *) svgHeaderString;
+@property (readonly, copy) NSString *svgHeaderString;
 - (NSString *) filteredSvgXmlDocumentStringWithOptions:(NSUInteger)xmlOptions;
 
 
@@ -70,7 +70,7 @@
 
 - (void) assignElementIDIfUnassigned:(NSXMLNode *)aNode;
 - (NSString *)uniqueIDForElementTagName:(NSString *)elementTagName pendingIDs:(NSArray *)pendingIDs;
-- (NSString *) newMacsvgid;
+@property (readonly, copy) NSString *newMacsvgid;
 
 - (id) macSVGPluginCallbacks;
 

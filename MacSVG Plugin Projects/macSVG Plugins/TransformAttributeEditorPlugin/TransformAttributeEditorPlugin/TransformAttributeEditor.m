@@ -69,7 +69,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -88,20 +88,18 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
         self.transformsArray = [[NSMutableArray alloc] init];
         
-        self.validElementsForTransformDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"rect", @"rect",
-                @"circle", @"circle",
-                @"ellipse", @"ellipse",
-                @"text", @"text",
-                @"image", @"image",
-                @"line", @"line",
-                @"polyline", @"polyline",
-                @"polygon", @"polygon",
-                @"path", @"path",
-                @"use", @"use",
-                @"g", @"g",
-                @"foreignObject", @"foreignObject",
-                nil];        
+        self.validElementsForTransformDictionary = @{@"rect": @"rect",
+                @"circle": @"circle",
+                @"ellipse": @"ellipse",
+                @"text": @"text",
+                @"image": @"image",
+                @"line": @"line",
+                @"polyline": @"polyline",
+                @"polygon": @"polygon",
+                @"path": @"path",
+                @"use": @"use",
+                @"g": @"g",
+                @"foreignObject": @"foreignObject"};        
     }
     
     return self;
@@ -138,7 +136,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     NSMutableString * trimmedString = [[NSMutableString alloc] init];
     
-    NSUInteger inputLength = [valueString length];
+    NSUInteger inputLength = valueString.length;
     for (int i = 0; i < inputLength; i++)
     {
         unichar aChar = [valueString characterAtIndex:i];
@@ -160,7 +158,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         [trimmedString appendString:charString];
     }
     
-    floatValue = [trimmedString floatValue];
+    floatValue = trimmedString.floatValue;
     
     return floatValue;
 }
@@ -176,7 +174,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -217,7 +215,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -258,7 +256,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     NSPoint resultPoint = aMousePoint;
     
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
@@ -295,7 +293,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     if ([attributeName isEqualToString:@"transform"] == YES) 
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
 
     return result;
@@ -335,14 +333,14 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     NSMutableDictionary * newAttributesDictionary = [[NSMutableDictionary alloc] init];
 
-    DOMNamedNodeMap * domAttributes = [self.pluginTargetDOMElement attributes];
-    NSInteger attCount = [domAttributes length];
+    DOMNamedNodeMap * domAttributes = (self.pluginTargetDOMElement).attributes;
+    NSInteger attCount = domAttributes.length;
     
     for (unsigned int a = 0; a < attCount; a++) 
     {
         DOMNode * attributes = [domAttributes item:a];
-        NSString * attributeName = [attributes nodeName];
-        NSString * attributeValue = [attributes nodeValue];
+        NSString * attributeName = attributes.nodeName;
+        NSString * attributeValue = attributes.nodeValue;
         
         NSRange xmlnsRange = [attributeName rangeOfString:@"xmlns"];
         if (xmlnsRange.location != NSNotFound)
@@ -350,12 +348,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             NSLog(@"syncDOMElementToXMLDocument - xmlns namespace found as attribute");
         }
         
-        if ([attributeName length] > 0)
+        if (attributeName.length > 0)
         {
             unichar firstChar = [attributeName characterAtIndex:0];
             if (firstChar != '_')
             {
-                [newAttributesDictionary setObject:attributeValue forKey:attributeName];
+                newAttributesDictionary[attributeName] = attributeValue;
             }
         }
     }
@@ -398,10 +396,10 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             [newTransformString appendString:@" "];
         }
     
-        NSString * functionString = [transformDictionary objectForKey:@"function"];
-        NSString * xString = [transformDictionary objectForKey:@"x"];
-        NSString * yString = [transformDictionary objectForKey:@"y"];
-        NSString * degreesString = [transformDictionary objectForKey:@"degrees"];
+        NSString * functionString = transformDictionary[@"function"];
+        NSString * xString = transformDictionary[@"x"];
+        NSString * yString = transformDictionary[@"y"];
+        NSString * degreesString = transformDictionary[@"degrees"];
         
         if ([functionString isEqualToString:@"translate"] == YES)
         {
@@ -413,11 +411,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             
             if (xString != NULL)
             {
-                if ([xString length] > 0)
+                if (xString.length > 0)
                 {
                     if (yString != NULL)
                     {
-                        if ([yString length] > 0)
+                        if (yString.length > 0)
                         {
                             [newTransformString appendFormat:@" %@ %@", xString, yString];
                         }
@@ -432,7 +430,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             
             if (yString != NULL)
             {
-                if ([yString length] > 0)
+                if (yString.length > 0)
                 {
                     [newTransformString appendFormat:@" %@", yString];
                 }
@@ -449,12 +447,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         }
         else if ([functionString isEqualToString:@"matrix"] == YES)
         {
-            NSString * m1 = [transformDictionary objectForKey:@"m1"];
-            NSString * m2 = [transformDictionary objectForKey:@"m2"];
-            NSString * m3 = [transformDictionary objectForKey:@"m3"];
-            NSString * m4 = [transformDictionary objectForKey:@"m4"];
-            NSString * m5 = [transformDictionary objectForKey:@"m5"];
-            NSString * m6 = [transformDictionary objectForKey:@"m6"];
+            NSString * m1 = transformDictionary[@"m1"];
+            NSString * m2 = transformDictionary[@"m2"];
+            NSString * m3 = transformDictionary[@"m3"];
+            NSString * m4 = transformDictionary[@"m4"];
+            NSString * m5 = transformDictionary[@"m5"];
+            NSString * m6 = transformDictionary[@"m6"];
             [newTransformString appendFormat:@"matrix(%@ %@ %@ %@ %@ %@)", 
                     m1, m2, m3, m4, m5, m6];
         }
@@ -468,7 +466,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [self.macSVGPluginCallbacks updateSelections]; // update selection rectangles and handles
     
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     [transformsTableView setNeedsDisplayInRect:[transformsTableView 
             frameOfCellAtColumn:0 row:selectedRow]];
 }
@@ -479,7 +477,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.transformsArray count];
+    return (self.transformsArray).count;
 }
 
 //==================================================================================
@@ -489,25 +487,25 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     id objectValue = NULL;
-    NSDictionary * transformDictionary = [self.transformsArray objectAtIndex:rowIndex];
+    NSDictionary * transformDictionary = (self.transformsArray)[rowIndex];
     
     if (transformDictionary != NULL)
     {
-        NSString * transformFunction = [transformDictionary objectForKey:@"function"];
+        NSString * transformFunction = transformDictionary[@"function"];
         
         NSString * transformValues = @"";
         
         if ([transformFunction isEqualToString:@"translate"] == YES) 
         {
-            NSString * xString = [transformDictionary objectForKey:@"x"];
-            NSString * yString = [transformDictionary objectForKey:@"y"];
+            NSString * xString = transformDictionary[@"x"];
+            NSString * yString = transformDictionary[@"y"];
             transformValues = [NSString stringWithFormat:@"%@ %@",
                     xString, yString];
         }
         else if ([transformFunction isEqualToString:@"scale"] == YES) 
         {
-            NSString * xString = [transformDictionary objectForKey:@"x"];
-            NSString * yString = [transformDictionary objectForKey:@"y"];
+            NSString * xString = transformDictionary[@"x"];
+            NSString * yString = transformDictionary[@"y"];
             if (yString == NULL)
             {
                 transformValues = [NSString stringWithFormat:@"%@",
@@ -521,9 +519,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         }
         else if ([transformFunction isEqualToString:@"rotate"] == YES) 
         {
-            NSString * degreesString = [transformDictionary objectForKey:@"degrees"];
-            NSString * xString = [transformDictionary objectForKey:@"x"];
-            NSString * yString = [transformDictionary objectForKey:@"y"];
+            NSString * degreesString = transformDictionary[@"degrees"];
+            NSString * xString = transformDictionary[@"x"];
+            NSString * yString = transformDictionary[@"y"];
             if (xString == NULL)
             {
                 transformValues = [NSString stringWithFormat:@"%@",
@@ -537,12 +535,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         }
         else if ([transformFunction isEqualToString:@"skewX"] == YES) 
         {
-            NSString * degreesString = [transformDictionary objectForKey:@"degrees"];
+            NSString * degreesString = transformDictionary[@"degrees"];
             transformValues = degreesString;
         }
         else if ([transformFunction isEqualToString:@"skewY"] == YES) 
         {
-            NSString * degreesString = [transformDictionary objectForKey:@"degrees"];
+            NSString * degreesString = transformDictionary[@"degrees"];
             transformValues = degreesString;
         }
         
@@ -561,7 +559,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     [super awakeFromNib];
 
-    [transformsTableView registerForDraggedTypes:[NSArray arrayWithObject:TransformTableViewDataType]];
+    [transformsTableView registerForDraggedTypes:@[TransformTableViewDataType]];
     
     translateToolButton.image = NULL;
     scaleToolButton.image = NULL;
@@ -579,7 +577,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     // Copy the row numbers to the pasteboard.
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
 
-    [pboard declareTypes:[NSArray arrayWithObject:TransformTableViewDataType] owner:self];
+    [pboard declareTypes:@[TransformTableViewDataType] owner:self];
 
     [pboard setData:data forType:TransformTableViewDataType];
     
@@ -601,11 +599,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-    NSInteger from = [rowIndexes firstIndex];
+    NSInteger from = rowIndexes.firstIndex;
 
-    NSMutableDictionary * traveller = [self.transformsArray objectAtIndex:from];
+    NSMutableDictionary * traveller = (self.transformsArray)[from];
     
-    NSInteger length = [self.transformsArray count];
+    NSInteger length = (self.transformsArray).count;
     //NSMutableArray * replacement = [NSMutableArray new];
 
     NSInteger i;
@@ -663,7 +661,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) beginTranslateTransform
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     BOOL makeNewTranslateItem = NO;
     
@@ -677,15 +675,14 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     else
     {
         NSMutableDictionary * selectedTransformDictionary =
-                [self.transformsArray objectAtIndex:selectedRow];
+                (self.transformsArray)[selectedRow];
         
-        NSString * selectedFunction = [selectedTransformDictionary
-                objectForKey:@"function"];
+        NSString * selectedFunction = selectedTransformDictionary[@"function"];
         
         if ([selectedFunction isEqualToString:@"translate"] == YES)
         {
-            xString = [selectedTransformDictionary objectForKey:@"x"];
-            yString = [selectedTransformDictionary objectForKey:@"y"];
+            xString = selectedTransformDictionary[@"x"];
+            yString = selectedTransformDictionary[@"y"];
         }
         else
         {
@@ -699,9 +696,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // no row selected, create a new item for the command
         NSMutableDictionary * newTransformDictionary =   [[NSMutableDictionary alloc] init];
         
-        [newTransformDictionary setObject:@"translate" forKey:@"function"];
-        [newTransformDictionary setObject:xString forKey:@"x"];
-        [newTransformDictionary setObject:yString forKey:@"y"];
+        newTransformDictionary[@"function"] = @"translate";
+        newTransformDictionary[@"x"] = xString;
+        newTransformDictionary[@"y"] = yString;
         
         selectedRow++;
         
@@ -718,26 +715,26 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    [label1TextField setStringValue:@"x"];
+    label1TextField.stringValue = @"x";
 
     [value1TextField setHidden:NO];
-    [value1TextField setStringValue:xString];
+    value1TextField.stringValue = xString;
     
     [label2TextField setHidden:NO];
-    [label2TextField setStringValue:@"y"];
+    label2TextField.stringValue = @"y";
 
     [value2TextField setHidden:NO];
-    [value2TextField setStringValue:yString];
+    value2TextField.stringValue = yString;
     
     [label3TextField setHidden:YES];
-    [label3TextField setStringValue:@""];
+    label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
-    [value3TextField setStringValue:@""];
+    value3TextField.stringValue = @"";
     
-    [transformsTableView setNextKeyView:value1TextField];
-    [value1TextField setNextKeyView:value2TextField];
-    [value2TextField setNextKeyView:transformsTableView];
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = value2TextField;
+    value2TextField.nextKeyView = transformsTableView;
     [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
@@ -751,17 +748,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     //NSLog(@"handleMouseMoveEventForTranslate");
 
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * translateDictionary = [self.transformsArray objectAtIndex:selectedRow];
+        NSMutableDictionary * translateDictionary = (self.transformsArray)[selectedRow];
             
-        NSString * previousTranslateXString = [translateDictionary objectForKey:@"x"];
-        NSString * previousTranslateYString = [translateDictionary objectForKey:@"y"];
+        NSString * previousTranslateXString = translateDictionary[@"x"];
+        NSString * previousTranslateYString = translateDictionary[@"y"];
         
-        float previousTranslateX = [previousTranslateXString floatValue];
-        float previousTranslateY = [previousTranslateYString floatValue];
+        float previousTranslateX = previousTranslateXString.floatValue;
+        float previousTranslateY = previousTranslateYString.floatValue;
         
         float deltaX = currentMousePoint.x - previousMousePoint.x;
         float deltaY = currentMousePoint.y - previousMousePoint.y;
@@ -782,8 +779,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
         }
         
-        NSString * elementName = [aSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        NSString * elementName = aSvgElement.nodeName;
+        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
         {
             NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
             
@@ -795,11 +792,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * newXString = [self allocFloatString:newX];
                 NSString * newYString = [self allocFloatString:newY];
                 
-                [translateDictionary setObject:newXString forKey:@"x"];
-                [translateDictionary setObject:newYString forKey:@"y"];
+                translateDictionary[@"x"] = newXString;
+                translateDictionary[@"y"] = newYString;
                 
-                [value1TextField setStringValue:newXString];
-                [value2TextField setStringValue:newYString];
+                value1TextField.stringValue = newXString;
+                value2TextField.stringValue = newYString;
             }
             
             [self setTransformAttribute];
@@ -813,7 +810,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) beginScaleTransform
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     BOOL makeNewScaleItem = NO;
 
@@ -827,15 +824,14 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     else
     {
         NSMutableDictionary * selectedTransformDictionary =
-                [self.transformsArray objectAtIndex:selectedRow];
+                (self.transformsArray)[selectedRow];
         
-        NSString * selectedFunction = [selectedTransformDictionary
-                objectForKey:@"function"];
+        NSString * selectedFunction = selectedTransformDictionary[@"function"];
         
         if ([selectedFunction isEqualToString:@"scale"] == YES)
         {
-            xString = [selectedTransformDictionary objectForKey:@"x"];
-            yString = [selectedTransformDictionary objectForKey:@"y"];
+            xString = selectedTransformDictionary[@"x"];
+            yString = selectedTransformDictionary[@"y"];
         }
         else
         {
@@ -849,9 +845,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // no row selected, create a new item for the command
         NSMutableDictionary * newTransformDictionary =   [[NSMutableDictionary alloc] init];
         
-        [newTransformDictionary setObject:@"scale" forKey:@"function"];
-        [newTransformDictionary setObject:xString forKey:@"x"];
-        [newTransformDictionary setObject:yString forKey:@"y"];
+        newTransformDictionary[@"function"] = @"scale";
+        newTransformDictionary[@"x"] = xString;
+        newTransformDictionary[@"y"] = yString;
         
         selectedRow++;
         
@@ -868,26 +864,26 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    [label1TextField setStringValue:@"x"];
+    label1TextField.stringValue = @"x";
 
     [value1TextField setHidden:NO];
-    [value1TextField setStringValue:xString];
+    value1TextField.stringValue = xString;
     
     [label2TextField setHidden:NO];
-    [label2TextField setStringValue:@"y"];
+    label2TextField.stringValue = @"y";
 
     [value2TextField setHidden:NO];
-    [value2TextField setStringValue:yString];
+    value2TextField.stringValue = yString;
     
     [label3TextField setHidden:YES];
-    [label3TextField setStringValue:@""];
+    label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
-    [value3TextField setStringValue:@""];
+    value3TextField.stringValue = @"";
 
-    [transformsTableView setNextKeyView:value1TextField];
-    [value1TextField setNextKeyView:value2TextField];
-    [value2TextField setNextKeyView:transformsTableView];
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = value2TextField;
+    value2TextField.nextKeyView = transformsTableView;
     [value3TextField setNextKeyView:NULL];
 
     [self setTransformAttribute];
@@ -901,20 +897,20 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     //NSLog(@"handleMouseMoveEventForScale");
 
-    NSString * elementTagName = [self.pluginTargetDOMElement tagName];
-    if ([self.validElementsForTransformDictionary objectForKey:elementTagName] != NULL)
+    NSString * elementTagName = (self.pluginTargetDOMElement).tagName;
+    if ((self.validElementsForTransformDictionary)[elementTagName] != NULL)
     {
-        NSInteger selectedRow = [transformsTableView selectedRow];
+        NSInteger selectedRow = transformsTableView.selectedRow;
         
         if (selectedRow != -1)
         {
-            NSMutableDictionary * scaleDictionary = [self.transformsArray objectAtIndex:selectedRow];
+            NSMutableDictionary * scaleDictionary = (self.transformsArray)[selectedRow];
 
-            NSString * scaleXString = [scaleDictionary objectForKey:@"x"];
-            NSString * scaleYString = [scaleDictionary objectForKey:@"y"];
+            NSString * scaleXString = scaleDictionary[@"x"];
+            NSString * scaleYString = scaleDictionary[@"y"];
 
-            float scaleX = [scaleXString floatValue];
-            float scaleY = [scaleYString floatValue];
+            float scaleX = scaleXString.floatValue;
+            float scaleY = scaleYString.floatValue;
 
 
 
@@ -964,13 +960,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * yAttributeString = [self.pluginTargetDOMElement getAttribute:@"y"];
                 NSString * widthAttributeString = [self.pluginTargetDOMElement getAttribute:@"width"];
                 NSString * heightAttributeString = [self.pluginTargetDOMElement getAttribute:@"height"];
-                if (([xAttributeString length] > 0) && ([yAttributeString length] > 0) &&
-                        ([widthAttributeString length] > 0) && ([heightAttributeString length] > 0))
+                if ((xAttributeString.length > 0) && (yAttributeString.length > 0) &&
+                        (widthAttributeString.length > 0) && (heightAttributeString.length > 0))
                 {
-                    float xAttribute = [xAttributeString floatValue];
-                    float yAttribute = [yAttributeString floatValue];
-                    float widthAttribute = [widthAttributeString floatValue];
-                    float heightAttribute = [heightAttributeString floatValue];
+                    float xAttribute = xAttributeString.floatValue;
+                    float yAttribute = yAttributeString.floatValue;
+                    float widthAttribute = widthAttributeString.floatValue;
+                    float heightAttribute = heightAttributeString.floatValue;
                     
                     scalingRect = NSMakeRect(xAttribute, yAttribute, widthAttribute, heightAttribute);
                 }
@@ -981,12 +977,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * cxAttributeString = [self.pluginTargetDOMElement getAttribute:@"cx"];
                 NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
                 NSString * rAttributeString = [self.pluginTargetDOMElement getAttribute:@"r"];
-                if (([cxAttributeString length] > 0) && ([cyAttributeString length] > 0) &&
-                        ([rAttributeString length] > 0))
+                if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
+                        (rAttributeString.length > 0))
                 {
-                    float cxAttribute = [cxAttributeString floatValue];
-                    float cyAttribute = [cyAttributeString floatValue];
-                    float rAttribute = [rAttributeString floatValue];
+                    float cxAttribute = cxAttributeString.floatValue;
+                    float cyAttribute = cyAttributeString.floatValue;
+                    float rAttribute = rAttributeString.floatValue;
                     
                     scalingRect = NSMakeRect(cxAttribute, cyAttribute, rAttribute * 2.0f, rAttribute * 2.0f);
                 }
@@ -998,13 +994,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
                 NSString * rxAttributeString = [self.pluginTargetDOMElement getAttribute:@"rx"];
                 NSString * ryAttributeString = [self.pluginTargetDOMElement getAttribute:@"ry"];
-                if (([cxAttributeString length] > 0) && ([cyAttributeString length] > 0) &&
-                        ([rxAttributeString length] > 0) && ([ryAttributeString length] > 0))
+                if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
+                        (rxAttributeString.length > 0) && (ryAttributeString.length > 0))
                 {
-                    float cxAttribute = [cxAttributeString floatValue];
-                    float cyAttribute = [cyAttributeString floatValue];
-                    float rxAttribute = [rxAttributeString floatValue];
-                    float ryAttribute = [ryAttributeString floatValue];
+                    float cxAttribute = cxAttributeString.floatValue;
+                    float cyAttribute = cyAttributeString.floatValue;
+                    float rxAttribute = rxAttributeString.floatValue;
+                    float ryAttribute = ryAttributeString.floatValue;
                     
                     scalingRect = NSMakeRect(cxAttribute, cyAttribute, rxAttribute * 2.0f, ryAttribute * 2.0f);
                 }
@@ -1018,7 +1014,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 scalingRect = boundingBoxRect;
             }
 
-            DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+            DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 
             NSRect pageRect;
             DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
@@ -1100,11 +1096,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * newXString = [self allocFloatString:scaleX];
                 NSString * newYString = [self allocFloatString:scaleY];
                 
-                [scaleDictionary setObject:newXString forKey:@"x"];
-                [scaleDictionary setObject:newYString forKey:@"y"];
+                scaleDictionary[@"x"] = newXString;
+                scaleDictionary[@"y"] = newYString;
                 
-                [value1TextField setStringValue:newXString];
-                [value2TextField setStringValue:newYString];
+                value1TextField.stringValue = newXString;
+                value2TextField.stringValue = newYString;
             }
             
             [self setTransformAttribute];
@@ -1118,7 +1114,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) beginRotateTransform
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     BOOL makeNewRotateItem = NO;
 
@@ -1135,16 +1131,15 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     else
     {
         rotateTransformDictionary =
-                [self.transformsArray objectAtIndex:selectedRow];
+                (self.transformsArray)[selectedRow];
         
-        NSString * selectedFunction = [rotateTransformDictionary
-                objectForKey:@"function"];
+        NSString * selectedFunction = rotateTransformDictionary[@"function"];
         
         if ([selectedFunction isEqualToString:@"rotate"] == YES)
         {
-            degreesString = [rotateTransformDictionary objectForKey:@"degrees"];
-            xString = [rotateTransformDictionary objectForKey:@"x"];
-            yString = [rotateTransformDictionary objectForKey:@"y"];
+            degreesString = rotateTransformDictionary[@"degrees"];
+            xString = rotateTransformDictionary[@"x"];
+            yString = rotateTransformDictionary[@"y"];
         }
         else
         {
@@ -1174,10 +1169,10 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         NSString * centerXString = [self allocFloatString:bboxXCenter];
         NSString * centerYString = [self allocFloatString:bboxYCenter];
         
-        [rotateTransformDictionary setObject:@"rotate" forKey:@"function"];
-        [rotateTransformDictionary setObject:degreesString forKey:@"degrees"];
-        [rotateTransformDictionary setObject:centerXString forKey:@"x"];
-        [rotateTransformDictionary setObject:centerYString forKey:@"y"];
+        rotateTransformDictionary[@"function"] = @"rotate";
+        rotateTransformDictionary[@"degrees"] = degreesString;
+        rotateTransformDictionary[@"x"] = centerXString;
+        rotateTransformDictionary[@"y"] = centerYString;
         
         xString = centerXString;
         yString = centerYString;
@@ -1194,37 +1189,37 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    [label1TextField setStringValue:@"degrees"];
+    label1TextField.stringValue = @"degrees";
 
     [value1TextField setHidden:NO];
-    [value1TextField setStringValue:degreesString];
+    value1TextField.stringValue = degreesString;
     
     [label2TextField setHidden:NO];
-    [label2TextField setStringValue:@"x"];
+    label2TextField.stringValue = @"x";
 
     [value2TextField setHidden:NO];
-    [value2TextField setStringValue:xString];
+    value2TextField.stringValue = xString;
     
     [label3TextField setHidden:NO];
-    [label3TextField setStringValue:@"y"];
+    label3TextField.stringValue = @"y";
 
     [value3TextField setHidden:NO];
-    [value3TextField setStringValue:yString];
+    value3TextField.stringValue = yString;
 
-    [transformsTableView setNextKeyView:value1TextField];
-    [value1TextField setNextKeyView:value2TextField];
-    [value2TextField setNextKeyView:value3TextField];
-    [value3TextField setNextKeyView:transformsTableView];
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = value2TextField;
+    value2TextField.nextKeyView = value3TextField;
+    value3TextField.nextKeyView = transformsTableView;
 
     [self setTransformAttribute];
 
     float currentDegrees = 0.0f;
-    NSString * degreesAttribute = [rotateTransformDictionary objectForKey:@"degrees"];
+    NSString * degreesAttribute = rotateTransformDictionary[@"degrees"];
     if (degreesAttribute != NULL)
     {
-        if ([degreesAttribute length] > 0)
+        if (degreesAttribute.length > 0)
         {
-            currentDegrees = [degreesAttribute floatValue];
+            currentDegrees = degreesAttribute.floatValue;
         }
     }
 
@@ -1261,18 +1256,18 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     //NSLog(@"handleMouseMoveEventForRotate");
 
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * rotateDictionary = [self.transformsArray objectAtIndex:selectedRow];
+        NSMutableDictionary * rotateDictionary = (self.transformsArray)[selectedRow];
                     
         NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
 
         //NSLog(@"rotate bBox1 = %f, %f, %f, %f", boundingBox.origin.x, boundingBox.origin.y,
         //        boundingBox.size.width, boundingBox.size.height);
 
-        DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+        DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
         DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
         DOMElement * svgRootElement = NULL;
         if (svgElementsList.length > 0)
@@ -1321,8 +1316,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // update the positions of the selected SVG elements
         DOMElement * aSvgElement = self.pluginTargetDOMElement;
 
-        NSString * elementName = [aSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        NSString * elementName = aSvgElement.nodeName;
+        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
         {
             NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
             
@@ -1330,9 +1325,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             {
                 NSString * newDegreeString = [self allocFloatString:rotateDegrees];
                 
-                [rotateDictionary setObject:newDegreeString forKey:@"degrees"];
+                rotateDictionary[@"degrees"] = newDegreeString;
                 
-                [value1TextField setStringValue:newDegreeString];
+                value1TextField.stringValue = newDegreeString;
             }
             
             [self setTransformAttribute];
@@ -1346,7 +1341,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) beginSkewXTransform
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     BOOL makeNewSkewXItem = NO;
 
@@ -1361,14 +1356,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     else
     {
         skewXTransformDictionary =
-                [self.transformsArray objectAtIndex:selectedRow];
+                (self.transformsArray)[selectedRow];
         
-        NSString * selectedFunction = [skewXTransformDictionary
-                objectForKey:@"function"];
+        NSString * selectedFunction = skewXTransformDictionary[@"function"];
         
         if ([selectedFunction isEqualToString:@"skewX"] == YES)
         {
-            degreesString = [skewXTransformDictionary objectForKey:@"degrees"];
+            degreesString = skewXTransformDictionary[@"degrees"];
         }
         else
         {
@@ -1382,8 +1376,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // no row selected, create a new item for the command
         skewXTransformDictionary =   [[NSMutableDictionary alloc] init];
         
-        [skewXTransformDictionary setObject:@"skewX" forKey:@"function"];
-        [skewXTransformDictionary setObject:degreesString forKey:@"degrees"];
+        skewXTransformDictionary[@"function"] = @"skewX";
+        skewXTransformDictionary[@"degrees"] = degreesString;
         
         selectedRow++;
         
@@ -1400,37 +1394,37 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    [label1TextField setStringValue:@"degrees"];
+    label1TextField.stringValue = @"degrees";
 
     [value1TextField setHidden:NO];
-    [value1TextField setStringValue:degreesString];
+    value1TextField.stringValue = degreesString;
     
     [label2TextField setHidden:YES];
-    [label2TextField setStringValue:@""];
+    label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
-    [value2TextField setStringValue:@""];
+    value2TextField.stringValue = @"";
     
     [label3TextField setHidden:YES];
-    [label3TextField setStringValue:@""];
+    label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
-    [value3TextField setStringValue:@""];
+    value3TextField.stringValue = @"";
 
-    [transformsTableView setNextKeyView:value1TextField];
-    [value1TextField setNextKeyView:transformsTableView];
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = transformsTableView;
     [value2TextField setNextKeyView:NULL];
     [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
 
     float currentDegrees = 0.0f;
-    NSString * degreesAttribute = [skewXTransformDictionary objectForKey:@"degrees"];
+    NSString * degreesAttribute = skewXTransformDictionary[@"degrees"];
     if (degreesAttribute != NULL)
     {
-        if ([degreesAttribute length] > 0)
+        if (degreesAttribute.length > 0)
         {
-            currentDegrees = [degreesAttribute floatValue];
+            currentDegrees = degreesAttribute.floatValue;
         }
     }
 
@@ -1446,11 +1440,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     //NSLog(@"handleMouseMoveEventForSkewX");
     
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * skewXDictionary = [self.transformsArray objectAtIndex:selectedRow];
+        NSMutableDictionary * skewXDictionary = (self.transformsArray)[selectedRow];
 
         NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
 
@@ -1537,8 +1531,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // update the positions of the selected SVG elements
         DOMElement * aSvgElement = self.pluginTargetDOMElement;
 
-        NSString * elementName = [aSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        NSString * elementName = aSvgElement.nodeName;
+        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
         {
             NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
             
@@ -1546,9 +1540,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             {
                 NSString * newDegreesString = [self allocFloatString:skewDegrees];
                 
-                [skewXDictionary setObject:newDegreesString forKey:@"degrees"];
+                skewXDictionary[@"degrees"] = newDegreesString;
                 
-                [value1TextField setStringValue:newDegreesString];
+                value1TextField.stringValue = newDegreesString;
             }
             
             [self setTransformAttribute];
@@ -1562,7 +1556,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) beginSkewYTransform
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     BOOL makeNewSkewYItem = NO;
 
@@ -1577,14 +1571,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     else
     {
         skewYTransformDictionary =
-                [self.transformsArray objectAtIndex:selectedRow];
+                (self.transformsArray)[selectedRow];
         
-        NSString * selectedFunction = [skewYTransformDictionary
-                objectForKey:@"function"];
+        NSString * selectedFunction = skewYTransformDictionary[@"function"];
         
         if ([selectedFunction isEqualToString:@"skewY"] == YES)
         {
-            degreesString = [skewYTransformDictionary objectForKey:@"degrees"];
+            degreesString = skewYTransformDictionary[@"degrees"];
         }
         else
         {
@@ -1598,8 +1591,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // no row selected, create a new item for the command
         skewYTransformDictionary =   [[NSMutableDictionary alloc] init];
         
-        [skewYTransformDictionary setObject:@"skewY" forKey:@"function"];
-        [skewYTransformDictionary setObject:degreesString forKey:@"degrees"];
+        skewYTransformDictionary[@"function"] = @"skewY";
+        skewYTransformDictionary[@"degrees"] = degreesString;
         
         selectedRow++;
         
@@ -1613,37 +1606,37 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    [label1TextField setStringValue:@"degrees"];
+    label1TextField.stringValue = @"degrees";
 
     [value1TextField setHidden:NO];
-    [value1TextField setStringValue:degreesString];
+    value1TextField.stringValue = degreesString;
     
     [label2TextField setHidden:YES];
-    [label2TextField setStringValue:@""];
+    label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
-    [value2TextField setStringValue:@""];
+    value2TextField.stringValue = @"";
     
     [label3TextField setHidden:YES];
-    [label3TextField setStringValue:@""];
+    label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
-    [value3TextField setStringValue:@""];
+    value3TextField.stringValue = @"";
 
-    [transformsTableView setNextKeyView:value1TextField];
-    [value1TextField setNextKeyView:transformsTableView];
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = transformsTableView;
     [value2TextField setNextKeyView:NULL];
     [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
 
     float currentDegrees = 0.0f;
-    NSString * degreesAttribute = [skewYTransformDictionary objectForKey:@"degrees"];
+    NSString * degreesAttribute = skewYTransformDictionary[@"degrees"];
     if (degreesAttribute != NULL)
     {
-        if ([degreesAttribute length] > 0)
+        if (degreesAttribute.length > 0)
         {
-            currentDegrees = [degreesAttribute floatValue];
+            currentDegrees = degreesAttribute.floatValue;
         }
     }
     
@@ -1659,11 +1652,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 {
     //NSLog(@"handleMouseMoveEventForSkewY");
     
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * skewYDictionary = [self.transformsArray objectAtIndex:selectedRow];
+        NSMutableDictionary * skewYDictionary = (self.transformsArray)[selectedRow];
 
         NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
 
@@ -1756,8 +1749,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         // update the positions of the selected SVG elements
         DOMElement * aSvgElement = self.pluginTargetDOMElement;
 
-        NSString * elementName = [aSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        NSString * elementName = aSvgElement.nodeName;
+        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
         {
             NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
             
@@ -1765,9 +1758,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             {
                 NSString * newDegreesString = [self allocFloatString:skewDegrees];
                 
-                [skewYDictionary setObject:newDegreesString forKey:@"degrees"];
+                skewYDictionary[@"degrees"] = newDegreesString;
                 
-                [value1TextField setStringValue:newDegreesString];
+                value1TextField.stringValue = newDegreesString;
             }
             
             [self setTransformAttribute];
@@ -1782,7 +1775,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 -(void)calculateViewingScale
 {
     currentScale = 1.0f;
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
     {
@@ -1802,17 +1795,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             float viewBoxHeight = 0;
             
             BOOL viewBoxValuesSet = NO;
-            if ([viewBoxValuesArray count] == 4)
+            if (viewBoxValuesArray.count == 4)
             {
-                NSString * viewBoxMinXString = [viewBoxValuesArray objectAtIndex:0];
-                NSString * viewBoxMinYString = [viewBoxValuesArray objectAtIndex:1];
-                NSString * viewBoxWidthString = [viewBoxValuesArray objectAtIndex:2];
-                NSString * viewBoxHeightString = [viewBoxValuesArray objectAtIndex:3];
+                NSString * viewBoxMinXString = viewBoxValuesArray[0];
+                NSString * viewBoxMinYString = viewBoxValuesArray[1];
+                NSString * viewBoxWidthString = viewBoxValuesArray[2];
+                NSString * viewBoxHeightString = viewBoxValuesArray[3];
                 
-                viewBoxMinX = [viewBoxMinXString floatValue];
-                viewBoxMinY = [viewBoxMinYString floatValue];
-                viewBoxWidth = [viewBoxWidthString floatValue];
-                viewBoxHeight = [viewBoxHeightString floatValue];
+                viewBoxMinX = viewBoxMinXString.floatValue;
+                viewBoxMinY = viewBoxMinYString.floatValue;
+                viewBoxWidth = viewBoxWidthString.floatValue;
+                viewBoxHeight = viewBoxHeightString.floatValue;
                 
                 if (viewBoxWidth > 0)
                 {
@@ -1832,8 +1825,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                     NSString * heightAttribute = [svgElement getAttribute:@"height"];
                     if (heightAttribute != NULL)
                     {
-                        float width = [widthAttribute floatValue];
-                        float height = [heightAttribute floatValue];
+                        float width = widthAttribute.floatValue;
+                        float height = heightAttribute.floatValue;
                         
                         if ((width > 0) && (height > 0))
                         {
@@ -1866,7 +1859,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     DOMElement * eventTargetElement = event.target;
 
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    CGFloat zoomFactor = [self.macSVGPluginCallbacks zoomFactor];
+    CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
     currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
 /*
@@ -1938,7 +1931,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     elementRectAtMouseDown = NSZeroRect;
-    DOMDocument * domDocument = [[self.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     DOMElement * svgRootElement = NULL;
     if (svgElementsList.length > 0)
@@ -2019,7 +2012,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     previousMousePoint = currentMousePoint;
     
-    CGFloat zoomFactor = [self.macSVGPluginCallbacks zoomFactor];
+    CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
     currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
     [event preventDefault];
@@ -2126,7 +2119,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
 
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    CGFloat zoomFactor = [self.macSVGPluginCallbacks zoomFactor];
+    CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
     currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
     previousMousePoint = currentMousePoint;
@@ -2153,7 +2146,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     DOMNode * targetNode = self.pluginTargetDOMElement;
     
     DOMElement * targetElement = (DOMElement *)targetNode;
-    NSString * tagName = [targetElement tagName];
+    NSString * tagName = targetElement.tagName;
     #pragma unused(tagName)
 
     if ([eventType isEqualToString:@"dblclick"] == YES)
@@ -2207,16 +2200,16 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 - (void)parseTransformAttribute:(NSString *)transformAttribute
 {
     NSArray * transformComponentsArray = [transformAttribute componentsSeparatedByString:@")"];
-    if ([transformComponentsArray count] > 0)
+    if (transformComponentsArray.count > 0)
     {
         for (NSString * aTransform in transformComponentsArray)
         {
             NSArray * aTransformComponentsArray = [aTransform componentsSeparatedByString:@"("];
-            if ([aTransformComponentsArray count] == 2)
+            if (aTransformComponentsArray.count == 2)
             {
                 NSCharacterSet * whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
-                NSString * untrimmedCommandString = [aTransformComponentsArray objectAtIndex:0];
+                NSString * untrimmedCommandString = aTransformComponentsArray[0];
                 NSString * commandString = [untrimmedCommandString 
                         stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
@@ -2250,12 +2243,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 
                 if (validCommand == YES)
                 {
-                    NSString * untrimmedValuesString = [aTransformComponentsArray objectAtIndex:1];
+                    NSString * untrimmedValuesString = aTransformComponentsArray[1];
                     NSString * valuesStringWithCommas = [untrimmedValuesString 
                             stringByTrimmingCharactersInSet:whitespaceCharacterSet];
                     NSMutableString * valuesString = [[NSMutableString alloc] 
                             initWithString:valuesStringWithCommas];
-                    NSRange valuesStringRange = NSMakeRange(0, [valuesString length]);
+                    NSRange valuesStringRange = NSMakeRange(0, valuesString.length);
                     NSUInteger replaceCount = 
                             [valuesString replaceOccurrencesOfString:@"," withString:@" " 
                             options:0 range:valuesStringRange];
@@ -2268,9 +2261,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                     NSMutableDictionary * transformDictionary = [[NSMutableDictionary alloc] init];
                     
                     NSString * functionString = [[NSString alloc] initWithString:commandString];
-                    [transformDictionary setObject:functionString forKey:@"function"];
+                    transformDictionary[@"function"] = functionString;
                     
-                    NSUInteger valuesCount = [valuesArray count];
+                    NSUInteger valuesCount = valuesArray.count;
                     BOOL validValues = NO;
                     
                     if ([commandString isEqualToString:@"translate"] == YES)
@@ -2278,11 +2271,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 2)
                         {
                             validValues = YES;
-                            NSString * xString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:xString forKey:@"x"];
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
                             
-                            NSString * yString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:1]];
-                            [transformDictionary setObject:yString forKey:@"y"];
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"y"] = yString;
                         }
                     }
                     else if ([commandString isEqualToString:@"scale"] == YES)
@@ -2290,17 +2283,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 1)
                         {
                             validValues = YES;
-                            NSString * xString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:xString forKey:@"x"];
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
                         }
                         else if (valuesCount == 2)
                         {
                             validValues = YES;
-                            NSString * xString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:xString forKey:@"x"];
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
                             
-                            NSString * yString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:1]];
-                            [transformDictionary setObject:yString forKey:@"y"];
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"y"] = yString;
                         }
                     }
                     else if ([commandString isEqualToString:@"rotate"] == YES)
@@ -2308,20 +2301,20 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 1)
                         {
                             validValues = YES;
-                            NSString * degreesString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:degreesString forKey:@"degrees"];
+                            NSString * degreesString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = degreesString;
                         }
                         else if (valuesCount == 3)
                         {
                             validValues = YES;
-                            NSString * degreesString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:degreesString forKey:@"degrees"];
+                            NSString * degreesString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = degreesString;
 
-                            NSString * xString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:1]];
-                            [transformDictionary setObject:xString forKey:@"x"];
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"x"] = xString;
                             
-                            NSString * yString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:2]];
-                            [transformDictionary setObject:yString forKey:@"y"];
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[2]];
+                            transformDictionary[@"y"] = yString;
                         }
                     }
                     else if ([commandString isEqualToString:@"matrix"] == YES)
@@ -2329,23 +2322,23 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 6)
                         {
                             validValues = YES;
-                            NSString * m1String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:m1String forKey:@"m1"];
+                            NSString * m1String = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"m1"] = m1String;
 
-                            NSString * m2String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:1]];
-                            [transformDictionary setObject:m2String forKey:@"m2"];
+                            NSString * m2String = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"m2"] = m2String;
 
-                            NSString * m3String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:2]];
-                            [transformDictionary setObject:m3String forKey:@"m3"];
+                            NSString * m3String = [[NSString alloc] initWithString:valuesArray[2]];
+                            transformDictionary[@"m3"] = m3String;
 
-                            NSString * m4String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:3]];
-                            [transformDictionary setObject:m4String forKey:@"m4"];
+                            NSString * m4String = [[NSString alloc] initWithString:valuesArray[3]];
+                            transformDictionary[@"m4"] = m4String;
 
-                            NSString * m5String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:4]];
-                            [transformDictionary setObject:m5String forKey:@"m5"];
+                            NSString * m5String = [[NSString alloc] initWithString:valuesArray[4]];
+                            transformDictionary[@"m5"] = m5String;
 
-                            NSString * m6String = [[NSString alloc] initWithString:[valuesArray objectAtIndex:5]];
-                            [transformDictionary setObject:m6String forKey:@"m6"];
+                            NSString * m6String = [[NSString alloc] initWithString:valuesArray[5]];
+                            transformDictionary[@"m6"] = m6String;
                         }
                     }
                     else if ([commandString isEqualToString:@"skewX"] == YES)
@@ -2353,8 +2346,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 1)
                         {
                             validValues = YES;
-                            NSString * xString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:xString forKey:@"degrees"];
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = xString;
                         }
                     }
                     else if ([commandString isEqualToString:@"skewY"] == YES)
@@ -2362,8 +2355,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                         if (valuesCount == 1)
                         {
                             validValues = YES;
-                            NSString * yString = [[NSString alloc] initWithString:[valuesArray objectAtIndex:0]];
-                            [transformDictionary setObject:yString forKey:@"degrees"];
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = yString;
                         }
                     }
                     
@@ -2391,7 +2384,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         if (transformAttributeNode != NULL)
         {
-            NSString * transformAttribute = [transformAttributeNode stringValue];
+            NSString * transformAttribute = transformAttributeNode.stringValue;
             
             [self parseTransformAttribute:transformAttribute];
         }
@@ -2421,22 +2414,22 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [self.transformsArray removeAllObjects];
 
     [label1TextField setHidden:YES];
-    [label1TextField setStringValue:@""];
+    label1TextField.stringValue = @"";
 
     [value1TextField setHidden:YES];
-    [value1TextField setStringValue:@""];
+    value1TextField.stringValue = @"";
     
     [label2TextField setHidden:YES];
-    [label2TextField setStringValue:@""];
+    label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
-    [value2TextField setStringValue:@""];
+    value2TextField.stringValue = @"";
     
     [label3TextField setHidden:YES];
-    [label3TextField setStringValue:@""];
+    label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
-    [value3TextField setStringValue:@""];
+    value3TextField.stringValue = @"";
 
     [transformsTableView deselectAll:self];
 
@@ -2464,48 +2457,48 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (void)copyTextFieldValuesToTransformDictionary:(NSMutableDictionary *)transformDictionary
 {
-    NSString * value1String = [value1TextField stringValue];
-    NSString * value2String = [value2TextField stringValue];
-    NSString * value3String = [value3TextField stringValue];
+    NSString * value1String = value1TextField.stringValue;
+    NSString * value2String = value2TextField.stringValue;
+    NSString * value3String = value3TextField.stringValue;
     
-    NSString * function = [transformDictionary objectForKey:@"function"];
+    NSString * function = transformDictionary[@"function"];
     
     if ([function isEqualToString:@"translate"] == YES)
     {
         NSString * xString = [[NSString alloc] initWithString:value1String];
-        [transformDictionary setObject:xString forKey:@"x"];
+        transformDictionary[@"x"] = xString;
         
         NSString * yString = [[NSString alloc] initWithString:value2String];
-        [transformDictionary setObject:yString forKey:@"y"];
+        transformDictionary[@"y"] = yString;
     }
     else if ([function isEqualToString:@"scale"] == YES)
     {
         NSString * xString = [[NSString alloc] initWithString:value1String];
-        [transformDictionary setObject:xString forKey:@"x"];
+        transformDictionary[@"x"] = xString;
         
         NSString * yString = [[NSString alloc] initWithString:value2String];
-        [transformDictionary setObject:yString forKey:@"y"];
+        transformDictionary[@"y"] = yString;
     }
     else if ([function isEqualToString:@"rotate"] == YES)
     {
         NSString * degreesString = [[NSString alloc] initWithString:value1String];
-        [transformDictionary setObject:degreesString forKey:@"degrees"];
+        transformDictionary[@"degrees"] = degreesString;
         
         NSString * xString = [[NSString alloc] initWithString:value2String];
-        [transformDictionary setObject:xString forKey:@"x"];
+        transformDictionary[@"x"] = xString;
         
         NSString * yString = [[NSString alloc] initWithString:value3String];
-        [transformDictionary setObject:yString forKey:@"y"];
+        transformDictionary[@"y"] = yString;
     }
     else if ([function isEqualToString:@"skewX"] == YES)
     {
         NSString * degreesString = [[NSString alloc] initWithString:value1String];
-        [transformDictionary setObject:degreesString forKey:@"degrees"];
+        transformDictionary[@"degrees"] = degreesString;
     }
     else if ([function isEqualToString:@"skewY"] == YES)
     {
         NSString * degreesString = [[NSString alloc] initWithString:value1String];
-        [transformDictionary setObject:degreesString forKey:@"degrees"];
+        transformDictionary[@"degrees"] = degreesString;
     }
 
     [transformsTableView reloadData];
@@ -2519,11 +2512,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (IBAction)transformToolTextFieldAction:(id)sender;
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
 
     if (selectedRow != -1)
     {
-        NSMutableDictionary * transformDictionary = [self.transformsArray objectAtIndex:selectedRow];
+        NSMutableDictionary * transformDictionary = (self.transformsArray)[selectedRow];
 
         [self copyTextFieldValuesToTransformDictionary:transformDictionary];
     }    
@@ -2535,23 +2528,22 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == transformsTableView)
 	{
-        NSUInteger rowCount = [transformsTableView numberOfRows];
+        NSUInteger rowCount = transformsTableView.numberOfRows;
         #pragma unused(rowCount)
-        NSUInteger transformsArrayCount = [self.transformsArray count];
+        NSUInteger transformsArrayCount = (self.transformsArray).count;
         #pragma unused(transformsArrayCount)
     
-        NSInteger selectedRow = [transformsTableView selectedRow];
+        NSInteger selectedRow = transformsTableView.selectedRow;
         
         if (selectedRow != -1)
         {
             NSMutableDictionary * selectedTransformDictionary =
-                    [self.transformsArray objectAtIndex:selectedRow];
+                    (self.transformsArray)[selectedRow];
             
-            NSString * selectedFunction = [selectedTransformDictionary
-                    objectForKey:@"function"];
+            NSString * selectedFunction = selectedTransformDictionary[@"function"];
             
             if ([selectedFunction isEqualToString:@"translate"] == YES)
             {
@@ -2669,7 +2661,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (IBAction)transformToolDeleteButtonAction:(id)sender;
 {
-    NSInteger selectedRow = [transformsTableView selectedRow];
+    NSInteger selectedRow = transformsTableView.selectedRow;
     
     if (selectedRow != -1)
     {

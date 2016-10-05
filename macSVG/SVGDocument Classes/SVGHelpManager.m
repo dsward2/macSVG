@@ -27,87 +27,86 @@
 
 -(void)createElementsHelpDictionary
 {
-    self.elementsHelpDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            @"linking.html#AElement", @"a",
-            @"text.html#AltGlyphElement", @"altGlyph", 
-            @"text.html#AltGlyphDefElement", @"altGlyphDef", 
-            @"text.html#AltGlyphItemElement", @"altGlyphItem", 
-            @"animate.html#AnimateElement", @"animate", 
-            @"animate.html#AnimateColorElement", @"animateColor", 
-            @"animate.html#AnimateMotionElement", @"animateMotion", 
-            @"animate.html#AnimateTransformElement", @"animateTransform", 
-            @"shapes.html#CircleElement", @"circle", 
-            @"masking.html#ClipPathElement", @"clipPath", 
-            @"color.html#ColorProfileElement", @"color-profile", 
-            @"interact.html#CursorElement", @"cursor", 
-            @"struct.html#DefsElement", @"defs", 
-            @"struct.html#DescElement", @"desc", 
-            @"shapes.html#EllipseElement", @"ellipse", 
-            @"filters.html#feBlendElement", @"feBlend", 
-            @"filters.html#feColorMatrixElement", @"feColorMatrix", 
-            @"filters.html#feComponentTransferElement", @"feComponentTransfer", 
-            @"filters.html#feCompositeElement", @"feComposite", 
-            @"filters.html#feConvolveMatrixElement", @"feConvolveMatrix", 
-            @"filters.html#feDiffuseLightingElement", @"feDiffuseLighting", 
-            @"filters.html#feDisplacementMapElement", @"feDisplacementMap", 
-            @"filters.html#feDistantLightElement", @"feDistantLight", 
-            @"filters.html#feFloodElement", @"feFlood", 
-            @"filters.html#feFuncAElement", @"feFuncA", 
-            @"filters.html#feFuncBElement", @"feFuncB", 
-            @"filters.html#feFuncGElement", @"feFuncG", 
-            @"filters.html#feFuncRElement", @"feFuncR", 
-            @"filters.html#feGaussianBlurElement", @"feGaussianBlur", 
-            @"filters.html#feImageElement", @"feImage", 
-            @"filters.html#feMergeElement", @"feMerge", 
-            @"filters.html#feMergeNodeElement", @"feMergeNode", 
-            @"filters.html#feMorphologyElement", @"feMorphology", 
-            @"filters.html#feOffsetElement", @"feOffset", 
-            @"filters.html#fePointLightElement", @"fePointLight", 
-            @"filters.html#feSpecularLightingElement", @"feSpecularLighting", 
-            @"filters.html#feSpotLightElement", @"feSpotLight", 
-            @"filters.html#feTileElement", @"feTile", 
-            @"filters.html#feTurbulenceElement", @"feTurbulence", 
-            @"filters.html#FilterElement", @"filter", 
-            @"fonts.html#FontElement", @"font", 
-            @"fonts.html#FontFaceElement", @"font-face", 
-            @"fonts.html#FontFaceFormatElement", @"font-face-format", 
-            @"fonts.html#FontFaceNameElement", @"font-face-name", 
-            @"fonts.html#FontFaceSrcElement", @"font-face-src", 
-            @"fonts.html#FontFaceURIElement", @"font-face-uri", 
-            @"extend.html#ForeignObjectElement", @"foreignObject", 
-            @"struct.html#GElement", @"g", 
-            @"fonts.html#GlyphElement", @"glyph", 
-            @"text.html#GlyphRefElement", @"glyphRef", 
-            @"fonts.html#HKernElement", @"hkern", 
-            @"struct.html#ImageElement", @"image", 
-            @"shapes.html#LineElement", @"line", 
-            @"pservers.html#LinearGradientElement", @"linearGradient", 
-            @"painting.html#MarkerElement", @"marker", 
-            @"masking.html#MaskElement", @"mask", 
-            @"metadata.html#MetadataElement", @"metadata", 
-            @"fonts.html#MissingGlyphElement", @"missing-glyph", 
-            @"animate.html#MPathElement", @"mpath", 
-            @"paths.html#PathElement", @"path", 
-            @"pservers.html#PatternElement", @"pattern", 
-            @"shapes.html#PolygonElement", @"polygon", 
-            @"shapes.html#PolylineElement", @"polyline", 
-            @"pservers.html#RadialGradientElement", @"radialGradient", 
-            @"shapes.html#RectElement", @"rect", 
-            @"script.html#ScriptElement", @"script", 
-            @"animate.html#SetElement", @"set", 
-            @"pservers.html#StopElement", @"stop", 
-            @"styling.html#StyleElement", @"style", 
-            @"struct.html#SVGElement", @"svg", 
-            @"struct.html#SwitchElement", @"switch", 
-            @"struct.html#SymbolElement", @"symbol", 
-            @"text.html#TextElement", @"text", 
-            @"text.html#TextPathElement", @"textPath", 
-            @"struct.html#TitleElement", @"title", 
-            @"text.html#TRefElement", @"tref", 
-            @"text.html#TSpanElement", @"tspan", 
-            @"struct.html#UseElement", @"use", 
-            @"linking.html#ViewElement", @"view", 
-            @"fonts.html#VKernElement", @"vkern", NULL];
+    self.elementsHelpDictionary = @{@"a": @"linking.html#AElement",
+            @"altGlyph": @"text.html#AltGlyphElement", 
+            @"altGlyphDef": @"text.html#AltGlyphDefElement", 
+            @"altGlyphItem": @"text.html#AltGlyphItemElement", 
+            @"animate": @"animate.html#AnimateElement", 
+            @"animateColor": @"animate.html#AnimateColorElement", 
+            @"animateMotion": @"animate.html#AnimateMotionElement", 
+            @"animateTransform": @"animate.html#AnimateTransformElement", 
+            @"circle": @"shapes.html#CircleElement", 
+            @"clipPath": @"masking.html#ClipPathElement", 
+            @"color-profile": @"color.html#ColorProfileElement", 
+            @"cursor": @"interact.html#CursorElement", 
+            @"defs": @"struct.html#DefsElement", 
+            @"desc": @"struct.html#DescElement", 
+            @"ellipse": @"shapes.html#EllipseElement", 
+            @"feBlend": @"filters.html#feBlendElement", 
+            @"feColorMatrix": @"filters.html#feColorMatrixElement", 
+            @"feComponentTransfer": @"filters.html#feComponentTransferElement", 
+            @"feComposite": @"filters.html#feCompositeElement", 
+            @"feConvolveMatrix": @"filters.html#feConvolveMatrixElement", 
+            @"feDiffuseLighting": @"filters.html#feDiffuseLightingElement", 
+            @"feDisplacementMap": @"filters.html#feDisplacementMapElement", 
+            @"feDistantLight": @"filters.html#feDistantLightElement", 
+            @"feFlood": @"filters.html#feFloodElement", 
+            @"feFuncA": @"filters.html#feFuncAElement", 
+            @"feFuncB": @"filters.html#feFuncBElement", 
+            @"feFuncG": @"filters.html#feFuncGElement", 
+            @"feFuncR": @"filters.html#feFuncRElement", 
+            @"feGaussianBlur": @"filters.html#feGaussianBlurElement", 
+            @"feImage": @"filters.html#feImageElement", 
+            @"feMerge": @"filters.html#feMergeElement", 
+            @"feMergeNode": @"filters.html#feMergeNodeElement", 
+            @"feMorphology": @"filters.html#feMorphologyElement", 
+            @"feOffset": @"filters.html#feOffsetElement", 
+            @"fePointLight": @"filters.html#fePointLightElement", 
+            @"feSpecularLighting": @"filters.html#feSpecularLightingElement", 
+            @"feSpotLight": @"filters.html#feSpotLightElement", 
+            @"feTile": @"filters.html#feTileElement", 
+            @"feTurbulence": @"filters.html#feTurbulenceElement", 
+            @"filter": @"filters.html#FilterElement", 
+            @"font": @"fonts.html#FontElement", 
+            @"font-face": @"fonts.html#FontFaceElement", 
+            @"font-face-format": @"fonts.html#FontFaceFormatElement", 
+            @"font-face-name": @"fonts.html#FontFaceNameElement", 
+            @"font-face-src": @"fonts.html#FontFaceSrcElement", 
+            @"font-face-uri": @"fonts.html#FontFaceURIElement", 
+            @"foreignObject": @"extend.html#ForeignObjectElement", 
+            @"g": @"struct.html#GElement", 
+            @"glyph": @"fonts.html#GlyphElement", 
+            @"glyphRef": @"text.html#GlyphRefElement", 
+            @"hkern": @"fonts.html#HKernElement", 
+            @"image": @"struct.html#ImageElement", 
+            @"line": @"shapes.html#LineElement", 
+            @"linearGradient": @"pservers.html#LinearGradientElement", 
+            @"marker": @"painting.html#MarkerElement", 
+            @"mask": @"masking.html#MaskElement", 
+            @"metadata": @"metadata.html#MetadataElement", 
+            @"missing-glyph": @"fonts.html#MissingGlyphElement", 
+            @"mpath": @"animate.html#MPathElement", 
+            @"path": @"paths.html#PathElement", 
+            @"pattern": @"pservers.html#PatternElement", 
+            @"polygon": @"shapes.html#PolygonElement", 
+            @"polyline": @"shapes.html#PolylineElement", 
+            @"radialGradient": @"pservers.html#RadialGradientElement", 
+            @"rect": @"shapes.html#RectElement", 
+            @"script": @"script.html#ScriptElement", 
+            @"set": @"animate.html#SetElement", 
+            @"stop": @"pservers.html#StopElement", 
+            @"style": @"styling.html#StyleElement", 
+            @"svg": @"struct.html#SVGElement", 
+            @"switch": @"struct.html#SwitchElement", 
+            @"symbol": @"struct.html#SymbolElement", 
+            @"text": @"text.html#TextElement", 
+            @"textPath": @"text.html#TextPathElement", 
+            @"title": @"struct.html#TitleElement", 
+            @"tref": @"text.html#TRefElement", 
+            @"tspan": @"text.html#TSpanElement", 
+            @"use": @"struct.html#UseElement", 
+            @"view": @"linking.html#ViewElement", 
+            @"vkern": @"fonts.html#VKernElement"};
 }
 
 
@@ -132,27 +131,27 @@
     {
         NSArray * cellArray = [aRowElement nodesForXPath:@"td" error:&xpathError];
         
-        NSXMLElement * attributeNameElement = [cellArray objectAtIndex:0];
-        NSString * attributeName = [attributeNameElement stringValue];
+        NSXMLElement * attributeNameElement = cellArray[0];
+        NSString * attributeName = attributeNameElement.stringValue;
         
         NSArray * attributeAElementArray = [attributeNameElement nodesForXPath:@"a" error:&xpathError];
-        NSXMLElement * attributeAElement = [attributeAElementArray firstObject];
+        NSXMLElement * attributeAElement = attributeAElementArray.firstObject;
         NSXMLNode * hrefAttributeNode = [attributeAElement attributeForName:@"href"];
-        NSString * hrefAttribute = [hrefAttributeNode stringValue];
+        NSString * hrefAttribute = hrefAttributeNode.stringValue;
         
-        NSXMLElement * elementNamesElement = [cellArray objectAtIndex:1];
+        NSXMLElement * elementNamesElement = cellArray[1];
         
         NSMutableArray * attributeElementsArray = [NSMutableArray array];
         NSArray * attributeElementsRowArray = [elementNamesElement nodesForXPath:@"a/span" error:&xpathError];
         for (NSXMLElement * aAttributeElement in attributeElementsRowArray)
         {
-            NSString * aElementName = [aAttributeElement stringValue];
+            NSString * aElementName = aAttributeElement.stringValue;
             [attributeElementsArray addObject:aElementName];
         }
         
-        NSXMLElement * attributeAnimatableElement = [cellArray objectAtIndex:2];
-        NSString * attributeAnimatable = [attributeAnimatableElement stringValue];
-        if ([attributeAnimatable length] > 0)
+        NSXMLElement * attributeAnimatableElement = cellArray[2];
+        NSString * attributeAnimatable = attributeAnimatableElement.stringValue;
+        if (attributeAnimatable.length > 0)
         {
             attributeAnimatable = @"1";
         }
@@ -161,13 +160,11 @@
             attributeAnimatable = @"0";
         }
 
-        NSDictionary * attributeHelpDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                attributeName, @"attributeName",
-                hrefAttribute, @"attributeURL",
-                attributeElementsArray, @"attributeElements",
-                attributeAnimatable, @"attributeAnimatable",
-                @"0", @"presentationAttribute",
-                nil];
+        NSDictionary * attributeHelpDictionary = @{@"attributeName": attributeName,
+                @"attributeURL": hrefAttribute,
+                @"attributeElements": attributeElementsArray,
+                @"attributeAnimatable": attributeAnimatable,
+                @"presentationAttribute": @"0"};
         
         [self.attributesHelpArray addObject:attributeHelpDictionary];
     }
@@ -187,7 +184,7 @@
     
     for (NSXMLElement * aElement in elementsXPathArray)
     {
-        NSString * aElementString = [aElement stringValue];
+        NSString * aElementString = aElement.stringValue;
         [elementsArray addObject:aElementString];
     }
     
@@ -195,18 +192,16 @@
     
     for (NSXMLElement * aAttributeElement in attributesXPathArray)
     {
-        NSString * attributeName = [aAttributeElement stringValue];
+        NSString * attributeName = aAttributeElement.stringValue;
         
         NSXMLNode * hrefAttributeNode = [aAttributeElement attributeForName:@"href"];
-        NSString * hrefAttribute = [hrefAttributeNode stringValue];
+        NSString * hrefAttribute = hrefAttributeNode.stringValue;
     
-        NSDictionary * attributeHelpDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                attributeName, @"attributeName",
-                hrefAttribute, @"attributeURL",
-                elementsArray, @"attributeElements",
-                @"1", @"attributeAnimatable",
-                @"1", @"presentationAttribute",
-                nil];
+        NSDictionary * attributeHelpDictionary = @{@"attributeName": attributeName,
+                @"attributeURL": hrefAttribute,
+                @"attributeElements": elementsArray,
+                @"attributeAnimatable": @"1",
+                @"presentationAttribute": @"1"};
         
         [self.attributesHelpArray addObject:attributeHelpDictionary];
     
@@ -216,7 +211,7 @@
 
 - (void)showDocumentationForElement:(NSString *)elementName
 {
-    NSString * urlFragment = [self.elementsHelpDictionary objectForKey:elementName];
+    NSString * urlFragment = (self.elementsHelpDictionary)[elementName];
     
     NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG/%@", urlFragment];
 
@@ -227,21 +222,21 @@
 - (void)showDocumentationForAttribute:(NSString *)attributeName
 {
     NSXMLElement * selectedElement = self.macSVGDocumentWindowController.editorUIFrameController.xmlAttributesTableController.xmlElementForAttributesTable;
-    NSString * elementName = [selectedElement name];
+    NSString * elementName = selectedElement.name;
     
     for (NSDictionary * attributeHelpDictionary in self.attributesHelpArray)
     {
-        NSString * aAttributeName = [attributeHelpDictionary objectForKey:@"attributeName"];
+        NSString * aAttributeName = attributeHelpDictionary[@"attributeName"];
         
         if ([attributeName isEqualToString:aAttributeName])
         {
-            NSArray * attributeElementsArray = [attributeHelpDictionary objectForKey:@"attributeElements"];
+            NSArray * attributeElementsArray = attributeHelpDictionary[@"attributeElements"];
         
             for (NSString * aElementName in attributeElementsArray)
             {
                 if ([elementName isEqualToString:aElementName])
                 {
-                    NSString * attributeURL = [attributeHelpDictionary objectForKey:@"attributeURL"];
+                    NSString * attributeURL = attributeHelpDictionary[@"attributeURL"];
 
                     NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG/%@", attributeURL];
 

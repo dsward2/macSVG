@@ -100,7 +100,7 @@
 	//[rectColor106 set];
 	//[rectPath105 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)[nsctx graphicsPort];
+	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
 	NSRect webBBox = NSMakeRect(-0.093000, -0.062500, 15.562000, 14.262500);
 	CGFloat hViewScale = cellFrame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = cellFrame.size.height / (webBBox.size.height);
@@ -137,9 +137,9 @@
 	CGFloat scaledStrokeWidth114 = 0.25 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth114);
 	NSColor * strokeColor115 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor115 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor115.CGColor);
 	NSColor * fillColor116 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor116 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor116.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip117 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform109 = CGAffineTransformConcat(currentTransform109, flip117);
@@ -208,9 +208,9 @@
 	CGFloat scaledStrokeWidth154 = 0.25 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth154);
 	NSColor * strokeColor155 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor155 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor155.CGColor);
 	NSColor * fillColor156 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor156 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor156.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip157 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform142 = CGAffineTransformConcat(currentTransform142, flip157);
@@ -271,7 +271,7 @@
 	//[rectColor24 set];
 	//[rectPath23 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)[nsctx graphicsPort];
+	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(10.000000, 0.000000, 568.000000, 680.000000);
@@ -322,9 +322,9 @@
 	CGFloat scaledStrokeWidth30 = 1 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth30);
 	NSColor * strokeColor31 = [NSColor colorWithRed:0 green:0 blue:1 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor31 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor31.CGColor);
 	NSColor * fillColor32 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor32 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor32.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip33 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform25 = CGAffineTransformConcat(currentTransform25, flip33);
@@ -372,7 +372,7 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)[nsctx graphicsPort];
+	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
 	NSRect webBBox = NSMakeRect(0.000000, 0.000000, 200.000000, 200.000000);
 	CGFloat hViewScale = cellFrame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = cellFrame.size.height / (webBBox.size.height);
@@ -407,9 +407,9 @@
 	CGFloat scaledStrokeWidth14 = 0 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth14);
 	NSColor * strokeColor15 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor15 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor15.CGColor);
 	NSColor * fillColor16 = [NSColor colorWithRed:1 green:0 blue:0 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor16 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor16.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip17 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform5 = CGAffineTransformConcat(currentTransform5, flip17);
@@ -458,9 +458,9 @@
 	CGFloat scaledStrokeWidth39 = 0 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth39);
 	NSColor * strokeColor40 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor40 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor40.CGColor);
 	NSColor * fillColor41 = [NSColor colorWithRed:1 green:1 blue:1 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor41 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor41.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip42 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform30 = CGAffineTransformConcat(currentTransform30, flip42);
@@ -509,9 +509,9 @@
 	CGFloat scaledStrokeWidth64 = 0 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth64);
 	NSColor * strokeColor65 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor65 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor65.CGColor);
 	NSColor * fillColor66 = [NSColor colorWithRed:1 green:0 blue:0 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor66 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor66.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip67 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform55 = CGAffineTransformConcat(currentTransform55, flip67);
@@ -560,9 +560,9 @@
 	CGFloat scaledStrokeWidth89 = 0 * viewScale;
 	CGContextSetLineWidth(context, scaledStrokeWidth89);
 	NSColor * strokeColor90 = [NSColor colorWithRed:0 green:0 blue:0 alpha:1];
-	CGContextSetStrokeColorWithColor(context, [strokeColor90 CGColor]);
+	CGContextSetStrokeColorWithColor(context, strokeColor90.CGColor);
 	NSColor * fillColor91 = [NSColor colorWithRed:1 green:1 blue:1 alpha:1];
-	CGContextSetFillColorWithColor(context, [fillColor91 CGColor]);
+	CGContextSetFillColorWithColor(context, fillColor91.CGColor);
 	if (flipImage == YES) { // flip image vertically
 		CGAffineTransform flip92 = CGAffineTransformMake(1, 0, 0, -1, 0, webBBox.size.height);
 		currentTransform80 = CGAffineTransformConcat(currentTransform80, flip92);

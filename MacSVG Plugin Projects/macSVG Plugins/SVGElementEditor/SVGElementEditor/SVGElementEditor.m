@@ -23,7 +23,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -53,7 +53,7 @@
 
     if ([elementName isEqualToString:@"svg"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
 
     return result;
@@ -86,8 +86,8 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = @"0";
 
     numericString = [NSString stringWithFormat:@"%f", attributeFloat];
@@ -95,7 +95,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -135,10 +135,10 @@
     NSString * viewBoxWidthString = viewBoxWidthTextField.stringValue;
     NSString * viewBoxHeightString = viewBoxHeightTextField.stringValue;
     
-    if (([viewBoxWidthString length] > 0) && ([viewBoxHeightString length] > 0))
+    if ((viewBoxWidthString.length > 0) && (viewBoxHeightString.length > 0))
     {
-        float viewBoxWidth = [viewBoxWidthString floatValue];
-        float viewBoxHeight = [viewBoxHeightString floatValue];
+        float viewBoxWidth = viewBoxWidthString.floatValue;
+        float viewBoxHeight = viewBoxHeightString.floatValue;
         
         float widthAttributeFloat = viewBoxWidth * scaleFactor;
         float heightAttributeFloat = viewBoxHeight * scaleFactor;
@@ -173,7 +173,7 @@
 
 - (IBAction)scalePopUpButtonAction:(id)sender
 {
-    NSString * scaleSetting = [scalePopUpButton titleOfSelectedItem];
+    NSString * scaleSetting = scalePopUpButton.titleOfSelectedItem;
     
     if ([scaleSetting isEqualToString:@"Original Scale"] == YES)
     {
@@ -260,21 +260,21 @@
     NSXMLNode * viewBoxAttributeNode = [self.pluginTargetXMLElement attributeForName:@"viewBox"];
     if (viewBoxAttributeNode != NULL)
     {
-        NSString * viewBoxValueString = [viewBoxAttributeNode stringValue];
+        NSString * viewBoxValueString = viewBoxAttributeNode.stringValue;
     
         NSArray * viewBoxValuesArray = [viewBoxValueString componentsSeparatedByString:@" "];
         
-        if ([viewBoxValuesArray count] == 4)
+        if (viewBoxValuesArray.count == 4)
         {
-            NSString * viewBoxMinX = [viewBoxValuesArray objectAtIndex:0];
-            NSString * viewBoxMinY = [viewBoxValuesArray objectAtIndex:1];
-            NSString * viewBoxWidth = [viewBoxValuesArray objectAtIndex:2];
-            NSString * viewBoxHeight = [viewBoxValuesArray objectAtIndex:3];
+            NSString * viewBoxMinX = viewBoxValuesArray[0];
+            NSString * viewBoxMinY = viewBoxValuesArray[1];
+            NSString * viewBoxWidth = viewBoxValuesArray[2];
+            NSString * viewBoxHeight = viewBoxValuesArray[3];
             
-            [viewBoxMinXTextField setStringValue:viewBoxMinX];
-            [viewBoxMinYTextField setStringValue:viewBoxMinY];
-            [viewBoxWidthTextField setStringValue:viewBoxWidth];
-            [viewBoxHeightTextField setStringValue:viewBoxHeight];
+            viewBoxMinXTextField.stringValue = viewBoxMinX;
+            viewBoxMinYTextField.stringValue = viewBoxMinY;
+            viewBoxWidthTextField.stringValue = viewBoxWidth;
+            viewBoxHeightTextField.stringValue = viewBoxHeight;
             
             viewBoxValuesSet = YES;
         }
@@ -282,10 +282,10 @@
     
     if (viewBoxValuesSet == NO)
     {
-        [viewBoxMinXTextField setStringValue:@""];
-        [viewBoxMinYTextField setStringValue:@""];
-        [viewBoxWidthTextField setStringValue:@""];
-        [viewBoxHeightTextField setStringValue:@""];
+        viewBoxMinXTextField.stringValue = @"";
+        viewBoxMinYTextField.stringValue = @"";
+        viewBoxWidthTextField.stringValue = @"";
+        viewBoxHeightTextField.stringValue = @"";
     }
 
     NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
@@ -293,9 +293,9 @@
     {
         NSString * widthValueString = [self numericStringWithAttributeNode:widthAttributeNode];
         
-        if ([widthValueString length] > 0)
+        if (widthValueString.length > 0)
         {
-            [widthAttributeTextField setStringValue:widthValueString];
+            widthAttributeTextField.stringValue = widthValueString;
             
             NSString * widthUnitString = [self unitForAttributeNode:widthAttributeNode];
             [widthUnitPopUpButton selectItemWithTitle:widthUnitString];
@@ -303,7 +303,7 @@
     }
     else
     {
-        [widthAttributeTextField setStringValue:@""];
+        widthAttributeTextField.stringValue = @"";
         [widthUnitPopUpButton selectItemWithTitle:@""];
     }
 
@@ -312,9 +312,9 @@
     {
         NSString * heightValueString = [self numericStringWithAttributeNode:heightAttributeNode];
         
-        if ([heightValueString length] > 0)
+        if (heightValueString.length > 0)
         {
-            [heightAttributeTextField setStringValue:heightValueString];
+            heightAttributeTextField.stringValue = heightValueString;
             
             NSString * heightUnitString = [self unitForAttributeNode:heightAttributeNode];
             [heightUnitPopUpButton selectItemWithTitle:heightUnitString];
@@ -322,7 +322,7 @@
     }
     else
     {
-        [heightAttributeTextField setStringValue:@""];
+        heightAttributeTextField.stringValue = @"";
         [heightUnitPopUpButton selectItemWithTitle:@""];
     }
 }
@@ -333,7 +333,7 @@
 
 - (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
+    NSString * attributeString = attributeNode.stringValue;
 
     NSString * resultUnit = @"";
     NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
@@ -397,55 +397,55 @@
     
     if (viewBoxAttributeNode != NULL)
     {
-        NSString * viewBoxMinX = [viewBoxMinXTextField stringValue];
-        NSString * viewBoxMinY = [viewBoxMinYTextField stringValue];
-        NSString * viewBoxWidth = [viewBoxWidthTextField stringValue];
-        NSString * viewBoxHeight = [viewBoxHeightTextField stringValue];
+        NSString * viewBoxMinX = viewBoxMinXTextField.stringValue;
+        NSString * viewBoxMinY = viewBoxMinYTextField.stringValue;
+        NSString * viewBoxWidth = viewBoxWidthTextField.stringValue;
+        NSString * viewBoxHeight = viewBoxHeightTextField.stringValue;
         
-        if (([viewBoxMinX length] > 0) && ([viewBoxMinX length] > 0) &&
-                ([viewBoxMinX length] > 0) && ([viewBoxMinX length] > 0))
+        if ((viewBoxMinX.length > 0) && (viewBoxMinX.length > 0) &&
+                (viewBoxMinX.length > 0) && (viewBoxMinX.length > 0))
         {
             NSString * viewBoxString = [NSString stringWithFormat:@"%@ %@ %@ %@",
                     viewBoxMinX, viewBoxMinY, viewBoxWidth, viewBoxHeight];
             
-            [viewBoxAttributeNode setStringValue:viewBoxString];
+            viewBoxAttributeNode.stringValue = viewBoxString;
         }
     }
 
-    NSString * widthString = [widthAttributeTextField stringValue];
-    NSString * widthUnitString = [widthUnitPopUpButton titleOfSelectedItem];
-    if ([widthString length] > 0)
+    NSString * widthString = widthAttributeTextField.stringValue;
+    NSString * widthUnitString = widthUnitPopUpButton.titleOfSelectedItem;
+    if (widthString.length > 0)
     {
         NSString * widthValue = [NSString stringWithFormat:@"%@%@", widthString, widthUnitString];
         NSXMLNode * widthAttributeNode = [self.pluginTargetXMLElement attributeForName:@"width"];
         if (widthAttributeNode == NULL)
         {
             widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [widthAttributeNode setName:@"width"];
-            [widthAttributeNode setStringValue:@""];
+            widthAttributeNode.name = @"width";
+            widthAttributeNode.stringValue = @"";
             [self.pluginTargetXMLElement addAttribute:widthAttributeNode];
         }
-        [widthAttributeNode setStringValue:widthValue];
+        widthAttributeNode.stringValue = widthValue;
     }
     else
     {
         [self.pluginTargetXMLElement removeAttributeForName:@"width"];
     }
 
-    NSString * heightString = [heightAttributeTextField stringValue];
-    NSString * heightUnitString = [heightUnitPopUpButton titleOfSelectedItem];
-    if ([heightString length] > 0)
+    NSString * heightString = heightAttributeTextField.stringValue;
+    NSString * heightUnitString = heightUnitPopUpButton.titleOfSelectedItem;
+    if (heightString.length > 0)
     {
         NSString * heightValue = [NSString stringWithFormat:@"%@%@", heightString, heightUnitString];
         NSXMLNode * heightAttributeNode = [self.pluginTargetXMLElement attributeForName:@"height"];
         if (heightAttributeNode == NULL)
         {
             heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [heightAttributeNode setName:@"height"];
-            [heightAttributeNode setStringValue:@""];
+            heightAttributeNode.name = @"height";
+            heightAttributeNode.stringValue = @"";
             [self.pluginTargetXMLElement addAttribute:heightAttributeNode];
         }
-        [heightAttributeNode setStringValue:heightValue];
+        heightAttributeNode.stringValue = heightValue;
     }
     else
     {

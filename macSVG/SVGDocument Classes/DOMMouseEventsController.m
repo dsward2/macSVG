@@ -44,7 +44,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -59,20 +59,18 @@
         selectionHandleClicked = NO;
         handle_orientation = NULL;
 
-        self.validElementsForTransformDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"rect", @"rect",
-                @"circle", @"circle",
-                @"ellipse", @"ellipse",
-                @"text", @"text",
-                @"image", @"image",
-                @"line", @"line",
-                @"polyline", @"polyline",
-                @"polygon", @"polygon",
-                @"path", @"path",
-                @"use", @"use",
-                @"g", @"g",
-                @"foreignObject", @"foreignObject",
-                nil];
+        self.validElementsForTransformDictionary = @{@"rect": @"rect",
+                @"circle": @"circle",
+                @"ellipse": @"ellipse",
+                @"text": @"text",
+                @"image": @"image",
+                @"line": @"line",
+                @"polyline": @"polyline",
+                @"polygon": @"polygon",
+                @"path": @"path",
+                @"use": @"use",
+                @"g": @"g",
+                @"foreignObject": @"foreignObject"};
     }
     
     return self;
@@ -88,7 +86,7 @@
     
     NSMutableString * trimmedString = [[NSMutableString alloc] init];
     
-    NSUInteger inputLength = [valueString length];
+    NSUInteger inputLength = valueString.length;
     for (int i = 0; i < inputLength; i++)
     {
         unichar aChar = [valueString characterAtIndex:i];
@@ -110,7 +108,7 @@
         [trimmedString appendString:charString];
     }
     
-    floatValue = [trimmedString floatValue];
+    floatValue = trimmedString.floatValue;
     
     return floatValue;
 }
@@ -126,7 +124,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -167,7 +165,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -249,7 +247,7 @@
 {
     NSPoint resultPoint = aMousePoint;
 
-    DOMDocument * domDocument = [[svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
 
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
@@ -257,7 +255,7 @@
         DOMNode * svgElementNode = [svgElementsList item:0];
         DOMElement * svgElement = (DOMElement *)svgElementNode;
 
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
         resultPoint = [webKitInterface transformPoint:aMousePoint fromElement:svgElement toElement:targetElement];
@@ -299,13 +297,13 @@
         }
     }
     
-    NSUInteger pointsArrayCount = [pointsArray count];
+    NSUInteger pointsArrayCount = pointsArray.count;
 
     NSString * newXString = [self allocFloatString:self.currentMousePoint.x];
     NSString * newYString = [self allocFloatString:self.currentMousePoint.y];
     
-    [pointsArray replaceObjectAtIndex:(pointsArrayCount - 2) withObject:newXString];
-    [pointsArray replaceObjectAtIndex:(pointsArrayCount - 1) withObject:newYString];
+    pointsArray[(pointsArrayCount - 2)] = newXString;
+    pointsArray[(pointsArrayCount - 1)] = newYString;
     
     NSString * xString = @"0";
     NSString * yString = @"0";
@@ -314,8 +312,8 @@
     
     for (int i = 0; i < pointsArrayCount; i+=2) 
     {
-        xString = [pointsArray objectAtIndex:i];
-        yString = [pointsArray objectAtIndex:(i + 1)];
+        xString = pointsArray[i];
+        yString = pointsArray[(i + 1)];
         
         if (i > 0) 
         {
@@ -358,17 +356,17 @@
         }
     }
     
-    NSUInteger pointsArrayCount = [pointsArray count];
+    NSUInteger pointsArrayCount = pointsArray.count;
 
     NSMutableString * newPointsString = [[NSMutableString alloc] init];
     
     for (int i = 0; i < pointsArrayCount; i+=2) 
     {
-        NSString * xString = [pointsArray objectAtIndex:i];
-        NSString * yString = [pointsArray objectAtIndex:(i + 1)];
+        NSString * xString = pointsArray[i];
+        NSString * yString = pointsArray[(i + 1)];
         
-        float x = [xString floatValue];
-        float y = [yString floatValue];
+        float x = xString.floatValue;
+        float y = yString.floatValue;
         
         float newX = x + deltaX;
         float newY = y + deltaY;
@@ -376,8 +374,8 @@
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
 
-        [pointsArray replaceObjectAtIndex:i withObject:newXString];
-        [pointsArray replaceObjectAtIndex:(i + 1) withObject:newYString];
+        pointsArray[i] = newXString;
+        pointsArray[(i + 1)] = newYString;
         
         if (i > 0) 
         {
@@ -424,13 +422,13 @@
                 }
             }
             
-            NSUInteger pointsArrayCount = [pointsArray count];
+            NSUInteger pointsArrayCount = pointsArray.count;
 
             NSString * newXString = [self allocFloatString:self.currentMousePoint.x];
             NSString * newYString = [self allocFloatString:self.currentMousePoint.y];
             
-            [pointsArray replaceObjectAtIndex:(pointsArrayCount - 2) withObject:newXString];
-            [pointsArray replaceObjectAtIndex:(pointsArrayCount - 1) withObject:newYString];
+            pointsArray[(pointsArrayCount - 2)] = newXString;
+            pointsArray[(pointsArrayCount - 1)] = newYString;
             
             NSString * xString = @"0";
             NSString * yString = @"0";
@@ -441,8 +439,8 @@
             
             for (int i = 0; i < outputPointsArrayCount; i+=2) 
             {
-                xString = [pointsArray objectAtIndex:i];
-                yString = [pointsArray objectAtIndex:(i + 1)];
+                xString = pointsArray[i];
+                yString = pointsArray[(i + 1)];
                 
                 if (i > 0) 
                 {
@@ -540,7 +538,7 @@
 
     if (aElement != NULL)
     {
-        NSString * tagName = [aElement tagName];
+        NSString * tagName = aElement.tagName;
         if ([tagName isEqualToString:@"text"] == YES) 
         {
             NSString * innerText = aElement.innerText;
@@ -561,7 +559,7 @@
 {
     // test for click on handles for existing selection, or new selection (not necessarily originalTargetXmlElement)
 
-    NSString * targetXmlElementName = [targetXMLElement name];
+    NSString * targetXmlElementName = targetXMLElement.name;
     
     if ([targetXmlElementName isEqualToString:@"path"] == YES)
     {
@@ -580,7 +578,7 @@
             self.svgXMLDOMSelectionManager.activeXMLElement = xmlPathElement;
 
             DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-            NSString * tagName = [activeDOMElement tagName];
+            NSString * tagName = activeDOMElement.tagName;
             
             [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
             
@@ -606,7 +604,7 @@
         {
             [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
 
-            NSString * tagName = [targetXMLElement name];
+            NSString * tagName = targetXMLElement.name;
             
             if ([tagName isEqualToString:@"path"] == YES)
             {
@@ -661,7 +659,7 @@
         self.svgXMLDOMSelectionManager.activeXMLElement = xmlPathElement;
 
         DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-        NSString * tagName = [activeDOMElement tagName];
+        NSString * tagName = activeDOMElement.tagName;
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
@@ -688,7 +686,7 @@
     {
         [self.svgPathEditor resetPathSegmentsArray];
 
-        NSString * tagName = [pathXMLElement name];
+        NSString * tagName = pathXMLElement.name;
         
         if ([tagName isEqualToString:@"path"] == YES)
         {
@@ -735,7 +733,7 @@
         self.svgXMLDOMSelectionManager.activeXMLElement = xmlPolylineElement;
 
         DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-        NSString * tagName = [activeDOMElement tagName];
+        NSString * tagName = activeDOMElement.tagName;
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
@@ -775,7 +773,7 @@
     {
         [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
 
-        NSString * tagName = [polylineXMLElement name];
+        NSString * tagName = polylineXMLElement.name;
         
         BOOL validElementFound = NO;
         
@@ -834,7 +832,7 @@
         self.svgXMLDOMSelectionManager.activeXMLElement = xmlLineElement;
 
         DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-        NSString * tagName = [activeDOMElement tagName];
+        NSString * tagName = activeDOMElement.tagName;
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
@@ -867,7 +865,7 @@
     {
         [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
 
-        NSString * tagName = [lineXMLElement name];
+        NSString * tagName = lineXMLElement.name;
         
         BOOL validElementFound = NO;
         
@@ -902,7 +900,7 @@
     // for selecting elements or to initiate dragging for element creation
     self.mouseMode = MOUSE_DRAGGING;
 
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
     
     DOMNode * targetNode = event.target;    // either a document node, or an editing handle node
     
@@ -990,7 +988,7 @@
     else
     {
         NSString * newTargetElementMacsvgid = [targetElement getAttribute:@"_macsvg_master_Macsvgid"];
-        if ([newTargetElementMacsvgid length] != 0)
+        if (newTargetElementMacsvgid.length != 0)
         {
             // user clicked in a control handle, change the target to the owner of the handle
             NSXMLElement * newTargetElement = [macSVGDocument xmlElementForMacsvgid:newTargetElementMacsvgid];
@@ -1075,7 +1073,7 @@
         {
             if (selectionHandleClicked == NO)
             {
-                MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+                MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
                 NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
                 NSXMLElement * rootXMLElement = [svgXmlDocument rootElement];
                 if (targetXMLElement == rootXMLElement)
@@ -1136,7 +1134,7 @@
             DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
             if (activeDOMElement != NULL)
             {
-                NSString * tagName = [activeDOMElement tagName];
+                NSString * tagName = activeDOMElement.tagName;
                 if ([tagName isEqualToString:@"polyline"] == YES)
                 {
                     extendExistingPolyline = YES;
@@ -1161,7 +1159,7 @@
             DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
             if (activeDOMElement != NULL)
             {
-                NSString * tagName = [activeDOMElement tagName];
+                NSString * tagName = activeDOMElement.tagName;
                 if ([tagName isEqualToString:@"polygon"] == YES)
                 {
                     extendExistingPolyline = YES;
@@ -1187,7 +1185,7 @@
             DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
             if (activeDOMElement != NULL)
             {
-                NSString * tagName = [activeDOMElement tagName];
+                NSString * tagName = activeDOMElement.tagName;
                 if ([tagName isEqualToString:@"path"] == YES)
                 {
                     editExistingPath = YES;
@@ -1259,7 +1257,7 @@
             }
             else
             {
-                [macSVGDocumentWindowController.svgWebKitController.domMouseEventsController setMouseMode:MOUSE_DISENGAGED];
+                (macSVGDocumentWindowController.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
             }
             [macSVGDocumentWindowController reloadAllViews];
         }
@@ -1276,8 +1274,8 @@
     
     NSString * tagName = aDomElement.tagName;
     
-    NSString * elementName = [aDomElement nodeName];
-    if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+    NSString * elementName = aDomElement.nodeName;
+    if ((self.validElementsForTransformDictionary)[elementName] != NULL)
     {
         if (([tagName isEqualToString:@"rect"] == YES) ||
                 ([tagName isEqualToString:@"image"] == YES) ||
@@ -1293,10 +1291,10 @@
                     (widthString != NULL) && (heightString != NULL) &&
                     (handle_orientation != NULL))
             {
-                float x = [xString floatValue];
-                float y = [yString floatValue];
-                float width = [widthString floatValue];
-                float height = [heightString floatValue];
+                float x = xString.floatValue;
+                float y = yString.floatValue;
+                float width = widthString.floatValue;
+                float height = heightString.floatValue;
 
                 float deltaX = self.currentMousePoint.x - x;
                 float deltaY = self.currentMousePoint.y - y;
@@ -1514,8 +1512,8 @@
             if ((cxString != NULL) && (cyString != NULL) &&
                     (radiusString != NULL) && (handle_orientation != NULL))
             {
-                float cx = [cxString floatValue];
-                float cy = [cyString floatValue];
+                float cx = cxString.floatValue;
+                float cy = cyString.floatValue;
 
                 if ([handle_orientation isEqualToString:@"top"] == YES) 
                 {
@@ -1659,8 +1657,8 @@
                     (rxString != NULL) && (ryString != NULL) && 
                     (handle_orientation != NULL))
             {
-                float cx = [cxString floatValue];
-                float cy = [cyString floatValue];
+                float cx = cxString.floatValue;
+                float cy = cyString.floatValue;
 
                 if ([handle_orientation isEqualToString:@"left"] == YES) 
                 {
@@ -1819,7 +1817,7 @@
 {
     //NSLog(@"handleMouseMoveEventForSelection");
 
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
 
     if (mouseMoveCount == 1)
     {
@@ -1844,8 +1842,8 @@
 
         NSString * tagName = aSvgElement.tagName;
         
-        NSString * elementName = [aSvgElement nodeName];
-        if ([self.validElementsForTransformDictionary objectForKey:elementName] != NULL)
+        NSString * elementName = aSvgElement.nodeName;
+        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
         {
             DOMElement * locatableElement = (id)aSvgElement;
                         
@@ -1992,7 +1990,7 @@
     {
         // update the element, projected to current mouse position
         
-        tagName = [updateDOMElement tagName];
+        tagName = updateDOMElement.tagName;
 
         float objectOriginX = self.clickPoint.x;
         float objectOriginY = self.clickPoint.y;
@@ -2146,7 +2144,7 @@
             DOMNode * selectedRectNode = [selectedRectsGroup.childNodes item:0];
             selectedRectElement = (id)selectedRectNode;
 
-            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
             NSRect selectionRect = NSMakeRect(objectOriginX, objectOriginY, objectWidth, objectHeight);
             [webKitInterface setRect:selectionRect forElement:selectedRectElement];
@@ -2166,7 +2164,7 @@
 -(void) handleMouseMoveEventForCrosshairCursor:(DOMEvent *)event
 {
     // handle drag events for crosshair cursor tool
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
 
     if (mouseMoveCount == 1)
     {
@@ -2192,7 +2190,7 @@
     {
         // update the element, projected to current mouse position
         
-        tagName = [movingDOMElement tagName];
+        tagName = movingDOMElement.tagName;
         
         if ([tagName isEqualToString:@"path"]  == YES)
         {
@@ -2214,7 +2212,7 @@
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
         
-        NSXMLElement * movingXMLElement = [self.svgXMLDOMSelectionManager activeXMLElement];
+        NSXMLElement * movingXMLElement = (self.svgXMLDOMSelectionManager).activeXMLElement;
 
         [self.svgXMLDOMSelectionManager.selectedElementsManager
                 addElementDictionaryWithXMLElement:movingXMLElement domElement:movingDOMElement];
@@ -2232,7 +2230,7 @@
 -(void) handleMouseMoveEvent:(DOMEvent *)event
 {
     // handle dragging events
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
 
     DOMElement * targetElement = [self.svgXMLDOMSelectionManager activeDOMElement];
     
@@ -2339,18 +2337,18 @@
     
     NSArray * valuesArray = [pointsString componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
     
-    NSInteger valuesArrayCount = [valuesArray count];
+    NSInteger valuesArrayCount = valuesArray.count;
     
     if (valuesArrayCount %2 == 0)
     {
         for (NSInteger i = 0; i < valuesArrayCount; i += 2)
         {
-            NSString * xString = [valuesArray objectAtIndex:i];
-            NSString * yString = [valuesArray objectAtIndex:i + 1];
+            NSString * xString = valuesArray[i];
+            NSString * yString = valuesArray[i + 1];
             
             NSMutableDictionary * polylinePointDictionary = [NSMutableDictionary dictionary];
-            [polylinePointDictionary setObject:xString forKey:@"x"];
-            [polylinePointDictionary setObject:yString forKey:@"y"];
+            polylinePointDictionary[@"x"] = xString;
+            polylinePointDictionary[@"y"] = yString;
             
             [newPolylinePointsArray addObject:polylinePointDictionary];
         }
@@ -2528,7 +2526,7 @@
             [event preventDefault];
             [event stopPropagation];
 
-            MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
             NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
             NSXMLElement * rootXMLElement = [svgXmlDocument rootElement];
             if (self.svgXMLDOMSelectionManager.activeXMLElement == rootXMLElement)
@@ -2589,7 +2587,7 @@
             DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
             if (activeDOMElement != NULL)
             {
-                NSString * tagName = [activeDOMElement tagName];
+                NSString * tagName = activeDOMElement.tagName;
                 if ([tagName isEqualToString:@"path"] == YES)
                 {
                     [self.svgPathEditor extendPath];
@@ -2613,7 +2611,7 @@
             [event preventDefault];
             [event stopPropagation];
 
-            MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
             NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
             NSXMLElement * rootXMLElement = [svgXmlDocument rootElement];
             if (self.svgXMLDOMSelectionManager.activeXMLElement == rootXMLElement)

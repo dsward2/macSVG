@@ -24,7 +24,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -76,7 +76,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
 // Timer driven exec
 +(NSString *) execCommand:(NSString *)commandlineNSString server:(DFSSHServer*)server sshError:(NSError **)sshError
 {
-    return [self execCommand:commandlineNSString server:server timeout:[NSNumber numberWithDouble:1]  sshError:sshError];
+    return [self execCommand:commandlineNSString server:server timeout:@1.0  sshError:sshError];
 }
 
 //==================================================================================
@@ -93,7 +93,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
     LIBSSH2_CHANNEL *channel;
 
     CFAbsoluteTime time;
-    time = CFAbsoluteTimeGetCurrent() + [timeout doubleValue];
+    time = CFAbsoluteTimeGetCurrent() + timeout.doubleValue;
     if (![server connectionStatus])
     {
         //return @"No Connection";
@@ -103,7 +103,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
         goto finalExit;
     }
     
-    const char * cmd = [commandlineNSString UTF8String];
+    const char * cmd = commandlineNSString.UTF8String;
     
     if (!cmd)
     {

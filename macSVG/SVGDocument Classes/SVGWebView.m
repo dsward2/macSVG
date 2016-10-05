@@ -18,7 +18,7 @@
 
 @implementation SVGWebView
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -29,7 +29,7 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
@@ -41,7 +41,7 @@
 }
 
 
-- (id)initWithFrame:(NSRect)frameRect
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
     if (self) {
@@ -67,13 +67,11 @@
     
     [self setAcceptsTouchEvents:NO];
 
-    [self registerForDraggedTypes:[NSArray arrayWithObjects:
-            XML_OUTLINE_PBOARD_TYPE, 
+    [self registerForDraggedTypes:@[XML_OUTLINE_PBOARD_TYPE, 
             NSURLPboardType, 
             NSStringPboardType, 
             NSFilenamesPboardType, 
-            NSTIFFPboardType, 
-            nil]];
+            NSTIFFPboardType]];
     
 }
 
@@ -105,14 +103,14 @@
 
     BOOL result = NO;
 
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
     XMLOutlineController * xmlOutlineController = macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
 
-    NSInteger selectedRowIndex = [xmlOutlineView selectedRow];
+    NSInteger selectedRowIndex = xmlOutlineView.selectedRow;
 
     if (selectedRowIndex != -1)
     {
@@ -128,7 +126,7 @@
 
         if (targetNode != NULL)
         {
-            childIndex = [targetNode childCount];
+            childIndex = targetNode.childCount;
         }
         
         // Destination determined by current selection in NSXMLDocument
@@ -148,9 +146,9 @@
             {
                 // change target to parent, and index one past old target
                 
-                NSXMLNode * targetParentNode = [targetNode parent];
+                NSXMLNode * targetParentNode = targetNode.parent;
                 
-                NSInteger targetIndexInParent = [targetNode index];
+                NSInteger targetIndexInParent = targetNode.index;
                 
                 targetNode = targetParentNode;
                 childIndex = targetIndexInParent + 1;
@@ -191,7 +189,7 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    unichar key = [event.charactersIgnoringModifiers characterAtIndex:0];
     if(key == NSDeleteCharacter)
     {
         NSBeep();
@@ -209,7 +207,7 @@
     //NSString * zoomFactorString = [NSString stringWithFormat:@"%f", zoomFactor];
     NSString * zoomFactorString = [self allocFloatString:zoomFactor];
 
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
 
@@ -219,23 +217,23 @@
     
     NSXMLNode * styleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
     
-    [styleAttributeNode setName:@"style"];
-    [styleAttributeNode setStringValue:newStyleAttributeString];
+    styleAttributeNode.name = @"style";
+    styleAttributeNode.stringValue = newStyleAttributeString;
     
     [rootElement addAttribute:styleAttributeNode];
     
     NSXMLNode * MacsvgidAttributeNode = [rootElement attributeForName:@"macsvgid"];
     if (MacsvgidAttributeNode != NULL)
     {
-        NSString * macsvgid = [MacsvgidAttributeNode stringValue];
+        NSString * macsvgid = MacsvgidAttributeNode.stringValue;
         
-        if ([macsvgid length] > 0)
+        if (macsvgid.length > 0)
         {
             DOMElement * aDOMElement = [svgWebKitController domElementForMacsvgid:macsvgid];
             
             if (aDOMElement == NULL)
             {
-                DOMDocument * domDocument = [[self mainFrame] DOMDocument];
+                DOMDocument * domDocument = self.mainFrame.DOMDocument;
                 DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
                 if (svgElementsList.length > 0)
                 {
@@ -263,7 +261,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {

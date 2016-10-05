@@ -16,16 +16,17 @@
 {
 }
 
-- (NSMutableArray *)selectedElementsArray;
-- (NSArray *)selectedXMLElementIDs;
-- (NSUInteger)selectedElementsCount;
+@property (readonly, copy) NSMutableArray *selectedElementsArray;
+@property (readonly, copy) NSArray *selectedXMLElementIDs;
+@property (readonly) NSUInteger selectedElementsCount;
 
 - (NSDictionary *)elementDictionaryAtIndex:(NSUInteger)elementIndex;
 - (NSXMLElement *)xmlElementAtIndex:(NSUInteger)elementIndex;
 - (DOMElement *)domElementAtIndex:(NSUInteger)elementIndex;
 
-- (NSXMLElement *)firstXmlElement;
-- (DOMElement *)firstDomElement;
+@property (readonly, copy) NSXMLElement *firstXmlElement;
+@property (readonly, copy) DOMElement *firstDomElement;
+//@property (readonly, strong) DOMElement *firstDomElement;
 
 - (void)addElementDictionaryWithXMLElement:(NSXMLElement *)xmlElement
         domElement:(DOMElement *)domElement;

@@ -35,7 +35,7 @@
 @property (strong) NSXMLElement * activeXMLElement;
 @property (strong) NSMutableArray * pathSegmentsArray;      // array of path segment dictionaries
 
-- (DOMElement *) activeDOMElement;    // result corresponds to activeXMLElement
+@property (readonly, copy) DOMElement *activeDOMElement;    // result corresponds to activeXMLElement
 - (DOMElement *)createTemporaryDOMElementForXMLElement:(NSXMLElement *)aXmlElement;
 - (void) selectXMLElement:(NSXMLElement *)aElement;
 -(void) selectXMLElementAndChildNodes:(NSXMLElement *)aXMLElement;

@@ -53,7 +53,7 @@
 
 - (NSString *)hexColorFromColorWell:(NSColorWell *)aColorWell
 {
-    NSColor * aColor = [aColorWell color];
+    NSColor * aColor = aColorWell.color;
     
     NSString * hexColor = [self hexadecimalValueOfAnNSColor:aColor];
     
@@ -62,7 +62,7 @@
 
 - (NSString *)pxStringValueForTextField:(NSTextField *)aTextField
 {
-    NSString * textFieldString = [aTextField stringValue];
+    NSString * textFieldString = aTextField.stringValue;
     
     NSString * pxString = [NSString stringWithFormat:@"%@px", textFieldString];
     
@@ -86,10 +86,10 @@
             [self pxStringValueForTextField:selectionHandleSizeTextField];
 
     self.showCheckerboardBackground =
-            [self.checkerboardBackgroundCheckboxButton state];
+            (self.checkerboardBackgroundCheckboxButton).state;
     
     self.validateElementPlacement =
-            [self.validateElementPlacementCheckboxButton state];
+            (self.validateElementPlacementCheckboxButton).state;
 
     self.pathEndpointStrokeColor =
             [self hexColorFromColorWell:pathEndpointStrokeColorWell];
@@ -127,27 +127,27 @@
 
 - (IBAction)setDefaultsButtonAction:(id)sender
 {
-    [selectionStrokeColorWell setColor:[NSColor blueColor]];
-    [selectionStrokeWidthTextField setStringValue:@"1"];
+    selectionStrokeColorWell.color = [NSColor blueColor];
+    selectionStrokeWidthTextField.stringValue = @"1";
 
-    [selectionHandleColorWell setColor:[NSColor redColor]];
-    [selectionHandleSizeTextField setStringValue:@"7"];
+    selectionHandleColorWell.color = [NSColor redColor];
+    selectionHandleSizeTextField.stringValue = @"7";
     
-    [self.checkerboardBackgroundCheckboxButton setState:1];
-    [self.validateElementPlacementCheckboxButton setState:1];
+    (self.checkerboardBackgroundCheckboxButton).state = 1;
+    (self.validateElementPlacementCheckboxButton).state = 1;
 
-    [pathEndpointStrokeColorWell setColor:[NSColor blueColor]];
-    [pathEndpointStrokeWidthTextField setStringValue:@"1"];
-    [pathEndpointFillColorWell setColor:[NSColor yellowColor]];
-    [pathEndpointRadiusTextField setStringValue:@"3"];
+    pathEndpointStrokeColorWell.color = [NSColor blueColor];
+    pathEndpointStrokeWidthTextField.stringValue = @"1";
+    pathEndpointFillColorWell.color = [NSColor yellowColor];
+    pathEndpointRadiusTextField.stringValue = @"3";
 
-    [pathCurvePointStrokeColorWell setColor:[NSColor redColor]];
-    [pathCurvePointStrokeWidthTextField setStringValue:@"1"];
-    [pathCurvePointFillColorWell setColor:[NSColor yellowColor]];
-    [pathCurvePointRadiusTextField setStringValue:@"3"];
+    pathCurvePointStrokeColorWell.color = [NSColor redColor];
+    pathCurvePointStrokeWidthTextField.stringValue = @"1";
+    pathCurvePointFillColorWell.color = [NSColor yellowColor];
+    pathCurvePointRadiusTextField.stringValue = @"3";
 
-    [pathLineStrokeColorWell setColor:[NSColor blueColor]];
-    [pathLineStrokeWidthTextField setStringValue:@"1"];
+    pathLineStrokeColorWell.color = [NSColor blueColor];
+    pathLineStrokeWidthTextField.stringValue = @"1";
     
     [self updateSettingsFromUserInterface];
 }
@@ -181,13 +181,13 @@
     NSString * pathLineStrokeWidth =
             [self pxStringValueForTextField:pathLineStrokeWidthTextField];
     
-    float selectionStrokeWidthFloat = [selectionStrokeWidth floatValue];
-    float selectionHandleSizeFloat = [selectionHandleSize floatValue];
-    float pathEndpointStrokeWidthFloat = [pathEndpointStrokeWidth floatValue];
-    float pathEndpointRadiusFloat = [pathEndpointRadius floatValue];
-    float pathCurvePointStrokeWidthFloat = [pathCurvePointStrokeWidth floatValue];
-    float pathCurvePointRadiusFloat = [pathCurvePointRadius floatValue];
-    float pathLineStrokeWidthFloat = [pathLineStrokeWidth floatValue];
+    float selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
+    float selectionHandleSizeFloat = selectionHandleSize.floatValue;
+    float pathEndpointStrokeWidthFloat = pathEndpointStrokeWidth.floatValue;
+    float pathEndpointRadiusFloat = pathEndpointRadius.floatValue;
+    float pathCurvePointStrokeWidthFloat = pathCurvePointStrokeWidth.floatValue;
+    float pathCurvePointRadiusFloat = pathCurvePointRadius.floatValue;
+    float pathLineStrokeWidthFloat = pathLineStrokeWidth.floatValue;
     
     selectionStrokeWidthFloat *= 2.0f;
     selectionHandleSizeFloat *= 2.0f;
@@ -205,19 +205,19 @@
     pathCurvePointRadius = [NSString stringWithFormat:@"%f", pathCurvePointRadiusFloat];
     pathLineStrokeWidth = [NSString stringWithFormat:@"%f", pathLineStrokeWidthFloat];
 
-    [selectionStrokeWidthTextField setStringValue:selectionStrokeWidth];
+    selectionStrokeWidthTextField.stringValue = selectionStrokeWidth;
 
-    [selectionHandleSizeTextField setStringValue:selectionHandleSize];
+    selectionHandleSizeTextField.stringValue = selectionHandleSize;
 
-    [pathEndpointStrokeWidthTextField setStringValue:pathEndpointStrokeWidth];
+    pathEndpointStrokeWidthTextField.stringValue = pathEndpointStrokeWidth;
 
-    [pathEndpointRadiusTextField setStringValue:pathEndpointRadius];
+    pathEndpointRadiusTextField.stringValue = pathEndpointRadius;
 
-    [pathCurvePointStrokeWidthTextField setStringValue:pathCurvePointStrokeWidth];
+    pathCurvePointStrokeWidthTextField.stringValue = pathCurvePointStrokeWidth;
 
-    [pathCurvePointRadiusTextField setStringValue:pathCurvePointRadius];
+    pathCurvePointRadiusTextField.stringValue = pathCurvePointRadius;
 
-    [pathLineStrokeWidthTextField setStringValue:pathLineStrokeWidth];
+    pathLineStrokeWidthTextField.stringValue = pathLineStrokeWidth;
     
     [self updateSettingsFromUserInterface];
 }
@@ -246,13 +246,13 @@
     NSString * pathLineStrokeWidth =
             [self pxStringValueForTextField:pathLineStrokeWidthTextField];
     
-    float selectionStrokeWidthFloat = [selectionStrokeWidth floatValue];
-    float selectionHandleSizeFloat = [selectionHandleSize floatValue];
-    float pathEndpointStrokeWidthFloat = [pathEndpointStrokeWidth floatValue];
-    float pathEndpointRadiusFloat = [pathEndpointRadius floatValue];
-    float pathCurvePointStrokeWidthFloat = [pathCurvePointStrokeWidth floatValue];
-    float pathCurvePointRadiusFloat = [pathCurvePointRadius floatValue];
-    float pathLineStrokeWidthFloat = [pathLineStrokeWidth floatValue];
+    float selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
+    float selectionHandleSizeFloat = selectionHandleSize.floatValue;
+    float pathEndpointStrokeWidthFloat = pathEndpointStrokeWidth.floatValue;
+    float pathEndpointRadiusFloat = pathEndpointRadius.floatValue;
+    float pathCurvePointStrokeWidthFloat = pathCurvePointStrokeWidth.floatValue;
+    float pathCurvePointRadiusFloat = pathCurvePointRadius.floatValue;
+    float pathLineStrokeWidthFloat = pathLineStrokeWidth.floatValue;
     
     selectionStrokeWidthFloat /= 2.0f;
     selectionHandleSizeFloat /= 2.0f;
@@ -270,19 +270,19 @@
     pathCurvePointRadius = [NSString stringWithFormat:@"%f", pathCurvePointRadiusFloat];
     pathLineStrokeWidth = [NSString stringWithFormat:@"%f", pathLineStrokeWidthFloat];
 
-    [selectionStrokeWidthTextField setStringValue:selectionStrokeWidth];
+    selectionStrokeWidthTextField.stringValue = selectionStrokeWidth;
 
-    [selectionHandleSizeTextField setStringValue:selectionHandleSize];
+    selectionHandleSizeTextField.stringValue = selectionHandleSize;
 
-    [pathEndpointStrokeWidthTextField setStringValue:pathEndpointStrokeWidth];
+    pathEndpointStrokeWidthTextField.stringValue = pathEndpointStrokeWidth;
 
-    [pathEndpointRadiusTextField setStringValue:pathEndpointRadius];
+    pathEndpointRadiusTextField.stringValue = pathEndpointRadius;
 
-    [pathCurvePointStrokeWidthTextField setStringValue:pathCurvePointStrokeWidth];
+    pathCurvePointStrokeWidthTextField.stringValue = pathCurvePointStrokeWidth;
 
-    [pathCurvePointRadiusTextField setStringValue:pathCurvePointRadius];
+    pathCurvePointRadiusTextField.stringValue = pathCurvePointRadius;
 
-    [pathLineStrokeWidthTextField setStringValue:pathLineStrokeWidth];
+    pathLineStrokeWidthTextField.stringValue = pathLineStrokeWidth;
     
     [self updateSettingsFromUserInterface];
 

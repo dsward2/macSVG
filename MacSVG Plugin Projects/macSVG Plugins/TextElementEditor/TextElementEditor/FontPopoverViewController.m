@@ -46,7 +46,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -126,25 +126,25 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     NSMutableDictionary * workDictionary = [NSMutableDictionary dictionary];
     
-    NSArray * allKeys = [self.browserFontsDictionary allKeys];
+    NSArray * allKeys = (self.browserFontsDictionary).allKeys;
     
     for (NSString * aKey in allKeys)
     {
-        NSArray * fontNamesArray = [self.browserFontsDictionary objectForKey:aKey];
+        NSArray * fontNamesArray = (self.browserFontsDictionary)[aKey];
         
         for (NSString * aFontName in fontNamesArray)
         {
-            [workDictionary setObject:@"" forKey:aFontName];
+            workDictionary[aFontName] = @"";
         }
     }
     
-    NSArray * allFontNamesKeys = [workDictionary allKeys];
+    NSArray * allFontNamesKeys = workDictionary.allKeys;
     
     NSArray * sortedFontNamesArray = [allFontNamesKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     
-    [self.browserFontsDictionary setObject:sortedFontNamesArray forKey:@"All Fonts"];
+    (self.browserFontsDictionary)[@"All Fonts"] = sortedFontNamesArray;
     
-    NSArray * allCategoryKeys = [self.browserFontsDictionary allKeys];
+    NSArray * allCategoryKeys = (self.browserFontsDictionary).allKeys;
     
     NSArray * sortedCategoriesArray = [allCategoryKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     
@@ -181,40 +181,38 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
     NSArray * styleElementsArray = [rootElement elementsForName:@"defs"];
     
-    if ([styleElementsArray count] > 0)
+    if (styleElementsArray.count > 0)
     {
-        resultElement = [styleElementsArray objectAtIndex:0];
+        resultElement = styleElementsArray[0];
     }
     else
     {
-        NSDictionary * drawableObjectsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"rect", @"rect",
-                @"circle", @"circle",
-                @"ellipse", @"ellipse",
-                @"text", @"text",
-                @"image", @"image",
-                @"line", @"line",
-                @"polyline", @"polyline",
-                @"polygon", @"polygon",
-                @"path", @"path",
-                @"use", @"use",
-                @"g", @"g",
-                @"foreignObject", @"foreignObject",
-                nil];
+        NSDictionary * drawableObjectsDictionary = @{@"rect": @"rect",
+                @"circle": @"circle",
+                @"ellipse": @"ellipse",
+                @"text": @"text",
+                @"image": @"image",
+                @"line": @"line",
+                @"polyline": @"polyline",
+                @"polygon": @"polygon",
+                @"path": @"path",
+                @"use": @"use",
+                @"g": @"g",
+                @"foreignObject": @"foreignObject"};
 
         // determine a good insertion point for the defs element
-        NSArray * nodesArray = [rootElement children];
+        NSArray * nodesArray = rootElement.children;
         NSInteger nodeIndex = 0;
         for (NSXMLNode * aNode in nodesArray)
         {
-            NSXMLNodeKind nodeKind = [aNode kind];
+            NSXMLNodeKind nodeKind = aNode.kind;
             
             if (nodeKind == NSXMLElementKind)
             {
                 NSXMLElement * aElement = (NSXMLElement *)aNode;
-                NSString * elementName = [aElement name];
+                NSString * elementName = aElement.name;
                 
-                if ([drawableObjectsDictionary objectForKey:elementName] != NULL)
+                if (drawableObjectsDictionary[elementName] != NULL)
                 {
                     break;
                 }
@@ -227,8 +225,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         resultElement = [[NSXMLElement alloc] initWithName:@"defs"];
         
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [idAttribute setName:@"id"];
-        [idAttribute setStringValue:@"svg_document_defs"];
+        idAttribute.name = @"id";
+        idAttribute.stringValue = @"svg_document_defs";
         
         [resultElement addAttribute:idAttribute];
         
@@ -253,7 +251,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     // <text font-family="Alex Brush" font-size="8">Text content</text>
     
     NSMutableString * fontURLName = [NSMutableString stringWithString:fontName];
-    NSRange fontURLNameRange = NSMakeRange(0, [fontURLName length]);
+    NSRange fontURLNameRange = NSMakeRange(0, fontURLName.length);
     [fontURLName replaceOccurrencesOfString:@" " withString:@"+" options: NSLiteralSearch range:fontURLNameRange];
     
     NSString * importStatement = [NSString stringWithFormat:@"@import url(https://fonts.googleapis.com/css?family=%@);", fontURLName];
@@ -267,7 +265,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSArray * styleElementsArray = [rootElement elementsForName:@"style"];
     for (NSXMLElement * aStyleElement in styleElementsArray)
     {
-        NSString * styleElementTextContent = [aStyleElement stringValue];
+        NSString * styleElementTextContent = aStyleElement.stringValue;
         if ([styleElementTextContent isEqualToString:importStatement] == YES)
         {
             existingImportFound = YES;
@@ -282,13 +280,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         NSXMLElement * styleElement = [[NSXMLElement alloc] initWithName:@"style"];
         
-        [styleElement setStringValue:importStatement];
+        styleElement.stringValue = importStatement;
         
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [idAttribute setName:@"id"];
+        idAttribute.name = @"id";
         NSString * idAttributeString = [NSString stringWithFormat:@"%@_Google_Webfont_import", fontName];
         
-        [idAttribute setStringValue:idAttributeString];
+        idAttribute.stringValue = idAttributeString;
         
         [styleElement addAttribute:idAttribute];
         
@@ -322,13 +320,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSXMLElement * rootElement = [xmlDocument rootElement];
     NSXMLElement * defsElement = [self defsElementForXMLDocument:xmlDocument];
     
-    NSString * fontFamilyString = [fontDictionary objectForKey:@"family"];
-    NSDictionary * fontFilesDictionary = [fontDictionary objectForKey:@"files"];
-    NSArray * fontVariantKeys = [fontFilesDictionary allKeys];
+    NSString * fontFamilyString = fontDictionary[@"family"];
+    NSDictionary * fontFilesDictionary = fontDictionary[@"files"];
+    NSArray * fontVariantKeys = fontFilesDictionary.allKeys;
 
     for (NSString * aFontVariantKey in fontVariantKeys)
     {
-        NSString * fontURLString = [fontFilesDictionary objectForKey:aFontVariantKey];
+        NSString * fontURLString = fontFilesDictionary[aFontVariantKey];
     
         BOOL existingEmbedFound = NO;
         
@@ -342,7 +340,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSArray * styleElementsArray = [rootElement elementsForName:@"style"];
         for (NSXMLElement * aStyleElement in styleElementsArray)
         {
-            NSString * styleElementTextContent = [aStyleElement stringValue];
+            NSString * styleElementTextContent = aStyleElement.stringValue;
             if ([styleElementTextContent isEqualToString:embedStatement] == YES)
             {
                 existingEmbedFound = YES;
@@ -356,13 +354,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             
             NSXMLElement * styleElement = [[NSXMLElement alloc] initWithName:@"style"];
             
-            [styleElement setStringValue:embedStatement];
+            styleElement.stringValue = embedStatement;
             
             NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [idAttribute setName:@"id"];
+            idAttribute.name = @"id";
             NSString * idAttributeString = [NSString stringWithFormat:@"%@_%@_Google_Webfont_embed", fontFamilyString, aFontVariantKey];
             
-            [idAttribute setStringValue:idAttributeString];
+            idAttribute.stringValue = idAttributeString;
             
             [styleElement addAttribute:idAttribute];
             
@@ -379,21 +377,21 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)importOrEmbedGoogleWebFonts
 {
-    NSInteger rowIndex = [googleWebfontsTableView selectedRow];
+    NSInteger rowIndex = googleWebfontsTableView.selectedRow;
 
     NSString * fontName = @"";
 
-    NSArray * googleWebfontsListArray = [self.googleWebFontsCatalogDictionary objectForKey:@"items"];
+    NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
     
     if (googleWebfontsListArray != NULL)
     {
-        NSDictionary * googleWebfontDictionary = [googleWebfontsListArray objectAtIndex:rowIndex];
+        NSDictionary * googleWebfontDictionary = googleWebfontsListArray[rowIndex];
         
         if (googleWebfontDictionary != NULL)
         {
-            fontName = [googleWebfontDictionary objectForKey:@"family"];
+            fontName = googleWebfontDictionary[@"family"];
 
-            NSInteger importOptionRow = [googleWebfontOptionsMatrix selectedRow];
+            NSInteger importOptionRow = googleWebfontOptionsMatrix.selectedRow;
             
             if (importOptionRow == 0)
             {
@@ -425,7 +423,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     NSDictionary * fontDescriptorDictionary = CFBridgingRelease(cfFontDescriptor);
     
-    fontName = [fontDescriptorDictionary objectForKey:@"NSFontNameAttribute"];
+    fontName = fontDescriptorDictionary[@"NSFontNameAttribute"];
     
     return fontName;
 }
@@ -519,7 +517,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSArray * styleElementsArray = [rootElement elementsForName:@"style"];
         for (NSXMLElement * aStyleElement in styleElementsArray)
         {
-            NSString * styleElementTextContent = [aStyleElement stringValue];
+            NSString * styleElementTextContent = aStyleElement.stringValue;
             if ([styleElementTextContent isEqualToString:importStatement] == YES)
             {
                 existingImportFound = YES;
@@ -534,13 +532,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             
             NSXMLElement * styleElement = [[NSXMLElement alloc] initWithName:@"style"];
             
-            [styleElement setStringValue:importStatement];
+            styleElement.stringValue = importStatement;
             
             NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [idAttribute setName:@"id"];
+            idAttribute.name = @"id";
             NSString * idAttributeString = [NSString stringWithFormat:@"%@_font_import", fontName];
             
-            [idAttribute setStringValue:idAttributeString];
+            idAttribute.stringValue = idAttributeString;
             
             [styleElement addAttribute:idAttribute];
             
@@ -578,7 +576,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSArray * styleElementsArray = [rootElement elementsForName:@"style"];
     for (NSXMLElement * aStyleElement in styleElementsArray)
     {
-        NSString * styleElementTextContent = [aStyleElement stringValue];
+        NSString * styleElementTextContent = aStyleElement.stringValue;
         if ([styleElementTextContent isEqualToString:embedStatement] == YES)
         {
             existingEmbedFound = YES;
@@ -592,17 +590,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         NSXMLElement * styleElement = [[NSXMLElement alloc] initWithName:@"style"];
         
-        [styleElement setStringValue:embedStatement];
+        styleElement.stringValue = embedStatement;
         
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
         
-        [idAttribute setName:@"id"];
+        idAttribute.name = @"id";
         
         NSString * idAttributeString =
                 [NSString stringWithFormat:@"%@_Webfont_embed",
                 fontFamilyString];
         
-        [idAttribute setStringValue:idAttributeString];
+        idAttribute.stringValue = idAttributeString;
         
         [styleElement addAttribute:idAttribute];
         
@@ -622,7 +620,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * fontName = @"Helvetica";
     
-    NSInteger importOptionRow = [webfontImportOptionsMatrix selectedRow];
+    NSInteger importOptionRow = webfontImportOptionsMatrix.selectedRow;
     
     if (importOptionRow == 0)
     {
@@ -646,9 +644,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * fontName = @"Helvetica";
     
-    NSString * fontURLString = [webfontPathTextField stringValue];
+    NSString * fontURLString = webfontPathTextField.stringValue;
     
-    if ([fontURLString length] > 0)
+    if (fontURLString.length > 0)
     {
         // Import webfont when SVG is loaded
         fontName = [self importOrEmbedWebfont:fontURLString];
@@ -665,7 +663,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     BOOL result = NO;
 
-    NSString * pathExtension = [url pathExtension];
+    NSString * pathExtension = url.pathExtension;
 
     if ([pathExtension isEqualToString:@"ttf"] == YES)
     {
@@ -673,7 +671,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     }
 
     BOOL isDirectory;
-    [[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDirectory];
+    [[NSFileManager defaultManager] fileExistsAtPath:url.path isDirectory:&isDirectory];
     
     if (isDirectory == YES)
     {
@@ -689,11 +687,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (IBAction)chooseTruetypeFontFileButtonAction:(id)sender
 {
-    [webfontStatusMessageTextField setStringValue:@""];
+    webfontStatusMessageTextField.stringValue = @"";
 
     NSOpenPanel* panel = [NSOpenPanel openPanel];
     
-    [panel setDelegate:self];
+    panel.delegate = self;
 
     // This method displays the panel and returns immediately.
     // The completion handler is called when the user selects an
@@ -703,16 +701,16 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     {
         if (result == NSFileHandlingPanelOKButton)
         {
-            NSURL *  fontURL = [[panel URLs] objectAtIndex:0];
+            NSURL *  fontURL = panel.URLs[0];
             
-            NSString * pathExtension = [fontURL pathExtension];
+            NSString * pathExtension = fontURL.pathExtension;
 
             if ([pathExtension isEqualToString:@"ttf"] == YES)
             {
                 // Open  the document.
-                NSString * urlString = [fontURL absoluteString];
+                NSString * urlString = fontURL.absoluteString;
                 
-                [webfontPathTextField setStringValue:urlString];
+                webfontPathTextField.stringValue = urlString;
                 
                 NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
                 
@@ -720,7 +718,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             }
             else
             {
-                [webfontStatusMessageTextField setStringValue:@"Import error - Truetype font not found"];
+                webfontStatusMessageTextField.stringValue = @"Import error - Truetype font not found";
             }
             
             [self reopenPopover];
@@ -738,7 +736,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSButton * targetButton = [textElementEditor browseFontsButton];
     
     // configure the preferred position of the popover
-    [fontPopover showRelativeToRect:[targetButton bounds] ofView:targetButton preferredEdge:NSMaxYEdge];
+    [fontPopover showRelativeToRect:targetButton.bounds ofView:targetButton preferredEdge:NSMaxYEdge];
 }
 
 //==================================================================================
@@ -753,7 +751,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             @"<html><head><link href='%@' rel='stylesheet' type='text/css'><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             urlString, fontName, textContent];
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
     
     self.importPreviewHTML = htmlString;
 }
@@ -778,7 +776,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             @"<html><head><style>%@p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             cssString, fontName, textContent];
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
     
     self.importPreviewHTML = htmlString;
 }
@@ -790,9 +788,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (IBAction)previewImportedFontButtonAction:(id)sender
 {
-    NSString * fontURLString = [webfontPathTextField stringValue];
+    NSString * fontURLString = webfontPathTextField.stringValue;
     
-    if ([fontURLString length] > 0)
+    if (fontURLString.length > 0)
     {
         NSString * fontName = [self fontNameFromURL:fontURLString];
         
@@ -809,7 +807,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (IBAction)chooseDisplayedFontButtonAction:(id)sender
 {
-    NSTabViewItem * tabViewItem = [tabView selectedTabViewItem];
+    NSTabViewItem * tabViewItem = tabView.selectedTabViewItem;
     NSInteger tabViewItemIndex = [tabView indexOfTabViewItem:tabViewItem];
     
     switch (tabViewItemIndex)
@@ -817,7 +815,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         case 0:
         {
             // Browser font tab
-            NSInteger rowIndex = [browserFontsTableView selectedRow];
+            NSInteger rowIndex = browserFontsTableView.selectedRow;
             NSString * fontName = [self stringValueForBrowserFontsRowIndex:rowIndex];
             [textElementEditor setFontName:fontName];
             break;
@@ -826,17 +824,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         {
             // Google Webfont tab
             [self importOrEmbedGoogleWebFonts];
-            NSInteger rowIndex = [googleWebfontsTableView selectedRow];
+            NSInteger rowIndex = googleWebfontsTableView.selectedRow;
             NSString * fontName = @"Helvetica";
-            NSArray * googleWebfontsListArray = [self.googleWebFontsCatalogDictionary objectForKey:@"items"];
+            NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
             
             if (googleWebfontsListArray != NULL)
             {
-                NSDictionary * googleWebfontDictionary = [googleWebfontsListArray objectAtIndex:rowIndex];
+                NSDictionary * googleWebfontDictionary = googleWebfontsListArray[rowIndex];
                 
                 if (googleWebfontDictionary != NULL)
                 {
-                    fontName = [googleWebfontDictionary objectForKey:@"family"];
+                    fontName = googleWebfontDictionary[@"family"];
                 }
             }
             [textElementEditor setFontName:fontName];
@@ -854,7 +852,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         case 3:
         {
             // Embedded file tab
-            NSInteger rowIndex = [definedFontsTableView selectedRow];
+            NSInteger rowIndex = definedFontsTableView.selectedRow;
             
             NSString * fontName = [self stringValueForDefinedFontsRowIndex:rowIndex];
 
@@ -878,11 +876,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSInteger result = 0;
     
-    NSString * browserListKey = [browserFontsFilterPopUpButton titleOfSelectedItem];
+    NSString * browserListKey = browserFontsFilterPopUpButton.titleOfSelectedItem;
     
-    NSArray * browserListArray = [self.browserFontsDictionary objectForKey:browserListKey];
+    NSArray * browserListArray = (self.browserFontsDictionary)[browserListKey];
     
-    result = [browserListArray count];
+    result = browserListArray.count;
     
     return result;
 }
@@ -897,11 +895,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     if (self.googleWebFontsCatalogDictionary != NULL)
     {
-        NSArray * googleWebfontsListArray = [self.googleWebFontsCatalogDictionary objectForKey:@"items"];
+        NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
         
         if (googleWebfontsListArray != NULL)
         {
-            result = [googleWebfontsListArray count];
+            result = googleWebfontsListArray.count;
         }
     }
 
@@ -916,7 +914,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSInteger result = 0;
     
-    result = [self.definedFontsArray count];
+    result = (self.definedFontsArray).count;
     
     return result;
 }
@@ -954,11 +952,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * result = @"Missing Result";
     
-    NSString * browserListKey = [browserFontsFilterPopUpButton titleOfSelectedItem];
+    NSString * browserListKey = browserFontsFilterPopUpButton.titleOfSelectedItem;
     
-    NSArray * browserListArray = [self.browserFontsDictionary objectForKey:browserListKey];
+    NSArray * browserListArray = (self.browserFontsDictionary)[browserListKey];
     
-    result = [browserListArray objectAtIndex:rowIndex];
+    result = browserListArray[rowIndex];
     
     return result;
 }
@@ -971,22 +969,22 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * result = @"Missing Result";
     
-    NSArray * googleWebfontsListArray = [self.googleWebFontsCatalogDictionary objectForKey:@"items"];
+    NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
     
     if (googleWebfontsListArray != NULL)
     {
-        NSDictionary * googleWebfontDictionary = [googleWebfontsListArray objectAtIndex:rowIndex];
+        NSDictionary * googleWebfontDictionary = googleWebfontsListArray[rowIndex];
         
         if (googleWebfontDictionary != NULL)
         {
-            NSString * fontFamily = [googleWebfontDictionary objectForKey:@"family"];
+            NSString * fontFamily = googleWebfontDictionary[@"family"];
             
             NSMutableString * variantsString = [NSMutableString string];
             
-            NSArray * variantsArray = [googleWebfontDictionary objectForKey:@"variants"];
+            NSArray * variantsArray = googleWebfontDictionary[@"variants"];
             for (NSString * aVariantString in variantsArray)
             {
-                if ([variantsString length] > 0)
+                if (variantsString.length > 0)
                 {
                     [variantsString appendString:@", "];
                 }
@@ -1008,7 +1006,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * result = @"Missing Result";
     
-    result = [self.definedFontsArray objectAtIndex:rowIndex];
+    result = (self.definedFontsArray)[rowIndex];
     
     return result;
 }
@@ -1044,7 +1042,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)browserFontsTableViewSelectionDidChange
 {
-    NSInteger rowIndex = [browserFontsTableView selectedRow];
+    NSInteger rowIndex = browserFontsTableView.selectedRow;
     
     NSString * fontName = [self stringValueForBrowserFontsRowIndex:rowIndex];
     
@@ -1054,7 +1052,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             @"<html><head><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             fontName, textContent];
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
     
     self.browserPreviewHTML = htmlString;
 }
@@ -1065,25 +1063,25 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)googleWebfontsTableViewSelectionDidChange
 {
-    NSInteger rowIndex = [googleWebfontsTableView selectedRow];
+    NSInteger rowIndex = googleWebfontsTableView.selectedRow;
 
     NSString * fontName = @"";
 
-    NSArray * googleWebfontsListArray = [self.googleWebFontsCatalogDictionary objectForKey:@"items"];
+    NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
     
     if (googleWebfontsListArray != NULL)
     {
-        NSDictionary * googleWebfontDictionary = [googleWebfontsListArray objectAtIndex:rowIndex];
+        NSDictionary * googleWebfontDictionary = googleWebfontsListArray[rowIndex];
         
         if (googleWebfontDictionary != NULL)
         {
-            fontName = [googleWebfontDictionary objectForKey:@"family"];
+            fontName = googleWebfontDictionary[@"family"];
         }
     }
     
     NSMutableString * fontURLName = [NSMutableString stringWithString:fontName];
     
-    NSRange fontURLNameRange = NSMakeRange(0, [fontURLName length]);
+    NSRange fontURLNameRange = NSMakeRange(0, fontURLName.length);
     [fontURLName replaceOccurrencesOfString:@" " withString:@"+" options: NSLiteralSearch range:fontURLNameRange];
     
     NSString * textContent = [textElementEditor textElementContent];
@@ -1092,7 +1090,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             stringWithFormat:@"<html><head><link href='http://fonts.googleapis.com/css?family=%@' rel='stylesheet' type='text/css'><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             fontURLName, fontName, textContent];
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
     
     self.googleWebfontsPreviewHTML = htmlString;
 }
@@ -1103,7 +1101,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)definedFontsTableViewSelectionDidChange
 {
-    NSInteger rowIndex = [browserFontsTableView selectedRow];
+    NSInteger rowIndex = browserFontsTableView.selectedRow;
     
     NSString * fontName = [self stringValueForDefinedFontsRowIndex:rowIndex];
     
@@ -1113,7 +1111,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             @"<html><head><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             fontName, textContent];
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
     
     self.browserPreviewHTML = htmlString;
 }
@@ -1124,7 +1122,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == browserFontsTableView)
     {
         [self browserFontsTableViewSelectionDidChange];
@@ -1145,11 +1143,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (void)embedTrueTypeFont:(NSString *)filepath
 {
-    NSString * filename = [filepath lastPathComponent];
+    NSString * filename = filepath.lastPathComponent;
 
     if (filename != nil) 
     {
-        NSUInteger filenameLength = [filename length];
+        NSUInteger filenameLength = filename.length;
         
         BOOL isTrueTypeFontFile = NO;
         
@@ -1186,7 +1184,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             NSArray * styleElementsArray = [rootElement elementsForName:@"style"];
             for (NSXMLElement * aStyleElement in styleElementsArray)
             {
-                NSString * styleElementTextContent = [aStyleElement stringValue];
+                NSString * styleElementTextContent = aStyleElement.stringValue;
                 if ([styleElementTextContent isEqualToString:xmlString] == YES)
                 {
                     existingEmbedFound = YES;
@@ -1200,13 +1198,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 
                 NSXMLElement * styleElement = [[NSXMLElement alloc] initWithName:@"style"];
                 
-                [styleElement setStringValue:xmlString];
+                styleElement.stringValue = xmlString;
                 
                 NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [idAttribute setName:@"id"];
+                idAttribute.name = @"id";
                 NSString * idAttributeString = [NSString stringWithFormat:@"%@_%@_TrueType_font_embed", fontFamilyString, @"regular"];
                 
-                [idAttribute setStringValue:idAttributeString];
+                idAttribute.stringValue = idAttributeString;
                 
                 [styleElement addAttribute:idAttribute];
                 
@@ -1225,21 +1223,21 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (NSString *)allocEncodeBase64Data:(NSData *)inputData
 {
-	if ([inputData length] == 0)
+	if (inputData.length == 0)
 		return @"";
 
-    char *characters = malloc((([inputData length] + 2) / 3) * 4);
+    char *characters = malloc(((inputData.length + 2) / 3) * 4);
 	if (characters == NULL)
 		return nil;
 	NSUInteger length = 0;
 	
 	NSUInteger i = 0;
-	while (i < [inputData length])
+	while (i < inputData.length)
 	{
 		char buffer[3] = {0,0,0};
 		short bufferLength = 0;
-		while (bufferLength < 3 && i < [inputData length])
-			buffer[bufferLength++] = ((char *)[inputData bytes])[i++];
+		while (bufferLength < 3 && i < inputData.length)
+			buffer[bufferLength++] = ((char *)inputData.bytes)[i++];
 		
 		//  Encode the bytes in the buffer to four characters, including padding "=" characters if necessary.
 		characters[length++] = encodingTable[(buffer[0] & 0xFC) >> 2];
@@ -1468,7 +1466,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             }
         */
         
-        NSInteger fontDataStringLength = [fontFaceString length];
+        NSInteger fontDataStringLength = fontFaceString.length;
         NSInteger openBracePosition = NSNotFound;
         NSInteger closeBracePosition = NSNotFound;
         for (NSInteger charIndex = fontFaceRange.location  + fontFaceRange.length - 1;
@@ -1501,17 +1499,17 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             {
                 NSArray * aCSSArray = [aCSSString componentsSeparatedByString:@":"];
                 
-                if ([aCSSArray count] == 2)
+                if (aCSSArray.count == 2)
                 {
-                    NSString * aCSSFragment = [aCSSArray objectAtIndex:0];
+                    NSString * aCSSFragment = aCSSArray[0];
 
                     NSString * trimmedCSSFragment = [aCSSFragment stringByTrimmingCharactersInSet:whitespaceSet];
                     
                     if ([trimmedCSSFragment isEqualToString:@"font-family"])
                     {
-                        NSString * fontFamilyName = [aCSSArray objectAtIndex:1];
+                        NSString * fontFamilyName = aCSSArray[1];
                         
-                        if ([fontFamilyName length] > 0)
+                        if (fontFamilyName.length > 0)
                         {
                             fontFamilyName = [fontFamilyName stringByTrimmingCharactersInSet:whitespaceSet];
 
@@ -1520,7 +1518,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
                             if ([firstCharacterString isEqualToString:@"'"] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"'" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -1529,7 +1527,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
                             if ([firstCharacterString isEqualToString:@"\""] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"\"" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -1621,7 +1619,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             BOOL fontDefinitionFound = NO;
             NSString * fontName = @"Helvetica";
 
-            NSString * styleElementTextContent = [aStyleElement stringValue];
+            NSString * styleElementTextContent = aStyleElement.stringValue;
             
             NSRange fontFaceRange = [styleElementTextContent rangeOfString:@"@font-face"];
             if (fontFaceRange.location != NSNotFound)
@@ -1701,7 +1699,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             break;
     }
     
-    [[fontPreviewWebView mainFrame] loadHTMLString:htmlString baseURL:NULL];
+    [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -1717,7 +1715,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
     // redirect, so each time we reset the data.
  
     // receivedData is an instance variable declared elsewhere.
-    [self.googleWebFontsCatalogReceivedData setLength:0];
+    (self.googleWebFontsCatalogReceivedData).length = 0;
 }
 
 //==================================================================================
@@ -1738,8 +1736,8 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
 {
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
-          [error localizedDescription],
-          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+          error.localizedDescription,
+          error.userInfo[NSURLErrorFailingURLStringErrorKey]);
 }
 
 //==================================================================================

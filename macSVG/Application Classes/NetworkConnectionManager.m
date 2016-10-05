@@ -49,11 +49,11 @@
     
     if (aTableView == networkFileBrowserTableView)
     {
-        rowsCount = [self.networkFileDirectoryArray count];
+        rowsCount = (self.networkFileDirectoryArray).count;
     }
     else if (aTableView == saveNetworkDirectoryBrowserTableView)
     {
-        rowsCount = [self.networkFileDirectoryArray count];
+        rowsCount = (self.networkFileDirectoryArray).count;
     }
     
     return rowsCount;
@@ -88,7 +88,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == networkFileBrowserTableView)
     {
         //
@@ -107,15 +107,15 @@
 {
     NSView * resultView = NULL;
 
-    if ([self.networkFileDirectoryArray count] > 0)
+    if ((self.networkFileDirectoryArray).count > 0)
     {
-        NSDictionary * itemDictionary = [self.networkFileDirectoryArray objectAtIndex:rowIndex];
-        NSString * fileName = [itemDictionary objectForKey:@"name"];
-        NSString * fileNameExtension = [fileName pathExtension];
-        NSString * flagsString = [itemDictionary objectForKey:@"flags"];
+        NSDictionary * itemDictionary = (self.networkFileDirectoryArray)[rowIndex];
+        NSString * fileName = itemDictionary[@"name"];
+        NSString * fileNameExtension = fileName.pathExtension;
+        NSString * flagsString = itemDictionary[@"flags"];
         unichar fileTypeChar = [flagsString characterAtIndex:0];
 
-        NSString * tableColumnIdentifier= [aTableColumn identifier];
+        NSString * tableColumnIdentifier= aTableColumn.identifier;
         
         if ([tableColumnIdentifier isEqualToString:@"fileName"] == YES)
         {
@@ -174,7 +174,7 @@
         {
             NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
 
-            NSString * dateTimeString = [itemDictionary objectForKey:@"dateTime"];
+            NSString * dateTimeString = itemDictionary[@"dateTime"];
             
             cellView.textField.stringValue = dateTimeString;
             
@@ -199,14 +199,14 @@
 - (void)textDidChange:(NSNotification *)aNotification
 {
     //NSString * name = [aNotification name];
-    id object = [aNotification object];
+    id object = aNotification.object;
     //NSDictionary * userInfo = [aNotification userInfo];
     NSWindow * aWindow = NULL;
     
     if ([object isKindOfClass:[NSTextField class]] == YES)
     {
         NSTextField * aTextField = object;
-        aWindow = [aTextField window];
+        aWindow = aTextField.window;
     }
 
     if (aWindow == openNetworkConnectionWindow)
@@ -233,14 +233,14 @@
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
     //NSString * name = [aNotification name];
-    id object = [aNotification object];
+    id object = aNotification.object;
     //NSDictionary * userInfo = [aNotification userInfo];
     NSWindow * aWindow = NULL;
     
     if ([object isKindOfClass:[NSTextField class]] == YES)
     {
         NSTextField * aTextField = object;
-        aWindow = [aTextField window];
+        aWindow = aTextField.window;
     }
 
     if (aWindow == openNetworkConnectionWindow)
@@ -277,14 +277,14 @@
 
 - (IBAction)openNetworkConnectionTextFieldAction:(id)sender
 {
-    NSString * connectionTypeString = [openNetworkConnectionTypePopUpButton titleOfSelectedItem];
-    NSString * urlFilePathString = [openNetworkUrlFilePathTextField stringValue];
+    NSString * connectionTypeString = openNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = openNetworkUrlFilePathTextField.stringValue;
     //NSString * hostNameString = [openNetworkHostNameTextField stringValue];
     //NSString * portNumberString = [openNetworkPortNumberTextField stringValue];
-    NSString * userNameString = [openNetworkUserNameTextField stringValue];
-    NSString * passwordString = [openNetworkPasswordTextField stringValue];
+    NSString * userNameString = openNetworkUserNameTextField.stringValue;
+    NSString * passwordString = openNetworkPasswordTextField.stringValue;
     
-    NSString * pathExtension = [urlFilePathString pathExtension];
+    NSString * pathExtension = urlFilePathString.pathExtension;
     
     BOOL validPathExtension = NO;
     if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -305,9 +305,9 @@
     }
     
     BOOL validLoginCredentials = NO;
-    if ([userNameString length] > 0)
+    if (userNameString.length > 0)
     {
-        if ([passwordString length] > 0)
+        if (passwordString.length > 0)
         {
             validLoginCredentials = YES;
         }
@@ -316,7 +316,7 @@
     if ([connectionTypeString isEqualToString:@"HTTP Web Server"] == YES)
     {
         [openNetworkBrowseFilesButton setEnabled:NO];
-        if ([urlFilePathString length] > 0)
+        if (urlFilePathString.length > 0)
         {
             if (validPathExtension == YES)
             {
@@ -334,7 +334,7 @@
     }
     else if ([connectionTypeString isEqualToString:@"SFTP Server"] == YES)
     {
-        if ([urlFilePathString length] > 0)
+        if (urlFilePathString.length > 0)
         {
             [openNetworkBrowseFilesButton setEnabled:YES];
             if (validPathExtension == YES)
@@ -356,7 +356,7 @@
     {
         if (validLoginCredentials == YES)
         {
-            if ([urlFilePathString length] > 0)
+            if (urlFilePathString.length > 0)
             {
                 [openNetworkBrowseFilesButton setEnabled:YES];
                 if (validPathExtension == YES)
@@ -388,23 +388,23 @@
 
 - (IBAction)networkFileBrowserDirectoryPopUpButtonAction:(id)sender
 {
-    NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+    NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
     //NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+    NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+    NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
-    NSInteger selectedIndex = [networkFileBrowserDirectoryPopUpButton indexOfSelectedItem];
+    NSInteger selectedIndex = networkFileBrowserDirectoryPopUpButton.indexOfSelectedItem;
     
     NSMutableString * networkDirectoryPath = [NSMutableString string];
     
     for (NSInteger i = 0; i <= selectedIndex; i++)
     {
         NSMenuItem * componentItem = [networkFileBrowserDirectoryPopUpButton itemAtIndex:i];
-        NSString * componentString = [componentItem title];
+        NSString * componentString = componentItem.title;
         [networkDirectoryPath appendString:componentString];
         
         if (i > 0)
@@ -413,14 +413,12 @@
         }
     }
 
-    NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            networkAccessMethod, @"connectionType",
-            networkDirectoryPath, @"urlFilePath",
-            hostAddrString, @"hostName",
-            portNumberString, @"portNumber",
-            userNameString, @"userName",
-            passwordString, @"password",
-            nil];
+    NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+            @"urlFilePath": networkDirectoryPath,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString};
     
     self.workingConnectionDictionary = connectionDictionary;
 
@@ -453,23 +451,21 @@
 
 - (IBAction)openNetworkConnectionBrowseFilesButtonAction:(id)sender
 {
-    NSString * connectionTypeString = [openNetworkConnectionTypePopUpButton titleOfSelectedItem];
-    NSString * urlFilePathString = [openNetworkUrlFilePathTextField stringValue];
-    NSString * hostNameString = [openNetworkHostNameTextField stringValue];
-    NSString * portNumberString = [openNetworkPortNumberTextField stringValue];
-    NSString * userNameString = [openNetworkUserNameTextField stringValue];
-    NSString * passwordString = [openNetworkPasswordTextField stringValue];
+    NSString * connectionTypeString = openNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = openNetworkUrlFilePathTextField.stringValue;
+    NSString * hostNameString = openNetworkHostNameTextField.stringValue;
+    NSString * portNumberString = openNetworkPortNumberTextField.stringValue;
+    NSString * userNameString = openNetworkUserNameTextField.stringValue;
+    NSString * passwordString = openNetworkPasswordTextField.stringValue;
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
-    NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            connectionTypeString, @"connectionType",
-            urlFilePathString, @"urlFilePath",
-            hostAddrString, @"hostName",
-            portNumberString, @"portNumber",
-            userNameString, @"userName",
-            passwordString, @"password",
-            nil];
+    NSDictionary * connectionDictionary = @{@"connectionType": connectionTypeString,
+            @"urlFilePath": urlFilePathString,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString};
 
     [openNetworkConnectionWindow orderOut:self];
     
@@ -484,7 +480,7 @@
 
 - (IBAction)networkFileBrowserCancelButtonAction:(id)sender
 {
-    self.networkFileDirectoryArray = [NSArray array];
+    self.networkFileDirectoryArray = @[];
     [networkFileBrowserTableView reloadData];
     [networkFileBrowserWindow orderOut:self];
 }
@@ -514,7 +510,7 @@
 {
     self.workingConnectionDictionary = connectionDictionary;
 
-    NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
+    NSString * connectionTypeString = connectionDictionary[@"connectionType"];
     
     if ([connectionTypeString isEqualToString:@"HTTP Web Server"] == YES)
     {
@@ -537,31 +533,31 @@
 - (void)loadNetworkFileBrowserForSSHConnection:(NSDictionary *)connectionDictionary
 {
     //NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePathString = [connectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [connectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [connectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [connectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [connectionDictionary objectForKey:@"password"];
+    NSString * urlFilePathString = connectionDictionary[@"urlFilePath"];
+    NSString * hostNameString = connectionDictionary[@"hostName"];
+    NSString * portNumberString = connectionDictionary[@"portNumber"];
+    NSString * userNameString = connectionDictionary[@"userName"];
+    NSString * passwordString = connectionDictionary[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     NSImage * iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-    [iconImage setSize:NSMakeSize(16,16)];
+    iconImage.size = NSMakeSize(16,16);
     
     [networkFileBrowserDirectoryPopUpButton removeAllItems];
     
     [networkFileBrowserDirectoryPopUpButton addItemWithTitle:@"/"];
     NSMenuItem * menuItem = [networkFileBrowserDirectoryPopUpButton itemAtIndex:0];
-    [menuItem setImage:iconImage];
+    menuItem.image = iconImage;
 
     NSArray * pathArray = [urlFilePathString componentsSeparatedByString:@"/"];
-    NSInteger pathArrayCount = [pathArray count];
+    NSInteger pathArrayCount = pathArray.count;
     for (NSInteger i = 0; i < pathArrayCount; i++)
     {
-        NSString * directoryString = [pathArray objectAtIndex:i];
-        if ([directoryString length] > 0)
+        NSString * directoryString = pathArray[i];
+        if (directoryString.length > 0)
         {
-            NSString * fileNameExtension = [directoryString pathExtension];
+            NSString * fileNameExtension = directoryString.pathExtension;
             BOOL displayListing = YES;
             if ([fileNameExtension isEqualToString:@"svg"] == YES)
             {
@@ -584,16 +580,16 @@
             {
                 [networkFileBrowserDirectoryPopUpButton addItemWithTitle:directoryString];
                 
-                NSInteger lastItemIndex = [networkFileBrowserDirectoryPopUpButton numberOfItems] - 1;
+                NSInteger lastItemIndex = networkFileBrowserDirectoryPopUpButton.numberOfItems - 1;
                 NSMenuItem * menuItem = [networkFileBrowserDirectoryPopUpButton itemAtIndex:lastItemIndex];
-                [menuItem setImage:iconImage];
+                menuItem.image = iconImage;
             }
         }
     }
-    NSInteger lastItemIndex = [networkFileBrowserDirectoryPopUpButton numberOfItems] - 1;
+    NSInteger lastItemIndex = networkFileBrowserDirectoryPopUpButton.numberOfItems - 1;
     [networkFileBrowserDirectoryPopUpButton selectItemAtIndex:lastItemIndex];
     
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];   
 
@@ -607,7 +603,7 @@
     {
         NSString * lsCommandString = [NSString stringWithFormat:@"ls -l -w 160 %@", urlFilePathString];
         
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
         NSError * sshError = NULL;
         NSString * lsDirectoryResult = [SSHCommand execCommand:lsCommandString server:server timeout:timeoutNumber sshError:&sshError];
 
@@ -632,7 +628,7 @@
             
             //NSLog(@"listingArray = %@", listingArray);
             
-            NSInteger listingArrayCount = [listingArray count];
+            NSInteger listingArrayCount = listingArray.count;
             
             if (listingArrayCount > 6)
             {
@@ -646,9 +642,9 @@
                 NSInteger fieldIndex = 0;
                 for (NSInteger i = 0; i < listingArrayCount; i++)
                 {
-                    NSString * listingComponent = [listingArray objectAtIndex:i];
+                    NSString * listingComponent = listingArray[i];
                     
-                    if ([listingComponent length] > 0)
+                    if (listingComponent.length > 0)
                     {
                         switch (fieldIndex)
                         {
@@ -677,19 +673,19 @@
                                 break;
 
                             case 5:
-                                if ([dateTimeString length] > 0)
+                                if (dateTimeString.length > 0)
                                 {
                                     dateTimeString = [dateTimeString stringByAppendingString:@" "];
                                 }
                                 dateTimeString = [dateTimeString stringByAppendingString:listingComponent];
-                                if ([dateTimeString length] > 9)
+                                if (dateTimeString.length > 9)
                                 {
                                     fieldIndex++;
                                 }
                                 break;
 
                             case 6:
-                                if ([nameString length] > 0)
+                                if (nameString.length > 0)
                                 {
                                     nameString = [nameString stringByAppendingString:@" "];
                                 }
@@ -702,7 +698,7 @@
                     }
                 }
                 
-                NSString * fileNameExtension = [nameString pathExtension];
+                NSString * fileNameExtension = nameString.pathExtension;
                 
                 BOOL displayListing = NO;
                 
@@ -731,14 +727,12 @@
 
                 if (displayListing == YES)
                 {
-                    NSDictionary * formattedListingDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                            flagsString, @"flags",
-                            ownerString, @"owner",
-                            groupString, @"group",
-                            sizeString, @"size",
-                            dateTimeString, @"dateTime",
-                            nameString, @"name",
-                            nil];
+                    NSDictionary * formattedListingDictionary = @{@"flags": flagsString,
+                            @"owner": ownerString,
+                            @"group": groupString,
+                            @"size": sizeString,
+                            @"dateTime": dateTimeString,
+                            @"name": nameString};
 
                     [formattedDirectoryArray addObject:formattedListingDictionary];
                 }
@@ -752,8 +746,8 @@
         [connection closeSSH:server];
     }
 
-    [networkFileBrowserTableView setTarget:self];
-    [networkFileBrowserTableView setDoubleAction:@selector(openFileListingItem:)];
+    networkFileBrowserTableView.target = self;
+    networkFileBrowserTableView.doubleAction = @selector(openFileListingItem:);
     [networkFileBrowserTableView reloadData];
 }
 
@@ -764,31 +758,31 @@
 - (void)loadNetworkFileBrowserForSFTPConnection:(NSDictionary *)connectionDictionary
 {
     //NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePathString = [connectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [connectionDictionary objectForKey:@"hostName"];
+    NSString * urlFilePathString = connectionDictionary[@"urlFilePath"];
+    NSString * hostNameString = connectionDictionary[@"hostName"];
     //NSString * portNumberString = [connectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [connectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [connectionDictionary objectForKey:@"password"];
+    NSString * userNameString = connectionDictionary[@"userName"];
+    NSString * passwordString = connectionDictionary[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     NSImage * iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-    [iconImage setSize:NSMakeSize(16,16)];
+    iconImage.size = NSMakeSize(16,16);
     
     [networkFileBrowserDirectoryPopUpButton removeAllItems];
 
     [networkFileBrowserDirectoryPopUpButton addItemWithTitle:@"/"];
     NSMenuItem * menuItem = [networkFileBrowserDirectoryPopUpButton itemAtIndex:0];
-    [menuItem setImage:iconImage];
+    menuItem.image = iconImage;
 
     NSArray * pathArray = [urlFilePathString componentsSeparatedByString:@"/"];
-    NSInteger pathArrayCount = [pathArray count];
+    NSInteger pathArrayCount = pathArray.count;
     for (NSInteger i = 0; i < pathArrayCount; i++)
     {
-        NSString * directoryString = [pathArray objectAtIndex:i];
-        if ([directoryString length] > 0)
+        NSString * directoryString = pathArray[i];
+        if (directoryString.length > 0)
         {
-            NSString * fileNameExtension = [directoryString pathExtension];
+            NSString * fileNameExtension = directoryString.pathExtension;
             BOOL displayListing = YES;
             if ([fileNameExtension isEqualToString:@"svg"] == YES)
             {
@@ -811,13 +805,13 @@
             {
                 [networkFileBrowserDirectoryPopUpButton addItemWithTitle:directoryString];
                 
-                NSInteger lastItemIndex = [networkFileBrowserDirectoryPopUpButton numberOfItems] - 1;
+                NSInteger lastItemIndex = networkFileBrowserDirectoryPopUpButton.numberOfItems - 1;
                 NSMenuItem * menuItem = [networkFileBrowserDirectoryPopUpButton itemAtIndex:lastItemIndex];
-                [menuItem setImage:iconImage];
+                menuItem.image = iconImage;
             }
         }
     }
-    NSInteger lastItemIndex = [networkFileBrowserDirectoryPopUpButton numberOfItems] - 1;
+    NSInteger lastItemIndex = networkFileBrowserDirectoryPopUpButton.numberOfItems - 1;
     [networkFileBrowserDirectoryPopUpButton selectItemAtIndex:lastItemIndex];
  
 /*
@@ -866,7 +860,7 @@
         
         //NSLog(@"listingArray = %@", listingArray);
         
-        NSInteger listingArrayCount = [listingArray count];
+        NSInteger listingArrayCount = listingArray.count;
         
         if (listingArrayCount > 6)
         {
@@ -880,9 +874,9 @@
             NSInteger fieldIndex = 0;
             for (NSInteger i = 0; i < listingArrayCount; i++)
             {
-                NSString * listingComponent = [listingArray objectAtIndex:i];
+                NSString * listingComponent = listingArray[i];
                 
-                if ([listingComponent length] > 0)
+                if (listingComponent.length > 0)
                 {
                     switch (fieldIndex)
                     {
@@ -911,19 +905,19 @@
                             break;
 
                         case 5:
-                            if ([dateTimeString length] > 0)
+                            if (dateTimeString.length > 0)
                             {
                                 dateTimeString = [dateTimeString stringByAppendingString:@" "];
                             }
                             dateTimeString = [dateTimeString stringByAppendingString:listingComponent];
-                            if ([dateTimeString length] > 9)
+                            if (dateTimeString.length > 9)
                             {
                                 fieldIndex++;
                             }
                             break;
 
                         case 6:
-                            if ([nameString length] > 0)
+                            if (nameString.length > 0)
                             {
                                 nameString = [nameString stringByAppendingString:@" "];
                             }
@@ -936,7 +930,7 @@
                 }
             }
             
-            NSString * fileNameExtension = [nameString pathExtension];
+            NSString * fileNameExtension = nameString.pathExtension;
             
             BOOL displayListing = NO;
             
@@ -971,14 +965,12 @@
 
             if (displayListing == YES)
             {
-                NSDictionary * formattedListingDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                        flagsString, @"flags",
-                        ownerString, @"owner",
-                        groupString, @"group",
-                        sizeString, @"size",
-                        dateTimeString, @"dateTime",
-                        nameString, @"name",
-                        nil];
+                NSDictionary * formattedListingDictionary = @{@"flags": flagsString,
+                        @"owner": ownerString,
+                        @"group": groupString,
+                        @"size": sizeString,
+                        @"dateTime": dateTimeString,
+                        @"name": nameString};
 
                 [formattedDirectoryArray addObject:formattedListingDictionary];
             }
@@ -990,8 +982,8 @@
 
     self.networkFileDirectoryArray = sortedDirectoryArray;
 
-    [networkFileBrowserTableView setTarget:self];
-    [networkFileBrowserTableView setDoubleAction:@selector(openFileListingItem:)];
+    networkFileBrowserTableView.target = self;
+    networkFileBrowserTableView.doubleAction = @selector(openFileListingItem:);
     [networkFileBrowserTableView reloadData];
 }
 
@@ -1006,8 +998,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     NSDictionary * listingDictionary1 = listing1;
     NSDictionary * listingDictionary2 = listing2;
 
-    NSString * name1 = [listingDictionary1 objectForKey:@"name"];
-    NSString * name2 = [listingDictionary2 objectForKey:@"name"];
+    NSString * name1 = listingDictionary1[@"name"];
+    NSString * name2 = listingDictionary2[@"name"];
 
     sortResult = [name1 compare:name2];
 
@@ -1020,38 +1012,36 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)openFileListingItem:(id)sender
 {
-    NSInteger rowIndex = [networkFileBrowserTableView selectedRow];
+    NSInteger rowIndex = networkFileBrowserTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        NSDictionary * listingDictionary = [self.networkFileDirectoryArray objectAtIndex:rowIndex];
+        NSDictionary * listingDictionary = (self.networkFileDirectoryArray)[rowIndex];
         
-        NSString * flagsString = [listingDictionary objectForKey:@"flags"];
+        NSString * flagsString = listingDictionary[@"flags"];
         //NSString * ownerString = [listingDictionary objectForKey:@"owner"];
         //NSString * groupString = [listingDictionary objectForKey:@"group"];
         //NSString * sizeString = [listingDictionary objectForKey:@"size"];
         //NSString * dateTimeString = [listingDictionary objectForKey:@"dateTime"];
-        NSString * nameString = [listingDictionary objectForKey:@"name"];
+        NSString * nameString = listingDictionary[@"name"];
 
-        NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
-        NSString * networkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-        NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-        NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-        NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-        NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+        NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
+        NSString * networkDirectoryPath = (self.workingConnectionDictionary)[@"urlFilePath"];
+        NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+        NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+        NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+        NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-        NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+        NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
         networkDirectoryPath = [networkDirectoryPath stringByAppendingPathComponent:nameString];
         
-        NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                networkAccessMethod, @"connectionType",
-                networkDirectoryPath, @"urlFilePath",
-                hostAddrString, @"hostName",
-                portNumberString, @"portNumber",
-                userNameString, @"userName",
-                passwordString, @"password",
-                nil];
+        NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+                @"urlFilePath": networkDirectoryPath,
+                @"hostName": hostAddrString,
+                @"portNumber": portNumberString,
+                @"userName": userNameString,
+                @"password": passwordString};
         
         self.workingConnectionDictionary = connectionDictionary;
 
@@ -1075,7 +1065,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         }
         else
         {
-            self.networkFileDirectoryArray = [NSArray array];
+            self.networkFileDirectoryArray = @[];
             [networkFileBrowserTableView reloadData];
             [networkFileBrowserWindow orderOut:self];
             
@@ -1098,13 +1088,13 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (void)openMacSVGDocumentWithScpConnection
 {
     //NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
+    NSString * urlFilePath = (self.workingConnectionDictionary)[@"urlFilePath"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
     //NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     SCPDownload * scpDownload = [[SCPDownload alloc] init];
     NSError * sshError = NULL;
@@ -1113,7 +1103,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
     if (fileData != NULL)
     {
-        NSString * pathExtension = [urlFilePath pathExtension];
+        NSString * pathExtension = urlFilePath.pathExtension;
         
         if ([pathExtension isEqualToString:@"svgz"] == YES)
         {
@@ -1138,8 +1128,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             macSVGDocument.fileNameExtension = pathExtension;
             macSVGDocument.networkConnectionDictionary = self.workingConnectionDictionary;
             
-            NSString * documentTitle = [urlFilePath lastPathComponent];
-            [macSVGDocument setDisplayName:documentTitle];
+            NSString * documentTitle = urlFilePath.lastPathComponent;
+            macSVGDocument.displayName = documentTitle;
         
             [macSVGDocument makeWindowControllers];
             [macSVGDocument showWindows];
@@ -1158,13 +1148,13 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (void)openMacSVGDocumentWithSftpConnection
 {
     //NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
+    NSString * urlFilePath = (self.workingConnectionDictionary)[@"urlFilePath"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
     //NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     SFTPDownload * sftpDownload = [[SFTPDownload alloc] init];
     
@@ -1183,7 +1173,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         MacSVGDocument * macSVGDocument = [[NSDocumentController sharedDocumentController]
                 openUntitledDocumentAndDisplay:NO error:&docError];
         
-        NSString * typeName = [urlFilePath pathExtension];
+        NSString * typeName = urlFilePath.pathExtension;
         
         BOOL result = [macSVGDocument readFromData:fileData
                 ofType:typeName error:&docError];
@@ -1210,17 +1200,17 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (NSString *)makeTemporaryFileWithSSHConnection:(NSDictionary *)networkConnectionDictionary
 {
     NSString * result = NULL;
-    NSString * hostNameString = [networkConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [networkConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [networkConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [networkConnectionDictionary objectForKey:@"password"];
-    NSString * urlFilePath = [networkConnectionDictionary objectForKey:@"urlFilePath"];
+    NSString * hostNameString = networkConnectionDictionary[@"hostName"];
+    NSString * portNumberString = networkConnectionDictionary[@"portNumber"];
+    NSString * userNameString = networkConnectionDictionary[@"userName"];
+    NSString * passwordString = networkConnectionDictionary[@"password"];
+    NSString * urlFilePath = networkConnectionDictionary[@"urlFilePath"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
-    NSString * fileName = [urlFilePath lastPathComponent];
+    NSString * fileName = urlFilePath.lastPathComponent;
 
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];
 
@@ -1233,11 +1223,11 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
     if ([server connectionStatus] == YES)
     {
-        NSString * directoryPath = [urlFilePath stringByDeletingLastPathComponent];
+        NSString * directoryPath = urlFilePath.stringByDeletingLastPathComponent;
         NSString * nameTemplate = [fileName stringByAppendingString:@".XXXXXXXX"];
     
         // dry-run temporary name generation
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
 
         NSString * mktempCommandString = [NSString
                 stringWithFormat:@"mktemp -u --tmpdir=%@ %@", directoryPath, nameTemplate];
@@ -1264,9 +1254,9 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         //NSAlert * errorAlert = [NSAlert alertWithMessageText:@"The file failed to save to the SSH network connection." defaultButton:@"OK" alternateButton:NULL otherButton:NULL informativeTextWithFormat:@"Check your network settings and try again."];
 
         NSAlert * errorAlert = [[NSAlert alloc] init];
-        [errorAlert setMessageText:@"The file failed to save to the SSH network connection."];
+        errorAlert.messageText = @"The file failed to save to the SSH network connection.";
         [errorAlert addButtonWithTitle:@"OK"];
-        [errorAlert setInformativeText:@"Check your network settings and try again."];
+        errorAlert.informativeText = @"Check your network settings and try again.";
         
         [errorAlert runModal];
     }
@@ -1283,15 +1273,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     BOOL result = NO;
 
-    NSString * hostNameString = [networkConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [networkConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [networkConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [networkConnectionDictionary objectForKey:@"password"];
+    NSString * hostNameString = networkConnectionDictionary[@"hostName"];
+    NSString * portNumberString = networkConnectionDictionary[@"portNumber"];
+    NSString * userNameString = networkConnectionDictionary[@"userName"];
+    NSString * passwordString = networkConnectionDictionary[@"password"];
     //NSString * urlFilePath = [networkConnectionDictionary objectForKey:@"urlFilePath"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];
 
@@ -1304,7 +1294,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
     if ([server connectionStatus] == YES)
     {
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
         NSString * rename1CommandString = [NSString
                 stringWithFormat:@"mv %@ %@", existingFileName, newFileName];
         NSError * sshError = NULL;
@@ -1329,7 +1319,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     BOOL result = NO;
     
-    NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+    NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
     //NSString * urlFilePath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
     //NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
     //NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
@@ -1363,16 +1353,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     //SFTPUploadWithBlocking * sftpUpload = [[SFTPUploadWithBlocking alloc] init];
     SFTPUpload * sftpUpload = [[SFTPUpload alloc] init];
     
-    NSString * hostNameString = [networkConnectionDictionary objectForKey:@"hostName"];
+    NSString * hostNameString = networkConnectionDictionary[@"hostName"];
     //NSString * portNumberString = [networkConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [networkConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [networkConnectionDictionary objectForKey:@"password"];
-    NSString * urlFilePath = [networkConnectionDictionary objectForKey:@"urlFilePath"];
+    NSString * userNameString = networkConnectionDictionary[@"userName"];
+    NSString * passwordString = networkConnectionDictionary[@"password"];
+    NSString * urlFilePath = networkConnectionDictionary[@"urlFilePath"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
-    NSString * fileName = [urlFilePath lastPathComponent];
-    NSString * fileExtension = [fileName pathExtension];
+    NSString * fileName = urlFilePath.lastPathComponent;
+    NSString * fileExtension = fileName.pathExtension;
 
     NSString * dataType = @"public.svg-image";
     if ([fileExtension isEqualToString:@"xhtml"] == YES)
@@ -1455,16 +1445,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
     //NSData * data = [macSVGDocument dataOfType:@"MacSVGDocument" error:&networkError];
     
-    NSString * hostNameString = [networkConnectionDictionary objectForKey:@"hostName"];
+    NSString * hostNameString = networkConnectionDictionary[@"hostName"];
     //NSString * portNumberString = [networkConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [networkConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [networkConnectionDictionary objectForKey:@"password"];
-    NSString * urlFilePath = [networkConnectionDictionary objectForKey:@"urlFilePath"];
+    NSString * userNameString = networkConnectionDictionary[@"userName"];
+    NSString * passwordString = networkConnectionDictionary[@"password"];
+    NSString * urlFilePath = networkConnectionDictionary[@"urlFilePath"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
-    NSString * fileName = [urlFilePath lastPathComponent];
-    NSString * fileExtension = [fileName pathExtension];
+    NSString * fileName = urlFilePath.lastPathComponent;
+    NSString * fileExtension = fileName.pathExtension;
 
     NSString * dataType = @"public.svg-image";
     if ([fileExtension isEqualToString:@"xhtml"] == YES)
@@ -1531,14 +1521,14 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (MacSVGDocument *)findFrontmostMacSVGDocument
 {
     MacSVGDocument * result = NULL;
-    NSArray *orderedDocuments = [NSApp orderedDocuments];
-    NSUInteger documentCount = [orderedDocuments count];
+    NSArray *orderedDocuments = NSApp.orderedDocuments;
+    NSUInteger documentCount = orderedDocuments.count;
     int i;
     for (i = 0; i < documentCount; i++)
     {
         if (result == NULL)
         {
-            NSDocument *aDocument = (NSDocument *)[orderedDocuments objectAtIndex:i];
+            NSDocument *aDocument = (NSDocument *)orderedDocuments[i];
             if ([aDocument isMemberOfClass:[MacSVGDocument class]] == YES)
             {
                 result = (MacSVGDocument *)aDocument;
@@ -1555,17 +1545,17 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (BOOL)saveAsDocument:(MacSVGDocument *)macSVGDocument
         networkConnectionDictionary:(NSDictionary *)networkConnectionDictionary
 {
-    NSString * connectionTypeString = [saveAsNetworkConnectionTypePopUpButton titleOfSelectedItem];
-    NSString * urlFilePathString = [saveAsNetworkUrlFilePathTextField stringValue];
-    NSString * hostNameString = [saveAsNetworkHostNameTextField stringValue];
-    NSString * portNumberString = [saveAsNetworkPortNumberTextField stringValue];
-    NSString * userNameString = [saveAsNetworkUserNameTextField stringValue];
-    NSString * passwordString = [saveAsNetworkPasswordTextField stringValue];
+    NSString * connectionTypeString = saveAsNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = saveAsNetworkUrlFilePathTextField.stringValue;
+    NSString * hostNameString = saveAsNetworkHostNameTextField.stringValue;
+    NSString * portNumberString = saveAsNetworkPortNumberTextField.stringValue;
+    NSString * userNameString = saveAsNetworkUserNameTextField.stringValue;
+    NSString * passwordString = saveAsNetworkPasswordTextField.stringValue;
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
-    NSString * lastPathComponent = [urlFilePathString lastPathComponent];
-    NSString * pathExtension = [lastPathComponent pathExtension];
+    NSString * lastPathComponent = urlFilePathString.lastPathComponent;
+    NSString * pathExtension = lastPathComponent.pathExtension;
 
     BOOL fileNameFound = NO;
     if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -1590,11 +1580,11 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     if (fileNameFound == NO)
     {
         //NSString * defaultDraftName = [macSVGDocument defaultDraftName];
-        NSString * defaultDraftName = [macSVGDocument displayName];
+        NSString * defaultDraftName = macSVGDocument.displayName;
 
-        NSString * newPathExtension = [defaultDraftName pathExtension];
+        NSString * newPathExtension = defaultDraftName.pathExtension;
         
-        if ([newPathExtension length] == 0)
+        if (newPathExtension.length == 0)
         {
             //newPathExtension = [macSVGDocument
             //        fileNameExtensionForType:@"MacSVGDocument"
@@ -1607,23 +1597,21 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             defaultDraftName = [defaultDraftName stringByAppendingPathExtension:newPathExtension];
         }
 
-        if ([newPathExtension length] == 0)
+        if (newPathExtension.length == 0)
         {
             NSLog(@"NetworkConnectionManager - valid path extension not found");
         }
         
         NSString * filePath = [urlFilePathString stringByAppendingPathComponent:defaultDraftName];
 
-        [saveAsNetworkUrlFilePathTextField setStringValue:filePath];
+        saveAsNetworkUrlFilePathTextField.stringValue = filePath;
         
-        connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                connectionTypeString, @"connectionType",
-                filePath, @"urlFilePath",
-                hostAddrString, @"hostName",
-                portNumberString, @"portNumber",
-                userNameString, @"userName",
-                passwordString, @"password",
-                nil];
+        connectionDictionary = @{@"connectionType": connectionTypeString,
+                @"urlFilePath": filePath,
+                @"hostName": hostAddrString,
+                @"portNumber": portNumberString,
+                @"userName": userNameString,
+                @"password": passwordString};
         
         macSVGDocument.networkConnectionDictionary = connectionDictionary;
     }
@@ -1643,15 +1631,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsNetworkConnectionTextFieldAction:(id)sender
 {
-    NSString * connectionTypeString = [saveAsNetworkConnectionTypePopUpButton titleOfSelectedItem];
-    NSString * urlFilePathString = [saveAsNetworkUrlFilePathTextField stringValue];
+    NSString * connectionTypeString = saveAsNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = saveAsNetworkUrlFilePathTextField.stringValue;
     //NSString * hostNameString = [saveAsNetworkHostNameTextField stringValue];
     //NSString * portNumberString = [saveAsNetworkPortNumberTextField stringValue];
-    NSString * userNameString = [saveAsNetworkUserNameTextField stringValue];
-    NSString * passwordString = [saveAsNetworkPasswordTextField stringValue];
+    NSString * userNameString = saveAsNetworkUserNameTextField.stringValue;
+    NSString * passwordString = saveAsNetworkPasswordTextField.stringValue;
     //NSInteger compressFileOption = [saveAsNetworkCompressedCheckboxButton state];
     
-    NSString * pathExtension = [urlFilePathString pathExtension];
+    NSString * pathExtension = urlFilePathString.pathExtension;
     
     BOOL validPathExtension = NO;
     if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -1672,9 +1660,9 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     }
     
     BOOL validLoginCredentials = NO;
-    if ([userNameString length] > 0)
+    if (userNameString.length > 0)
     {
-        if ([passwordString length] > 0)
+        if (passwordString.length > 0)
         {
             validLoginCredentials = YES;
         }
@@ -1682,7 +1670,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
     if ([connectionTypeString isEqualToString:@"SFTP Server"] == YES)
     {
-        if ([urlFilePathString length] > 0)
+        if (urlFilePathString.length > 0)
         {
             [saveAsNetworkBrowseDirectoriesButton setEnabled:YES];
             if (validPathExtension == YES)
@@ -1704,7 +1692,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     {
         if (validLoginCredentials == YES)
         {
-            if ([urlFilePathString length] > 0)
+            if (urlFilePathString.length > 0)
             {
                 [saveAsNetworkBrowseDirectoriesButton setEnabled:YES];
                 if (validPathExtension == YES)
@@ -1756,15 +1744,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsNetworkConnectionBrowseDirectoriesButtonAction:(id)sender
 {
-    NSString * connectionTypeString = [saveAsNetworkConnectionTypePopUpButton titleOfSelectedItem];
-    NSString * urlFilePathString = [saveAsNetworkUrlFilePathTextField stringValue];
-    NSString * hostNameString = [saveAsNetworkHostNameTextField stringValue];
-    NSString * portNumberString = [saveAsNetworkPortNumberTextField stringValue];
-    NSString * userNameString = [saveAsNetworkUserNameTextField stringValue];
-    NSString * passwordString = [saveAsNetworkPasswordTextField stringValue];
-    NSInteger compressFileOptionState = [saveAsNetworkCompressedCheckboxButton state];
+    NSString * connectionTypeString = saveAsNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = saveAsNetworkUrlFilePathTextField.stringValue;
+    NSString * hostNameString = saveAsNetworkHostNameTextField.stringValue;
+    NSString * portNumberString = saveAsNetworkPortNumberTextField.stringValue;
+    NSString * userNameString = saveAsNetworkUserNameTextField.stringValue;
+    NSString * passwordString = saveAsNetworkPasswordTextField.stringValue;
+    NSInteger compressFileOptionState = saveAsNetworkCompressedCheckboxButton.state;
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
     
     NSString * compressFileOption = @"NO";
     if (compressFileOptionState != 0)
@@ -1772,25 +1760,23 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         compressFileOption = @"YES";
     }
 
-    NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            connectionTypeString, @"connectionType",
-            urlFilePathString, @"urlFilePath",
-            hostAddrString, @"hostName",
-            portNumberString, @"portNumber",
-            userNameString, @"userName",
-            passwordString, @"password",
-            compressFileOption, @"compressFileOption",
-            nil];
+    NSDictionary * connectionDictionary = @{@"connectionType": connectionTypeString,
+            @"urlFilePath": urlFilePathString,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString,
+            @"compressFileOption": compressFileOption};
 
     [saveAsNetworkConnectionWindow orderOut:self];
     
-    NSString * lastPathComponent = [urlFilePathString lastPathComponent];
+    NSString * lastPathComponent = urlFilePathString.lastPathComponent;
     
     BOOL validFileName = NO;
     
-    if ([lastPathComponent length] > 0)
+    if (lastPathComponent.length > 0)
     {
-        NSString * fileNameExtension = [lastPathComponent pathExtension];
+        NSString * fileNameExtension = lastPathComponent.pathExtension;
         
         if ([fileNameExtension isEqualToString:@"svg"] == YES)
         {
@@ -1812,12 +1798,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
     if (validFileName == YES)
     {
-        [saveNetworkDirectoryBrowserFileNameTextField setStringValue:lastPathComponent];
+        saveNetworkDirectoryBrowserFileNameTextField.stringValue = lastPathComponent;
         [saveNetworkDirectoryBrowserSaveButton setEnabled:YES];
     }
     else
     {
-        [saveNetworkDirectoryBrowserFileNameTextField setStringValue:@""];
+        saveNetworkDirectoryBrowserFileNameTextField.stringValue = @"";
         [saveNetworkDirectoryBrowserSaveButton setEnabled:NO];
     }
     
@@ -1834,7 +1820,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     self.workingConnectionDictionary = connectionDictionary;
 
-    NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
+    NSString * connectionTypeString = connectionDictionary[@"connectionType"];
     
     if ([connectionTypeString isEqualToString:@"HTTP Web Server"] == YES)
     {
@@ -1857,32 +1843,32 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (void)loadNetworkDirectoryBrowserForSSHConnection:(NSDictionary *)connectionDictionary
 {
     //NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePathString = [connectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [connectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [connectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [connectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [connectionDictionary objectForKey:@"password"];
+    NSString * urlFilePathString = connectionDictionary[@"urlFilePath"];
+    NSString * hostNameString = connectionDictionary[@"hostName"];
+    NSString * portNumberString = connectionDictionary[@"portNumber"];
+    NSString * userNameString = connectionDictionary[@"userName"];
+    NSString * passwordString = connectionDictionary[@"password"];
     //NSString * compressFileOption = [connectionDictionary objectForKey:@"compressFileOption"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     NSImage * iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-    [iconImage setSize:NSMakeSize(16,16)];
+    iconImage.size = NSMakeSize(16,16);
     
     [saveNetworkDirectoryBrowserDirectoryPopUpButton removeAllItems];
     
     [saveNetworkDirectoryBrowserDirectoryPopUpButton addItemWithTitle:@"/"];
     NSMenuItem * menuItem = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemAtIndex:0];
-    [menuItem setImage:iconImage];
+    menuItem.image = iconImage;
     
     NSArray * pathArray = [urlFilePathString componentsSeparatedByString:@"/"];
-    NSInteger pathArrayCount = [pathArray count];
+    NSInteger pathArrayCount = pathArray.count;
     for (NSInteger i = 0; i < pathArrayCount; i++)
     {
-        NSString * directoryString = [pathArray objectAtIndex:i];
-        if ([directoryString length] > 0)
+        NSString * directoryString = pathArray[i];
+        if (directoryString.length > 0)
         {
-            NSString * fileNameExtension = [directoryString pathExtension];
+            NSString * fileNameExtension = directoryString.pathExtension;
             BOOL displayListing = YES;
             if ([fileNameExtension isEqualToString:@"svg"] == YES)
             {
@@ -1905,16 +1891,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             {
                 [saveNetworkDirectoryBrowserDirectoryPopUpButton addItemWithTitle:directoryString];
                 
-                NSInteger lastItemIndex = [saveNetworkDirectoryBrowserDirectoryPopUpButton numberOfItems] - 1;
+                NSInteger lastItemIndex = saveNetworkDirectoryBrowserDirectoryPopUpButton.numberOfItems - 1;
                 NSMenuItem * menuItem = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemAtIndex:lastItemIndex];
-                [menuItem setImage:iconImage];
+                menuItem.image = iconImage;
             }
         }
     }
-    NSInteger lastItemIndex = [saveNetworkDirectoryBrowserDirectoryPopUpButton numberOfItems] - 1;
+    NSInteger lastItemIndex = saveNetworkDirectoryBrowserDirectoryPopUpButton.numberOfItems - 1;
     [saveNetworkDirectoryBrowserDirectoryPopUpButton selectItemAtIndex:lastItemIndex];
     
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];   
 
@@ -1928,8 +1914,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     {
         NSString * directoryPathString = urlFilePathString;
     
-        NSString * lastPathComponent = [urlFilePathString lastPathComponent];
-        NSString * pathExtension = [lastPathComponent pathExtension];
+        NSString * lastPathComponent = urlFilePathString.lastPathComponent;
+        NSString * pathExtension = lastPathComponent.pathExtension;
         BOOL omitFileName = NO;
         
         if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -1951,15 +1937,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         
         if (omitFileName == YES)
         {
-            NSInteger directoryPathStringLength = [directoryPathString length];
-            NSInteger fileNameLength = [lastPathComponent length];
+            NSInteger directoryPathStringLength = directoryPathString.length;
+            NSInteger fileNameLength = lastPathComponent.length;
             NSInteger trimIndex = directoryPathStringLength - fileNameLength;
             directoryPathString = [directoryPathString substringToIndex:trimIndex];
         }
     
         NSString * lsCommandString = [NSString stringWithFormat:@"ls -l -w 160 %@", directoryPathString];
         
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
         NSError * sshError = NULL;
         NSString * lsDirectoryResult = [SSHCommand execCommand:lsCommandString server:server timeout:timeoutNumber sshError:&sshError];
 
@@ -1983,7 +1969,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             
             //NSLog(@"listingArray = %@", listingArray);
             
-            NSInteger listingArrayCount = [listingArray count];
+            NSInteger listingArrayCount = listingArray.count;
             
             if (listingArrayCount > 6)
             {
@@ -1997,9 +1983,9 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                 NSInteger fieldIndex = 0;
                 for (NSInteger i = 0; i < listingArrayCount; i++)
                 {
-                    NSString * listingComponent = [listingArray objectAtIndex:i];
+                    NSString * listingComponent = listingArray[i];
                     
-                    if ([listingComponent length] > 0)
+                    if (listingComponent.length > 0)
                     {
                         switch (fieldIndex)
                         {
@@ -2028,19 +2014,19 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                                 break;
 
                             case 5:
-                                if ([dateTimeString length] > 0)
+                                if (dateTimeString.length > 0)
                                 {
                                     dateTimeString = [dateTimeString stringByAppendingString:@" "];
                                 }
                                 dateTimeString = [dateTimeString stringByAppendingString:listingComponent];
-                                if ([dateTimeString length] > 9)
+                                if (dateTimeString.length > 9)
                                 {
                                     fieldIndex++;
                                 }
                                 break;
 
                             case 6:
-                                if ([nameString length] > 0)
+                                if (nameString.length > 0)
                                 {
                                     nameString = [nameString stringByAppendingString:@" "];
                                 }
@@ -2053,7 +2039,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                     }
                 }
                 
-                NSString * fileNameExtension = [nameString pathExtension];
+                NSString * fileNameExtension = nameString.pathExtension;
                 
                 BOOL displayListing = NO;
                 
@@ -2082,14 +2068,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
                 if (displayListing == YES)
                 {
-                    NSDictionary * formattedListingDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                            flagsString, @"flags",
-                            ownerString, @"owner",
-                            groupString, @"group",
-                            sizeString, @"size",
-                            dateTimeString, @"dateTime",
-                            nameString, @"name",
-                            nil];
+                    NSDictionary * formattedListingDictionary = @{@"flags": flagsString,
+                            @"owner": ownerString,
+                            @"group": groupString,
+                            @"size": sizeString,
+                            @"dateTime": dateTimeString,
+                            @"name": nameString};
 
                     [formattedDirectoryArray addObject:formattedListingDictionary];
                 }
@@ -2103,8 +2087,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         [connection closeSSH:server];
     }
 
-    [saveNetworkDirectoryBrowserTableView setTarget:self];
-    [saveNetworkDirectoryBrowserTableView setDoubleAction:@selector(openDirectoryListingItem:)];
+    saveNetworkDirectoryBrowserTableView.target = self;
+    saveNetworkDirectoryBrowserTableView.doubleAction = @selector(openDirectoryListingItem:);
     [saveNetworkDirectoryBrowserTableView reloadData];
 }
 
@@ -2115,32 +2099,32 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 - (void)loadNetworkDirectoryBrowserForSFTPConnection:(NSDictionary *)connectionDictionary
 {
     //NSString * connectionTypeString = [connectionDictionary objectForKey:@"connectionType"];
-    NSString * urlFilePathString = [connectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [connectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [connectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [connectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [connectionDictionary objectForKey:@"password"];
+    NSString * urlFilePathString = connectionDictionary[@"urlFilePath"];
+    NSString * hostNameString = connectionDictionary[@"hostName"];
+    NSString * portNumberString = connectionDictionary[@"portNumber"];
+    NSString * userNameString = connectionDictionary[@"userName"];
+    NSString * passwordString = connectionDictionary[@"password"];
     //NSString * compressFileOption = [connectionDictionary objectForKey:@"compressFileOption"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     NSImage * iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-    [iconImage setSize:NSMakeSize(16,16)];
+    iconImage.size = NSMakeSize(16,16);
     
     [saveNetworkDirectoryBrowserDirectoryPopUpButton removeAllItems];
     
     [saveNetworkDirectoryBrowserDirectoryPopUpButton addItemWithTitle:@"/"];
     NSMenuItem * menuItem = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemAtIndex:0];
-    [menuItem setImage:iconImage];
+    menuItem.image = iconImage;
     
     NSArray * pathArray = [urlFilePathString componentsSeparatedByString:@"/"];
-    NSInteger pathArrayCount = [pathArray count];
+    NSInteger pathArrayCount = pathArray.count;
     for (NSInteger i = 0; i < pathArrayCount; i++)
     {
-        NSString * directoryString = [pathArray objectAtIndex:i];
-        if ([directoryString length] > 0)
+        NSString * directoryString = pathArray[i];
+        if (directoryString.length > 0)
         {
-            NSString * fileNameExtension = [directoryString pathExtension];
+            NSString * fileNameExtension = directoryString.pathExtension;
             BOOL displayListing = YES;
             if ([fileNameExtension isEqualToString:@"svg"] == YES)
             {
@@ -2163,16 +2147,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             {
                 [saveNetworkDirectoryBrowserDirectoryPopUpButton addItemWithTitle:directoryString];
                 
-                NSInteger lastItemIndex = [saveNetworkDirectoryBrowserDirectoryPopUpButton numberOfItems] - 1;
+                NSInteger lastItemIndex = saveNetworkDirectoryBrowserDirectoryPopUpButton.numberOfItems - 1;
                 NSMenuItem * menuItem = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemAtIndex:lastItemIndex];
-                [menuItem setImage:iconImage];
+                menuItem.image = iconImage;
             }
         }
     }
-    NSInteger lastItemIndex = [saveNetworkDirectoryBrowserDirectoryPopUpButton numberOfItems] - 1;
+    NSInteger lastItemIndex = saveNetworkDirectoryBrowserDirectoryPopUpButton.numberOfItems - 1;
     [saveNetworkDirectoryBrowserDirectoryPopUpButton selectItemAtIndex:lastItemIndex];
     
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];   
 
@@ -2186,8 +2170,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     {
         NSString * directoryPathString = urlFilePathString;
     
-        NSString * lastPathComponent = [urlFilePathString lastPathComponent];
-        NSString * pathExtension = [lastPathComponent pathExtension];
+        NSString * lastPathComponent = urlFilePathString.lastPathComponent;
+        NSString * pathExtension = lastPathComponent.pathExtension;
         BOOL omitFileName = NO;
         
         if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -2209,15 +2193,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         
         if (omitFileName == YES)
         {
-            NSInteger directoryPathStringLength = [directoryPathString length];
-            NSInteger fileNameLength = [lastPathComponent length];
+            NSInteger directoryPathStringLength = directoryPathString.length;
+            NSInteger fileNameLength = lastPathComponent.length;
             NSInteger trimIndex = directoryPathStringLength - fileNameLength;
             directoryPathString = [directoryPathString substringToIndex:trimIndex];
         }
     
         NSString * lsCommandString = [NSString stringWithFormat:@"ls -l -w 160 %@", directoryPathString];
         
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
         NSError * sshError = NULL;
         NSString * lsDirectoryResult = [SSHCommand execCommand:lsCommandString server:server timeout:timeoutNumber sshError:&sshError];
 
@@ -2241,7 +2225,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             
             //NSLog(@"listingArray = %@", listingArray);
             
-            NSInteger listingArrayCount = [listingArray count];
+            NSInteger listingArrayCount = listingArray.count;
             
             if (listingArrayCount > 6)
             {
@@ -2255,9 +2239,9 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                 NSInteger fieldIndex = 0;
                 for (NSInteger i = 0; i < listingArrayCount; i++)
                 {
-                    NSString * listingComponent = [listingArray objectAtIndex:i];
+                    NSString * listingComponent = listingArray[i];
                     
-                    if ([listingComponent length] > 0)
+                    if (listingComponent.length > 0)
                     {
                         switch (fieldIndex)
                         {
@@ -2286,19 +2270,19 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                                 break;
 
                             case 5:
-                                if ([dateTimeString length] > 0)
+                                if (dateTimeString.length > 0)
                                 {
                                     dateTimeString = [dateTimeString stringByAppendingString:@" "];
                                 }
                                 dateTimeString = [dateTimeString stringByAppendingString:listingComponent];
-                                if ([dateTimeString length] > 9)
+                                if (dateTimeString.length > 9)
                                 {
                                     fieldIndex++;
                                 }
                                 break;
 
                             case 6:
-                                if ([nameString length] > 0)
+                                if (nameString.length > 0)
                                 {
                                     nameString = [nameString stringByAppendingString:@" "];
                                 }
@@ -2311,7 +2295,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
                     }
                 }
                 
-                NSString * fileNameExtension = [nameString pathExtension];
+                NSString * fileNameExtension = nameString.pathExtension;
                 
                 BOOL displayListing = NO;
                 
@@ -2340,14 +2324,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
                 if (displayListing == YES)
                 {
-                    NSDictionary * formattedListingDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                            flagsString, @"flags",
-                            ownerString, @"owner",
-                            groupString, @"group",
-                            sizeString, @"size",
-                            dateTimeString, @"dateTime",
-                            nameString, @"name",
-                            nil];
+                    NSDictionary * formattedListingDictionary = @{@"flags": flagsString,
+                            @"owner": ownerString,
+                            @"group": groupString,
+                            @"size": sizeString,
+                            @"dateTime": dateTimeString,
+                            @"name": nameString};
 
                     [formattedDirectoryArray addObject:formattedListingDictionary];
                 }
@@ -2361,8 +2343,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         [connection closeSSH:server];
     }
 
-    [saveNetworkDirectoryBrowserTableView setTarget:self];
-    [saveNetworkDirectoryBrowserTableView setDoubleAction:@selector(openDirectoryListingItem:)];
+    saveNetworkDirectoryBrowserTableView.target = self;
+    saveNetworkDirectoryBrowserTableView.doubleAction = @selector(openDirectoryListingItem:);
     [saveNetworkDirectoryBrowserTableView reloadData];
 }
 
@@ -2372,30 +2354,30 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)openDirectoryListingItem:(id)sender
 {
-    NSInteger rowIndex = [saveNetworkDirectoryBrowserTableView selectedRow];
+    NSInteger rowIndex = saveNetworkDirectoryBrowserTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        NSDictionary * listingDictionary = [self.networkFileDirectoryArray objectAtIndex:rowIndex];
+        NSDictionary * listingDictionary = (self.networkFileDirectoryArray)[rowIndex];
         
-        NSString * flagsString = [listingDictionary objectForKey:@"flags"];
+        NSString * flagsString = listingDictionary[@"flags"];
         //NSString * ownerString = [listingDictionary objectForKey:@"owner"];
         //NSString * groupString = [listingDictionary objectForKey:@"group"];
         //NSString * sizeString = [listingDictionary objectForKey:@"size"];
         //NSString * dateTimeString = [listingDictionary objectForKey:@"dateTime"];
-        NSString * nameString = [listingDictionary objectForKey:@"name"];
+        NSString * nameString = listingDictionary[@"name"];
 
-        NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
-        NSString * networkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-        NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-        NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-        NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-        NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+        NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
+        NSString * networkDirectoryPath = (self.workingConnectionDictionary)[@"urlFilePath"];
+        NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+        NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+        NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+        NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-        NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+        NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
         
-        NSString * lastPathComponent = [networkDirectoryPath lastPathComponent];
-        NSString * pathExtension = [lastPathComponent pathExtension];
+        NSString * lastPathComponent = networkDirectoryPath.lastPathComponent;
+        NSString * pathExtension = lastPathComponent.pathExtension;
         
         BOOL fileNameFound = NO;
         if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -2417,7 +2399,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         
         if (fileNameFound == YES)
         {
-            networkDirectoryPath = [networkDirectoryPath stringByDeletingLastPathComponent];
+            networkDirectoryPath = networkDirectoryPath.stringByDeletingLastPathComponent;
         }
 
         networkDirectoryPath = [networkDirectoryPath stringByAppendingPathComponent:nameString];
@@ -2427,14 +2409,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             networkDirectoryPath = [networkDirectoryPath stringByAppendingPathComponent:lastPathComponent];
         }
         
-        NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                networkAccessMethod, @"connectionType",
-                networkDirectoryPath, @"urlFilePath",
-                hostAddrString, @"hostName",
-                portNumberString, @"portNumber",
-                userNameString, @"userName",
-                passwordString, @"password",
-                nil];
+        NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+                @"urlFilePath": networkDirectoryPath,
+                @"hostName": hostAddrString,
+                @"portNumber": portNumberString,
+                @"userName": userNameString,
+                @"password": passwordString};
         
         self.workingConnectionDictionary = connectionDictionary;
 
@@ -2478,12 +2458,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsBrowserNetworkConnectionTextFieldAction:(id)sender
 {
-    NSString * fileName = [saveNetworkDirectoryBrowserFileNameTextField stringValue];
+    NSString * fileName = saveNetworkDirectoryBrowserFileNameTextField.stringValue;
     BOOL validFileName = NO;
     
-    if ([fileName length] > 0)
+    if (fileName.length > 0)
     {
-        NSString * fileNameExtension = [fileName pathExtension];
+        NSString * fileNameExtension = fileName.pathExtension;
         
         if ([fileNameExtension isEqualToString:@"svg"] == YES)
         {
@@ -2519,23 +2499,23 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsNetworkDirectoryBrowserDirectoryPopUpButtonAction:(id)sender
 {
-    NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+    NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
     //NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+    NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+    NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
-    NSInteger selectedIndex = [saveNetworkDirectoryBrowserDirectoryPopUpButton indexOfSelectedItem];
+    NSInteger selectedIndex = saveNetworkDirectoryBrowserDirectoryPopUpButton.indexOfSelectedItem;
     
     NSMutableString * networkDirectoryPath = [NSMutableString string];
     
     for (NSInteger i = 0; i <= selectedIndex; i++)
     {
         NSMenuItem * componentItem = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemAtIndex:i];
-        NSString * componentString = [componentItem title];
+        NSString * componentString = componentItem.title;
         [networkDirectoryPath appendString:componentString];
         
         if (i > 0)
@@ -2544,14 +2524,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         }
     }
 
-    NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            networkAccessMethod, @"connectionType",
-            networkDirectoryPath, @"urlFilePath",
-            hostAddrString, @"hostName",
-            portNumberString, @"portNumber",
-            userNameString, @"userName",
-            passwordString, @"password",
-            nil];
+    NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+            @"urlFilePath": networkDirectoryPath,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString};
     
     self.workingConnectionDictionary = connectionDictionary;
 
@@ -2634,7 +2612,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsNetworkDirectoryBrowserCancelButtonAction:(id)sender
 {
-    self.networkFileDirectoryArray = [NSArray array];
+    self.networkFileDirectoryArray = @[];
     [saveNetworkDirectoryBrowserTableView reloadData];
     [saveAsNetworkDirectoryBrowserWindow orderOut:self];
 }
@@ -2645,23 +2623,23 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction)saveAsNetworkDirectoryBrowserSaveButtonAction:(id)sender
 {
-    NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+    NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
     //NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+    NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+    NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
-    NSArray * pathItemsArray = [saveNetworkDirectoryBrowserDirectoryPopUpButton itemArray];
+    NSArray * pathItemsArray = saveNetworkDirectoryBrowserDirectoryPopUpButton.itemArray;
     
     NSMutableString * pathString = [NSMutableString string];
     
     NSInteger itemIndex = 0;
     for (NSMenuItem * aMenuItem in pathItemsArray)
     {
-        NSString * itemTitle = [aMenuItem title];
+        NSString * itemTitle = aMenuItem.title;
         
         [pathString appendString:itemTitle];
         
@@ -2673,18 +2651,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         itemIndex++;
     }
     
-    NSString * fileName = [saveNetworkDirectoryBrowserFileNameTextField stringValue];
+    NSString * fileName = saveNetworkDirectoryBrowserFileNameTextField.stringValue;
     
     [pathString appendString:fileName];
     
-    NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-            networkAccessMethod, @"connectionType",
-            pathString, @"urlFilePath",
-            hostAddrString, @"hostName",
-            portNumberString, @"portNumber",
-            userNameString, @"userName",
-            passwordString, @"password",
-            nil];
+    NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+            @"urlFilePath": pathString,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString};
     
     self.workingConnectionDictionary = connectionDictionary;
     
@@ -2704,13 +2680,13 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (void)saveNetworkDirectoryBrowserTableViewSelectionDidChange
 {
-    NSInteger selectedRow = [saveNetworkDirectoryBrowserTableView selectedRow];
+    NSInteger selectedRow = saveNetworkDirectoryBrowserTableView.selectedRow;
     
     if (selectedRow != -1)
     {
-        NSDictionary * itemDictionary = [self.networkFileDirectoryArray objectAtIndex:selectedRow];
+        NSDictionary * itemDictionary = (self.networkFileDirectoryArray)[selectedRow];
         
-        NSString * flagsString = [itemDictionary objectForKey:@"flags"];
+        NSString * flagsString = itemDictionary[@"flags"];
         
         unichar firstCharacter = [flagsString characterAtIndex:0];
         
@@ -2737,15 +2713,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     NSView * resultView = NULL;
 
-    if ([self.networkFileDirectoryArray count] > 0)
+    if ((self.networkFileDirectoryArray).count > 0)
     {
-        NSDictionary * itemDictionary = [self.networkFileDirectoryArray objectAtIndex:rowIndex];
-        NSString * fileName = [itemDictionary objectForKey:@"name"];
-        NSString * fileNameExtension = [fileName pathExtension];
-        NSString * flagsString = [itemDictionary objectForKey:@"flags"];
+        NSDictionary * itemDictionary = (self.networkFileDirectoryArray)[rowIndex];
+        NSString * fileName = itemDictionary[@"name"];
+        NSString * fileNameExtension = fileName.pathExtension;
+        NSString * flagsString = itemDictionary[@"flags"];
         unichar fileTypeChar = [flagsString characterAtIndex:0];
 
-        NSString * tableColumnIdentifier= [aTableColumn identifier];
+        NSString * tableColumnIdentifier= aTableColumn.identifier;
         
         if ([tableColumnIdentifier isEqualToString:@"fileName"] == YES)
         {
@@ -2756,12 +2732,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             if (fileTypeChar == 'd')
             {
                 iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-                [cellView.textField setTextColor:[NSColor blackColor]];
+                (cellView.textField).textColor = [NSColor blackColor];
             }
             else
             {
                 iconImage = [[NSWorkspace sharedWorkspace] iconForFileType:fileNameExtension];
-                [cellView.textField setTextColor:[NSColor grayColor]];
+                (cellView.textField).textColor = [NSColor grayColor];
             }
             
             cellView.textField.stringValue = fileName;
@@ -2796,11 +2772,11 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             if (fileTypeChar == 'd')
             {
                 listingType = @"Folder";
-                [cellView.textField setTextColor:[NSColor blackColor]];
+                (cellView.textField).textColor = [NSColor blackColor];
             }
             else
             {
-                [cellView.textField setTextColor:[NSColor grayColor]];
+                (cellView.textField).textColor = [NSColor grayColor];
             }
             
             cellView.textField.stringValue = listingType;
@@ -2811,15 +2787,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         {
             NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
 
-            NSString * dateTimeString = [itemDictionary objectForKey:@"dateTime"];
+            NSString * dateTimeString = itemDictionary[@"dateTime"];
 
             if (fileTypeChar == 'd')
             {
-                [cellView.textField setTextColor:[NSColor blackColor]];
+                (cellView.textField).textColor = [NSColor blackColor];
             }
             else
             {
-                [cellView.textField setTextColor:[NSColor grayColor]];
+                (cellView.textField).textColor = [NSColor grayColor];
             }
             
             cellView.textField.stringValue = dateTimeString;
@@ -2842,18 +2818,18 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (NSData *)gzipInflate:(NSData *)inputData
 {
-    if ([inputData length] == 0) return inputData;
+    if (inputData.length == 0) return inputData;
 
-    unsigned int full_length = (unsigned int)[inputData length];
-    unsigned int half_length = (unsigned int)[inputData length] / 2;
+    unsigned int full_length = (unsigned int)inputData.length;
+    unsigned int half_length = (unsigned int)inputData.length / 2;
 
     NSMutableData *decompressed = [NSMutableData dataWithLength: full_length + half_length];
     BOOL done = NO;
     int status;
 
     z_stream strm;
-    strm.next_in = (Bytef *)[inputData bytes];
-    strm.avail_in = (unsigned int)[inputData length];
+    strm.next_in = (Bytef *)inputData.bytes;
+    strm.avail_in = (unsigned int)inputData.length;
     strm.total_out = 0;
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
@@ -2862,12 +2838,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     while (!done)
     {
         // Make sure we have enough room and reset the lengths.
-        if (strm.total_out >= [decompressed length])
+        if (strm.total_out >= decompressed.length)
         {
             [decompressed increaseLengthBy: half_length];
         }
-        strm.next_out = [decompressed mutableBytes] + strm.total_out;
-        strm.avail_out = (unsigned int)([decompressed length] - strm.total_out);
+        strm.next_out = decompressed.mutableBytes + strm.total_out;
+        strm.avail_out = (unsigned int)(decompressed.length - strm.total_out);
 
         // Inflate another chunk.
         status = inflate (&strm, Z_SYNC_FLUSH);
@@ -2879,7 +2855,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     // Set real length.
     if (done)
     {
-        [decompressed setLength: strm.total_out];
+        decompressed.length = strm.total_out;
         return [NSData dataWithData: decompressed];
     }
     else return nil;
@@ -2891,7 +2867,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (NSData *)gzipDeflate:(NSData *)inputData
 {
-    if ([inputData length] == 0) return inputData;
+    if (inputData.length == 0) return inputData;
 
     z_stream strm;
 
@@ -2899,8 +2875,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
     strm.total_out = 0;
-    strm.next_in=(Bytef *)[inputData bytes];
-    strm.avail_in = (unsigned int)[inputData length];
+    strm.next_in=(Bytef *)inputData.bytes;
+    strm.avail_in = (unsigned int)inputData.length;
 
     // Compresssion Levels:
     //   Z_NO_COMPRESSION
@@ -2913,20 +2889,20 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     NSMutableData *compressed = [NSMutableData dataWithLength:16384];  // 16K chunks for expansion
 
     do {
-        if (strm.total_out >= [compressed length])
+        if (strm.total_out >= compressed.length)
         {
             [compressed increaseLengthBy: 16384];
         }
 
-        strm.next_out = [compressed mutableBytes] + strm.total_out;
-        strm.avail_out = (unsigned int)([compressed length] - strm.total_out);
+        strm.next_out = compressed.mutableBytes + strm.total_out;
+        strm.avail_out = (unsigned int)(compressed.length - strm.total_out);
 
         deflate(&strm, Z_FINISH);  
     } while (strm.avail_out == 0);
 
     deflateEnd(&strm);
 
-    [compressed setLength: strm.total_out];
+    compressed.length = strm.total_out;
     return [NSData dataWithData:compressed];
 }
 
@@ -2936,12 +2912,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 
 - (IBAction) showCreateNewFolderSheet:(id)sender
 {
-    [createNewFolderNameTextField setStringValue:@""];
+    createNewFolderNameTextField.stringValue = @"";
 
-    NSString * pathString = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
+    NSString * pathString = (self.workingConnectionDictionary)[@"urlFilePath"];
     
-    NSString * lastPathComponent = [pathString lastPathComponent];
-    NSString * pathExtension = [lastPathComponent pathExtension];
+    NSString * lastPathComponent = pathString.lastPathComponent;
+    NSString * pathExtension = lastPathComponent.pathExtension;
     
     BOOL fileNameFound = NO;
     if ([pathExtension isEqualToString:@"svg"] == YES)
@@ -2963,10 +2939,10 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
     if (fileNameFound == YES)
     {
-        pathString = [pathString stringByDeletingLastPathComponent];
+        pathString = pathString.stringByDeletingLastPathComponent;
     }
     
-    [createNewFolderPathTextField setStringValue:pathString];
+    createNewFolderPathTextField.stringValue = pathString;
 
     //[NSApp beginSheet:createNewFolderSheet modalForWindow:saveAsNetworkDirectoryBrowserWindow
     //        modalDelegate:self didEndSelector:nil contextInfo:nil];
@@ -2986,10 +2962,10 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     BOOL createFolderSuccess = NO;
     
-    NSString * newFolderName = [createNewFolderNameTextField stringValue];
+    NSString * newFolderName = createNewFolderNameTextField.stringValue;
     
-    NSInteger newFolderNameLength = [newFolderName length];
-    if ([newFolderName length] > 0)
+    NSInteger newFolderNameLength = newFolderName.length;
+    if (newFolderName.length > 0)
     {
         BOOL validFolderName = YES;
         for (NSInteger i = 0; i < newFolderNameLength; i++)
@@ -3004,16 +2980,16 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
         if (validFolderName == YES)
         {
-            NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+            NSString * networkAccessMethod = (self.workingConnectionDictionary)[@"connectionType"];
             //NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-            NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-            NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-            NSString * userNameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-            NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+            NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+            NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+            NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+            NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-            NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+            NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
             
-            NSString * pathString = [createNewFolderPathTextField stringValue];
+            NSString * pathString = createNewFolderPathTextField.stringValue;
             
             NSError * directoryError = NULL;
             
@@ -3034,14 +3010,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
             {
                 NSString * newPathString = [pathString stringByAppendingPathComponent:newFolderName];
             
-                NSDictionary * connectionDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                        networkAccessMethod, @"connectionType",
-                        newPathString, @"urlFilePath",
-                        hostAddrString, @"hostName",
-                        portNumberString, @"portNumber",
-                        userNameString, @"userName",
-                        passwordString, @"password",
-                        nil];
+                NSDictionary * connectionDictionary = @{@"connectionType": networkAccessMethod,
+                        @"urlFilePath": newPathString,
+                        @"hostName": hostAddrString,
+                        @"portNumber": portNumberString,
+                        @"userName": userNameString,
+                        @"password": passwordString};
 
                 self.workingConnectionDictionary = connectionDictionary;
 
@@ -3092,15 +3066,15 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     NSError * directoryError = NULL;
 
     //NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
-    NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
-    NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * usernameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * oldNetworkDirectoryPath = (self.workingConnectionDictionary)[@"urlFilePath"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+    NSString * portNumberString = (self.workingConnectionDictionary)[@"portNumber"];
+    NSString * usernameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
-    int portNumber = [portNumberString intValue];
+    int portNumber = portNumberString.intValue;
 
     DFSSHServer *server = [[DFSSHServer alloc] init];   
 
@@ -3116,7 +3090,7 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
         NSString * mkdirCommandString = [NSString stringWithFormat:@"mkdir %@", newDirectoryPath];
         
-        NSNumber * timeoutNumber = [NSNumber numberWithDouble:60];
+        NSNumber * timeoutNumber = @60.0;
         NSError * sshError = NULL;
         NSString * lsDirectoryResult = [SSHCommand execCommand:mkdirCommandString
                 server:server timeout:timeoutNumber sshError:&sshError];
@@ -3140,12 +3114,12 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
 {
     //NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
     //NSString * oldNetworkDirectoryPath = [self.workingConnectionDictionary objectForKey:@"urlFilePath"];
-    NSString * hostNameString = [self.workingConnectionDictionary objectForKey:@"hostName"];
+    NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
     //NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
-    NSString * usernameString = [self.workingConnectionDictionary objectForKey:@"userName"];
-    NSString * passwordString = [self.workingConnectionDictionary objectForKey:@"password"];
+    NSString * usernameString = (self.workingConnectionDictionary)[@"userName"];
+    NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
 
-    NSString * hostAddrString = [[NSHost hostWithName:hostNameString] address];
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
 
     SFTPMkdir * sftpMkdir = [[SFTPMkdir alloc] init];
     

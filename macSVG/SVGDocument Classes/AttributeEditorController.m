@@ -40,26 +40,26 @@
     
     [xmlAttributesTableView abortEditing];
     
-    NSInteger selectedRow = [xmlAttributesTableView selectedRow];
+    NSInteger selectedRow = xmlAttributesTableView.selectedRow;
     
     if (selectedRow != -1)
     {
         NSArray * xmlAttributesArray = xmlAttributesTableController.xmlAttributesArray;
     
-        NSMutableDictionary * attributeDictionary = [xmlAttributesArray objectAtIndex:selectedRow];
+        NSMutableDictionary * attributeDictionary = xmlAttributesArray[selectedRow];
         
-        NSString * attributeName = [attributeDictionary objectForKey:@"name"];
-        NSString * attributeValue = [attributeDictionary objectForKey:@"value"];
+        NSString * attributeName = attributeDictionary[@"name"];
+        NSString * attributeValue = attributeDictionary[@"value"];
         #pragma unused(attributeName)
 
-        NSString * attributeKind = [attributeDictionary objectForKey:@"kind"];
+        NSString * attributeKind = attributeDictionary[@"kind"];
         #pragma unused(attributeKind)
 
-        [attributeEditorTextView setString:attributeValue];
+        attributeEditorTextView.string = attributeValue;
     }
     else
     {
-        [attributeEditorTextView setString:@""];
+        attributeEditorTextView.string = @"";
     }
 }
 
@@ -71,10 +71,10 @@
 {
     if (enabled == YES)
     {
-        if ([attributeEditorView superview] == NULL) 
+        if (attributeEditorView.superview == NULL) 
         {
             NSView * attributeEditorFrameView = editorUIFrameController.editorPanelFrameView;
-            NSRect frameRect = [attributeEditorFrameView frame];
+            NSRect frameRect = attributeEditorFrameView.frame;
             attributeEditorView.frame = frameRect;
             attributeEditorView.bounds = frameRect;
         
@@ -107,18 +107,18 @@
         {
             XMLAttributesTableView * xmlAttributesTableView = xmlAttributesTableController.xmlAttributesTableView;
             
-            NSInteger selectedRow = [xmlAttributesTableView selectedRow];
+            NSInteger selectedRow = xmlAttributesTableView.selectedRow;
             
             if (selectedRow != -1)
             {
                 NSArray * xmlAttributesArray = xmlAttributesTableController.xmlAttributesArray;
             
-                NSMutableDictionary * attributeDictionary = [xmlAttributesArray objectAtIndex:selectedRow];
+                NSMutableDictionary * attributeDictionary = xmlAttributesArray[selectedRow];
                 
-                NSString * attributeName = [attributeDictionary objectForKey:@"name"];
-                NSString * attributeValue = [attributeDictionary objectForKey:@"value"];
+                NSString * attributeName = attributeDictionary[@"name"];
+                NSString * attributeValue = attributeDictionary[@"value"];
                 #pragma unused(attributeValue)
-                NSString * attributeKind = [attributeDictionary objectForKey:@"kind"];
+                NSString * attributeKind = attributeDictionary[@"kind"];
                 #pragma unused(attributeKind)
 
                 NSXMLElement * xmlElementForAttributes = 
@@ -126,11 +126,11 @@
                 
                 if (xmlElementForAttributes != NULL)
                 {
-                    NSString * newAttributeValue = [attributeEditorTextView string];
+                    NSString * newAttributeValue = attributeEditorTextView.string;
                     
                     NSXMLNode * attributeNode = [xmlElementForAttributes attributeForName:attributeName];
                     
-                    [attributeNode setStringValue:newAttributeValue];
+                    attributeNode.stringValue = newAttributeValue;
                     
                     [macSVGDocumentWindowController reloadAllViews];
                 }

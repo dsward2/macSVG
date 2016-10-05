@@ -238,7 +238,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
     }
 
     /* Send a file via scp. The mode parameter must only have permissions! */
-    unsigned long fileSize = [fileData length];
+    unsigned long fileSize = fileData.length;
     
     //unsigned long permissions = fileinfo.st_mode & 0777;
     int permissions = 0644; // 0 digit signifies octal notation!
@@ -254,7 +254,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SSH session for SCP: %@, %d",
                     sshErrorString, errorInt);
@@ -266,7 +266,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
         }
     } while (!channel);
 
-    NSInteger dataSize = [fileData length];
+    NSInteger dataSize = fileData.length;
 
     NSLog(@"dataSize = %ld", dataSize);
 

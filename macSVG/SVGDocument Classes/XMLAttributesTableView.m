@@ -15,7 +15,7 @@
 {
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -29,7 +29,7 @@
 - (void) textDidEndEditing: (NSNotification *) notification
 {
     // make return and tab only end editing, and not cause other cells to edit
-    NSDictionary *userInfo = [notification userInfo];
+    NSDictionary *userInfo = notification.userInfo;
 
     int textMovement = [[userInfo valueForKey:@"NSTextMovement"] intValue];
 
@@ -40,17 +40,16 @@
         NSMutableDictionary *newInfo;
         newInfo = [NSMutableDictionary dictionaryWithDictionary: userInfo];
 
-        [newInfo setObject: [NSNumber numberWithInt: NSIllegalTextMovement]
-                forKey: @"NSTextMovement"];
+        newInfo[@"NSTextMovement"] = @(NSIllegalTextMovement);
 
-        notification = [NSNotification notificationWithName: [notification name]
-                object: [notification object]
+        notification = [NSNotification notificationWithName: notification.name
+                object: notification.object
                 userInfo: newInfo];
     }
 
     [super textDidEndEditing: notification];
          
-    [[self window] makeFirstResponder:self];
+    [self.window makeFirstResponder:self];
 
 } // textDidEndEditing
 

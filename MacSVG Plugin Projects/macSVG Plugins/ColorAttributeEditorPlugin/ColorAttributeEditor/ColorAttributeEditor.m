@@ -25,7 +25,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -48,8 +48,8 @@
 
     [webColorsTableView reloadData];
     
-    [webColorsTableView setDoubleAction:@selector(setWebColorButtonAction:)];
-    [webColorsTableView setTarget:self];
+    webColorsTableView.doubleAction = @selector(setWebColorButtonAction:);
+    webColorsTableView.target = self;
 }
 
 //==================================================================================
@@ -101,7 +101,7 @@
     if (validAttribute == YES)
     {
         NSDictionary * elementsWithAttribute = [self elementsWithAttribute:attributeName];
-        if ([elementsWithAttribute objectForKey:elementName] != NULL)
+        if (elementsWithAttribute[elementName] != NULL)
         {
             validElement = YES;
         }
@@ -129,7 +129,7 @@
         
         if (validElement == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
 
@@ -158,7 +158,7 @@
             domElement:newPluginTargetDOMElement attributeName:newAttributeName
             existingValue:existingValue];
     
-    NSString * tagName = [self.pluginTargetXMLElement name];
+    NSString * tagName = (self.pluginTargetXMLElement).name;
     if ([tagName isEqualToString:@"stop"] == YES)
     {
         [setGradientButton setEnabled:NO];
@@ -170,9 +170,9 @@
 
     NSString * colorTextString = existingValue;
 
-    [colorTextField setStringValue:colorTextString];
+    colorTextField.stringValue = colorTextString;
 
-    NSUInteger colorTextLength = [colorTextString length];
+    NSUInteger colorTextLength = colorTextString.length;
 
     if (colorTextLength > 0)
     {
@@ -277,7 +277,7 @@
                     
                     NSColor * colorWellColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1];
                     
-                    [colorWell setColor:colorWellColor];
+                    colorWell.color = colorWellColor;
                 }
             }
         }
@@ -285,11 +285,11 @@
 
 
     
-    NSInteger webColorsArrayCount = [self.webColorsArray count];
+    NSInteger webColorsArrayCount = (self.webColorsArray).count;
     for (NSInteger i = 0; i < webColorsArrayCount; i++)
     {
-        NSDictionary * colorDictionary = [self.webColorsArray objectAtIndex:i];
-        NSString * colorName = [colorDictionary objectForKey:@"name"];
+        NSDictionary * colorDictionary = (self.webColorsArray)[i];
+        NSString * colorName = colorDictionary[@"name"];
         
         if ([colorName isEqualToString:existingValue] == YES)
         {
@@ -297,16 +297,16 @@
             [webColorsTableView selectRowIndexes:selectedIndexSet byExtendingSelection:NO];
             [webColorsTableView scrollRowToVisible:i];
 
-            NSString * colorRGB = [colorDictionary objectForKey:@"rgb"];
+            NSString * colorRGB = colorDictionary[@"rgb"];
             
             NSArray * channelsArray = [colorRGB componentsSeparatedByString:@","];
-            NSString * redString = [channelsArray objectAtIndex:0];
-            NSString * greenString = [channelsArray objectAtIndex:1];
-            NSString * blueString = [channelsArray objectAtIndex:2];
+            NSString * redString = channelsArray[0];
+            NSString * greenString = channelsArray[1];
+            NSString * blueString = channelsArray[2];
             
-            int redInt = [redString intValue];
-            int greenInt = [greenString intValue];
-            int blueInt = [blueString intValue];
+            int redInt = redString.intValue;
+            int greenInt = greenString.intValue;
+            int blueInt = blueString.intValue;
             
             float redFloat = ((float)redInt / 255.0f);
             float greenFloat = ((float)greenInt / 255.0f);
@@ -314,7 +314,7 @@
             
             NSColor * wellColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1.0f];
             
-            [colorWell setColor:wellColor];
+            colorWell.color = wellColor;
 
             break;
         }
@@ -329,11 +329,9 @@
 
 - (void)addWebColorName:(NSString *)colorName hex:(NSString *)hex rgb:(NSString *)rgb
 {
-    NSDictionary * colorDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-            colorName, @"name",
-            hex, @"hex",
-            rgb, @"rgb",
-            nil];
+    NSDictionary * colorDictionary = @{@"name": colorName,
+            @"hex": hex,
+            @"rgb": rgb};
             
     [self.webColorsArray addObject:colorDictionary];
     
@@ -503,7 +501,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.webColorsArray count];
+    return (self.webColorsArray).count;
 }
 
 //==================================================================================
@@ -513,17 +511,17 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     id objectValue = NULL;
-    NSDictionary * webColorDictionary = [self.webColorsArray objectAtIndex:rowIndex];
+    NSDictionary * webColorDictionary = (self.webColorsArray)[rowIndex];
     
     if (webColorDictionary != NULL)
     {
-        if ([[aTableColumn identifier] isEqualToString:@"Swatch"] == YES)
+        if ([aTableColumn.identifier isEqualToString:@"Swatch"] == YES)
         {
-            objectValue = [webColorDictionary objectForKey:@"rgb"];
+            objectValue = webColorDictionary[@"rgb"];
         } 
-        else if ([[aTableColumn identifier] isEqualToString:@"HTML Color Name"] == YES)
+        else if ([aTableColumn.identifier isEqualToString:@"HTML Color Name"] == YES)
         {
-            objectValue = [webColorDictionary objectForKey:@"name"];
+            objectValue = webColorDictionary[@"name"];
         } 
     } 
     
@@ -536,7 +534,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == webColorsTableView)
 	{
 	}
@@ -552,8 +550,8 @@
     
     if (attributeNode != NULL)
     {
-        NSString * colorTextString = [colorTextField stringValue];
-        [attributeNode setStringValue:colorTextString];
+        NSString * colorTextString = colorTextField.stringValue;
+        attributeNode.stringValue = colorTextString;
         
         [self updateDocumentViews];
     }
@@ -567,9 +565,9 @@
 {
     BOOL result = NO;
 
-    NSString * colorTextString = [colorTextField stringValue];
+    NSString * colorTextString = colorTextField.stringValue;
 
-    NSUInteger colorTextLength = [colorTextString length];
+    NSUInteger colorTextLength = colorTextString.length;
 
     if (colorTextLength > 0)
     {
@@ -634,7 +632,7 @@
                     for (NSXMLElement * aGradientElement in allGradientElements)
                     {
                         NSXMLNode * gradientIDNode = [aGradientElement attributeForName:@"id"];
-                        NSString * gradientIDString = [gradientIDNode stringValue];
+                        NSString * gradientIDString = gradientIDNode.stringValue;
                         
                         if ([idString isEqualToString:gradientIDString] == YES)
                         {
@@ -657,14 +655,14 @@
             BOOL validHTMLColor = NO; 
             BOOL continueSearch = YES;
             
-            NSUInteger webColorsCount = [self.webColorsArray count];
+            NSUInteger webColorsCount = (self.webColorsArray).count;
                         
             int colorIdx = 0;
             while (continueSearch == YES)
             {
-                NSDictionary * colorNameDictionary = [self.webColorsArray objectAtIndex:colorIdx];
+                NSDictionary * colorNameDictionary = (self.webColorsArray)[colorIdx];
                 
-                NSString * aColorName = [colorNameDictionary objectForKey:@"name"];
+                NSString * aColorName = colorNameDictionary[@"name"];
                 
                 if ([colorTextString isEqualToString:aColorName] == YES) 
                 {
@@ -687,7 +685,7 @@
                 NSRange urlRange = [colorTextString rangeOfString:@"url(#"];
                 if (urlRange.location == 0)
                 {
-                    NSInteger extractLength = [colorTextString length] - 6;
+                    NSInteger extractLength = colorTextString.length - 6;
                     NSRange extractURLRange = NSMakeRange(5, extractLength);
                     NSString * idString = [colorTextString substringWithRange:extractURLRange];
                     
@@ -696,7 +694,7 @@
                     for (NSXMLElement * aGradientElement in allGradientElements)
                     {
                         NSXMLNode * gradientIDNode = [aGradientElement attributeForName:@"id"];
-                        NSString * gradientIDString = [gradientIDNode stringValue];
+                        NSString * gradientIDString = gradientIDNode.stringValue;
                         
                         if ([idString isEqualToString:gradientIDString] == YES)
                         {
@@ -783,8 +781,8 @@
         
         if (colorTextIsValid == YES)
         {
-            NSString * colorStringValue = [colorTextField stringValue];
-            [attributeNode setStringValue:colorStringValue];
+            NSString * colorStringValue = colorTextField.stringValue;
+            attributeNode.stringValue = colorStringValue;
         }
     }
     
@@ -798,14 +796,14 @@
 - (void)setGradientElement:(NSXMLElement *)gradientElement;
 {
     NSXMLNode * gradientElementIDNode = [gradientElement attributeForName:@"id"];
-    NSString * gradientElementIDString = [gradientElementIDNode stringValue];
+    NSString * gradientElementIDString = gradientElementIDNode.stringValue;
     
     NSString * gradientURLString = [NSString stringWithFormat:@"url(#%@)", gradientElementIDString];
     
-    [colorTextField setStringValue:gradientURLString];
+    colorTextField.stringValue = gradientURLString;
     
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
-    [attributeNode setStringValue:gradientURLString];
+    attributeNode.stringValue = gradientURLString;
     
     [self updateDocumentViews];
 }
@@ -820,7 +818,7 @@
     if (attributeNode != NULL)
     {
         NSString * colorStringValue = @"none";
-        [attributeNode setStringValue:colorStringValue];
+        attributeNode.stringValue = colorStringValue;
     }
     
     [self updateDocumentViews];
@@ -833,26 +831,26 @@
 
 - (IBAction)setWebColorButtonAction:(id)sender
 {
-    NSInteger rowIndex = [webColorsTableView selectedRow];
+    NSInteger rowIndex = webColorsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        NSDictionary * webColorDictionary = [self.webColorsArray objectAtIndex:rowIndex];
+        NSDictionary * webColorDictionary = (self.webColorsArray)[rowIndex];
 
-        NSString * colorName = [webColorDictionary objectForKey:@"name"];
+        NSString * colorName = webColorDictionary[@"name"];
         //NSString * colorHex = [webColorDictionary objectForKey:@"hex"];
-        NSString * colorRGB = [webColorDictionary objectForKey:@"rgb"];
+        NSString * colorRGB = webColorDictionary[@"rgb"];
         
-        [colorTextField setStringValue:colorName];
+        colorTextField.stringValue = colorName;
         
         NSArray * channelsArray = [colorRGB componentsSeparatedByString:@","];
-        NSString * redString = [channelsArray objectAtIndex:0];
-        NSString * greenString = [channelsArray objectAtIndex:1];
-        NSString * blueString = [channelsArray objectAtIndex:2];
+        NSString * redString = channelsArray[0];
+        NSString * greenString = channelsArray[1];
+        NSString * blueString = channelsArray[2];
         
-        int redInt = [redString intValue];
-        int greenInt = [greenString intValue];
-        int blueInt = [blueString intValue];
+        int redInt = redString.intValue;
+        int greenInt = greenString.intValue;
+        int blueInt = blueString.intValue;
         
         float redFloat = ((float)redInt / 255.0f);
         float greenFloat = ((float)greenInt / 255.0f);
@@ -860,7 +858,7 @@
         
         NSColor * wellColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1.0f];
         
-        [colorWell setColor:wellColor];
+        colorWell.color = wellColor;
         
         [self setColorButtonAction:self];
     }
@@ -873,7 +871,7 @@
 
 - (IBAction)colorWellAction:(id)sender
 {
-    NSColor * wellColor = [colorWell color];
+    NSColor * wellColor = colorWell.color;
     
     CGFloat redFloat = 0;
     CGFloat greenFloat = 0;
@@ -889,7 +887,7 @@
     NSString * colorString = [[NSString alloc] initWithFormat:@"#%02x%02x%02x",
             redInt, greenInt, blueInt];
     
-    [colorTextField setStringValue:colorString];
+    colorTextField.stringValue = colorString;
     
     [self setColorButtonAction:self];
     
@@ -905,7 +903,7 @@
     [gradientEditorPopoverViewController loadGradientsData];
     
     // configure the preferred position of the popover
-    [gradientEditorPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [gradientEditorPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 

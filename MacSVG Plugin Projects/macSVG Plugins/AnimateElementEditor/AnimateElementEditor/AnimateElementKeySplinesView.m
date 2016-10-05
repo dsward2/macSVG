@@ -13,7 +13,7 @@
 
 // ============================================================================
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -24,7 +24,7 @@
 
 // ============================================================================
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {    
     self = [super initWithCoder:decoder];
     if (self) 
@@ -51,16 +51,16 @@
     
     NSArray * keyValuesArray = keyValuesPopoverViewController.keyValuesArray;
     
-    NSInteger keyValuesArrayCount = [keyValuesArray count];
+    NSInteger keyValuesArrayCount = keyValuesArray.count;
 
     NSCharacterSet * delimitersCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@" ,"];
     
     for (NSInteger i = 0; i < (keyValuesArrayCount - 1); i++)
     {
-        NSDictionary * currentDictionary = [keyValuesArray objectAtIndex:i];
+        NSDictionary * currentDictionary = keyValuesArray[i];
         //NSDictionary * nextDictionary = [keyValuesArray objectAtIndex:(i + 1)];
         
-        NSString * keySplinesString = [currentDictionary objectForKey:@"keySplines"];
+        NSString * keySplinesString = currentDictionary[@"keySplines"];
         //NSString * startTimeString = [currentDictionary objectForKey:@"keyTimes"];
         //NSString * endTimeString = [nextDictionary objectForKey:@"keyTimes"];
 
@@ -78,15 +78,15 @@
         NSInteger keySplineIndex = 0;
         
         NSArray * keySplinesArray = [keySplinesString componentsSeparatedByCharactersInSet:delimitersCharacterSet];
-        NSInteger keySplinesArrayCount = [keySplinesArray count];
+        NSInteger keySplinesArrayCount = keySplinesArray.count;
         if (keySplinesArrayCount > 3)
         {
             
             for (NSString * keySplineValueString in keySplinesArray)
             {
-                if ([keySplineValueString length] > 0)
+                if (keySplineValueString.length > 0)
                 {
-                    float keySplineValue = [keySplineValueString floatValue] * 100;
+                    float keySplineValue = keySplineValueString.floatValue * 100;
                     
                     if (keySplineIndex == 0)
                     {
@@ -131,7 +131,7 @@
         
         [splinePath curveToPoint:endPoint controlPoint1:controlPoint1 controlPoint2:controlPoint2];
 
-        [splinePath setLineWidth:3.0];
+        splinePath.lineWidth = 3.0;
         
         [[NSColor blackColor] set];
         [splinePath stroke];

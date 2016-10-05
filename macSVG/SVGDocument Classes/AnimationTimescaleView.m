@@ -32,7 +32,7 @@
 //	initWithFrame:
 //==================================================================================
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -54,7 +54,7 @@
 //	initWithCoder:
 //==================================================================================
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -89,10 +89,10 @@
 
         NSImage * playHeadImage = [[NSImage alloc] initWithContentsOfFile:imageFilePath];
         NSRect playHeadImageViewRect = NSZeroRect;
-        playHeadImageViewRect.size = [playHeadImage size];
+        playHeadImageViewRect.size = playHeadImage.size;
         playHeadImageViewRect.origin.y = frameRect.size.height - playHeadYOffset;
         playHeadImageView = [[NSImageView alloc] initWithFrame:playHeadImageViewRect];
-        [playHeadImageView setImage:playHeadImage];
+        playHeadImageView.image = playHeadImage;
 
         [self addSubview:playHeadImageView];
         
@@ -106,10 +106,10 @@
 
         NSImage * playHeadSelectedImage = [[NSImage alloc] initWithContentsOfFile:imageFilePath];
         NSRect playHeadSelectedImageViewRect = NSZeroRect;
-        playHeadSelectedImageViewRect.size = [playHeadSelectedImage size];
+        playHeadSelectedImageViewRect.size = playHeadSelectedImage.size;
         playHeadSelectedImageViewRect.origin.y = frameRect.size.height - playHeadYOffset;
         playHeadSelectedImageView = [[NSImageView alloc] initWithFrame:playHeadSelectedImageViewRect];
-        [playHeadSelectedImageView setImage:playHeadSelectedImage];
+        playHeadSelectedImageView.image = playHeadSelectedImage;
 
         [self addSubview:playHeadSelectedImageView];
         
@@ -145,11 +145,11 @@
     NSBezierPath* dividerPath = [NSBezierPath bezierPath];
     [dividerPath moveToPoint:NSMakePoint(0, frameRect.size.height - 2)];
     [dividerPath lineToPoint:NSMakePoint(frameRect.size.width, frameRect.size.height - 2)];
-    [dividerPath setLineWidth:1];
+    dividerPath.lineWidth = 1;
     [dividerPath stroke];
         
     NSMutableDictionary * textAttributes = [[NSMutableDictionary alloc] init];
-    [textAttributes setObject:self.blackColor forKey:NSForegroundColorAttributeName];
+    textAttributes[NSForegroundColorAttributeName] = self.blackColor;
         
     float tenthInterval = animationTimelineView.pixelsPerSecond / 10.0f;
     
@@ -181,7 +181,7 @@
             [thePath moveToPoint:NSMakePoint(x + markerOffset, topY)];
             [thePath lineToPoint:NSMakePoint(x + markerOffset, frameRect.size.height)];
 
-            [thePath setLineWidth:tickWidth];
+            thePath.lineWidth = tickWidth;
 
             [thePath stroke];
         }
@@ -252,11 +252,11 @@
         // shift key or command key are not pressed
     
         SVGWebView * svgWebView = macSVGDocumentWindowController.svgWebKitController.svgWebView;
-        DOMDocument * domDocument = [[svgWebView mainFrame] DOMDocument];
+        DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
         DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
         if (svgElementsList.length > 0)
         {
-            NSPoint globalLocation = [theEvent locationInWindow];
+            NSPoint globalLocation = theEvent.locationInWindow;
             NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
             
             CGFloat newTimeValue = localLocation.x / animationTimelineView.pixelsPerSecond;
@@ -274,14 +274,14 @@
             DOMNode * svgElementNode = [svgElementsList item:0];
             DOMElement * svgElement = (DOMElement *)svgElementNode;
             
-            NSArray * setCurrentTimeArgumentsArray = [NSArray arrayWithObject:newTimeValueNumber];
+            NSArray * setCurrentTimeArgumentsArray = @[newTimeValueNumber];
             [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
 
             [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
             
             NSString * currentTimeString = [[NSString alloc] initWithFormat:@"%.2f", newTimeValue];
             
-            [macSVGDocumentWindowController.svgWebKitController.currentTimeTextField setStringValue:currentTimeString];
+            (macSVGDocumentWindowController.svgWebKitController.currentTimeTextField).stringValue = currentTimeString;
             
             macSVGDocumentWindowController.currentTimeString = currentTimeString;
             

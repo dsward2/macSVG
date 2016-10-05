@@ -250,7 +250,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SFTP session: %@, %d",
                     sshErrorString, errorInt);
@@ -282,7 +282,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SFTP output file: %@, %d",
                     sshErrorString, errorInt);
@@ -327,7 +327,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
     } while (rc > 0);
 */
 
-    NSInteger dataSize = [fileData length];
+    NSInteger dataSize = fileData.length;
     NSLog(@"dataSize = %ld", dataSize);
     off_t got=0;
 

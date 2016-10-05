@@ -246,7 +246,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
             int want_buf = 0;
             int errorInt = libssh2_session_last_error(session, &errorMsg,
                     &errorMsgLength, want_buf);
-            NSString * sshErrorString = [NSString stringWithUTF8String:errorMsg];
+            NSString * sshErrorString = @(errorMsg);
             
             NSLog(@"Unable to open SSH session for SCP: %@, %d",
                     sshErrorString, errorInt);

@@ -22,7 +22,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 //	initWithNibName
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -71,7 +71,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         self.colorStopsArray = [NSMutableArray array];
     }
     
-    [[[gradientPreviewWebView mainFrame] frameView] setAllowsScrolling:NO];
+    [gradientPreviewWebView.mainFrame.frameView setAllowsScrolling:NO];
     [gradientPreviewWebView setEditable:NO];
 }
 
@@ -105,7 +105,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -148,40 +148,38 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
     NSArray * styleElementsArray = [rootElement elementsForName:@"defs"];
     
-    if ([styleElementsArray count] > 0)
+    if (styleElementsArray.count > 0)
     {
-        resultElement = [styleElementsArray objectAtIndex:0];
+        resultElement = styleElementsArray[0];
     }
     else
     {
-        NSDictionary * drawableObjectsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"rect", @"rect",
-                @"circle", @"circle",
-                @"ellipse", @"ellipse",
-                @"text", @"text",
-                @"image", @"image",
-                @"line", @"line",
-                @"polyline", @"polyline",
-                @"polygon", @"polygon",
-                @"path", @"path",
-                @"use", @"use",
-                @"g", @"g",
-                @"foreignObject", @"foreignObject",
-                nil];
+        NSDictionary * drawableObjectsDictionary = @{@"rect": @"rect",
+                @"circle": @"circle",
+                @"ellipse": @"ellipse",
+                @"text": @"text",
+                @"image": @"image",
+                @"line": @"line",
+                @"polyline": @"polyline",
+                @"polygon": @"polygon",
+                @"path": @"path",
+                @"use": @"use",
+                @"g": @"g",
+                @"foreignObject": @"foreignObject"};
 
         // determine a good insertion point for the defs element
-        NSArray * nodesArray = [rootElement children];
+        NSArray * nodesArray = rootElement.children;
         NSInteger nodeIndex = 0;
         for (NSXMLNode * aNode in nodesArray)
         {
-            NSXMLNodeKind nodeKind = [aNode kind];
+            NSXMLNodeKind nodeKind = aNode.kind;
             
             if (nodeKind == NSXMLElementKind)
             {
                 NSXMLElement * aElement = (NSXMLElement *)aNode;
-                NSString * elementName = [aElement name];
+                NSString * elementName = aElement.name;
                 
-                if ([drawableObjectsDictionary objectForKey:elementName] != NULL)
+                if (drawableObjectsDictionary[elementName] != NULL)
                 {
                     break;
                 }
@@ -194,8 +192,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         resultElement = [[NSXMLElement alloc] initWithName:@"defs"];
         
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [idAttribute setName:@"id"];
-        [idAttribute setStringValue:@"svg_document_defs"];
+        idAttribute.name = @"id";
+        idAttribute.stringValue = @"svg_document_defs";
         
         [resultElement addAttribute:idAttribute];
         
@@ -215,7 +213,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     NSInteger result = 0;
     
-    result = [self.gradientsArray count];
+    result = (self.gradientsArray).count;
     
     return result;
 }
@@ -228,7 +226,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     NSInteger result = 0;
     
-    result = [self.colorStopsArray count];
+    result = (self.colorStopsArray).count;
     
     return result;
 }
@@ -261,21 +259,21 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     NSString * result = @"Missing Result";
 
-    if ([self.gradientsArray count] > 0)
+    if ((self.gradientsArray).count > 0)
     {
-        NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+        NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
 
-        NSString * tableColumnTitle= [aTableColumn identifier];
+        NSString * tableColumnTitle= aTableColumn.identifier;
         
         if ([tableColumnTitle isEqualToString:@"gradientID"] == YES)
         {
             NSXMLNode * gradientElementIDNode = [gradientElement attributeForName:@"id"];
-            NSString * gradientElementIDString = [gradientElementIDNode stringValue];
+            NSString * gradientElementIDString = gradientElementIDNode.stringValue;
             result = gradientElementIDString;
         }
         else if ([tableColumnTitle isEqualToString:@"gradientType"] == YES)
         {
-            NSString * gradientTagName = [gradientElement name];
+            NSString * gradientTagName = gradientElement.name;
             result = gradientTagName;
         }
     }
@@ -317,8 +315,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     float greenFloat = 1.0f;
     float blueFloat = 0.0f;
 
-    NSInteger colorStringLength = [colorString length];
-    if ([colorString length] > 0)
+    NSInteger colorStringLength = colorString.length;
+    if (colorString.length > 0)
     {
         unichar firstChar = [colorString characterAtIndex:0];
         if (firstChar == '#')
@@ -427,20 +425,20 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             
             for (NSDictionary * webColorDictionary in webColorsArray)
             {
-                NSString * webColorName = [webColorDictionary objectForKey:@"name"];
+                NSString * webColorName = webColorDictionary[@"name"];
                 if ([colorString isEqualToString:webColorName] == YES)
                 {
-                    NSString * rgbColorString = [webColorDictionary objectForKey:@"rgb"];
+                    NSString * rgbColorString = webColorDictionary[@"rgb"];
                     
                     NSArray * rgbArray = [rgbColorString componentsSeparatedByString:@","];
                     
-                    NSString * redString = [rgbArray objectAtIndex:0];
-                    NSString * greenString = [rgbArray objectAtIndex:1];
-                    NSString * blueString = [rgbArray objectAtIndex:2];
+                    NSString * redString = rgbArray[0];
+                    NSString * greenString = rgbArray[1];
+                    NSString * blueString = rgbArray[2];
                     
-                    NSInteger redInt = [redString integerValue];
-                    NSInteger greenInt = [greenString integerValue];
-                    NSInteger blueInt = [blueString integerValue];
+                    NSInteger redInt = redString.integerValue;
+                    NSInteger greenInt = greenString.integerValue;
+                    NSInteger blueInt = blueString.integerValue;
 
                     redFloat = (float)redInt / 255.0f;
                     greenFloat = (float)greenInt / 255.0f;
@@ -473,11 +471,11 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     NSView * resultView = NULL;
 
-    if ([self.colorStopsArray count] > 0)
+    if ((self.colorStopsArray).count > 0)
     {
-        NSXMLElement * colorStopElement = [self.colorStopsArray objectAtIndex:rowIndex];
+        NSXMLElement * colorStopElement = (self.colorStopsArray)[rowIndex];
 
-        NSString * tableColumnIdentifier= [aTableColumn identifier];
+        NSString * tableColumnIdentifier= aTableColumn.identifier;
         
         if ([tableColumnIdentifier isEqualToString:@"stopIndex"] == YES)
         {
@@ -494,15 +492,15 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
 
             NSXMLNode * colorStopIDNode = [colorStopElement attributeForName:@"id"];
-            NSString * colorStopIDString = [colorStopIDNode stringValue];
+            NSString * colorStopIDString = colorStopIDNode.stringValue;
             
             NSXMLNode * offsetNode = [colorStopElement attributeForName:@"offset"];
-            NSString * offsetString = [offsetNode stringValue];
+            NSString * offsetString = offsetNode.stringValue;
             
             NSString * cellTextString = [NSString stringWithFormat:@"%@ - %@", offsetString, colorStopIDString];
             
             NSXMLNode * stopColorNode = [colorStopElement attributeForName:@"stop-color"];
-            NSString * stopColorString = [stopColorNode stringValue];
+            NSString * stopColorString = stopColorNode.stringValue;
             
             NSImage * colorImage = [self makeColorSwatchImage:stopColorString];
             
@@ -528,11 +526,11 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     NSView * resultView = NULL;
 
-    if ([self.gradientsArray count] > 0)
+    if ((self.gradientsArray).count > 0)
     {
-        NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+        NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
 
-        NSString * tableColumnIdentifier= [aTableColumn identifier];
+        NSString * tableColumnIdentifier= aTableColumn.identifier;
         
         if ([tableColumnIdentifier isEqualToString:@"gradientID"] == YES)
         {
@@ -542,7 +540,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             NSXMLNode * gradientIDNode = [gradientElement attributeForName:@"id"];
             if (gradientIDNode != NULL)
             {
-                gradientIDString = [gradientIDNode stringValue];
+                gradientIDString = gradientIDNode.stringValue;
             }
             
             cellView.textField.stringValue = gradientIDString;
@@ -553,7 +551,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         {
             NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
 
-            NSString * gradientTagNameString = [gradientElement name];
+            NSString * gradientTagNameString = gradientElement.name;
             
             cellView.textField.stringValue = gradientTagNameString;
             
@@ -604,7 +602,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     
     NSString * mimeType = @"image/svg+xml";
 
-    [[gradientPreviewWebView mainFrame] loadData:xmlData
+    [gradientPreviewWebView.mainFrame loadData:xmlData
             MIMEType:mimeType	
             textEncodingName:@"UTF-8" 
             baseURL:baseURL];
@@ -616,116 +614,116 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)loadGradientTextFields
 {
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
 
             [self loadPresetOptionsForGradientElement:gradientElement];
             
-            NSString * elementName = [gradientElement name];
-            [gradientTypeTextField setStringValue:elementName];
+            NSString * elementName = gradientElement.name;
+            gradientTypeTextField.stringValue = elementName;
             
             NSString * idString = @"";
             NSXMLNode * idNode = [gradientElement attributeForName:@"id"];
             if (idNode != NULL)
             {
-                idString = [idNode stringValue];
+                idString = idNode.stringValue;
             }
-            [gradientIDTextField setStringValue:idString];
+            gradientIDTextField.stringValue = idString;
             
             
             if ([elementName isEqualToString:@"radialGradient"] == YES)
             {
-                [gradientX1Label setStringValue:@"cx"];
+                gradientX1Label.stringValue = @"cx";
                 NSString * cxString = @"";
                 NSXMLNode * cxNode = [gradientElement attributeForName:@"cx"];
                 if (cxNode != NULL)
                 {
-                    cxString = [cxNode stringValue];
+                    cxString = cxNode.stringValue;
                 }
-                [gradientX1TextField setStringValue:cxString];
+                gradientX1TextField.stringValue = cxString;
                 
-                [gradientY1Label setStringValue:@"cy"];
+                gradientY1Label.stringValue = @"cy";
                 NSString * cyString = @"";
                 NSXMLNode * cyNode = [gradientElement attributeForName:@"cy"];
                 if (cyNode != NULL)
                 {
-                    cyString = [cyNode stringValue];
+                    cyString = cyNode.stringValue;
                 }
-                [gradientY1TextField setStringValue:cyString];
+                gradientY1TextField.stringValue = cyString;
                 
-                [gradientX2Label setStringValue:@"fx"];
+                gradientX2Label.stringValue = @"fx";
                 NSString * fxString = @"";
                 NSXMLNode * fxNode = [gradientElement attributeForName:@"fx"];
                 if (fxNode != NULL)
                 {
-                    fxString = [fxNode stringValue];
+                    fxString = fxNode.stringValue;
                 }
-                [gradientX2TextField setStringValue:fxString];
+                gradientX2TextField.stringValue = fxString;
                 
-                [gradientY2Label setStringValue:@"fy"];
+                gradientY2Label.stringValue = @"fy";
                 NSString * fyString = @"";
                 NSXMLNode * fyNode = [gradientElement attributeForName:@"fy"];
                 if (fyNode != NULL)
                 {
-                    fyString = [fyNode stringValue];
+                    fyString = fyNode.stringValue;
                 }
-                [gradientY2TextField setStringValue:fyString];
+                gradientY2TextField.stringValue = fyString;
 
                 NSString * rString = @"";
                 NSXMLNode * rNode = [gradientElement attributeForName:@"r"];
                 if (rNode != NULL)
                 {
-                    rString = [rNode stringValue];
+                    rString = rNode.stringValue;
                 }
-                [gradientRTextField setStringValue:rString];
+                gradientRTextField.stringValue = rString;
                 [gradientRTextField setHidden:NO];
                 
                 [gradientRLabel setHidden:NO];
             }
             else
             {
-                [gradientX1Label setStringValue:@"x1"];
+                gradientX1Label.stringValue = @"x1";
                 NSString * x1String = @"";
                 NSXMLNode * x1Node = [gradientElement attributeForName:@"x1"];
                 if (x1Node != NULL)
                 {
-                    x1String = [x1Node stringValue];
+                    x1String = x1Node.stringValue;
                 }
-                [gradientX1TextField setStringValue:x1String];
+                gradientX1TextField.stringValue = x1String;
                 
-                [gradientY1Label setStringValue:@"y1"];
+                gradientY1Label.stringValue = @"y1";
                 NSString * y1String = @"";
                 NSXMLNode * y1Node = [gradientElement attributeForName:@"y1"];
                 if (y1Node != NULL)
                 {
-                    y1String = [y1Node stringValue];
+                    y1String = y1Node.stringValue;
                 }
-                [gradientY1TextField setStringValue:y1String];
+                gradientY1TextField.stringValue = y1String;
                 
-                [gradientX2Label setStringValue:@"x2"];
+                gradientX2Label.stringValue = @"x2";
                 NSString * x2String = @"";
                 NSXMLNode * x2Node = [gradientElement attributeForName:@"x2"];
                 if (x2Node != NULL)
                 {
-                    x2String = [x2Node stringValue];
+                    x2String = x2Node.stringValue;
                 }
-                [gradientX2TextField setStringValue:x2String];
+                gradientX2TextField.stringValue = x2String;
                 
-                [gradientY2Label setStringValue:@"y2"];
+                gradientY2Label.stringValue = @"y2";
                 NSString * y2String = @"";
                 NSXMLNode * y2Node = [gradientElement attributeForName:@"y2"];
                 if (y2Node != NULL)
                 {
-                    y2String = [y2Node stringValue];
+                    y2String = y2Node.stringValue;
                 }
-                [gradientY2TextField setStringValue:y2String];
+                gradientY2TextField.stringValue = y2String;
 
-                [gradientRTextField setStringValue:@""];
+                gradientRTextField.stringValue = @"";
                 [gradientRTextField setHidden:YES];
                 
                 [gradientRLabel setHidden:YES];
@@ -737,13 +735,13 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     }
     else
     {
-        [gradientTypeTextField setStringValue:@""];
-        [gradientIDTextField setStringValue:@""];
-        [gradientX1TextField setStringValue:@""];
-        [gradientY1TextField setStringValue:@""];
-        [gradientX2TextField setStringValue:@""];
-        [gradientY2TextField setStringValue:@""];
-        [gradientRTextField setStringValue:@""];
+        gradientTypeTextField.stringValue = @"";
+        gradientIDTextField.stringValue = @"";
+        gradientX1TextField.stringValue = @"";
+        gradientY1TextField.stringValue = @"";
+        gradientX2TextField.stringValue = @"";
+        gradientY2TextField.stringValue = @"";
+        gradientRTextField.stringValue = @"";
         [self loadPresetOptionsForGradientElement:NULL];
         
         [newColorStopButton setEnabled:NO];
@@ -766,7 +764,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
     if (gradientElement != NULL)
     {
-        NSString * elementName = [gradientElement name];
+        NSString * elementName = gradientElement.name;
 
         if ([elementName isEqualToString:@"linearGradient"] == YES)
         {
@@ -796,107 +794,107 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (IBAction)presetsPopUpButtonAction:(id)sender
 {
-    NSString * presetValue = [presetsPopUpButton titleOfSelectedItem];
+    NSString * presetValue = presetsPopUpButton.titleOfSelectedItem;
     
     if ([presetValue isEqualToString:@"Top-to-Bottom"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];
-        [gradientY1TextField setStringValue:@"0%"];
-        [gradientX2TextField setStringValue:@"0%"];
-        [gradientY2TextField setStringValue:@"100%"];
+        gradientX1TextField.stringValue = @"0%";
+        gradientY1TextField.stringValue = @"0%";
+        gradientX2TextField.stringValue = @"0%";
+        gradientY2TextField.stringValue = @"100%";
     }
     else if ([presetValue isEqualToString:@"Left-to-Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];
-        [gradientY1TextField setStringValue:@"0%"];
-        [gradientX2TextField setStringValue:@"100%"];
-        [gradientY2TextField setStringValue:@"0%"];
+        gradientX1TextField.stringValue = @"0%";
+        gradientY1TextField.stringValue = @"0%";
+        gradientX2TextField.stringValue = @"100%";
+        gradientY2TextField.stringValue = @"0%";
     }
     else if ([presetValue isEqualToString:@"Top Left-to-Bottom Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];
-        [gradientY1TextField setStringValue:@"0%"];
-        [gradientX2TextField setStringValue:@"100%"];
-        [gradientY2TextField setStringValue:@"100%"];
+        gradientX1TextField.stringValue = @"0%";
+        gradientY1TextField.stringValue = @"0%";
+        gradientX2TextField.stringValue = @"100%";
+        gradientY2TextField.stringValue = @"100%";
     }
     else if ([presetValue isEqualToString:@"Bottom Left-to-Top Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];
-        [gradientY1TextField setStringValue:@"100%"];
-        [gradientX2TextField setStringValue:@"100%"];
-        [gradientY2TextField setStringValue:@"0%"];
+        gradientX1TextField.stringValue = @"0%";
+        gradientY1TextField.stringValue = @"100%";
+        gradientX2TextField.stringValue = @"100%";
+        gradientY2TextField.stringValue = @"0%";
     }
     else if ([presetValue isEqualToString:@"Center"] == YES)
     {
-        [gradientX1TextField setStringValue:@"50%"];    // cx
-        [gradientY1TextField setStringValue:@"50%"];    // cy
-        [gradientX2TextField setStringValue:@"50%"];    // fx
-        [gradientY2TextField setStringValue:@"50%"];    // fy
-        [gradientRTextField setStringValue:@"50%"];     // r
+        gradientX1TextField.stringValue = @"50%";    // cx
+        gradientY1TextField.stringValue = @"50%";    // cy
+        gradientX2TextField.stringValue = @"50%";    // fx
+        gradientY2TextField.stringValue = @"50%";    // fy
+        gradientRTextField.stringValue = @"50%";     // r
     }
     else if ([presetValue isEqualToString:@"Top"] == YES)
     {
-        [gradientX1TextField setStringValue:@"50%"];    // cx
-        [gradientY1TextField setStringValue:@"0%"];     // cy
-        [gradientX2TextField setStringValue:@"50%"];    // fx
-        [gradientY2TextField setStringValue:@"0%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"50%";    // cx
+        gradientY1TextField.stringValue = @"0%";     // cy
+        gradientX2TextField.stringValue = @"50%";    // fx
+        gradientY2TextField.stringValue = @"0%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Bottom"] == YES)
     {
-        [gradientX1TextField setStringValue:@"50%"];    // cx
-        [gradientY1TextField setStringValue:@"100%"];     // cy
-        [gradientX2TextField setStringValue:@"50%"];    // fx
-        [gradientY2TextField setStringValue:@"100%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"50%";    // cx
+        gradientY1TextField.stringValue = @"100%";     // cy
+        gradientX2TextField.stringValue = @"50%";    // fx
+        gradientY2TextField.stringValue = @"100%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Left"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];    // cx
-        [gradientY1TextField setStringValue:@"50%"];     // cy
-        [gradientX2TextField setStringValue:@"0%"];    // fx
-        [gradientY2TextField setStringValue:@"50%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"0%";    // cx
+        gradientY1TextField.stringValue = @"50%";     // cy
+        gradientX2TextField.stringValue = @"0%";    // fx
+        gradientY2TextField.stringValue = @"50%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"100%"];    // cx
-        [gradientY1TextField setStringValue:@"50%"];     // cy
-        [gradientX2TextField setStringValue:@"100%"];    // fx
-        [gradientY2TextField setStringValue:@"50%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"100%";    // cx
+        gradientY1TextField.stringValue = @"50%";     // cy
+        gradientX2TextField.stringValue = @"100%";    // fx
+        gradientY2TextField.stringValue = @"50%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Top Left"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];    // cx
-        [gradientY1TextField setStringValue:@"0%"];     // cy
-        [gradientX2TextField setStringValue:@"0%"];    // fx
-        [gradientY2TextField setStringValue:@"0%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"0%";    // cx
+        gradientY1TextField.stringValue = @"0%";     // cy
+        gradientX2TextField.stringValue = @"0%";    // fx
+        gradientY2TextField.stringValue = @"0%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Top Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"100%"];    // cx
-        [gradientY1TextField setStringValue:@"0%"];     // cy
-        [gradientX2TextField setStringValue:@"100%"];    // fx
-        [gradientY2TextField setStringValue:@"0%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"100%";    // cx
+        gradientY1TextField.stringValue = @"0%";     // cy
+        gradientX2TextField.stringValue = @"100%";    // fx
+        gradientY2TextField.stringValue = @"0%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Bottom Left"] == YES)
     {
-        [gradientX1TextField setStringValue:@"0%"];    // cx
-        [gradientY1TextField setStringValue:@"100%"];     // cy
-        [gradientX2TextField setStringValue:@"0%"];    // fx
-        [gradientY2TextField setStringValue:@"100%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"0%";    // cx
+        gradientY1TextField.stringValue = @"100%";     // cy
+        gradientX2TextField.stringValue = @"0%";    // fx
+        gradientY2TextField.stringValue = @"100%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     else if ([presetValue isEqualToString:@"Bottom Right"] == YES)
     {
-        [gradientX1TextField setStringValue:@"100%"];    // cx
-        [gradientY1TextField setStringValue:@"100%"];     // cy
-        [gradientX2TextField setStringValue:@"100%"];    // fx
-        [gradientY2TextField setStringValue:@"100%"];    // fy
-        [gradientRTextField setStringValue:@"100%"];     // r
+        gradientX1TextField.stringValue = @"100%";    // cx
+        gradientY1TextField.stringValue = @"100%";     // cy
+        gradientX2TextField.stringValue = @"100%";    // fx
+        gradientY2TextField.stringValue = @"100%";    // fy
+        gradientRTextField.stringValue = @"100%";     // r
     }
     
     [self updateGradientElement];
@@ -913,56 +911,56 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)loadColorStopTextFields
 {
-    NSInteger rowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger rowIndex = colorStopElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            NSXMLElement * colorStopElement = [self.colorStopsArray objectAtIndex:rowIndex];
+            NSXMLElement * colorStopElement = (self.colorStopsArray)[rowIndex];
             
             NSString * idString = @"";
             NSXMLNode * idNode = [colorStopElement attributeForName:@"id"];
             if (idNode != NULL)
             {
-                idString = [idNode stringValue];
+                idString = idNode.stringValue;
             }
-            [colorStopIDTextField setStringValue:idString];
+            colorStopIDTextField.stringValue = idString;
             
             NSString * offsetString = @"";
             NSXMLNode * offsetNode = [colorStopElement attributeForName:@"offset"];
             if (offsetNode != NULL)
             {
-                offsetString = [offsetNode stringValue];
+                offsetString = offsetNode.stringValue;
             }
-            [colorStopOffsetTextField setStringValue:offsetString];
+            colorStopOffsetTextField.stringValue = offsetString;
             
             NSString * colorString = @"";
             NSXMLNode * colorNode = [colorStopElement attributeForName:@"stop-color"];
             if (colorNode != NULL)
             {
-                colorString = [colorNode stringValue];
+                colorString = colorNode.stringValue;
             }
-            [colorStopColorComboBox setStringValue:colorString];
+            colorStopColorComboBox.stringValue = colorString;
             
             NSString * opacityString = @"";
             NSXMLNode * opacityNode = [colorStopElement attributeForName:@"stop-opacity"];
             if (opacityNode != NULL)
             {
-                opacityString = [opacityNode stringValue];
+                opacityString = opacityNode.stringValue;
             }
-            [colorStopOpacityTextField setStringValue:opacityString];
+            colorStopOpacityTextField.stringValue = opacityString;
             
             [self updateColorWell];
         }
     }
     else
     {
-        [colorStopIDTextField setStringValue:@""];
-        [colorStopOffsetTextField setStringValue:@""];
-        [colorStopColorComboBox setStringValue:@""];
-        [colorStopOpacityTextField setStringValue:@""];
-        [colorStopColorWell setColor:[NSColor whiteColor]];
+        colorStopIDTextField.stringValue = @"";
+        colorStopOffsetTextField.stringValue = @"";
+        colorStopColorComboBox.stringValue = @"";
+        colorStopOpacityTextField.stringValue = @"";
+        colorStopColorWell.color = [NSColor whiteColor];
     }
 }
 
@@ -1000,7 +998,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)colorStopsTableViewSelectionDidChange
 {
-    NSInteger rowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger rowIndex = colorStopElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
@@ -1020,130 +1018,130 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)updateGradientElement
 {
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
             
-            NSString * elementName = [gradientElement name];
-            [gradientTypeTextField setStringValue:elementName];
+            NSString * elementName = gradientElement.name;
+            gradientTypeTextField.stringValue = elementName;
             
-            NSString * idString = [gradientIDTextField stringValue];
+            NSString * idString = gradientIDTextField.stringValue;
             NSXMLNode * idNode = [gradientElement attributeForName:@"id"];
             if (idNode == NULL)
             {
                 idNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [idNode setName:@"id"];
-                [idNode setStringValue:@""];
+                idNode.name = @"id";
+                idNode.stringValue = @"";
                 [gradientElement addAttribute:idNode];
             }
-            [idNode setStringValue:idString];
+            idNode.stringValue = idString;
             
             if ([elementName isEqualToString:@"radialGradient"] == YES)
             {
-                NSString * cxString = [gradientX1TextField stringValue];
+                NSString * cxString = gradientX1TextField.stringValue;
                 NSXMLNode * cxNode = [gradientElement attributeForName:@"cx"];
                 if (cxNode == NULL)
                 {
                     cxNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [cxNode setName:@"cx"];
-                    [cxNode setStringValue:@""];
+                    cxNode.name = @"cx";
+                    cxNode.stringValue = @"";
                     [gradientElement addAttribute:cxNode];
                 }
-                [cxNode setStringValue:cxString];
+                cxNode.stringValue = cxString;
 
-                NSString * cyString = [gradientY1TextField stringValue];
+                NSString * cyString = gradientY1TextField.stringValue;
                 NSXMLNode * cyNode = [gradientElement attributeForName:@"cy"];
                 if (cyNode == NULL)
                 {
                     cyNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [cyNode setName:@"cy"];
-                    [cyNode setStringValue:@""];
+                    cyNode.name = @"cy";
+                    cyNode.stringValue = @"";
                     [gradientElement addAttribute:cyNode];
                 }
-                [cyNode setStringValue:cyString];
+                cyNode.stringValue = cyString;
 
-                NSString * fxString = [gradientX2TextField stringValue];
+                NSString * fxString = gradientX2TextField.stringValue;
                 NSXMLNode * fxNode = [gradientElement attributeForName:@"fx"];
                 if (fxNode == NULL)
                 {
                     fxNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [fxNode setName:@"fx"];
-                    [fxNode setStringValue:@""];
+                    fxNode.name = @"fx";
+                    fxNode.stringValue = @"";
                     [gradientElement addAttribute:fxNode];
                 }
-                [fxNode setStringValue:fxString];
+                fxNode.stringValue = fxString;
 
-                NSString * fyString = [gradientY2TextField stringValue];
+                NSString * fyString = gradientY2TextField.stringValue;
                 NSXMLNode * fyNode = [gradientElement attributeForName:@"fy"];
                 if (fyNode == NULL)
                 {
                     fyNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [fyNode setName:@"fy"];
-                    [fyNode setStringValue:@""];
+                    fyNode.name = @"fy";
+                    fyNode.stringValue = @"";
                     [gradientElement addAttribute:fyNode];
                 }
-                [fyNode setStringValue:fyString];
+                fyNode.stringValue = fyString;
 
-                NSString * rString = [gradientRTextField stringValue];
+                NSString * rString = gradientRTextField.stringValue;
                 NSXMLNode * rNode = [gradientElement attributeForName:@"r"];
                 if (rNode == NULL)
                 {
                     rNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [rNode setName:@"r"];
-                    [rNode setStringValue:@""];
+                    rNode.name = @"r";
+                    rNode.stringValue = @"";
                     [gradientElement addAttribute:rNode];
                 }
-                [rNode setStringValue:rString];
+                rNode.stringValue = rString;
             }
             else
             {
-                NSString * x1String = [gradientX1TextField stringValue];
+                NSString * x1String = gradientX1TextField.stringValue;
                 NSXMLNode * x1Node = [gradientElement attributeForName:@"x1"];
                 if (x1Node == NULL)
                 {
                     x1Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [x1Node setName:@"x1"];
-                    [x1Node setStringValue:@""];
+                    x1Node.name = @"x1";
+                    x1Node.stringValue = @"";
                     [gradientElement addAttribute:x1Node];
                 }
-                [x1Node setStringValue:x1String];
+                x1Node.stringValue = x1String;
 
-                NSString * y1String = [gradientY1TextField stringValue];
+                NSString * y1String = gradientY1TextField.stringValue;
                 NSXMLNode * y1Node = [gradientElement attributeForName:@"y1"];
                 if (y1Node == NULL)
                 {
                     y1Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [y1Node setName:@"y1"];
-                    [y1Node setStringValue:@""];
+                    y1Node.name = @"y1";
+                    y1Node.stringValue = @"";
                     [gradientElement addAttribute:y1Node];
                 }
-                [y1Node setStringValue:y1String];
+                y1Node.stringValue = y1String;
 
-                NSString * x2String = [gradientX2TextField stringValue];
+                NSString * x2String = gradientX2TextField.stringValue;
                 NSXMLNode * x2Node = [gradientElement attributeForName:@"x2"];
                 if (x2Node == NULL)
                 {
                     x2Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [x2Node setName:@"x2"];
-                    [x2Node setStringValue:@""];
+                    x2Node.name = @"x2";
+                    x2Node.stringValue = @"";
                     [gradientElement addAttribute:x2Node];
                 }
-                [x2Node setStringValue:x2String];
+                x2Node.stringValue = x2String;
 
-                NSString * y2String = [gradientY2TextField stringValue];
+                NSString * y2String = gradientY2TextField.stringValue;
                 NSXMLNode * y2Node = [gradientElement attributeForName:@"y2"];
                 if (y2Node == NULL)
                 {
                     y2Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [y2Node setName:@"y2"];
-                    [y2Node setStringValue:@""];
+                    y2Node.name = @"y2";
+                    y2Node.stringValue = @"";
                     [gradientElement addAttribute:y2Node];
                 }
-                [y2Node setStringValue:y2String];
+                y2Node.stringValue = y2String;
             }
         }
     }
@@ -1155,59 +1153,59 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)updateColorStopElement
 {
-    NSInteger rowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger rowIndex = colorStopElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            NSXMLElement * colorStopElement = [self.colorStopsArray objectAtIndex:rowIndex];
+            NSXMLElement * colorStopElement = (self.colorStopsArray)[rowIndex];
 
-            NSString * idString = [colorStopIDTextField stringValue];
+            NSString * idString = colorStopIDTextField.stringValue;
             NSXMLNode * idNode = [colorStopElement attributeForName:@"id"];
             if (idNode == NULL)
             {
                 idNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [idNode setName:@"x1"];
-                [idNode setStringValue:@""];
+                idNode.name = @"x1";
+                idNode.stringValue = @"";
                 [colorStopElement addAttribute:idNode];
             }
-            [idNode setStringValue:idString];
+            idNode.stringValue = idString;
 
-            NSString * offsetString = [colorStopOffsetTextField stringValue];
+            NSString * offsetString = colorStopOffsetTextField.stringValue;
             NSXMLNode * offsetNode = [colorStopElement attributeForName:@"offset"];
             if (offsetNode == NULL)
             {
                 offsetNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [offsetNode setName:@"offset"];
-                [offsetNode setStringValue:@""];
+                offsetNode.name = @"offset";
+                offsetNode.stringValue = @"";
                 [colorStopElement addAttribute:offsetNode];
             }
-            [offsetNode setStringValue:offsetString];
+            offsetNode.stringValue = offsetString;
 
-            NSString * colorString = [colorStopColorComboBox stringValue];
+            NSString * colorString = colorStopColorComboBox.stringValue;
             NSXMLNode * colorNode = [colorStopElement attributeForName:@"stop-color"];
             if (colorNode == NULL)
             {
                 colorNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [colorNode setName:@"stop-color"];
-                [colorNode setStringValue:@""];
+                colorNode.name = @"stop-color";
+                colorNode.stringValue = @"";
                 [colorStopElement addAttribute:colorNode];
             }
-            [colorNode setStringValue:colorString];
+            colorNode.stringValue = colorString;
 
-            NSString * opacityString = [colorStopOpacityTextField stringValue];
-            if ([opacityString length] > 0)
+            NSString * opacityString = colorStopOpacityTextField.stringValue;
+            if (opacityString.length > 0)
             {
                 NSXMLNode * opacityNode = [colorStopElement attributeForName:@"stop-opacity"];
                 if (opacityNode == NULL)
                 {
                     opacityNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                    [opacityNode setName:@"stop-opacity"];
-                    [opacityNode setStringValue:@""];
+                    opacityNode.name = @"stop-opacity";
+                    opacityNode.stringValue = @"";
                     [colorStopElement addAttribute:opacityNode];
                 }
-                [opacityNode setStringValue:opacityString];
+                opacityNode.stringValue = opacityString;
             }
             else
             {
@@ -1229,25 +1227,25 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)sortGradientColorStops
 {
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
             
-            NSArray * gradientChildArray = [gradientElement children];
+            NSArray * gradientChildArray = gradientElement.children;
             
             NSMutableArray * unsortedColorStopsArray = [NSMutableArray array];
             
             for (NSXMLNode * childNode in gradientChildArray)
             {
-                if ([childNode kind] == NSXMLElementKind)
+                if (childNode.kind == NSXMLElementKind)
                 {
                     NSXMLElement * childElement = (NSXMLElement *)childNode;
                     
-                    NSString * childElementName = [childElement name];
+                    NSString * childElementName = childElement.name;
                     
                     if ([childElementName isEqualToString:@"stop"] == YES)
                     {
@@ -1256,7 +1254,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 }
             }
             
-            if ([unsortedColorStopsArray count] > 0)
+            if (unsortedColorStopsArray.count > 0)
             {
                 NSArray * sortedColorStopsArray = [unsortedColorStopsArray
                         sortedArrayUsingFunction:colorStopsSort context:NULL];
@@ -1299,7 +1297,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == gradientElementsTableView)
     {
         [self gradientPreviewTableViewSelectionDidChange];
@@ -1318,7 +1316,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [colorAttributeEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = colorAttributeEditor.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
     NSString * xpathQuery = @".//linearGradient";
@@ -1337,7 +1335,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [colorAttributeEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = colorAttributeEditor.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
     NSString * xpathQuery = @".//radialGradient";
@@ -1369,18 +1367,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
  -(void)loadGradientsData
 {
-    [gradientTypeTextField setStringValue:@""];
-    [gradientIDTextField setStringValue:@""];
-    [gradientX1TextField setStringValue:@""];
-    [gradientY1TextField setStringValue:@""];
-    [gradientX2TextField setStringValue:@""];
-    [gradientY2TextField setStringValue:@""];
-    [gradientRTextField setStringValue:@""];
-    [colorStopIDTextField setStringValue:@""];
-    [colorStopOffsetTextField setStringValue:@""];
-    [colorStopColorComboBox setStringValue:@""];
-    [colorStopOpacityTextField setStringValue:@""];
-    [colorStopColorWell setColor:[NSColor whiteColor]];
+    gradientTypeTextField.stringValue = @"";
+    gradientIDTextField.stringValue = @"";
+    gradientX1TextField.stringValue = @"";
+    gradientY1TextField.stringValue = @"";
+    gradientX2TextField.stringValue = @"";
+    gradientY2TextField.stringValue = @"";
+    gradientRTextField.stringValue = @"";
+    colorStopIDTextField.stringValue = @"";
+    colorStopOffsetTextField.stringValue = @"";
+    colorStopColorComboBox.stringValue = @"";
+    colorStopOpacityTextField.stringValue = @"";
+    colorStopColorWell.color = [NSColor whiteColor];
 
     [self.gradientsArray removeAllObjects];
     NSArray * gradientElementsArray = [self findAllGradientElements];
@@ -1388,15 +1386,15 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
     [gradientElementsTableView reloadData];
 
-    NSXMLElement * targetElement = [colorAttributeEditor pluginTargetXMLElement];
-    NSString * activeAttributeName = [colorAttributeEditor activeAttributeName];
+    NSXMLElement * targetElement = colorAttributeEditor.pluginTargetXMLElement;
+    NSString * activeAttributeName = colorAttributeEditor.activeAttributeName;
     
     NSXMLNode * attributeNode = [targetElement attributeForName:activeAttributeName];
     if (attributeNode != NULL)
     {
-        NSString * attributeValue = [attributeNode stringValue];
+        NSString * attributeValue = attributeNode.stringValue;
         
-        if ([attributeValue length] > 1)
+        if (attributeValue.length > 1)
         {
             BOOL validGradientIDFound = NO;
             NSInteger foundGradientIndex = 0;
@@ -1405,14 +1403,14 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             
             if (firstChar == '#')
             {
-                NSInteger extractLength = [attributeValue length] - 1;
+                NSInteger extractLength = attributeValue.length - 1;
                 NSRange extractURLRange = NSMakeRange(1, extractLength);
                 NSString * idString = [attributeValue substringWithRange:extractURLRange];
                 
                 for (NSXMLElement * aGradientElement in self.gradientsArray)
                 {
                     NSXMLNode * gradientIDNode = [aGradientElement attributeForName:@"id"];
-                    NSString * gradientIDString = [gradientIDNode stringValue];
+                    NSString * gradientIDString = gradientIDNode.stringValue;
                     
                     if ([idString isEqualToString:gradientIDString] == YES)
                     {
@@ -1427,14 +1425,14 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 NSRange urlRange = [attributeValue rangeOfString:@"url(#"];
                 if (urlRange.location == 0)
                 {
-                    NSInteger extractLength = [attributeValue length] - 6;
+                    NSInteger extractLength = attributeValue.length - 6;
                     NSRange extractURLRange = NSMakeRange(5, extractLength);
                     NSString * idString = [attributeValue substringWithRange:extractURLRange];
                     
                     for (NSXMLElement * aGradientElement in self.gradientsArray)
                     {
                         NSXMLNode * gradientIDNode = [aGradientElement attributeForName:@"id"];
-                        NSString * gradientIDString = [gradientIDNode stringValue];
+                        NSString * gradientIDString = gradientIDNode.stringValue;
                         
                         if ([idString isEqualToString:gradientIDString] == YES)
                         {
@@ -1465,26 +1463,26 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     [self.colorStopsArray removeAllObjects];
 
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
 
     NSMutableArray * buildColorStopsArray = [NSMutableArray array];
 
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
             
             [self sortGradientColorStops];
             
-            NSArray * childElements = [gradientElement children];
+            NSArray * childElements = gradientElement.children;
             
             for (NSXMLNode * childNode in childElements)
             {
-                if ([childNode kind] == NSXMLElementKind)
+                if (childNode.kind == NSXMLElementKind)
                 {
                     NSXMLElement * childElement = (NSXMLElement *)childNode;
-                    NSString * elementName = [childElement name];
+                    NSString * elementName = childElement.name;
                     
                     if ([elementName isEqualToString:@"stop"] == YES)
                     {
@@ -1520,15 +1518,15 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     NSXMLNode * offsetAttribute1 = [colorStopElement1 attributeForName:@"offset"];
     if (offsetAttribute1 != NULL)
     {
-        offsetString1 = [offsetAttribute1 stringValue];
-        offsetFloat1 = [offsetString1 floatValue];
+        offsetString1 = offsetAttribute1.stringValue;
+        offsetFloat1 = offsetString1.floatValue;
     }
 
     NSXMLNode * offsetAttribute2 = [colorStopElement2 attributeForName:@"offset"];
     if (offsetAttribute2 != NULL)
     {
-        offsetString2 = [offsetAttribute2 stringValue];
-        offsetFloat2 = [offsetString2 floatValue];
+        offsetString2 = offsetAttribute2.stringValue;
+        offsetFloat2 = offsetString2.floatValue;
     }
 
     //sortResult = [offsetString1 compare:offsetString2];
@@ -1560,7 +1558,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     NSXMLElement * defsElement = [self defsElementForXMLDocument:svgXmlDocument];
 
     NSXMLElement * newLinearGradientElement = [[NSXMLElement alloc] init];
-    [newLinearGradientElement setName:@"linearGradient"];
+    newLinearGradientElement.name = @"linearGradient";
 
     NSString * linearGradientID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1568,34 +1566,34 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:linearGradientID];
     
     NSXMLNode * linearGradientIDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [linearGradientIDAttributeNode setName:@"id"];
-    [linearGradientIDAttributeNode setStringValue:linearGradientID];
+    linearGradientIDAttributeNode.name = @"id";
+    linearGradientIDAttributeNode.stringValue = linearGradientID;
     [newLinearGradientElement addAttribute:linearGradientIDAttributeNode];
 
     NSXMLNode * x1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [x1AttributeNode setName:@"x1"];
-    [x1AttributeNode setStringValue:@"0%"];
+    x1AttributeNode.name = @"x1";
+    x1AttributeNode.stringValue = @"0%";
     [newLinearGradientElement addAttribute:x1AttributeNode];
 
     NSXMLNode * y1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [y1AttributeNode setName:@"y1"];
-    [y1AttributeNode setStringValue:@"0%"];
+    y1AttributeNode.name = @"y1";
+    y1AttributeNode.stringValue = @"0%";
     [newLinearGradientElement addAttribute:y1AttributeNode];
 
     NSXMLNode * x2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [x2AttributeNode setName:@"x2"];
-    [x2AttributeNode setStringValue:@"0%"];
+    x2AttributeNode.name = @"x2";
+    x2AttributeNode.stringValue = @"0%";
     [newLinearGradientElement addAttribute:x2AttributeNode];
 
     NSXMLNode * y2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [y2AttributeNode setName:@"y2"];
-    [y2AttributeNode setStringValue:@"100%"];
+    y2AttributeNode.name = @"y2";
+    y2AttributeNode.stringValue = @"100%";
     [newLinearGradientElement addAttribute:y2AttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newLinearGradientElement];
 
     NSXMLElement * newStop1Element = [[NSXMLElement alloc] init];
-    [newStop1Element setName:@"stop"];
+    newStop1Element.name = @"stop";
 
     NSString * stop1ID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1603,18 +1601,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:stop1ID];
 
     NSXMLNode * stop1IDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stop1IDAttributeNode setName:@"id"];
-    [stop1IDAttributeNode setStringValue:stop1ID];
+    stop1IDAttributeNode.name = @"id";
+    stop1IDAttributeNode.stringValue = stop1ID;
     [newStop1Element addAttribute:stop1IDAttributeNode];
 
     NSXMLNode * offset1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [offset1AttributeNode setName:@"offset"];
-    [offset1AttributeNode setStringValue:@"0%"];
+    offset1AttributeNode.name = @"offset";
+    offset1AttributeNode.stringValue = @"0%";
     [newStop1Element addAttribute:offset1AttributeNode];
 
     NSXMLNode * stopColor1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stopColor1AttributeNode setName:@"stop-color"];
-    [stopColor1AttributeNode setStringValue:@"white"];
+    stopColor1AttributeNode.name = @"stop-color";
+    stopColor1AttributeNode.stringValue = @"white";
     [newStop1Element addAttribute:stopColor1AttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newStop1Element];
@@ -1622,7 +1620,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [newLinearGradientElement addChild:newStop1Element];
 
     NSXMLElement * newStop2Element = [[NSXMLElement alloc] init];
-    [newStop2Element setName:@"stop"];
+    newStop2Element.name = @"stop";
 
     NSString * stop2ID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1630,18 +1628,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:stop2ID];
 
     NSXMLNode * stop2IDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stop2IDAttributeNode setName:@"id"];
-    [stop2IDAttributeNode setStringValue:stop2ID];
+    stop2IDAttributeNode.name = @"id";
+    stop2IDAttributeNode.stringValue = stop2ID;
     [newStop2Element addAttribute:stop2IDAttributeNode];
 
     NSXMLNode * offset2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [offset2AttributeNode setName:@"offset"];
-    [offset2AttributeNode setStringValue:@"100%"];
+    offset2AttributeNode.name = @"offset";
+    offset2AttributeNode.stringValue = @"100%";
     [newStop2Element addAttribute:offset2AttributeNode];
 
     NSXMLNode * stopColor2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stopColor2AttributeNode setName:@"stop-color"];
-    [stopColor2AttributeNode setStringValue:@"black"];
+    stopColor2AttributeNode.name = @"stop-color";
+    stopColor2AttributeNode.stringValue = @"black";
     [newStop2Element addAttribute:stopColor2AttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newStop2Element];
@@ -1672,7 +1670,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     NSXMLElement * defsElement = [self defsElementForXMLDocument:svgXmlDocument];
 
     NSXMLElement * newRadialGradientElement = [[NSXMLElement alloc] init];
-    [newRadialGradientElement setName:@"radialGradient"];
+    newRadialGradientElement.name = @"radialGradient";
 
     NSString * radialGradientID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1680,39 +1678,39 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:radialGradientID];
 
     NSXMLNode * radialGradientIDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [radialGradientIDAttributeNode setName:@"id"];
-    [radialGradientIDAttributeNode setStringValue:radialGradientID];
+    radialGradientIDAttributeNode.name = @"id";
+    radialGradientIDAttributeNode.stringValue = radialGradientID;
     [newRadialGradientElement addAttribute:radialGradientIDAttributeNode];
 
     NSXMLNode * cxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [cxAttributeNode setName:@"cx"];
-    [cxAttributeNode setStringValue:@"50%"];
+    cxAttributeNode.name = @"cx";
+    cxAttributeNode.stringValue = @"50%";
     [newRadialGradientElement addAttribute:cxAttributeNode];
 
     NSXMLNode * cyAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [cyAttributeNode setName:@"cy"];
-    [cyAttributeNode setStringValue:@"50%"];
+    cyAttributeNode.name = @"cy";
+    cyAttributeNode.stringValue = @"50%";
     [newRadialGradientElement addAttribute:cyAttributeNode];
 
     NSXMLNode * fxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [fxAttributeNode setName:@"fx"];
-    [fxAttributeNode setStringValue:@"50%"];
+    fxAttributeNode.name = @"fx";
+    fxAttributeNode.stringValue = @"50%";
     [newRadialGradientElement addAttribute:fxAttributeNode];
 
     NSXMLNode * fyAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [fyAttributeNode setName:@"fy"];
-    [fyAttributeNode setStringValue:@"50%"];
+    fyAttributeNode.name = @"fy";
+    fyAttributeNode.stringValue = @"50%";
     [newRadialGradientElement addAttribute:fyAttributeNode];
 
     NSXMLNode * rAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [rAttributeNode setName:@"r"];
-    [rAttributeNode setStringValue:@"50%"];
+    rAttributeNode.name = @"r";
+    rAttributeNode.stringValue = @"50%";
     [newRadialGradientElement addAttribute:rAttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newRadialGradientElement];
 
     NSXMLElement * newStop1Element = [[NSXMLElement alloc] init];
-    [newStop1Element setName:@"stop"];
+    newStop1Element.name = @"stop";
     
     NSString * stop1ID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1720,18 +1718,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:stop1ID];
 
     NSXMLNode * stop1IDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stop1IDAttributeNode setName:@"id"];
-    [stop1IDAttributeNode setStringValue:stop1ID];
+    stop1IDAttributeNode.name = @"id";
+    stop1IDAttributeNode.stringValue = stop1ID;
     [newStop1Element addAttribute:stop1IDAttributeNode];
 
     NSXMLNode * offset1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [offset1AttributeNode setName:@"offset"];
-    [offset1AttributeNode setStringValue:@"0%"];
+    offset1AttributeNode.name = @"offset";
+    offset1AttributeNode.stringValue = @"0%";
     [newStop1Element addAttribute:offset1AttributeNode];
 
     NSXMLNode * stopColor1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stopColor1AttributeNode setName:@"stop-color"];
-    [stopColor1AttributeNode setStringValue:@"white"];
+    stopColor1AttributeNode.name = @"stop-color";
+    stopColor1AttributeNode.stringValue = @"white";
     [newStop1Element addAttribute:stopColor1AttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newStop1Element];
@@ -1739,7 +1737,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [newRadialGradientElement addChild:newStop1Element];
 
     NSXMLElement * newStop2Element = [[NSXMLElement alloc] init];
-    [newStop2Element setName:@"stop"];
+    newStop2Element.name = @"stop";
 
     NSString * stop2ID =
             [colorAttributeEditor.macSVGPluginCallbacks
@@ -1747,18 +1745,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [pendingIDs addObject:stop2ID];
 
     NSXMLNode * stop2IDAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stop2IDAttributeNode setName:@"id"];
-    [stop2IDAttributeNode setStringValue:stop2ID];
+    stop2IDAttributeNode.name = @"id";
+    stop2IDAttributeNode.stringValue = stop2ID;
     [newStop2Element addAttribute:stop2IDAttributeNode];
 
     NSXMLNode * offset2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [offset2AttributeNode setName:@"offset"];
-    [offset2AttributeNode setStringValue:@"100%"];
+    offset2AttributeNode.name = @"offset";
+    offset2AttributeNode.stringValue = @"100%";
     [newStop2Element addAttribute:offset2AttributeNode];
     
     NSXMLNode * stopColor2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [stopColor2AttributeNode setName:@"stop-color"];
-    [stopColor2AttributeNode setStringValue:@"black"];
+    stopColor2AttributeNode.name = @"stop-color";
+    stopColor2AttributeNode.stringValue = @"black";
     [newStop2Element addAttribute:stopColor2AttributeNode];
 
     [colorAttributeEditor assignMacsvgidsForNode:newStop2Element];
@@ -1787,47 +1785,47 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     
     NSXMLElement * gradientElement = NULL;
     NSXMLElement * colorStopElement = NULL;
-    NSInteger gradientRowIndex = [gradientElementsTableView selectedRow];
+    NSInteger gradientRowIndex = gradientElementsTableView.selectedRow;
     if (gradientRowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            gradientElement = [self.gradientsArray objectAtIndex:gradientRowIndex];
+            gradientElement = (self.gradientsArray)[gradientRowIndex];
         }
     }
     
-    NSInteger colorStopRowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger colorStopRowIndex = colorStopElementsTableView.selectedRow;
     if (colorStopRowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            colorStopElement = [self.colorStopsArray objectAtIndex:colorStopRowIndex];
+            colorStopElement = (self.colorStopsArray)[colorStopRowIndex];
         }
     }
 
     NSXMLElement * newColorStopElement = [[NSXMLElement alloc] init];
-    [newColorStopElement setName:@"stop"];
+    newColorStopElement.name = @"stop";
     
     NSString * colorStopID =
             [colorAttributeEditor.macSVGPluginCallbacks
             uniqueIDForElementTagName:@"stop" pendingIDs:NULL];
     NSXMLNode * colorStopIDNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [colorStopIDNode setName:@"id"];
-    [colorStopIDNode setStringValue:colorStopID];
+    colorStopIDNode.name = @"id";
+    colorStopIDNode.stringValue = colorStopID;
     [newColorStopElement addAttribute:colorStopIDNode];
     
     [colorAttributeEditor assignMacsvgidsForNode:newColorStopElement];
     
     NSXMLNode * colorStopColorNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [colorStopColorNode setName:@"stop-color"];
-    [colorStopColorNode setStringValue:@"red"];
+    colorStopColorNode.name = @"stop-color";
+    colorStopColorNode.stringValue = @"red";
     [newColorStopElement addAttribute:colorStopColorNode];
 
     float colorStopOffset = 50.0f;
 
     BOOL usePercentage = NO;
     
-    NSInteger colorStopArrayCount = [self.colorStopsArray count];
+    NSInteger colorStopArrayCount = (self.colorStopsArray).count;
     if (colorStopArrayCount > 1)
     {
         float largestInterval = 0.0f;
@@ -1837,19 +1835,19 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
         
         for (NSInteger i = 1; i < colorStopArrayCount; i++)
         {
-            NSXMLElement * colorStop1Element = [self.colorStopsArray objectAtIndex:(i - 1)];
-            NSXMLElement * colorStop2Element = [self.colorStopsArray objectAtIndex:i];
+            NSXMLElement * colorStop1Element = (self.colorStopsArray)[(i - 1)];
+            NSXMLElement * colorStop2Element = (self.colorStopsArray)[i];
             
             float offset1 = 0.0f;
             float offset2 = 100.0f;
             
             NSXMLNode * offset1Node = [colorStop1Element attributeForName:@"offset"];
-            NSString * offset1String = [offset1Node stringValue];
-            offset1 = [offset1String floatValue];
+            NSString * offset1String = offset1Node.stringValue;
+            offset1 = offset1String.floatValue;
             
             NSXMLNode * offset2Node = [colorStop2Element attributeForName:@"offset"];
-            NSString * offset2String = [offset2Node stringValue];
-            offset2 = [offset2String floatValue];
+            NSString * offset2String = offset2Node.stringValue;
+            offset2 = offset2String.floatValue;
             
             NSRange percentageRange = [offset1String rangeOfString:@"%"];
             if (percentageRange.location != NSNotFound)
@@ -1875,13 +1873,13 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     }
     else if (colorStopArrayCount == 1)
     {
-        NSXMLElement * colorStop1Element = [self.colorStopsArray objectAtIndex:0];
+        NSXMLElement * colorStop1Element = (self.colorStopsArray)[0];
         
         float offset1 = 0.0f;
         
         NSXMLNode * offset1Node = [colorStop1Element attributeForName:@"offset"];
-        NSString * offset1String = [offset1Node stringValue];
-        offset1 = [offset1String floatValue];
+        NSString * offset1String = offset1Node.stringValue;
+        offset1 = offset1String.floatValue;
         
         NSRange percentageRange = [offset1String rangeOfString:@"%"];
         if (percentageRange.location != NSNotFound)
@@ -1910,8 +1908,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
         colorStopOffsetString = [colorStopOffsetString stringByAppendingString:@"%"];
     }
     NSXMLNode * colorStopOffsetNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [colorStopOffsetNode setName:@"offset"];
-    [colorStopOffsetNode setStringValue:colorStopOffsetString];
+    colorStopOffsetNode.name = @"offset";
+    colorStopOffsetNode.stringValue = colorStopOffsetString;
     [newColorStopElement addAttribute:colorStopOffsetNode];
 
     [gradientElement addChild:newColorStopElement];
@@ -1939,21 +1937,21 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
 {
     NSXMLElement * gradientElement = NULL;
     NSXMLElement * colorStopElement = NULL;
-    NSInteger gradientRowIndex = [gradientElementsTableView selectedRow];
+    NSInteger gradientRowIndex = gradientElementsTableView.selectedRow;
     if (gradientRowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            gradientElement = [self.gradientsArray objectAtIndex:gradientRowIndex];
+            gradientElement = (self.gradientsArray)[gradientRowIndex];
         }
     }
     
-    NSInteger colorStopRowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger colorStopRowIndex = colorStopElementsTableView.selectedRow;
     if (colorStopRowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            colorStopElement = [self.colorStopsArray objectAtIndex:colorStopRowIndex];
+            colorStopElement = (self.colorStopsArray)[colorStopRowIndex];
         }
     }
     
@@ -1961,7 +1959,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     {
         if (colorStopElement != NULL)
         {
-            NSInteger colorStopElementIndex = [colorStopElement index];
+            NSInteger colorStopElementIndex = colorStopElement.index;
             [gradientElement removeChildAtIndex:colorStopElementIndex];
         }
     }
@@ -1992,21 +1990,21 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
 {
     NSXMLElement * gradientElement = NULL;
     NSXMLElement * colorStopElement = NULL;
-    NSInteger gradientRowIndex = [gradientElementsTableView selectedRow];
+    NSInteger gradientRowIndex = gradientElementsTableView.selectedRow;
     if (gradientRowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            gradientElement = [self.gradientsArray objectAtIndex:gradientRowIndex];
+            gradientElement = (self.gradientsArray)[gradientRowIndex];
         }
     }
     
-    NSInteger colorStopRowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger colorStopRowIndex = colorStopElementsTableView.selectedRow;
     if (colorStopRowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            colorStopElement = [self.colorStopsArray objectAtIndex:colorStopRowIndex];
+            colorStopElement = (self.colorStopsArray)[colorStopRowIndex];
         }
     }
 
@@ -2038,9 +2036,9 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
 
 - (void)updateColorWell
 {
-    NSString * colorTextString = [colorStopColorComboBox stringValue];
+    NSString * colorTextString = colorStopColorComboBox.stringValue;
     
-    NSUInteger colorTextLength = [colorTextString length];
+    NSUInteger colorTextLength = colorTextString.length;
 
     if (colorTextLength > 0)
     {
@@ -2145,30 +2143,30 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
                     
                     NSColor * colorWellColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1];
                     
-                    [colorStopColorWell setColor:colorWellColor];
+                    colorStopColorWell.color = colorWellColor;
                 }
             }
         }
     }
 
-    NSInteger webColorsArrayCount = [colorAttributeEditor.webColorsArray count];
+    NSInteger webColorsArrayCount = (colorAttributeEditor.webColorsArray).count;
     for (NSInteger i = 0; i < webColorsArrayCount; i++)
     {
-        NSDictionary * colorDictionary = [colorAttributeEditor.webColorsArray objectAtIndex:i];
-        NSString * colorName = [colorDictionary objectForKey:@"name"];
+        NSDictionary * colorDictionary = (colorAttributeEditor.webColorsArray)[i];
+        NSString * colorName = colorDictionary[@"name"];
         
         if ([colorName isEqualToString:colorTextString] == YES)
         {
-            NSString * colorRGB = [colorDictionary objectForKey:@"rgb"];
+            NSString * colorRGB = colorDictionary[@"rgb"];
             
             NSArray * channelsArray = [colorRGB componentsSeparatedByString:@","];
-            NSString * redString = [channelsArray objectAtIndex:0];
-            NSString * greenString = [channelsArray objectAtIndex:1];
-            NSString * blueString = [channelsArray objectAtIndex:2];
+            NSString * redString = channelsArray[0];
+            NSString * greenString = channelsArray[1];
+            NSString * blueString = channelsArray[2];
             
-            int redInt = [redString intValue];
-            int greenInt = [greenString intValue];
-            int blueInt = [blueString intValue];
+            int redInt = redString.intValue;
+            int greenInt = greenString.intValue;
+            int blueInt = blueString.intValue;
             
             float redFloat = ((float)redInt / 255.0f);
             float greenFloat = ((float)greenInt / 255.0f);
@@ -2176,7 +2174,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
             
             NSColor * wellColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1.0f];
             
-            [colorStopColorWell setColor:wellColor];
+            colorStopColorWell.color = wellColor;
 
             break;
         }
@@ -2189,7 +2187,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
 
 - (IBAction)colorStopColorWellAction:(id)sender
 {
-    NSColor * wellColor = [colorStopColorWell color];
+    NSColor * wellColor = colorStopColorWell.color;
     
     CGFloat redFloat = 0;
     CGFloat greenFloat = 0;
@@ -2205,25 +2203,25 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     NSString * colorString = [[NSString alloc] initWithFormat:@"#%02x%02x%02x",
             redInt, greenInt, blueInt];
     
-    [colorStopColorComboBox setStringValue:colorString];
+    colorStopColorComboBox.stringValue = colorString;
 
     NSXMLElement * gradientElement = NULL;
     NSXMLElement * colorStopElement = NULL;
-    NSInteger gradientRowIndex = [gradientElementsTableView selectedRow];
+    NSInteger gradientRowIndex = gradientElementsTableView.selectedRow;
     if (gradientRowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            gradientElement = [self.gradientsArray objectAtIndex:gradientRowIndex];
+            gradientElement = (self.gradientsArray)[gradientRowIndex];
         }
     }
     
-    NSInteger colorStopRowIndex = [colorStopElementsTableView selectedRow];
+    NSInteger colorStopRowIndex = colorStopElementsTableView.selectedRow;
     if (colorStopRowIndex != -1)
     {
-        if ([self.colorStopsArray count] > 0)
+        if ((self.colorStopsArray).count > 0)
         {
-            colorStopElement = [self.colorStopsArray objectAtIndex:colorStopRowIndex];
+            colorStopElement = (self.colorStopsArray)[colorStopRowIndex];
         }
     }
 
@@ -2276,13 +2274,13 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
     [self updateColorStopElement];
     [self updateGradientPreview];
 
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
 
             [colorAttributeEditor setGradientElement:gradientElement];
         }
@@ -2329,18 +2327,18 @@ height=\"118px\" viewBox=\"0 0 118 118\" preserveAspectRatio=\"none\">";
 {
     NSString * xmlDocString = @"No gradient selected";
     
-    NSInteger rowIndex = [gradientElementsTableView selectedRow];
+    NSInteger rowIndex = gradientElementsTableView.selectedRow;
     
     if (rowIndex != -1)
     {
-        if ([self.gradientsArray count] > 0)
+        if ((self.gradientsArray).count > 0)
         {
-            NSXMLElement * gradientElement = [self.gradientsArray objectAtIndex:rowIndex];
+            NSXMLElement * gradientElement = (self.gradientsArray)[rowIndex];
 
             NSXMLNode * gradientIDAttributeNode = [gradientElement attributeForName:@"id"];
-            NSString * gradientIDString = [gradientIDAttributeNode stringValue];
+            NSString * gradientIDString = gradientIDAttributeNode.stringValue;
 
-            NSString * gradientString = [gradientElement XMLString];
+            NSString * gradientString = gradientElement.XMLString;
             
             NSString * headerString = [self svgHeaderString];
             
@@ -2387,7 +2385,7 @@ height=\"118px\" viewBox=\"0 0 118 118\" preserveAspectRatio=\"none\">";
     if (aComboBox == colorStopColorComboBox)
     {
         NSArray * webColorsArray = colorAttributeEditor.webColorsArray;
-        NSInteger webColorsArrayCount = [webColorsArray count];
+        NSInteger webColorsArrayCount = webColorsArray.count;
         result = webColorsArrayCount;
     }
     
@@ -2405,8 +2403,8 @@ height=\"118px\" viewBox=\"0 0 118 118\" preserveAspectRatio=\"none\">";
     if (aComboBox == colorStopColorComboBox)
     {
         NSArray * webColorsArray = colorAttributeEditor.webColorsArray;
-        NSDictionary * webColorDictionary = [webColorsArray objectAtIndex:index];
-        NSString * colorName = [webColorDictionary objectForKey:@"name"];
+        NSDictionary * webColorDictionary = webColorsArray[index];
+        NSString * colorName = webColorDictionary[@"name"];
         result = colorName;
     }
     

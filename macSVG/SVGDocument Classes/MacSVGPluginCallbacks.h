@@ -17,17 +17,16 @@
 
 //- (void)setMacSVGDocumentObject:(id)aMacSVGDocument;
 
-- (id)svgXmlDocument;                           // returns NSXMLDocument
-- (id)macSVGDocumentWindowController;      // returns MacSVGDocumentWindowController
-- (id)svgWebKitController;                      // returns SVGWebKitController
-- (id)svgWebView;                               // returns SVGWebView
-- (CGFloat)zoomFactor;
-- (id)svgPathEditorSelectedPathElement;           // returns NSXMLElement
+@property (readonly, strong) id svgXmlDocument;                           // returns NSXMLDocument
+@property (readonly, strong) id macSVGDocumentWindowController;      // returns MacSVGDocumentWindowController
+@property (readonly, strong) id svgWebKitController;                      // returns SVGWebKitController
+@property (readonly, strong) id svgWebView;                               // returns SVGWebView
+@property (readonly) CGFloat zoomFactor;
+@property (readonly, strong) id svgPathEditorSelectedPathElement;           // returns NSXMLElement
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
-- (id)mouseEventsControllerActiveDOMElement;    // returns DOMElement
-- (NSMutableArray *)pathSegmentsArray;          // array of dictionaries for path segments
+@property (readonly, strong) id mouseEventsControllerActiveDOMElement;    // returns DOMElement
+@property (copy) NSMutableArray *pathSegmentsArray;          // array of dictionaries for path segments
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
-- (void)setPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)aPathSegmentsArray;
 - (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;
@@ -39,45 +38,35 @@
 - (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 - (void)assignElementIDIfUnassigned:(NSXMLNode *)aNode;
 - (NSString *)uniqueIDForElementTagName:(NSString *)elementTagName pendingIDs:(NSArray *)pendingIDs;
-- (NSString *)newMacsvgid;
+@property (readonly, copy) NSString *newMacsvgid;
 - (void)pushUndoRedoDocumentChanges;
 
-- (NSMutableArray *)selectedElementsArray;
+@property (readonly, copy) NSMutableArray *selectedElementsArray;
 - (void)setToolMode:(NSInteger)newToolMode;
 - (void)selectXMLElement:(NSXMLElement *)aXMLElement;
 - (void)setActiveXMLElement:(NSXMLElement *)aXMLElement;
 - (void)updateDOMSelectionRectsAndHandles;
 
-- (NSString *) selectedPathMode;
-- (void) setSelectedPathMode:(NSString *)newValue;
+@property (copy) NSString *selectedPathMode;
 
 // elliptical arc parameters
-- (BOOL) useRelativePathCoordinates;
-- (void) setUseRelativePathCoordinates:(BOOL)newValue;
+@property  BOOL useRelativePathCoordinates;
     
-- (BOOL) closePathAutomatically;
-- (void) setClosePathAutomatically:(BOOL)newValue;
+@property  BOOL closePathAutomatically;
 
-- (BOOL) curveSegmentContinuity;
-- (void) setCurveSegmentContinuity:(BOOL)newValue;
+@property  BOOL curveSegmentContinuity;
 
-- (NSString *)largeArcFlagString;
-- (void)setLargeArcFlagString:(NSString *)newValue;
+@property (copy) NSString *largeArcFlagString;
 
-- (NSString *)sweepFlagString;
-- (void)setSweepFlagString:(NSString *)newValue;
+@property (copy) NSString *sweepFlagString;
 
-- (NSString *)xAxisRotationString;
-- (void)setXAxisRotationString:(NSString *)newValue;
+@property (copy) NSString *xAxisRotationString;
 
-- (NSString *)pathRadiusXString;
-- (void)setPathRadiusXString:(NSString *)newValue;
+@property (copy) NSString *pathRadiusXString;
 
-- (NSString *)pathRadiusYString;
-- (void)setPathRadiusYString:(NSString *)newValue;
+@property (copy) NSString *pathRadiusYString;
 
-- (NSMutableDictionary *)imageDictionary;
-- (void)setImageDictionary:(NSMutableDictionary *)newImageDictionary;
+@property (copy) NSMutableDictionary *imageDictionary;
 
 - (void)restartLastPathSegment;
 

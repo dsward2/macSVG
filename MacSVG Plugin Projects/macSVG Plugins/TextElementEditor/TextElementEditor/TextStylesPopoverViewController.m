@@ -20,7 +20,7 @@
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -42,7 +42,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -79,8 +79,8 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = @"0";
 
     numericString = [NSString stringWithFormat:@"%f", attributeFloat];
@@ -88,7 +88,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -125,7 +125,7 @@
 
 - (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
+    NSString * attributeString = attributeNode.stringValue;
 
     NSString * resultUnit = @"px";
     NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
@@ -238,20 +238,20 @@
 {
     // e.g., text-shadow: 2px 2px 3px #ff0000;
 
-    NSString * horizontalOffsetString = [horizontalOffsetTextField stringValue];
-    NSString * horizontalOffsetUnitString = [horizontalOffsetUnitPopUpButton titleOfSelectedItem];
+    NSString * horizontalOffsetString = horizontalOffsetTextField.stringValue;
+    NSString * horizontalOffsetUnitString = horizontalOffsetUnitPopUpButton.titleOfSelectedItem;
     
-    NSString * verticalOffsetString = [verticalOffsetTextField stringValue];
-    NSString * verticalOffsetUnitString = [verticalOffsetUnitPopUpButton titleOfSelectedItem];
+    NSString * verticalOffsetString = verticalOffsetTextField.stringValue;
+    NSString * verticalOffsetUnitString = verticalOffsetUnitPopUpButton.titleOfSelectedItem;
     
-    NSString * blurRadiusString = [blurRadiusTextField stringValue];
-    NSString * blurRadiusUnitString = [blurRadiusUnitPopUpButton titleOfSelectedItem];
+    NSString * blurRadiusString = blurRadiusTextField.stringValue;
+    NSString * blurRadiusUnitString = blurRadiusUnitPopUpButton.titleOfSelectedItem;
 
-    NSColor * shadowColor = [shadowColorWell color];
+    NSColor * shadowColor = shadowColorWell.color;
     NSString * hexColorString = [self hexadecimalValueOfAnNSColor:shadowColor];
     
-    NSInteger horizontalOffsetStringLength = [horizontalOffsetString length];
-    NSInteger verticalOffsetStringLength = [verticalOffsetString length];
+    NSInteger horizontalOffsetStringLength = horizontalOffsetString.length;
+    NSInteger verticalOffsetStringLength = verticalOffsetString.length;
     
     if ((horizontalOffsetStringLength > 0) && (verticalOffsetStringLength > 0))
     {
@@ -272,11 +272,11 @@
         [textShadowString appendString:hexColorString];
         [textShadowString appendString:@";"];
 
-        NSString * cssStyleString = [cssStyleTextView string];
+        NSString * cssStyleString = cssStyleTextView.string;
         
         NSString * newCssStyleString = [cssStyleString stringByAppendingString:textShadowString];
         
-        [cssStyleTextView setString:newCssStyleString];
+        cssStyleTextView.string = newCssStyleString;
     }
 }
 
@@ -286,12 +286,12 @@
 
 - (void)loadTextStyles
 {
-    NSXMLElement * textElement = [textElementEditor pluginTargetXMLElement];
+    NSXMLElement * textElement = textElementEditor.pluginTargetXMLElement;
     
     NSXMLNode * textStyleAttributeNode = [textElement attributeForName:@"text-style"];
     if (textStyleAttributeNode != NULL)
     {
-        NSString * textStyleAttributeString = [textStyleAttributeNode stringValue];
+        NSString * textStyleAttributeString = textStyleAttributeNode.stringValue;
         [fontStylePopUpButton selectItemWithTitle:textStyleAttributeString];
     }
     else
@@ -302,7 +302,7 @@
     NSXMLNode * fontVariantAttributeNode = [textElement attributeForName:@"font-variant"];
     if (fontVariantAttributeNode != NULL)
     {
-        NSString * fontVariantAttributeString = [fontVariantAttributeNode stringValue];
+        NSString * fontVariantAttributeString = fontVariantAttributeNode.stringValue;
         [fontVariantPopUpButton selectItemWithTitle:fontVariantAttributeString];
     }
     else
@@ -313,7 +313,7 @@
     NSXMLNode * fontWeightAttributeNode = [textElement attributeForName:@"font-weight"];
     if (fontWeightAttributeNode != NULL)
     {
-        NSString * fontWeightAttributeString = [fontWeightAttributeNode stringValue];
+        NSString * fontWeightAttributeString = fontWeightAttributeNode.stringValue;
         [fontWeightPopUpButton selectItemWithTitle:fontWeightAttributeString];
     }
     else
@@ -324,7 +324,7 @@
     NSXMLNode * fontStretchAttributeNode = [textElement attributeForName:@"font-stretch"];
     if (fontStretchAttributeNode != NULL)
     {
-        NSString * fontStretchAttributeString = [fontStretchAttributeNode stringValue];
+        NSString * fontStretchAttributeString = fontStretchAttributeNode.stringValue;
         [fontStretchPopUpButton selectItemWithTitle:fontStretchAttributeString];
     }
     else
@@ -332,16 +332,16 @@
         [fontStretchPopUpButton selectItemWithTitle:@""];
     }
 
-    [underlineCheckboxButton setIntegerValue:0];
-    [overlineCheckboxButton setIntegerValue:0];
-    [lineThroughCheckboxButton setIntegerValue:0];
-    [blinkCheckboxButton setIntegerValue:0];
-    [inheritDecorationCheckboxButton setIntegerValue:0];
+    underlineCheckboxButton.integerValue = 0;
+    overlineCheckboxButton.integerValue = 0;
+    lineThroughCheckboxButton.integerValue = 0;
+    blinkCheckboxButton.integerValue = 0;
+    inheritDecorationCheckboxButton.integerValue = 0;
 
     NSXMLNode * textDecorationAttributeNode = [textElement attributeForName:@"text-decoration"];
     if (textDecorationAttributeNode != NULL)
     {
-        NSString * textDecorationAttributeString = [textDecorationAttributeNode stringValue];
+        NSString * textDecorationAttributeString = textDecorationAttributeNode.stringValue;
 
         //NSRange noneRange = [textDecorationAttributeString rangeOfString:@"none"];
         NSRange underlineRange = [textDecorationAttributeString rangeOfString:@"underline"];
@@ -352,28 +352,28 @@
         
         if (inheritRange.location != NSNotFound)
         {
-            [inheritDecorationCheckboxButton setIntegerValue:1];
+            inheritDecorationCheckboxButton.integerValue = 1;
         }
         else
         {
             if (underlineRange.location != NSNotFound)
             {
-                [underlineCheckboxButton setIntegerValue:1];
+                underlineCheckboxButton.integerValue = 1;
             }
             
             if (overlineRange.location != NSNotFound)
             {
-                [overlineCheckboxButton setIntegerValue:1];
+                overlineCheckboxButton.integerValue = 1;
             }
             
             if (lineThroughRange.location != NSNotFound)
             {
-                [lineThroughCheckboxButton setIntegerValue:1];
+                lineThroughCheckboxButton.integerValue = 1;
             }
             
             if (blinkRange.location != NSNotFound)
             {
-                [blinkCheckboxButton setIntegerValue:1];
+                blinkCheckboxButton.integerValue = 1;
             }
         }
     }
@@ -384,12 +384,12 @@
         NSString * letterSpacingAttributeString = [self numericStringWithAttributeNode:letterSpacingAttributeNode];
         NSString * letterSpacingUnitString = [self unitForAttributeNode:letterSpacingAttributeNode];
         
-        [letterSpacingTextfield setStringValue:letterSpacingAttributeString];
+        letterSpacingTextfield.stringValue = letterSpacingAttributeString;
         [letterSpacingUnitPopUpButton selectItemWithTitle:letterSpacingUnitString];
     }
     else
     {
-        [letterSpacingTextfield setStringValue:@""];
+        letterSpacingTextfield.stringValue = @"";
         [letterSpacingUnitPopUpButton selectItemWithTitle:@"px"];
     }
     
@@ -399,12 +399,12 @@
         NSString * wordSpacingAttributeString = [self numericStringWithAttributeNode:wordSpacingAttributeNode];
         NSString * wordSpacingUnitString = [self unitForAttributeNode:wordSpacingAttributeNode];
         
-        [wordSpacingTextfield setStringValue:wordSpacingAttributeString];
+        wordSpacingTextfield.stringValue = wordSpacingAttributeString;
         [wordSpacingUnitPopUpButton selectItemWithTitle:wordSpacingUnitString];
     }
     else
     {
-        [wordSpacingTextfield setStringValue:@""];
+        wordSpacingTextfield.stringValue = @"";
         [wordSpacingUnitPopUpButton selectItemWithTitle:@"px"];
     }
 
@@ -412,28 +412,28 @@
     NSXMLNode * cssStyleAttributeNode = [textElement attributeForName:@"style"];
     if (cssStyleAttributeNode != NULL)
     {
-        NSString * cssStyleAttributeString = [cssStyleAttributeNode stringValue];
+        NSString * cssStyleAttributeString = cssStyleAttributeNode.stringValue;
         
-        [cssStyleTextView setString:cssStyleAttributeString];
+        cssStyleTextView.string = cssStyleAttributeString;
     }
     else
     {
-        [cssStyleTextView setString:@""];
+        cssStyleTextView.string = @"";
     }
 
     // shadowColorWell retains existing color
     
-    NSString * oldHorizontalOffsetString = [horizontalOffsetTextField stringValue];
-    if ([oldHorizontalOffsetString length] == 0)
+    NSString * oldHorizontalOffsetString = horizontalOffsetTextField.stringValue;
+    if (oldHorizontalOffsetString.length == 0)
     {
-        [horizontalOffsetTextField setStringValue:@"3"];
+        horizontalOffsetTextField.stringValue = @"3";
         [horizontalOffsetUnitPopUpButton selectItemWithTitle:@"px"];
     }
     
-    NSString * oldVerticalOffsetString = [verticalOffsetTextField stringValue];
-    if ([oldVerticalOffsetString length] == 0)
+    NSString * oldVerticalOffsetString = verticalOffsetTextField.stringValue;
+    if (oldVerticalOffsetString.length == 0)
     {
-        [verticalOffsetTextField setStringValue:@"3"];
+        verticalOffsetTextField.stringValue = @"3";
         [verticalOffsetUnitPopUpButton selectItemWithTitle:@"px"];
     }
 }
@@ -446,8 +446,8 @@
 {
     NSXMLElement * textElement = [textElementEditor activeXMLTextElement];
 
-    NSString * fontStyleAttributeString = [fontStylePopUpButton titleOfSelectedItem];
-    if ([fontStyleAttributeString length] == 0)
+    NSString * fontStyleAttributeString = fontStylePopUpButton.titleOfSelectedItem;
+    if (fontStyleAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"font-style"];
     }
@@ -457,14 +457,14 @@
         if (fontStyleAttributeNode == NULL)
         {
             fontStyleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontStyleAttributeNode setName:@"font-style"];
+            fontStyleAttributeNode.name = @"font-style";
             [textElement addAttribute:fontStyleAttributeNode];
         }
-        [fontStyleAttributeNode setStringValue:fontStyleAttributeString];
+        fontStyleAttributeNode.stringValue = fontStyleAttributeString;
     }
 
-    NSString * fontVariantAttributeString = [fontVariantPopUpButton titleOfSelectedItem];
-    if ([fontVariantAttributeString length] == 0)
+    NSString * fontVariantAttributeString = fontVariantPopUpButton.titleOfSelectedItem;
+    if (fontVariantAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"font-variant"];
     }
@@ -474,14 +474,14 @@
         if (fontVariantAttributeNode == NULL)
         {
             fontVariantAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontVariantAttributeNode setName:@"font-variant"];
+            fontVariantAttributeNode.name = @"font-variant";
             [textElement addAttribute:fontVariantAttributeNode];
         }
-        [fontVariantAttributeNode setStringValue:fontVariantAttributeString];
+        fontVariantAttributeNode.stringValue = fontVariantAttributeString;
     }
 
-    NSString * fontWeightAttributeString = [fontWeightPopUpButton titleOfSelectedItem];
-    if ([fontWeightAttributeString length] == 0)
+    NSString * fontWeightAttributeString = fontWeightPopUpButton.titleOfSelectedItem;
+    if (fontWeightAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"font-weight"];
     }
@@ -491,14 +491,14 @@
         if (fontWeightAttributeNode == NULL)
         {
             fontWeightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontWeightAttributeNode setName:@"font-weight"];
+            fontWeightAttributeNode.name = @"font-weight";
             [textElement addAttribute:fontWeightAttributeNode];
         }
-        [fontWeightAttributeNode setStringValue:fontWeightAttributeString];
+        fontWeightAttributeNode.stringValue = fontWeightAttributeString;
     }
     
-    NSString * fontStretchAttributeString = [fontStretchPopUpButton titleOfSelectedItem];
-    if ([fontStretchAttributeString length] == 0)
+    NSString * fontStretchAttributeString = fontStretchPopUpButton.titleOfSelectedItem;
+    if (fontStretchAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"font-stretch"];
     }
@@ -508,17 +508,17 @@
         if (fontStretchAttributeNode == NULL)
         {
             fontStretchAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontStretchAttributeNode setName:@"font-stretch"];
+            fontStretchAttributeNode.name = @"font-stretch";
             [textElement addAttribute:fontStretchAttributeNode];
         }
-        [fontStretchAttributeNode setStringValue:fontStretchAttributeString];
+        fontStretchAttributeNode.stringValue = fontStretchAttributeString;
     }
     
-    NSInteger underlineCheckboxValue = [underlineCheckboxButton integerValue];
-    NSInteger overlineCheckboxValue = [overlineCheckboxButton integerValue];
-    NSInteger lineThroughCheckboxValue = [lineThroughCheckboxButton integerValue];
-    NSInteger blinkCheckboxValue = [blinkCheckboxButton integerValue];
-    NSInteger inheritCheckboxValue = [inheritDecorationCheckboxButton integerValue];
+    NSInteger underlineCheckboxValue = underlineCheckboxButton.integerValue;
+    NSInteger overlineCheckboxValue = overlineCheckboxButton.integerValue;
+    NSInteger lineThroughCheckboxValue = lineThroughCheckboxButton.integerValue;
+    NSInteger blinkCheckboxValue = blinkCheckboxButton.integerValue;
+    NSInteger inheritCheckboxValue = inheritDecorationCheckboxButton.integerValue;
 
     NSInteger valuesSum = underlineCheckboxValue + overlineCheckboxValue +
             lineThroughCheckboxValue + blinkCheckboxValue + inheritCheckboxValue;
@@ -534,10 +534,10 @@
             if (textDecorationAttributeNode == NULL)
             {
                 textDecorationAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [textDecorationAttributeNode setName:@"text-decoration"];
+                textDecorationAttributeNode.name = @"text-decoration";
                 [textElement addAttribute:textDecorationAttributeNode];
             }
-            [textDecorationAttributeNode setStringValue:@"inherit"];
+            textDecorationAttributeNode.stringValue = @"inherit";
         }
         else
         {
@@ -550,7 +550,7 @@
             
             if (overlineCheckboxValue != 0)
             {
-                if ([decorationString length] > 0)
+                if (decorationString.length > 0)
                 {
                     [decorationString appendString:@" "];
                 }
@@ -559,7 +559,7 @@
             
             if (lineThroughCheckboxValue != 0)
             {
-                if ([decorationString length] > 0)
+                if (decorationString.length > 0)
                 {
                     [decorationString appendString:@" "];
                 }
@@ -568,7 +568,7 @@
             
             if (blinkCheckboxValue != 0)
             {
-                if ([decorationString length] > 0)
+                if (decorationString.length > 0)
                 {
                     [decorationString appendString:@" "];
                 }
@@ -579,62 +579,62 @@
             if (textDecorationAttributeNode == NULL)
             {
                 textDecorationAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [textDecorationAttributeNode setName:@"text-decoration"];
+                textDecorationAttributeNode.name = @"text-decoration";
                 [textElement addAttribute:textDecorationAttributeNode];
             }
-            [textDecorationAttributeNode setStringValue:decorationString];
+            textDecorationAttributeNode.stringValue = decorationString;
         }
     }
 
-    NSString * letterSpacingAttributeString = [letterSpacingTextfield stringValue];
-    if ([letterSpacingAttributeString length] == 0)
+    NSString * letterSpacingAttributeString = letterSpacingTextfield.stringValue;
+    if (letterSpacingAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"letter-spacing"];
     }
     else
     {
-        float letterSpacingFloat = [letterSpacingTextfield floatValue];
+        float letterSpacingFloat = letterSpacingTextfield.floatValue;
         NSString * numericLetterSpacingString = [self numericStringWithFloat:letterSpacingFloat];
-        NSString * letterSpacingUnitString = [letterSpacingUnitPopUpButton titleOfSelectedItem];
+        NSString * letterSpacingUnitString = letterSpacingUnitPopUpButton.titleOfSelectedItem;
         NSString * letterSpacingString = [NSString stringWithFormat:@"%@%@", numericLetterSpacingString, letterSpacingUnitString];
         NSXMLNode * letterSpacingAttributeNode = [textElement attributeForName:@"letter-spacing"];
         if (letterSpacingAttributeNode == NULL)
         {
             letterSpacingAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [letterSpacingAttributeNode setName:@"letter-spacing"];
+            letterSpacingAttributeNode.name = @"letter-spacing";
             [textElement addAttribute:letterSpacingAttributeNode];
         }
-        [letterSpacingAttributeNode setStringValue:letterSpacingString];
+        letterSpacingAttributeNode.stringValue = letterSpacingString;
     }
     
-    NSString * wordSpacingAttributeString = [wordSpacingTextfield stringValue];
-    if ([wordSpacingAttributeString length] == 0)
+    NSString * wordSpacingAttributeString = wordSpacingTextfield.stringValue;
+    if (wordSpacingAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"word-spacing"];
     }
     else
     {
-        float wordSpacingFloat = [wordSpacingTextfield floatValue];
+        float wordSpacingFloat = wordSpacingTextfield.floatValue;
         NSString * numericWordSpacingString = [self numericStringWithFloat:wordSpacingFloat];
-        NSString * wordSpacingUnitString = [wordSpacingUnitPopUpButton titleOfSelectedItem];
+        NSString * wordSpacingUnitString = wordSpacingUnitPopUpButton.titleOfSelectedItem;
         NSString * wordSpacingString = [NSString stringWithFormat:@"%@%@", numericWordSpacingString, wordSpacingUnitString];
         NSXMLNode * wordSpacingAttributeNode = [textElement attributeForName:@"word-spacing"];
         if (wordSpacingAttributeNode == NULL)
         {
             wordSpacingAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [wordSpacingAttributeNode setName:@"word-spacing"];
+            wordSpacingAttributeNode.name = @"word-spacing";
             [textElement addAttribute:wordSpacingAttributeNode];
         }
-        [wordSpacingAttributeNode setStringValue:wordSpacingString];
+        wordSpacingAttributeNode.stringValue = wordSpacingString;
     }
     
     
-    NSString * cssStyleAttributeString = [cssStyleTextView string];
+    NSString * cssStyleAttributeString = cssStyleTextView.string;
 
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     cssStyleAttributeString = [cssStyleAttributeString stringByTrimmingCharactersInSet:whitespaceSet];
 
-    if ([cssStyleAttributeString length] == 0)
+    if (cssStyleAttributeString.length == 0)
     {
         [textElement removeAttributeForName:@"style"];
     }
@@ -644,10 +644,10 @@
         if (cssStyleAttributeNode == NULL)
         {
             cssStyleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [cssStyleAttributeNode setName:@"style"];
+            cssStyleAttributeNode.name = @"style";
             [textElement addAttribute:cssStyleAttributeNode];
         }
-        [cssStyleAttributeNode setStringValue:cssStyleAttributeString];
+        cssStyleAttributeNode.stringValue = cssStyleAttributeString;
     }
 }
 

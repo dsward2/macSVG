@@ -18,7 +18,7 @@
 
 - (void)performPathFunction
 {
-    NSString * functionTitle = [self.pathElementEditor.pathFunctionsPopupButton titleOfSelectedItem];
+    NSString * functionTitle = (self.pathElementEditor.pathFunctionsPopupButton).titleOfSelectedItem;
     
     if ([functionTitle isEqualToString:@"Convert to Absolute Coordinates"] == YES)
     {
@@ -76,7 +76,7 @@
     BOOL hideValue2 = YES;
     BOOL hideValue3 = YES;
 
-    NSString * functionTitle = [self.pathElementEditor.pathFunctionsPopupButton titleOfSelectedItem];
+    NSString * functionTitle = (self.pathElementEditor.pathFunctionsPopupButton).titleOfSelectedItem;
     
     if ([functionTitle isEqualToString:@"Scale Path Coordinates"] == YES)
     {
@@ -152,7 +152,7 @@
 - (void)reversePath
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             buildPathSegmentsArrayWithPathString:pathAttributeString];
@@ -172,7 +172,7 @@
 - (void)mirrorPathHorizontally
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             buildPathSegmentsArrayWithPathString:pathAttributeString];
@@ -196,7 +196,7 @@
 - (void)mirrorPathVertically
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             buildPathSegmentsArrayWithPathString:pathAttributeString];
@@ -220,7 +220,7 @@
 - (void)flipPathHorizontally
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             buildPathSegmentsArrayWithPathString:pathAttributeString];
@@ -240,7 +240,7 @@
 - (void)flipPathVertically
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
@@ -258,12 +258,12 @@
 - (void)scalePathCoordinates
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
-    CGFloat scaleX = [self.pathElementEditor.pathFunctionValue1 floatValue];
-    CGFloat scaleY = [self.pathElementEditor.pathFunctionValue2 floatValue];
+    CGFloat scaleX = (self.pathElementEditor.pathFunctionValue1).floatValue;
+    CGFloat scaleY = (self.pathElementEditor.pathFunctionValue2).floatValue;
     
     NSMutableArray * scaledSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             scalePathCoordinatesWithPathSegmentsArray:pathSegmentsArray
@@ -280,13 +280,13 @@
 - (void)rotatePathCoordinates
 {
     NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = [pathAttributeNode stringValue];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
-    CGFloat rotateX = [self.pathElementEditor.pathFunctionValue1 floatValue];
-    CGFloat rotateY = [self.pathElementEditor.pathFunctionValue2 floatValue];
-    CGFloat degrees = [self.pathElementEditor.pathFunctionValue3 floatValue];
+    CGFloat rotateX = (self.pathElementEditor.pathFunctionValue1).floatValue;
+    CGFloat rotateY = (self.pathElementEditor.pathFunctionValue2).floatValue;
+    CGFloat degrees = (self.pathElementEditor.pathFunctionValue3).floatValue;
     
     NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             rotatePathCoordinatesWithPathSegmentsArray:pathSegmentsArray

@@ -29,7 +29,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -49,7 +49,7 @@
     NSRect resultRect = NSZeroRect;
     
     id bBox = [aDOMElement callWebScriptMethod:@"getBBox"
-            withArguments:NULL];  // call JavaScript function
+        withArguments:NULL];  // call JavaScript function - note JavaScript must be enabled in the WebView
     
     if (bBox != NULL)
     {
@@ -59,6 +59,23 @@
         id heightResult = [bBox valueForKey:@"height"];
 
         resultRect = NSMakeRect([xResult floatValue], [yResult floatValue], [widthResult floatValue], [heightResult floatValue]);
+    }
+    else
+    {
+        // this produces approximately the same result as getBBox, but with integer values, currently untested
+        NSArray * lineBoxRectsArray = [aDOMElement lineBoxRects];   // gets an array of NSValue objects
+        
+        if (lineBoxRectsArray.count > 0)
+        {
+            id concreteValueObject = [lineBoxRectsArray firstObject];
+            NSRect lineBoxRect;
+            [concreteValueObject getValue:&lineBoxRect];
+            resultRect = lineBoxRect;
+        }
+        else
+        {
+            resultRect = [aDOMElement boundingBox];     // this fallback is known to produce incorrect results
+        }
     }
 
     return resultRect;
@@ -70,7 +87,7 @@
 
 -(NSRect)bBoxForDOMElement:(DOMElement *)aDOMElement webView:(WebView *)webView
 {
-    JSContextRef ctx = [[webView mainFrame] globalContext];
+    JSContextRef ctx = webView.mainFrame.globalContext;
     
     return [self bBoxForDOMElement:aDOMElement globalContext:ctx];
 }
@@ -150,7 +167,8 @@
 
 - (NSPoint)transformPoint:(NSPoint)aMousePoint fromElement:(DOMElement *)sourceElement toElement:(DOMElement *)targetElement
 {
-    NSPoint resultPoint = NSZeroPoint;
+    //NSPoint resultPoint = NSZeroPoint;
+    NSPoint resultPoint = aMousePoint;
     
     // current transform matrix
     id ctmMatrix = [targetElement callWebScriptMethod:@"getCTM"
@@ -171,7 +189,7 @@
             NSNumber * yNumber = [NSNumber numberWithFloat:aMousePoint.y];
             [svgMousePoint setValue:yNumber forKey:@"y"];
         
-            NSArray * xformArray = [NSArray arrayWithObject:inverseCtmMatrix];
+            NSArray * xformArray = @[inverseCtmMatrix];
             id transformCTMMousePoint = [svgMousePoint callWebScriptMethod:@"matrixTransform"
                     withArguments:xformArray];  // call JavaScript function
             
@@ -288,7 +306,7 @@
             [topLeftSvgMousePoint setValue:xNumber forKey:@"x"];
             [topLeftSvgMousePoint setValue:yNumber forKey:@"y"];
             
-            NSArray * topleftMatrixArray = [NSArray arrayWithObject:elementCtmMatrix];
+            NSArray * topleftMatrixArray = @[elementCtmMatrix];
             id topLeftCTMPoint = [topLeftSvgMousePoint callWebScriptMethod:@"matrixTransform"
                     withArguments:topleftMatrixArray];  // call JavaScript function
             
@@ -296,8 +314,8 @@
             {
                 NSNumber * topLeftX = [topLeftCTMPoint valueForKey:@"x"];
                 NSNumber * topLeftY = [topLeftCTMPoint valueForKey:@"y"];
-                resultRect.origin.x = [topLeftX floatValue];
-                resultRect.origin.y = [topLeftY floatValue];
+                resultRect.origin.x = topLeftX.floatValue;
+                resultRect.origin.y = topLeftY.floatValue;
 
                 id bottomRightSvgMousePoint = [svgRootElement callWebScriptMethod:@"createSVGPoint"
                         withArguments:NULL];  // call JavaScript function
@@ -309,7 +327,7 @@
 
                 //DOMSVGPoint * bottomRightCTMPoint = [bottomRightSvgMousePoint matrixTransform:elementCtmMatrix];
 
-                NSArray * bottomRightMatrixArray = [NSArray arrayWithObject:elementCtmMatrix];
+                NSArray * bottomRightMatrixArray = @[elementCtmMatrix];
                 id bottomRightCTMPoint = [bottomRightSvgMousePoint callWebScriptMethod:@"matrixTransform"
                         withArguments:bottomRightMatrixArray];  // call JavaScript function
                 
@@ -318,10 +336,10 @@
                 NSNumber * bottomRightCTMXNumber = [bottomRightCTMPoint valueForKey:@"x"];
                 NSNumber * bottomRightCTMYNumber = [bottomRightCTMPoint valueForKey:@"y"];
                 
-                CGFloat topLeftCTMX = [topLeftCTMXNumber floatValue];
-                CGFloat topLeftCTMY = [topLeftCTMYNumber floatValue];
-                CGFloat bottomRightCTMX = [bottomRightCTMXNumber floatValue];
-                CGFloat bottomRightCTMY = [bottomRightCTMYNumber floatValue];
+                CGFloat topLeftCTMX = topLeftCTMXNumber.floatValue;
+                CGFloat topLeftCTMY = topLeftCTMYNumber.floatValue;
+                CGFloat bottomRightCTMX = bottomRightCTMXNumber.floatValue;
+                CGFloat bottomRightCTMY = bottomRightCTMYNumber.floatValue;
                 
                 resultRect.size.width = bottomRightCTMX - topLeftCTMX;
                 resultRect.size.height = bottomRightCTMY - topLeftCTMY;
@@ -341,7 +359,7 @@
     NSNumber * animationsPaused = [svgElement callWebScriptMethod:@"animationsPaused"
             withArguments:NULL];  // call JavaScript function
     
-    BOOL result = [animationsPaused boolValue];
+    BOOL result = animationsPaused.boolValue;
     
     return result;
 }
@@ -397,7 +415,7 @@
     NSNumber * currentTime = [svgElement callWebScriptMethod:@"getCurrentTime"
             withArguments:NULL];  // call JavaScript function
 
-    float result = [currentTime floatValue];
+    float result = currentTime.floatValue;
     
     return result;
 }
@@ -472,7 +490,7 @@
     NSNumber * heightNumber = [aElement callWebScriptMethod:@"height"
         withArguments:NULL];  // call JavaScript function
 
-    resultRect = NSMakeRect([xNumber floatValue], [yNumber floatValue], [widthNumber floatValue], [heightNumber floatValue]);
+    resultRect = NSMakeRect(xNumber.floatValue, yNumber.floatValue, widthNumber.floatValue, heightNumber.floatValue);
     
     return resultRect;
 }
@@ -505,25 +523,25 @@
 - (DOMElement *)replaceDOMElement:(DOMElement *)domElement domDocument:(DOMDocument *)domDocument
 {
     // intended as work-around webkit bug to fix bounding rect, replace existing DOM path element
-    NSString * elementName = [domElement tagName];
+    NSString * elementName = domElement.tagName;
     
     DOMElement * newDOMElement = [domDocument createElementNS:@"http://www.w3.org/2000/svg"
             qualifiedName:elementName];
 
-    DOMNamedNodeMap * domAttributesNodeMap = [domElement attributes];
+    DOMNamedNodeMap * domAttributesNodeMap = domElement.attributes;
     
-    unsigned long itemCount = [domAttributesNodeMap length];
+    unsigned long itemCount = domAttributesNodeMap.length;
     for (unsigned i = 0; i < itemCount; i++)
     {
         DOMNode * attributeNode = [domAttributesNodeMap item:i];
         
-        NSString * attributeName = [attributeNode nodeName];
-        NSString * attributeValue = [attributeNode nodeValue];
+        NSString * attributeName = attributeNode.nodeName;
+        NSString * attributeValue = attributeNode.nodeValue;
         
         [newDOMElement setAttribute:attributeName value:attributeValue];
     }
 
-    DOMElement * parentElement = [domElement parentElement];
+    DOMElement * parentElement = domElement.parentElement;
 
     [parentElement replaceChild:newDOMElement oldChild:domElement];
     
@@ -545,7 +563,7 @@
     }
     else if ([objCObject isKindOfClass:[NSDictionary class]]) {
         for (id<NSCopying> key in [objCObject allKeys]) {
-           NSLog(@"object %@ for key %@: %@", name, key, [objCObject objectForKey:key]);
+           NSLog(@"object %@ for key %@: %@", name, key, objCObject[key]);
         }
     }
 }

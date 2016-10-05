@@ -47,7 +47,7 @@
 @property(strong) WebKitInterface * webKitInterface;
 @property(assign) JSContextRef globalContext;
 
-- (NSString *)pluginName;
+@property (readonly, copy) NSString *pluginName;
 
 - (void)setMacSVGDocumentObject:(id)aMacSVGDocument;
 
@@ -56,7 +56,7 @@
 - (void)unloadPluginView;
 
 // Override and return a label if this editor is for Plug-Ins menu
-- (NSString *)pluginMenuTitle;
+@property (readonly, copy) NSString *pluginMenuTitle;
 
 // Override and return a label if this editor can edit specified element tag name, or nil if not applicable
 - (NSString *)isEditorForElement:(NSXMLElement *)aElement elementName:(NSString *)elementName;
@@ -98,7 +98,7 @@
 - (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData;
 
 // For menu plug-ins, override this method to begin plugin session
-- (BOOL)beginMenuPlugIn;
+@property (readonly) BOOL beginMenuPlugIn;
 
 // Plugin implementations should call this method after changes are applied to update the host application user interfaces
 - (void)updateDocumentViews;
@@ -109,7 +109,7 @@
 // Plugin implementations should override this method to be notified when the host application is resizing the plugin panel in it's scrollview
 - (void)resizePluginViewSizeForScrollView:(NSScrollView *)scrollView;
 
-- (BOOL) isMenuPlugIn;
+@property (getter=isMenuPlugIn, readonly) BOOL menuPlugIn;
 
 - (void)assignMacsvgidsForNode:(NSXMLNode *)aNode;  // for plug-ins that create new elements, call after creation
 
@@ -117,6 +117,6 @@
 - (NSMutableString *)allocFloatString:(float)aFloat;
 - (NSMutableString *)allocPxString:(float)aFloat;
 
-- (BOOL)isValidMenuItemSelection;
+@property (getter=isValidMenuItemSelection, readonly) BOOL validMenuItemSelection;
 
 @end

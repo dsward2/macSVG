@@ -66,8 +66,8 @@
 - (IBAction)openMacSVGDocumentWithNetworkConnection:(id)sender;
 - (IBAction)saveMacSVGDocumentWithNetworkConnection:(id)sender;
 
-- (WebKitInterface *)webKitInterface;
-- (NetworkConnectionManager *)networkConnectionManager;
+@property (readonly, strong) WebKitInterface *webKitInterface;
+@property (readonly, strong) NetworkConnectionManager *networkConnectionManager;
 
 - (IBAction)launchWebBrowserDocument:(id)sender;
 

@@ -38,7 +38,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -80,7 +80,7 @@
 
     if ([elementName isEqualToString:@"text"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
 
     return result;
@@ -99,15 +99,15 @@
     {
         if ([attributeName isEqualToString:@"font-family"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
         else if ([attributeName isEqualToString:@"font-size"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
         else if ([attributeName isEqualToString:@"text-anchor"] == YES)
         {
-            result = [self pluginName];
+            result = self.pluginName;
         }
     }
     
@@ -196,7 +196,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -233,8 +233,8 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = @"0";
 
     numericString = [NSString stringWithFormat:@"%f", attributeFloat];
@@ -242,7 +242,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -279,7 +279,7 @@
 
 - (NSString *)textElementContent
 {
-    return [textContentTextView string];
+    return textContentTextView.string;
 }
 
 //==================================================================================
@@ -299,7 +299,7 @@
 {
     if (fontName != NULL)
     {
-        [fontFamilyTextField setStringValue:fontName];
+        fontFamilyTextField.stringValue = fontName;
         
         [self updateTextElementAction:self];
     }
@@ -315,7 +315,7 @@
 
 - (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
+    NSString * attributeString = attributeNode.stringValue;
 
     NSString * resultUnit = @"px";
     NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
@@ -388,23 +388,23 @@
 {
     NSArray * tspanElementsArray = [self findAllTspanElements];
 
-    if ([tspanElementsArray count] == 0)
+    if (tspanElementsArray.count == 0)
     {
         [tspanPopUpButton removeAllItems];
         NSString * itemTitle = @"No tspan elements defined";
         [tspanPopUpButton addItemWithTitle:itemTitle];
         [tspanPopUpButton setEnabled:NO];
         
-        NSString * textContentString = [self.pluginTargetXMLElement stringValue];
-        [textContentTextView setString:textContentString];
+        NSString * textContentString = (self.pluginTargetXMLElement).stringValue;
+        textContentTextView.string = textContentString;
     }
     else
     {
-        NSInteger tspanIndex = [tspanPopUpButton indexOfSelectedItem];
+        NSInteger tspanIndex = tspanPopUpButton.indexOfSelectedItem;
         
-        NSXMLElement * firstTspanElement = [tspanElementsArray objectAtIndex:tspanIndex];
-        NSString * textContentString = [firstTspanElement stringValue];
-        [textContentTextView setString:textContentString];
+        NSXMLElement * firstTspanElement = tspanElementsArray[tspanIndex];
+        NSString * textContentString = firstTspanElement.stringValue;
+        textContentTextView.string = textContentString;
     }
 }
 
@@ -417,45 +417,45 @@
     NSString * idString = [self.macSVGPluginCallbacks uniqueIDForElementTagName:@"tspan" pendingIDs:NULL];
 
     NSXMLElement * newTspanElement = [[NSXMLElement alloc] init];
-    [newTspanElement setName:@"tspan"];
+    newTspanElement.name = @"tspan";
     
     NSXMLNode * idAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [idAttributeNode setName:@"id"];
-    [idAttributeNode setStringValue:idString];
+    idAttributeNode.name = @"id";
+    idAttributeNode.stringValue = idString;
     [newTspanElement addAttribute:idAttributeNode];
     
     [self assignMacsvgidsForNode:newTspanElement];
     
     NSXMLNode * dxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [dxAttributeNode setName:@"dx"];
-    [dxAttributeNode setStringValue:@"0"];
+    dxAttributeNode.name = @"dx";
+    dxAttributeNode.stringValue = @"0";
     [newTspanElement addAttribute:dxAttributeNode];
     
     NSXMLNode * dyAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [dyAttributeNode setName:@"dy"];
-    [dyAttributeNode setStringValue:@"0"];
+    dyAttributeNode.name = @"dy";
+    dyAttributeNode.stringValue = @"0";
     [newTspanElement addAttribute:dyAttributeNode];
     
     NSXMLNode * rotateAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [rotateAttributeNode setName:@"rotate"];
-    [rotateAttributeNode setStringValue:@"0"];
+    rotateAttributeNode.name = @"rotate";
+    rotateAttributeNode.stringValue = @"0";
     [newTspanElement addAttribute:rotateAttributeNode];
     
     NSXMLNode * newTextContentNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
     NSString * newTextContentString = [NSString stringWithFormat:@"%@ tspan text", idString];
     [self.pluginTargetXMLElement normalizeAdjacentTextNodesPreservingCDATA:YES];
-    NSArray * textElementChildArray = [self.pluginTargetXMLElement children];
+    NSArray * textElementChildArray = (self.pluginTargetXMLElement).children;
     for (NSXMLNode * aChildNode in textElementChildArray)
     {
-        if ([aChildNode kind] == NSXMLTextKind)
+        if (aChildNode.kind == NSXMLTextKind)
         {
-            newTextContentString = [aChildNode stringValue];
+            newTextContentString = aChildNode.stringValue;
             //[aChildNode detach];
-            NSInteger textContentIndex = [aChildNode index];
+            NSInteger textContentIndex = aChildNode.index;
             [self.pluginTargetXMLElement removeChildAtIndex:textContentIndex];
         }
     }
-    [newTextContentNode setStringValue:newTextContentString];
+    newTextContentNode.stringValue = newTextContentString;
     [newTspanElement addChild:newTextContentNode];
     
     [self.pluginTargetXMLElement addChild:newTspanElement];
@@ -470,7 +470,7 @@
         NSString * tspanIDString = @"tspan ID Missing";
         if (tspanIDNode != NULL)
         {
-            tspanIDString = [tspanIDNode stringValue];
+            tspanIDString = tspanIDNode.stringValue;
         }
         
         [tspanTitlesArray addObject:tspanIDString];
@@ -479,13 +479,13 @@
     [tspanPopUpButton removeAllItems];
     [tspanPopUpButton addItemsWithTitles:tspanTitlesArray];
     [tspanPopUpButton setEnabled:YES];
-    NSInteger newTspanIndex = [tspanTitlesArray count] - 1;
+    NSInteger newTspanIndex = tspanTitlesArray.count - 1;
     [tspanPopUpButton selectItemAtIndex:newTspanIndex];
 
     [editTspanButton setEnabled:YES];
     
-    NSString * textContentString = [newTspanElement stringValue];
-    [textContentTextView setString:textContentString];
+    NSString * textContentString = newTspanElement.stringValue;
+    textContentTextView.string = textContentString;
     
     creatingNewTspan = YES;
     
@@ -502,15 +502,15 @@
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    NSInteger tspanIndex = [tspanPopUpButton indexOfSelectedItem];
+    NSInteger tspanIndex = tspanPopUpButton.indexOfSelectedItem;
 
     NSArray * tspanElementsArray = [self findAllTspanElements];
-    NSXMLElement * tspanElement = [tspanElementsArray objectAtIndex:tspanIndex];
+    NSXMLElement * tspanElement = tspanElementsArray[tspanIndex];
     
     [tspanPopoverViewController loadSettingsForTspan:tspanElement textElement:self.pluginTargetXMLElement];
     
     // configure the preferred position of the popover
-    [tspanPopover showRelativeToRect:[targetButton bounds]
+    [tspanPopover showRelativeToRect:targetButton.bounds
             ofView:sender preferredEdge:NSMaxYEdge];
 }
 
@@ -543,17 +543,17 @@
             domElement:newPluginTargetDOMElement];
     
     NSArray * textPathElementsArray = [newPluginTargetXMLElement elementsForName:@"textPath"];
-    if ([textPathElementsArray count] > 0)
+    if (textPathElementsArray.count > 0)
     {
-        [editTextpathButton setTitle:@"Edit textPath"];
+        editTextpathButton.title = @"Edit textPath";
     }
     else
     {
-        [editTextpathButton setTitle:@"New textPath"];
+        editTextpathButton.title = @"New textPath";
     }
     
     NSArray * pathElementsArray = [self findAllPathElements];
-    if ([pathElementsArray count] > 0)
+    if (pathElementsArray.count > 0)
     {
         [editTextpathButton setEnabled:YES];
     }
@@ -566,7 +566,7 @@
     {
         NSArray * tspanElementsArray = [self findAllTspanElements];
 
-        if ([tspanElementsArray count] == 0)
+        if (tspanElementsArray.count == 0)
         {
             [tspanPopUpButton removeAllItems];
             NSString * itemTitle = @"No tspan elements defined";
@@ -578,9 +578,9 @@
             NSString * textContentString = @"";
             if (newPluginTargetXMLElement != NULL)
             {
-                textContentString = [newPluginTargetXMLElement stringValue];
+                textContentString = newPluginTargetXMLElement.stringValue;
             }
-            [textContentTextView setString:textContentString];
+            textContentTextView.string = textContentString;
         }
         else
         {
@@ -592,7 +592,7 @@
                 NSString * tspanIDString = @"tspan ID Missing";
                 if (tspanIDNode != NULL)
                 {
-                    tspanIDString = [tspanIDNode stringValue];
+                    tspanIDString = tspanIDNode.stringValue;
                 }
                 
                 [tspanTitlesArray addObject:tspanIDString];
@@ -605,16 +605,16 @@
 
             [editTspanButton setEnabled:YES];
             
-            NSXMLElement * firstTspanElement = [tspanElementsArray objectAtIndex:0];
-            NSString * textContentString = [firstTspanElement stringValue];
-            [textContentTextView setString:textContentString];
+            NSXMLElement * firstTspanElement = tspanElementsArray[0];
+            NSString * textContentString = firstTspanElement.stringValue;
+            textContentTextView.string = textContentString;
         }
         
         NSXMLNode * fontFamilyAttributeNode = [newPluginTargetXMLElement attributeForName:@"font-family"];
         if (fontFamilyAttributeNode != NULL)
         {
-            NSString * fontFamilyAttributeString = [fontFamilyAttributeNode stringValue];
-            [fontFamilyTextField setStringValue:fontFamilyAttributeString];
+            NSString * fontFamilyAttributeString = fontFamilyAttributeNode.stringValue;
+            fontFamilyTextField.stringValue = fontFamilyAttributeString;
         }
         
         NSXMLNode * fontSizeAttributeNode = [newPluginTargetXMLElement attributeForName:@"font-size"];
@@ -624,22 +624,22 @@
             
             NSString * fontSizeUnitString = [self unitForAttributeNode:fontSizeAttributeNode];
             
-            [fontSizeTextField setStringValue:fontSizeAttributeString];
+            fontSizeTextField.stringValue = fontSizeAttributeString;
             [fontSizeUnitsPopUpButton selectItemWithTitle:fontSizeUnitString];
             
-            float fontSizeFloat = [fontSizeAttributeString floatValue];
-            [fontSizeStepper setFloatValue:fontSizeFloat];
+            float fontSizeFloat = fontSizeAttributeString.floatValue;
+            fontSizeStepper.floatValue = fontSizeFloat;
         }
 
         NSXMLNode * textAnchorAttributeNode = [newPluginTargetXMLElement attributeForName:@"text-anchor"];
         if (textAnchorAttributeNode != NULL)
         {
-            NSString * textAnchorAttributeString = [textAnchorAttributeNode stringValue];
-            [textAnchorPopUpButton setStringValue:textAnchorAttributeString];
+            NSString * textAnchorAttributeString = textAnchorAttributeNode.stringValue;
+            textAnchorPopUpButton.stringValue = textAnchorAttributeString;
         }
         else
         {
-            [textAnchorPopUpButton setStringValue:@""];
+            textAnchorPopUpButton.stringValue = @"";
         }
     }
     
@@ -654,7 +654,7 @@
     NSButton *targetButton = (NSButton *)sender;
     
     // configure the preferred position of the popover
-    [fontPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [fontPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 // -------------------------------------------------------------------------------
@@ -663,11 +663,11 @@
 
 - (IBAction)fontSizeStepperAction:(id)sender
 {
-    float fontSizeFloat = [fontSizeStepper floatValue];
+    float fontSizeFloat = fontSizeStepper.floatValue;
 
     NSString * fontSizeAttributeString = [self numericStringWithFloat:fontSizeFloat];
     
-    [fontSizeTextField setStringValue:fontSizeAttributeString];
+    fontSizeTextField.stringValue = fontSizeAttributeString;
 
     [self updateTextElementAction:self];
 }
@@ -683,7 +683,7 @@
     [textStylesPopoverViewController loadTextStyles];
     
     // configure the preferred position of the popover
-    [textStylesPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [textStylesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 // -------------------------------------------------------------------------------
@@ -697,7 +697,7 @@
     [textPathPopoverViewController loadSettingsForTextElement:self.pluginTargetXMLElement];
     
     // configure the preferred position of the popover
-    [textPathPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [textPathPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 // -------------------------------------------------------------------------------
@@ -706,55 +706,55 @@
 
 - (IBAction)updateTextElementAction:(id)sender
 {
-    NSString * fontFamilyAttributeString = [fontFamilyTextField stringValue];
-    if ([fontFamilyAttributeString length] > 0)
+    NSString * fontFamilyAttributeString = fontFamilyTextField.stringValue;
+    if (fontFamilyAttributeString.length > 0)
     {
         NSXMLNode * fontFamilyAttributeNode = [self.pluginTargetXMLElement attributeForName:@"font-family"];
         
         if (fontFamilyAttributeNode == NULL)
         {
             fontFamilyAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontFamilyAttributeNode setName:@"font-family"];
+            fontFamilyAttributeNode.name = @"font-family";
             [self.pluginTargetXMLElement addAttribute:fontFamilyAttributeNode];
         }
 
-        [fontFamilyAttributeNode setStringValue:fontFamilyAttributeString];
+        fontFamilyAttributeNode.stringValue = fontFamilyAttributeString;
     }
 
-    NSString * fontNumericSizeAttributeString = [fontSizeTextField stringValue];
-    NSString * fontSizeUnitsString = [fontSizeUnitsPopUpButton titleOfSelectedItem];
+    NSString * fontNumericSizeAttributeString = fontSizeTextField.stringValue;
+    NSString * fontSizeUnitsString = fontSizeUnitsPopUpButton.titleOfSelectedItem;
     NSString * fontSizeString = [NSString stringWithFormat:@"%@%@",
             fontNumericSizeAttributeString, fontSizeUnitsString];
-    if ([fontFamilyAttributeString length] > 0)
+    if (fontFamilyAttributeString.length > 0)
     {
         NSXMLNode * fontSizeAttributeNode = [self.pluginTargetXMLElement attributeForName:@"font-size"];
         
         if (fontSizeAttributeNode == NULL)
         {
             fontSizeAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [fontSizeAttributeNode setName:@"font-size"];
+            fontSizeAttributeNode.name = @"font-size";
             [self.pluginTargetXMLElement addAttribute:fontSizeAttributeNode];
         }
 
-        [fontSizeAttributeNode setStringValue:fontSizeString];
+        fontSizeAttributeNode.stringValue = fontSizeString;
         
-        float fontSizeFloat = [fontNumericSizeAttributeString floatValue];
-        [fontSizeStepper setFloatValue:fontSizeFloat];
+        float fontSizeFloat = fontNumericSizeAttributeString.floatValue;
+        fontSizeStepper.floatValue = fontSizeFloat;
     }
     
-    NSString * textAnchorString = [textAnchorPopUpButton titleOfSelectedItem];
-    textAnchorString = [textAnchorString lowercaseString];
+    NSString * textAnchorString = textAnchorPopUpButton.titleOfSelectedItem;
+    textAnchorString = textAnchorString.lowercaseString;
     NSXMLNode * textAnchorAttributeNode = [self.pluginTargetXMLElement attributeForName:@"text-anchor"];
-    if ([textAnchorString length] > 0)
+    if (textAnchorString.length > 0)
     {
         if (textAnchorAttributeNode == NULL)
         {
             textAnchorAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [textAnchorAttributeNode setName:@"text-anchor"];
+            textAnchorAttributeNode.name = @"text-anchor";
             [self.pluginTargetXMLElement addAttribute:textAnchorAttributeNode];
         }
 
-        [textAnchorAttributeNode setStringValue:textAnchorString];
+        textAnchorAttributeNode.stringValue = textAnchorString;
     }
     else
     {
@@ -768,22 +768,22 @@
     // update the main text, in text or textPath or tSpan
     NSXMLElement * textContainerElement = [self textContainerElement:self.pluginTargetXMLElement];
     
-    if ([tspanPopUpButton isEnabled] == YES)
+    if (tspanPopUpButton.enabled == YES)
     {
         // override previous element search result
-        NSInteger tspanIndex = [tspanPopUpButton indexOfSelectedItem];
+        NSInteger tspanIndex = tspanPopUpButton.indexOfSelectedItem;
         
         NSArray * tspanArray = [self findAllTspanElements];
-        textContainerElement = [tspanArray objectAtIndex:tspanIndex];
+        textContainerElement = tspanArray[tspanIndex];
     }
     
-    NSString * textContentString = [textContentTextView string];
+    NSString * textContentString = textContentTextView.string;
     
     NSXMLNode * textNode = NULL;
-    NSArray * textContainerChildArray = [textContainerElement children];
+    NSArray * textContainerChildArray = textContainerElement.children;
     for (NSXMLNode * aChildNode in textContainerChildArray)
     {
-        if ([aChildNode kind] == NSXMLTextKind)
+        if (aChildNode.kind == NSXMLTextKind)
         {
             textNode = aChildNode;
             break;
@@ -795,14 +795,14 @@
         [textContainerElement addChild:textNode];
     }
     
-    [textNode setStringValue:textContentString];
+    textNode.stringValue = textContentString;
     
     [textContainerElement normalizeAdjacentTextNodesPreservingCDATA:YES];
 
     [self updateDocumentViews];
     
-    NSWindow * keyWindow = [NSApp keyWindow];
-    id firstResponder = [keyWindow firstResponder];
+    NSWindow * keyWindow = NSApp.keyWindow;
+    id firstResponder = keyWindow.firstResponder;
     if (firstResponder != textContentTextView)
     {
         [keyWindow makeFirstResponder:textContentTextView];
@@ -818,10 +818,10 @@
     NSXMLElement * resultElement = withinElement;
     BOOL textContainerFound = NO;
     
-    NSArray * childNodesArray = [withinElement children];
+    NSArray * childNodesArray = withinElement.children;
     for (NSXMLNode * aChildNode in childNodesArray)
     {
-        NSXMLNodeKind nodeKind = [aChildNode kind];
+        NSXMLNodeKind nodeKind = aChildNode.kind;
         if (nodeKind == NSXMLTextKind)
         {
             // an existing text node is found, resuse it
@@ -836,7 +836,7 @@
         // check again, recursively
         for (NSXMLNode * aChildNode in childNodesArray)
         {
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
                 // an existing text node is found, resuse it

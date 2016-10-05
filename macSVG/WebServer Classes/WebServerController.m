@@ -27,7 +27,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 
 @interface WebServerController (PrivateMethods)
-- (NSString *)applicationSupportFolder;
+@property (readonly, copy) NSString *applicationSupportFolder;
 @end
 
 @implementation WebServerController
@@ -63,7 +63,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 	[httpServer setPort:self.webServerPort];
 	
 	// Serve files from our embedded Web folder
-	NSString * webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];
+	NSString * webPath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"Web"];
 	//DDLogVerbose(@"Setting document root: %@", webPath);
 	
 	[httpServer setDocumentRoot:webPath];

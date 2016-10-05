@@ -42,17 +42,17 @@
     BOOL creatingNewTspan;
 }
 
-- (NSXMLElement *)activeXMLTextElement;
-- (NSXMLDocument *)activeXMLDocument;
+@property (readonly, copy) NSXMLElement *activeXMLTextElement;
+@property (readonly, copy) NSXMLDocument *activeXMLDocument;
 
 - (IBAction)browseFontsButtonAction:(id)sender;
 - (IBAction)fontSizeStepperAction:(id)sender;
 - (IBAction)textStylesButtonAction:(id)sender;
 - (IBAction)editTextPathButtonAction:(id)sender;
 
-- (NSString *)textElementContent;
+@property (readonly, copy) NSString *textElementContent;
 - (void)setFontName:(NSString *)fontName;
-- (NSButton *)browseFontsButton;
+@property (readonly, strong) NSButton *browseFontsButton;
 
 - (IBAction)updateTextElementAction:(id)sender;
 - (IBAction)tspanPopUpButtonAction:(id)sender;

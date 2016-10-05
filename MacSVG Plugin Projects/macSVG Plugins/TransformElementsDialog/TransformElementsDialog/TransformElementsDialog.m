@@ -39,10 +39,10 @@
     // for menu plug-ins
     if (transformElementsDialogWindowController.window == NULL)
     {
-        NSString * pluginNameString = [self className];
+        NSString * pluginNameString = self.className;
         NSArray * topLevelObjects = NULL;
 
-        NSString * bundlePath = [[NSBundle bundleForClass:[self class]] bundlePath];
+        NSString * bundlePath = [NSBundle bundleForClass:[self class]].bundlePath;
 
         NSBundle * pluginBundle = [NSBundle bundleWithPath:bundlePath];
 

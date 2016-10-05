@@ -87,11 +87,11 @@
     
     self.webBBox = NSZeroRect;
 
-    if ([svgElementsArray count] > 0)
+    if (svgElementsArray.count > 0)
     {
         for (NSXMLNode * aXMLNode in svgElementsArray)
         {
-            NSXMLNodeKind nodeKind = [aXMLNode kind];
+            NSXMLNodeKind nodeKind = aXMLNode.kind;
             
             if (nodeKind == NSXMLElementKind)
             {
@@ -114,11 +114,11 @@
 
     self.processedElementsSet = [NSMutableSet set];
 
-    if ([svgElementsArray count] > 0)
+    if (svgElementsArray.count > 0)
     {
         for (NSXMLNode * aXMLNode in svgElementsArray)
         {
-            NSXMLNodeKind nodeKind = [aXMLNode kind];
+            NSXMLNodeKind nodeKind = aXMLNode.kind;
             
             if (nodeKind == NSXMLElementKind)
             {
@@ -167,12 +167,12 @@
     {
         [self.processedElementsSet addObject:svgElement];
 
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
         NSXMLNode * MacsvgidNode = [svgElement attributeForName:@"macsvgid"];
         if (MacsvgidNode != NULL)
         {
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
             DOMElement * domElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:macsvgid];
             if (domElement != NULL)
             {
@@ -189,19 +189,19 @@
                         NSXMLNode * strokeWidthAttributeNode = [svgElement attributeForName:@"stroke-width"];
                         if (strokeWidthAttributeNode != NULL)
                         {
-                            NSString * strokeWidthString = [strokeWidthAttributeNode stringValue];
-                            CGFloat strokeWidth = [strokeWidthString floatValue];
+                            NSString * strokeWidthString = strokeWidthAttributeNode.stringValue;
+                            CGFloat strokeWidth = strokeWidthString.floatValue;
                             self.webBBox = NSInsetRect(self.webBBox, -(strokeWidth / 2.0f), -(strokeWidth / 2.0f));
                         }
                     
                         self.webBBox = NSUnionRect(self.webBBox, elementRect);
                     }
 
-                    NSArray * childElementsArray = [svgElement children];
+                    NSArray * childElementsArray = svgElement.children;
                     
                     for (NSXMLNode * childNode in childElementsArray)
                     {
-                        NSXMLNodeKind kind = [childNode kind];
+                        NSXMLNodeKind kind = childNode.kind;
                         
                         if (kind == NSXMLElementKind)
                         {
@@ -228,7 +228,7 @@
     
         [self insertSeparatorLine:resultString];
 
-        NSString * svgElementXmlString = [svgElement XMLString];
+        NSString * svgElementXmlString = svgElement.XMLString;
         NSString * commentString = [NSString stringWithFormat:@"\t// SVG element: %@\n", svgElementXmlString];
         [resultString appendString:commentString];
 
@@ -242,7 +242,7 @@
         NSXMLNode * MacsvgidNode = [svgElement attributeForName:@"macsvgid"];
         if (MacsvgidNode != NULL)
         {
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
             DOMElement * domElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:macsvgid];
             if (domElement != NULL)
             {
@@ -257,12 +257,12 @@
                     NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
                     NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
                     
-                    CGFloat ctmMatrixA = [ctmMatrixAString floatValue];
-                    CGFloat ctmMatrixB = [ctmMatrixBString floatValue];
-                    CGFloat ctmMatrixC = [ctmMatrixCString floatValue];
-                    CGFloat ctmMatrixD = [ctmMatrixDString floatValue];
-                    CGFloat ctmMatrixE = [ctmMatrixEString floatValue];
-                    CGFloat ctmMatrixF = [ctmMatrixFString floatValue];
+                    CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
+                    CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
+                    CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
+                    CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
+                    CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
+                    CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
 
                     ctmMatrixVar = [self indexVarName:@"ctmMatrix"];
                     [resultString appendFormat:@"\tCGAffineTransform %@ = CGAffineTransformMake(%f, %f, %f, %f, %f, %f);\n",
@@ -273,7 +273,7 @@
             }
         }
 
-        NSString * svgElementName = [svgElement name];
+        NSString * svgElementName = svgElement.name;
         
         if ([svgElementName isEqualToString:@"rect"] == YES)
         {
@@ -316,13 +316,13 @@
         {
         }
         
-        NSArray * childElementsArray = [svgElement children];
+        NSArray * childElementsArray = svgElement.children;
 
         [resultString appendString:@"\tCGContextRestoreGState(context);\n"];
         
         for (NSXMLNode * childNode in childElementsArray)
         {
-            NSXMLNodeKind kind = [childNode kind];
+            NSXMLNodeKind kind = childNode.kind;
             
             if (kind == NSXMLElementKind)
             {
@@ -359,15 +359,15 @@
     NSXMLNode * x2AttributeNode = [svgElement attributeForName:@"x2"];
     NSXMLNode * y2AttributeNode = [svgElement attributeForName:@"y2"];
 
-    NSString * x1String = [x1AttributeNode stringValue];
-    NSString * y1String = [y1AttributeNode stringValue];
-    NSString * x2String = [x2AttributeNode stringValue];
-    NSString * y2String = [y2AttributeNode stringValue];
+    NSString * x1String = x1AttributeNode.stringValue;
+    NSString * y1String = y1AttributeNode.stringValue;
+    NSString * x2String = x2AttributeNode.stringValue;
+    NSString * y2String = y2AttributeNode.stringValue;
     
-    CGFloat x1 = [x1String floatValue];
-    CGFloat y1 = [y1String floatValue];
-    CGFloat x2 = [x2String floatValue];
-    CGFloat y2 = [y2String floatValue];
+    CGFloat x1 = x1String.floatValue;
+    CGFloat y1 = y1String.floatValue;
+    CGFloat x2 = x2String.floatValue;
+    CGFloat y2 = y2String.floatValue;
     
     NSString * x1VarName = [self indexVarName:@"x1_"];
     [resultString appendFormat:@"\tCGFloat %@ = %f;\n", x1VarName, x1];
@@ -417,27 +417,27 @@
     NSXMLNode * rxAttributeNode = [svgElement attributeForName:@"rx"];
     NSXMLNode * ryAttributeNode = [svgElement attributeForName:@"ry"];
 
-    NSString * xString = [xAttributeNode stringValue];
-    NSString * yString = [yAttributeNode stringValue];
-    NSString * widthString = [widthAttributeNode stringValue];
-    NSString * heightString = [heightAttributeNode stringValue];
+    NSString * xString = xAttributeNode.stringValue;
+    NSString * yString = yAttributeNode.stringValue;
+    NSString * widthString = widthAttributeNode.stringValue;
+    NSString * heightString = heightAttributeNode.stringValue;
     NSString * rxString = @"0";
     if (rxAttributeNode != NULL)
     {
-        rxString = [rxAttributeNode stringValue];
+        rxString = rxAttributeNode.stringValue;
     }
     NSString * ryString = @"0";
     if (ryAttributeNode != NULL)
     {
-        ryString = [ryAttributeNode stringValue];
+        ryString = ryAttributeNode.stringValue;
     }
 
-    CGFloat xFloat = [xString floatValue];
-    CGFloat yFloat = [yString floatValue];
-    CGFloat widthFloat = [widthString floatValue];
-    CGFloat heightFloat = [heightString floatValue];
-    CGFloat rxFloat = [rxString floatValue];
-    CGFloat ryFloat = [ryString floatValue];
+    CGFloat xFloat = xString.floatValue;
+    CGFloat yFloat = yString.floatValue;
+    CGFloat widthFloat = widthString.floatValue;
+    CGFloat heightFloat = heightString.floatValue;
+    CGFloat rxFloat = rxString.floatValue;
+    CGFloat ryFloat = ryString.floatValue;
     #pragma unused(ryFloat)
 
     NSString * xVarName = [self indexVarName:@"x"];
@@ -528,13 +528,13 @@
     NSXMLNode * cyAttributeNode = [svgElement attributeForName:@"cy"];
     NSXMLNode * rAttributeNode = [svgElement attributeForName:@"r"];
 
-    NSString * cxString = [cxAttributeNode stringValue];
-    NSString * cyString = [cyAttributeNode stringValue];
-    NSString * rString = [rAttributeNode stringValue];
+    NSString * cxString = cxAttributeNode.stringValue;
+    NSString * cyString = cyAttributeNode.stringValue;
+    NSString * rString = rAttributeNode.stringValue;
 
-    CGFloat cxFloat = [cxString floatValue];
-    CGFloat cyFloat = [cyString floatValue];
-    CGFloat rFloat = [rString floatValue];
+    CGFloat cxFloat = cxString.floatValue;
+    CGFloat cyFloat = cyString.floatValue;
+    CGFloat rFloat = rString.floatValue;
 
     NSString * cxVarName = [self indexVarName:@"cx"];
     [resultString appendFormat:@"\tCGFloat %@ = %f;\n", cxVarName, cxFloat];
@@ -586,15 +586,15 @@
     NSXMLNode * rxAttributeNode = [svgElement attributeForName:@"rx"];
     NSXMLNode * ryAttributeNode = [svgElement attributeForName:@"ry"];
 
-    NSString * cxString = [cxAttributeNode stringValue];
-    NSString * cyString = [cyAttributeNode stringValue];
-    NSString * rxString = [rxAttributeNode stringValue];
-    NSString * ryString = [ryAttributeNode stringValue];
+    NSString * cxString = cxAttributeNode.stringValue;
+    NSString * cyString = cyAttributeNode.stringValue;
+    NSString * rxString = rxAttributeNode.stringValue;
+    NSString * ryString = ryAttributeNode.stringValue;
 
-    CGFloat cxFloat = [cxString floatValue];
-    CGFloat cyFloat = [cyString floatValue];
-    CGFloat rxFloat = [rxString floatValue];
-    CGFloat ryFloat = [ryString floatValue];
+    CGFloat cxFloat = cxString.floatValue;
+    CGFloat cyFloat = cyString.floatValue;
+    CGFloat rxFloat = rxString.floatValue;
+    CGFloat ryFloat = ryString.floatValue;
 
     NSString * cxVarName = [self indexVarName:@"cx"];
     [resultString appendFormat:@"\tCGFloat %@ = %f;\n", cxVarName, cxFloat];
@@ -646,18 +646,18 @@
     NSXMLNode * pointsAttributeNode = [svgElement attributeForName:@"points"];
     if (pointsAttributeNode != NULL)
     {
-        NSString * pointsAttributeString = [pointsAttributeNode stringValue];
+        NSString * pointsAttributeString = pointsAttributeNode.stringValue;
         
         NSCharacterSet * arrayCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@" ,;\n\r"];
         NSArray * pointsArray = [pointsAttributeString componentsSeparatedByCharactersInSet:arrayCharacterSet];
         
-        NSInteger pointsArrayCount = [pointsArray count];
+        NSInteger pointsArrayCount = pointsArray.count;
         if ((pointsArrayCount % 2) == 0)
         {
             for (NSInteger i = 0; i < pointsArrayCount; i+= 2)
             {
-                NSString * xString = [pointsArray objectAtIndex:i];
-                NSString * yString = [pointsArray objectAtIndex:(i + 1)];
+                NSString * xString = pointsArray[i];
+                NSString * yString = pointsArray[(i + 1)];
                 
                 if (i == 0)
                 {
@@ -700,7 +700,7 @@
     NSXMLNode * pointsAttributeNode = [svgElement attributeForName:@"points"];
     if (pointsAttributeNode != NULL)
     {
-        NSString * pointsAttributeString = [pointsAttributeNode stringValue];
+        NSString * pointsAttributeString = pointsAttributeNode.stringValue;
         
         NSCharacterSet * arrayCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@" ,;\n\r"];
         NSArray * tempPointsArray = [pointsAttributeString componentsSeparatedByCharactersInSet:arrayCharacterSet];
@@ -708,19 +708,19 @@
         NSMutableArray * pointsArray = [NSMutableArray array];
         for (NSString * aPointValue in tempPointsArray)
         {
-            if ([aPointValue length] > 0)
+            if (aPointValue.length > 0)
             {
                 [pointsArray addObject:aPointValue];
             }
         }
         
-        NSInteger pointsArrayCount = [pointsArray count];
+        NSInteger pointsArrayCount = pointsArray.count;
         if ((pointsArrayCount % 2) == 0)
         {
             for (NSInteger i = 0; i < pointsArrayCount; i+= 2)
             {
-                NSString * xString = [pointsArray objectAtIndex:i];
-                NSString * yString = [pointsArray objectAtIndex:(i + 1)];
+                NSString * xString = pointsArray[i];
+                NSString * yString = pointsArray[(i + 1)];
                 
                 if (i == 0)
                 {
@@ -735,8 +735,8 @@
             
             }
 
-            NSString * lastXString = [pointsArray objectAtIndex:0];
-            NSString * lastYString = [pointsArray objectAtIndex:1];
+            NSString * lastXString = pointsArray[0];
+            NSString * lastYString = pointsArray[1];
             
             NSString * linetoString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", polygonPathVar, lastXString, lastYString];
             [resultString appendString:linetoString];
@@ -763,9 +763,9 @@
 {
     NSString * pathDataString = @"";
     NSXMLNode * pathDataNode = [svgElement attributeForName:@"d"];
-    if ([pathDataNode kind] == NSXMLAttributeKind)
+    if (pathDataNode.kind == NSXMLAttributeKind)
     {
-        pathDataString = [pathDataNode stringValue];
+        pathDataString = pathDataNode.stringValue;
     }
 
     // kCGPathEOFill kCGPathEOFillStroke kCGPathFillStroke kCGPathStroke
@@ -779,7 +779,7 @@
 
     for (NSDictionary * pathSegmentDictionary in pathSegmentsArray)
     {
-        NSString * commandString = [pathSegmentDictionary objectForKey:@"command"];
+        NSString * commandString = pathSegmentDictionary[@"command"];
         
         unichar commandCharacter = [commandString characterAtIndex:0];
         
@@ -787,8 +787,8 @@
         {
             case 'M':     // moveto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
                 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathMoveToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 
@@ -798,8 +798,8 @@
             }
             case 'm':     // moveto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathMoveToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
 
@@ -809,8 +809,8 @@
             }
             case 'L':     // lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -819,8 +819,8 @@
             }
             case 'l':     // lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -829,8 +829,8 @@
             }
             case 'H':     // horizontal lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -839,8 +839,8 @@
             }
             case 'h':     // horizontal lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -849,8 +849,8 @@
             }
             case 'V':     // vertical lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -859,8 +859,8 @@
             }
             case 'v':     // vertical lineto
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -869,14 +869,14 @@
             }
             case 'C':     // curveto
             {
-                NSString * x1String = [pathSegmentDictionary objectForKey:@"x1"];
-                NSString * y1String = [pathSegmentDictionary objectForKey:@"y1"];
+                NSString * x1String = pathSegmentDictionary[@"x1"];
+                NSString * y1String = pathSegmentDictionary[@"y1"];
 
-                NSString * x2String = [pathSegmentDictionary objectForKey:@"x2"];
-                NSString * y2String = [pathSegmentDictionary objectForKey:@"y2"];
+                NSString * x2String = pathSegmentDictionary[@"x2"];
+                NSString * y2String = pathSegmentDictionary[@"y2"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
                 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddCurveToPoint(%@, NULL, %@, %@, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, x2String, y2String, xString, yString];
@@ -886,14 +886,14 @@
             }
             case 'c':     // curveto
             {
-                NSString * x1String = [pathSegmentDictionary objectForKey:@"absoluteX1"];
-                NSString * y1String = [pathSegmentDictionary objectForKey:@"absoluteY1"];
+                NSString * x1String = pathSegmentDictionary[@"absoluteX1"];
+                NSString * y1String = pathSegmentDictionary[@"absoluteY1"];
 
-                NSString * x2String = [pathSegmentDictionary objectForKey:@"absoluteX2"];
-                NSString * y2String = [pathSegmentDictionary objectForKey:@"absoluteY2"];
+                NSString * x2String = pathSegmentDictionary[@"absoluteX2"];
+                NSString * y2String = pathSegmentDictionary[@"absoluteY2"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddCurveToPoint(%@, NULL, %@, %@, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, x2String, y2String, xString, yString];
@@ -903,11 +903,11 @@
             }
             case 'S':     // smooth curveto
             {
-                NSString * x2String = [pathSegmentDictionary objectForKey:@"x2"];
-                NSString * y2String = [pathSegmentDictionary objectForKey:@"y2"];
+                NSString * x2String = pathSegmentDictionary[@"x2"];
+                NSString * y2String = pathSegmentDictionary[@"y2"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
                 
                 NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
                 
@@ -915,14 +915,14 @@
                 {
                     //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
                     
-                    NSString * previousX2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    NSString * previousY2String = [pathSegmentDictionary objectForKey:@"y2"];
+                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
+                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
                     
-                    CGFloat previousX2 = [previousX2String floatValue];
-                    CGFloat previousY2 = [previousY2String floatValue];
+                    CGFloat previousX2 = previousX2String.floatValue;
+                    CGFloat previousY2 = previousY2String.floatValue;
                     
-                    CGFloat x = [xString floatValue];
-                    CGFloat y = [yString floatValue];
+                    CGFloat x = xString.floatValue;
+                    CGFloat y = yString.floatValue;
                     
                     CGFloat x1 = x - previousX2;
                     CGFloat y1 = y - previousY2;
@@ -939,11 +939,11 @@
             }
             case 's':     // smooth curveto
             {
-                NSString * x2String = [pathSegmentDictionary objectForKey:@"x2"];
-                NSString * y2String = [pathSegmentDictionary objectForKey:@"y2"];
+                NSString * x2String = pathSegmentDictionary[@"x2"];
+                NSString * y2String = pathSegmentDictionary[@"y2"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
 
@@ -951,14 +951,14 @@
                 {
                     //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
                     
-                    NSString * previousX2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    NSString * previousY2String = [pathSegmentDictionary objectForKey:@"y2"];
+                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
+                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
                     
-                    CGFloat previousX2 = [previousX2String floatValue];
-                    CGFloat previousY2 = [previousY2String floatValue];
+                    CGFloat previousX2 = previousX2String.floatValue;
+                    CGFloat previousY2 = previousY2String.floatValue;
                     
-                    CGFloat x = [xString floatValue];
-                    CGFloat y = [yString floatValue];
+                    CGFloat x = xString.floatValue;
+                    CGFloat y = yString.floatValue;
                     
                     CGFloat x1 = x - previousX2;
                     CGFloat y1 = y - previousY2;
@@ -975,11 +975,11 @@
             }
             case 'Q':     // quadratic Bezier curve
             {
-                NSString * x1String = [pathSegmentDictionary objectForKey:@"x1"];
-                NSString * y1String = [pathSegmentDictionary objectForKey:@"y1"];
+                NSString * x1String = pathSegmentDictionary[@"x1"];
+                NSString * y1String = pathSegmentDictionary[@"y1"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddQuadCurveToPoint(%@, NULL, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, xString, yString];
@@ -989,11 +989,11 @@
             }
             case 'q':     // quadratic Bezier curve
             {
-                NSString * x1String = [pathSegmentDictionary objectForKey:@"absoluteX1"];
-                NSString * y1String = [pathSegmentDictionary objectForKey:@"absoluteY1"];
+                NSString * x1String = pathSegmentDictionary[@"absoluteX1"];
+                NSString * y1String = pathSegmentDictionary[@"absoluteY1"];
 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"absoluteX"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"absoluteY"];
+                NSString * xString = pathSegmentDictionary[@"absoluteX"];
+                NSString * yString = pathSegmentDictionary[@"absoluteY"];
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddQuadCurveToPoint(%@, NULL, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, xString, yString];
@@ -1003,8 +1003,8 @@
             }
             case 'T':     // smooth quadratic Bezier curve
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
 
@@ -1012,14 +1012,14 @@
                 {
                     //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
                     
-                    NSString * previousX2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    NSString * previousY2String = [pathSegmentDictionary objectForKey:@"y2"];
+                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
+                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
                     
-                    CGFloat previousX2 = [previousX2String floatValue];
-                    CGFloat previousY2 = [previousY2String floatValue];
+                    CGFloat previousX2 = previousX2String.floatValue;
+                    CGFloat previousY2 = previousY2String.floatValue;
                     
-                    CGFloat x = [xString floatValue];
-                    CGFloat y = [yString floatValue];
+                    CGFloat x = xString.floatValue;
+                    CGFloat y = yString.floatValue;
                     
                     CGFloat x1 = x - previousX2;
                     CGFloat y1 = y - previousY2;
@@ -1036,8 +1036,8 @@
             }
             case 't':     // smooth quadratic Bezier curve
             {
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
                 NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
 
@@ -1045,14 +1045,14 @@
                 {
                     //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
                     
-                    NSString * previousX2String = [pathSegmentDictionary objectForKey:@"x2"];
-                    NSString * previousY2String = [pathSegmentDictionary objectForKey:@"y2"];
+                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
+                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
                     
-                    CGFloat previousX2 = [previousX2String floatValue];
-                    CGFloat previousY2 = [previousY2String floatValue];
+                    CGFloat previousX2 = previousX2String.floatValue;
+                    CGFloat previousY2 = previousY2String.floatValue;
                     
-                    CGFloat x = [xString floatValue];
-                    CGFloat y = [yString floatValue];
+                    CGFloat x = xString.floatValue;
+                    CGFloat y = yString.floatValue;
                     
                     CGFloat x1 = x - previousX2;
                     CGFloat y1 = y - previousY2;
@@ -1069,20 +1069,20 @@
             }
             case 'A':     // elliptical arc
             {
-                NSString * rxString = [pathSegmentDictionary objectForKey:@"rx"];
-                NSString * ryString = [pathSegmentDictionary objectForKey:@"ry"];
+                NSString * rxString = pathSegmentDictionary[@"rx"];
+                NSString * ryString = pathSegmentDictionary[@"ry"];
                 
-                NSString * dataXAxisRotationString = [pathSegmentDictionary objectForKey:@"x-axis-rotation"];
+                NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
                 
-                NSString * largeArcString = [pathSegmentDictionary objectForKey:@"large-arc-flag"];
+                NSString * largeArcString = pathSegmentDictionary[@"large-arc-flag"];
                 
-                NSString * sweepString = [pathSegmentDictionary objectForKey:@"sweep-flag"];
+                NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
                 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
-                NSString * startXString = [pathSegmentDictionary objectForKey:@"absoluteStartX"];
-                NSString * startYString = [pathSegmentDictionary objectForKey:@"absoluteStartY"];
+                NSString * startXString = pathSegmentDictionary[@"absoluteStartX"];
+                NSString * startYString = pathSegmentDictionary[@"absoluteStartY"];
 
                 //CGContextAddArcToPoint (context, x1, y1, x2, y2, radius)
                 
@@ -1092,14 +1092,14 @@
                 [resultString appendString:segmentString];
                 */
                 
-                CGPoint curPoint = CGPointMake([startXString floatValue], [startYString floatValue]);
-                CGFloat xRadius = [rxString floatValue];
-                CGFloat yRadius = [ryString floatValue];
-                double dataXAxisRotation = [dataXAxisRotationString doubleValue];
-                BOOL largeArcFlag = [largeArcString boolValue];
-                BOOL sweepFlag = [sweepString boolValue];
-                CGFloat endPointX = [xString floatValue];
-                CGFloat endPointY = [yString floatValue];
+                CGPoint curPoint = CGPointMake(startXString.floatValue, startYString.floatValue);
+                CGFloat xRadius = rxString.floatValue;
+                CGFloat yRadius = ryString.floatValue;
+                double dataXAxisRotation = dataXAxisRotationString.doubleValue;
+                BOOL largeArcFlag = largeArcString.boolValue;
+                BOOL sweepFlag = sweepString.boolValue;
+                CGFloat endPointX = xString.floatValue;
+                CGFloat endPointY = yString.floatValue;
                 
                 [self addSVGArcToPathVar:pathVar curPoint:curPoint xRadius:xRadius yRadius:yRadius
                         xAxisRotationDegrees:dataXAxisRotation largeArcFlag:largeArcFlag sweepFlag:sweepFlag
@@ -1109,23 +1109,23 @@
             }
             case 'a':     // elliptical arc
             {
-                NSString * rxString = [pathSegmentDictionary objectForKey:@"rx"];
-                NSString * ryString = [pathSegmentDictionary objectForKey:@"ry"];   // CoreGraphics does not support rx/ry, so we just use rx
+                NSString * rxString = pathSegmentDictionary[@"rx"];
+                NSString * ryString = pathSegmentDictionary[@"ry"];   // CoreGraphics does not support rx/ry, so we just use rx
                 #pragma unused(ryString)
                 
-                NSString * dataXAxisRotationString = [pathSegmentDictionary objectForKey:@"x-axis-rotation"];   // not sure how to handle these yet
-                NSString * largeArcString = [pathSegmentDictionary objectForKey:@"large-arc-flag"];
-                NSString * sweepString = [pathSegmentDictionary objectForKey:@"sweep-flag"];
+                NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];   // not sure how to handle these yet
+                NSString * largeArcString = pathSegmentDictionary[@"large-arc-flag"];
+                NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
 
                 #pragma unused(dataXAxisRotationString)
                 #pragma unused(largeArcString)
                 #pragma unused(sweepString)
                 
-                NSString * xString = [pathSegmentDictionary objectForKey:@"x"];
-                NSString * yString = [pathSegmentDictionary objectForKey:@"y"];
+                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * yString = pathSegmentDictionary[@"y"];
 
-                NSString * startXString = [pathSegmentDictionary objectForKey:@"absoluteStartX"];
-                NSString * startYString = [pathSegmentDictionary objectForKey:@"absoluteStartY"];
+                NSString * startXString = pathSegmentDictionary[@"absoluteStartX"];
+                NSString * startYString = pathSegmentDictionary[@"absoluteStartY"];
 
                 //CGContextAddArcToPoint (context, x1, y1, x2, y2, radius)
                 
@@ -1139,10 +1139,10 @@
             {
                 //[resultString appendFormat:@"CGPathClosePath(%@);\n", pathVar];
 
-                NSDictionary * firstPathSegmentDictionary = [pathSegmentsArray firstObject];
+                NSDictionary * firstPathSegmentDictionary = pathSegmentsArray.firstObject;
 
-                NSString * firstXString = [firstPathSegmentDictionary objectForKey:@"x"];
-                NSString * firstYString = [firstPathSegmentDictionary objectForKey:@"y"];
+                NSString * firstXString = firstPathSegmentDictionary[@"x"];
+                NSString * firstYString = firstPathSegmentDictionary[@"y"];
 
                 if (firstXString == NULL)
                 {
@@ -1162,10 +1162,10 @@
             {
                 //[resultString appendFormat:@"CGPathClosePath(%@);\n", pathVar];
 
-                NSDictionary * firstPathSegmentDictionary = [pathSegmentsArray firstObject];
+                NSDictionary * firstPathSegmentDictionary = pathSegmentsArray.firstObject;
 
-                NSString * firstXString = [firstPathSegmentDictionary objectForKey:@"x"];
-                NSString * firstYString = [firstPathSegmentDictionary objectForKey:@"y"];
+                NSString * firstXString = firstPathSegmentDictionary[@"x"];
+                NSString * firstYString = firstPathSegmentDictionary[@"y"];
                 
                 if (firstXString == NULL)
                 {
@@ -1257,7 +1257,7 @@
     NSXMLNode * fillAttributeNode = [svgElement attributeForName:@"fill"];
     if (fillAttributeNode != NULL)
     {
-        NSString * fillString = [fillAttributeNode stringValue];
+        NSString * fillString = fillAttributeNode.stringValue;
         if ([fillString isEqualToString:@"none"] == NO)
         {
             pathMode = @"kCGPathFillStroke";
@@ -1269,14 +1269,14 @@
             NSCharacterSet * parenthesesCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"()"];
             NSArray * fillURLArray = [fillString componentsSeparatedByCharactersInSet:parenthesesCharacterSet];
             
-            if ([fillURLArray count] >= 2)
+            if (fillURLArray.count >= 2)
             {
                 NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
                 
-                NSString * urlString = [fillURLArray objectAtIndex:1];
+                NSString * urlString = fillURLArray[1];
                 urlString = [urlString stringByTrimmingCharactersInSet:whitespaceSet];
                 
-                if ([urlString length] > 1)
+                if (urlString.length > 1)
                 {
                     unichar firstChar = [urlString characterAtIndex:0];
                     
@@ -1284,7 +1284,7 @@
                     {
                         NSString * elementIDString = [urlString substringFromIndex:1];
                         
-                        MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+                        MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
                         NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
                         
                         NSXMLElement * rootElement = [svgXmlDocument rootElement];
@@ -1294,15 +1294,15 @@
                         NSError * error = NULL;
                         NSArray * resultArray = [rootElement nodesForXPath:xpathQuery error:&error];
                         
-                        if ([resultArray count] > 0)
+                        if (resultArray.count > 0)
                         {
-                            NSXMLNode * firstResultNode = [resultArray firstObject];
+                            NSXMLNode * firstResultNode = resultArray.firstObject;
                             
-                            if ([firstResultNode kind] == NSXMLElementKind)
+                            if (firstResultNode.kind == NSXMLElementKind)
                             {
                                 NSXMLElement * firstResultElement = (NSXMLElement *)firstResultNode;
                                 
-                                NSString * firstResultElementName = [firstResultElement name];
+                                NSString * firstResultElementName = firstResultElement.name;
                                 
                                 if ([firstResultElementName isEqualToString:@"linearGradient"] == YES)
                                 {
@@ -1342,43 +1342,43 @@
     NSXMLNode * x2AttributeNode = [linearGradientElement attributeForName:@"x2"];
     NSXMLNode * y2AttributeNode = [linearGradientElement attributeForName:@"y2"];
     
-    NSString * x1String = [x1AttributeNode stringValue];
-    NSString * y1String = [y1AttributeNode stringValue];
-    NSString * x2String = [x2AttributeNode stringValue];
-    NSString * y2String = [y2AttributeNode stringValue];
+    NSString * x1String = x1AttributeNode.stringValue;
+    NSString * y1String = y1AttributeNode.stringValue;
+    NSString * x2String = x2AttributeNode.stringValue;
+    NSString * y2String = y2AttributeNode.stringValue;
     
     NSString * opacityString = @"1.0";
     NSXMLNode * linearGradientElementOpacityAttributeNode = [linearGradientElement attributeForName:@"opacity"];
     if (linearGradientElementOpacityAttributeNode != NULL)
     {
-        opacityString = [linearGradientElementOpacityAttributeNode stringValue];
+        opacityString = linearGradientElementOpacityAttributeNode.stringValue;
     }
     
     NSRange percentSignRange = [x1String rangeOfString:@"%"];
     if (percentSignRange.location != NSNotFound)
     {
-        CGFloat percentFloat = [x1String floatValue];
+        CGFloat percentFloat = x1String.floatValue;
         percentFloat /= 100.0f;
         x1String = [self allocFloatString:percentFloat];
     }
     percentSignRange = [y1String rangeOfString:@"%"];
     if (percentSignRange.location != NSNotFound)
     {
-        CGFloat percentFloat = [y1String floatValue];
+        CGFloat percentFloat = y1String.floatValue;
         percentFloat /= 100.0f;
         y1String = [self allocFloatString:percentFloat];
     }
     percentSignRange = [x2String rangeOfString:@"%"];
     if (percentSignRange.location != NSNotFound)
     {
-        CGFloat percentFloat = [x2String floatValue];
+        CGFloat percentFloat = x2String.floatValue;
         percentFloat /= 100.0f;
         x2String = [self allocFloatString:percentFloat];
     }
     percentSignRange = [y2String rangeOfString:@"%"];
     if (percentSignRange.location != NSNotFound)
     {
-        CGFloat percentFloat = [y2String floatValue];
+        CGFloat percentFloat = y2String.floatValue;
         percentFloat /= 100.0f;
         y2String = [self allocFloatString:percentFloat];
     }
@@ -1387,22 +1387,22 @@
     NSMutableString * gradientColorsString = [NSMutableString string];
     NSMutableString * releaseGradientColorsString = [NSMutableString string];
     
-    NSArray * childNodes = [linearGradientElement children];
+    NSArray * childNodes = linearGradientElement.children;
     for (NSXMLNode * aChildNode in childNodes)
     {
-        if ([aChildNode kind] == NSXMLElementKind)
+        if (aChildNode.kind == NSXMLElementKind)
         {
             NSXMLElement * childElement = (NSXMLElement *)aChildNode;
             
-            NSString * childElementName = [childElement name];
+            NSString * childElementName = childElement.name;
             
             if ([childElementName isEqualToString:@"stop"] == YES)
             {
                 NSXMLNode * offsetAttributeNode = [childElement attributeForName:@"offset"];
                 NSXMLNode * stopColorAttributeNode = [childElement attributeForName:@"stop-color"];
                 
-                NSString * offsetString = [offsetAttributeNode stringValue];
-                NSString * stopColorString = [stopColorAttributeNode stringValue];
+                NSString * offsetString = offsetAttributeNode.stringValue;
+                NSString * stopColorString = stopColorAttributeNode.stringValue;
                 
                 stopColorString = [self hexColorForColorName:stopColorString];
                 
@@ -1415,7 +1415,7 @@
                 [resultString appendFormat:@"\tCGColorRef %@ = CGColorCreate(%@, %@);\n",
                         linearGradientColorVar, linearGradientColorSpaceVar, linearGradientColorArrayVar];
                 
-                if ([gradientStopLocationsString length] > 0)
+                if (gradientStopLocationsString.length > 0)
                 {
                     [gradientStopLocationsString appendString:@", "];
                 }
@@ -1423,7 +1423,7 @@
                 NSRange percentSignRange = [offsetString rangeOfString:@"\%"];
                 if (percentSignRange.location != NSNotFound)
                 {
-                    CGFloat percentFloat = [offsetString floatValue];
+                    CGFloat percentFloat = offsetString.floatValue;
                     percentFloat /= 100.0f;
                     offsetString = [NSString stringWithFormat:@"%f", percentFloat];
                 }
@@ -1432,7 +1432,7 @@
 
 
                 
-                if ([gradientColorsString length] > 0)
+                if (gradientColorsString.length > 0)
                 {
                     [gradientColorsString appendString:@", "];
                 }
@@ -1702,10 +1702,10 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     NSXMLNode * strokeWidthNode = [svgElement attributeForName:@"stroke-width"];
     if (strokeWidthNode != NULL)
     {
-        strokeWidthString = [strokeWidthNode stringValue];
+        strokeWidthString = strokeWidthNode.stringValue;
         
         NSMutableString * copyStrokeWidthString = [NSMutableString string];
-        NSInteger strokeWidthStringLength = [strokeWidthString length];
+        NSInteger strokeWidthStringLength = strokeWidthString.length;
         for (NSInteger i = 0; i < strokeWidthStringLength; i++)
         {
             unichar aChar = [strokeWidthString characterAtIndex:i];
@@ -1746,16 +1746,16 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     NSXMLNode * opacityNode = [svgElement attributeForName:@"opacity"];
     if (opacityNode != NULL)
     {
-        opacityString = [opacityNode stringValue];
+        opacityString = opacityNode.stringValue;
     }
 
     NSString * strokeColorString = @"#000000";
     NSXMLNode * strokeColorNode = [svgElement attributeForName:@"stroke"];
     if (strokeColorNode != NULL)
     {
-        strokeColorString = [strokeColorNode stringValue];
+        strokeColorString = strokeColorNode.stringValue;
     }
-    if ([strokeColorString length] == 0)
+    if (strokeColorString.length == 0)
     {
         strokeColorString = @"#000000";
     }
@@ -1782,15 +1782,15 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     NSXMLNode * opacityNode = [svgElement attributeForName:@"opacity"];
     if (opacityNode != NULL)
     {
-        opacityString = [opacityNode stringValue];
+        opacityString = opacityNode.stringValue;
     }
     NSString * fillColorString = @"#000000";
     NSXMLNode * fillColorNode = [svgElement attributeForName:@"fill"];
     if (fillColorNode != NULL)
     {
-        fillColorString = [fillColorNode stringValue];
+        fillColorString = fillColorNode.stringValue;
     }
-    if ([fillColorString length] == 0)
+    if (fillColorString.length == 0)
     {
         fillColorString = @"#000000";
     }
@@ -1811,7 +1811,7 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
 {
     NSString * resultString = @"[NSColor colorWithRed:0 green:0 blue:0 alpha:1]";
     
-    if ([hexColor length] == 7)
+    if (hexColor.length == 7)
     {
         unichar firstChar = [hexColor characterAtIndex:0];
         
@@ -1825,9 +1825,9 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
             NSString * greenDecimalString = [self getDecimalValueWithHex:greenHex];
             NSString * blueDecimalString = [self getDecimalValueWithHex:blueHex];
             
-            NSInteger redInteger = [redDecimalString integerValue];
-            NSInteger greenInteger = [greenDecimalString integerValue];
-            NSInteger blueInteger = [blueDecimalString integerValue];
+            NSInteger redInteger = redDecimalString.integerValue;
+            NSInteger greenInteger = greenDecimalString.integerValue;
+            NSInteger blueInteger = blueDecimalString.integerValue;
             
             CGFloat redFloat = (CGFloat)redInteger / 255.0f;
             CGFloat greenFloat = (CGFloat)greenInteger / 255.0f;
@@ -1853,7 +1853,7 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
 {
     NSString * resultString = @"[NSColor colorWithRed:0 green:0 blue:0 alpha:1]";
     
-    if ([hexColor length] == 7)
+    if (hexColor.length == 7)
     {
         unichar firstChar = [hexColor characterAtIndex:0];
         
@@ -1867,9 +1867,9 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
             NSString * greenDecimalString = [self getDecimalValueWithHex:greenHex];
             NSString * blueDecimalString = [self getDecimalValueWithHex:blueHex];
             
-            NSInteger redInteger = [redDecimalString integerValue];
-            NSInteger greenInteger = [greenDecimalString integerValue];
-            NSInteger blueInteger = [blueDecimalString integerValue];
+            NSInteger redInteger = redDecimalString.integerValue;
+            NSInteger greenInteger = greenDecimalString.integerValue;
+            NSInteger blueInteger = blueDecimalString.integerValue;
             
             CGFloat redFloat = (CGFloat)redInteger / 255.0f;
             CGFloat greenFloat = (CGFloat)greenInteger / 255.0f;
@@ -1945,7 +1945,7 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -1986,7 +1986,7 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -2031,7 +2031,7 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
 
     if (colorFirstCharacter == '#')
     {
-        if ([colorName length] == 4)
+        if (colorName.length == 4)
         {
             unichar digit1 = [colorName characterAtIndex:1];
             unichar digit2 = [colorName characterAtIndex:2];
@@ -2045,11 +2045,11 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
     {
         for (NSDictionary * aColorDictionary in self.webColorsArray)
         {
-            NSString * aColorName = [aColorDictionary objectForKey:@"name"];
+            NSString * aColorName = aColorDictionary[@"name"];
             
             if ([colorName isEqualToString:aColorName] == YES)
             {
-                resultName  = [aColorDictionary objectForKey:@"hex"];
+                resultName  = aColorDictionary[@"hex"];
                 break;
             }
         }
@@ -2064,11 +2064,9 @@ CGFloat CalculateVectorMagnitude(CGPoint aVector)
 
 - (void)addWebColorName:(NSString *)colorName hex:(NSString *)hex rgb:(NSString *)rgb
 {
-    NSDictionary * colorDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-            colorName, @"name",
-            hex, @"hex",
-            rgb, @"rgb",
-            nil];
+    NSDictionary * colorDictionary = @{@"name": colorName,
+            @"hex": hex,
+            @"rgb": rgb};
             
     [self.webColorsArray addObject:colorDictionary];
     

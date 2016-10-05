@@ -77,11 +77,11 @@
     // e.g., "| feBlend | feColorMatrix\n     | feComponentTransfer | feComposite\n     | feConvolveMatrix | feDiffuseLighting\n     | feDisplacementMap | feFlood\n     | feGaussianBlur | feImage | feMerge\n     | feMorphology | feOffset\n     | feSpecularLighting | feTile\n     | feTurbulence "
     
     NSMutableDictionary * childElementsDictionary = [[NSMutableDictionary alloc] init];
-    [classDictionary setObject:childElementsDictionary forKey:@"class-elements"];
+    classDictionary[@"class-elements"] = childElementsDictionary;
     
     NSMutableString * elementsString = [[NSMutableString alloc] initWithString:entityValue];
     
-    [elementsString replaceOccurrencesOfString:@"\n" withString:@"" options:0 range:NSMakeRange(0, [elementsString length])];
+    [elementsString replaceOccurrencesOfString:@"\n" withString:@"" options:0 range:NSMakeRange(0, elementsString.length)];
     
     NSArray * inputElementsArray = [elementsString componentsSeparatedByString:@"|"];
     
@@ -93,7 +93,7 @@
         if ([trimmedName isEqualToString:@""] == NO)
         {
             NSString * aElementName = [[NSString alloc] initWithString:trimmedName];
-            [childElementsDictionary setObject:aElementName forKey:aElementName];
+            childElementsDictionary[aElementName] = aElementName;
         }
     }
 }
@@ -123,25 +123,25 @@
     replaceCount = [valuesString replaceOccurrencesOfString:@"<" withString:@"" 
             options:0 range:valuesStringRange];
 
-    valuesStringRange = NSMakeRange([valuesString length] - 1, 1);
+    valuesStringRange = NSMakeRange(valuesString.length - 1, 1);
     replaceCount = [valuesString replaceOccurrencesOfString:@">" withString:@"" 
             options:0 range:valuesStringRange];
 
-    valuesStringRange = NSMakeRange(0, [valuesString length]);
+    valuesStringRange = NSMakeRange(0, valuesString.length);
     replaceCount = [valuesString replaceOccurrencesOfString:@"(" withString:@" ( " 
             options:0 range:valuesStringRange];
 
-    valuesStringRange = NSMakeRange(0, [valuesString length]);
+    valuesStringRange = NSMakeRange(0, valuesString.length);
     replaceCount = [valuesString replaceOccurrencesOfString:@")" withString:@" ) " 
             options:0 range:valuesStringRange];
     
-    valuesStringRange = NSMakeRange(0, [valuesString length]);
+    valuesStringRange = NSMakeRange(0, valuesString.length);
     replaceCount = [valuesString replaceOccurrencesOfString:@"|" withString:@" | " 
             options:0 range:valuesStringRange];
         
     NSArray * inputValuesArray = [valuesString componentsSeparatedByString:@" "];
 
-    NSInteger fixArrayCount = [inputValuesArray count];
+    NSInteger fixArrayCount = inputValuesArray.count;
     if (fixArrayCount > 0)
     {
         NSMutableArray * fixArray = [NSMutableArray arrayWithArray:inputValuesArray];
@@ -149,8 +149,8 @@
         BOOL continueFixLoop = YES;
         while (continueFixLoop == YES)
         {
-            NSString * fixString = [fixArray objectAtIndex:fixArrayIndex];
-            NSInteger fixStringLength = [fixString length];
+            NSString * fixString = fixArray[fixArrayIndex];
+            NSInteger fixStringLength = fixString.length;
 
             NSUInteger quotemarkCount = 0;
             for (int i = 0; i < fixStringLength; i++)
@@ -165,8 +165,8 @@
             {
                 if (fixArrayIndex < (fixArrayCount - 1))
                 {
-                    NSString * nextFixString = [fixArray objectAtIndex:(fixArrayIndex + 1)];
-                    NSInteger nextFixStringLength = [nextFixString length];
+                    NSString * nextFixString = fixArray[(fixArrayIndex + 1)];
+                    NSInteger nextFixStringLength = nextFixString.length;
                     NSUInteger nextQuotemarkCount = 0;
                     for (int i = 0; i < nextFixStringLength; i++)
                     {
@@ -179,7 +179,7 @@
                     {
                         // recombine two consecutive string elements
                         NSString * replacementString = [NSString stringWithFormat:@"%@ %@", fixString, nextFixString];
-                        [fixArray replaceObjectAtIndex:fixArrayIndex withObject:replacementString];
+                        fixArray[fixArrayIndex] = replacementString;
                         [fixArray removeObjectAtIndex:(fixArrayIndex + 1)];
                         fixArrayIndex++;
                         fixArrayCount--;
@@ -297,7 +297,7 @@
                     
                     NSMutableString * mutableValueString = [[NSMutableString alloc] initWithString:valueString];
 
-                    NSUInteger valueStringLength = [mutableValueString length];
+                    NSUInteger valueStringLength = mutableValueString.length;
                     if (valueStringLength > 1) 
                     {
                         NSUInteger quotemarkCount = 0;
@@ -349,10 +349,10 @@
 //    NSLog(@"element-name=%@, attribute-name=%@, attribute-type=%@, default-value=%@)", 
 //            elementName, attributeName, enumeratedValuesArray, defaultValuesArray);
     
-    [attributeDictionary setObject:elementName forKey:@"element_name"];
-    [attributeDictionary setObject:attributeName forKey:@"attribute_name"];
-    [attributeDictionary setObject:enumeratedValuesArray forKey:@"attribute_type"];
-    [attributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+    attributeDictionary[@"element_name"] = elementName;
+    attributeDictionary[@"attribute_name"] = attributeName;
+    attributeDictionary[@"attribute_type"] = enumeratedValuesArray;
+    attributeDictionary[@"default_value"] = defaultValuesArray;
 }
 
 // ================================================================
@@ -367,11 +367,11 @@
     self.svgXmlDtd = [[NSXMLDTD alloc]
             initWithContentsOfURL:svgXmlDtdUrl 
             options:optionsMask error:&error];
-    [self.svgXmlDtd setName:@"svg"];
+    (self.svgXmlDtd).name = @"svg";
 
 	//NSLog(@"DTD = %@", svgXmlDtd);
    
-    NSArray * childArray = [self.svgXmlDtd children];
+    NSArray * childArray = (self.svgXmlDtd).children;
     
     int childIndex = 0;
 
@@ -413,82 +413,82 @@
 
         //NSLog(@"%@", [childNode XMLString]);
 
-        NSXMLNodeKind nodeKind = [childNode kind];
+        NSXMLNodeKind nodeKind = childNode.kind;
         
         switch (nodeKind) 
         {
             case NSXMLEntityDeclarationKind:
             {
                 NSXMLDTDNode * dtdNode = (NSXMLDTDNode *)childNode;
-                NSXMLDTDNodeKind dtdNodeKind = [dtdNode DTDKind];
+                NSXMLDTDNodeKind dtdNodeKind = dtdNode.DTDKind;
                 #pragma unused(dtdNodeKind)
                 
-                entityName = [childNode name];
-                entityValue = [childNode stringValue];
-                entityURI = [childNode URI];
+                entityName = childNode.name;
+                entityValue = childNode.stringValue;
+                entityURI = childNode.URI;
                 //NSLog(@"NSXMLEntityDeclarationKind %@ = %@, %@", entityName, entityValue, entityURI);
                 
                 NSArray * entityArray = [entityName componentsSeparatedByString:@"."];
                 
-                if ([entityArray count] == 2)
+                if (entityArray.count == 2)
                 {
-                    NSString * part1 = [entityArray objectAtIndex:0];
-                    NSString * part2 = [entityArray objectAtIndex:1];
+                    NSString * part1 = entityArray[0];
+                    NSString * part2 = entityArray[1];
 
                     if ([part2 isEqualToString:@"datatype"] == YES)
                     {
                         datatypeDictionary = [[NSMutableDictionary alloc] init];
-                        [self.datatypesDictionary setObject:datatypeDictionary forKey:part1];
-                        [datatypeDictionary setObject:entityValue forKey:@"value"];
+                        (self.datatypesDictionary)[part1] = datatypeDictionary;
+                        datatypeDictionary[@"value"] = entityValue;
                     }
                 }
                 
                 
-                if ([entityArray count] == 3)
+                if (entityArray.count == 3)
                 {
-                    NSString * part1 = [entityArray objectAtIndex:0];
-                    NSString * part2 = [entityArray objectAtIndex:1];
-                    NSString * part3 = [entityArray objectAtIndex:2];
+                    NSString * part1 = entityArray[0];
+                    NSString * part2 = entityArray[1];
+                    NSString * part3 = entityArray[2];
                     
                     if ([part1 isEqualToString:@"SVG"] == YES)
                     {
                         if ([part3 isEqualToString:@"qname"] == YES)
                         {
                             entityDictionary = [[NSMutableDictionary alloc] init];
-                            [self.entitiesDictionary setObject:entityDictionary forKey:part2];
-                            [entityDictionary setObject:entityValue forKey:@"value"];
+                            (self.entitiesDictionary)[part2] = entityDictionary;
+                            entityDictionary[@"value"] = entityValue;
                         }
                         if ([part3 isEqualToString:@"class"] == YES)
                         {
                             classDictionary = [[NSMutableDictionary alloc] init];
-                            [self.classesDictionary setObject:classDictionary forKey:part2];
-                            [classDictionary setObject:entityValue forKey:@"value"];
+                            (self.classesDictionary)[part2] = classDictionary;
+                            classDictionary[@"value"] = entityValue;
                             [self buildValidChildElements:classDictionary withValue:entityValue];
                         }
                         if ([part3 isEqualToString:@"attrib"] == YES)
                         {
                             attribDictionary = [[NSMutableDictionary alloc] init];
-                            [self.attribsDictionary setObject:attribDictionary forKey:part2];
-                            [attribDictionary setObject:entityValue forKey:@"value"];
+                            (self.attribsDictionary)[part2] = attribDictionary;
+                            attribDictionary[@"value"] = entityValue;
                         }
                         if ([part3 isEqualToString:@"attlist"] == YES)
                         {
                             attDictionary = [[NSMutableDictionary alloc] init];
-                            [self.attlistDictionary setObject:attDictionary forKey:part2];
-                            [attDictionary setObject:entityValue forKey:@"value"];
+                            (self.attlistDictionary)[part2] = attDictionary;
+                            attDictionary[@"value"] = entityValue;
                         }
                         if ([part3 isEqualToString:@"content"] == YES)
                         {
                             // the list of valid child elements per element
                             contentDictionary = [[NSMutableDictionary alloc] init];
-                            [self.elementContentsDictionary setObject:contentDictionary forKey:part2];
+                            (self.elementContentsDictionary)[part2] = contentDictionary;
                             //[contentDictionary setObject:entityValue forKey:@"value"];
 
                             NSMutableString * elementsString = [[NSMutableString alloc] initWithString:entityValue];
                             
-                            [elementsString replaceOccurrencesOfString:@"(" withString:@"" options:0 range:NSMakeRange(0, [elementsString length])];
-                            [elementsString replaceOccurrencesOfString:@")" withString:@"" options:0 range:NSMakeRange(0, [elementsString length])];
-                            [elementsString replaceOccurrencesOfString:@"*" withString:@"" options:0 range:NSMakeRange(0, [elementsString length])];
+                            [elementsString replaceOccurrencesOfString:@"(" withString:@"" options:0 range:NSMakeRange(0, elementsString.length)];
+                            [elementsString replaceOccurrencesOfString:@")" withString:@"" options:0 range:NSMakeRange(0, elementsString.length)];
+                            [elementsString replaceOccurrencesOfString:@"*" withString:@"" options:0 range:NSMakeRange(0, elementsString.length)];
                             
                             NSArray * elementsArray = [elementsString componentsSeparatedByString:@"|"];
                             
@@ -499,7 +499,7 @@
                             
                                 if ([elementName isEqualToString:@""] == NO)
                                 {
-                                    [contentDictionary setObject:elementName forKey:elementName];
+                                    contentDictionary[elementName] = elementName;
                                 }
                             }
                         }
@@ -511,45 +511,45 @@
             case NSXMLAttributeDeclarationKind:
             {
                 NSXMLDTDNode * dtdNode = (NSXMLDTDNode *)childNode;
-                NSXMLDTDNodeKind dtdNodeKind = [dtdNode DTDKind];
+                NSXMLDTDNodeKind dtdNodeKind = dtdNode.DTDKind;
                 NSString * dtdNodeDescription = [self descriptionForDTDNodeKind:dtdNodeKind];
                 
-                attributeName = [childNode name];
-                attributeValue = [childNode stringValue];
-                attributeURI = [childNode URI];
+                attributeName = childNode.name;
+                attributeValue = childNode.stringValue;
+                attributeURI = childNode.URI;
                 //NSLog(@"NSXMLAttributeDeclarationKind %@ = %@, %@", attributeName, attributeValue, attributeURI);
                 
                 // also add a dictionary to the current element dictionary
-                NSMutableDictionary * elementAttributesDictionary = [elementDictionary objectForKey:@"attributes"];
+                NSMutableDictionary * elementAttributesDictionary = elementDictionary[@"attributes"];
                 
                 NSMutableDictionary * attributeDictionary = [[NSMutableDictionary alloc] init];
                 //[attributeDictionary setObject:attributeValue forKey:@"default-value"];
-                [attributeDictionary setObject:[childNode XMLString] forKey:@"xml"];
-                [attributeDictionary setObject:dtdNodeDescription forKey:@"description"];
+                attributeDictionary[@"xml"] = childNode.XMLString;
+                attributeDictionary[@"description"] = dtdNodeDescription;
                 
-                [self buildValidAttributeValues:attributeDictionary xmlString:[childNode XMLString]];
+                [self buildValidAttributeValues:attributeDictionary xmlString:childNode.XMLString];
                 
-                [elementAttributesDictionary setObject:attributeDictionary forKey:attributeName];
+                elementAttributesDictionary[attributeName] = attributeDictionary;
                 break;
             }
             case NSXMLElementDeclarationKind:
             {
                 NSXMLDTDNode * dtdNode = (NSXMLDTDNode *)childNode;
-                NSXMLDTDNodeKind dtdNodeKind = [dtdNode DTDKind];
+                NSXMLDTDNodeKind dtdNodeKind = dtdNode.DTDKind;
                 #pragma unused(dtdNodeKind)
                 
-                elementName = [childNode name];
-                elementValue = [childNode stringValue];
-                elementURI = [childNode URI];
+                elementName = childNode.name;
+                elementValue = childNode.stringValue;
+                elementURI = childNode.URI;
                 //NSLog(@"NSXMLElementDeclarationKind %@ = %@, %@", elementName, elementValue, elementURI);
                 
                 elementDictionary = [[NSMutableDictionary alloc] init];
-                [self.elementsDictionary setObject:elementDictionary forKey:elementName];
-                [elementDictionary setObject:elementValue forKey:@"value"];
-                [elementDictionary setObject:[childNode XMLString] forKey:@"xml"];
+                (self.elementsDictionary)[elementName] = elementDictionary;
+                elementDictionary[@"value"] = elementValue;
+                elementDictionary[@"xml"] = childNode.XMLString;
 
                 NSMutableDictionary * elementAttributesDictionary =  [[NSMutableDictionary alloc] init];
-                [elementDictionary setObject:elementAttributesDictionary forKey:@"attributes"];
+                elementDictionary[@"attributes"] = elementAttributesDictionary;
                 
 
                 break;
@@ -557,20 +557,20 @@
             case NSXMLNotationDeclarationKind:
             {
                 NSXMLDTDNode * dtdNode = (NSXMLDTDNode *)childNode;
-                NSXMLDTDNodeKind dtdNodeKind = [dtdNode DTDKind];
+                NSXMLDTDNodeKind dtdNodeKind = dtdNode.DTDKind;
                 #pragma unused(dtdNodeKind)
                 
-                notationName = [childNode name];
-                notationValue = [childNode stringValue];
-                notationURI = [childNode URI];
+                notationName = childNode.name;
+                notationValue = childNode.stringValue;
+                notationURI = childNode.URI;
                 //NSLog(@"NSXMLNotationDeclarationKind %@ = %@, %@", notationName, notationValue, notationURI);
                 break;
             }
             default:
             {
-                unknownName = [childNode name];
-                unknownValue = [childNode stringValue];
-                unknownURI = [childNode URI];
+                unknownName = childNode.name;
+                unknownValue = childNode.stringValue;
+                unknownURI = childNode.URI;
                 NSLog(@"Unknown kind %lu, %@ = %@, %@", nodeKind, unknownName, unknownValue, unknownURI);
                break;
             }
@@ -582,83 +582,83 @@
     // Customize the default DTD rules to fix some missing common cases
 
     // we add the 'stop' element to gradient class
-    NSDictionary * gradientClassDictionary = [self.classesDictionary objectForKey:@"Gradient"];
+    NSDictionary * gradientClassDictionary = (self.classesDictionary)[@"Gradient"];
     
     NSMutableDictionary * gradientClassElementsDictionary = 
-            [gradientClassDictionary objectForKey:@"class-elements"];
+            gradientClassDictionary[@"class-elements"];
     
-    [gradientClassElementsDictionary setObject:@"stop" forKey:@"stop"];
+    gradientClassElementsDictionary[@"stop"] = @"stop";
 
 
 
     // add the 'mpath' element to animation class
-    NSDictionary * animateMotionClassDictionary = [self.classesDictionary objectForKey:@"Animation"];
+    NSDictionary * animateMotionClassDictionary = (self.classesDictionary)[@"Animation"];
     
     NSMutableDictionary * animateMotionClassElementsDictionary =
-            [animateMotionClassDictionary objectForKey:@"class-elements"];
+            animateMotionClassDictionary[@"class-elements"];
     
-    [animateMotionClassElementsDictionary setObject:@"mpath" forKey:@"mpath"];
+    animateMotionClassElementsDictionary[@"mpath"] = @"mpath";
 
     
     // add the 'mpath' element to animation element content
-    NSMutableDictionary * animateMotionDictionary = [self.elementContentsDictionary objectForKey:@"animateMotion"];
+    NSMutableDictionary * animateMotionDictionary = (self.elementContentsDictionary)[@"animateMotion"];
         
-    [animateMotionDictionary setObject:@"mpath" forKey:@"mpath"];
+    animateMotionDictionary[@"mpath"] = @"mpath";
 
 
 
     // add some elements to Font class
 
-    NSDictionary * fontClassDictionary = [self.classesDictionary objectForKey:@"Font"];
+    NSDictionary * fontClassDictionary = (self.classesDictionary)[@"Font"];
     
     NSMutableDictionary * fontFaceFormatClassElementsDictionary = 
-            [fontClassDictionary objectForKey:@"class-elements"];
+            fontClassDictionary[@"class-elements"];
     
-    [fontFaceFormatClassElementsDictionary setObject:@"font-face-format" forKey:@"font-face-format"];
-    [fontFaceFormatClassElementsDictionary setObject:@"font-face-name" forKey:@"font-face-name"];
-    [fontFaceFormatClassElementsDictionary setObject:@"font-face-src" forKey:@"font-face-src"];
-    [fontFaceFormatClassElementsDictionary setObject:@"font-face-uri" forKey:@"font-face-uri"];
+    fontFaceFormatClassElementsDictionary[@"font-face-format"] = @"font-face-format";
+    fontFaceFormatClassElementsDictionary[@"font-face-name"] = @"font-face-name";
+    fontFaceFormatClassElementsDictionary[@"font-face-src"] = @"font-face-src";
+    fontFaceFormatClassElementsDictionary[@"font-face-uri"] = @"font-face-uri";
 
     // allow extended font-face elements to be added - taking a wild guess here - check these someday
-    NSMutableDictionary * fontFaceDictionary = [self.elementContentsDictionary objectForKey:@"font-face"];
-    [fontFaceDictionary setObject:@"font-face-src" forKey:@"font-face-src"];
-    [fontFaceDictionary setObject:@"font-face-name" forKey:@"font-face-name"];
-    [fontFaceDictionary setObject:@"font-face-format" forKey:@"font-face-format"];
-    [fontFaceDictionary setObject:@"glyphRef" forKey:@"glyphRef"];
-    [fontFaceDictionary setObject:@"hkern" forKey:@"hkern"];
-    [fontFaceDictionary setObject:@"vkern" forKey:@"vkern"];
+    NSMutableDictionary * fontFaceDictionary = (self.elementContentsDictionary)[@"font-face"];
+    fontFaceDictionary[@"font-face-src"] = @"font-face-src";
+    fontFaceDictionary[@"font-face-name"] = @"font-face-name";
+    fontFaceDictionary[@"font-face-format"] = @"font-face-format";
+    fontFaceDictionary[@"glyphRef"] = @"glyphRef";
+    fontFaceDictionary[@"hkern"] = @"hkern";
+    fontFaceDictionary[@"vkern"] = @"vkern";
 
     // allow some elements to Text class
-    NSMutableDictionary * textDictionary = [self.elementContentsDictionary objectForKey:@"text"];
-    [textDictionary setObject:@"tspan" forKey:@"tspan"];
-    [textDictionary setObject:@"textPath" forKey:@"textPath"];
+    NSMutableDictionary * textDictionary = (self.elementContentsDictionary)[@"text"];
+    textDictionary[@"tspan"] = @"tspan";
+    textDictionary[@"textPath"] = @"textPath";
     
     // allow some elements to textPath class
-    NSMutableDictionary * textPathDictionary = [self.elementContentsDictionary objectForKey:@"textPath"];
-    [textPathDictionary setObject:@"tspan" forKey:@"tspan"];
+    NSMutableDictionary * textPathDictionary = (self.elementContentsDictionary)[@"textPath"];
+    textPathDictionary[@"tspan"] = @"tspan";
     
     // customize DTD attribute rules
-    NSArray * allElementKeys = [self.elementsDictionary allKeys];
+    NSArray * allElementKeys = (self.elementsDictionary).allKeys;
     
     // set default opacity value 1.0f
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange opacityRange = [attributeName rangeOfString:@"opacity"];
                 if (opacityRange.location != NSNotFound)
                 {
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"1.0"];
-                    [aAttributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+                    aAttributeDictionary[@"default_value"] = defaultValuesArray;
                 }
             }
         }
@@ -668,26 +668,26 @@
     // also, set '0' as the default value for repeatCount attributes
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"repeatCount"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"indefinite"];
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"0"];
-                    [aAttributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+                    aAttributeDictionary[@"default_value"] = defaultValuesArray;
                 }
             }
         }
@@ -697,27 +697,27 @@
     // also, set 'indefinite' as the default value for repeatDur attributes
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"repeatDur"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"indefinite"];
                     [attributeTypeArray addObject:@"media"];
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"indefinite"];
-                    [aAttributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+                    aAttributeDictionary[@"default_value"] = defaultValuesArray;
                 }
             }
         }
@@ -728,21 +728,21 @@
     // also, set 'xMidYMid meet' as the default value for preserveAspectRatio attributes
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"preserveAspectRatio"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"none"];
                     
@@ -766,9 +766,9 @@
                     [attributeTypeArray addObject:@"xMaxYMid slice"];
                     [attributeTypeArray addObject:@"xMaxYMax slice"];
                     
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"xMidYMid meet"];
-                    [aAttributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+                    aAttributeDictionary[@"default_value"] = defaultValuesArray;
                 }
             }
         }
@@ -778,26 +778,26 @@
     // also, set '0s' as the default value for dur attributes
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"begin"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"none"];
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"0s"];
-                    [aAttributeDictionary setObject:defaultValuesArray forKey:@"default_value"];
+                    aAttributeDictionary[@"default_value"] = defaultValuesArray;
                 }
             }
         }
@@ -806,8 +806,8 @@
     // add several fill attribute defined values for all elements where fill is a valid attribute
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         BOOL isAnimateElement = NO;
         if ([aElementKey isEqualToString:@"animate"] == YES)
@@ -829,16 +829,16 @@
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"fill"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"none"];
 
@@ -862,7 +862,7 @@
                         [attributeTypeArray addObject:@"url(#aElementID)"];
                     }
                     
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                 }
             }
         }
@@ -871,21 +871,21 @@
     // add several stroke attribute defined values for elements where stroke is a valid attribute
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = [self.elementsDictionary objectForKey:aElementKey];
-        NSDictionary * attributesDictionary = [aElementDictionary objectForKey:@"attributes"];
+        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         if (attributesDictionary != NULL)
         {
-            NSArray * allAttributeKeys = [attributesDictionary allKeys];
+            NSArray * allAttributeKeys = attributesDictionary.allKeys;
             for (NSString * attributeKey in allAttributeKeys)
             {
-                NSMutableDictionary * aAttributeDictionary = [attributesDictionary objectForKey:attributeKey];
-                NSString * attributeName = [aAttributeDictionary objectForKey:@"attribute_name"];
+                NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
+                NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"stroke"];
                 if (repeatCountRange.location != NSNotFound)
                 {
-                    NSArray * existingAttributeTypeArray = [aAttributeDictionary objectForKey:@"attribute_type"];
+                    NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
                     [attributeTypeArray addObject:@"none"];
                     [attributeTypeArray addObject:@"currentColor"];
@@ -900,7 +900,7 @@
                     [attributeTypeArray addObject:@"#000000"];
                     [attributeTypeArray addObject:@"url(#aElementID)"];
                     
-                    [aAttributeDictionary setObject:attributeTypeArray forKey:@"attribute_type"];
+                    aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                 }
             }
         }
@@ -1139,7 +1139,7 @@
     //NSXMLParser * dtdParser = [[NSXMLParser alloc] initWithContentsOfURL:svgXmlDtdUrl];
     NSXMLParser * dtdParser = [[NSXMLParser alloc] initWithData:dtdXmlData];
 
-    [dtdParser setDelegate:self];
+    dtdParser.delegate = self;
     
     [dtdParser setShouldProcessNamespaces:YES];
     [dtdParser setShouldReportNamespacePrefixes:YES];
@@ -1147,7 +1147,7 @@
 
     [dtdParser parse];
     
-    NSError * parseError = [dtdParser parserError];
+    NSError * parseError = dtdParser.parserError;
     
     NSLog(@"parseError=%@", parseError);
 }
@@ -1156,7 +1156,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 

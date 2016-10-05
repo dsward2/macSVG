@@ -36,7 +36,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -63,7 +63,7 @@
 
 - (NSDictionary *)elementDictionaryAtIndex:(NSUInteger)elementIndex
 {
-    return [selectedElementsDictionariesArray objectAtIndex:elementIndex];
+    return selectedElementsDictionariesArray[elementIndex];
 }
 
 //==================================================================================
@@ -90,7 +90,7 @@
 
 - (NSUInteger)selectedElementsCount
 {
-    return [selectedElementsDictionariesArray count];
+    return selectedElementsDictionariesArray.count;
 }
 
 //==================================================================================
@@ -99,8 +99,8 @@
 
 - (NSXMLElement *)xmlElementAtIndex:(NSUInteger)elementIndex
 {
-    NSMutableDictionary * elementDictionary = [selectedElementsDictionariesArray objectAtIndex:elementIndex];
-    NSXMLElement * xmlElement = [elementDictionary objectForKey:@"xmlElement"];
+    NSMutableDictionary * elementDictionary = selectedElementsDictionariesArray[elementIndex];
+    NSXMLElement * xmlElement = elementDictionary[@"xmlElement"];
     
     if (xmlElement == NULL)
     {
@@ -117,10 +117,10 @@
 - (NSXMLElement *)firstXmlElement
 {   NSXMLElement * xmlElement = NULL;
 
-    if ([selectedElementsDictionariesArray count] > 0)
+    if (selectedElementsDictionariesArray.count > 0)
     {
-        NSMutableDictionary * elementDictionary = [selectedElementsDictionariesArray objectAtIndex:0];
-        xmlElement = [elementDictionary objectForKey:@"xmlElement"];
+        NSMutableDictionary * elementDictionary = selectedElementsDictionariesArray[0];
+        xmlElement = elementDictionary[@"xmlElement"];
     }
     
     return xmlElement;
@@ -133,8 +133,8 @@
 
 - (DOMElement *)domElementAtIndex:(NSUInteger)elementIndex
 {
-    NSMutableDictionary * elementDictionary = [selectedElementsDictionariesArray objectAtIndex:elementIndex];
-    DOMElement * domElement = [elementDictionary objectForKey:@"domElement"];
+    NSMutableDictionary * elementDictionary = selectedElementsDictionariesArray[elementIndex];
+    DOMElement * domElement = elementDictionary[@"domElement"];
     
     if (domElement == NULL)
     {
@@ -152,10 +152,10 @@
 {
     DOMElement * domElement = NULL;
 
-    if ([selectedElementsDictionariesArray count] > 0)
+    if (selectedElementsDictionariesArray.count > 0)
     {
-        NSMutableDictionary * elementDictionary = [selectedElementsDictionariesArray objectAtIndex:0];
-        domElement = [elementDictionary objectForKey:@"domElement"];
+        NSMutableDictionary * elementDictionary = selectedElementsDictionariesArray[0];
+        domElement = elementDictionary[@"domElement"];
     }
     
     return domElement;
@@ -209,12 +209,12 @@
     
     for (NSDictionary * selectedItemDictionary in selectedElementsDictionariesArray)
     {
-        NSXMLElement * aElement = [selectedItemDictionary objectForKey:@"xmlElement"];
+        NSXMLElement * aElement = selectedItemDictionary[@"xmlElement"];
         
         if (aElement != NULL)
         {
             NSXMLNode * MacsvgidNode = [aElement attributeForName:@"macsvgid"];
-            NSString * macsvgid = [MacsvgidNode stringValue];
+            NSString * macsvgid = MacsvgidNode.stringValue;
 
             if (macsvgid != NULL)
             {
@@ -234,11 +234,11 @@
 {
     for (NSMutableDictionary * selectedItemDictionary in selectedElementsDictionariesArray)
     {
-        DOMElement * aElement = [selectedItemDictionary objectForKey:@"domElement"];
+        DOMElement * aElement = selectedItemDictionary[@"domElement"];
         
         if (aElement == oldElement)
         {
-            [selectedItemDictionary setObject:newElement forKey:@"domElement"];
+            selectedItemDictionary[@"domElement"] = newElement;
             break;
         }
     }

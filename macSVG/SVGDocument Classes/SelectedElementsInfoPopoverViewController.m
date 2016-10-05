@@ -49,17 +49,17 @@
     NSMutableArray * selectedElementsArray =
             macSVGDocumentWindowController.svgXMLDOMSelectionManager.selectedElementsManager.selectedElementsArray;
     
-    NSInteger selectedElementsArrayCount = [selectedElementsArray count];
+    NSInteger selectedElementsArrayCount = selectedElementsArray.count;
 
     if (selectedElementsArrayCount > 0)
     {
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         
         CGRect unionRect = CGRectNull;
         
         for (NSMutableDictionary * elementDictionary in selectedElementsArray)
         {
-            DOMElement * aDOMElement = [elementDictionary objectForKey:@"domElement"];
+            DOMElement * aDOMElement = elementDictionary[@"domElement"];
         
             CGRect boundingBox = [macSVGAppDelegate.webKitInterface bBoxForDOMElement:aDOMElement];
             
@@ -87,27 +87,27 @@
         NSString * centerXString = [NSString stringWithFormat:@"%f", (unionRect.origin.x + (unionRect.size.width / 2.0f))];
         NSString * centerYString = [NSString stringWithFormat:@"%f", (unionRect.origin.y + (unionRect.size.height / 2.0f))];
         
-        [selectedElementsCountTextField setStringValue:selectedElementsCountString];
-        [topTextField setStringValue:topString];
-        [bottomTextField setStringValue:bottomString];
-        [leftTextField setStringValue:leftString];
-        [rightTextField setStringValue:rightString];
-        [widthTextField setStringValue:widthString];
-        [heightTextField setStringValue:heightString];
-        [centerXTextField setStringValue:centerXString];
-        [centerYTextField setStringValue:centerYString];
+        selectedElementsCountTextField.stringValue = selectedElementsCountString;
+        topTextField.stringValue = topString;
+        bottomTextField.stringValue = bottomString;
+        leftTextField.stringValue = leftString;
+        rightTextField.stringValue = rightString;
+        widthTextField.stringValue = widthString;
+        heightTextField.stringValue = heightString;
+        centerXTextField.stringValue = centerXString;
+        centerYTextField.stringValue = centerYString;
     }
     else
     {
-        [selectedElementsCountTextField setStringValue:@"0"];
-        [topTextField setStringValue:@"--"];
-        [bottomTextField setStringValue:@"--"];
-        [leftTextField setStringValue:@"--"];
-        [rightTextField setStringValue:@"--"];
-        [widthTextField setStringValue:@"--"];
-        [heightTextField setStringValue:@"--"];
-        [centerXTextField setStringValue:@"--"];
-        [centerYTextField setStringValue:@"--"];
+        selectedElementsCountTextField.stringValue = @"0";
+        topTextField.stringValue = @"--";
+        bottomTextField.stringValue = @"--";
+        leftTextField.stringValue = @"--";
+        rightTextField.stringValue = @"--";
+        widthTextField.stringValue = @"--";
+        heightTextField.stringValue = @"--";
+        centerXTextField.stringValue = @"--";
+        centerYTextField.stringValue = @"--";
     }
 }
 

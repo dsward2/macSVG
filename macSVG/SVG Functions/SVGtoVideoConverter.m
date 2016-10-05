@@ -79,7 +79,7 @@
 
     self.hiddenWebView = [[WebView alloc] initWithFrame:webViewFrame];
 
-    [self.hiddenWindow setContentView:self.hiddenWebView];
+    (self.hiddenWindow).contentView = self.hiddenWebView;
     
     NSData * xmlData = [svgXmlString dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -87,7 +87,7 @@
     
     NSString * mimeType = @"image/svg+xml";
 
-    [[self.hiddenWebView mainFrame] loadData:xmlData
+    [(self.hiddenWebView).mainFrame loadData:xmlData
             MIMEType:mimeType	
             textEncodingName:@"UTF-8" 
             baseURL:baseURL];
@@ -139,27 +139,20 @@
     */
 
     //[compressionSettings setObject:AVVideoColorPrimaries_P3_D65   // TODO: requires macOS 10.12
-    [compressionSettings setObject:AVVideoColorPrimaries_ITU_R_709_2
-              forKey:AVVideoColorPrimariesKey];
-    [compressionSettings setObject:AVVideoTransferFunction_ITU_R_709_2
-              forKey:AVVideoTransferFunctionKey];
-    [compressionSettings setObject:AVVideoYCbCrMatrix_ITU_R_709_2
-              forKey:AVVideoYCbCrMatrixKey];
+    compressionSettings[AVVideoColorPrimariesKey] = AVVideoColorPrimaries_ITU_R_709_2;
+    compressionSettings[AVVideoTransferFunctionKey] = AVVideoTransferFunction_ITU_R_709_2;
+    compressionSettings[AVVideoYCbCrMatrixKey] = AVVideoYCbCrMatrix_ITU_R_709_2;
     
-    self.videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-            AVVideoCodecH264, AVVideoCodecKey,
-            [NSNumber numberWithInteger:self.movieWidth], AVVideoWidthKey,
-            [NSNumber numberWithInteger:self.movieHeight], AVVideoHeightKey,
-            compressionSettings, AVVideoColorPropertiesKey,
-            nil];
+    self.videoSettings = @{AVVideoCodecKey: AVVideoCodecH264,
+            AVVideoWidthKey: [NSNumber numberWithInteger:self.movieWidth],
+            AVVideoHeightKey: [NSNumber numberWithInteger:self.movieHeight],
+            AVVideoColorPropertiesKey: compressionSettings};
     
     self.writerInput = [AVAssetWriterInput
             assetWriterInputWithMediaType:AVMediaTypeVideo
             outputSettings:self.videoSettings];
 
-    NSDictionary* bufferAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
-            kCVPixelBufferPixelFormatTypeKey, nil];
+    NSDictionary* bufferAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey: [NSNumber numberWithInt:kCVPixelFormatType_32ARGB]};
 
     self.adaptor = [AVAssetWriterInputPixelBufferAdaptor
         assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.writerInput
@@ -176,16 +169,16 @@
 
 - (void)getNextFrameImage
 {
-    DOMDocument * domDocument = [[self.hiddenWebView mainFrame] DOMDocument];
-    DOMElement * svgElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.hiddenWebView).mainFrame.DOMDocument;
+    DOMElement * svgElement = domDocument.documentElement;
     
     NSString * currentTimeString = [NSString stringWithFormat:@"%f", self.currentTime];
     self.currentTimeTextLabel.stringValue = currentTimeString;
-    NSNumber * newTimeValueNumber = [NSNumber numberWithFloat:self.currentTime];
+    NSNumber * newTimeValueNumber = @(self.currentTime);
 
     [svgElement callWebScriptMethod:@"pauseAnimations" withArguments:NULL];  // call JavaScript function
     
-    NSArray * setCurrentTimeArgumentsArray = [NSArray arrayWithObject:newTimeValueNumber];
+    NSArray * setCurrentTimeArgumentsArray = @[newTimeValueNumber];
     [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
 
     [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
@@ -208,7 +201,7 @@
         [self initVideoWriter:webImage];
     }
 
-    CGImageSourceRef webCGImageSourceRef = CGImageSourceCreateWithData((CFDataRef)[webImage TIFFRepresentation], NULL);
+    CGImageSourceRef webCGImageSourceRef = CGImageSourceCreateWithData((CFDataRef)webImage.TIFFRepresentation, NULL);
     CGImageRef webCGImageRef =  CGImageSourceCreateImageAtIndex(webCGImageSourceRef, 0, NULL);
 
     CVPixelBufferRef buffer = [self newPixelBufferFromCGImage:webCGImageRef andFrameSize:self.webFrameSize];
@@ -218,10 +211,22 @@
         CMTime frameTime = CMTimeMake(self.frameCount,(int32_t) self.framesPerSecond);
         [self.adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
 
+        /*
         if (buffer)
         {
             CVBufferRelease(buffer);
         }
+        */
+    }
+
+    if (buffer)
+    {
+        CVBufferRelease(buffer);
+    }
+
+    if (webCGImageRef)
+    {
+        CGImageRelease((webCGImageRef));
     }
     
     self.frameCount++;
@@ -262,10 +267,8 @@
 
 - (CVPixelBufferRef) newPixelBufferFromCGImage: (CGImageRef) image andFrameSize:(CGSize)frameSize
 {
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
-            [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
-            nil];
+    NSDictionary *options = @{(id)kCVPixelBufferCGImageCompatibilityKey: @YES,
+            (id)kCVPixelBufferCGBitmapContextCompatibilityKey: @YES};
     
     CVPixelBufferRef pxbuffer = NULL;
     
@@ -333,8 +336,8 @@
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 
-    NSArray * destinationRepresentations = [webImage representations];
-    NSBitmapImageRep * destinationBitmapImageRep = [destinationRepresentations firstObject];
+    NSArray * destinationRepresentations = webImage.representations;
+    NSBitmapImageRep * destinationBitmapImageRep = destinationRepresentations.firstObject;
     destinationBitmapImageRep.colorSpaceName = NSCalibratedRGBColorSpace;
 
     // redraw after color space setting

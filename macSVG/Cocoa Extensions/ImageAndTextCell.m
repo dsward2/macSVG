@@ -59,10 +59,10 @@
 
 @implementation ImageAndTextCell
 
-- (id)init {
+- (instancetype)init {
     if ((self = [super init]))
     {
-        [self setLineBreakMode:NSLineBreakByTruncatingTail];
+        self.lineBreakMode = NSLineBreakByTruncatingTail;
         [self setSelectable:YES];
     }
     return self;
@@ -90,7 +90,7 @@
     NSRect result;
     if (self.image != nil)
     {
-        result.size = [self.image size];
+        result.size = (self.image).size;
         result.origin = cellFrame.origin;
         result.origin.x += 3;
         result.origin.y += ceil((cellFrame.size.height - result.size.height) / 2);
@@ -111,7 +111,7 @@
     NSRect result;
     if (self.image != nil)
     {
-        CGFloat imageWidth = [self.image size].width;
+        CGFloat imageWidth = (self.image).size.width;
         result = cellFrame;
         result.origin.x += (3 + imageWidth);
         result.size.width -= (3 + imageWidth);
@@ -129,7 +129,7 @@
         editor:(NSText *)textObj delegate:(id)anObject event:(NSEvent *)theEvent
 {
     NSRect textFrame, imageFrame;
-    NSDivideRect (aRect, &imageFrame, &textFrame, 3 + [self.image size].width, NSMinXEdge);
+    NSDivideRect (aRect, &imageFrame, &textFrame, 3 + (self.image).size.width, NSMinXEdge);
     [super editWithFrame: textFrame inView: controlView editor:textObj delegate:anObject event: theEvent];
 }
 
@@ -139,7 +139,7 @@
         delegate:(id)anObject start:(NSInteger)selStart length:(NSInteger)selLength
 {
     NSRect textFrame, imageFrame;
-    NSDivideRect (aRect, &imageFrame, &textFrame, 3 + [self.image size].width, NSMinXEdge);
+    NSDivideRect (aRect, &imageFrame, &textFrame, 3 + (self.image).size.width, NSMinXEdge);
     [super selectWithFrame: textFrame inView: controlView editor:textObj delegate:anObject start:selStart length:selLength];
 }
 
@@ -150,17 +150,17 @@
     if (self.image != nil)
     {
         NSRect imageFrame;
-        NSSize imageSize = [self.image size];
+        NSSize imageSize = (self.image).size;
         NSDivideRect(cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
-        if ([self drawsBackground])
+        if (self.drawsBackground)
         {
-            [[self backgroundColor] set];
+            [self.backgroundColor set];
             NSRectFill(imageFrame);
         }
         imageFrame.origin.x += 3;
         imageFrame.size = imageSize;
 
-        if ([controlView isFlipped])
+        if (controlView.flipped)
         {
             imageFrame.origin.y += ceil((cellFrame.size.height + imageFrame.size.height) / 2);
         }
@@ -178,9 +178,9 @@
 
 
 - (NSSize)cellSize {
-    NSSize cellSize = [super cellSize];
+    NSSize cellSize = super.cellSize;
     if (self.image != nil) {
-        cellSize.width += [self.image size].width;
+        cellSize.width += (self.image).size.width;
     }
     cellSize.width += 3;
     return cellSize;
@@ -193,19 +193,19 @@
                             inRect:(NSRect)cellFrame
                             ofView:(NSView *)controlView
 {
-    NSPoint point = [controlView convertPoint:[event locationInWindow] fromView:nil];
+    NSPoint point = [controlView convertPoint:event.locationInWindow fromView:nil];
     // If we have an image, we need to see if the user clicked on the image portion.
     if (self.image != nil)
     {
         // This code closely mimics drawWithFrame:inView:
-        NSSize imageSize = [self.image size];
+        NSSize imageSize = (self.image).size;
         NSRect imageFrame;
         NSDivideRect(cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
         
         imageFrame.origin.x += 3;
         imageFrame.size = imageSize;
         // If the point is in the image rect, then it is a content hit
-        if (NSMouseInRect(point, imageFrame, [controlView isFlipped]))
+        if (NSMouseInRect(point, imageFrame, controlView.flipped))
         {
             // We consider this just a content area. It is not trackable, nor it it editable text. If it was, we would or in the additional items.
             // By returning the correct parts, we allow NSTableView to correctly begin an edit when the text portion is clicked on.

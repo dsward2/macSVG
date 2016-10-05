@@ -68,7 +68,7 @@
 - (NSArray *)selectedItems 
 {
     NSMutableArray *items = [NSMutableArray array];
-    NSIndexSet * selectedRows = [self selectedRowIndexes];
+    NSIndexSet * selectedRows = self.selectedRowIndexes;
     if (selectedRows != nil) 
     {
         /*
@@ -88,7 +88,7 @@
         [selectedRows enumerateIndexesUsingBlock:^(NSUInteger i, BOOL *stop) {
             NSXMLNode * aItemNode = [self itemAtRow:i];
         
-            if ([aItemNode kind] == NSXMLElementKind)
+            if (aItemNode.kind == NSXMLElementKind)
             {
                 [items addObject:aItemNode];
             }
@@ -106,9 +106,9 @@
     // If we are extending the selection, we start with the existing selection; otherwise, we create a new blank set of the indexes.
     NSMutableIndexSet *newSelection = [[NSMutableIndexSet alloc] init];
     
-    for (NSInteger i = 0; i < [items count]; i++) 
+    for (NSInteger i = 0; i < items.count; i++) 
     {
-        NSInteger row = [self rowForItem:[items objectAtIndex:i]];
+        NSInteger row = [self rowForItem:items[i]];
         if (row >= 0) 
         {
             [newSelection addIndex:row];
@@ -234,17 +234,17 @@
 
         if (macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
         {
-            NSPoint globalLocation = [theEvent locationInWindow];
+            NSPoint globalLocation = theEvent.locationInWindow;
             NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
             NSInteger clickedRow = [self rowAtPoint:localLocation];
         
             NSXMLNode * aRowItem = [self itemAtRow:clickedRow];
             
-            if ([aRowItem kind] == NSXMLElementKind)
+            if (aRowItem.kind == NSXMLElementKind)
             {
                 NSXMLElement * aElement = (NSXMLElement *)aRowItem;
                 
-                NSString * elementName = [aElement name];
+                NSString * elementName = aElement.name;
                 if ([elementName isEqualToString:@"path"])
                 {
                     doDeselectAll = NO;
@@ -272,11 +272,11 @@
     else
     {
         // shift key and/or command key are pressed
-        NSPoint globalLocation = [theEvent locationInWindow];
+        NSPoint globalLocation = theEvent.locationInWindow;
         NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
         NSInteger clickedRow = [self rowAtPoint:localLocation];
     
-        NSIndexSet * selectedRowIndexes = [self selectedRowIndexes];
+        NSIndexSet * selectedRowIndexes = self.selectedRowIndexes;
         
         if ([selectedRowIndexes containsIndex:clickedRow] == YES)
         {
@@ -300,7 +300,7 @@
     [self deselectRow:rowIndexForItem];
     
     NSXMLNode * itemNode = (NSXMLNode *)aRowItem;
-    if ([itemNode kind] != NSXMLElementKind)
+    if (itemNode.kind != NSXMLElementKind)
     {
         id parentItem = [self parentForItem:aRowItem];
         NSInteger rowIndexForParentItem = [self rowForItem:parentItem];
@@ -319,7 +319,7 @@
 - (void)drawBackgroundInClipRect:(NSRect)clipRect
 {
     NSBezierPath * clipRectPath = [NSBezierPath bezierPathWithRect:clipRect]; //6.0
-    [clipRectPath setLineWidth: 1];
+    clipRectPath.lineWidth = 1;
     [[NSColor whiteColor] set];
     //[clipRectPath stroke];
     [clipRectPath fill];
@@ -328,22 +328,22 @@
 
 - (void)highlightSelectionInClipRect:(NSRect)theClipRect
 {
-    [self setSelectionHighlightStyle:NSTableViewSelectionHighlightStyleSourceList];
+    self.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
 
     NSBezierPath * clipRectPath = [NSBezierPath bezierPathWithRect:theClipRect]; //6.0
-    [clipRectPath setLineWidth: 1];
+    clipRectPath.lineWidth = 1;
     [[NSColor whiteColor] set];
     //[clipRectPath stroke];
     [clipRectPath fill];
 
     NSRange         visibleRowsRange = [self rowsInRect:theClipRect];
-    NSIndexSet *    selectedRowIndexes = [self selectedRowIndexes];
+    NSIndexSet *    selectedRowIndexes = self.selectedRowIndexes;
     NSInteger       startRow = visibleRowsRange.location;
     NSInteger       endRow = startRow + visibleRowsRange.length;
 
     // if the view is focused, use highlight color, otherwise use the out-of-focus highlight color
     BOOL windowIsActive = NO;
-    if (self == [[self window] firstResponder] && [[self window] isMainWindow] && [[self window] isKeyWindow])
+    if (self == self.window.firstResponder && self.window.mainWindow && self.window.keyWindow)
     {
         windowIsActive = YES;
     }
@@ -360,7 +360,7 @@
     {
         NSRect aRowRect = NSInsetRect([self rectOfRow:aRow], 0, 0);
         NSBezierPath * path = [NSBezierPath bezierPathWithRect:aRowRect]; //6.0
-        [path setLineWidth: 1];
+        path.lineWidth = 1;
         
         if([selectedRowIndexes containsIndex:aRow])
         {
@@ -369,7 +369,7 @@
                 NSColor * rowColor = selectedControlColor;
             
                 NSXMLNode * nodeForRow = [self itemAtRow:aRow];
-                NSXMLNode * parentNode = [nodeForRow parent];
+                NSXMLNode * parentNode = nodeForRow.parent;
                 if (parentNode != NULL)
                 {
                     NSInteger rowForParentItem = [self rowForItem:parentNode];
@@ -423,7 +423,7 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-    unichar key = [[event charactersIgnoringModifiers] characterAtIndex:0];
+    unichar key = [event.charactersIgnoringModifiers characterAtIndex:0];
     
     BOOL skipSuperclassKeyDown = NO;
     
@@ -431,7 +431,7 @@
     {
         case NSDeleteCharacter:
         {
-            if([self selectedRow] == -1)
+            if(self.selectedRow == -1)
             {
                 NSBeep();
             }
@@ -470,7 +470,7 @@
         
         case NSUpArrowFunctionKey:  // up arrow key
         {
-            if ([event modifierFlags] & NSAlternateKeyMask) // option key
+            if (event.modifierFlags & NSAlternateKeyMask) // option key
             {
                 XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
 
@@ -483,7 +483,7 @@
         
         case NSDownArrowFunctionKey:  // down arrow key
         {
-            if ([event modifierFlags] & NSAlternateKeyMask) // option key
+            if (event.modifierFlags & NSAlternateKeyMask) // option key
             {
                 XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
 
@@ -496,7 +496,7 @@
         
         case NSLeftArrowFunctionKey:  // left arrow key
         {
-            if ([event modifierFlags] & NSAlternateKeyMask) // option key
+            if (event.modifierFlags & NSAlternateKeyMask) // option key
             {
                 XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
 
@@ -509,7 +509,7 @@
         
         case NSRightArrowFunctionKey:  // right arrow key
         {
-            if ([event modifierFlags] & NSAlternateKeyMask) // option key
+            if (event.modifierFlags & NSAlternateKeyMask) // option key
             {
                 XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
 

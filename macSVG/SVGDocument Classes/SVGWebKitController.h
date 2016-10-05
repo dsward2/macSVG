@@ -70,8 +70,7 @@
 
 - (void)updateSelections;
 
-- (NSMutableArray *)pathSegmentsArray;
-- (void)setPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
+@property (copy) NSMutableArray *pathSegmentsArray;
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)pathSegmentsArray;
 - (void)updateActivePathInDOM;
@@ -81,7 +80,7 @@
 - (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 
-- (id)svgPathEditorSelectedPathElement;   // returns NSXMLElement
+@property (readonly, strong) id svgPathEditorSelectedPathElement;   // returns NSXMLElement
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
 
 - (void)walkDOMNodeTree:(DOMNode *)parent level:(unsigned int)level;

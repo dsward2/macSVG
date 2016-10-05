@@ -38,7 +38,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -65,7 +65,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -106,7 +106,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -149,7 +149,7 @@
         handlePoint:(NSString *)handlePointString
 
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     DOMElement * handleCircleElement = [domDocument createElementNS:svgNamespace
             qualifiedName:@"circle" ];
@@ -182,7 +182,7 @@
 -(void) addHandleForLineElement:(DOMElement *)lineElement
         pointIndex:(NSUInteger)pointIndex lineHandlesGroup:(DOMElement *)lineHandlesGroup
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     NSString * x1String = [lineElement getAttribute:@"x1"];
     NSString * y1String = [lineElement getAttribute:@"y1"];
@@ -197,17 +197,17 @@
     CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
     
     NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
-    CGFloat linePointStrokeWidthFloat = [linePointStrokeWidthString floatValue];
+    CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
     linePointStrokeWidthFloat *= reciprocalZoomFactor;
     linePointStrokeWidthString = [self allocPxString:linePointStrokeWidthFloat];
 
     NSString * lineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
-    CGFloat lineLineStrokeWidthFloat = [lineLineStrokeWidthString floatValue];
+    CGFloat lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
     lineLineStrokeWidthFloat *= reciprocalZoomFactor;
     lineLineStrokeWidthString = [self allocPxString:lineLineStrokeWidthFloat];
 
     NSString * linePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat linePointRadiusFloat = [linePointRadiusString floatValue];
+    CGFloat linePointRadiusFloat = linePointRadiusString.floatValue;
     linePointRadiusFloat *= reciprocalZoomFactor;
     linePointRadiusString = [self allocPxString:linePointRadiusFloat];
     
@@ -241,7 +241,7 @@
     [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_line_point_index" value:pointIndexString];
 
     NSXMLNode * MacsvgidNode = [self.selectedLineElement attributeForName:@"macsvgid"];
-    NSString * selectedElementMacsvgid = [MacsvgidNode stringValue];
+    NSString * selectedElementMacsvgid = MacsvgidNode.stringValue;
 
     [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:selectedElementMacsvgid];
 
@@ -254,7 +254,7 @@
 
 -(void) makeLineHandles
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
             svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
@@ -284,7 +284,7 @@
         if (lineDOMElement != NULL)
         {
             NSString * linePointIndexString = [self.activeHandleDOMElement getAttribute:@"_macsvg_line_point_index"];
-            NSInteger linePointIndex = [linePointIndexString integerValue];
+            NSInteger linePointIndex = linePointIndexString.integerValue;
 
             NSString * xAttributeName = @"x1";
             NSString * yAttributeName = @"y1";
@@ -298,8 +298,8 @@
             NSXMLNode * xAttributeNode = [lineXMLElement attributeForName:xAttributeName];
             NSXMLNode * yAttributeNode = [lineXMLElement attributeForName:yAttributeName];
             
-            NSString * xString = [xAttributeNode stringValue];
-            NSString * yString = [yAttributeNode stringValue];
+            NSString * xString = xAttributeNode.stringValue;
+            NSString * yString = yAttributeNode.stringValue;
             
             [lineDOMElement setAttribute:xAttributeName value:xString];
             [lineDOMElement setAttribute:yAttributeName value:yString];
@@ -341,7 +341,7 @@
     if (self.selectedLineElement != NULL)
     {
         NSXMLNode * MacsvgidNode = [self.selectedLineElement attributeForName:@"macsvgid"];
-        NSString * macsvgid = [MacsvgidNode stringValue];
+        NSString * macsvgid = MacsvgidNode.stringValue;
         
         DOMElement * selectedDOMLineElement = [svgWebKitController domElementForMacsvgid:macsvgid];
     
@@ -472,25 +472,25 @@
     if (self.linePointIndex == 0)
     {
         NSXMLNode * x1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [x1AttributeNode setName:@"x1"];
-        [x1AttributeNode setStringValue:xString];
+        x1AttributeNode.name = @"x1";
+        x1AttributeNode.stringValue = xString;
         [self.selectedLineElement addAttribute:x1AttributeNode];
 
         NSXMLNode * y1AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [y1AttributeNode setName:@"y1"];
-        [y1AttributeNode setStringValue:yString];
+        y1AttributeNode.name = @"y1";
+        y1AttributeNode.stringValue = yString;
         [self.selectedLineElement addAttribute:y1AttributeNode];
     }
     else
     {
         NSXMLNode * x2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [x2AttributeNode setName:@"x2"];
-        [x2AttributeNode setStringValue:xString];
+        x2AttributeNode.name = @"x2";
+        x2AttributeNode.stringValue = xString;
         [self.selectedLineElement addAttribute:x2AttributeNode];
 
         NSXMLNode * y2AttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [y2AttributeNode setName:@"y2"];
-        [y2AttributeNode setStringValue:yString];
+        y2AttributeNode.name = @"y2";
+        y2AttributeNode.stringValue = yString;
         [self.selectedLineElement addAttribute:y2AttributeNode];
     }
 }
@@ -517,7 +517,7 @@
                 if ([self.activeHandleDOMElement hasAttribute:@"_macsvg_line_point_index"] == YES)
                 {
                     NSString * handleSegmentString = [self.activeHandleDOMElement getAttribute:@"_macsvg_line_point_index"];
-                    NSInteger newLinePointIndex = [handleSegmentString integerValue];
+                    NSInteger newLinePointIndex = handleSegmentString.integerValue;
                     
                     editingMode = kLineEditingModeActive;
                     newEditingMode = kLineEditingModeActive;

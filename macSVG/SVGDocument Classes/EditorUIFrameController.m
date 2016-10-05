@@ -42,7 +42,7 @@
 //	init
 //==================================================================================
 
-- (id)init 
+- (instancetype)init 
 {
     if ((self = [super init])) 
     {
@@ -85,8 +85,8 @@
     [self.validAttributesController setEnabled:NO];
 
     NSScrollView * scrollView = self.elementEditorPlugInController.pluginHostScrollView;
-    NSView * documentView = [scrollView documentView];
-    NSView * contentView = [scrollView contentView];  // the NSClipView inside NSScrollView
+    NSView * documentView = scrollView.documentView;
+    NSView * contentView = scrollView.contentView;  // the NSClipView inside NSScrollView
     
     NSRect scrollViewFrame = scrollView.frame;
     NSRect scrollViewBounds = scrollView.bounds;
@@ -130,8 +130,8 @@
     [self.validAttributesController setEnabled:NO];
     
     NSScrollView * scrollView = self.attributeEditorPlugInController.pluginHostScrollView;
-    NSView * documentView = [scrollView documentView];
-    NSView * contentView = [scrollView contentView];
+    NSView * documentView = scrollView.documentView;
+    NSView * contentView = scrollView.contentView;
     #pragma unused(documentView)
     #pragma unused(contentView)
     
@@ -212,16 +212,16 @@
 
 - (void)reloadData
 {
-    [xmlElementTextView setString:@""];
+    xmlElementTextView.string = @"";
 
     NSArray * selectedElementsArray =
             self.macSVGDocumentWindowController.svgXMLDOMSelectionManager.selectedElementsManager.selectedElementsArray;
     
-    if ([selectedElementsArray count] > 0)
+    if (selectedElementsArray.count > 0)
     {
-        NSMutableDictionary * selectedElementDictionary = [selectedElementsArray objectAtIndex:0];
+        NSMutableDictionary * selectedElementDictionary = selectedElementsArray[0];
         
-        NSXMLElement * selectedXMLElement = [selectedElementDictionary objectForKey:@"xmlElement"];
+        NSXMLElement * selectedXMLElement = selectedElementDictionary[@"xmlElement"];
         
         if (selectedXMLElement == NULL)
         {
@@ -234,21 +234,21 @@
         // fast filter to remove macsvgid and child elements
         NSXMLElement * copyXMLElement = [selectedXMLElement copy];
         [copyXMLElement detach];
-        NSArray * xmlChildArray = [copyXMLElement children];
+        NSArray * xmlChildArray = copyXMLElement.children;
         for (NSXMLNode * childNode in xmlChildArray)
         {
-            if ([childNode kind] == NSXMLElementKind)
+            if (childNode.kind == NSXMLElementKind)
             {
-                NSInteger childIndex = [childNode index];
+                NSInteger childIndex = childNode.index;
                 [copyXMLElement removeChildAtIndex:childIndex];
             }
         }
         [copyXMLElement removeAttributeForName:@"macsvgid"];
         NSString * filteredElementText = [copyXMLElement XMLStringWithOptions:NSXMLNodePreserveCDATA];
 
-        [[xmlElementTextView textStorage] beginEditing];
-        [xmlElementTextView setString:filteredElementText];
-        [[xmlElementTextView textStorage] endEditing];
+        [xmlElementTextView.textStorage beginEditing];
+        xmlElementTextView.string = filteredElementText;
+        [xmlElementTextView.textStorage endEditing];
     }
 
     [xmlElementTextView scrollToBeginningOfDocument:NULL];
@@ -260,12 +260,12 @@
 
 - (IBAction)setEditorFrameContent:(id)sender
 {
-    NSInteger selectedItemIndex = [self.editorPanelPopUpButton indexOfSelectedItem];
+    NSInteger selectedItemIndex = (self.editorPanelPopUpButton).indexOfSelectedItem;
     
-    NSDictionary * selectedItemDictionary = [self.editorPanelsArray objectAtIndex:selectedItemIndex];
+    NSDictionary * selectedItemDictionary = (self.editorPanelsArray)[selectedItemIndex];
 
-    NSString * selectedItemTitle = [selectedItemDictionary objectForKey:@"title"];
-    NSString * selectedItemKind = [selectedItemDictionary objectForKey:@"kind"];
+    NSString * selectedItemTitle = selectedItemDictionary[@"title"];
+    NSString * selectedItemKind = selectedItemDictionary[@"kind"];
     
     [self loadEditor:selectedItemTitle kind:selectedItemKind];
 
@@ -281,10 +281,10 @@
     //NSString * eventType = objc_msgSend(event, sel_getUid("type"));
     //#pragma unused(eventType)
 
-    NSInteger currentEditorIndex = [self.editorPanelPopUpButton indexOfSelectedItem];
-    NSDictionary * currentEditorSelectionDictionary = [self.editorPanelsArray objectAtIndex:currentEditorIndex];
+    NSInteger currentEditorIndex = (self.editorPanelPopUpButton).indexOfSelectedItem;
+    NSDictionary * currentEditorSelectionDictionary = (self.editorPanelsArray)[currentEditorIndex];
     
-    NSString * currentEditorKind = [currentEditorSelectionDictionary objectForKey:@"kind"];
+    NSString * currentEditorKind = currentEditorSelectionDictionary[@"kind"];
 
     if ([currentEditorKind isEqualToString:@"element"] == YES)
     {
@@ -315,7 +315,7 @@
 {
     [self.macSVGDocumentWindowController.showAttributeHelpButton setEnabled:NO];
 
-    NSString * currentEditor = [self.editorPanelPopUpButton titleOfSelectedItem];
+    NSString * currentEditor = (self.editorPanelPopUpButton).titleOfSelectedItem;
 
     if ([currentEditor isEqualToString:newCurrentEditor] == NO)
     {
@@ -362,7 +362,7 @@
         [self setEmptyView];
     }
     
-    NSInteger selectedRow = [self.macSVGDocumentWindowController.xmlAttributesTableController.xmlAttributesTableView selectedRow];
+    NSInteger selectedRow = (self.macSVGDocumentWindowController.xmlAttributesTableController.xmlAttributesTableView).selectedRow;
     if (selectedRow >= 0)
     {
         [self.macSVGDocumentWindowController.showAttributeHelpButton setEnabled:YES];
@@ -442,8 +442,8 @@
     
     for (NSMutableDictionary * itemDictionary in self.editorPanelsArray)
     {
-        NSString * titleString = [itemDictionary objectForKey:@"title"];
-        NSString * kindString = [itemDictionary objectForKey:@"kind"];
+        NSString * titleString = itemDictionary[@"title"];
+        NSString * kindString = itemDictionary[@"kind"];
         
         [self.editorPanelPopUpButton addItemWithTitle:titleString];
         
@@ -475,7 +475,7 @@
         }
         else
         {
-            if ([aElementName length] == 0)
+            if (aElementName.length == 0)
             {
                 disableEditors = YES;
             }
@@ -485,7 +485,7 @@
     NSString * validContext = aContext;
     if ([validContext isEqualToString:@"attribute"] == YES)
     {
-        if ([aAttributeName length] == 0)
+        if (aAttributeName.length == 0)
         {
             validContext = @"element";
         }
@@ -502,14 +502,14 @@
         [self buildEditorPanelsArrayForContext:validContext];
         
         NSXMLElement * selectedElement = NULL;
-        if ([node kind] == NSXMLElementKind)
+        if (node.kind == NSXMLElementKind)
         {
             selectedElement = (NSXMLElement *)node;
         }
         else
         {
-            NSXMLNode * nodeParent = [node parent];
-            if ([nodeParent kind] == NSXMLElementKind)
+            NSXMLNode * nodeParent = node.parent;
+            if (nodeParent.kind == NSXMLElementKind)
             {
                 selectedElement = (NSXMLElement *)nodeParent;
             }
@@ -542,7 +542,7 @@
                 if (selectedItemsCount > 0)
                 {
                     NSXMLElement * selectedXMLElement = [selectedElementsManager xmlElementAtIndex:0];
-                    self.elementName = [selectedXMLElement name];
+                    self.elementName = selectedXMLElement.name;
                 }
                 else
                 {
@@ -565,7 +565,7 @@
             if ([self.elementName isEqualToString:@"plugin"] == YES)
             {
                 NSLog(@"setValidEditorsForXMLNode:elementName:attributeName:context self.editorContext='tool' self.elementName='plugin'");
-                newCurrentEditor = [self.editorPanelPopUpButton titleOfSelectedItem];
+                newCurrentEditor = (self.editorPanelPopUpButton).titleOfSelectedItem;
                 newCurrentEditorKind = self.currentEditorKind;
                 bestEditorName = newCurrentEditor;
                 [self addEditorPanelItemWithTitle:newCurrentEditor kind:newCurrentEditorKind];
@@ -573,7 +573,7 @@
             else if ([self.elementName isEqualToString:@""] == YES)
             {
                 NSLog(@"setValidEditorsForXMLNode:elementName:attributeName:context self.editorContext='tool' self.elementName=''");
-                newCurrentEditor = [self.editorPanelPopUpButton titleOfSelectedItem];
+                newCurrentEditor = (self.editorPanelPopUpButton).titleOfSelectedItem;
                 newCurrentEditorKind = self.currentEditorKind;
 
                 for (MacSVGPlugin * macSVGPlugin in pluginsArray)
@@ -702,7 +702,7 @@
                 }
             }
             
-            if ([bestEditorName length] == 0)
+            if (bestEditorName.length == 0)
             {
                 newCurrentEditor = @"Attribute Editor";
                 newCurrentEditorKind = @"main";
@@ -728,7 +728,7 @@
             }
         }
 
-        if ([bestEditorName length] > 0)
+        if (bestEditorName.length > 0)
         {
             [self setCurrentEditor:bestEditorName kind:bestEditorKind];
         }

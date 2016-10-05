@@ -16,7 +16,7 @@
 //	initWithFrame:
 //==================================================================================
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -31,7 +31,7 @@
 //	initWithCoder:
 //==================================================================================
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -56,7 +56,7 @@
     synchronizedScrollView = scrollview;
     
     // get the content view of the
-    synchronizedContentView=[synchronizedScrollView contentView];
+    synchronizedContentView=synchronizedScrollView.contentView;
     
     // Make sure the watched view is sending bounds changed
     // notifications (which is probably does anyway, but calling
@@ -73,14 +73,14 @@
 - (void)synchronizedViewContentBoundsDidChange:(NSNotification *)notification
 {
     // get the changed content view from the notification
-    NSView *changedContentView=[notification object];
+    NSView *changedContentView=notification.object;
     
     // get the origin of the NSClipView of the scroll view that
     // we're watching
-    NSPoint changedBoundsOrigin = [changedContentView bounds].origin;
+    NSPoint changedBoundsOrigin = changedContentView.bounds.origin;
     
     // get our current origin
-    NSPoint curOffset = [[self contentView] bounds].origin;
+    NSPoint curOffset = self.contentView.bounds.origin;
     NSPoint newOffset = curOffset;
     
     // scrolling is synchronized in the vertical plane
@@ -100,17 +100,17 @@
     {
         // note that a scroll view watching this one will
         // get notified here
-        [[self contentView] scrollToPoint:newOffset];
+        [self.contentView scrollToPoint:newOffset];
         // we have to tell the NSScrollView to update its
         // scrollers
-        [self reflectScrolledClipView:[self contentView]];
+        [self reflectScrolledClipView:self.contentView];
     }
 }
 
 - (void)stopSynchronizing
 {
     if (synchronizedScrollView != nil) {
-        NSView* synchronizedContentView = [synchronizedScrollView contentView];
+        NSView* synchronizedContentView = synchronizedScrollView.contentView;
         
         // remove any existing notification registration
         [[NSNotificationCenter defaultCenter] removeObserver:self

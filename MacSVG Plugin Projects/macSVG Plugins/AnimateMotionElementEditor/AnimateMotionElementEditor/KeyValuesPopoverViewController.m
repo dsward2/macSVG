@@ -29,7 +29,7 @@
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -55,7 +55,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return [self.keyValuesArray count];
+    return (self.keyValuesArray).count;
 }
 
 //==================================================================================
@@ -65,37 +65,37 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     id objectValue = NULL;
-    NSMutableDictionary * keyValuesDictionary = [self.keyValuesArray objectAtIndex:rowIndex];
+    NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
     
     if (keyValuesDictionary != NULL)
     {
-        if ([[aTableColumn identifier] isEqualToString:@"rowNumber"] == YES)
+        if ([aTableColumn.identifier isEqualToString:@"rowNumber"] == YES)
         {
             objectValue = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
         } 
-        if ([[aTableColumn identifier] isEqualToString:@"keyTimes"] == YES)
+        if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
         {
-            objectValue = [keyValuesDictionary objectForKey:@"keyTimes"];
+            objectValue = keyValuesDictionary[@"keyTimes"];
         } 
-        else if ([[aTableColumn identifier] isEqualToString:@"keySplines"] == YES)
+        else if ([aTableColumn.identifier isEqualToString:@"keySplines"] == YES)
         {
-            objectValue = [keyValuesDictionary objectForKey:@"keySplines"];
+            objectValue = keyValuesDictionary[@"keySplines"];
             
-            if (rowIndex >= ([self.keyValuesArray count] - 1))
+            if (rowIndex >= ((self.keyValuesArray).count - 1))
             {
                 NSColor * redColor = [NSColor redColor];
 
                 NSDictionary *redAttribute =
-                        [NSDictionary dictionaryWithObject:redColor forKey:NSForegroundColorAttributeName];
+                        @{NSForegroundColorAttributeName: redColor};
                 
                 NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
 
                 objectValue = redString;
             }
         } 
-        else if ([[aTableColumn identifier] isEqualToString:@"keyPoints"] == YES)
+        else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
         {
-            objectValue = [keyValuesDictionary objectForKey:@"keyPoints"];
+            objectValue = keyValuesDictionary[@"keyPoints"];
         } 
     }
     
@@ -108,22 +108,22 @@
 
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    NSString * columnIdentifier = [aTableColumn identifier];
-    NSMutableDictionary * keyValuesDictionary = [self.keyValuesArray objectAtIndex:rowIndex];
+    NSString * columnIdentifier = aTableColumn.identifier;
+    NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
     
     if (aTableView == keyValuesTableView)
     {
         if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
         {
-            [keyValuesDictionary setObject:anObject forKey:@"keyTimes"];
+            keyValuesDictionary[@"keyTimes"] = anObject;
         }
         else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
         {
-            [keyValuesDictionary setObject:anObject forKey:@"keySplines"];
+            keyValuesDictionary[@"keySplines"] = anObject;
         }
         else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
         {
-            [keyValuesDictionary setObject:anObject forKey:@"keyPoints"];
+            keyValuesDictionary[@"keyPoints"] = anObject;
         }
     }
 
@@ -138,7 +138,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
 	if (aTableView == keyValuesTableView)
 	{
 	}
@@ -161,12 +161,12 @@
 {
     NSInteger result = 0;
     
-    NSInteger arrayCount = [aArray count];
+    NSInteger arrayCount = aArray.count;
     
     for (NSInteger i = 0; i < arrayCount; i++)
     {
-        NSString * aValue = [aArray objectAtIndex:i];
-        if ([aValue length] > 0)
+        NSString * aValue = aArray[i];
+        if (aValue.length > 0)
         {
             result = i + 1;
         }
@@ -185,7 +185,7 @@
     NSString * keySplinesString = @"0 0 1 1;";
     NSString * keyPointsString = @"";
     
-    NSInteger presetIndex = [presetsPopUpButton indexOfSelectedItem];
+    NSInteger presetIndex = presetsPopUpButton.indexOfSelectedItem;
     
     switch (presetIndex)
     {
@@ -253,21 +253,21 @@
     NSXMLNode * keyTimesNode = [animateMotionElement attributeForName:@"keyTimes"];
     if (keyTimesNode != NULL)
     {
-        keyTimesString = [keyTimesNode stringValue];
+        keyTimesString = keyTimesNode.stringValue;
     }
 
     NSString * keySplinesString = @"";
     NSXMLNode * keySplinesNode = [animateMotionElement attributeForName:@"keySplines"];
     if (keySplinesNode != NULL)
     {
-        keySplinesString = [keySplinesNode stringValue];
+        keySplinesString = keySplinesNode.stringValue;
     }
 
     NSString * keyPointsString = @"";
     NSXMLNode * keyPointsNode = [animateMotionElement attributeForName:@"keyPoints"];
     if (keyPointsNode != NULL)
     {
-        keyPointsString = [keyPointsNode stringValue];
+        keyPointsString = keyPointsNode.stringValue;
     }
 
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -310,19 +310,19 @@
         NSString * keyTimesString = @"";
         if (i < keyTimesArrayCount)
         {
-            keyTimesString = [keyTimesArray objectAtIndex:i];
+            keyTimesString = keyTimesArray[i];
         }
 
         NSString * keySplinesString = @"";
         if (i < keySplinesArrayCount)
         {
-            keySplinesString = [keySplinesArray objectAtIndex:i];
+            keySplinesString = keySplinesArray[i];
         }
 
         NSString * keyPointsString = @"";
         if (i < keyPointsArrayCount)
         {
-            keyPointsString = [keyPointsArray objectAtIndex:i];
+            keyPointsString = keyPointsArray[i];
         }
         
         NSMutableDictionary * keyValuesDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:

@@ -10,7 +10,7 @@
 
 @implementation ColorSwatchCell
 
-- (id)init {
+- (instancetype)init {
     if ((self = [super init])) {
         [self setSelectable:YES];
     }
@@ -21,7 +21,7 @@
 //	initWithCoder:
 //==================================================================================
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
@@ -40,13 +40,13 @@
     NSString * colorRGB = self.stringValue;
 
     NSArray * channelsArray = [colorRGB componentsSeparatedByString:@","];
-    NSString * redString = [channelsArray objectAtIndex:0];
-    NSString * greenString = [channelsArray objectAtIndex:1];
-    NSString * blueString = [channelsArray objectAtIndex:2];
+    NSString * redString = channelsArray[0];
+    NSString * greenString = channelsArray[1];
+    NSString * blueString = channelsArray[2];
     
-    int redInt = [redString intValue];
-    int greenInt = [greenString intValue];
-    int blueInt = [blueString intValue];
+    int redInt = redString.intValue;
+    int greenInt = greenString.intValue;
+    int blueInt = blueString.intValue;
     
     float redFloat = ((float)redInt / 255.0f);
     float greenFloat = ((float)greenInt / 255.0f);
@@ -60,7 +60,7 @@
 }
 
 - (NSSize)cellSize {
-    NSSize cellSize = [super cellSize];
+    NSSize cellSize = super.cellSize;
     return cellSize;
 }
 

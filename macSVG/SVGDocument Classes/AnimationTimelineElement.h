@@ -31,6 +31,6 @@
 -(void) addTimespanAtBegin:(float)beginSeconds dur:(float)durationSeconds colorIndex:(int)colorIndex
         pixelPerSecond:(float)pixelsPerSecond frameRect:(NSRect)frameRect rowIndex:(NSUInteger)rowIndex;
         
--(float) earliestBeginSeconds;
+@property (readonly) float earliestBeginSeconds;
 
 @end

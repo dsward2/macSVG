@@ -43,7 +43,7 @@
 //	initWithNibName:bundle:
 //==================================================================================
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -68,7 +68,7 @@
     
     self.tspanSettingsArray = [NSMutableArray array];
     
-    [[[tspanPreviewWebView mainFrame] frameView] setAllowsScrolling:NO];
+    [tspanPreviewWebView.mainFrame.frameView setAllowsScrolling:NO];
 }
 
 
@@ -136,20 +136,20 @@
 {
     // e.g., text-shadow: 2px 2px 3px #ff0000;
 
-    NSString * horizontalOffsetString = [horizontalOffsetTextField stringValue];
-    NSString * horizontalOffsetUnitString = [horizontalOffsetUnitPopUpButton titleOfSelectedItem];
+    NSString * horizontalOffsetString = horizontalOffsetTextField.stringValue;
+    NSString * horizontalOffsetUnitString = horizontalOffsetUnitPopUpButton.titleOfSelectedItem;
     
-    NSString * verticalOffsetString = [verticalOffsetTextField stringValue];
-    NSString * verticalOffsetUnitString = [verticalOffsetUnitPopUpButton titleOfSelectedItem];
+    NSString * verticalOffsetString = verticalOffsetTextField.stringValue;
+    NSString * verticalOffsetUnitString = verticalOffsetUnitPopUpButton.titleOfSelectedItem;
     
-    NSString * blurRadiusString = [blurRadiusTextField stringValue];
-    NSString * blurRadiusUnitString = [blurRadiusUnitPopUpButton titleOfSelectedItem];
+    NSString * blurRadiusString = blurRadiusTextField.stringValue;
+    NSString * blurRadiusUnitString = blurRadiusUnitPopUpButton.titleOfSelectedItem;
 
-    NSColor * shadowColor = [shadowColorWell color];
+    NSColor * shadowColor = shadowColorWell.color;
     NSString * hexColorString = [self hexadecimalValueOfAnNSColor:shadowColor];
     
-    NSInteger horizontalOffsetStringLength = [horizontalOffsetString length];
-    NSInteger verticalOffsetStringLength = [verticalOffsetString length];
+    NSInteger horizontalOffsetStringLength = horizontalOffsetString.length;
+    NSInteger verticalOffsetStringLength = verticalOffsetString.length;
     
     if ((horizontalOffsetStringLength > 0) && (verticalOffsetStringLength > 0))
     {
@@ -170,11 +170,11 @@
         [textShadowString appendString:hexColorString];
         [textShadowString appendString:@";"];
 
-        NSString * cssStyleString = [cssStyleTextView string];
+        NSString * cssStyleString = cssStyleTextView.string;
         
         NSString * newCssStyleString = [cssStyleString stringByAppendingString:textShadowString];
         
-        [cssStyleTextView setString:newCssStyleString];
+        cssStyleTextView.string = newCssStyleString;
     }
 }
 
@@ -192,18 +192,18 @@
     self.masterTspanElement = tspanElement;
     
     // remove all child elements and text data
-    NSArray * masterTextElementChildArray = [self.masterTextElement children];
-    NSInteger childCount = [masterTextElementChildArray count];
+    NSArray * masterTextElementChildArray = (self.masterTextElement).children;
+    NSInteger childCount = masterTextElementChildArray.count;
     for (NSInteger childIndex = childCount - 1; childIndex >= 0; childIndex--)
     {
         NSXMLNode * aChildNode = [self.masterTextElement childAtIndex:childIndex];
         
-        if ([aChildNode kind] == NSXMLTextKind)
+        if (aChildNode.kind == NSXMLTextKind)
         {
-            self.masterTextContentString = [aChildNode stringValue];
+            self.masterTextContentString = aChildNode.stringValue;
         }
         
-        if ([aChildNode kind] != NSXMLAttributeKind)
+        if (aChildNode.kind != NSXMLAttributeKind)
         {
             [self.masterTextElement removeChildAtIndex:childIndex];
         }
@@ -213,23 +213,23 @@
     NSXMLNode * cssStyleAttributeNode = [tspanElement attributeForName:@"style"];
     if (cssStyleAttributeNode != NULL)
     {
-        NSString * cssStyleAttributeString = [cssStyleAttributeNode stringValue];
+        NSString * cssStyleAttributeString = cssStyleAttributeNode.stringValue;
         
-        [cssStyleTextView setString:cssStyleAttributeString];
+        cssStyleTextView.string = cssStyleAttributeString;
     }
     else
     {
-        [cssStyleTextView setString:@""];
+        cssStyleTextView.string = @"";
     }
 
     self.tspanSettingsArray = [NSMutableArray array];
 
     NSXMLNode * textContentNode = NULL;
     
-    NSArray * tspanElementChildren = [tspanElement children];
+    NSArray * tspanElementChildren = tspanElement.children;
     for (NSXMLNode * tspanChildNode in tspanElementChildren)
     {
-        NSXMLNodeKind nodeKind = [tspanChildNode kind];
+        NSXMLNodeKind nodeKind = tspanChildNode.kind;
         if (nodeKind == NSXMLTextKind)
         {
             textContentNode = tspanChildNode;
@@ -238,9 +238,9 @@
     
     if (textContentNode != NULL)
     {
-        NSString * textContentString = [textContentNode stringValue];
+        NSString * textContentString = textContentNode.stringValue;
         
-        NSInteger textContentStringLength = [textContentString length];
+        NSInteger textContentStringLength = textContentString.length;
         
         for (NSInteger textIndex = 0; textIndex < textContentStringLength; textIndex++)
         {
@@ -249,11 +249,11 @@
             NSMutableDictionary * textCharacterDictionary = [NSMutableDictionary dictionary];
             
             NSString * characterString = [NSString stringWithFormat:@"%C", aTextCharacter];
-            [textCharacterDictionary setObject:characterString forKey:@"character"];
+            textCharacterDictionary[@"character"] = characterString;
 
-            [textCharacterDictionary setObject:@"--" forKey:@"dx"];
-            [textCharacterDictionary setObject:@"--" forKey:@"dy"];
-            [textCharacterDictionary setObject:@"--" forKey:@"rotate"];
+            textCharacterDictionary[@"dx"] = @"--";
+            textCharacterDictionary[@"dy"] = @"--";
+            textCharacterDictionary[@"rotate"] = @"--";
             
             [self.tspanSettingsArray addObject:textCharacterDictionary];
         }
@@ -264,56 +264,56 @@
     NSXMLNode * dxAttributeNode = [tspanElement attributeForName:@"dx"];
     if (dxAttributeNode != NULL)
     {
-        NSString * dxAttributeString = [dxAttributeNode stringValue];
+        NSString * dxAttributeString = dxAttributeNode.stringValue;
         NSArray * dxAttributeArray = [dxAttributeString componentsSeparatedByString:@","];
-        NSInteger dxAttributeArrayCount = [dxAttributeArray count];
+        NSInteger dxAttributeArrayCount = dxAttributeArray.count;
         for (NSInteger i = 0; i < dxAttributeArrayCount; i++)
         {
-            NSString * dxAttribute = [dxAttributeArray objectAtIndex:i];
+            NSString * dxAttribute = dxAttributeArray[i];
             dxAttribute = [dxAttribute stringByTrimmingCharactersInSet:whitespaceSet];
             
-            NSMutableDictionary * textCharacterDictionary = [self.tspanSettingsArray objectAtIndex:i];
-            [textCharacterDictionary setObject:dxAttribute forKey:@"dx"];
+            NSMutableDictionary * textCharacterDictionary = (self.tspanSettingsArray)[i];
+            textCharacterDictionary[@"dx"] = dxAttribute;
         }
     }
     
     NSXMLNode * dyAttributeNode = [tspanElement attributeForName:@"dy"];
     if (dyAttributeNode != NULL)
     {
-        NSString * dyAttributeString = [dyAttributeNode stringValue];
+        NSString * dyAttributeString = dyAttributeNode.stringValue;
         NSArray * dyAttributeArray = [dyAttributeString componentsSeparatedByString:@","];
-        NSInteger dyAttributeArrayCount = [dyAttributeArray count];
+        NSInteger dyAttributeArrayCount = dyAttributeArray.count;
         for (NSInteger i = 0; i < dyAttributeArrayCount; i++)
         {
-            NSString * dyAttribute = [dyAttributeArray objectAtIndex:i];
+            NSString * dyAttribute = dyAttributeArray[i];
             dyAttribute = [dyAttribute stringByTrimmingCharactersInSet:whitespaceSet];
             
-            NSMutableDictionary * textCharacterDictionary = [self.tspanSettingsArray objectAtIndex:i];
-            [textCharacterDictionary setObject:dyAttribute forKey:@"dy"];
+            NSMutableDictionary * textCharacterDictionary = (self.tspanSettingsArray)[i];
+            textCharacterDictionary[@"dy"] = dyAttribute;
         }
     }
     
     NSXMLNode * rotateAttributeNode = [tspanElement attributeForName:@"rotate"];
     if (rotateAttributeNode != NULL)
     {
-        NSString * rotateAttributeString = [rotateAttributeNode stringValue];
+        NSString * rotateAttributeString = rotateAttributeNode.stringValue;
         NSArray * rotateAttributeArray = [rotateAttributeString componentsSeparatedByString:@","];
-        NSInteger rotateAttributeArrayCount = [rotateAttributeArray count];
+        NSInteger rotateAttributeArrayCount = rotateAttributeArray.count;
         for (NSInteger i = 0; i < rotateAttributeArrayCount; i++)
         {
-            NSString * rotateAttribute = [rotateAttributeArray objectAtIndex:i];
+            NSString * rotateAttribute = rotateAttributeArray[i];
             rotateAttribute = [rotateAttribute stringByTrimmingCharactersInSet:whitespaceSet];
             
-            NSMutableDictionary * textCharacterDictionary = [self.tspanSettingsArray objectAtIndex:i];
-            [textCharacterDictionary setObject:rotateAttribute forKey:@"rotate"];
+            NSMutableDictionary * textCharacterDictionary = (self.tspanSettingsArray)[i];
+            textCharacterDictionary[@"rotate"] = rotateAttribute;
         }
     }
     
     [tspanTableView reloadData];
 
     [self makeTspanPreviewSVG];
-    NSString * tspanPreviewXmlString = [self.tspanPreviewXMLDocument XMLString];
-    [[tspanPreviewWebView mainFrame] loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -325,12 +325,12 @@
     //NSXMLElement * textElement = [textElementEditor activeXMLTextElement];
     [self attachTspanAttributes:self.originalTspanElement];
     
-    NSString * cssStyleAttributeString = [cssStyleTextView string];
+    NSString * cssStyleAttributeString = cssStyleTextView.string;
 
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     cssStyleAttributeString = [cssStyleAttributeString stringByTrimmingCharactersInSet:whitespaceSet];
 
-    if ([cssStyleAttributeString length] == 0)
+    if (cssStyleAttributeString.length == 0)
     {
         [self.originalTspanElement removeAttributeForName:@"style"];
     }
@@ -340,10 +340,10 @@
         if (cssStyleAttributeNode == NULL)
         {
             cssStyleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [cssStyleAttributeNode setName:@"style"];
+            cssStyleAttributeNode.name = @"style";
             [self.originalTspanElement addAttribute:cssStyleAttributeNode];
         }
-        [cssStyleAttributeNode setStringValue:cssStyleAttributeString];
+        cssStyleAttributeNode.stringValue = cssStyleAttributeString;
     }
 }
 
@@ -357,7 +357,7 @@
     
     if (aTableView == tspanTableView)
     {
-        result = [self.tspanSettingsArray count];
+        result = (self.tspanSettingsArray).count;
     }
     
     return result;
@@ -371,8 +371,8 @@
 {
     NSString * result = @"Missing Result";
     
-    NSString * columnIdentifier = [aTableColumn identifier];
-    NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:rowIndex];
+    NSString * columnIdentifier = aTableColumn.identifier;
+    NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[rowIndex];
     
     if (aTableView == tspanTableView)
     {
@@ -384,19 +384,19 @@
         }
         else if ([columnIdentifier isEqualToString:@"charValue"] == YES)
         {
-            result = [characterDictionary objectForKey:@"character"];
+            result = characterDictionary[@"character"];
         }
         else if ([columnIdentifier isEqualToString:@"charDX"] == YES)
         {
-            result = [characterDictionary objectForKey:@"dx"];
+            result = characterDictionary[@"dx"];
         }
         else if ([columnIdentifier isEqualToString:@"charDY"] == YES)
         {
-            result = [characterDictionary objectForKey:@"dy"];
+            result = characterDictionary[@"dy"];
         }
         else if ([columnIdentifier isEqualToString:@"charRotate"] == YES)
         {
-            result = [characterDictionary objectForKey:@"rotate"];
+            result = characterDictionary[@"rotate"];
         }
     }
     
@@ -409,31 +409,31 @@
 
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    NSString * columnIdentifier = [aTableColumn identifier];
-    NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:rowIndex];
+    NSString * columnIdentifier = aTableColumn.identifier;
+    NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[rowIndex];
     
     if (aTableView == tspanTableView)
     {
         if ([columnIdentifier isEqualToString:@"charDX"] == YES)
         {
-            [characterDictionary setObject:anObject forKey:@"dx"];
+            characterDictionary[@"dx"] = anObject;
             [self normalizeAttributesArray:@"dx"];
         }
         else if ([columnIdentifier isEqualToString:@"charDY"] == YES)
         {
-            [characterDictionary setObject:anObject forKey:@"dy"];
+            characterDictionary[@"dy"] = anObject;
             [self normalizeAttributesArray:@"dy"];
         }
         else if ([columnIdentifier isEqualToString:@"charRotate"] == YES)
         {
-            [characterDictionary setObject:anObject forKey:@"rotate"];
+            characterDictionary[@"rotate"] = anObject;
             [self normalizeAttributesArray:@"rotate"];
         }
     }
 
     [self makeTspanPreviewSVG];
-    NSString * tspanPreviewXmlString = [self.tspanPreviewXMLDocument XMLString];
-    [[tspanPreviewWebView mainFrame] loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -442,7 +442,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == tspanTableView)
     {
     }
@@ -481,14 +481,14 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     NSXMLNode * fontFamilyAttributeNode = [self.masterTextElement attributeForName:@"font-family"];
     if (fontFamilyAttributeNode != NULL)
     {
-        fontFamilyString = [fontFamilyAttributeNode stringValue];
+        fontFamilyString = fontFamilyAttributeNode.stringValue;
     }
 
     NSXMLElement * fontStyleElement = NULL;
     NSArray * styleElementsArray = [self findAllStyleElements];
     for (NSXMLElement * aStyleElement in styleElementsArray)
     {
-        NSString * styleElementTextContent = [aStyleElement stringValue];
+        NSString * styleElementTextContent = aStyleElement.stringValue;
         
         NSRange fontFaceRange = [styleElementTextContent rangeOfString:@"@font-face"];
         if (fontFaceRange.location != NSNotFound)
@@ -508,7 +508,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     NSString * fontStyleString = @"";
     if (fontStyleElement != NULL)
     {
-        NSString * fontStyleXMLString = [fontStyleElement XMLString];
+        NSString * fontStyleXMLString = fontStyleElement.XMLString;
         fontStyleString = [NSString stringWithFormat:@"<defs>%@</defs>", fontStyleXMLString];
     }
 
@@ -521,41 +521,41 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     if (xAttributeNode == NULL)
     {
         xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [xAttributeNode setName:@"x"];
-        [xAttributeNode setStringValue:@""];
+        xAttributeNode.name = @"x";
+        xAttributeNode.stringValue = @"";
         [previewTextElement addChild:xAttributeNode];
     }
-    [xAttributeNode setStringValue:@"20"];
+    xAttributeNode.stringValue = @"20";
     
     NSXMLNode * yAttributeNode = [previewTextElement attributeForName:@"y"];
     if (yAttributeNode == NULL)
     {
         yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [yAttributeNode setName:@"x"];
-        [yAttributeNode setStringValue:@""];
+        yAttributeNode.name = @"x";
+        yAttributeNode.stringValue = @"";
         [previewTextElement addChild:yAttributeNode];
     }
-    [yAttributeNode setStringValue:@"45"];
+    yAttributeNode.stringValue = @"45";
     
     NSXMLNode * fontSizeAttributeNode = [previewTextElement attributeForName:@"font-size"];
     if (fontSizeAttributeNode == NULL)
     {
         fontSizeAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [fontSizeAttributeNode setName:@"font-size"];
-        [fontSizeAttributeNode setStringValue:@""];
+        fontSizeAttributeNode.name = @"font-size";
+        fontSizeAttributeNode.stringValue = @"";
         [previewTextElement addChild:fontSizeAttributeNode];
     }
-    [fontSizeAttributeNode setStringValue:@"22"];
+    fontSizeAttributeNode.stringValue = @"22";
     
     NSXMLNode * textAnchorAttributeNode = [previewTextElement attributeForName:@"text-anchor"];
     if (textAnchorAttributeNode == NULL)
     {
         textAnchorAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [textAnchorAttributeNode setName:@"text-anchor"];
-        [textAnchorAttributeNode setStringValue:@""];
+        textAnchorAttributeNode.name = @"text-anchor";
+        textAnchorAttributeNode.stringValue = @"";
         [previewTextElement addChild:textAnchorAttributeNode];
     }
-    [textAnchorAttributeNode setStringValue:@"start"];
+    textAnchorAttributeNode.stringValue = @"start";
     
     
     NSXMLElement * previewTspanElement = [self.masterTspanElement copy];
@@ -563,7 +563,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     [self attachTspanAttributes:previewTspanElement];
     
     NSXMLNode * textContentNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-    [textContentNode setStringValue:self.masterTextContentString];
+    textContentNode.stringValue = self.masterTextContentString;
     [previewTspanElement addChild:textContentNode];
 
     [previewTextElement addChild:previewTspanElement];
@@ -571,10 +571,10 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     NSXMLNode * visibilityNode = [previewTextElement attributeForName:@"visibility"];
     if (visibilityNode != NULL)
     {
-        [visibilityNode setStringValue:@"visible"];
+        visibilityNode.stringValue = @"visible";
     }
 
-    NSString * textElementString = [previewTextElement XMLString];
+    NSString * textElementString = previewTextElement.XMLString;
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>",
             textElementString];
@@ -597,12 +597,12 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
 {
     NSInteger lastDefinedValueIndex = -1;
     
-    NSInteger tspanArrayCount = [self.tspanSettingsArray count];
+    NSInteger tspanArrayCount = (self.tspanSettingsArray).count;
     for (NSInteger i = 0; i < tspanArrayCount; i++)
     {
-        NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+        NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
 
-        NSString * attributeValue = [characterDictionary objectForKey:attributeName];
+        NSString * attributeValue = characterDictionary[attributeName];
         
         if ([attributeValue isEqualToString:@"--"] == NO)
         {
@@ -616,11 +616,11 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
         
         for (NSInteger i = 0; i <= lastDefinedValueIndex; i++)
         {
-            NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+            NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
 
-            NSString * attributeValue = [characterDictionary objectForKey:attributeName];
+            NSString * attributeValue = characterDictionary[attributeName];
             
-            if ([attributeValue length] == 0)
+            if (attributeValue.length == 0)
             {
                 attributeValue = lastValidValue;
             }
@@ -630,7 +630,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
                 attributeValue = lastValidValue;
             }
             
-            [characterDictionary setObject:attributeValue forKey:attributeName];
+            characterDictionary[attributeName] = attributeValue;
             
             lastValidValue = attributeValue;
         }
@@ -651,15 +651,15 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     [self normalizeAttributesArray:@"dy"];
     [self normalizeAttributesArray:@"rotate"];
     
-    NSInteger tspanArrayCount = [self.tspanSettingsArray count];
+    NSInteger tspanArrayCount = (self.tspanSettingsArray).count;
     for (NSInteger i = 0; i < tspanArrayCount; i++)
     {
-        NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+        NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
         
-        NSString * characterDXString = [characterDictionary objectForKey:@"dx"];
+        NSString * characterDXString = characterDictionary[@"dx"];
         if ([characterDXString isEqualToString:@"--"] == NO)
         {
-            NSInteger dxAttributeStringLength = [dxAttributeString length];
+            NSInteger dxAttributeStringLength = dxAttributeString.length;
             if (dxAttributeStringLength > 0)
             {
                 [dxAttributeString appendString:@","];
@@ -667,10 +667,10 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
             [dxAttributeString appendString:characterDXString];
         }
         
-        NSString * characterDYString = [characterDictionary objectForKey:@"dy"];
+        NSString * characterDYString = characterDictionary[@"dy"];
         if ([characterDYString isEqualToString:@"--"] == NO)
         {
-            NSInteger dyAttributeStringLength = [dyAttributeString length];
+            NSInteger dyAttributeStringLength = dyAttributeString.length;
             if (dyAttributeStringLength > 0)
             {
                 [dyAttributeString appendString:@","];
@@ -678,10 +678,10 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
             [dyAttributeString appendString:characterDYString];
         }
         
-        NSString * characterRotateString = [characterDictionary objectForKey:@"rotate"];
+        NSString * characterRotateString = characterDictionary[@"rotate"];
         if ([characterRotateString isEqualToString:@"--"] == NO)
         {
-            NSInteger rotateAttributeStringLength = [rotateAttributeString length];
+            NSInteger rotateAttributeStringLength = rotateAttributeString.length;
             if (rotateAttributeStringLength > 0)
             {
                 [rotateAttributeString appendString:@","];
@@ -694,31 +694,31 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
     if (dxAttributeNode == NULL)
     {
         dxAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [dxAttributeNode setName:@"dx"];
-        [dxAttributeNode setStringValue:@""];
+        dxAttributeNode.name = @"dx";
+        dxAttributeNode.stringValue = @"";
         [tspanElement addChild:dxAttributeNode];
     }
-    [dxAttributeNode setStringValue:dxAttributeString];
+    dxAttributeNode.stringValue = dxAttributeString;
     
     NSXMLNode * dyAttributeNode = [tspanElement attributeForName:@"dy"];
     if (dyAttributeNode == NULL)
     {
         dyAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [dyAttributeNode setName:@"dy"];
-        [dyAttributeNode setStringValue:@""];
+        dyAttributeNode.name = @"dy";
+        dyAttributeNode.stringValue = @"";
         [tspanElement addChild:dyAttributeNode];
     }
-    [dyAttributeNode setStringValue:dyAttributeString];
+    dyAttributeNode.stringValue = dyAttributeString;
     
     NSXMLNode * rotateAttributeNode = [tspanElement attributeForName:@"rotate"];
     if (rotateAttributeNode == NULL)
     {
         rotateAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [rotateAttributeNode setName:@"rotate"];
-        [rotateAttributeNode setStringValue:@""];
+        rotateAttributeNode.name = @"rotate";
+        rotateAttributeNode.stringValue = @"";
         [tspanElement addChild:rotateAttributeNode];
     }
-    [rotateAttributeNode setStringValue:rotateAttributeString];
+    rotateAttributeNode.stringValue = rotateAttributeString;
 }
 
 //==================================================================================
@@ -729,7 +729,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
  {       
     NSArray * resultArray = NULL;
     
-    NSXMLDocument * svgXmlDocument = [textElementEditor svgXmlDocument];
+    NSXMLDocument * svgXmlDocument = textElementEditor.svgXmlDocument;
     
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -809,7 +809,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
             }
         */
         
-        NSInteger fontDataStringLength = [fontFaceString length];
+        NSInteger fontDataStringLength = fontFaceString.length;
         NSInteger openBracePosition = NSNotFound;
         NSInteger closeBracePosition = NSNotFound;
         for (NSInteger charIndex = fontFaceRange.location  + fontFaceRange.length - 1;
@@ -842,17 +842,17 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
             {
                 NSArray * aCSSArray = [aCSSString componentsSeparatedByString:@":"];
                 
-                if ([aCSSArray count] == 2)
+                if (aCSSArray.count == 2)
                 {
-                    NSString * aCSSFragment = [aCSSArray objectAtIndex:0];
+                    NSString * aCSSFragment = aCSSArray[0];
 
                     NSString * trimmedCSSFragment = [aCSSFragment stringByTrimmingCharactersInSet:whitespaceSet];
                     
                     if ([trimmedCSSFragment isEqualToString:@"font-family"])
                     {
-                        NSString * fontFamilyName = [aCSSArray objectAtIndex:1];
+                        NSString * fontFamilyName = aCSSArray[1];
                         
-                        if ([fontFamilyName length] > 0)
+                        if (fontFamilyName.length > 0)
                         {
                             fontFamilyName = [fontFamilyName stringByTrimmingCharactersInSet:whitespaceSet];
 
@@ -861,7 +861,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
                             if ([firstCharacterString isEqualToString:@"'"] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"'" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -870,7 +870,7 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
                             if ([firstCharacterString isEqualToString:@"\""] == YES)
                             {
                                 NSMutableString * trimmedFontFamilyName = [NSMutableString stringWithString:fontFamilyName];
-                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, [trimmedFontFamilyName length]);
+                                NSRange trimmedFontFamilyNameRange = NSMakeRange(0, trimmedFontFamilyName.length);
                                 [trimmedFontFamilyName replaceOccurrencesOfString:@"\"" withString:@""
                                         options:NSLiteralSearch range:trimmedFontFamilyNameRange];
                                 fontFamilyName = trimmedFontFamilyName;
@@ -946,20 +946,20 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
 
 - (IBAction)resetDXButtonAction:(id)sender
 {
-    NSInteger tspanArrayCount = [self.tspanSettingsArray count];
+    NSInteger tspanArrayCount = (self.tspanSettingsArray).count;
     for (NSInteger i = 0; i < tspanArrayCount; i++)
     {
-        NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+        NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
         
-        [characterDictionary setObject:@"--" forKey:@"dx"];
+        characterDictionary[@"dx"] = @"--";
     }
     
     [tspanTableView reloadData];
 
 
     [self makeTspanPreviewSVG];
-    NSString * tspanPreviewXmlString = [self.tspanPreviewXMLDocument XMLString];
-    [[tspanPreviewWebView mainFrame] loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -968,19 +968,19 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
 
 - (IBAction)resetDYButtonAction:(id)sender
 {
-    NSInteger tspanArrayCount = [self.tspanSettingsArray count];
+    NSInteger tspanArrayCount = (self.tspanSettingsArray).count;
     for (NSInteger i = 0; i < tspanArrayCount; i++)
     {
-        NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+        NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
         
-        [characterDictionary setObject:@"--" forKey:@"dy"];
+        characterDictionary[@"dy"] = @"--";
     }
     
     [tspanTableView reloadData];
 
     [self makeTspanPreviewSVG];
-    NSString * tspanPreviewXmlString = [self.tspanPreviewXMLDocument XMLString];
-    [[tspanPreviewWebView mainFrame] loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
 
 //==================================================================================
@@ -989,19 +989,19 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
 
 - (IBAction)resetRotateButtonAction:(id)sender
 {
-    NSInteger tspanArrayCount = [self.tspanSettingsArray count];
+    NSInteger tspanArrayCount = (self.tspanSettingsArray).count;
     for (NSInteger i = 0; i < tspanArrayCount; i++)
     {
-        NSMutableDictionary * characterDictionary = [self.tspanSettingsArray objectAtIndex:i];
+        NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[i];
         
-        [characterDictionary setObject:@"--" forKey:@"rotate"];
+        characterDictionary[@"rotate"] = @"--";
     }
     
     [tspanTableView reloadData];
 
     [self makeTspanPreviewSVG];
-    NSString * tspanPreviewXmlString = [self.tspanPreviewXMLDocument XMLString];
-    [[tspanPreviewWebView mainFrame] loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
 
 

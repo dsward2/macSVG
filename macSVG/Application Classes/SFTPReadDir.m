@@ -185,11 +185,11 @@
             components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute)
             fromDate:aDate];
     
-    NSInteger year = [weekdayComponents year];
-    NSInteger month = [weekdayComponents month];
-    NSInteger day = [weekdayComponents day];
-    NSInteger hour = [weekdayComponents hour];
-    NSInteger minute = [weekdayComponents minute];
+    NSInteger year = weekdayComponents.year;
+    NSInteger month = weekdayComponents.month;
+    NSInteger day = weekdayComponents.day;
+    NSInteger hour = weekdayComponents.hour;
+    NSInteger minute = weekdayComponents.minute;
     
     NSString * monthString = @"???";
     

@@ -103,7 +103,7 @@
 //	initWithFrame:
 //==================================================================================
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -118,7 +118,7 @@
 //	initWithCoder:
 //==================================================================================
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -140,7 +140,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -180,7 +180,7 @@
     
     NSString * trimmedBeginTime = [beginTime stringByTrimmingCharactersInSet:self.whitespaceSet];
 
-    NSUInteger stringLength = [trimmedBeginTime length];
+    NSUInteger stringLength = trimmedBeginTime.length;
     
     if (stringLength == 0)
     {
@@ -263,7 +263,7 @@
             //NSRange valueRange = NSMakeRange(0, timeQualifierOffset - 1);
             NSString * valueString = [trimmedBeginTime substringToIndex:timeQualifierOffset];
             
-            NSUInteger valueStringLength = [valueString length];
+            NSUInteger valueStringLength = valueString.length;
             if (valueStringLength > 1)
             {
                 unichar lastChar = [valueString characterAtIndex:(valueStringLength - 1)];
@@ -276,18 +276,18 @@
                 
             NSString * timeUnit = [trimmedBeginTime substringFromIndex:timeQualifierOffset];
             
-            [resultDictionary setObject:@"absoluteTime" forKey:@"method"];
-            [resultDictionary setObject:valueString forKey:@"value"];
-            [resultDictionary setObject:timeUnit forKey:@"timeUnit"];
+            resultDictionary[@"method"] = @"absoluteTime";
+            resultDictionary[@"value"] = valueString;
+            resultDictionary[@"timeUnit"] = timeUnit;
         }
         else
         {
             NSString * eventID = [trimmedBeginTime substringToIndex:(timeQualifierOffset)];
             NSString * eventQualifier = [trimmedBeginTime substringFromIndex:(timeQualifierOffset + 1)];
 
-            [resultDictionary setObject:@"event" forKey:@"method"];
-            [resultDictionary setObject:eventID forKey:@"eventID"];
-            [resultDictionary setObject:eventQualifier forKey:@"eventQualifier"];
+            resultDictionary[@"method"] = @"event";
+            resultDictionary[@"eventID"] = eventID;
+            resultDictionary[@"eventQualifier"] = eventQualifier;
         }
     }
     else if (timeQualifierOffsetCount == 0)
@@ -297,9 +297,9 @@
             //NSString * valueString = [trimmedBeginTime substringToIndex:timeQualifierOffset];
             NSString * valueString = trimmedBeginTime;
 
-            [resultDictionary setObject:@"absoluteTime" forKey:@"method"];
-            [resultDictionary setObject:valueString forKey:@"value"];
-            [resultDictionary setObject:@"s" forKey:@"timeUnit"];
+            resultDictionary[@"method"] = @"absoluteTime";
+            resultDictionary[@"value"] = valueString;
+            resultDictionary[@"timeUnit"] = @"s";
         }
     }
     
@@ -324,7 +324,7 @@
 - (void)findAnimationElementsInElement:(NSXMLElement *)aElement animationElementsArray:(NSMutableArray *)animationElementsArray
 {
     // recursive search for elements
-    NSString * tagName = [aElement name];
+    NSString * tagName = aElement.name;
     
     BOOL isAnimationElement = NO;
     
@@ -357,34 +357,34 @@
     {
         NSMutableDictionary * animationElementDictionary = [[NSMutableDictionary alloc] init];
         
-        [animationElementDictionary setObject:aElement forKey:@"element"];
-        [animationElementDictionary setObject:tagName forKey:@"tagName"];
+        animationElementDictionary[@"element"] = aElement;
+        animationElementDictionary[@"tagName"] = tagName;
         
         NSMutableDictionary * attributesDictionary = [[NSMutableDictionary alloc] init];
     
-        NSArray * attributesArray = [aElement attributes];
+        NSArray * attributesArray = aElement.attributes;
         
         for (NSXMLNode * aNode in attributesArray)
         {
-            NSString * attributeName = [aNode name];
-            NSString * attributeString = [aNode stringValue];
+            NSString * attributeName = aNode.name;
+            NSString * attributeString = aNode.stringValue;
             
             NSString * attributeValue = [[NSString alloc] initWithString:attributeString];
-            [attributesDictionary setObject:attributeValue forKey:attributeName];
+            attributesDictionary[attributeName] = attributeValue;
         }
         
-        [animationElementDictionary setObject:attributesDictionary forKey:@"attributes"];
+        animationElementDictionary[@"attributes"] = attributesDictionary;
 
         [animationElementsArray addObject:animationElementDictionary];
     }
     
-    NSUInteger childCount = [aElement childCount];
+    NSUInteger childCount = aElement.childCount;
     
     int i;
     for (i = 0; i < childCount; i++) 
     {
         NSXMLNode * aNode = [aElement childAtIndex:i];
-        NSXMLNodeKind nodeKind = [aNode kind];
+        NSXMLNodeKind nodeKind = aNode.kind;
         if (nodeKind == NSXMLElementKind)
         {
             NSXMLElement * childElement = (NSXMLElement *)aNode;
@@ -401,10 +401,10 @@
 {
     NSUInteger result = NSNotFound;
     
-    NSMutableDictionary * attributesDictionary = [animationElementDictionary objectForKey:@"attributes"];
-    NSString * searchMacsvgid = [attributesDictionary objectForKey:@"macsvgid"];
+    NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
+    NSString * searchMacsvgid = attributesDictionary[@"macsvgid"];
     
-    NSUInteger timelineElementsArrayCount = [self.timelineElementsArray count];
+    NSUInteger timelineElementsArrayCount = (self.timelineElementsArray).count;
     
     if (timelineElementsArrayCount > 0)
     {
@@ -412,8 +412,7 @@
         NSUInteger timelineElementIndex = 0;
         while (continueSearch == YES) 
         {
-            AnimationTimelineElement * animationTimelineElement = [self.timelineElementsArray
-                    objectAtIndex:timelineElementIndex];
+            AnimationTimelineElement * animationTimelineElement = (self.timelineElementsArray)[timelineElementIndex];
                     
             //NSMutableDictionary * aAttributesDictionary = [itemDictionary objectForKey:@"attributes"];
             //NSString * aMacsvgid = [aAttributesDictionary objectForKey:@"macsvgid"];
@@ -446,7 +445,7 @@
 {
     NSUInteger result = NSNotFound;
     
-    NSUInteger timelineElementsArrayCount = [self.timelineElementsArray count];
+    NSUInteger timelineElementsArrayCount = (self.timelineElementsArray).count;
     
     if (timelineElementsArrayCount > 0)
     {
@@ -454,8 +453,7 @@
         NSUInteger timelineElementIndex = 0;
         while (continueSearch == YES) 
         {
-            AnimationTimelineElement * timelineElement = [self.timelineElementsArray
-                    objectAtIndex:timelineElementIndex];
+            AnimationTimelineElement * timelineElement = (self.timelineElementsArray)[timelineElementIndex];
                     
             NSString * elementID = timelineElement.elementID;
             
@@ -531,20 +529,20 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
 {
     float durationTime = 0;
     
-    NSMutableDictionary * attributesDictionary = [animationElementDictionary objectForKey:@"attributes"];
+    NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
     
-    NSString * durationAttribute = [attributesDictionary objectForKey:@"dur"];
+    NSString * durationAttribute = attributesDictionary[@"dur"];
     
     // FIXME: also needs support for 'end' time value attribute
     
     NSMutableDictionary * durationTimeDictionary = [self allocTimeComponentsDictionary:durationAttribute];
     
-    NSString * timeMethod = [durationTimeDictionary objectForKey:@"method"];
+    NSString * timeMethod = durationTimeDictionary[@"method"];
     
     if ([timeMethod isEqualToString:@"absoluteTime"] == YES)
     {
-        NSString * aTimeValue = [durationTimeDictionary objectForKey:@"value"];
-        durationTime = [aTimeValue floatValue];
+        NSString * aTimeValue = durationTimeDictionary[@"value"];
+        durationTime = aTimeValue.floatValue;
     }
     else if ([timeMethod isEqualToString:@"event"] == YES)
     {
@@ -617,7 +615,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
 {
     BOOL result = NO;
     
-    float beginSecondsFloat = [beginSeconds floatValue];
+    float beginSecondsFloat = beginSeconds.floatValue;
     
     if (beginSecondsFloat < self.timelineMaxSeconds)
     {
@@ -630,28 +628,28 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
         if (elementIndex != NSNotFound)
         {
             isRepeatElement = YES;  // a timeline element already exists, so a repeat
-            animationTimelineElement = [self.timelineElementsArray objectAtIndex:elementIndex];
+            animationTimelineElement = (self.timelineElementsArray)[elementIndex];
         }
         else
         {
             animationTimelineElement = [[AnimationTimelineElement alloc] init];
                         
-            NSMutableDictionary * attributesDictionary = [animationElementDictionary objectForKey:@"attributes"];
+            NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
             
-            NSXMLElement * xmlElement = [animationElementDictionary objectForKey:@"element"];
+            NSXMLElement * xmlElement = animationElementDictionary[@"element"];
             
-            NSString * aTagName = [animationElementDictionary objectForKey:@"tagName"];
+            NSString * aTagName = animationElementDictionary[@"tagName"];
             
-            NSString * aMacsvgid = [attributesDictionary objectForKey:@"macsvgid"];
+            NSString * aMacsvgid = attributesDictionary[@"macsvgid"];
             
             NSString * aElementID = @"";
-            NSString * aElementIDTry = [attributesDictionary objectForKey:@"id"];
+            NSString * aElementIDTry = attributesDictionary[@"id"];
             if (aElementIDTry != NULL)
             {
                 aElementID = aElementIDTry;
             }
             
-            NSString * transformType = [attributesDictionary objectForKey:@"type"];
+            NSString * transformType = attributesDictionary[@"type"];
             if (transformType == NULL)
             {
                 transformType = @"";
@@ -665,20 +663,20 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             NSString * aParentMacsvgid = @"";
             NSString * aParentID = @"";
             
-            NSXMLNode * parentNode = [xmlElement parent];
+            NSXMLNode * parentNode = xmlElement.parent;
             if (parentNode != NULL)
             {
                 NSXMLElement * parentElement = (NSXMLElement *)parentNode;
                 
-                aParentTagName = [parentElement name];
+                aParentTagName = parentElement.name;
                 
                 NSXMLNode * parentMacsvgidNode = [parentElement attributeForName:@"macsvgid"];
-                aParentMacsvgid = [parentMacsvgidNode stringValue];
+                aParentMacsvgid = parentMacsvgidNode.stringValue;
 
                 NSXMLNode * parentIDNode = [parentElement attributeForName:@"id"];
                 if (parentIDNode != NULL)
                 {
-                    aParentID = [parentIDNode stringValue];
+                    aParentID = parentIDNode.stringValue;
                 }
                 else
                 {
@@ -702,7 +700,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
 
             [self.timelineElementsArray addObject:animationTimelineElement];
             
-            elementIndex = [self.timelineElementsArray count] - 1;
+            elementIndex = (self.timelineElementsArray).count - 1;
         }
         
         NSMutableArray * animationTimespanArray = animationTimelineElement.animationTimespanArray;
@@ -711,7 +709,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
         
         if (animationTimespanArray != NULL)
         {
-            if ([animationTimespanArray count] > 0)
+            if (animationTimespanArray.count > 0)
             {
                  for (AnimationTimespan * animationTimespan in animationTimespanArray)
                 {
@@ -738,8 +736,8 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             [animationTimelineElement addTimespanAtBegin:beginSecondsFloat dur:durationSeconds colorIndex:colorIndex
                     pixelPerSecond:self.pixelsPerSecond frameRect:frameRect rowIndex:elementIndex];
                     
-            NSMutableDictionary * attributesDictionary = [animationElementDictionary objectForKey:@"attributes"];
-            NSString * repeatCount = [attributesDictionary objectForKey:@"repeatCount"];
+            NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
+            NSString * repeatCount = attributesDictionary[@"repeatCount"];
             int repeatCountValue = 0;
             if (repeatCount != NULL)
             {
@@ -756,7 +754,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
                 }
                 else
                 {
-                    repeatCountValue = [repeatCount intValue];
+                    repeatCountValue = repeatCount.intValue;
                 }
                 
                 if (repeatCountValue > 0)
@@ -824,11 +822,11 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
         // a timeline does not exist for current element, create a new one
         float duration = [self durationForAnimationElement:animationElementDictionary];
         
-        AnimationTimelineElement * animationTimelineElement = [self.timelineElementsArray objectAtIndex:timelineIndex];
+        AnimationTimelineElement * animationTimelineElement = (self.timelineElementsArray)[timelineIndex];
         
         NSMutableArray * animationTimespanArray = animationTimelineElement.animationTimespanArray;
         
-        AnimationTimespan * animationTimespan = [animationTimespanArray lastObject];
+        AnimationTimespan * animationTimespan = animationTimespanArray.lastObject;
         
         float previousBeginSeconds = animationTimespan.beginSeconds;
         float previousDurationSeconds = animationTimespan.durationSeconds;
@@ -863,7 +861,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"end" withString:@""];
         }
         
-        CGFloat syncbaseOffsetFloat = [syncbaseOffsetString floatValue];
+        CGFloat syncbaseOffsetFloat = syncbaseOffsetString.floatValue;
         beginSeconds += syncbaseOffsetFloat;
         
         //NSLog(@"%@.%@ %@", eventID, eventQualifier, beginSecondsString);
@@ -887,14 +885,14 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     
     NSMutableDictionary * timeComponentsDictionary = [self allocTimeComponentsDictionary:beginTime];
 
-    NSString * method = [timeComponentsDictionary objectForKey:@"method"];
+    NSString * method = timeComponentsDictionary[@"method"];
 
     if ([method isEqualToString:@"absoluteTime"] == YES)
     {
         if ([beginMode isEqualToString:@"absoluteTime"] == YES)
         {
-            NSString * valueString = [timeComponentsDictionary objectForKey:@"value"];
-            NSString * timeUnit = [timeComponentsDictionary objectForKey:@"timeUnit"];
+            NSString * valueString = timeComponentsDictionary[@"value"];
+            NSString * timeUnit = timeComponentsDictionary[@"timeUnit"];
             
             BOOL aResult = [self addTimelineElement:animationElementDictionary forBeginTime:valueString timeUnit:timeUnit];
             if (aResult == YES)
@@ -907,8 +905,8 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     {
         if ([beginMode isEqualToString:@"eventTime"] == YES)
         {
-            NSString * eventID = [timeComponentsDictionary objectForKey:@"eventID"];
-            NSString * eventQualifier = [timeComponentsDictionary objectForKey:@"eventQualifier"];
+            NSString * eventID = timeComponentsDictionary[@"eventID"];
+            NSString * eventQualifier = timeComponentsDictionary[@"eventQualifier"];
 
             BOOL aResult = [self addTimelineElement:animationElementDictionary forEventID:eventID eventQualifier:eventQualifier];
             if (aResult == YES)
@@ -931,8 +929,8 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
         
     //NSString * beginAttribute = [animationElementDictionary objectForKey:@"beginAttribute"];
     
-    NSMutableDictionary * attributesDictionary = [animationElementDictionary objectForKey:@"attributes"];
-    NSString * beginAttribute = [attributesDictionary objectForKey:@"begin"];
+    NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
+    NSString * beginAttribute = attributesDictionary[@"begin"];
     
     if (beginAttribute == NULL)
     {
@@ -945,7 +943,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     {
         NSString * beginTime = [untrimmedBeginTime stringByTrimmingCharactersInSet:self.separationSet];
     
-        NSUInteger beginTimeLength = [beginTime length];
+        NSUInteger beginTimeLength = beginTime.length;
         
         if (beginTimeLength > 0)
         {
@@ -1061,7 +1059,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     
     [self.timelineScrollView setSynchronizedScrollView:self.labelScrollView];
     
-    NSRect documentVisibleRect = [self.timelineScrollView documentVisibleRect];
+    NSRect documentVisibleRect = (self.timelineScrollView).documentVisibleRect;
     
     [self.labelScrollView setSynchronizedScrollView:self.timelineScrollView];
      
@@ -1071,22 +1069,22 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     frameRect.origin.y = 0;
     
     frameRect.size.width = self.timelineMaxSeconds * self.pixelsPerSecond;
-    frameRect.size.height = [self.timelineElementsArray count] * timelineItemHeight;
+    frameRect.size.height = (self.timelineElementsArray).count * timelineItemHeight;
         
     if (frameRect.size.height < documentVisibleRect.size.height)
     {
         frameRect.size.height = documentVisibleRect.size.height;
     }
     
-    [self setFrame:frameRect];
-    [self setBounds:frameRect];
+    self.frame = frameRect;
+    self.bounds = frameRect;
     
     NSRect timescaleFrameRect = self.animationTimescaleView.frame;
     timescaleFrameRect.origin.x = 0;
     timescaleFrameRect.origin.y = 0;
     timescaleFrameRect.size.width = frameRect.size.width;
-    [self.animationTimescaleView setFrame:timescaleFrameRect];
-    [self.animationTimescaleView setBounds:timescaleFrameRect];
+    (self.animationTimescaleView).frame = timescaleFrameRect;
+    (self.animationTimescaleView).bounds = timescaleFrameRect;
 }
 
 //==================================================================================
@@ -1112,7 +1110,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
 
     NSMutableArray * animationElementsArray = [[NSMutableArray alloc] init];
 
-    MacSVGDocument * macSVGDocument = [self.macSVGDocumentWindowController document];
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
     NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
     NSXMLElement * rootElement = [svgXmlDocument rootElement];
     
@@ -1147,7 +1145,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     NSRect frameRect = self.frame;
         
     NSMutableDictionary * textAttributes = [[NSMutableDictionary alloc] init];
-    [textAttributes setObject:self.grayColor forKey:NSForegroundColorAttributeName];
+    textAttributes[NSForegroundColorAttributeName] = self.grayColor;
     
     if (self.pixelsPerSecond == 0.0f)
     {
@@ -1186,7 +1184,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             [thePath moveToPoint:NSMakePoint(x + markerOffset, topY)];
             [thePath lineToPoint:NSMakePoint(x + markerOffset, 0)];
 
-            [thePath setLineWidth:tickWidth];
+            thePath.lineWidth = tickWidth;
 
             [thePath stroke];
         }

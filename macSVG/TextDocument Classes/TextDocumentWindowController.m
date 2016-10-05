@@ -10,7 +10,7 @@
 
 @implementation TextDocumentWindowController
 
-- (id)initWithWindow:(NSWindow *)window
+- (instancetype)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
     if (self) {
@@ -24,7 +24,7 @@
 //	initWithWindowNibName
 //==================================================================================
 
-- (id)initWithWindowNibName:(NSString *)windowNibName owner:(id)owner
+- (instancetype)initWithWindowNibName:(NSString *)windowNibName owner:(id)owner
 {
     //self = [super initWithWindowNibName:windowNibName owner:owner];
     self = [super initWithWindowNibName:windowNibName owner:self];
@@ -44,7 +44,7 @@
 {
     [super windowDidLoad];
     
-    [self.documentTextView setDelegate:self];
+    (self.documentTextView).delegate = self;
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
@@ -73,16 +73,16 @@
 
 - (void)enableEditMenuItems
 {
-    NSMenu * mainMenu = [NSApp mainMenu];
+    NSMenu * mainMenu = NSApp.mainMenu;
 
     NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
     NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
-    NSMenu * editMenu = [editMenuItem submenu];
+    NSMenu * editMenu = editMenuItem.submenu;
 
-    NSArray * selectedRangesArray = [self.documentTextView selectedRanges];
+    NSArray * selectedRangesArray = (self.documentTextView).selectedRanges;
     
     BOOL validSelectionRangeFound = NO;
-    if ([selectedRangesArray count] > 0)
+    if (selectedRangesArray.count > 0)
     {
         for (NSValue * aValue in selectedRangesArray)
         {
@@ -100,13 +100,13 @@
     {
         // enable pasteboard functions for selected elements
         NSMenuItem * cutElementMenuItem = [editMenu itemWithTitle:@"Cut"];
-        [cutElementMenuItem setTarget:self.documentTextView];
-        [cutElementMenuItem setAction:@selector(cut:)];
+        cutElementMenuItem.target = self.documentTextView;
+        cutElementMenuItem.action = @selector(cut:);
         cutElementMenuItem.enabled = YES;
 
         NSMenuItem * copyElementMenuItem = [editMenu itemWithTitle:@"Copy"];
-        [copyElementMenuItem setTarget:self.documentTextView];
-        [copyElementMenuItem setAction:@selector(copy:)];
+        copyElementMenuItem.target = self.documentTextView;
+        copyElementMenuItem.action = @selector(copy:);
         copyElementMenuItem.enabled = YES;
     }
     else

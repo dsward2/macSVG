@@ -38,7 +38,7 @@
 //	init
 //==================================================================================
 
-- (id)init 
+- (instancetype)init 
 {
     if ((self = [super init])) 
     {
@@ -71,12 +71,12 @@
 {
     if (enabled == YES)
     {
-        if ([elementEditorPlugInView superview] == NULL) 
+        if (elementEditorPlugInView.superview == NULL) 
         {
             NSView * editorPanelFrameView = editorUIFrameController.editorPanelFrameView;
             if (editorPanelFrameView != NULL)
             {
-                NSRect frameRect = [editorPanelFrameView frame];
+                NSRect frameRect = editorPanelFrameView.frame;
                 elementEditorPlugInView.frame = frameRect;
                 elementEditorPlugInView.bounds = frameRect;
             
@@ -111,19 +111,19 @@
 
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             editorUIFrameController.macSVGDocumentWindowController;
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
-    NSMutableArray * pluginsArray = [macSVGDocumentWindowController pluginsArray];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
+    NSMutableArray * pluginsArray = macSVGDocumentWindowController.pluginsArray;
 
     XMLAttributesTableController * xmlAttributesTableController =
             macSVGDocumentWindowController.xmlAttributesTableController;
 
     NSXMLElement * xmlElementForAttributes = [xmlAttributesTableController xmlElementForAttributesTable];
     
-    NSString * currentElementName = [xmlElementForAttributes name];
+    NSString * currentElementName = xmlElementForAttributes.name;
 
     if (xmlElementForAttributes != NULL)
     {
-        NSString * elementName = [xmlElementForAttributes name];
+        NSString * elementName = xmlElementForAttributes.name;
 
         if ([elementName isEqualToString:currentElementName] == NO)
         {
@@ -156,7 +156,7 @@
     {
         [self removeOldPluginView];
                         
-        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
         NSMutableDictionary * elementsDictionary = svgDtdData.elementsDictionary;
         NSMutableDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
@@ -173,7 +173,7 @@
                     elementsDictionary:elementsDictionary
                     elementContentsDictionary:elementContentsDictionary];
             
-            NSString * pluginName = [macSVGPlugin pluginName];
+            NSString * pluginName = macSVGPlugin.pluginName;
             
             if ([selectedElementEditorPlugIn isEqualToString:pluginName] == YES)
             {
@@ -188,7 +188,7 @@
                 SVGWebKitController * svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
                 
                 NSXMLNode * MacsvgidNode = [xmlElementForAttributes attributeForName:@"macsvgid"];
-                NSString * macsvgid = [MacsvgidNode stringValue];
+                NSString * macsvgid = MacsvgidNode.stringValue;
                 
                 DOMElement * domElementForAttributes =
                         [svgWebKitController domElementForMacsvgid:macsvgid];

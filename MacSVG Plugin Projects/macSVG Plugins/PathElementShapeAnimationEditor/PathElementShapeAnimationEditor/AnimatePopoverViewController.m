@@ -16,7 +16,7 @@
 
 @implementation AnimatePopoverViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -39,7 +39,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -76,8 +76,8 @@
 
 - (NSString *)numericStringWithAttributeNode:(NSXMLNode *)attributeNode
 {
-    NSString * attributeString = [attributeNode stringValue];
-    float attributeFloat = [attributeString floatValue];
+    NSString * attributeString = attributeNode.stringValue;
+    float attributeFloat = attributeString.floatValue;
     NSString * numericString = @"0";
 
     numericString = [NSString stringWithFormat:@"%f", attributeFloat];
@@ -85,7 +85,7 @@
     NSRange decimalPointRange = [numericString rangeOfString:@"."];
     if (decimalPointRange.location != NSNotFound)
     {
-        NSInteger index = [numericString length] - 1;
+        NSInteger index = numericString.length - 1;
         BOOL continueTrim = YES;
         while (continueTrim == YES)
         {
@@ -136,7 +136,7 @@
 {
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
-    NSString * result = [aTextField stringValue];
+    NSString * result = aTextField.stringValue;
     
     result = [result stringByTrimmingCharactersInSet:whitespaceSet];
     
@@ -154,14 +154,14 @@
     NSCharacterSet * separatorCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@" ;"];
 
     NSArray * beginStringArray = [beginString componentsSeparatedByCharactersInSet:separatorCharacterSet];
-    NSInteger beginStringArrayCount = [beginStringArray count];
+    NSInteger beginStringArrayCount = beginStringArray.count;
     
     for (NSString * aTimeString in beginStringArray)
     {
         BOOL digitsFound = NO;
         BOOL nonDigitFound = NO;
         BOOL sFound = NO;
-        NSInteger stringLength = [aTimeString length];
+        NSInteger stringLength = aTimeString.length;
         for (NSInteger i = 0; i < stringLength; i++)
         {
             unichar aChar = [aTimeString characterAtIndex:i];
@@ -240,7 +240,7 @@
 
 - (NSString *)formatDurationString:(NSString *)durationString
 {
-    float durationFloat = [durationString floatValue];
+    float durationFloat = durationString.floatValue;
     
     NSString * newDurationString = [self numericStringWithFloat:durationFloat];
 
@@ -258,33 +258,33 @@
     NSMutableDictionary * animateAttributesDictionary = [NSMutableDictionary dictionary];
     
     NSString * idString = [self trimmedStringForTextField:animateElementIDTextField];
-    [animateAttributesDictionary setObject:idString forKey:@"id"];
+    animateAttributesDictionary[@"id"] = idString;
 
     NSString * beginString = [self trimmedStringForTextField:beginAtTimesTextField];
     beginString = [self formatBeginString:beginString];
-    [animateAttributesDictionary setObject:beginString forKey:@"begin"];
+    animateAttributesDictionary[@"begin"] = beginString;
 
     NSString * durString = [self trimmedStringForTextField:durationTextField];
     durString = [self formatDurationString:durString];
-    [animateAttributesDictionary setObject:durString forKey:@"dur"];
+    animateAttributesDictionary[@"dur"] = durString;
 
     NSString * repeatCountString = [self trimmedStringForTextField:repeatCountTextField];
-    [animateAttributesDictionary setObject:repeatCountString forKey:@"repeatCount"];
+    animateAttributesDictionary[@"repeatCount"] = repeatCountString;
 
-    NSInteger repeatCountColumn = [repeatCountMatrix selectedColumn];
+    NSInteger repeatCountColumn = repeatCountMatrix.selectedColumn;
     if (repeatCountColumn == 1)
     {
         NSString * repeatCountString = [self trimmedStringForTextField:repeatCountTextField];
-        [animateAttributesDictionary setObject:repeatCountString forKey:@"repeatCount"];
+        animateAttributesDictionary[@"repeatCount"] = repeatCountString;
     }
     else
     {
-        [animateAttributesDictionary setObject:@"indefinite" forKey:@"repeatCount"];
+        animateAttributesDictionary[@"repeatCount"] = @"indefinite";
     }
     
-    NSString * fillString = [fillPopUpButton titleOfSelectedItem];
+    NSString * fillString = fillPopUpButton.titleOfSelectedItem;
     if (fillString == NULL) fillString = @"";
-    [animateAttributesDictionary setObject:fillString forKey:@"fill"];
+    animateAttributesDictionary[@"fill"] = fillString;
     
     if (createNewAnimateElement == YES)
     {
@@ -310,18 +310,18 @@
             [pathElementShapeAnimationEditor.macSVGPluginCallbacks
             uniqueIDForElementTagName:@"animate" pendingIDs:NULL];
     //NSString * idString = @"UnknownID";
-    [animateElementIDTextField setStringValue:idString];
+    animateElementIDTextField.stringValue = idString;
 
     NSString * beginString = @"0s";
-    [beginAtTimesTextField setStringValue:beginString];
+    beginAtTimesTextField.stringValue = beginString;
 
     NSString * durString = @"1";
-    [durationTextField setStringValue:durString];
+    durationTextField.stringValue = durString;
 
     [repeatCountMatrix selectCellAtRow:0 column:0];
 
     NSString * repeatCountString = @"0";
-    [repeatCountTextField setStringValue:repeatCountString];
+    repeatCountTextField.stringValue = repeatCountString;
 
     NSString * fillString = @"freeze";
     [fillPopUpButton selectItemWithTitle:fillString];
@@ -339,17 +339,17 @@
     NSXMLNode * idAttributeNode = [animateElement attributeForName:@"id"];
     if (idAttributeNode != NULL)
     {
-        idString = [idAttributeNode stringValue];
+        idString = idAttributeNode.stringValue;
     }
-    [animateElementIDTextField setStringValue:idString];
+    animateElementIDTextField.stringValue = idString;
     
     NSString * beginString = @"";
     NSXMLNode * beginAttributeNode = [animateElement attributeForName:@"begin"];
     if (beginAttributeNode != NULL)
     {
-        beginString = [beginAttributeNode stringValue];
+        beginString = beginAttributeNode.stringValue;
     }
-    [beginAtTimesTextField setStringValue:beginString];
+    beginAtTimesTextField.stringValue = beginString;
     
     NSString * durString = @"";
     NSXMLNode * durAttributeNode = [animateElement attributeForName:@"dur"];
@@ -357,30 +357,30 @@
     {
         durString = [self numericStringWithAttributeNode:durAttributeNode];
     }
-    [durationTextField setStringValue:durString];
+    durationTextField.stringValue = durString;
     
     NSString * repeatCountString = @"";
     NSXMLNode * repeatCountAttributeNode = [animateElement attributeForName:@"repeatCount"];
     if (repeatCountAttributeNode != NULL)
     {
-        repeatCountString = [repeatCountAttributeNode stringValue];
+        repeatCountString = repeatCountAttributeNode.stringValue;
     }
     if ([repeatCountString isEqualToString:@"indefinite"] == YES)
     {
         [repeatCountMatrix selectCellAtRow:1 column:0];
-        [repeatCountTextField setStringValue:@""];
+        repeatCountTextField.stringValue = @"";
     }
     else
     {
         [repeatCountMatrix selectCellAtRow:0 column:0];
-        [repeatCountTextField setStringValue:repeatCountString];
+        repeatCountTextField.stringValue = repeatCountString;
     }
     
     NSString * fillString = @"";
     NSXMLNode * fillAttributeNode = [animateElement attributeForName:@"fill"];
     if (fillAttributeNode != NULL)
     {
-        fillString = [fillAttributeNode stringValue];
+        fillString = fillAttributeNode.stringValue;
     }
     [fillPopUpButton selectItemWithTitle:fillString];    
 }

@@ -27,21 +27,21 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (NSString *)allocEncodeBase64Data:(NSData *)inputData
 {
-	if ([inputData length] == 0)
+	if (inputData.length == 0)
 		return @"";
 
-    char *characters = malloc((([inputData length] + 2) / 3) * 4);
+    char *characters = malloc(((inputData.length + 2) / 3) * 4);
 	if (characters == NULL)
 		return nil;
 	NSUInteger length = 0;
 	
 	NSUInteger i = 0;
-	while (i < [inputData length])
+	while (i < inputData.length)
 	{
 		char buffer[3] = {0,0,0};
 		short bufferLength = 0;
-		while (bufferLength < 3 && i < [inputData length])
-			buffer[bufferLength++] = ((char *)[inputData bytes])[i++];
+		while (bufferLength < 3 && i < inputData.length)
+			buffer[bufferLength++] = ((char *)inputData.bytes)[i++];
 		
 		//  Encode the bytes in the buffer to four characters, including padding "=" characters if necessary.
 		characters[length++] = encodingTable[(buffer[0] & 0xFC) >> 2];

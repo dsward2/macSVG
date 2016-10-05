@@ -43,10 +43,10 @@
     // for menu plug-ins
     if (bezierCircleGeneratorWindowController.window == NULL)
     {
-        NSString * pluginNameString = [self className];
+        NSString * pluginNameString = self.className;
         NSArray * topLevelObjects = NULL;
 
-        NSString * bundlePath = [[NSBundle bundleForClass:[self class]] bundlePath];
+        NSString * bundlePath = [NSBundle bundleForClass:[self class]].bundlePath;
 
         NSBundle * pluginBundle = [NSBundle bundleWithPath:bundlePath];
 
@@ -190,39 +190,39 @@
 - (void)addCirclePathXMLElement:(NSString *)pathString
 {
     NSXMLElement * pathElement = [[NSXMLElement alloc] init];
-    [pathElement setName:@"path"];
+    pathElement.name = @"path";
     
     NSXMLNode * strokeAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [strokeAttribute setName:@"stroke"];
-    [strokeAttribute setStringValue:@"black"];
+    strokeAttribute.name = @"stroke";
+    strokeAttribute.stringValue = @"black";
     [pathElement addAttribute:strokeAttribute];
 
     NSXMLNode * strokeWidthAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [strokeWidthAttribute setName:@"stroke-width"];
-    [strokeWidthAttribute setStringValue:@"3"];
+    strokeWidthAttribute.name = @"stroke-width";
+    strokeWidthAttribute.stringValue = @"3";
     [pathElement addAttribute:strokeWidthAttribute];
 
     NSXMLNode * fillAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [fillAttribute setName:@"fill"];
-    [fillAttribute setStringValue:@"none"];
+    fillAttribute.name = @"fill";
+    fillAttribute.stringValue = @"none";
     [pathElement addAttribute:fillAttribute];
 
     //NSString * idString = [NSString stringWithFormat:@"bezierCirclePath%d", 1];
     NSString * idString = [self.macSVGPluginCallbacks uniqueIDForElementTagName:@"bezierCirclePath" pendingIDs:NULL];
 
     NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [idAttribute setName:@"id"];
-    [idAttribute setStringValue:idString];
+    idAttribute.name = @"id";
+    idAttribute.stringValue = idString;
     [pathElement addAttribute:idAttribute];
     
     NSXMLNode * dAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [dAttribute setName:@"d"];
-    [dAttribute setStringValue:pathString];
+    dAttribute.name = @"d";
+    dAttribute.stringValue = pathString;
     [pathElement addAttribute:dAttribute];
 
     [self assignMacsvgidsForNode:pathElement];
 
-    NSInteger selectedRow = [self.svgXmlOutlineView selectedRow];
+    NSInteger selectedRow = (self.svgXmlOutlineView).selectedRow;
     NSXMLElement * parentElement = NULL;
     NSInteger childIndex = -1;
     
@@ -230,14 +230,14 @@
     {
         NSXMLNode * selectedNode = [self.svgXmlOutlineView itemAtRow:selectedRow];
         NSXMLNode * parentNode = selectedNode;
-        childIndex = [parentNode index] + 1;
+        childIndex = parentNode.index + 1;
         
         BOOL continueSearch = YES;
         while (continueSearch == YES)
         {
-            if ([parentNode kind] == NSXMLElementKind)
+            if (parentNode.kind == NSXMLElementKind)
             {
-                NSString * selectedNodeName = [parentNode name];
+                NSString * selectedNodeName = parentNode.name;
                 
                 if ([selectedNodeName isEqualToString:@"g"] == YES)
                 {
@@ -253,8 +253,8 @@
             
             if (continueSearch == YES)
             {
-                childIndex = [parentNode index] + 1;
-                parentNode = [parentNode parent];
+                childIndex = parentNode.index + 1;
+                parentNode = parentNode.parent;
                 if (parentNode == NULL)
                 {
                     parentElement = [self.svgXmlOutlineView itemAtRow:0];

@@ -42,7 +42,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) 
@@ -71,7 +71,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -112,7 +112,7 @@
     BOOL continueTrim = YES;
     while (continueTrim == YES)
     {
-        NSUInteger stringLength = [aString length];
+        NSUInteger stringLength = aString.length;
         
         if (stringLength <= 1)
         {
@@ -172,18 +172,18 @@
     
     NSArray * valuesArray = [pointsString componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
     
-    NSInteger valuesArrayCount = [valuesArray count];
+    NSInteger valuesArrayCount = valuesArray.count;
     
     if (valuesArrayCount %2 == 0)
     {
         for (NSInteger i = 0; i < valuesArrayCount; i += 2)
         {
-            NSString * xString = [valuesArray objectAtIndex:i];
-            NSString * yString = [valuesArray objectAtIndex:i + 1];
+            NSString * xString = valuesArray[i];
+            NSString * yString = valuesArray[i + 1];
             
             NSMutableDictionary * polylinePointDictionary = [NSMutableDictionary dictionary];
-            [polylinePointDictionary setObject:xString forKey:@"x"];
-            [polylinePointDictionary setObject:yString forKey:@"y"];
+            polylinePointDictionary[@"x"] = xString;
+            polylinePointDictionary[@"y"] = yString;
             
             [newPolylinePointsArray addObject:polylinePointDictionary];
         }
@@ -199,7 +199,7 @@
 - (void)buildPolylinePointsArray:(NSXMLElement *)polylineElement
 {
     NSXMLNode * pointsAttribute = [polylineElement attributeForName:@"points"];
-    NSString * pointsString = [pointsAttribute stringValue];
+    NSString * pointsString = pointsAttribute.stringValue;
     
     NSMutableArray * activePolylinePointsArray = [self buildPolylinePointsArrayWithPointsString:pointsString];
     
@@ -220,7 +220,7 @@
         handlePoint:(NSString *)handlePointString
 
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     DOMElement * handleCircleElement = [domDocument createElementNS:svgNamespace
             qualifiedName:@"circle" ];
@@ -253,10 +253,10 @@
 -(void) addHandleForPoint:(NSDictionary *)polylinePointDictionary
         pointIndex:(NSUInteger)pointIndex polylineHandlesGroup:(DOMElement *)polylineHandlesGroup
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
-    NSString * xString = [polylinePointDictionary objectForKey:@"x"];
-    NSString * yString = [polylinePointDictionary objectForKey:@"y"];
+    NSString * xString = polylinePointDictionary[@"x"];
+    NSString * yString = polylinePointDictionary[@"y"];
     
     NSString * xPxString = [xString stringByAppendingString:@"px"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
@@ -264,17 +264,17 @@
     CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
     
     NSString * polylinePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
-    CGFloat polylinePointStrokeWidthFloat = [polylinePointStrokeWidthString floatValue];
+    CGFloat polylinePointStrokeWidthFloat = polylinePointStrokeWidthString.floatValue;
     polylinePointStrokeWidthFloat *= reciprocalZoomFactor;
     polylinePointStrokeWidthString = [self allocPxString:polylinePointStrokeWidthFloat];
 
     NSString * polylineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
-    CGFloat polylineLineStrokeWidthFloat = [polylineLineStrokeWidthString floatValue];
+    CGFloat polylineLineStrokeWidthFloat = polylineLineStrokeWidthString.floatValue;
     polylineLineStrokeWidthFloat *= reciprocalZoomFactor;
     polylineLineStrokeWidthString = [self allocPxString:polylineLineStrokeWidthFloat];
 
     NSString * polylinePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat polylinePointRadiusFloat = [polylinePointRadiusString floatValue];
+    CGFloat polylinePointRadiusFloat = polylinePointRadiusString.floatValue;
     polylinePointRadiusFloat *= reciprocalZoomFactor;
     polylinePointRadiusString = [self allocPxString:polylinePointRadiusFloat];
 
@@ -299,7 +299,7 @@
     [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_polyline_point_index" value:pointIndexString];
 
     NSXMLNode * MacsvgidNode = [self.selectedPolylineElement attributeForName:@"macsvgid"];
-    NSString * selectedElementMacsvgid = [MacsvgidNode stringValue];
+    NSString * selectedElementMacsvgid = MacsvgidNode.stringValue;
 
     [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:selectedElementMacsvgid];
 
@@ -312,7 +312,7 @@
 
 -(void) makePolylineHandles
 {
-    DOMDocument * domDocument = [[svgWebKitController.svgWebView mainFrame] DOMDocument];
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
             svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
@@ -321,11 +321,11 @@
             qualifiedName:@"g"];
     [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polylineHandlesGroup"];
         
-    NSUInteger polylinePointsCount = [self.polylinePointsArray count];
+    NSUInteger polylinePointsCount = (self.polylinePointsArray).count;
             
     for (NSUInteger pointIdx = 0; pointIdx < polylinePointsCount; pointIdx++)
     {
-        NSDictionary * polylinePointDictionary = [self.polylinePointsArray objectAtIndex:pointIdx];
+        NSDictionary * polylinePointDictionary = (self.polylinePointsArray)[pointIdx];
 
         [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup];
     }
@@ -352,19 +352,19 @@
 - (NSString *)buildStringWithPolylinePointsArray:(NSArray *)aPolylinePointsArray;
 {
     // convert polyline points data
-    NSUInteger polylinePointsCount = [aPolylinePointsArray count];
+    NSUInteger polylinePointsCount = aPolylinePointsArray.count;
 
     NSMutableString * newPointsString = [[NSMutableString alloc] init];
     
     for (NSInteger i = 0; i < polylinePointsCount; i++)
     {
-        NSMutableDictionary * polylinePointDictionary = [aPolylinePointsArray objectAtIndex:i];
+        NSMutableDictionary * polylinePointDictionary = aPolylinePointsArray[i];
         
-        NSString * xString = [polylinePointDictionary objectForKey:@"x"];
+        NSString * xString = polylinePointDictionary[@"x"];
         [newPointsString appendString:xString];
         [newPointsString appendString:@","];
         
-        NSString * yString = [polylinePointDictionary objectForKey:@"y"];
+        NSString * yString = polylinePointDictionary[@"y"];
         [newPointsString appendString:yString];
         [newPointsString appendString:@" "];
     }
@@ -392,7 +392,7 @@
         
         if (macsvgid != NULL)
         {
-            MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
             
             NSXMLElement * polylineXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
@@ -436,7 +436,7 @@
     if (self.selectedPolylineElement != NULL)
     {
         NSXMLNode * MacsvgidNode = [self.selectedPolylineElement attributeForName:@"macsvgid"];
-        NSString * macsvgid = [MacsvgidNode stringValue];
+        NSString * macsvgid = MacsvgidNode.stringValue;
         
         DOMElement * selectedDOMPolylineElement = [svgWebKitController domElementForMacsvgid:macsvgid];
     
@@ -466,15 +466,15 @@
         NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
         NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
         
-        NSInteger polylinePointsArrayCount = [self.polylinePointsArray count];
+        NSInteger polylinePointsArrayCount = (self.polylinePointsArray).count;
         
         if (polylinePointsArrayCount > 0)
         {
             NSInteger lastPointIndex = polylinePointsArrayCount - 1;
-            NSMutableDictionary * pointDictionary = [self.polylinePointsArray objectAtIndex:lastPointIndex];
+            NSMutableDictionary * pointDictionary = (self.polylinePointsArray)[lastPointIndex];
             
-            [pointDictionary setObject:newXString forKey:@"x"];
-            [pointDictionary setObject:newYString forKey:@"y"];
+            pointDictionary[@"x"] = newXString;
+            pointDictionary[@"y"] = newYString;
             
             NSString * newPointsString = [self buildStringWithPolylinePointsArray:self.polylinePointsArray];
             
@@ -494,7 +494,7 @@
         
         if (macsvgid != NULL)
         {
-            MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
+            MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
             
             NSXMLElement * polylineXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
@@ -547,8 +547,8 @@
     NSMutableDictionary * pointDictionary = [[NSMutableDictionary alloc] init];
     
     // start all paths with moveto
-    [pointDictionary setObject:clickXString forKey:@"x"];
-    [pointDictionary setObject:clickYString forKey:@"y"];
+    pointDictionary[@"x"] = clickXString;
+    pointDictionary[@"y"] = clickYString;
     
     [self.polylinePointsArray addObject:pointDictionary];
     
@@ -570,7 +570,7 @@
     
     if (self.selectedPolylineElement != NULL)
     {
-        if ([self.polylinePointsArray count] > 0)
+        if ((self.polylinePointsArray).count > 0)
         {
             result = [self setActiveDOMHandle:handleDOMElement];
         }
@@ -591,13 +591,13 @@
 {
     //NSLog(@"editPolyline");       // mousedown move event, i.e., dragging an endpoint or control point
 
-    NSInteger polylinePointsCount = [self.polylinePointsArray count];
+    NSInteger polylinePointsCount = (self.polylinePointsArray).count;
     
     if (self.polylinePointIndex >= 0)
     {
         if (self.polylinePointIndex < polylinePointsCount)
         {
-            NSMutableDictionary * polylinePointDictionary = [self.polylinePointsArray objectAtIndex:self.polylinePointIndex];
+            NSMutableDictionary * polylinePointDictionary = (self.polylinePointsArray)[self.polylinePointIndex];
 
             [self editPolylinePoint:polylinePointDictionary];
 
@@ -624,11 +624,11 @@
 
 -(void) editPolylinePoint:(NSMutableDictionary *)polylinePointDictionary
 {
-    NSString * previousXString = [polylinePointDictionary objectForKey:@"x"];     // endpoint x
-    NSString * previousYString = [polylinePointDictionary objectForKey:@"y"];     // endpoint y
+    NSString * previousXString = polylinePointDictionary[@"x"];     // endpoint x
+    NSString * previousYString = polylinePointDictionary[@"y"];     // endpoint y
 
-    float previousX = [previousXString floatValue];
-    float previousY = [previousYString floatValue];
+    float previousX = previousXString.floatValue;
+    float previousY = previousYString.floatValue;
 
     NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     
@@ -641,8 +641,8 @@
     NSString * newXString = [self allocFloatString:newX];
     NSString * newYString = [self allocFloatString:newY];
 
-    [polylinePointDictionary setObject:newXString forKey:@"x"];
-    [polylinePointDictionary setObject:newYString forKey:@"y"];
+    polylinePointDictionary[@"x"] = newXString;
+    polylinePointDictionary[@"y"] = newYString;
 }
 
 //==================================================================================
@@ -667,7 +667,7 @@
                 if ([self.activeHandleDOMElement hasAttribute:@"_macsvg_polyline_point_index"] == YES)
                 {
                     NSString * handleSegmentString = [self.activeHandleDOMElement getAttribute:@"_macsvg_polyline_point_index"];
-                    NSInteger newPolylinePointIndex = [handleSegmentString integerValue];
+                    NSInteger newPolylinePointIndex = handleSegmentString.integerValue;
                     
                     editingMode = kPolylineEditingModeActive;
                     newEditingMode = kPolylineEditingModeActive;

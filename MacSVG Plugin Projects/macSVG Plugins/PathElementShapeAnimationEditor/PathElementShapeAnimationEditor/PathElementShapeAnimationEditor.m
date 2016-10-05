@@ -26,7 +26,7 @@
 //	init
 //==================================================================================
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -64,17 +64,17 @@
     NSString * result = NULL;
     if ([elementName isEqualToString:@"path"] == YES)
     {
-        result = [self pluginName];
+        result = self.pluginName;
     }
     else if ([elementName isEqualToString:@"animate"] == YES)
     {
         if (aElement != NULL)
         {
-            NSXMLElement * parentElement = (NSXMLElement *)[aElement parent];
-            NSString * parentElementName = [parentElement name];
+            NSXMLElement * parentElement = (NSXMLElement *)aElement.parent;
+            NSString * parentElementName = parentElement.name;
             if ([parentElementName isEqualToString:@"path"] == YES)
             {
-                result = [self pluginName];
+                result = self.pluginName;
             }
         }
     }
@@ -99,7 +99,7 @@
 {
     NSInteger result = 10;
     
-    NSString * targetElementName = [targetElement name];
+    NSString * targetElementName = targetElement.name;
     
     if ([targetElementName isEqualToString:@"path"] == YES)
     {
@@ -110,7 +110,7 @@
             NSXMLNode * animateAttributeNameNode = [aAnimateElement attributeForName:@"attributeName"];
             if (animateAttributeNameNode != NULL)
             {
-                NSString * animateAttributeNameString = [animateAttributeNameNode stringValue];
+                NSString * animateAttributeNameString = animateAttributeNameNode.stringValue;
                 
                 if ([animateAttributeNameString isEqualToString:@"d"] == YES)
                 {
@@ -179,7 +179,7 @@
     NSButton *targetButton = (NSButton *)sender;
     
     // configure the preferred position of the popover
-    [animatePopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [animatePopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 
     [animatePopoverViewController loadSettingsForNewAnimateElement];
 }
@@ -193,9 +193,9 @@
     NSButton *targetButton = (NSButton *)sender;
     
     // configure the preferred position of the popover
-    [animatePopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+    [animatePopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
     
-    NSInteger selectedAnimateElementIndex = [animateElementsTableView selectedRow];
+    NSInteger selectedAnimateElementIndex = animateElementsTableView.selectedRow;
     
     NSXMLElement * animateElement = [self animateElementAtCount:selectedAnimateElementIndex];
     
@@ -216,7 +216,7 @@
 
 - (IBAction)manageAnimationPathButtonAction:(id)sender
 {
-    NSInteger selectedRow = [animateElementsTableView selectedRow];
+    NSInteger selectedRow = animateElementsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
@@ -225,17 +225,17 @@
         if (animateElement != NULL)
         {
             NSXMLElement * targetElement = self.pluginTargetXMLElement;
-            NSString * targetName = [self.pluginTargetXMLElement name];
+            NSString * targetName = (self.pluginTargetXMLElement).name;
             if ([targetName isEqualToString:@"animate"] == YES)
             {
-                NSXMLNode * parentNode = [self.pluginTargetXMLElement parent];
-                if ([parentNode kind] == NSXMLElementKind)
+                NSXMLNode * parentNode = (self.pluginTargetXMLElement).parent;
+                if (parentNode.kind == NSXMLElementKind)
                 {
                     NSXMLElement * parentElement = (NSXMLElement *)parentNode;
-                    NSString * parentName = [parentElement name];
+                    NSString * parentName = parentElement.name;
                     if ([parentName isEqualToString:@"path"] == YES)
                     {
-                        targetElement = (NSXMLElement *)[self.pluginTargetXMLElement parent];
+                        targetElement = (NSXMLElement *)(self.pluginTargetXMLElement).parent;
                     }
                     else
                     {
@@ -251,7 +251,7 @@
                 
                 // configure the preferred position of the popover
                 NSButton * targetButton = (NSButton *)sender;
-                [animationPathsPopover showRelativeToRect:[targetButton bounds] ofView:sender preferredEdge:NSMaxYEdge];
+                [animationPathsPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
             }
             else
             {
@@ -267,17 +267,17 @@
 
 - (void) setAttributesWithDictionary:(NSMutableDictionary *)animateAttributesDictionary
 {
-    NSInteger selectedAnimateElementIndex = [animateElementsTableView selectedRow];
+    NSInteger selectedAnimateElementIndex = animateElementsTableView.selectedRow;
     
     NSXMLElement * animateElement = [self animateElementAtCount:selectedAnimateElementIndex];
 
-    NSArray * allKeys = [animateAttributesDictionary allKeys];
+    NSArray * allKeys = animateAttributesDictionary.allKeys;
     
     for (NSString * aKey in allKeys)
     {
-        NSString * aValue = [animateAttributesDictionary objectForKey:aKey];
+        NSString * aValue = animateAttributesDictionary[aKey];
         
-        if ([aValue length] == 0)
+        if (aValue.length == 0)
         {
             // if attribute value is empty, remove attribute
             [animateElement removeAttributeForName:aKey];
@@ -289,13 +289,13 @@
             if (attributeNode == NULL)
             {
                 attributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                [attributeNode setName:aKey];
-                [attributeNode setStringValue:aValue];
+                attributeNode.name = aKey;
+                attributeNode.stringValue = aValue;
                 [animateElement addAttribute:attributeNode];
             }
             else
             {
-                [attributeNode setStringValue:aValue];
+                attributeNode.stringValue = aValue;
             }
         }
     }
@@ -324,17 +324,17 @@
 
 
     NSXMLElement * targetElement = self.pluginTargetXMLElement;
-    NSString * targetName = [self.pluginTargetXMLElement name];
+    NSString * targetName = (self.pluginTargetXMLElement).name;
     if ([targetName isEqualToString:@"animate"] == YES)
     {
-        NSXMLNode * parentNode = [self.pluginTargetXMLElement parent];
-        if ([parentNode kind] == NSXMLElementKind)
+        NSXMLNode * parentNode = (self.pluginTargetXMLElement).parent;
+        if (parentNode.kind == NSXMLElementKind)
         {
             NSXMLElement * parentElement = (NSXMLElement *)parentNode;
-            NSString * parentName = [parentElement name];
+            NSString * parentName = parentElement.name;
             if ([parentName isEqualToString:@"path"] == YES)
             {
-                targetElement = (NSXMLElement *)[self.pluginTargetXMLElement parent];
+                targetElement = (NSXMLElement *)(self.pluginTargetXMLElement).parent;
             }
             else
             {
@@ -345,23 +345,23 @@
 
     if (targetElement != NULL)
     {
-        NSArray * childArray = [targetElement children];
+        NSArray * childArray = targetElement.children;
         
         for (NSXMLNode * aChildNode in childArray)
         {
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
                 NSXMLElement * aChildElement = (NSXMLElement *)aChildNode;
                 
-                NSString * tagName = [aChildElement name];
+                NSString * tagName = aChildElement.name;
                 
                 if ([tagName isEqualToString:@"animate"] == YES)
                 {
                     NSXMLNode * attributeNameAttributeNode = [aChildElement attributeForName:@"attributeName"];
                     if (attributeNameAttributeNode != NULL)
                     {
-                        NSString * attributeNameValueString = [attributeNameAttributeNode stringValue];
+                        NSString * attributeNameValueString = attributeNameAttributeNode.stringValue;
                         
                         if ([attributeNameValueString isEqualToString:@"d"])
                         {
@@ -402,17 +402,17 @@
     NSInteger currentCount = 0;
 
     NSXMLElement * targetElement = self.pluginTargetXMLElement;
-    NSString * targetName = [self.pluginTargetXMLElement name];
+    NSString * targetName = (self.pluginTargetXMLElement).name;
     if ([targetName isEqualToString:@"animate"] == YES)
     {
-        NSXMLNode * parentNode = [self.pluginTargetXMLElement parent];
-        if ([parentNode kind] == NSXMLElementKind)
+        NSXMLNode * parentNode = (self.pluginTargetXMLElement).parent;
+        if (parentNode.kind == NSXMLElementKind)
         {
             NSXMLElement * parentElement = (NSXMLElement *)parentNode;
-            NSString * parentName = [parentElement name];
+            NSString * parentName = parentElement.name;
             if ([parentName isEqualToString:@"path"] == YES)
             {
-                targetElement = (NSXMLElement *)[self.pluginTargetXMLElement parent];
+                targetElement = (NSXMLElement *)(self.pluginTargetXMLElement).parent;
             }
             else
             {
@@ -423,23 +423,23 @@
 
     if (targetElement != NULL)
     {
-        NSArray * childArray = [targetElement children];
+        NSArray * childArray = targetElement.children;
         
         for (NSXMLNode * aChildNode in childArray)
         {
-            NSXMLNodeKind nodeKind = [aChildNode kind];
+            NSXMLNodeKind nodeKind = aChildNode.kind;
             if (nodeKind == NSXMLElementKind)
             {
                 NSXMLElement * aChildElement = (NSXMLElement *)aChildNode;
                 
-                NSString * tagName = [aChildElement name];
+                NSString * tagName = aChildElement.name;
                 
                 if ([tagName isEqualToString:@"animate"] == YES)
                 {
                     NSXMLNode * attributeNameAttributeNode = [aChildElement attributeForName:@"attributeName"];
                     if (attributeNameAttributeNode != NULL)
                     {
-                        NSString * attributeNameValueString = [attributeNameAttributeNode stringValue];
+                        NSString * attributeNameValueString = attributeNameAttributeNode.stringValue;
                         
                         if ([attributeNameValueString isEqualToString:@"d"])
                         {
@@ -469,7 +469,7 @@
 {
     NSString * result = @"Missing Result";
     
-    NSString * tableColumnTitle= [aTableColumn identifier];
+    NSString * tableColumnTitle= aTableColumn.identifier;
     
     if ([tableColumnTitle isEqualToString:@"AnimateIndex"] == YES)
     {
@@ -483,7 +483,7 @@
         if (animateElement != NULL)
         {
             NSXMLNode * idAttributeNode = [animateElement attributeForName:@"id"];
-            NSString * idAttributeString = [idAttributeNode stringValue];
+            NSString * idAttributeString = idAttributeNode.stringValue;
             result = idAttributeString;
         }
     }
@@ -513,7 +513,7 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aTableView = [aNotification object];
+	id aTableView = aNotification.object;
     if (aTableView == animateElementsTableView)
     {
         [self enableButtons];
@@ -530,29 +530,29 @@
     
     NSXMLElement * newAnimateElement = [[NSXMLElement alloc] initWithName:@"animate"];
     
-    NSString * macsvgid = [self.macSVGPluginCallbacks newMacsvgid];
+    NSString * macsvgid = (self.macSVGPluginCallbacks).newMacsvgid;
     NSXMLNode * MacsvgidAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [MacsvgidAttributeNode setName:@"macsvgid"];
-    [MacsvgidAttributeNode setStringValue:macsvgid];
+    MacsvgidAttributeNode.name = @"macsvgid";
+    MacsvgidAttributeNode.stringValue = macsvgid;
     [newAnimateElement addAttribute:MacsvgidAttributeNode];
     
     NSXMLNode * attributeNameAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-    [attributeNameAttributeNode setName:@"attributeName"];
-    [attributeNameAttributeNode setStringValue:@"d"];
+    attributeNameAttributeNode.name = @"attributeName";
+    attributeNameAttributeNode.stringValue = @"d";
     [newAnimateElement addAttribute:attributeNameAttributeNode];
 
     NSXMLElement * targetElement = self.pluginTargetXMLElement;
-    NSString * targetName = [self.pluginTargetXMLElement name];
+    NSString * targetName = (self.pluginTargetXMLElement).name;
     if ([targetName isEqualToString:@"animate"] == YES)
     {
-        NSXMLNode * parentNode = [self.pluginTargetXMLElement parent];
-        if ([parentNode kind] == NSXMLElementKind)
+        NSXMLNode * parentNode = (self.pluginTargetXMLElement).parent;
+        if (parentNode.kind == NSXMLElementKind)
         {
             NSXMLElement * parentElement = (NSXMLElement *)parentNode;
-            NSString * parentName = [parentElement name];
+            NSString * parentName = parentElement.name;
             if ([parentName isEqualToString:@"path"] == YES)
             {
-                targetElement = (NSXMLElement *)[self.pluginTargetXMLElement parent];
+                targetElement = (NSXMLElement *)(self.pluginTargetXMLElement).parent;
             }
             else
             {
@@ -570,11 +570,11 @@
         NSXMLNode * masterPathAttributeNode = [targetElement attributeForName:@"d"];
         if (masterPathAttributeNode != NULL)
         {
-            masterPathString = [masterPathAttributeNode stringValue];
+            masterPathString = masterPathAttributeNode.stringValue;
         }
         NSXMLNode * valuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-        [valuesAttributeNode setName:@"values"];
-        [valuesAttributeNode setStringValue:masterPathString];
+        valuesAttributeNode.name = @"values";
+        valuesAttributeNode.stringValue = masterPathString;
         [newAnimateElement addAttribute:valuesAttributeNode];
         
         //[self.pluginTargetXMLElement addChild:newAnimateElement];  // add animate element to path element
@@ -610,7 +610,7 @@
     }
     else
     {
-        NSInteger selectedRow = [animateElementsTableView selectedRow];
+        NSInteger selectedRow = animateElementsTableView.selectedRow;
         if (selectedRow == -1)
         {
             [editAnimateElementButton setEnabled:NO];

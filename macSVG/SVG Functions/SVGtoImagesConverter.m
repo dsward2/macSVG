@@ -135,15 +135,15 @@
 
 - (void) createOffscreenWindowForIconset
 {
-    NSInteger currentIconsetArrayCount = [self.currentIconsetArray count];
+    NSInteger currentIconsetArrayCount = (self.currentIconsetArray).count;
     
     if (self.iconsetIndex < currentIconsetArrayCount)
     {
-        NSString * iconsetItemString = [self.currentIconsetArray objectAtIndex:self.iconsetIndex];
+        NSString * iconsetItemString = (self.currentIconsetArray)[self.iconsetIndex];
         
         NSArray * iconsetItemArray = [iconsetItemString componentsSeparatedByString:@" "];
         
-        self.imageWidth = [[iconsetItemArray objectAtIndex:1] floatValue];
+        self.imageWidth = [iconsetItemArray[1] floatValue];
         self.imageHeight = self.imageWidth;
         
         self.imageScale = self.imageWidth / 512.0f;
@@ -196,7 +196,7 @@
     
     self.hiddenWebView.drawsBackground = NO;
 
-    [self.hiddenWindow setContentView:self.hiddenWebView];
+    (self.hiddenWindow).contentView = self.hiddenWebView;
     
     NSData * xmlData = [self.svgXmlString dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -212,13 +212,13 @@
         [self adjustIconDocumentSize:tempXMLDocument];
     }
 
-    xmlData = [tempXMLDocument XMLData];
+    xmlData = tempXMLDocument.XMLData;
     
     NSURL * baseURL = NULL;
     
     NSString * mimeType = @"image/svg+xml";
 
-    [[self.hiddenWebView mainFrame] loadData:xmlData
+    [(self.hiddenWebView).mainFrame loadData:xmlData
             MIMEType:mimeType	
             textEncodingName:@"UTF-8" 
             baseURL:baseURL];
@@ -234,7 +234,7 @@
 {
     NSXMLElement * rootElement = [xmlDocument rootElement];
     
-    NSString * rootElementName = [rootElement name];
+    NSString * rootElementName = rootElement.name;
     
     if ([rootElementName isEqualToString:@"svg"] == YES)
     {
@@ -245,18 +245,18 @@
         if ((widthAttributeNode != NULL) && (heightAttributeNode != NULL) && (viewBoxAttributeNode != NULL))
         {
             NSString * tempWidthString = [NSString stringWithFormat:@"%fpx", self.imageWidth];
-            [widthAttributeNode setStringValue:tempWidthString];
+            widthAttributeNode.stringValue = tempWidthString;
             
             NSString * tempHeightString = [NSString stringWithFormat:@"%fpx", self.imageHeight];
-            [heightAttributeNode setStringValue:tempHeightString];
+            heightAttributeNode.stringValue = tempHeightString;
             
             NSString * tempViewBoxString = @"0 0 512 512";
-            [viewBoxAttributeNode setStringValue:tempViewBoxString];
+            viewBoxAttributeNode.stringValue = tempViewBoxString;
 
             NSString * styleString = @"overflow: hidden;";
             NSXMLNode * styleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            [styleAttributeNode setName:@"style"];
-            [styleAttributeNode setStringValue:styleString];
+            styleAttributeNode.name = @"style";
+            styleAttributeNode.stringValue = styleString;
             [rootElement addAttribute:styleAttributeNode];
         }
     }
@@ -268,16 +268,16 @@
 
 - (void)getNextFrameImage
 {
-    DOMDocument * domDocument = [[self.hiddenWebView mainFrame] DOMDocument];
-    DOMElement * svgElement = [domDocument documentElement];
+    DOMDocument * domDocument = (self.hiddenWebView).mainFrame.DOMDocument;
+    DOMElement * svgElement = domDocument.documentElement;
     
     NSString * currentTimeString = [NSString stringWithFormat:@"%f", self.currentTime];
     self.currentTimeTextLabel.stringValue = currentTimeString;
-    NSNumber * newTimeValueNumber = [NSNumber numberWithFloat:self.currentTime];
+    NSNumber * newTimeValueNumber = @(self.currentTime);
 
     [svgElement callWebScriptMethod:@"pauseAnimations" withArguments:NULL];  // call JavaScript function
     
-    NSArray * setCurrentTimeArgumentsArray = [NSArray arrayWithObject:newTimeValueNumber];
+    NSArray * setCurrentTimeArgumentsArray = @[newTimeValueNumber];
     [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
 
     [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
@@ -300,31 +300,25 @@
     CGImageRef cgImageRef = [webImage CGImageForProposedRect:NULL context:nil hints:nil];
 
     NSBitmapImageRep * cgImageRep = [[NSBitmapImageRep alloc] initWithCGImage:cgImageRef];
-    [cgImageRep setSize:[webImage size]];
+    cgImageRep.size = webImage.size;
     
     NSData * imageData = NULL;
 
     if ([self.outputFormatString isEqualToString:@"PNG"] == YES)
     {
-        NSDictionary * pngProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                [NSColor clearColor], NSImageFallbackBackgroundColor,
-                nil];
+        NSDictionary * pngProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
         imageData = [cgImageRep representationUsingType:NSPNGFileType properties:pngProperties];
     }
     else if ([self.outputFormatString isEqualToString:@"JPEG"] == YES)
     {
-        NSDictionary * jpegProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                [NSColor clearColor], NSImageFallbackBackgroundColor,
-                nil];
+        NSDictionary * jpegProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
         imageData = [cgImageRep representationUsingType:NSJPEGFileType properties:jpegProperties];
     }
     else if ([self.outputFormatString isEqualToString:@"TIFF"] == YES)
     {
-        NSDictionary * tiffProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                [NSColor clearColor], NSImageFallbackBackgroundColor,
-                nil];
+        NSDictionary * tiffProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
         imageData = [cgImageRep representationUsingType:NSTIFFFileType properties:tiffProperties];
     }
@@ -388,17 +382,17 @@
 {
     NSString * result = originalPath;
 
-    NSArray * originalPathComponents = [originalPath pathComponents];
+    NSArray * originalPathComponents = originalPath.pathComponents;
     
-    NSInteger originalPathComponentsCount = [originalPathComponents count];
+    NSInteger originalPathComponentsCount = originalPathComponents.count;
     
     if (originalPathComponentsCount > 0)
     {
-        NSString * newFileNameTemplate = [self.currentIconsetArray objectAtIndex:self.iconsetIndex];
+        NSString * newFileNameTemplate = (self.currentIconsetArray)[self.iconsetIndex];
         
         NSArray * templateComponents = [newFileNameTemplate componentsSeparatedByString:@" "];
         
-        NSString * newFileName = [templateComponents objectAtIndex:0];
+        NSString * newFileName = templateComponents[0];
         
         NSMutableArray * newPathComponents = [originalPathComponents mutableCopy];
         
@@ -448,8 +442,8 @@
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 
-    NSArray * destinationRepresentations = [webImage representations];
-    NSBitmapImageRep * destinationBitmapImageRep = [destinationRepresentations firstObject];
+    NSArray * destinationRepresentations = webImage.representations;
+    NSBitmapImageRep * destinationBitmapImageRep = destinationRepresentations.firstObject;
     destinationBitmapImageRep.colorSpaceName = NSCalibratedRGBColorSpace;
 
     // redraw after color space setting

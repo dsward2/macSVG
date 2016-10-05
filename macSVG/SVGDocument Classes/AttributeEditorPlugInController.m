@@ -38,7 +38,7 @@
 //	init
 //==================================================================================
 
-- (id)init {
+- (instancetype)init {
     if ((self = [super init])) 
     {
         self.currentXMLElementForAttribute = NULL;
@@ -70,12 +70,12 @@
 {
     if (enabled == YES)
     {
-        if ([attributeEditorPlugInView superview] == NULL) 
+        if (attributeEditorPlugInView.superview == NULL) 
         {
             NSView * attributeEditorFrameView = editorUIFrameController.editorPanelFrameView;
             if (attributeEditorFrameView != NULL)
             {
-                NSRect frameRect = [attributeEditorFrameView frame];
+                NSRect frameRect = attributeEditorFrameView.frame;
                 attributeEditorPlugInView.frame = frameRect;
                 attributeEditorPlugInView.bounds = frameRect;
                 
@@ -114,22 +114,22 @@
     
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             editorUIFrameController.macSVGDocumentWindowController;
-    MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
-    NSMutableArray * pluginsArray = [macSVGDocumentWindowController pluginsArray];
+    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
+    NSMutableArray * pluginsArray = macSVGDocumentWindowController.pluginsArray;
 
     XMLAttributesTableController * xmlAttributesTableController =
             macSVGDocumentWindowController.xmlAttributesTableController;
 
     NSXMLElement * xmlElementForAttributes = [xmlAttributesTableController xmlElementForAttributesTable];
 
-    NSString * currentElementName = [xmlElementForAttributes name];
+    NSString * currentElementName = xmlElementForAttributes.name;
 
     if (xmlElementForAttributes != NULL)
     {
         XMLAttributesTableView * xmlAttributesTableView =
-                [xmlAttributesTableController xmlAttributesTableView];
+                xmlAttributesTableController.xmlAttributesTableView;
                 
-        NSInteger selectedRow = [xmlAttributesTableView selectedRow];
+        NSInteger selectedRow = xmlAttributesTableView.selectedRow;
 
         if (selectedRow == -1)
         {
@@ -140,17 +140,17 @@
         else
         {
             // an attribute is selected
-            NSString * elementName = [xmlElementForAttributes name];
+            NSString * elementName = xmlElementForAttributes.name;
 
             NSMutableArray * xmlAttributesArray = 
                     xmlAttributesTableController.xmlAttributesArray;
             
             NSMutableDictionary * xmlAttributeDictionary = 
-                    [xmlAttributesArray objectAtIndex:selectedRow];
+                    xmlAttributesArray[selectedRow];
             
-            attributeName = [xmlAttributeDictionary objectForKey:@"name"];
-            attributeValue = [xmlAttributeDictionary objectForKey:@"value"];
-            attributeKind = [xmlAttributeDictionary objectForKey:@"kind"];
+            attributeName = xmlAttributeDictionary[@"name"];
+            attributeValue = xmlAttributeDictionary[@"value"];
+            attributeKind = xmlAttributeDictionary[@"kind"];
             
             if (xmlElementForAttributes != self.currentXMLElementForAttribute)
             {
@@ -193,7 +193,7 @@
                 SVGWebKitController * svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
                 
                 NSXMLNode * MacsvgidNode = [xmlElementForAttributes attributeForName:@"macsvgid"];
-                NSString * macsvgid = [MacsvgidNode stringValue];
+                NSString * macsvgid = MacsvgidNode.stringValue;
                 
                 DOMElement * domElementForAttributes =
                         [svgWebKitController domElementForMacsvgid:macsvgid];
@@ -213,7 +213,7 @@
                         
         if (xmlElementForAttributes != NULL)
         {
-            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)[NSApp delegate];
+            MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
             NSMutableDictionary * elementsDictionary = svgDtdData.elementsDictionary;
             NSMutableDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
@@ -230,7 +230,7 @@
                         elementsDictionary:elementsDictionary
                         elementContentsDictionary:elementContentsDictionary];
                                             
-                NSString * pluginName = [macSVGPlugin pluginName];
+                NSString * pluginName = macSVGPlugin.pluginName;
                         
                 if ([selectedAttributeEditorPlugIn isEqualToString:pluginName] == YES)
                 {
@@ -245,7 +245,7 @@
                     SVGWebKitController * svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
                     
                     NSXMLNode * MacsvgidNode = [xmlElementForAttributes attributeForName:@"macsvgid"];
-                    NSString * macsvgid = [MacsvgidNode stringValue];
+                    NSString * macsvgid = MacsvgidNode.stringValue;
                     
                     DOMElement * domElementForAttributes =
                             [svgWebKitController domElementForMacsvgid:macsvgid];
