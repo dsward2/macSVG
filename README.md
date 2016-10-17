@@ -5,7 +5,17 @@ Copyright (c) 2016 by ArkPhone, LLC
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
+# Examples:
+
 <img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/path_animation_and_shape_morphing.svg">
+
+#
+
+<img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/animated_text_on_a_continuous_loop.svg">
+
+#
+
+<img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/animate_stroke-dasharray_on_path.svg">
 
 # Coming soon:
 A project website.
