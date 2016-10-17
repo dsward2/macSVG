@@ -12,7 +12,7 @@ An Apple ID-signed application.
 
 Until then, macSVG can be built from source code.
 
-# Early adaptor notes:
+# Early adapter notes:
 Several examples are available under macSVG's Help menu with the "Browse SVG Examples..." command.
 
 macSVG.app includes a built-in HTTP server, which allows the current document window to be quickly previewed with standard Mac web browsers, and other devices on the local area network.  The first time macSVG is launched, macOS will pose a dialog message "Do you want the application “macSVG.app” to accept incoming network connections?".  Click "Allow" or "Deny" to enable or disable remote connections.
