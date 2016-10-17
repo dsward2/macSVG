@@ -11,6 +11,7 @@
 		0E31631517A871230030D657 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E31631317A871230030D657 /* InfoPlist.strings */; };
 		0E31632117A873230030D657 /* CoordinatesAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */; };
 		0EC2E93E17A88B7A00AFFFDC /* CoordinatesAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */; };
+		0ECCB0081DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42EA1D7114DC001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		0E31631F17A873230030D657 /* CoordinatesAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinatesAttributeEditor.h; sourceTree = "<group>"; };
 		0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatesAttributeEditor.m; sourceTree = "<group>"; };
 		0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoordinatesAttributeEditor.xib; sourceTree = "<group>"; };
+		0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EFA42E91D7114DC001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -82,6 +84,7 @@
 				0E31631217A871230030D657 /* CoordinatesAttributeEditor-Info.plist */,
 				0E31631317A871230030D657 /* InfoPlist.strings */,
 				0E31631617A871230030D657 /* CoordinatesAttributeEditor-Prefix.pch */,
+				0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E31631517A871230030D657 /* InfoPlist.strings in Resources */,
+				0ECCB0081DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EC2E93E17A88B7A00AFFFDC /* CoordinatesAttributeEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +173,7 @@
 /* Begin XCBuildConfiguration section */
 		0E31631717A871230030D657 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -213,6 +218,7 @@
 		};
 		0E31631817A871230030D657 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -250,6 +256,7 @@
 		};
 		0E31631A17A871230030D657 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -265,6 +272,7 @@
 		};
 		0E31631B17A871230030D657 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

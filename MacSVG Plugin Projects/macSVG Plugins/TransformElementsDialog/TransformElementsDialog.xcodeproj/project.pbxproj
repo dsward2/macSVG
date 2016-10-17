@@ -11,6 +11,7 @@
 		0E5AE6001D5BD8C8000C1643 /* TransformElementsDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */; };
 		0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */; };
 		0E693CFE1D70551300006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */; };
+		0ECCB0201DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformElementsDialogWindowController.m; sourceTree = "<group>"; };
 		0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransformElementsDialog.xib; sourceTree = "<group>"; };
 		0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,10 +62,27 @@
 				0E5AE5FC1D5BD62D000C1643 /* TransformElementsDialog.m */,
 				0E5AE5FE1D5BD8C8000C1643 /* TransformElementsDialogWindowController.h */,
 				0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */,
-				0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */,
-				0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */,
+				0ECCB01E1DB4ABC2001A6085 /* Supporting Files */,
+				0ECCB01D1DB4ABB6001A6085 /* Frameworks */,
 			);
 			path = TransformElementsDialog;
+			sourceTree = "<group>";
+		};
+		0ECCB01D1DB4ABB6001A6085 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0ECCB01E1DB4ABC2001A6085 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */,
+				0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB0201DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +163,7 @@
 /* Begin XCBuildConfiguration section */
 		0E5AE5F61D5BD57F000C1643 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -189,6 +210,7 @@
 		};
 		0E5AE5F71D5BD57F000C1643 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -228,6 +250,7 @@
 		};
 		0E5AE5F91D5BD57F000C1643 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
@@ -245,6 +268,7 @@
 		};
 		0E5AE5FA1D5BD57F000C1643 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (

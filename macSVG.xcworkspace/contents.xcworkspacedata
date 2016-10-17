@@ -13,6 +13,9 @@
          <FileRef
             location = "group:MacSVGPlugin.xcodeproj">
          </FileRef>
+         <FileRef
+            location = "group:macSVGPluginConfig.xcconfig">
+         </FileRef>
       </Group>
       <Group
          location = "container:MacSVG Plugin Projects/macSVG Plugins"

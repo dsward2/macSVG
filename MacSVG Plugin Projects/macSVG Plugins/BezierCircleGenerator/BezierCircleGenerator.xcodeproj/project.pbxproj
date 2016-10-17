@@ -10,6 +10,7 @@
 		0E81A96B1D34E62A00EA824A /* BezierCircleGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E81A96A1D34E62A00EA824A /* BezierCircleGenerator.m */; };
 		0E81A96E1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E81A96D1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m */; };
 		0E81A9711D34F2D700EA824A /* BezierCircleGenerator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */; };
+		0ECCB0031DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42E61D711497001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E51D711497001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +22,7 @@
 		0E81A96C1D34F00B00EA824A /* BezierCircleGeneratorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierCircleGeneratorWindowController.h; sourceTree = "<group>"; };
 		0E81A96D1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BezierCircleGeneratorWindowController.m; sourceTree = "<group>"; };
 		0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BezierCircleGenerator.xib; sourceTree = "<group>"; };
+		0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EFA42E51D711497001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -61,7 +63,7 @@
 				0E81A96A1D34E62A00EA824A /* BezierCircleGenerator.m */,
 				0E81A96C1D34F00B00EA824A /* BezierCircleGeneratorWindowController.h */,
 				0E81A96D1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m */,
-				0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */,
+				0ECCB0041DB4A9B8001A6085 /* Supporting Files */,
 			);
 			path = BezierCircleGenerator;
 			sourceTree = "<group>";
@@ -73,6 +75,15 @@
 			);
 			name = Frameworks;
 			path = BezierCircleGenerator;
+			sourceTree = "<group>";
+		};
+		0ECCB0041DB4A9B8001A6085 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */,
+				0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB0031DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E81A9711D34F2D700EA824A /* BezierCircleGenerator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +164,7 @@
 /* Begin XCBuildConfiguration section */
 		0E81A9641D34E54F00EA824A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -198,6 +211,7 @@
 		};
 		0E81A9651D34E54F00EA824A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -237,6 +251,7 @@
 		};
 		0E81A9671D34E54F00EA824A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -251,6 +266,7 @@
 		};
 		0E81A9681D34E54F00EA824A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;

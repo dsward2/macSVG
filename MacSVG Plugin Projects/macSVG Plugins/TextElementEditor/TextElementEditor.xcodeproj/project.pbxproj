@@ -16,6 +16,7 @@
 		0E420E4917C2BA2300239733 /* TextPathPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E420E4817C2BA2300239733 /* TextPathPopoverViewController.m */; };
 		0E46D9FA17CB1B5000314429 /* TspanPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */; };
 		0E693CFA1D7054D800006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF91D7054D800006B21 /* MacSVGPlugin.framework */; };
+		0ECCB01A1DB4AB71001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0ED1B97D17B44109003E282F /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97C17B44109003E282F /* SZJsonParser.m */; };
 		0ED1B98017B47630003E282F /* FontPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97F17B47630003E282F /* FontPopoverViewController.m */; };
 		0ED1B98317B49482003E282F /* BrowserFonts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ED1B98117B49482003E282F /* BrowserFonts.plist */; };
@@ -42,6 +43,7 @@
 		0E46D9F817CB1B5000314429 /* TspanPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TspanPopoverViewController.h; sourceTree = "<group>"; };
 		0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TspanPopoverViewController.m; sourceTree = "<group>"; };
 		0E693CF91D7054D800006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0ED1B97B17B44109003E282F /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZJsonParser.h; path = "json-objc-parser-master/JSON Parser/SZJsonParser.h"; sourceTree = "<group>"; };
 		0ED1B97C17B44109003E282F /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZJsonParser.m; path = "json-objc-parser-master/JSON Parser/SZJsonParser.m"; sourceTree = "<group>"; };
 		0ED1B97E17B47630003E282F /* FontPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPopoverViewController.h; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				0E26CD6517A6326C0053B3D4 /* TextElementEditor-Info.plist */,
 				0E26CD6617A6326C0053B3D4 /* InfoPlist.strings */,
 				0E26CD6917A6326C0053B3D4 /* TextElementEditor-Prefix.pch */,
+				0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB01A1DB4AB71001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E26CD7517A633580053B3D4 /* TextElementEditor.xib in Resources */,
 				0E26CD6817A6326C0053B3D4 /* InfoPlist.strings in Resources */,
 				0ED1B98317B49482003E282F /* BrowserFonts.plist in Resources */,
@@ -231,6 +235,7 @@
 /* Begin XCBuildConfiguration section */
 		0E26CD6A17A6326C0053B3D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -275,6 +280,7 @@
 		};
 		0E26CD6B17A6326C0053B3D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -312,6 +318,7 @@
 		};
 		0E26CD6D17A6326C0053B3D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -327,6 +334,7 @@
 		};
 		0E26CD6E17A6326C0053B3D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

@@ -13,6 +13,7 @@
 		0E46DA1217CBFD7800314429 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1017CBFD7800314429 /* InfoPlist.strings */; };
 		0E46DA1D17CBFE1200314429 /* AnimateMotionElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46DA1C17CBFE1200314429 /* AnimateMotionElementEditor.m */; };
 		0E46DA2017CBFE5800314429 /* AnimateMotionElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1E17CBFE5800314429 /* AnimateMotionElementEditor.xib */; };
+		0ECCAFFF1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EF29D9C1D7A9E3A00267844 /* AnimateMotionTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D9B1D7A9E3A00267844 /* AnimateMotionTableRowView.m */; };
 		0EFA42E41D71147D001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E31D71147D001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		0E46DA1B17CBFE1200314429 /* AnimateMotionElementEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateMotionElementEditor.h; sourceTree = "<group>"; };
 		0E46DA1C17CBFE1200314429 /* AnimateMotionElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AnimateMotionElementEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E46DA1F17CBFE5800314429 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AnimateMotionElementEditor.xib; sourceTree = "<group>"; };
+		0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EF29D9A1D7A9E3A00267844 /* AnimateMotionTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateMotionTableRowView.h; sourceTree = "<group>"; };
 		0EF29D9B1D7A9E3A00267844 /* AnimateMotionTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateMotionTableRowView.m; sourceTree = "<group>"; };
 		0EFA42E31D71147D001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +95,7 @@
 		0E46DA0E17CBFD7800314429 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */,
 				0E46DA1E17CBFE5800314429 /* AnimateMotionElementEditor.xib */,
 				0E46DA0F17CBFD7800314429 /* AnimateMotionElementEditor-Info.plist */,
 				0E46DA1017CBFD7800314429 /* InfoPlist.strings */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E46DA1217CBFD7800314429 /* InfoPlist.strings in Resources */,
+				0ECCAFFF1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E46DA2017CBFE5800314429 /* AnimateMotionElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +199,7 @@
 /* Begin XCBuildConfiguration section */
 		0E46DA1417CBFD7800314429 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -239,6 +244,7 @@
 		};
 		0E46DA1517CBFD7800314429 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -276,6 +282,7 @@
 		};
 		0E46DA1717CBFD7800314429 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -291,6 +298,7 @@
 		};
 		0E46DA1817CBFD7800314429 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

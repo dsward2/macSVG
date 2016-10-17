@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E693CF41D70549300006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF31D70549300006B21 /* MacSVGPlugin.framework */; };
+		0ECCB0121DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0ED841081800C8C1003985CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ED841071800C8C1003985CD /* Cocoa.framework */; };
 		0ED841121800C8C1003985CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0ED841101800C8C1003985CD /* InfoPlist.strings */; };
 		0ED8411B1800C962003985CD /* PieChartGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8411A1800C962003985CD /* PieChartGenerator.m */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		0E693CF31D70549300006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0ED841041800C8C1003985CD /* PieChartGenerator.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PieChartGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ED841071800C8C1003985CD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0ED8410A1800C8C1003985CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -101,6 +103,7 @@
 				0ED8410F1800C8C1003985CD /* PieChartGenerator-Info.plist */,
 				0ED841101800C8C1003985CD /* InfoPlist.strings */,
 				0ED841131800C8C1003985CD /* PieChartGenerator-Prefix.pch */,
+				0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0ED841121800C8C1003985CD /* InfoPlist.strings in Resources */,
+				0ECCB0121DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0ED8411D1800C9B0003985CD /* PieChartGenerator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +193,7 @@
 /* Begin XCBuildConfiguration section */
 		0ED841141800C8C1003985CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -232,6 +237,7 @@
 		};
 		0ED841151800C8C1003985CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -268,6 +274,7 @@
 		};
 		0ED841171800C8C1003985CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -283,6 +290,7 @@
 		};
 		0ED841181800C8C1003985CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

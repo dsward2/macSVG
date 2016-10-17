@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ECCB00C1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EF29DB51D7B7E9C00267844 /* IRIReferenceAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29DB41D7B7E9C00267844 /* IRIReferenceAttributeEditor.m */; };
 		0EF29DB81D7B829200267844 /* IRIReferenceAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EF29DB71D7B829200267844 /* IRIReferenceAttributeEditor.xib */; };
 		0EF29DBA1D7B9F8500267844 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF29DB91D7B9F8500267844 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EF29DA91D7B7BF300267844 /* IRIReferenceAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IRIReferenceAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF29DAC1D7B7BF300267844 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EF29DB31D7B7E9C00267844 /* IRIReferenceAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRIReferenceAttributeEditor.h; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			children = (
 				0EF29DAC1D7B7BF300267844 /* Info.plist */,
 				0EF29DB71D7B829200267844 /* IRIReferenceAttributeEditor.xib */,
+				0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = SupportingFiles;
 			sourceTree = "<group>";
@@ -133,6 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB00C1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EF29DB81D7B829200267844 /* IRIReferenceAttributeEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,6 +157,7 @@
 /* Begin XCBuildConfiguration section */
 		0EF29DAD1D7B7BF300267844 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -199,6 +204,7 @@
 		};
 		0EF29DAE1D7B7BF300267844 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -238,6 +244,7 @@
 		};
 		0EF29DB01D7B7BF300267844 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = IRIReferenceAttributeEditor/Info.plist;
@@ -251,6 +258,7 @@
 		};
 		0EF29DB11D7B7BF300267844 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00B1DB4AA4C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = IRIReferenceAttributeEditor/Info.plist;

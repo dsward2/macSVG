@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0E4CF18F14D9182500A94168 /* skewY.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4CF18E14D9182500A94168 /* skewY.png */; };
 		0E693CFC1D7054FE00006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */; };
+		0ECCB01C1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EDF158714D1FCD000E872DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDF158614D1FCD000E872DA /* Cocoa.framework */; };
 		0EDF159114D1FCD000E872DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF158F14D1FCD000E872DA /* InfoPlist.strings */; };
 		0EDF159C14D1FEC900E872DA /* TransformAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDF159B14D1FEC900E872DA /* TransformAttributeEditor.m */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		0E4CF18E14D9182500A94168 /* skewY.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = skewY.png; path = TransformAttributeEditorPlugin/Icons/skewY.png; sourceTree = SOURCE_ROOT; };
 		0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EDF158314D1FCD000E872DA /* TransformAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDF158614D1FCD000E872DA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0EDF158914D1FCD000E872DA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -106,6 +108,7 @@
 				0EDF159D14D1FFB000E872DA /* TransformAttributeEditor.xib */,
 				0EDF15BC14D20BBE00E872DA /* TransformAttributeEditor-Info.plist */,
 				0EDF15BD14D20BBE00E872DA /* TransformAttributeEditor-Prefix.pch */,
+				0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB01C1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EDF159114D1FCD000E872DA /* InfoPlist.strings in Resources */,
 				0EDF159E14D1FFB000E872DA /* TransformAttributeEditor.xib in Resources */,
 				0EDF15A414D2078300E872DA /* rotate.png in Resources */,
@@ -209,6 +213,7 @@
 /* Begin XCBuildConfiguration section */
 		0EDF159314D1FCD000E872DA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -252,6 +257,7 @@
 		};
 		0EDF159414D1FCD000E872DA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -287,6 +293,7 @@
 		};
 		0EDF159614D1FCD000E872DA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -305,6 +312,7 @@
 		};
 		0EDF159714D1FCD000E872DA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;

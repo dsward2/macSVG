@@ -11,6 +11,7 @@
 		0E96DC5F17A5AFB90097A267 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E96DC5D17A5AFB90097A267 /* InfoPlist.strings */; };
 		0E96DC6B17A5BE130097A267 /* ImageElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DC6717A5B02E0097A267 /* ImageElementEditor.m */; };
 		0E96DC6C17A5BE1B0097A267 /* ImageElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E96DC6817A5B0E90097A267 /* ImageElementEditor.xib */; };
+		0ECCB00A1DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42EC1D7114F9001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42EB1D7114F9001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		0E96DC6617A5B02E0097A267 /* ImageElementEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageElementEditor.h; sourceTree = "<group>"; };
 		0E96DC6717A5B02E0097A267 /* ImageElementEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageElementEditor.m; sourceTree = "<group>"; };
 		0E96DC6817A5B0E90097A267 /* ImageElementEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageElementEditor.xib; sourceTree = "<group>"; };
+		0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EFA42EB1D7114F9001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -82,6 +84,7 @@
 				0E96DC5C17A5AFB90097A267 /* ImageElementEditor-Info.plist */,
 				0E96DC5D17A5AFB90097A267 /* InfoPlist.strings */,
 				0E96DC6017A5AFB90097A267 /* ImageElementEditor-Prefix.pch */,
+				0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E96DC5F17A5AFB90097A267 /* InfoPlist.strings in Resources */,
+				0ECCB00A1DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E96DC6C17A5BE1B0097A267 /* ImageElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +173,7 @@
 /* Begin XCBuildConfiguration section */
 		0E96DC6117A5AFB90097A267 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -213,6 +218,7 @@
 		};
 		0E96DC6217A5AFB90097A267 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -250,6 +256,7 @@
 		};
 		0E96DC6417A5AFB90097A267 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -265,6 +272,7 @@
 		};
 		0E96DC6517A5AFB90097A267 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

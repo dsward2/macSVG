@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ECCB0101DB4AA86001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EEE3AEC17BC03740040846F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EEE3AEB17BC03740040846F /* Cocoa.framework */; };
 		0EEE3AF617BC03740040846F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EEE3AF417BC03740040846F /* InfoPlist.strings */; };
 		0EEE3AFF17BC041A0040846F /* PathElementShapeAnimationEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3AFE17BC041A0040846F /* PathElementShapeAnimationEditor.m */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EEE3AE817BC03740040846F /* PathElementShapeAnimationEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathElementShapeAnimationEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEE3AEB17BC03740040846F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0EEE3AF317BC03740040846F /* PathElementShapeAnimationEditor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PathElementShapeAnimationEditor-Info.plist"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				0EEE3AF317BC03740040846F /* PathElementShapeAnimationEditor-Info.plist */,
 				0EEE3AF417BC03740040846F /* InfoPlist.strings */,
 				0EEE3AF717BC03740040846F /* PathElementShapeAnimationEditor-Prefix.pch */,
+				0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EEE3AF617BC03740040846F /* InfoPlist.strings in Resources */,
+				0ECCB0101DB4AA86001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EEE3B0817BC34F20040846F /* PathElementShapeAnimationEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +193,7 @@
 /* Begin XCBuildConfiguration section */
 		0EEE3AF817BC03740040846F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -233,6 +238,7 @@
 		};
 		0EEE3AF917BC03740040846F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -270,6 +276,7 @@
 		};
 		0EEE3AFB17BC03740040846F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -285,6 +292,7 @@
 		};
 		0EEE3AFC17BC03740040846F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

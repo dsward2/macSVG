@@ -11,6 +11,7 @@
 		0EA78C1C1D8410DC00C9D4C8 /* PointsAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */; };
 		0EA78C1F1D84142A00C9D4C8 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */; };
 		0EA78C391D84165A00C9D4C8 /* PointsTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */; };
+		0ECCB0141DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		0EA78C1E1D84142A00C9D4C8 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA78C371D84165A00C9D4C8 /* PointsTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsTableRowView.h; sourceTree = "<group>"; };
 		0EA78C381D84165A00C9D4C8 /* PointsTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointsTableRowView.m; sourceTree = "<group>"; };
+		0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 			children = (
 				0EA78C1B1D8410DC00C9D4C8 /* PointsAttributeEditor.xib */,
 				0EA78C111D840FA900C9D4C8 /* Info.plist */,
+				0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB0141DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EA78C1C1D8410DC00C9D4C8 /* PointsAttributeEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -159,6 +163,7 @@
 /* Begin XCBuildConfiguration section */
 		0EA78C121D840FA900C9D4C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -205,6 +210,7 @@
 		};
 		0EA78C131D840FA900C9D4C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -244,6 +250,7 @@
 		};
 		0EA78C151D840FA900C9D4C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
@@ -258,6 +265,7 @@
 		};
 		0EA78C161D840FA900C9D4C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0131DB4AB0B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";

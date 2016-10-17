@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ECCB0011DB4A95D001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EF29D8B1D791B4200267844 /* AnimateTransformElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */; };
 		0EF29D8F1D791B9700267844 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */; };
 		0EF29D911D7927FC00267844 /* AnimateTransformElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EF29D801D791ACB00267844 /* AnimateTransformElementEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimateTransformElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF29D831D791ACB00267844 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EF29D891D791B4200267844 /* AnimateTransformElementEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformElementEditor.h; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		0EF29D8C1D791B5300267844 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */,
 				0EF29D831D791ACB00267844 /* Info.plist */,
 				0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */,
 			);
@@ -149,6 +152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB0011DB4A95D001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EF29D911D7927FC00267844 /* AnimateTransformElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +176,7 @@
 /* Begin XCBuildConfiguration section */
 		0EF29D841D791ACB00267844 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -218,6 +223,7 @@
 		};
 		0EF29D851D791ACB00267844 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -257,6 +263,7 @@
 		};
 		0EF29D871D791ACB00267844 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;
@@ -270,6 +277,7 @@
 		};
 		0EF29D881D791ACB00267844 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;

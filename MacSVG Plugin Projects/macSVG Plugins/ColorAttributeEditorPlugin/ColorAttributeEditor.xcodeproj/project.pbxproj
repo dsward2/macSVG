@@ -17,6 +17,7 @@
 		0E2EEF9B14B793DF00A88ED9 /* ColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EEF9914B793DF00A88ED9 /* ColorSwatchCell.m */; };
 		0E5CC08217E283D0006ABDDA /* GradientEditorPopoverViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E5CC08017E283D0006ABDDA /* GradientEditorPopoverViewController.h */; };
 		0E5CC08317E283D0006ABDDA /* GradientEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5CC08117E283D0006ABDDA /* GradientEditorPopoverViewController.m */; };
+		0ECCB0061DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42E81D7114B7001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E71D7114B7001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		0E2EEF9914B793DF00A88ED9 /* ColorSwatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ColorSwatchCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E5CC08017E283D0006ABDDA /* GradientEditorPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientEditorPopoverViewController.h; sourceTree = "<group>"; };
 		0E5CC08117E283D0006ABDDA /* GradientEditorPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GradientEditorPopoverViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EFA42E71D7114B7001FDE91 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 				0E18CA2014B5B8AE00AB9F78 /* InfoPlist.strings */,
 				0E18CA2314B5B8AE00AB9F78 /* ColorAttributeEditor-Prefix.pch */,
 				0E08F69314B6EC6A008E6ADD /* svg_colors.xml */,
+				0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ECCB0061DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E18CA2214B5B8AE00AB9F78 /* InfoPlist.strings in Resources */,
 				0E08F52814B6B1C7008E6ADD /* ColorAttributeEditor.xib in Resources */,
 				0E08F69414B6EC6A008E6ADD /* svg_colors.xml in Resources */,
@@ -201,6 +205,7 @@
 /* Begin XCBuildConfiguration section */
 		0E18CA2414B5B8AE00AB9F78 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -242,6 +247,7 @@
 		};
 		0E18CA2514B5B8AE00AB9F78 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -275,6 +281,7 @@
 		};
 		0E18CA2714B5B8AF00AB9F78 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -298,6 +305,7 @@
 		};
 		0E18CA2814B5B8AF00AB9F78 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;

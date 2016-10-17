@@ -10,6 +10,7 @@
 		0E06F8861D57B7F300265FA2 /* PathElementEditorFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */; };
 		0E6E00381D37126A0060154A /* PathSegmentEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */; };
 		0EA47BEA1D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA47BE91D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m */; };
+		0ECCB00E1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EDEB22D1501AE0E008CA4AF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */; };
 		0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDEB2351501AE0E008CA4AF /* InfoPlist.strings */; };
 		0EDEB2421501AEA4008CA4AF /* PathElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDEB2411501AEA4008CA4AF /* PathElementEditor.m */; };
@@ -24,6 +25,7 @@
 		0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathSegmentEditorPopoverViewController.m; sourceTree = "<group>"; };
 		0EA47BE81D87DD53005B2FF3 /* ArcSettingsPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcSettingsPopoverViewController.h; sourceTree = "<group>"; };
 		0EA47BE91D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArcSettingsPopoverViewController.m; sourceTree = "<group>"; };
+		0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EDEB2291501AE0E008CA4AF /* PathElementEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0EDEB2341501AE0E008CA4AF /* PathElementEditor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PathElementEditor-Info.plist"; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				0EDEB2341501AE0E008CA4AF /* PathElementEditor-Info.plist */,
 				0EDEB2351501AE0E008CA4AF /* InfoPlist.strings */,
 				0EDEB2381501AE0E008CA4AF /* PathElementEditor-Prefix.pch */,
+				0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */,
+				0ECCB00E1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EDEB2441501AEED008CA4AF /* PathElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,6 +191,7 @@
 /* Begin XCBuildConfiguration section */
 		0EDEB2391501AE0E008CA4AF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -228,6 +233,7 @@
 		};
 		0EDEB23A1501AE0E008CA4AF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -261,6 +267,7 @@
 		};
 		0EDEB23C1501AE0E008CA4AF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -280,6 +287,7 @@
 		};
 		0EDEB23D1501AE0E008CA4AF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
