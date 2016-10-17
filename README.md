@@ -10,7 +10,7 @@ Examples.
 Demo videos.
 An Apple ID-signed application.
 
-Until then, macSVG can be built from source code.
+Until then, macSVG can be built from source code.  Open "macSVG.xcworkspace" in Xcode, set the target to "macSVG Debug", build and run.
 
 # Early adapter notes:
 Several examples are available under macSVG's Help menu with the "Browse SVG Examples..." command.
