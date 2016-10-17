@@ -5,7 +5,7 @@ Copyright (c) 2016 by ArkPhone, LLC
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
-![macSVG Example](https://raw.githubusercontent.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/path_animation_and_shape_morphing.svg)
+<img src="https://raw.githubusercontent.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/path_animation_and_shape_morphing.svg">
 
 # Coming soon:
 A project website.
