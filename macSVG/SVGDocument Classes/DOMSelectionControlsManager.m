@@ -1182,6 +1182,8 @@
                         }
                     }
                     
+                    /*
+                    // 20161017 - tentatively disable copying the transform attribute here - it was getting applied twice in the new controls elements
                     NSString * transformAttribute = [aDomElement getAttribute:@"transform"];
                     if (transformAttribute != NULL)
                     {
@@ -1190,6 +1192,7 @@
                             [handleParentElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
                         }
                     }
+                    */
                     
                     NSString * elementName = aDomElement.nodeName;
                     if ((self.validElementsForTransformDictionary)[elementName] != NULL)
