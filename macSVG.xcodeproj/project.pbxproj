@@ -687,6 +687,7 @@
 		0EC671841D696EBB0086943C /* multi-line_text_with_foreignobject_and_html.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */; };
 		0ECCAFDF1DB4A6A0001A6085 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCAFDE1DB4A6A0001A6085 /* README.md */; };
 		0ECCB0221DB4B60A001A6085 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0211DB4B60A001A6085 /* LICENSE */; };
+		0ECCB0251DB51B58001A6085 /* macsvg-screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0241DB51B58001A6085 /* macsvg-screenshot.jpg */; };
 		0ED17E301D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */; };
 		0ED841221800FCCA003985CD /* PieChartGenerator.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0ED841201800FCAB003985CD /* PieChartGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EDC2EB91471D8C100747907 /* SVGPathEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC2EB81471D8C100747907 /* SVGPathEditor.m */; };
@@ -2140,6 +2141,7 @@
 		0EC902C01D831B7F003FDF32 /* MacSVG-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MacSVG-Info.plist"; sourceTree = "<group>"; };
 		0ECCAFDE1DB4A6A0001A6085 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0ECCB0211DB4B60A001A6085 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		0ECCB0241DB51B58001A6085 /* macsvg-screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "macsvg-screenshot.jpg"; sourceTree = "<group>"; };
 		0ED17E2C1D42F4EB001F9D8E /* Tools icons.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = "Tools icons.svg"; path = "macSVG/Resources/Tools Icons/Tools SVG Design/Tools icons.svg"; sourceTree = "<group>"; };
 		0ED17E2E1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVGtoCoreGraphicsConverter.h; path = "SVG Functions/SVGtoCoreGraphicsConverter.h"; sourceTree = "<group>"; };
 		0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SVGtoCoreGraphicsConverter.m; path = "SVG Functions/SVGtoCoreGraphicsConverter.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -3308,6 +3310,7 @@
 			isa = PBXGroup;
 			children = (
 				0ECCAFDE1DB4A6A0001A6085 /* README.md */,
+				0ECCB0231DB51B57001A6085 /* README_images */,
 				0ECCB0211DB4B60A001A6085 /* LICENSE */,
 				0EB6638214286398003723F0 /* macSVG */,
 				0EB6637B14286398003723F0 /* Frameworks */,
@@ -3475,6 +3478,14 @@
 				0EC22E281D7039FD00931DC4 /* libssh2.a */,
 			);
 			path = lib;
+			sourceTree = "<group>";
+		};
+		0ECCB0231DB51B57001A6085 /* README_images */ = {
+			isa = PBXGroup;
+			children = (
+				0ECCB0241DB51B58001A6085 /* macsvg-screenshot.jpg */,
+			);
+			path = README_images;
 			sourceTree = "<group>";
 		};
 		0ED17E2B1D42F4EB001F9D8E /* Tools SVG Design */ = {
@@ -3711,6 +3722,7 @@
 				0EB663DF1428666B003723F0 /* Untitled.svg in Resources */,
 				0E1F752B1D83C132008AFEAB /* shear.png in Resources */,
 				0EA2B4CB1D9C96FC00100631 /* MacSVGDocument.xib in Resources */,
+				0ECCB0251DB51B58001A6085 /* macsvg-screenshot.jpg in Resources */,
 				0E1F752A1D83C132008AFEAB /* scale.png in Resources */,
 				0EA2B4C81D9C96FC00100631 /* Credits.rtf in Resources */,
 				0EB663E01428666B003723F0 /* Untitled.xhtml in Resources */,
