@@ -3,7 +3,7 @@ macSVG - A macOS App for Designing HTML5 SVG (Scalable Vector Graphics) Art and 
 
 Copyright (c) 2016 by ArkPhone, LLC
 
-![macSVG](dsward.github.com/macsvg/README_images/macsvg-screenshot.jpg)
+![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
 # Coming soon:
 A project website.
