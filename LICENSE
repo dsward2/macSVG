@@ -1,0 +1,423 @@
+
+macSVG 0.5
+
+Copyright ©2011-2016 ArkPhone LLC
+
+Designed in Arkansas, USA.
+
+Support: http://macsvg.org
+
+Contact Developer: Doug Ward at dsward@macsvg.org
+
+or https://twitter.com/dsward
+
+============================
+
+macSVG is distributed under the MIT License:
+
+MIT License
+
+Copyright (c) 2011-2016 ArkPhone, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+============================
+
+macSVG.app developer's special thanks to -
+
+My wife, Evelyn.
+
+To my parents.
+
+And to - Andy 'Ship It!' Griebel - Marketing consultant and hosting service provider for macsvg.org.
+
+webkit.org -The WebKit project t is a major component in the macSVG application.  macSVG uses Apple's standard macOS Cocoa WebKit framework and API.
+
+============================
+
+The "Mona Lisa" by Leonardo da Vinci, c. 1503–06 -
+
+Image hosted at WikiMedia Commons -
+
+https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg
+
+Used as a default image for SVG image elements.
+
+============================
+
+"Technical Drawing Pencil" by itomato
+
+https://openclipart.org/detail/9866/technical-drawing-pencil
+
+Created with Inkscape, hosted at openclipart.org, imported into macSVG to design the app icon.
+
+============================
+
+svg11-flat-20110816.dtd -
+
+http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd
+
+     This is SVG, a language for describing two-dimensional graphics in XML.
+
+     The Scalable Vector Graphics (SVG)
+     Copyright 2001, 2002, 2011 World Wide Web Consortium
+        (Massachusetts Institute of Technology, Institut National de
+         Recherche en Informatique et en Automatique, Keio University).
+         All Rights Reserved.
+
+     Permission to use, copy, modify and distribute the SVG DTD and its
+     accompanying documentation for any purpose and without fee is hereby
+     granted in perpetuity, provided that the above copyright notice and
+     this paragraph appear in all copies.  The copyright holders make no
+     representation about the suitability of the DTD for any purpose.
+
+     It is provided "as is" without expressed or implied warranty.
+
+        Author:   Jun Fujisawa <fujisawa.jun@canon.co.jp>
+        Revision: $Id: svg11-flat-20110816.dtd,v 1.1 2011/08/10 04:19:02 cmccorma Exp $
+
+============================
+
+libssh2 - a client-side C library implementing the SSH2 protocol:
+
+https://libssh2.org
+
+/* Copyright (c) 2004-2007 Sara Golemon <sarag@libssh2.org>
+ * Copyright (c) 2005,2006 Mikhail Gusarov <dottedmag@dottedmag.net>
+ * Copyright (c) 2006-2007 The Written Word, Inc.
+ * Copyright (c) 2007 Eli Fant <elifantu@mail.ru>
+ * Copyright (c) 2009-2014 Daniel Stenberg
+ * Copyright (C) 2008, 2009 Simon Josefsson
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms,
+ * with or without modification, are permitted provided
+ * that the following conditions are met:
+ *
+ *   Redistributions of source code must retain the above
+ *   copyright notice, this list of conditions and the
+ *   following disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above
+ *   copyright notice, this list of conditions and the following
+ *   disclaimer in the documentation and/or other materials
+ *   provided with the distribution.
+ *
+ *   Neither the name of the copyright holder nor the names
+ *   of any other contributors may be used to endorse or
+ *   promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+ * OF SUCH DAMAGE.
+ */
+
+============================
+
+DFSSHWrapper - An SSH Wrapper:
+
+https://github.com/thebsdbox/DFSSHWrapper
+
+Created by Daniel Finneran on 23/10/2011.
+Copyright 2011 Home. All rights reserved.
+
+============================
+
+Cocoa HTTP Server - a small, lightweight, embeddable HTTP server for Mac OS X
+
+https://github.com/robbiehanson/CocoaHTTPServer/wiki
+
+Software License Agreement (BSD License)
+
+Copyright (c) 2011, Deusty, LLC
+All rights reserved.
+
+Redistribution and use of this software in source and binary forms,
+with or without modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above
+  copyright notice, this list of conditions and the
+  following disclaimer.
+
+* Neither the name of Deusty nor the names of its
+  contributors may be used to endorse or promote products
+  derived from this software without specific prior
+  written permission of Deusty, LLC.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+============================
+
+CocoaAsyncSocket -
+
+Public Domain License
+The CocoaAsyncSocket project is in the public domain. 
+
+The original TCP version (AsyncSocket) was created by Dustin Voss in January 2003.
+Updated and maintained by Deusty LLC and the Apple development community.
+
+The AsyncSocket project has been around since 2001 and is used in many applications and frameworks.
+
+http://code.google.com/p/cocoaasyncsocket/
+
+https://github.com/robbiehanson/CocoaAsyncSocket
+
+============================
+
+SZJsonParser
+
+https://github.com/sazameki/json-objc-parser
+
+//  SZJsonParser.h
+//  JSON Parser
+//
+//  Created by numata on 09/09/04.
+//  Copyright 2009 Satoshi Numata. All rights reserved.
+
+<< License >>
+
+Sazameki JSON Parser written in Objective-C is provided under the terms of the MIT license.
+
+Copyright © 2009 Satoshi Numata, Ph.D.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+============================
+
+Google Fonts -
+
+https://developers.google.com/terms/
+
+https://developers.google.com/fonts/faq
+
+https://developers.google.com/site-policies
+
+Except as otherwise noted, the content of this page is licensed under the Creative Commons Attribution 3.0 License, and code samples are licensed under the Apache 2.0 License. For details, see our Site Policies. Java is a registered trademark of Oracle and/or its affiliates.
+
+https://github.com/google/fonts
+
+Licensing
+
+It is important to always read the license for every font that you use. Each font family directory contains the appropriate license file for the fonts in that directory. The fonts files themselves also contain licensing and authorship metadata.
+
+Most of the fonts in the collection use the SIL Open Font License, v1.1. Some fonts use the Apache 2 license. The Ubuntu fonts use the Ubuntu Font License v1.0.
+
+The SIL Open Font License has an option for copyright holders to include a Reserved Font Name requirement, and this option is used with some of the fonts. If you modify those fonts, please take care of this important detail.
+
+============================
+
+bezCircle.pde -
+
+"free"
+
+http://paulhertz.net/factory/wp-content/uploads/2010/03/bezcircle_applet/bezCircle.pde
+
+Adapted from Java to Objective-C
+
+============================
+
+Path Segment Subdivision -
+
+adapted from http://antigrain.com/research/adaptive_bezier/#toc0003
+
+The AGG Project - Anti-Grain Geometry
+Copyright © 2002-2006 Maxim Shemanarev
+
+And -
+
+Curves and Arcs: Quadratic, Cubic, Elliptical (SVG implementations)
+
+http://www.ericeastwood.com/blog/25/curves-and-arcs-quadratic-cubic-elliptical-svg-implementations
+
+Copyright © 2015 Eric Eastwood
+
+============================
+
+Draw round rect with CoreGraphics -
+
+adapted from http://snipplr.com/view/8559/
+
+============================
+
+SVGgh by Glenn R. Howes, GenerallyHelpfulSoftware
+
+https://github.com/GenerallyHelpfulSoftware/SVGgh
+
+The AddSVGArcToPath was adapted for SVG-to-CoreGraphics feature.
+
+//  SVGUtilities.m
+//  SVGgh
+// The MIT License (MIT)
+//  Copyright (c) 2013-2014 Glenn R. Howes
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+//
+//  Created by Glenn Howes on 1/11/13.
+//
+
+============================
+
+Cocoa Lumberjack - 
+
+CocoaLumberjack is a fast & simple, yet powerful & flexible logging framework for Mac and iOS.
+
+https://github.com/CocoaLumberjack/CocoaLumberjack
+
+Software License Agreement (BSD License)
+
+Copyright (c) 2010-2016, Deusty, LLC
+All rights reserved.
+
+Redistribution and use of this software in source and binary forms,
+with or without modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above
+  copyright notice, this list of conditions and the
+  following disclaimer.
+
+* Neither the name of Deusty nor the names of its
+  contributors may be used to endorse or promote products
+  derived from this software without specific prior
+  written permission of Deusty, LLC.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+============================
+
+//
+//  SynchroScrollView.h
+//  edenx
+//
+//  Created by Guillaume Laurent on 2/21/09.
+//  Copied from http://developer.apple.com/documentation/Cocoa/Conceptual/NSScrollViewGuide/Articles/SynchroScroll.html
+//
+
+============================
+
+levinunnink / Smooth-Line-View
+
+https://github.com/levinunnink/Smooth-Line-View
+
+//  The MIT License (MIT)
+//
+//  Copyright (c) 2013 Levi Nunnink
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of
+//  this software and associated documentation files (the "Software"), to deal in
+//  the Software without restriction, including without limitation the rights to
+//  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+//  the Software, and to permit persons to whom the Software is furnished to do so,
+//  subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+//  FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+//  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+//  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+//  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+//
+//  Created by Levi Nunnink (@a_band) http://culturezoo.com
+//  Copyright (C) Droplr Inc. All Rights Reserved
+//
+
+============================
+
+Apple, Inc. sample code used in this project
+
+ Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
+ Inc. ("Apple") in consideration of your agreement to the following
+ terms, and your use, installation, modification or redistribution of
+ this Apple software constitutes acceptance of these terms.  If you do
+ not agree with these terms, please do not use, install, modify or
+ redistribute this Apple software.
+ 
+ In consideration of your agreement to abide by the following terms, and
+ subject to these terms, Apple grants you a personal, non-exclusive
+ license, under Apple's copyrights in this original Apple software (the
+ "Apple Software"), to use, reproduce, modify and redistribute the Apple
+ Software, with or without modifications, in source and/or binary forms;
+ provided that if you redistribute the Apple Software in its entirety and
+ without modifications, you must retain this notice and the following
+ text and disclaimers in all such redistributions of the Apple Software.
+ Neither the name, trademarks, service marks or logos of Apple Inc. may
+ be used to endorse or promote products derived from the Apple Software
+ without specific prior written permission from Apple.  Except as
+ expressly stated in this notice, no other rights or licenses, express or
+ implied, are granted by Apple herein, including but not limited to any
+ patent rights that may be infringed by your derivative works or by other
+ works in which the Apple Software may be incorporated.
+ 
+ The Apple Software is provided by Apple on an "AS IS" basis.  APPLE
+ MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
+ THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
+ OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+ 
+ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
+ MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
+ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
+ STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ 
+ Copyright (C) 2009 Apple Inc. All Rights Reserved.
+
+============================
+
+Various small sections of code were obtained from stackover.com and Google searches.
+
+============================
+
+All trademarks are the property of their respective holders.
