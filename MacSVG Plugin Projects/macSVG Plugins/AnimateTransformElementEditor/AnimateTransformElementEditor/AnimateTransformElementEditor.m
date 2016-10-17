@@ -456,7 +456,7 @@
     {
         CGFloat columnWidth = tableWidth;
 
-        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"center y"];
+        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
         yTableColumn.title = @"y";
         yTableColumn.width = columnWidth;
         yTableColumn.minWidth = 60.0f;
@@ -505,6 +505,8 @@
                 }
             
                 NSArray * valueItemsArray = [filteredValuesString componentsSeparatedByString:@" "];
+                
+                valueItemsArray = [valueItemsArray mutableCopy];
                 
                 [self.valuesArray addObject:valueItemsArray];
             }
@@ -610,17 +612,9 @@
     
     if (rowView == NULL)
     {
-        // Size doesn't matter, the table will set it
         rowView = [[AnimateTransformTableRowView alloc] initWithFrame:NSZeroRect];
-
-        // This seemingly magical line enables your view to be found
-        // next time "makeViewWithIdentifier" is called.
-        rowView.identifier = kRowIdentifier; 
+        rowView.identifier = kRowIdentifier;
     }
-
-    // Can customize properties here. Note that customizing
-    // 'backgroundColor' isn't going to work at this point since the table
-    // will reset it later. Use 'didAddRow' to customize if desired.
 
     return rowView;
 }
@@ -840,7 +834,7 @@
 
 - (IBAction)applyChangesButtonAction:(id)sender
 {
-    //NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
+    NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
     
     NSString * calcModeString = calcModePopUpButton.titleOfSelectedItem;
     NSString * beginString = beginTextField.stringValue;
@@ -854,26 +848,64 @@
     NSString * fromYString = fromYTextField.stringValue;
     NSString * toXString = toXTextField.stringValue;
     NSString * toYString = toYTextField.stringValue;
+
+
+    NSString * typeAttributeString = @"translate";
+    NSInteger rowArrayCount = 2;
+
+    NSXMLNode * typeAttributeNode = [animateTransformElement attributeForName:@"type"];
+    if (typeAttributeNode != NULL)
+    {
+        typeAttributeString = typeAttributeNode.stringValue;
+    }
+
+    if ([typeAttributeString isEqualToString:@"translate"] == YES)
+    {
+        rowArrayCount = 2;
+    }
+    else if ([typeAttributeString isEqualToString:@"scale"] == YES)
+    {
+        rowArrayCount = 2;
+    }
+    else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
+    {
+        rowArrayCount = 3;
+    }
+    else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
+    {
+        rowArrayCount = 1;
+    }
+    else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
+    {
+        rowArrayCount = 1;
+    }
     
     NSMutableString * valuesString = [NSMutableString string];
     for (NSArray * rowArray in self.valuesArray)
     {
-        NSInteger rowArrayCount = rowArray.count;
-        NSInteger indexOfObject = 0;
-        for (NSString * columnString in rowArray)
+        NSInteger actualRowArrayCount = rowArray.count;
+        
+        if (rowArrayCount <= actualRowArrayCount)
         {
-            [valuesString appendString:columnString];
-            
-            if (indexOfObject >= (rowArrayCount - 1))
+            NSInteger indexOfObject = 0;
+            //for (NSString * columnString in rowArray)
+            for (NSInteger i = 0; i < rowArrayCount; i++)
             {
-                [valuesString appendString:@";"];
-            }
-            else
-            {
-                [valuesString appendString:@" "];
-            }
+                NSString * columnString = [rowArray objectAtIndex:i];
             
-            indexOfObject++;
+                [valuesString appendString:columnString];
+                
+                if (indexOfObject >= (rowArrayCount - 1))
+                {
+                    [valuesString appendString:@";"];
+                }
+                else
+                {
+                    [valuesString appendString:@" "];
+                }
+                
+                indexOfObject++;
+            }
         }
     }
     

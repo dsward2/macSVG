@@ -1,12 +1,12 @@
 //
-//  DOMSelectionRectsAndHandlesManager.m
+//  DOMSelectionControlsManager.m
 //  macSVG
 //
 //  Created by Douglas Ward on 9/9/13.
 //
 //
 
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import <WebKit/WebKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "MacSVGDocumentWindowController.h"
@@ -24,8 +24,9 @@
 #import "SVGPolylineEditor.h"
 #import "SVGLineEditor.h"
 #import "DOMMouseEventsController.h"
+#import "AnimationTimelineView.h"
 
-@implementation DOMSelectionRectsAndHandlesManager
+@implementation DOMSelectionControlsManager
 
 //==================================================================================
 //	dealloc
@@ -65,128 +66,6 @@
     }
     
     return self;
-}
-
-//==================================================================================
-//	floatFromString:
-//==================================================================================
-
--(float) floatFromString:(NSString *)valueString
-{
-    float floatValue = 0;
-    
-    NSMutableString * trimmedString = [[NSMutableString alloc] init];
-    
-    NSUInteger inputLength = valueString.length;
-    for (int i = 0; i < inputLength; i++)
-    {
-        unichar aChar = [valueString characterAtIndex:i];
-        
-        BOOL validChar = YES;
-        
-        if (aChar < '0') validChar = NO;
-        if (aChar > '9') validChar = NO;
-        if (aChar == '.') validChar = YES;
-        if (aChar == '-') validChar = YES;
-        
-        if (validChar == NO) 
-        {
-            break;
-        }
-        
-        NSString * charString = [[NSString alloc] initWithFormat:@"%C", aChar];
-        
-        [trimmedString appendString:charString];
-    }
-    
-    floatValue = trimmedString.floatValue;
-    
-    return floatValue;
-}
-
-//==================================================================================
-//	allocFloatString:
-//==================================================================================
-
-- (NSMutableString *)allocFloatString:(float)aFloat
-{
-    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
-
-    BOOL continueTrim = YES;
-    while (continueTrim == YES)
-    {
-        NSUInteger stringLength = aString.length;
-        
-        if (stringLength <= 1)
-        {
-            continueTrim = NO;
-        }
-        else
-        {
-            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
-            
-            if (lastChar == '0')
-            {
-                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
-                [aString deleteCharactersInRange:deleteRange];
-            }
-            else if (lastChar == '.')
-            {
-                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
-                [aString deleteCharactersInRange:deleteRange];
-                continueTrim = NO;
-            }
-            else
-            {
-                continueTrim = NO;
-            }
-        }
-    }
-    return aString;
-}
-
-//==================================================================================
-//	allocPxString:
-//==================================================================================
-
-- (NSMutableString *)allocPxString:(float)aFloat
-{
-    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
-
-    BOOL continueTrim = YES;
-    while (continueTrim == YES)
-    {
-        NSUInteger stringLength = aString.length;
-        
-        if (stringLength <= 1)
-        {
-            continueTrim = NO;
-        }
-        else
-        {
-            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
-            
-            if (lastChar == '0')
-            {
-                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
-                [aString deleteCharactersInRange:deleteRange];
-            }
-            else if (lastChar == '.')
-            {
-                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
-                [aString deleteCharactersInRange:deleteRange];
-                continueTrim = NO;
-            }
-            else
-            {
-                continueTrim = NO;
-            }
-        }
-    }
-    
-    [aString appendString:@"px"];
-    
-    return aString;
 }
 
 //==================================================================================
@@ -391,8 +270,11 @@
 //==================================================================================
 
 -(void) copyChildAnimationFromDOMElement:(DOMElement *)sourceElement toDOMElement:(DOMElement *)destinationElement
+        offsetPoint:(NSPoint)offsetPoint
 {
     //NSLog(@"enter copyChildAnimationFromElement:toElement:");
+
+    NSInteger animationEnabled = macSVGDocumentWindowController.enableAnimationCheckbox.state;
 
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
 
@@ -409,6 +291,8 @@
     DOMNodeList * childNodes = sourceElement.childNodes;
 
     unsigned int childCount = childNodes.length;
+
+    NSCharacterSet * delimitersCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@" ,;"];
     
     for (int i = 0; i < childCount; i++)
     {
@@ -444,7 +328,7 @@
             {
                 // copy a matching animation element to the selection rectangle, hopefully in sync with original element
                 
-                DOMElement * shadowAnimationElement = [domDocument createElementNS:svgNamespace
+                DOMElement * controlAnimationElement = [domDocument createElementNS:svgNamespace
                         qualifiedName:childElementName];
                 
                 DOMNamedNodeMap * attributesNodeMap = aChildNode.attributes;
@@ -454,34 +338,199 @@
                 
                 for (a = 0; a < attCount; a++) 
                 {
-                    DOMNode *att = [attributesNodeMap item:a];
-                    NSString *attName = att.nodeName;
-                    NSString *attValue = att.nodeValue;
+                    DOMNode * attributeNode = [attributesNodeMap item:a];
+                    NSString * attributeName = [attributeNode.nodeName copy];
+                    NSString * attributeValue = [attributeNode.nodeValue copy];
                     
-                    if ([attName isEqualToString:@"begin"] == YES)
+                    if ([attributeName isEqualToString:@"begin"] == YES)
                     {
-                        beginValue = attValue;
+                        beginValue = attributeValue;
                     }
                     
-                    if ([attName isEqualToString:@"macsvgid"] == YES)
+                    if ([attributeName isEqualToString:@"macsvgid"] == YES)
                     {
-                        attName = @"shadow_Macsvgid";
+                        attributeName = @"control_Macsvgid";
                     }
                     
-                    if ([attName isEqualToString:@"id"] == YES)
+                    if ([attributeName isEqualToString:@"id"] == YES)
                     {
-                        attValue = [NSString stringWithFormat:@"_macsvg_shadow_%@", attValue];
+                        attributeValue = [NSString stringWithFormat:@"_macsvg_control_%@", attributeValue];
                     }
                     
-                    [shadowAnimationElement setAttributeNS:NULL qualifiedName:attName value:attValue];  // TEST 20160810 reverted
-                    //[shadowAnimationElement setAttributeNS:svgNamespace qualifiedName:attName value:attValue];  // TEST 20160806
+                    [controlAnimationElement setAttributeNS:NULL qualifiedName:attributeName value:attributeValue];  // TEST 20160810 reverted
+                    //[controlAnimationElement setAttributeNS:svgNamespace qualifiedName:attName value:attValue];  // TEST 20160806
+                }
+                
+                
+                if (animationEnabled != 0)      // 20161014
+                {
+                    NSString * sourceElementTag = [sourceElement tagName];
+
+                    BOOL isCircleOrEllipse = NO;
+                    
+                    if ([sourceElementTag isEqualToString:@"circle"] == YES)
+                    {
+                        isCircleOrEllipse = YES;
+                    }
+                    
+                    if ([sourceElementTag isEqualToString:@"ellipse"] == YES)
+                    {
+                        isCircleOrEllipse = YES;
+                    }
+                    
+                    if (isCircleOrEllipse == YES)
+                    {
+                        if ([childElementName isEqualToString:@"animate"] == YES)
+                        {
+                            NSString * animateAttributeName = [aChildElement getAttribute:@"attributeName"];
+                            NSString * animateValues = [aChildElement getAttribute:@"values"];
+                            
+                            if ([animateValues length] > 0)
+                            {
+                                NSString * radiusString = NULL;
+
+                                if ([sourceElementTag isEqualToString:@"circle"] == YES)
+                                {
+                                    radiusString = [sourceElement getAttribute:@"r"];
+                                }
+                                else if ([sourceElementTag isEqualToString:@"ellipse"] == YES)
+                                {
+                                    if ([animateAttributeName isEqualToString:@"cx"] == YES)
+                                    {
+                                        radiusString = [sourceElement getAttribute:@"rx"];
+                                    }
+                                    else if ([animateAttributeName isEqualToString:@"cy"] == YES)
+                                    {
+                                        radiusString = [sourceElement getAttribute:@"ry"];
+                                    }
+                                }
+                            
+                                if (radiusString != NULL)
+                                {
+                                    CGFloat radiusFloat = [radiusString floatValue];
+                            
+                                    NSString * newAttributeName = NULL;
+                                    
+                                    if ([animateAttributeName isEqualToString:@"cx"] == YES)
+                                    {
+                                        newAttributeName = @"x";
+                                    }
+                                    else if ([animateAttributeName isEqualToString:@"cy"] == YES)
+                                    {
+                                        newAttributeName = @"y";
+                                    }
+                                    
+                                    if (newAttributeName != NULL)
+                                    {
+                                        NSString * strokeWidthString = [sourceElement getAttribute:@"stroke-width"];
+                                        
+                                        if ([strokeWidthString length] == 0)
+                                        {
+                                            strokeWidthString = @"0";
+                                        }
+                                        
+                                        CGFloat strokeWidth = strokeWidthString.floatValue;
+                                    
+                                        [controlAnimationElement setAttribute:@"attributeName" value:newAttributeName];
+                                        
+                                        NSArray * animateValuesArray = [animateValues componentsSeparatedByCharactersInSet:delimitersCharacterSet];
+                                        
+                                        NSMutableString * newValuesString = [NSMutableString string];
+                                        
+                                        for (NSString * aAnimateValue in animateValuesArray)
+                                        {
+                                            if ([aAnimateValue length] > 0)
+                                            {
+                                                CGFloat aAnimateValueFloat = [aAnimateValue floatValue];
+
+                                                aAnimateValueFloat -= radiusFloat;
+                                                aAnimateValueFloat -= strokeWidth / 2.0f;
+
+                                                if ([animateAttributeName isEqualToString:@"cx"] == YES)
+                                                {
+                                                    aAnimateValueFloat += offsetPoint.x;
+                                                }
+                                                else if ([animateAttributeName isEqualToString:@"cy"] == YES)
+                                                {
+                                                    aAnimateValueFloat += offsetPoint.y;
+                                                }
+                                                
+                                                if (newValuesString.length > 0)
+                                                {
+                                                    [newValuesString appendString:@"; "];
+                                                }
+                                                
+                                                [newValuesString appendFormat:@"%f", aAnimateValueFloat];
+                                            }
+                                        }
+                                        
+                                        [controlAnimationElement setAttribute:@"values" value:newValuesString];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // adjust animate values for rectangular objects
+                        if ([childElementName isEqualToString:@"animate"] == YES)
+                        {
+                            NSString * animateAttributeName = [aChildElement getAttribute:@"attributeName"];
+                            NSString * animateValues = [aChildElement getAttribute:@"values"];
+                            
+                            if ([animateValues length] > 0)
+                            {
+                                NSString * strokeWidthString = [sourceElement getAttribute:@"stroke-width"];
+                                
+                                if ([strokeWidthString length] == 0)
+                                {
+                                    strokeWidthString = @"0";
+                                }
+                                
+                                CGFloat strokeWidth = strokeWidthString.floatValue;
+                            
+                                NSArray * animateValuesArray = [animateValues componentsSeparatedByCharactersInSet:delimitersCharacterSet];
+                                
+                                NSMutableString * newValuesString = [NSMutableString string];
+                                
+                                for (NSString * aAnimateValue in animateValuesArray)
+                                {
+                                    if ([aAnimateValue length] > 0)
+                                    {
+                                        CGFloat aAnimateValueFloat = [aAnimateValue floatValue];
+                                        
+                                        aAnimateValueFloat -= strokeWidth / 2.0f;
+                                        //aAnimateValueFloat -= 1.0f;
+                                        
+                                        if ([animateAttributeName isEqualToString:@"x"] == YES)
+                                        {
+                                            aAnimateValueFloat += offsetPoint.x;
+                                        }
+                                        else if ([animateAttributeName isEqualToString:@"y"] == YES)
+                                        {
+                                            aAnimateValueFloat += offsetPoint.y;
+                                        }
+                                        
+                                        if (newValuesString.length > 0)
+                                        {
+                                            [newValuesString appendString:@"; "];
+                                        }
+                                        
+                                        [newValuesString appendFormat:@"%f", aAnimateValueFloat];
+                                    }
+                                }
+                                
+                                [controlAnimationElement setAttribute:@"values" value:newValuesString];
+                            }
+                        }
+                    }
                 }
 
-                [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_shadowAnimation"];
+                [controlAnimationElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_controlAnimation"];
                                 
-                [destinationElement appendChild:shadowAnimationElement];
+                [destinationElement appendChild:controlAnimationElement];
                 
-                [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
+                [controlAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
             }
         }
     }
@@ -520,56 +569,16 @@
 
 -(void) makeDOMSelectionRects
 {
+    //NSLog(@"enter makeDOMSelectionRects");
+
     MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
 
     [svgXMLDOMSelectionManager resyncDOMElementsInSelectedElementsArray];
 
-    //MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
-
     [self removeDOMSelectionRectsAndHandles];
 
-    //NSLog(@"enter makeDOMSelectionRects");
-    
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
-    
-    
-    /*
-	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
-    
-    if (svgElementsList.length == 0)
-    {
-        DOMElement * newSvgElement = [domDocument createElementNS:svgNamespace
-                qualifiedName:@"svg"];
-
-        DOMElement * documentElement = domDocument.documentElement;
-        
-        int clientLeft = documentElement.clientLeft;
-        int clientTop = documentElement.clientTop;
-        int clientWidth = documentElement.clientWidth;
-        int clientHeight = documentElement.clientHeight;
-        
-        NSString * svgWidth = [NSString stringWithFormat:@"%dpx", clientWidth];
-        NSString * svgHeight = [NSString stringWithFormat:@"%dpx", clientHeight];
-        NSString * svgViewBox = [NSString stringWithFormat:@"%d %d %d %d", clientLeft, clientTop, clientWidth, clientHeight];
-
-        [newSvgElement setAttribute:@"xmlns" value:@"http://www.w3.org/2000/svg"];
-        [newSvgElement setAttribute:@"xmlns:xlink" value:@"http://www.w3.org/1999/xlink"];
-        [newSvgElement setAttribute:@"cursor" value:@"crosshair"];
-        [newSvgElement setAttribute:@"height" value:svgHeight];
-        [newSvgElement setAttribute:@"id" value:@"svg_document"];
-        [newSvgElement setAttribute:@"width" value:svgWidth];
-        [newSvgElement setAttribute:@"version" value:@"1.1"];
-        [newSvgElement setAttribute:@"preserveAspectRatio" value:@"none"];
-        [newSvgElement setAttribute:@"viewBox" value:svgViewBox];
-        
-        [documentElement appendChild:newSvgElement];
-        
-        svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
-    }
-    */
-    
-    
     
     DOMElement * newSelectedRectsGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
@@ -701,11 +710,11 @@
             
             DOMElement * parentElement = (id)aSelectedSvgElement.parentNode;
             
-            DOMElement * shadowParentElement = NULL;
+            DOMElement * controlParentElement = NULL;
             
             if (commonParentElementsArray.count > 0)
             {
-                // check for an existing shadow group for this level of the structure
+                // check for an existing controls group for this level of the structure
                 BOOL continueSearch = YES;
                 NSUInteger parentIndex = 0;
                 while (continueSearch == YES) 
@@ -714,7 +723,7 @@
                     if (domSelectionCacheRecord.parentElement == parentElement) 
                     {
                         // match found, a group exists for this level
-                        shadowParentElement = domSelectionCacheRecord.shadowParentElement;
+                        controlParentElement = domSelectionCacheRecord.controlParentElement;
                         continueSearch = NO;
                     }
                     else
@@ -728,9 +737,9 @@
                 }
             }
             
-            if (shadowParentElement == NULL) 
+            if (controlParentElement == NULL) 
             {
-                // a shadow element was not found, so replicate the DOM path of selected item
+                // a controls element was not found, so replicate the DOM path of selected item
                 NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
                 
                 BOOL continueCreatingParents = YES;
@@ -756,24 +765,24 @@
                 {
                     NSString * parentTagName = parentElement.nodeName;
 
-                    DOMElement * newShadowParentElement = [domDocument createElementNS:svgNamespace
+                    DOMElement * newControlParentElement = [domDocument createElementNS:svgNamespace
                             qualifiedName:parentTagName];
 
-                    NSString * shadow_Macsvgid = [parentElement getAttribute:@"macsvgid"];
-                    [newShadowParentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+                    NSString * control_Macsvgid = [parentElement getAttribute:@"macsvgid"];
+                    [newControlParentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
                     [newSelectedRectsGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionParent"];
 
-                    [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newShadowParentElement];
+                    [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newControlParentElement offsetPoint:NSZeroPoint];
                     
                     DOMSelectionCacheRecord * newDOMSelectionCacheRecord = 
                             [[DOMSelectionCacheRecord alloc] init];
                     
                     newDOMSelectionCacheRecord.parentElement = parentElement;
-                    newDOMSelectionCacheRecord.shadowParentElement = newShadowParentElement;
+                    newDOMSelectionCacheRecord.controlParentElement = newControlParentElement;
                                         
                     [commonParentElementsArray addObject:newDOMSelectionCacheRecord];
                     
-                    [newParentsArray insertObject:newShadowParentElement atIndex:0];
+                    [newParentsArray insertObject:newControlParentElement atIndex:0];
                     
                     if (parentElement.parentNode == NULL) 
                     {
@@ -800,17 +809,17 @@
                 }
 
                 // inject new elements into DOM from the top down, starting as child of 'newSelectedRectsGroup'
-                shadowParentElement = (DOMElement *)newSelectedRectsGroup;
+                controlParentElement = (DOMElement *)newSelectedRectsGroup;
                 
                 for (DOMElement * aElement in newParentsArray)
                 {
-                    [shadowParentElement appendChild:aElement];
+                    [controlParentElement appendChild:aElement];
                     
-                    shadowParentElement = (DOMElement *)aElement;
+                    controlParentElement = (DOMElement *)aElement;
                 }
             }
             
-            if (shadowParentElement != NULL)
+            if (controlParentElement != NULL)
             {    
                 // inject blue rectangle around bounds of selected item
                 
@@ -846,12 +855,12 @@
                     [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"height" value:bboxHeightString];
                     [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:selectionStrokeWidth];
                     
-                    NSString * shadow_Macsvgid = [aSelectedSvgElement getAttribute:@"macsvgid"];
-                    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+                    NSString * control_Macsvgid = [aSelectedSvgElement getAttribute:@"macsvgid"];
+                    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
 
-                    [shadowParentElement appendChild:selectedItemRectElement];
+                    [controlParentElement appendChild:selectedItemRectElement];
 
-                    [self copyChildAnimationFromDOMElement:aSelectedSvgElement toDOMElement:selectedItemRectElement];
+                    [self copyChildAnimationFromDOMElement:aSelectedSvgElement toDOMElement:selectedItemRectElement offsetPoint:NSZeroPoint];
                     
                     //NSLog(@"selectionRect added %@, %@, %@, %@", bboxXString, bboxYString, bboxWidthString, bboxHeightString);
                 }
@@ -864,163 +873,26 @@
     }
 
     // set begin attributes again for animation elements
-    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_shadowAnimation"];
+    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_controlAnimation"];
     unsigned animationElementsCount = animationElements.length;
     for (int i = 0; i < animationElementsCount; i++)
     {
-        DOMElement * shadowAnimationElement = (id)[animationElements item:i];
+        DOMElement * controlAnimationElement = (id)[animationElements item:i];
         
-        NSString * beginValue = [shadowAnimationElement getAttribute:@"begin"];
+        NSString * beginValue = [controlAnimationElement getAttribute:@"begin"];
         
-        [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
+        [controlAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
     }
 
     [self setMacsvgTopGroupChild:newSelectedRectsGroup];
 }
-
-//==================================================================================
-//	updateDOMSelectionRectsAndHandles
-//==================================================================================
-
-- (void) updateDOMSelectionRectsAndHandles
-{
-    DOMElement * keyDOMElement = [self keyDOMElement];
-
-    DOMElement * selectedRectsGroup = [self getMacsvgTopGroupChildByID:@"_macsvg_selectedRectsGroup" createIfNew:NO];
-    
-    if (selectedRectsGroup != NULL)
-    {
-        [self makeDOMSelectionRects];
-        [self makeDOMSelectionHandles:keyDOMElement];
-    }
-    else if (keyDOMElement != NULL)
-    {
-        [self makeDOMSelectionHandles:keyDOMElement];
-    }
-}
-
-//==================================================================================
-//	updateSelectionRectsDOMElement:
-//==================================================================================
-
-- (void) updateSelectionRectsDOMElement:(DOMElement *)selectionRectsDOMElement
-{
-    // top-level caller can send selectionRectsDOMElement with <g id='selectedRectsGroup'>
-    // then, this method will recursively handle all child elements
-    //NSLog(@"enter updateSelectionRectsDOMElement");
-    // recursive method
-    NSString * nodeName = selectionRectsDOMElement.nodeName;
-
-    NSString * shadow_Macsvgid = [selectionRectsDOMElement getAttribute:@"shadow_Macsvgid"];
-    
-    if (shadow_Macsvgid == NULL)
-    {
-        NSLog(@"shadow_Macsvgid = NULL");
-    }
-    else
-    {
-        if (shadow_Macsvgid.length == 0)
-        {
-            NSLog(@"shadow_Macsvgid is empty");
-        }
-    }
-    
-    if ([nodeName isEqualToString:@"rect"] == YES)
-    {
-        DOMElement * rectElement = (id)selectionRectsDOMElement;
-
-        if (shadow_Macsvgid != NULL)
-        {
-            if ([shadow_Macsvgid isEqualToString:@""] == NO)
-            {
-                DOMElement * originalElement = [svgWebKitController domElementForMacsvgid:shadow_Macsvgid];
-                
-                MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
-                WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
-                
-                NSRect boundingBox = [webKitInterface bBoxForDOMElement:originalElement];
-                //NSRect boundingBox = [webKitInterface bBoxForDOMElement:originalElement globalContext:[[svgWebView mainFrame] globalContext]];
-                
-                if (NSIsEmptyRect(boundingBox) == NO)
-                {
-                    float bboxX = boundingBox.origin.x - 2;
-                    float bboxY = boundingBox.origin.y - 2;
-                    float bboxWidth = boundingBox.size.width + 4;
-                    float bboxHeight = boundingBox.size.height + 4;
-
-                    NSRect expandedRect = NSMakeRect(bboxX, bboxY, bboxWidth, bboxHeight);
-                    
-                    [webKitInterface setRect:expandedRect forElement:rectElement];
-
-                    NSString * transformAttribute = [originalElement getAttribute:@"transform"];
-                    
-                    if (transformAttribute != NULL)
-                    {
-                        if (transformAttribute.length > 0)
-                        {
-                            [rectElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
-                        }
-                        else
-                        {
-                            [rectElement setAttributeNS:NULL qualifiedName:@"transform" value:@""];
-                        }
-                    }
-                    else
-                    {
-                        [rectElement removeAttributeNS:NULL localName:@"transform"];
-                    }
-                }
-            }
-        }
-    }
-
-    if ([nodeName isEqualToString:@"g"] == YES)
-    {
-        DOMElement * gElement = (id)selectionRectsDOMElement;
-
-        if (shadow_Macsvgid != NULL)
-        {
-            if ([shadow_Macsvgid isEqualToString:@""] == NO)
-            {
-                DOMElement * originalElement = [svgWebKitController domElementForMacsvgid:shadow_Macsvgid];
-
-                NSString * transformAttribute = [originalElement getAttribute:@"transform"];
-                
-                if (transformAttribute != NULL)
-                {
-                    if (transformAttribute.length > 0)
-                    {
-                        [gElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
-                    }
-                    else
-                    {
-                        [gElement setAttributeNS:NULL qualifiedName:@"transform" value:@""];
-                    }
-                }
-                else
-                {
-                    [gElement removeAttributeNS:NULL localName:@"transform"];
-                }
-            }
-        }
-    }
-
-    int selectedRectsCount = selectionRectsDOMElement.childElementCount;
-    for (int j = 0; j < selectedRectsCount; j++)
-    {
-        // recursive call for child elements
-        DOMElement * childElement = (id)[(id)selectionRectsDOMElement.childNodes item:j];
-        [self updateSelectionRectsDOMElement:childElement];
-    }
-}
-
 
 
 //==================================================================================
 //	makeDOMSelectionHandleAtPoint
 //==================================================================================
 
--(void) makeDOMSelectionHandleAtPoint:(NSPoint)handlePoint macsvgid:(NSString *)macsvgid 
+-(DOMElement *) makeDOMSelectionHandleAtPoint:(NSPoint)handlePoint macsvgid:(NSString *)macsvgid
         handleOwnerElement:(DOMElement *)handleOwnerElement
         handleParentElement:(DOMElement *)handleParentElement
         orientation:(NSString *)orientation
@@ -1113,6 +985,8 @@
     [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_handle_orientation" value:orientation];
     
     [handleParentElement appendChild:selectedItemRectElement];
+    
+    return selectedItemRectElement;
 }
 
 //==================================================================================
@@ -1177,7 +1051,8 @@
             if (validSVGLocatableName != NULL)
             {
                 //DOMElement * parentElement = (id)[aDomElement parentNode];
-                DOMElement * parentElement = aDomElement;   // 20160703
+                //DOMElement * parentElement = aDomElement;   // 20160703
+                DOMElement * parentElement = aDomElement.parentElement;   // 20160703
                 
                 // replicate the DOM path of selected item
                 NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
@@ -1217,7 +1092,7 @@
                     [newHandleParentElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:parent_Macsvgid];
                     [newSelectionHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandlesParent"];
 
-                    [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newHandleParentElement];
+                    [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newHandleParentElement offsetPoint:NSZeroPoint];
                     
                     [newParentsArray insertObject:newHandleParentElement atIndex:0];
                     
@@ -1323,53 +1198,69 @@
 
                         handlePoint.x = boundingBox.origin.x;
                         handlePoint.y = boundingBox.origin.y;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * topLeftHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"topLeft"];
+                        NSPoint topLeftOffsetPoint = NSMakePoint(-2.0f, 0.0f);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:topLeftHandle offsetPoint:topLeftOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
                         handlePoint.y = boundingBox.origin.y;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * topRightHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"topRight"];
+                        NSPoint topRightOffsetPoint = NSMakePoint(boundingBox.size.width, 0.0f);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:topRightHandle offsetPoint:topRightOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x;
                         handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * bottomLeftHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"bottomLeft"];
+                        NSPoint bottomLeftOffsetPoint = NSMakePoint(-2.0f, boundingBox.size.height);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:bottomLeftHandle offsetPoint:bottomLeftOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
                         handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * bottomRightHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"bottomRight"];
+                        NSPoint bottomRightOffsetPoint = NSMakePoint(boundingBox.size.width, boundingBox.size.height);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:bottomRightHandle offsetPoint:bottomRightOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
                         handlePoint.y = boundingBox.origin.y;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * topHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"top"];
+                        NSPoint topOffsetPoint = NSMakePoint(boundingBox.size.width / 2.0f, 0.0f);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:topHandle offsetPoint:topOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x;
                         handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * leftHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"left"];
+                        NSPoint leftOffsetPoint = NSMakePoint(-2.0f, boundingBox.size.height / 2.0f);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:leftHandle offsetPoint:leftOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x + (boundingBox.size.width / 2.0f);
                         handlePoint.y = boundingBox.origin.y + boundingBox.size.height;
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * bottomHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"bottom"];
+                        NSPoint bottomOffsetPoint = NSMakePoint(boundingBox.size.width / 2.0f, boundingBox.size.height);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:bottomHandle offsetPoint:bottomOffsetPoint];
 
                         handlePoint.x = boundingBox.origin.x + boundingBox.size.width;
                         handlePoint.y = boundingBox.origin.y + (boundingBox.size.height / 2.0f);
-                        [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid 
+                        DOMElement * rightHandle = [self makeDOMSelectionHandleAtPoint:handlePoint macsvgid:macsvgid
                                 handleOwnerElement:aDomElement
                                 handleParentElement:handleParentElement orientation:@"right"];
+                        NSPoint rightOffsetPoint = NSMakePoint(boundingBox.size.width, boundingBox.size.height / 2.0f);
+                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:rightHandle offsetPoint:rightOffsetPoint];
 
-                        [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:handleParentElement];
+                        //[self copyChildAnimationFromDOMElement:aDomElement toDOMElement:handleParentElement];
                         
                         self.domElementForHandles = aDomElement;
                         self.domElementForHandlesCreationTime = time(NULL);
@@ -1563,9 +1454,9 @@
     {
         DOMElement * parentElement = (id)polylineDOMElement.parentNode;
 
-        DOMElement * shadowParentElement = NULL;
+        DOMElement * controlParentElement = NULL;
 
-        if (shadowParentElement == NULL)
+        if (controlParentElement == NULL)
         {
             // replicate the segment of the DOM path
             NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
@@ -1593,22 +1484,22 @@
             {
                 NSString * parentTagName = parentElement.nodeName;
 
-                DOMElement * newShadowParentElement = [domDocument createElementNS:svgNamespace
+                DOMElement * newControlParentElement = [domDocument createElementNS:svgNamespace
                         qualifiedName:parentTagName];
 
-                NSString * shadow_Macsvgid = [parentElement getAttribute:@"macsvgid"];
-                [newShadowParentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+                NSString * control_Macsvgid = [parentElement getAttribute:@"macsvgid"];
+                [newControlParentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
                 [newHighlightPolylinePointGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionParent"];
 
-                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newShadowParentElement];
+                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newControlParentElement offsetPoint:NSZeroPoint];
                 
                 DOMSelectionCacheRecord * newDOMSelectionCacheRecord = 
                         [[DOMSelectionCacheRecord alloc] init];
                 
                 newDOMSelectionCacheRecord.parentElement = parentElement;
-                newDOMSelectionCacheRecord.shadowParentElement = newShadowParentElement;
+                newDOMSelectionCacheRecord.controlParentElement = newControlParentElement;
                 
-                [newParentsArray insertObject:newShadowParentElement atIndex:0];
+                [newParentsArray insertObject:newControlParentElement atIndex:0];
                 
                 if (parentElement.parentNode == NULL) 
                 {
@@ -1635,17 +1526,17 @@
             }
 
             // inject new elements into DOM from the top down, starting as child of 'newSelectedRectsGroup'
-            shadowParentElement = (DOMElement *)newHighlightPolylinePointGroup;
+            controlParentElement = (DOMElement *)newHighlightPolylinePointGroup;
             
             for (DOMElement * aElement in newParentsArray)
             {
-                [shadowParentElement appendChild:aElement];
+                [controlParentElement appendChild:aElement];
                 
-                shadowParentElement = (DOMElement *)aElement;
+                controlParentElement = (DOMElement *)aElement;
             }
         }
         
-        if (shadowParentElement != NULL)
+        if (controlParentElement != NULL)
         {    
             // highlight the point
             
@@ -1682,9 +1573,9 @@
 
 
 
-            [shadowParentElement appendChild:pointHandleCircleElement];
+            [controlParentElement appendChild:pointHandleCircleElement];
 
-            [self copyChildAnimationFromDOMElement:polylineDOMElement toDOMElement:pointHandleCircleElement];
+            [self copyChildAnimationFromDOMElement:polylineDOMElement toDOMElement:pointHandleCircleElement offsetPoint:NSZeroPoint];
 
 
 
@@ -1701,10 +1592,10 @@
             [pathSegmentElement setAttributeNS:NULL qualifiedName:@"points" value:polylinePointsString];
             
             
-            NSString * shadow_Macsvgid = [polylineDOMElement getAttribute:@"macsvgid"];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+            NSString * control_Macsvgid = [polylineDOMElement getAttribute:@"macsvgid"];
+            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
 
-            [shadowParentElement appendChild:pathSegmentElement];
+            [controlParentElement appendChild:pathSegmentElement];
 
             [self copyChildAnimationFromDOMElement:polylineDOMElement toDOMElement:pathSegmentElement];
             */
@@ -1714,15 +1605,15 @@
     }
 
     // set begin attributes again for animation elements
-    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_shadowAnimation"];
+    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_controlAnimation"];
     unsigned animationElementsCount = animationElements.length;
     for (int i = 0; i < animationElementsCount; i++)
     {
-        DOMElement * shadowAnimationElement = (id)[animationElements item:i];
+        DOMElement * controlAnimationElement = (id)[animationElements item:i];
         
-        NSString * beginValue = [shadowAnimationElement getAttribute:@"begin"];
+        NSString * beginValue = [controlAnimationElement getAttribute:@"begin"];
         
-        [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
+        [controlAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
     }
 }
 
@@ -1855,9 +1746,9 @@
     {
         DOMElement * parentElement = (id)lineDOMElement.parentNode;
 
-        DOMElement * shadowParentElement = NULL;
+        DOMElement * controlParentElement = NULL;
 
-        if (shadowParentElement == NULL)
+        if (controlParentElement == NULL)
         {
             // replicate the segment of the DOM path
             NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
@@ -1885,22 +1776,22 @@
             {
                 NSString * parentTagName = parentElement.nodeName;
 
-                DOMElement * newShadowParentElement = [domDocument createElementNS:svgNamespace
+                DOMElement * newControlsParentElement = [domDocument createElementNS:svgNamespace
                         qualifiedName:parentTagName];
 
-                NSString * shadow_Macsvgid = [parentElement getAttribute:@"macsvgid"];
-                [newShadowParentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+                NSString * control_Macsvgid = [parentElement getAttribute:@"macsvgid"];
+                [newControlsParentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
                 [newHighlightLinePointGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionParent"];
 
-                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newShadowParentElement];
+                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newControlsParentElement offsetPoint:NSZeroPoint];
                 
                 DOMSelectionCacheRecord * newDOMSelectionCacheRecord = 
                         [[DOMSelectionCacheRecord alloc] init];
                 
                 newDOMSelectionCacheRecord.parentElement = parentElement;
-                newDOMSelectionCacheRecord.shadowParentElement = newShadowParentElement;
+                newDOMSelectionCacheRecord.controlParentElement = newControlsParentElement;
                 
-                [newParentsArray insertObject:newShadowParentElement atIndex:0];
+                [newParentsArray insertObject:newControlsParentElement atIndex:0];
                 
                 if (parentElement.parentNode == NULL) 
                 {
@@ -1927,17 +1818,17 @@
             }
 
             // inject new elements into DOM from the top down, starting as child of 'newSelectedRectsGroup'
-            shadowParentElement = (DOMElement *)newHighlightLinePointGroup;
+            controlParentElement = (DOMElement *)newHighlightLinePointGroup;
             
             for (DOMElement * aElement in newParentsArray)
             {
-                [shadowParentElement appendChild:aElement];
+                [controlParentElement appendChild:aElement];
                 
-                shadowParentElement = (DOMElement *)aElement;
+                controlParentElement = (DOMElement *)aElement;
             }
         }
         
-        if (shadowParentElement != NULL)
+        if (controlParentElement != NULL)
         {    
             // highlight the point
             
@@ -1974,9 +1865,9 @@
 
 
 
-            [shadowParentElement appendChild:pointHandleCircleElement];
+            [controlParentElement appendChild:pointHandleCircleElement];
 
-            [self copyChildAnimationFromDOMElement:lineDOMElement toDOMElement:pointHandleCircleElement];
+            [self copyChildAnimationFromDOMElement:lineDOMElement toDOMElement:pointHandleCircleElement offsetPoint:NSZeroPoint];
 
 
 
@@ -1993,10 +1884,10 @@
             [pathSegmentElement setAttributeNS:NULL qualifiedName:@"points" value:polylinePointsString];
             
             
-            NSString * shadow_Macsvgid = [polylineDOMElement getAttribute:@"macsvgid"];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+            NSString * control_Macsvgid = [polylineDOMElement getAttribute:@"macsvgid"];
+            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
 
-            [shadowParentElement appendChild:pathSegmentElement];
+            [controlParentElement appendChild:pathSegmentElement];
 
             [self copyChildAnimationFromDOMElement:polylineDOMElement toDOMElement:pathSegmentElement];
             */
@@ -2006,15 +1897,15 @@
     }
 
     // set begin attributes again for animation elements
-    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_shadowAnimation"];
+    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_controlAnimation"];
     unsigned animationElementsCount = animationElements.length;
     for (int i = 0; i < animationElementsCount; i++)
     {
-        DOMElement * shadowAnimationElement = (id)[animationElements item:i];
+        DOMElement * controlAnimationElement = (id)[animationElements item:i];
         
-        NSString * beginValue = [shadowAnimationElement getAttribute:@"begin"];
+        NSString * beginValue = [controlAnimationElement getAttribute:@"begin"];
         
-        [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
+        [controlAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
     }
 }
 
@@ -2161,9 +2052,9 @@
     {
         DOMElement * parentElement = (id)pathDOMElement.parentNode;
 
-        DOMElement * shadowParentElement = NULL;
+        DOMElement * controlParentElement = NULL;
 
-        if (shadowParentElement == NULL)
+        if (controlParentElement == NULL)
         {
             // replicate the segment of the DOM path
             NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
@@ -2191,22 +2082,22 @@
             {
                 NSString * parentTagName = parentElement.nodeName;
 
-                DOMElement * newShadowParentElement = [domDocument createElementNS:svgNamespace
+                DOMElement * newControlParentElement = [domDocument createElementNS:svgNamespace
                         qualifiedName:parentTagName];
 
-                NSString * shadow_Macsvgid = [parentElement getAttribute:@"macsvgid"];
-                [newShadowParentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+                NSString * control_Macsvgid = [parentElement getAttribute:@"macsvgid"];
+                [newControlParentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
                 [newHighlightPathSegmentGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionParent"];
 
-                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newShadowParentElement];
+                [self copyChildAnimationFromDOMElement:parentElement toDOMElement:newControlParentElement offsetPoint:NSZeroPoint];
                 
                 DOMSelectionCacheRecord * newDOMSelectionCacheRecord = 
                         [[DOMSelectionCacheRecord alloc] init];
                 
                 newDOMSelectionCacheRecord.parentElement = parentElement;
-                newDOMSelectionCacheRecord.shadowParentElement = newShadowParentElement;
+                newDOMSelectionCacheRecord.controlParentElement = newControlParentElement;
                 
-                [newParentsArray insertObject:newShadowParentElement atIndex:0];
+                [newParentsArray insertObject:newControlParentElement atIndex:0];
                 
                 if (parentElement.parentNode == NULL) 
                 {
@@ -2233,17 +2124,17 @@
             }
 
             // inject new elements into DOM from the top down, starting as child of 'newSelectedRectsGroup'
-            shadowParentElement = (DOMElement *)newHighlightPathSegmentGroup;
+            controlParentElement = (DOMElement *)newHighlightPathSegmentGroup;
             
             for (DOMElement * aElement in newParentsArray)
             {
-                [shadowParentElement appendChild:aElement];
+                [controlParentElement appendChild:aElement];
                 
-                shadowParentElement = (DOMElement *)aElement;
+                controlParentElement = (DOMElement *)aElement;
             }
         }
         
-        if (shadowParentElement != NULL)
+        if (controlParentElement != NULL)
         {    
             // draw the path segment highlight
             
@@ -2267,27 +2158,27 @@
             [pathSegmentElement setAttributeNS:NULL qualifiedName:@"d" value:pathSegmentString];
             
             
-            NSString * shadow_Macsvgid = [pathDOMElement getAttribute:@"macsvgid"];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"shadow_Macsvgid" value:shadow_Macsvgid];
+            NSString * control_Macsvgid = [pathDOMElement getAttribute:@"macsvgid"];
+            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
 
-            [shadowParentElement appendChild:pathSegmentElement];
+            [controlParentElement appendChild:pathSegmentElement];
 
-            [self copyChildAnimationFromDOMElement:pathDOMElement toDOMElement:pathSegmentElement];
+            [self copyChildAnimationFromDOMElement:pathDOMElement toDOMElement:pathSegmentElement offsetPoint:NSZeroPoint];
 
             //NSLog(@"selectionRect added %@, %@, %@, %@", bboxXString, bboxYString, bboxWidthString, bboxHeightString);
         }
     }
 
     // set begin attributes again for animation elements
-    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_shadowAnimation"];
+    DOMNodeList * animationElements = [domDocument getElementsByClassName:@"_macsvg_controlAnimation"];
     unsigned animationElementsCount = animationElements.length;
     for (int i = 0; i < animationElementsCount; i++)
     {
-        DOMElement * shadowAnimationElement = (id)[animationElements item:i];
+        DOMElement * controlAnimationElement = (id)[animationElements item:i];
         
-        NSString * beginValue = [shadowAnimationElement getAttribute:@"begin"];
+        NSString * beginValue = [controlAnimationElement getAttribute:@"begin"];
         
-        [shadowAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
+        [controlAnimationElement setAttributeNS:NULL qualifiedName:@"begin" value:beginValue];   // enable animation for element in webkit
     }
 }
 
@@ -2772,6 +2663,293 @@
     
     return keyXMLElement;
 }
+
+
+
+//==================================================================================
+//	updateDOMSelectionRectsAndHandles
+//==================================================================================
+
+- (void) updateDOMSelectionRectsAndHandles
+{
+    DOMElement * keyDOMElement = [self keyDOMElement];
+
+    DOMElement * selectedRectsGroup = [self getMacsvgTopGroupChildByID:@"_macsvg_selectedRectsGroup" createIfNew:NO];
+    
+    if (selectedRectsGroup != NULL)
+    {
+        [self makeDOMSelectionRects];
+        [self makeDOMSelectionHandles:keyDOMElement];
+    }
+    else if (keyDOMElement != NULL)
+    {
+        [self makeDOMSelectionHandles:keyDOMElement];
+    }
+
+    NSInteger animationEnabled = macSVGDocumentWindowController.enableAnimationCheckbox.state;
+    if (animationEnabled != 0)
+    {
+        DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
+        DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+        if (svgElementsList.length > 0)
+        {
+            NSString * currentTimeString = (macSVGDocumentWindowController.svgWebKitController.currentTimeTextField).stringValue;
+            CGFloat currentTimeValue = [currentTimeString floatValue];
+            
+            [macSVGDocumentWindowController.animationTimelineView setPlayHeadPosition:currentTimeValue];
+            
+            NSNumber * newTimeValueNumber = [NSNumber numberWithFloat:currentTimeValue];
+            DOMNode * svgElementNode = [svgElementsList item:0];
+            DOMElement * svgElement = (DOMElement *)svgElementNode;
+            
+            NSArray * setCurrentTimeArgumentsArray = @[newTimeValueNumber];
+            [svgElement callWebScriptMethod:@"setCurrentTime" withArguments:setCurrentTimeArgumentsArray];  // call JavaScript function
+
+            [svgElement callWebScriptMethod:@"forceRedraw" withArguments:NULL];  // call JavaScript function
+            
+            [macSVGDocumentWindowController.animationTimelineView setPlayHeadPosition:currentTimeValue];
+        }
+    }
+}
+
+//==================================================================================
+//	updateSelectionRectsDOMElement:
+//==================================================================================
+
+- (void) updateSelectionRectsDOMElement:(DOMElement *)selectionRectsDOMElement
+{
+    // top-level caller can send selectionRectsDOMElement with <g id='selectedRectsGroup'>
+    // then, this method will recursively handle all child elements
+    //NSLog(@"enter updateSelectionRectsDOMElement");
+    // recursive method
+    NSString * nodeName = selectionRectsDOMElement.nodeName;
+
+    NSString * control_Macsvgid = [selectionRectsDOMElement getAttribute:@"control_Macsvgid"];
+    
+    if (control_Macsvgid == NULL)
+    {
+        NSLog(@"control_Macsvgid = NULL");
+    }
+    else
+    {
+        if (control_Macsvgid.length == 0)
+        {
+            NSLog(@"control_Macsvgid is empty");
+        }
+    }
+    
+    if ([nodeName isEqualToString:@"rect"] == YES)
+    {
+        DOMElement * rectElement = (id)selectionRectsDOMElement;
+
+        if (control_Macsvgid != NULL)
+        {
+            if ([control_Macsvgid isEqualToString:@""] == NO)
+            {
+                DOMElement * originalElement = [svgWebKitController domElementForMacsvgid:control_Macsvgid];
+                
+                MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+                WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
+                
+                NSRect boundingBox = [webKitInterface bBoxForDOMElement:originalElement];
+                //NSRect boundingBox = [webKitInterface bBoxForDOMElement:originalElement globalContext:[[svgWebView mainFrame] globalContext]];
+                
+                if (NSIsEmptyRect(boundingBox) == NO)
+                {
+                    float bboxX = boundingBox.origin.x - 2;
+                    float bboxY = boundingBox.origin.y - 2;
+                    float bboxWidth = boundingBox.size.width + 4;
+                    float bboxHeight = boundingBox.size.height + 4;
+
+                    NSRect expandedRect = NSMakeRect(bboxX, bboxY, bboxWidth, bboxHeight);
+                    
+                    [webKitInterface setRect:expandedRect forElement:rectElement];
+
+                    NSString * transformAttribute = [originalElement getAttribute:@"transform"];
+                    
+                    if (transformAttribute != NULL)
+                    {
+                        if (transformAttribute.length > 0)
+                        {
+                            [rectElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
+                        }
+                        else
+                        {
+                            [rectElement setAttributeNS:NULL qualifiedName:@"transform" value:@""];
+                        }
+                    }
+                    else
+                    {
+                        [rectElement removeAttributeNS:NULL localName:@"transform"];
+                    }
+                }
+            }
+        }
+    }
+
+    if ([nodeName isEqualToString:@"g"] == YES)
+    {
+        DOMElement * gElement = (id)selectionRectsDOMElement;
+
+        if (control_Macsvgid != NULL)
+        {
+            if ([control_Macsvgid isEqualToString:@""] == NO)
+            {
+                DOMElement * originalElement = [svgWebKitController domElementForMacsvgid:control_Macsvgid];
+
+                NSString * transformAttribute = [originalElement getAttribute:@"transform"];
+                
+                if (transformAttribute != NULL)
+                {
+                    if (transformAttribute.length > 0)
+                    {
+                        [gElement setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribute];
+                    }
+                    else
+                    {
+                        [gElement setAttributeNS:NULL qualifiedName:@"transform" value:@""];
+                    }
+                }
+                else
+                {
+                    [gElement removeAttributeNS:NULL localName:@"transform"];
+                }
+            }
+        }
+    }
+
+    int selectedRectsCount = selectionRectsDOMElement.childElementCount;
+    for (int j = 0; j < selectedRectsCount; j++)
+    {
+        // recursive call for child elements
+        DOMElement * childElement = (id)[(id)selectionRectsDOMElement.childNodes item:j];
+        [self updateSelectionRectsDOMElement:childElement];
+    }
+}
+
+
+//==================================================================================
+//	floatFromString:
+//==================================================================================
+
+-(float) floatFromString:(NSString *)valueString
+{
+    float floatValue = 0;
+    
+    NSMutableString * trimmedString = [[NSMutableString alloc] init];
+    
+    NSUInteger inputLength = valueString.length;
+    for (int i = 0; i < inputLength; i++)
+    {
+        unichar aChar = [valueString characterAtIndex:i];
+        
+        BOOL validChar = YES;
+        
+        if (aChar < '0') validChar = NO;
+        if (aChar > '9') validChar = NO;
+        if (aChar == '.') validChar = YES;
+        if (aChar == '-') validChar = YES;
+        
+        if (validChar == NO) 
+        {
+            break;
+        }
+        
+        NSString * charString = [[NSString alloc] initWithFormat:@"%C", aChar];
+        
+        [trimmedString appendString:charString];
+    }
+    
+    floatValue = trimmedString.floatValue;
+    
+    return floatValue;
+}
+
+//==================================================================================
+//	allocFloatString:
+//==================================================================================
+
+- (NSMutableString *)allocFloatString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = aString.length;
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    return aString;
+}
+
+//==================================================================================
+//	allocPxString:
+//==================================================================================
+
+- (NSMutableString *)allocPxString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = aString.length;
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    
+    [aString appendString:@"px"];
+    
+    return aString;
+}
+
 
 
 

@@ -163,8 +163,8 @@
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
-    id domSelectionRectsAndHandlesManager = [svgWebKitController domSelectionRectsAndHandlesManager];
-    [domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];
+    id domSelectionControlsManager = [svgWebKitController domSelectionControlsManager];
+    [domSelectionControlsManager updateDOMSelectionRectsAndHandles];
 }
 
 - (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray

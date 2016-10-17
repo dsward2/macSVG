@@ -20,7 +20,7 @@
 //#import "ElementEditorPluginController.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 #import "MacSVGDocument.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "SVGXMLDOMSelectionManager.h"
 
 #define kPolylineEditingModeNotActive 0
@@ -314,8 +314,8 @@
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
-    DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-            svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
     
     DOMElement * newPolylineHandlesGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
@@ -330,17 +330,17 @@
         [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup];
     }
     
-    [domSelectionRectsAndHandlesManager setMacsvgTopGroupChild:newPolylineHandlesGroup];
+    [domSelectionControlsManager setMacsvgTopGroupChild:newPolylineHandlesGroup];
 
-    [domSelectionRectsAndHandlesManager highlightPolylinePoint];
+    [domSelectionControlsManager highlightPolylinePoint];
 
     if (self.highlightSelectedPoint == YES)
     {
-        [domSelectionRectsAndHandlesManager highlightPolylinePoint];
+        [domSelectionControlsManager highlightPolylinePoint];
     }
     else
     {
-        [domSelectionRectsAndHandlesManager removeDOMPolylinePointHighlight];
+        [domSelectionControlsManager removeDOMPolylinePointHighlight];
     }
 
 }
@@ -512,7 +512,7 @@
 {
     // remove existing polyline handles from DOM
     
-    [svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_polylineHandlesGroup"];
 }
 

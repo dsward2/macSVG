@@ -17,7 +17,7 @@
 - (void)dealloc
 {
     self.parentElement = NULL;
-    self.shadowParentElement = NULL;
+    self.controlParentElement = NULL;
 }
 
 @end

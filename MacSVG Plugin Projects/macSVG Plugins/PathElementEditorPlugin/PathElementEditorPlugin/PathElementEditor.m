@@ -13,7 +13,7 @@
 #import "ArcSettingsPopoverViewController.h"
 #import "MacSVGDocumentWindowController.h"
 #import "SVGXMLDOMSelectionManager.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "PathElementEditorFunctions.h"
 #import "DOMMouseEventsController.h"
 #import "SVGWebKitController.h"
@@ -832,8 +832,8 @@
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
 
-    DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-            macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
     
     id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
     id domMouseEventsController = [svgWebKitController domMouseEventsController];
@@ -852,11 +852,11 @@
                 [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
             }
 
-            //domSelectionRectsAndHandlesManager.pathSegmentIndex = rowIndex;
+            //domSelectionControlsManager.pathSegmentIndex = rowIndex;
             svgPathEditor.pathSegmentIndex = rowIndex;
-            domSelectionRectsAndHandlesManager.segmentStrokeWidth =
+            domSelectionControlsManager.segmentStrokeWidth =
                     (highlightStrokeWidthTextField.stringValue).floatValue;
-            domSelectionRectsAndHandlesManager.segmentStrokeHexColor =
+            domSelectionControlsManager.segmentStrokeHexColor =
                     [self hexColorFromColorWell:highlightColorWell];
 
             [self highlightPathSegment];
@@ -1193,18 +1193,18 @@
 
             MacSVGDocumentWindowController * macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
             
-            DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-                    macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+            DOMSelectionControlsManager * domSelectionControlsManager =
+                    macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
             
-            domSelectionRectsAndHandlesManager.segmentStrokeWidth = 0;
+            domSelectionControlsManager.segmentStrokeWidth = 0;
             if (highlightUseCustomStrokeWidthCheckbox.state == YES)
             {
-                domSelectionRectsAndHandlesManager.segmentStrokeWidth = (highlightStrokeWidthTextField.stringValue).floatValue;
+                domSelectionControlsManager.segmentStrokeWidth = (highlightStrokeWidthTextField.stringValue).floatValue;
             }
     
-            domSelectionRectsAndHandlesManager.segmentStrokeHexColor = [self hexColorFromColorWell:highlightColorWell];
+            domSelectionControlsManager.segmentStrokeHexColor = [self hexColorFromColorWell:highlightColorWell];
 
-            [domSelectionRectsAndHandlesManager highlightPathSegment];
+            [domSelectionControlsManager highlightPathSegment];
         }
     }
     else
@@ -1226,10 +1226,10 @@
         MacSVGDocumentWindowController * macSVGDocumentWindowController =
                 [self.macSVGDocument macSVGDocumentWindowController];
         
-        DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-                macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+        DOMSelectionControlsManager * domSelectionControlsManager =
+                macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
         
-        [domSelectionRectsAndHandlesManager removeDOMPathSegmentHighlight];
+        [domSelectionControlsManager removeDOMPathSegmentHighlight];
     }
 }
 

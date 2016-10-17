@@ -20,7 +20,7 @@
 #import "ElementEditorPluginController.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 #import "MacSVGDocument.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 
 //@class PathElementEditor;
 
@@ -2047,8 +2047,8 @@
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
-    DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-            svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
     
     DOMElement * newPathHandlesGroup = [domDocument createElementNS:svgNamespace 
             qualifiedName:@"g"];
@@ -2128,15 +2128,15 @@
         }
     }
     
-    [domSelectionRectsAndHandlesManager setMacsvgTopGroupChild:newPathHandlesGroup];
+    [domSelectionControlsManager setMacsvgTopGroupChild:newPathHandlesGroup];
 
     if (self.highlightSelectedSegment == YES)
     {
-        [domSelectionRectsAndHandlesManager highlightPathSegment];
+        [domSelectionControlsManager highlightPathSegment];
     }
     else
     {
-        [domSelectionRectsAndHandlesManager removeDOMPathSegmentHighlight];
+        [domSelectionControlsManager removeDOMPathSegmentHighlight];
     }
 }
 
@@ -2547,7 +2547,7 @@
 {
     // remove existing pathHandlesGroup from DOM
     
-    [svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_pathHandlesGroup"];
 }
 

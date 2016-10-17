@@ -1,5 +1,5 @@
 //
-//  DOMSelectionRectsAndHandlesManager.h
+//  DOMSelectionControlsManager.h
 //  macSVG
 //
 //  Created by Douglas Ward on 9/9/13.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
-// Supports selection rects for multiple elements, but only one element should have handles
+// Supports selection rects for multiple elements, but note: only one element should have handles
 
 @class DOMElement;
 @class SVGWebView;
@@ -18,7 +18,7 @@
 @class ToolSettingsPopoverViewController;
 @class MacSVGDocumentWindowController;
 
-@interface DOMSelectionRectsAndHandlesManager : NSObject
+@interface DOMSelectionControlsManager : NSObject
 {
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
     IBOutlet SVGWebView * svgWebView;
@@ -32,8 +32,6 @@
 
 @property(assign) CGFloat segmentStrokeWidth;
 @property(strong) NSString * segmentStrokeHexColor;
-//@property(assign) NSInteger pathSegmentIndex;
-//@property(assign) NSInteger polylinePointIndex;
 
 - (void) makeDOMSelectionRects;
 

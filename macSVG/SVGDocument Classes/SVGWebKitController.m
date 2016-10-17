@@ -19,7 +19,7 @@
 #import "DOMMouseEventsController.h"
 #import "MacSVGAppDelegate.h"
 #import "WebKitInterface.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "objc/message.h"
 
 @implementation SVGWebKitController
@@ -124,7 +124,7 @@
 
     if (animationEnabled != 0)
     {
-        [self updateSelections];
+        //[self updateAnimatedSelections];  // disabled 20161014
         
         DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
         
@@ -162,6 +162,19 @@
         (self.currentTimeTextField).stringValue = @"0.00";
     }
 }
+
+// ================================================================
+
+/*
+- (void)updateAnimatedSelections
+{
+    NSUInteger currentToolMode = self.macSVGDocumentWindowController.currentToolMode;
+    if (currentToolMode != toolModeCrosshairCursor)
+    {
+        [self.domSelectionControlsManager updateDOMSelectionRectsAndHandles];
+    }
+}
+*/
 
 //==================================================================================
 //	startPeriodicTimer
@@ -402,7 +415,7 @@
     
     [self.svgXMLDOMSelectionManager resyncDOMElementsInSelectedElementsArray];
     
-    //[self.domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];    // 20160716
+    //[self.domSelectionControlsManager updateDOMSelectionRectsAndHandles];    // 20160716
 }
 
 //==================================================================================
@@ -1011,11 +1024,11 @@
 
 - (void)refreshSelectionRectsAndHandles
 {
-    [self.domSelectionRectsAndHandlesManager makeDOMSelectionRects];
+    [self.domSelectionControlsManager makeDOMSelectionRects];
     
     DOMElement * firstDOMElement = [self.svgXMLDOMSelectionManager.selectedElementsManager firstDomElement];
     
-    [self.domSelectionRectsAndHandlesManager makeDOMSelectionHandles:firstDOMElement];
+    [self.domSelectionControlsManager makeDOMSelectionHandles:firstDOMElement];
 }
 
 
@@ -1281,7 +1294,7 @@
     NSUInteger currentToolMode = self.macSVGDocumentWindowController.currentToolMode;
     if (currentToolMode != toolModeCrosshairCursor)
     {
-        [self.domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];
+        [self.domSelectionControlsManager updateDOMSelectionRectsAndHandles];
     }
 }
 

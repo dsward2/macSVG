@@ -11,7 +11,7 @@
 
 @class XMLOutlineView;
 @class MacSVGDocumentWindowController;
-@class DOMSelectionRectsAndHandlesManager;
+@class DOMSelectionControlsManager;
 @class ToolSettingsPopoverViewController;
 @class SelectedElementsInfoPopoverViewController;
 
@@ -19,7 +19,7 @@
 
 @interface XMLOutlineController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSMenuDelegate>
 {
-    IBOutlet DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager;
+    IBOutlet DOMSelectionControlsManager * domSelectionControlsManager;
     IBOutlet ToolSettingsPopoverViewController * toolSettingsPopoverViewController;
 @private
     NSMutableDictionary * iconImagesDictionary;

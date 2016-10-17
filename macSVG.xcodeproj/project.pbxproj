@@ -70,7 +70,7 @@
 		0E47E12017ECCABE00C029DD /* SVGElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EEFBB2C17EA2C03006887CA /* SVGElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E47E12117ECCABE00C029DD /* TextElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EEFBB2D17EA2C03006887CA /* TextElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E47E12217ECCABE00C029DD /* TransformAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EEFBB4217EA2C46006887CA /* TransformAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		0E4DAF2117DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.m */; };
+		0E4DAF2117DDEFAE00E5BAEB /* DOMSelectionControlsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionControlsManager.m */; };
 		0E4EA2E41D40721F00C5145C /* SVGHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4EA2E31D40721F00C5145C /* SVGHelpManager.m */; };
 		0E4EA2E61D40999A00C5145C /* svg_attributes_help.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E4EA2E51D40998100C5145C /* svg_attributes_help.txt */; };
 		0E4EA2E91D40ADAB00C5145C /* svg_presentation_attributes_help.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E4EA2E71D40AD7500C5145C /* svg_presentation_attributes_help.txt */; };
@@ -1421,8 +1421,8 @@
 		0E4312951459F8FD0091DD03 /* translate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = translate.png; sourceTree = "<group>"; };
 		0E47A9D614B3986500AC9A28 /* EmbeddedFontEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = EmbeddedFontEncoder.h; path = "SVG Functions/EmbeddedFontEncoder.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E47A9D714B3986500AC9A28 /* EmbeddedFontEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = EmbeddedFontEncoder.m; path = "SVG Functions/EmbeddedFontEncoder.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		0E4DAF1F17DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DOMSelectionRectsAndHandlesManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DOMSelectionRectsAndHandlesManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0E4DAF1F17DDEFAE00E5BAEB /* DOMSelectionControlsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DOMSelectionControlsManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionControlsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DOMSelectionControlsManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E4DAF2217DE574500E5BAEB /* path.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = path.svg; sourceTree = "<group>"; };
 		0E4DAF2417DE5C5000E5BAEB /* path-pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "path-pdf.pdf"; sourceTree = "<group>"; };
 		0E4EA2E21D40721F00C5145C /* SVGHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGHelpManager.h; sourceTree = "<group>"; };
@@ -3012,8 +3012,8 @@
 			children = (
 				0EDD6011151F81FE00CE93DA /* SVGXMLDOMSelectionManager.h */,
 				0EDD6012151F81FE00CE93DA /* SVGXMLDOMSelectionManager.m */,
-				0E4DAF1F17DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.h */,
-				0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.m */,
+				0E4DAF1F17DDEFAE00E5BAEB /* DOMSelectionControlsManager.h */,
+				0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionControlsManager.m */,
 				0EF62C2B1783F1AF00AAD355 /* SelectedElementsManager.h */,
 				0EF62C2C1783F1AF00AAD355 /* SelectedElementsManager.m */,
 				0E97020214BE6602004F2BF6 /* DOMSelectionCacheRecord.h */,
@@ -3792,7 +3792,7 @@
 				0EA9DF25149D3100001672D1 /* AnimationTimelineView.m in Sources */,
 				0EA9DF28149D6CFF001672D1 /* AnimationTimescaleView.m in Sources */,
 				0EE22BC617FC3FE100B58D6D /* SFTPMkdir.m in Sources */,
-				0E4DAF2117DDEFAE00E5BAEB /* DOMSelectionRectsAndHandlesManager.m in Sources */,
+				0E4DAF2117DDEFAE00E5BAEB /* DOMSelectionControlsManager.m in Sources */,
 				0E9637A0178671440011861A /* HTTPConnection.m in Sources */,
 				0EDDC38B178DEE26003B014D /* SVGDTDData.m in Sources */,
 				0E82B12E1D7309FC005D0634 /* GCDAsyncSocket.m in Sources */,

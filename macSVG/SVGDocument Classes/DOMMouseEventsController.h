@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class DOMSelectionRectsAndHandlesManager;
+@class DOMSelectionControlsManager;
 
 // mouseMode values
 enum {
@@ -33,7 +33,7 @@ enum {
     IBOutlet SVGWebView * svgWebView;
     IBOutlet SVGWebKitController * svgWebKitController;
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
-    IBOutlet DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager;
+    IBOutlet DOMSelectionControlsManager * domSelectionControlsManager;
 
     //DOMNode * clickTarget;
     int mouseMoveCount;

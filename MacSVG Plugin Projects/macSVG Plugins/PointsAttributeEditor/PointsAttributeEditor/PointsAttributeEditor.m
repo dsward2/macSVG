@@ -11,7 +11,7 @@
 #import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 #import "MacSVGDocumentWindowController.h"
 #import "SVGXMLDOMSelectionManager.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "SVGWebKitController.h"
 #import "SVGPolylineEditor.h"
 #import "DOMMouseEventsController.h"
@@ -450,8 +450,8 @@
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
 
-    DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-            macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
     
     id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
     id domMouseEventsController = [svgWebKitController domMouseEventsController];
@@ -463,9 +463,9 @@
         {
             svgPolylineEditor.polylinePointIndex = rowIndex;
             
-            domSelectionRectsAndHandlesManager.segmentStrokeWidth =
+            domSelectionControlsManager.segmentStrokeWidth =
                     (highlightStrokeWidthTextField.stringValue).floatValue;
-            domSelectionRectsAndHandlesManager.segmentStrokeHexColor =
+            domSelectionControlsManager.segmentStrokeHexColor =
                     [self hexColorFromColorWell:highlightColorWell];
 
             [self highlightPolylinePoint];
@@ -504,18 +504,18 @@
 
             MacSVGDocumentWindowController * macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
             
-            DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-                    macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+            DOMSelectionControlsManager * domSelectionControlsManager =
+                    macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
             
-            domSelectionRectsAndHandlesManager.segmentStrokeWidth = 0;
+            domSelectionControlsManager.segmentStrokeWidth = 0;
             if (highlightUseCustomStrokeWidthCheckbox.state == YES)
             {
-                domSelectionRectsAndHandlesManager.segmentStrokeWidth = (highlightStrokeWidthTextField.stringValue).floatValue;
+                domSelectionControlsManager.segmentStrokeWidth = (highlightStrokeWidthTextField.stringValue).floatValue;
             }
     
-            domSelectionRectsAndHandlesManager.segmentStrokeHexColor = [self hexColorFromColorWell:highlightColorWell];
+            domSelectionControlsManager.segmentStrokeHexColor = [self hexColorFromColorWell:highlightColorWell];
 
-            [domSelectionRectsAndHandlesManager highlightPolylinePoint];
+            [domSelectionControlsManager highlightPolylinePoint];
         }
     }
 }
@@ -533,10 +533,10 @@
         MacSVGDocumentWindowController * macSVGDocumentWindowController =
                 [self.macSVGDocument macSVGDocumentWindowController];
         
-        DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-                macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+        DOMSelectionControlsManager * domSelectionControlsManager =
+                macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
         
-        [domSelectionRectsAndHandlesManager removeDOMPolylinePointHighlight];
+        [domSelectionControlsManager removeDOMPolylinePointHighlight];
     }
 }
 

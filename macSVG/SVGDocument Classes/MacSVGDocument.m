@@ -16,7 +16,7 @@
 #import "MacSVGPluginCallbacks.h"
 #import "svgXMLDOMSelectionManager.h"
 #import "SVGWebKitController.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "SelectedElementsManager.h"
 #import "NetworkConnectionManager.h"
 

@@ -13,13 +13,13 @@
 @class SVGWebView;
 @class SVGWebKitController;
 @class SelectedElementsManager;
-@class DOMSelectionRectsAndHandlesManager;
+@class DOMSelectionControlsManager;
 
 // Selection management notes -
 // XMLOutlineView is the primary selection manager, containing the master copy of SVG XML data
 // SelectedElementsManager manages selectedElementsArray for multiple XML/DOM elements
 // SVGXMLDOMSelectionManager manages activeElement for creation and live editing, usually during mouse-down
-// DOMSelectionRectsAndHandlesManager manages keyElement with handles, and selection rects
+// DOMSelectionControlsManager manages keyElement with handles, and selection rects
 // MacSVGPlugin manages pluginTargetXMLElement and pluginTargetDOMElement
 // XMLAttributesTableController manages xmlElementForAttributesTable
 
@@ -31,7 +31,7 @@
 }
 
 @property (strong) SelectedElementsManager * selectedElementsManager;
-@property (strong) IBOutlet DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager;
+@property (strong) IBOutlet DOMSelectionControlsManager * domSelectionControlsManager;
 @property (strong) NSXMLElement * activeXMLElement;
 @property (strong) NSMutableArray * pathSegmentsArray;      // array of path segment dictionaries
 

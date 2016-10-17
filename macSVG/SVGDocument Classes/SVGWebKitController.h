@@ -15,7 +15,7 @@
 @class DOMElement;
 @class DOMDocument;
 @class SVGXMLDOMSelectionManager;
-@class DOMSelectionRectsAndHandlesManager;
+@class DOMSelectionControlsManager;
 
 #define svgNamespace @"http://www.w3.org/2000/svg"
 
@@ -24,7 +24,7 @@
 }
 
 @property (weak) IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
-@property (weak) IBOutlet DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager;
+@property (weak) IBOutlet DOMSelectionControlsManager * domSelectionControlsManager;
 @property (weak) IBOutlet SVGXMLDOMSelectionManager * svgXMLDOMSelectionManager;
 @property (weak) IBOutlet NSTextField * currentTimeTextField;
 @property (weak) DOMDocument * previousDomDocument;  // used to detect domDocument changed

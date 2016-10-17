@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
@@ -825,7 +825,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Trh-Of-KTR" userLabel="SVGXMLDOMSelectionManager" customClass="SVGXMLDOMSelectionManager">
             <connections>
-                <outlet property="domSelectionRectsAndHandlesManager" destination="qWY-VJ-0Fx" id="tlg-3W-icL"/>
+                <outlet property="domSelectionControlsManager" destination="qWY-VJ-0Fx" id="4Gn-SV-zhT"/>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="D9P-Ri-KJ7"/>
                 <outlet property="svgWebKitController" destination="100193" id="RQK-nw-UwB"/>
                 <outlet property="svgWebView" destination="100022" id="Tjv-xe-JqV"/>
@@ -833,7 +833,7 @@
         </customObject>
         <customObject id="100214" userLabel="XMLOutlineController" customClass="XMLOutlineController">
             <connections>
-                <outlet property="domSelectionRectsAndHandlesManager" destination="qWY-VJ-0Fx" id="Yio-vb-nd6"/>
+                <outlet property="domSelectionControlsManager" destination="qWY-VJ-0Fx" id="4XI-fe-Tvh"/>
                 <outlet property="editErrorTextField" destination="gZh-Gv-zcc" id="EOR-I6-hFa"/>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="564-pB-YEa"/>
                 <outlet property="selectedElementsInfoPopover" destination="z9z-gA-nbW" id="T4V-bd-lN1"/>
@@ -861,7 +861,7 @@
             <connections>
                 <outlet property="currentTimeTextField" destination="100268" id="100439"/>
                 <outlet property="domMouseEventsController" destination="100938" id="100942"/>
-                <outlet property="domSelectionRectsAndHandlesManager" destination="qWY-VJ-0Fx" id="foe-eM-OB4"/>
+                <outlet property="domSelectionControlsManager" destination="qWY-VJ-0Fx" id="dx8-kV-iN2"/>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="5AH-05-7i9"/>
                 <outlet property="svgWebView" destination="100022" id="100199"/>
                 <outlet property="svgXMLDOMSelectionManager" destination="Trh-Of-KTR" id="Xcz-2E-bt1"/>
@@ -869,7 +869,7 @@
         </customObject>
         <customObject id="100938" userLabel="DOMMouseEventsController" customClass="DOMMouseEventsController">
             <connections>
-                <outlet property="domSelectionRectsAndHandlesManager" destination="qWY-VJ-0Fx" id="nlq-5F-HzC"/>
+                <outlet property="domSelectionControlsManager" destination="qWY-VJ-0Fx" id="WRY-UJ-kyv"/>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="u4i-AW-zvQ"/>
                 <outlet property="svgLineEditor" destination="5Cb-if-XFA" id="ASe-TJ-V7y"/>
                 <outlet property="svgPathEditor" destination="100604" id="100941"/>
@@ -879,7 +879,7 @@
                 <outlet property="svgXMLDOMSelectionManager" destination="Trh-Of-KTR" id="WGg-HU-XuM"/>
             </connections>
         </customObject>
-        <customObject id="qWY-VJ-0Fx" userLabel="DOMSelectionRectsAndHandlesManager" customClass="DOMSelectionRectsAndHandlesManager">
+        <customObject id="qWY-VJ-0Fx" userLabel="DOMSelectionControlsManager" customClass="DOMSelectionControlsManager">
             <connections>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="CQ6-zu-6Qe"/>
                 <outlet property="svgWebKitController" destination="100193" id="Taj-lQ-VPN"/>

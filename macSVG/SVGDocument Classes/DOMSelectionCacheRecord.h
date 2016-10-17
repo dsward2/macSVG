@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class DOMElement;
+
 @interface DOMSelectionCacheRecord : NSObject
 {
 }
-@property(strong) id parentElement;
-@property(strong) id shadowParentElement;
+@property(strong) DOMElement * parentElement;
+@property(strong) DOMElement * controlParentElement;
 
 @end

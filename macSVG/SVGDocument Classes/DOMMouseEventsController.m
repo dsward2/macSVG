@@ -22,7 +22,7 @@
 #import "SelectedElementsManager.h"
 #import "WebKitInterface.h"
 #import "MacSVGAppDelegate.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "EditorUIFrameController.h"
 #import "ElementEditorPlugInController.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
@@ -582,7 +582,7 @@
             
             [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
             [self.svgXMLDOMSelectionManager.selectedElementsManager
                     addElementDictionaryWithXMLElement:xmlPathElement
@@ -597,7 +597,7 @@
                 
                 [self.svgXMLDOMSelectionManager selectXMLElement:xmlPathElement];
                 
-                [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+                [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             }
         }
         else
@@ -614,7 +614,7 @@
 
                 [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
                 
-                [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+                [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             }
         }
     }
@@ -663,7 +663,7 @@
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
-        [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
         [self.svgXMLDOMSelectionManager.selectedElementsManager
                 addElementDictionaryWithXMLElement:xmlPathElement
@@ -679,7 +679,7 @@
             
             [self.svgXMLDOMSelectionManager selectXMLElement:xmlPathElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
         }
     }
     else
@@ -700,7 +700,7 @@
 
             [self.svgXMLDOMSelectionManager selectXMLElement:pathXMLElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
             [self.svgPathEditor makePathHandles];
         }
@@ -737,7 +737,7 @@
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
-        [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
         [self.svgXMLDOMSelectionManager.selectedElementsManager
                 addElementDictionaryWithXMLElement:xmlPolylineElement
@@ -766,7 +766,7 @@
             
             [self.svgXMLDOMSelectionManager selectXMLElement:xmlPolylineElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
         }
     }
     else
@@ -798,7 +798,7 @@
 
             [self.svgXMLDOMSelectionManager selectXMLElement:polylineXMLElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
             [self.svgPolylineEditor makePolylineHandles];
         }
@@ -836,7 +836,7 @@
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
         
-        [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
         [self.svgXMLDOMSelectionManager.selectedElementsManager
                 addElementDictionaryWithXMLElement:xmlLineElement
@@ -858,7 +858,7 @@
             
             [self.svgXMLDOMSelectionManager selectXMLElement:xmlLineElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
         }
     }
     else
@@ -882,7 +882,7 @@
 
             [self.svgXMLDOMSelectionManager selectXMLElement:lineXMLElement];
             
-            [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
             [self.svgLineEditor makeLineHandles];
         }
@@ -1220,7 +1220,7 @@
     {
         macSVGDocumentWindowController.creatingNewElement = YES;
 
-        [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
         [macSVGDocument pushUndoRedoDocumentChanges];
         
@@ -1804,7 +1804,7 @@
         NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
         if (currentToolMode != toolModeCrosshairCursor)
         {
-            [domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];
+            [domSelectionControlsManager updateDOMSelectionRectsAndHandles];
         }
     }
 }
@@ -1969,7 +1969,7 @@
     NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
     if (currentToolMode != toolModeCrosshairCursor)
     {
-        [domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager updateDOMSelectionRectsAndHandles];
     }
 }    
 
@@ -2135,7 +2135,7 @@
         // find the selection rectangles
         DOMElement * selectedRectElement = NULL;
         
-        DOMElement * selectedRectsGroup = [domSelectionRectsAndHandlesManager
+        DOMElement * selectedRectsGroup = [domSelectionControlsManager
                 getMacsvgTopGroupChildByID:@"_macsvg_selectedRectsGroup" createIfNew:NO];
         
         int selectedRectsCount = selectedRectsGroup.childElementCount;
@@ -2174,7 +2174,7 @@
     // find the selection rectangle
     DOMElement * selectedRectElement = NULL;
     
-    DOMElement * selectedRectsGroup = [domSelectionRectsAndHandlesManager
+    DOMElement * selectedRectsGroup = [domSelectionControlsManager
             getMacsvgTopGroupChildByID:@"_macsvg_selectedRectsGroup" createIfNew:NO];
     
     int selectedRectsCount = selectedRectsGroup.childElementCount;
@@ -2210,7 +2210,7 @@
         }
         
         [self.svgXMLDOMSelectionManager.selectedElementsManager removeAllElements];
-        [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
         
         NSXMLElement * movingXMLElement = (self.svgXMLDOMSelectionManager).activeXMLElement;
 
@@ -2649,6 +2649,11 @@
             
             break;
         }
+    }
+
+    if (currentToolMode != toolModeCrosshairCursor)
+    {
+        [domSelectionControlsManager updateDOMSelectionRectsAndHandles];
     }
     
     selectionHandleClicked = NO;

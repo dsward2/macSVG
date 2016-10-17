@@ -17,7 +17,7 @@
 #import "SelectedElementsManager.h"
 #import "SVGXMLDOMSelectionManager.h"
 #import "XMLOutlineRowView.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "ToolSettingsPopoverViewController.h"
 #import "SVGWebKitController.h"
 #import "SVGWebView.h"
@@ -496,7 +496,11 @@
     
     NSString * prototypeElementName = prototypeElement.name;
     
-    if ([prototypeElementName isEqualToString:@"animateTransform"])
+    if ([prototypeElementName isEqualToString:@"animate"])
+    {
+        resultString = [self customizeAnimate:xmlElementPrototypeString forParentElement:parentElement];
+    }
+    else if ([prototypeElementName isEqualToString:@"animateTransform"])
     {
         resultString = [self customizeAnimateTransform:xmlElementPrototypeString forParentElement:parentElement];
     }
@@ -521,6 +525,48 @@
 
     return resultString;
 }
+
+
+//==================================================================================
+//	customizeAnimate:forParentElement:
+//==================================================================================
+
+- (NSString *)customizeAnimate:(NSString *)xmlElementPrototypeString forParentElement:(NSXMLElement *)parentElement
+{
+    NSString * resultString = xmlElementPrototypeString;
+    
+    NSString * parentElementTag = [parentElement name];
+
+    BOOL isCircleOrEllipse = NO;
+    if ([parentElementTag isEqualToString:@"circle"] == YES)
+    {
+        isCircleOrEllipse = YES;
+    }
+    else if ([parentElementTag isEqualToString:@"ellipse"] == YES)
+    {
+        isCircleOrEllipse = YES;
+    }
+
+    if (isCircleOrEllipse == YES)
+    {
+        NSError * error = NULL;
+        NSXMLElement * prototypeElement = [[NSXMLElement alloc] initWithXMLString:xmlElementPrototypeString error:&error];
+        
+        NSString * prototypeElementName = prototypeElement.name;
+        
+        if ([prototypeElementName isEqualToString:@"animate"] == YES)
+        {
+            NSXMLNode * attributeNameNode = [prototypeElement attributeForName:@"attributeName"];
+            
+            attributeNameNode.stringValue = @"cx";  // change the animate element prototype's attribureName attribute from "x" to "cx"
+        
+            resultString = prototypeElement.XMLString;
+        }
+    }
+    
+    return resultString;
+}
+
 
 //==================================================================================
 //	customizeAnimateTransform:forParentElement:
@@ -921,7 +967,7 @@
         [macSVGDocument deleteElementForMacsvgid:macsvgid];
     }
     
-    [domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+    [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
     
     //[macSVGDocumentWindowController reloadAllViews];
     
@@ -1730,7 +1776,7 @@
         }
     }
     
-    [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager updateDOMSelectionRectsAndHandles];
+    [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager updateDOMSelectionRectsAndHandles];
     
     [self.macSVGDocumentWindowController reloadAttributesTableData];
 }

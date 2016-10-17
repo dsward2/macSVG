@@ -12,15 +12,12 @@
 #import "MacSVGDocumentWindowController.h"
 #import "DOMMouseEventsController.h"
 #import "SVGXMLDOMSelectionManager.h"
-//#import "WebKitInterface.h"
-//#import "MacSVGAppDelegate.h"
 #import "SelectedElementsManager.h"
 #import "ToolSettingsPopoverViewController.h"
 #import "EditorUIFrameController.h"
-//#import "ElementEditorPluginController.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 #import "MacSVGDocument.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "SVGXMLDOMSelectionManager.h"
 
 @implementation SVGLineEditor
@@ -256,8 +253,8 @@
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
-    DOMSelectionRectsAndHandlesManager * domSelectionRectsAndHandlesManager =
-            svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager;
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
     
     DOMElement * newLineHandlesGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
@@ -268,9 +265,9 @@
     [self addHandleForLineElement:activeDOMElement pointIndex:0 lineHandlesGroup:newLineHandlesGroup];
     [self addHandleForLineElement:activeDOMElement pointIndex:1 lineHandlesGroup:newLineHandlesGroup];
     
-    [domSelectionRectsAndHandlesManager setMacsvgTopGroupChild:newLineHandlesGroup];
+    [domSelectionControlsManager setMacsvgTopGroupChild:newLineHandlesGroup];
 
-    [domSelectionRectsAndHandlesManager highlightLinePoint];
+    [domSelectionControlsManager highlightLinePoint];
 }
 
 //==================================================================================
@@ -389,7 +386,7 @@
 {
     // remove existing line handles from DOM
     
-    [svgXMLDOMSelectionManager.domSelectionRectsAndHandlesManager
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_lineHandlesGroup"];
 }
 

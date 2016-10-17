@@ -16,7 +16,7 @@
 #import "WebKitInterface.h"
 #import "SVGWebKitController.h"
 #import "SelectedElementsManager.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "DOMMouseEventsController.h"
 #import "SVGPathEditor.h"
 #import "SVGPolylineEditor.h"
@@ -467,7 +467,7 @@
 - (void)setSelectedXMLElements:(NSArray *)selectedXMLElements
 {
     [self.selectedElementsManager removeAllElements];
-    [self.domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+    [self.domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
     if (selectedXMLElements.count <= 1)
     {
@@ -487,10 +487,10 @@
     
     if (macSVGDocumentWindowController.currentToolMode == toolModeArrowCursor)
     {
-        [self.domSelectionRectsAndHandlesManager makeDOMSelectionRects];
+        [self.domSelectionControlsManager makeDOMSelectionRects];
         
         DOMElement * firstDOMElement = [self.selectedElementsManager firstDomElement];
-        [self.domSelectionRectsAndHandlesManager makeDOMSelectionHandles:firstDOMElement];
+        [self.domSelectionControlsManager makeDOMSelectionHandles:firstDOMElement];
     }
     
     NSXMLElement * selectedXMLElement = [self.selectedElementsManager firstXmlElement];
@@ -654,7 +654,7 @@
             if (selectedItemsIndex == NSNotFound)
             {
                 [self.selectedElementsManager removeAllElements];  // remove all selected elements
-                [self.domSelectionRectsAndHandlesManager removeDOMSelectionRectsAndHandles];
+                [self.domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             }
         }
     }
@@ -756,10 +756,10 @@
     {
         if (macSVGDocumentWindowController.currentToolMode != toolModeCrosshairCursor)
         {
-            [self.domSelectionRectsAndHandlesManager makeDOMSelectionRects];   // test 20130709
+            [self.domSelectionControlsManager makeDOMSelectionRects];   // test 20130709
             
-            //[self.domSelectionRectsAndHandlesManager makeDOMSelectionHandles:[self activeDOMElement]];
-            [self.domSelectionRectsAndHandlesManager makeDOMSelectionHandles:aDOMElement];  // test 20160907
+            //[self.domSelectionControlsManager makeDOMSelectionHandles:[self activeDOMElement]];
+            [self.domSelectionControlsManager makeDOMSelectionHandles:aDOMElement];  // test 20160907
         }
         else
         {

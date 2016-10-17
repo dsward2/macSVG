@@ -34,7 +34,7 @@
 #import "SVGLineEditor.h"
 #import "NetworkConnectionManager.h"
 #import "NSOutlineView_Extensions.h"
-#import "DOMSelectionRectsAndHandlesManager.h"
+#import "DOMSelectionControlsManager.h"
 #import "SVGHelpManager.h"
 #import "SVGtoCoreGraphicsConverter.h"
 #import "XMLAttributesTableController.h"
