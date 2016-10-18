@@ -685,9 +685,7 @@
 		0EC22E2B1D703C4100931DC4 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E2A1D703C4100931DC4 /* libcrypto.a */; };
 		0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EC671841D696EBB0086943C /* multi-line_text_with_foreignobject_and_html.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */; };
-		0ECCAFDF1DB4A6A0001A6085 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0ECCAFDE1DB4A6A0001A6085 /* README.md */; };
 		0ECCB0221DB4B60A001A6085 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0211DB4B60A001A6085 /* LICENSE */; };
-		0ECCB0251DB51B58001A6085 /* macsvg-screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0241DB51B58001A6085 /* macsvg-screenshot.jpg */; };
 		0ED17E301D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */; };
 		0ED841221800FCCA003985CD /* PieChartGenerator.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0ED841201800FCAB003985CD /* PieChartGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EDC2EB91471D8C100747907 /* SVGPathEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC2EB81471D8C100747907 /* SVGPathEditor.m */; };
@@ -3722,7 +3720,6 @@
 				0EB663DF1428666B003723F0 /* Untitled.svg in Resources */,
 				0E1F752B1D83C132008AFEAB /* shear.png in Resources */,
 				0EA2B4CB1D9C96FC00100631 /* MacSVGDocument.xib in Resources */,
-				0ECCB0251DB51B58001A6085 /* macsvg-screenshot.jpg in Resources */,
 				0E1F752A1D83C132008AFEAB /* scale.png in Resources */,
 				0EA2B4C81D9C96FC00100631 /* Credits.rtf in Resources */,
 				0EB663E01428666B003723F0 /* Untitled.xhtml in Resources */,
@@ -3780,7 +3777,6 @@
 				0E96379F178671380011861A /* SVGHTTPConnection.m in Sources */,
 				0EACF1DC1D4EE9F900CAB71E /* MacSVGIconButton.m in Sources */,
 				0E3B72F61D8272E700B10ECE /* SVGtoVideoConverter.m in Sources */,
-				0ECCAFDF1DB4A6A0001A6085 /* README.md in Sources */,
 				0EEE3A8017B9E3AA0040846F /* DFSSHConnector.m in Sources */,
 				0EB663EC142866C4003723F0 /* SVGWebKitController.m in Sources */,
 				0E770CDC1D7FCE52000401C9 /* SVGPolylineEditor.m in Sources */,

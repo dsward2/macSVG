@@ -1,5 +1,5 @@
 # macSVG
-macSVG - A macOS App for Designing HTML5 SVG (Scalable Vector Graphics) Art and Animation
+macSVG - An open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation
 
 Copyright (c) 2016 by ArkPhone, LLC
 
@@ -19,10 +19,16 @@ Copyright (c) 2016 by ArkPhone, LLC
 
 # Coming soon:
 A project website.
+
 Documentation.
+
 Examples.
+
 Demo videos.
+
 An Apple ID-signed application.
+
+WordPress support.
 
 Until then, macSVG can be built from source code.  Open "macSVG.xcworkspace" in Xcode, set the target to "macSVG Debug", build and run.
 
