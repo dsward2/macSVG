@@ -255,7 +255,9 @@
         }
         else
         {
-            //NSError * assetWriterError = self.videoWriter.error;
+            NSError * assetWriterError = self.videoWriter.error;
+            
+            NSLog(@"SVGtoVideoConverter error - %@", assetWriterError);
         }
     }];
     

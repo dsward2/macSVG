@@ -2888,11 +2888,33 @@
 }
 
 //==================================================================================
+// updateZoomScroll:
+//==================================================================================
+
+- (void)updateZoomScroll:(NSDictionary *)newMidpointDictionary
+{
+    NSScrollView * webScrollView = [[[[self.svgWebKitController.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
+    
+    NSNumber * newMidXNumber = [newMidpointDictionary objectForKey:@"x"];
+    NSNumber * newMidYNumber = [newMidpointDictionary objectForKey:@"y"];
+    
+    CGFloat newMidX = newMidXNumber.floatValue;
+    CGFloat newMidY = newMidYNumber.floatValue;
+    NSPoint midpoint = NSMakePoint(newMidX, newMidY);
+    
+    [[webScrollView documentView] scrollPoint:midpoint];
+}
+
+//==================================================================================
 // zoomIn:
 //==================================================================================
 
 - (IBAction)zoomIn:(id)sender
 {
+    NSScrollView * webScrollView = [[[[self.svgWebKitController.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
+    
+    NSRect documentVisibleRect = webScrollView.documentVisibleRect;
+
     CGFloat zoomFactor = self.svgWebKitController.svgWebView.zoomFactor;
     
     zoomFactor *= 2.0f;
@@ -2900,6 +2922,15 @@
     [self.svgWebKitController.svgWebView setSVGZoomStyleWithFloat:zoomFactor];
 
     [self reloadAllViews];
+    
+    CGFloat newMidX = (documentVisibleRect.origin.x + (documentVisibleRect.size.width / 4.0f)) * 2.0f;
+    CGFloat newMidY = (documentVisibleRect.origin.y + (documentVisibleRect.size.height / 4.0f)) * 2.0f;
+    
+    NSNumber * newMidXNumber = @(newMidX);
+    NSNumber * newMidYNumber = @(newMidY);
+    NSDictionary * newMidpointDictionary = @{@"x":newMidXNumber, @"y":newMidYNumber};
+    
+    [self performSelector:@selector(updateZoomScroll:) withObject:newMidpointDictionary afterDelay:0.1f];
 }
 
 //==================================================================================
@@ -2908,6 +2939,10 @@
 
 - (IBAction)zoomOut:(id)sender
 {
+    NSScrollView * webScrollView = [[[[self.svgWebKitController.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
+
+    NSRect documentVisibleRect = webScrollView.documentVisibleRect;
+    
     CGFloat zoomFactor = self.svgWebKitController.svgWebView.zoomFactor;
     
     zoomFactor *= 0.5f;
@@ -2915,6 +2950,16 @@
     [self.svgWebKitController.svgWebView setSVGZoomStyleWithFloat:zoomFactor];
 
     [self reloadAllViews];
+
+    
+    CGFloat newMidX = (documentVisibleRect.origin.x + (documentVisibleRect.size.width / 4.0f)) / 2.0f;
+    CGFloat newMidY = (documentVisibleRect.origin.y + (documentVisibleRect.size.height / 4.0f)) / 2.0f;
+    
+    NSNumber * newMidXNumber = @(newMidX);
+    NSNumber * newMidYNumber = @(newMidY);
+    NSDictionary * newMidpointDictionary = @{@"x":newMidXNumber, @"y":newMidYNumber};
+    
+    [self performSelector:@selector(updateZoomScroll:) withObject:newMidpointDictionary afterDelay:0.1f];
 }
 
 //==================================================================================
@@ -3378,7 +3423,8 @@
    // Set the default name for the file and show the panel.
    NSSavePanel*    panel = [NSSavePanel savePanel];
    panel.nameFieldStringValue = newName;
-   [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+   [panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result)
+   {
         if (result == NSFileHandlingPanelOKButton)
         {
             NSURL *  theFile = panel.URL;
@@ -3404,8 +3450,9 @@
                 }
                 */
                 
-                [self exportHTML5Video:filePath];
             }];
+
+            [self exportHTML5Video:filePath];
         }
     }];
 }
