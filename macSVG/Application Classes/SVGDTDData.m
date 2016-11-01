@@ -1132,7 +1132,7 @@
     [inputString appendFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"];
     [inputString appendFormat:@"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n"];
     [inputString appendFormat:@"\"%@\">\n", svgXmlDtdUrl];
-    [inputString appendFormat:@"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"480\" height=\"320\" viewBox=\"0 0 480 320\" preserveAspectRatio=\"none\"></svg>\n"];
+    [inputString appendFormat:@"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"480\" height=\"320\" viewBox=\"0 0 480 320\" preserveAspectRatio=\"xMidYMid meet\"></svg>\n"];
     
     NSData * dtdXmlData = [inputString dataUsingEncoding:NSUTF8StringEncoding];
     

@@ -161,9 +161,26 @@
     NSParameterAssert(self.writerInput);
     NSParameterAssert([self.videoWriter canAddInput:self.writerInput]);
     [self.videoWriter addInput:self.writerInput];
+    
+    if (self.videoWriter.status == AVAssetWriterStatusFailed)
+    {
+        NSLog(@"self.videoWriter.status = AVAssetWriterStatusFailed 1");
+    }
 
     [self.videoWriter startWriting];
+
+    if (self.videoWriter.status == AVAssetWriterStatusFailed)
+    {
+        NSLog(@"self.videoWriter.status = AVAssetWriterStatusFailed 2");
+    }
+
     [self.videoWriter startSessionAtSourceTime:kCMTimeZero];
+
+    if (self.videoWriter.status == AVAssetWriterStatusFailed)
+    {
+        NSLog(@"self.videoWriter.status = AVAssetWriterStatusFailed 3");
+    }
+
 }
 
 

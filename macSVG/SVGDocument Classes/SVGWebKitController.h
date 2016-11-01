@@ -40,6 +40,9 @@
 @property (assign) BOOL webKitInspectorIsAttached;
 @property (assign) BOOL javaScriptIsDisabled;
 
+@property (assign) NSPoint mainFrameScrollToPoint;
+@property (assign) BOOL scrollToPointAfterMainFrameLoad;
+
 - (IBAction)showWebKitInspectorAction:(id)sender;
 - (IBAction)detachWebKitInspectorAction:(id)sender;
 - (IBAction)disableJavaScriptAction:(id)sender;
@@ -84,5 +87,7 @@
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
 
 - (void)walkDOMNodeTree:(DOMNode *)parent level:(unsigned int)level;
+
+- (void)setScrollToPoint:(NSPoint)scrollToPoint;
 
 @end

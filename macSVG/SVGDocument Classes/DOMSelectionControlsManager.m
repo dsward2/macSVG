@@ -1431,7 +1431,7 @@
             [newSvgElement setAttribute:@"id" value:@"svg_document"];
             [newSvgElement setAttribute:@"width" value:svgWidth];
             [newSvgElement setAttribute:@"version" value:@"1.1"];
-            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"none"];
+            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"xMidYMid meet"];
             [newSvgElement setAttribute:@"viewBox" value:svgViewBox];
             
             [documentElement appendChild:newSvgElement];
@@ -1723,7 +1723,7 @@
             [newSvgElement setAttribute:@"id" value:@"svg_document"];
             [newSvgElement setAttribute:@"width" value:svgWidth];
             [newSvgElement setAttribute:@"version" value:@"1.1"];
-            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"none"];
+            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"xMidYMid meet"];
             [newSvgElement setAttribute:@"viewBox" value:svgViewBox];
             
             [documentElement appendChild:newSvgElement];
@@ -1968,7 +1968,7 @@
             [newSvgElement setAttribute:@"id" value:@"svg_document"];
             [newSvgElement setAttribute:@"width" value:svgWidth];
             [newSvgElement setAttribute:@"version" value:@"1.1"];
-            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"none"];
+            [newSvgElement setAttribute:@"preserveAspectRatio" value:@"xMidYMid meet"];
             [newSvgElement setAttribute:@"viewBox" value:svgViewBox];
             
             [documentElement appendChild:newSvgElement];

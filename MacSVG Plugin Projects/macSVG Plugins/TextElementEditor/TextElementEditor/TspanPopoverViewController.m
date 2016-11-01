@@ -467,7 +467,7 @@ xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n\
 xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"\n\
 xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"\n\
 version=\"1.1\" baseProfile=\"full\" width=\"354px\"\n\
-height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"none\">";
+height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"xMidYMid meet\">";
     return headerString;
 }
 

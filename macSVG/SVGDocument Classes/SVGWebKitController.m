@@ -1015,7 +1015,58 @@
         {
             [self refreshSelectionRectsAndHandles];
         }
+
+        if (self.scrollToPointAfterMainFrameLoad == YES)
+        {
+            NSScrollView * webScrollView = [[[mainFrame frameView] documentView] enclosingScrollView];
+            
+            [[webScrollView documentView] scrollPoint:self.mainFrameScrollToPoint];
+
+            self.mainFrameScrollToPoint = NSZeroPoint;
+            self.scrollToPointAfterMainFrameLoad = NO;
+        }
     }
+}
+
+//==================================================================================
+//	setScrollToPoint:
+//==================================================================================
+
+- (void)setScrollToPoint:(NSPoint)scrollToPoint
+{
+    // this method will trigger scrolling to the specified point after the mainFrame load is completed
+    NSPoint newScrollToPoint = NSZeroPoint;
+    
+    CGFloat zoomFactor = self.svgWebView.zoomFactor;
+
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+    WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
+
+    WebFrame * mainFrame = (self.svgWebView).mainFrame;
+    DOMDocument * domDocument = mainFrame.DOMDocument;
+    DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+    if (svgElementsList.length > 0)
+    {
+        DOMNode * domSvgElementNode = [svgElementsList item:0];
+        DOMElement * svgElement = (DOMElement *)domSvgElementNode;
+        NSRect svgElementRect = [webKitInterface bBoxForDOMElement:svgElement];
+        
+        svgElementRect.size.width *= zoomFactor;
+        svgElementRect.size.height *= zoomFactor;
+        
+        NSRect webViewFrame = self.svgWebView.frame;
+        
+        if (svgElementRect.size.width > webViewFrame.size.width)
+        {
+            if (svgElementRect.size.height > webViewFrame.size.height)
+            {
+                newScrollToPoint = scrollToPoint;
+            }
+        }
+    }
+
+    self.mainFrameScrollToPoint = newScrollToPoint;
+    self.scrollToPointAfterMainFrameLoad = YES;
 }
 
 //==================================================================================

@@ -278,7 +278,7 @@
   </svgElement>
   <svgElement id="svg">
     <docref>struct.html#SVGElement</docref>
-    <prototype>svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" cursor="crosshair" height="50px" id="svg_document" width="320px" version="1.1" preserveAspectRatio="none" viewBox="0 0 320 50"</prototype>
+    <prototype>svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" cursor="crosshair" height="50px" id="svg_document" width="320px" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 320 50"</prototype>
   </svgElement>
   <svgElement id="switch">
     <docref>struct.html#SwitchElement</docref>

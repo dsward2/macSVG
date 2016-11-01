@@ -2888,24 +2888,6 @@
 }
 
 //==================================================================================
-// updateZoomScroll:
-//==================================================================================
-
-- (void)updateZoomScroll:(NSDictionary *)newMidpointDictionary
-{
-    NSScrollView * webScrollView = [[[[self.svgWebKitController.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
-    
-    NSNumber * newMidXNumber = [newMidpointDictionary objectForKey:@"x"];
-    NSNumber * newMidYNumber = [newMidpointDictionary objectForKey:@"y"];
-    
-    CGFloat newMidX = newMidXNumber.floatValue;
-    CGFloat newMidY = newMidYNumber.floatValue;
-    NSPoint midpoint = NSMakePoint(newMidX, newMidY);
-    
-    [[webScrollView documentView] scrollPoint:midpoint];
-}
-
-//==================================================================================
 // zoomIn:
 //==================================================================================
 
@@ -2919,18 +2901,20 @@
     
     zoomFactor *= 2.0f;
     
+    NSPoint scrollToPoint = NSZeroPoint;
+    
+    if ((documentVisibleRect.origin.x > 0) || (documentVisibleRect.origin.y > 0))
+    {
+        CGFloat newMidX = (documentVisibleRect.origin.x + (documentVisibleRect.size.width / 4.0f)) * 2.0f;
+        CGFloat newMidY = (documentVisibleRect.origin.y + (documentVisibleRect.size.height / 4.0f)) * 2.0f;
+        scrollToPoint = NSMakePoint(newMidX, newMidY);
+    }
+    
     [self.svgWebKitController.svgWebView setSVGZoomStyleWithFloat:zoomFactor];
 
+    [self.svgWebKitController setScrollToPoint:scrollToPoint];
+    
     [self reloadAllViews];
-    
-    CGFloat newMidX = (documentVisibleRect.origin.x + (documentVisibleRect.size.width / 4.0f)) * 2.0f;
-    CGFloat newMidY = (documentVisibleRect.origin.y + (documentVisibleRect.size.height / 4.0f)) * 2.0f;
-    
-    NSNumber * newMidXNumber = @(newMidX);
-    NSNumber * newMidYNumber = @(newMidY);
-    NSDictionary * newMidpointDictionary = @{@"x":newMidXNumber, @"y":newMidYNumber};
-    
-    [self performSelector:@selector(updateZoomScroll:) withObject:newMidpointDictionary afterDelay:0.1f];
 }
 
 //==================================================================================
@@ -2942,24 +2926,20 @@
     NSScrollView * webScrollView = [[[[self.svgWebKitController.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
 
     NSRect documentVisibleRect = webScrollView.documentVisibleRect;
+
+    CGFloat scaleFactor = 0.5f;
     
-    CGFloat zoomFactor = self.svgWebKitController.svgWebView.zoomFactor;
+    CGFloat zoomFactor = self.svgWebKitController.svgWebView.zoomFactor * scaleFactor;
     
-    zoomFactor *= 0.5f;
+    CGFloat newMidX = (documentVisibleRect.origin.x * scaleFactor) - ((documentVisibleRect.size.width * scaleFactor) / 2.0f);
+    CGFloat newMidY = (documentVisibleRect.origin.y * scaleFactor) - ((documentVisibleRect.size.height * scaleFactor) / 2.0f);
+    NSPoint scrollToPoint = NSMakePoint(newMidX, newMidY);
     
     [self.svgWebKitController.svgWebView setSVGZoomStyleWithFloat:zoomFactor];
 
-    [self reloadAllViews];
+    [self.svgWebKitController setScrollToPoint:scrollToPoint];
 
-    
-    CGFloat newMidX = (documentVisibleRect.origin.x + (documentVisibleRect.size.width / 4.0f)) / 2.0f;
-    CGFloat newMidY = (documentVisibleRect.origin.y + (documentVisibleRect.size.height / 4.0f)) / 2.0f;
-    
-    NSNumber * newMidXNumber = @(newMidX);
-    NSNumber * newMidYNumber = @(newMidY);
-    NSDictionary * newMidpointDictionary = @{@"x":newMidXNumber, @"y":newMidYNumber};
-    
-    [self performSelector:@selector(updateZoomScroll:) withObject:newMidpointDictionary afterDelay:0.1f];
+    [self reloadAllViews];
 }
 
 //==================================================================================
