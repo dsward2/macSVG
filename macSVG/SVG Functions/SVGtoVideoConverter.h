@@ -23,6 +23,8 @@
 @property (assign) NSInteger frameCount;
 @property (assign) CGSize webFrameSize;
 
+@property (assign) BOOL videoWriterFailed;
+
 @property (strong) NSWindow * hiddenWindow;
 @property (strong) WebView * hiddenWebView;
 

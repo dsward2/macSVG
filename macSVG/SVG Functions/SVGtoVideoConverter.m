@@ -38,6 +38,7 @@
     self = [super init];
     if (self)
     {
+        self.videoWriterFailed = NO;
     }
     return self;
 }
@@ -66,6 +67,17 @@
     self.currentTimeTextLabel = currentTimeTextLabel;
     self.generatingHTML5VideoSheet = generatingHTML5VideoSheet;
     self.hostWindow = hostWindow;
+
+    NSFileManager *manager = [[NSFileManager alloc] init];
+    if ([manager fileExistsAtPath:path] == YES)
+    {
+        NSError *fileError;
+        [manager removeItemAtPath:path error:&fileError];
+        if (fileError)
+        {
+            NSLog(@"%@", fileError.localizedDescription);
+        }
+    }
 
     NSString * currentTimeString = [NSString stringWithFormat:@"%f", self.currentTime];
     self.currentTimeTextLabel.stringValue = currentTimeString;
@@ -98,6 +110,8 @@
 
 - (void)initVideoWriter:(NSImage *)firstFrameImage
 {
+    self.videoWriterFailed = NO;
+
     NSError *error  = nil;
     
     self.webFrameSize = firstFrameImage.size;
@@ -223,17 +237,58 @@
 
     CVPixelBufferRef buffer = [self newPixelBufferFromCGImage:webCGImageRef andFrameSize:self.webFrameSize];
 
+
+
+    // per Technical Q&A QA1839: Specifying color space information for pixel buffers
+    // https://developer.apple.com/library/content/qa/qa1839/_index.html
+    CGColorSpaceRef sRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+    if (sRGBColorSpace != NULL)
+    {
+        CFDataRef sRGBProfileData = CGColorSpaceCopyICCProfile(sRGBColorSpace);
+        if (sRGBProfileData != NULL)
+        {
+            NSDictionary *pbAttachements =
+                        @{(id)kCVImageBufferICCProfileKey : (__bridge id)sRGBProfileData};
+     
+            CFRelease(sRGBProfileData);
+     
+            //CVBufferRef pixelBuffer = <#Your pixel buffer#>;
+     
+            /* set the color space attachment on the buffer */
+            CVBufferSetAttachments(buffer,
+                        (__bridge CFDictionaryRef)pbAttachements, kCVAttachmentMode_ShouldPropagate);
+        }
+        else
+        {
+            NSLog(@"CGColorSpaceCopyICCProfile returned NULL");
+     
+            /* handle the error */
+        }
+     
+        CFRelease(sRGBColorSpace);
+    }
+    else
+    {
+        NSLog(@"CGColorSpaceCreateWithName returned NULL");
+     
+        /* handle the error */
+    }
+
+
+
     if (self.adaptor.assetWriterInput.readyForMoreMediaData)
     {
-        CMTime frameTime = CMTimeMake(self.frameCount,(int32_t) self.framesPerSecond);
-        [self.adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
-
-        /*
-        if (buffer)
+        CMTime frameTime = CMTimeMake(self.frameCount, (int32_t)self.framesPerSecond);
+        BOOL appendResult = [self.adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
+        
+        if (appendResult == NO)
         {
-            CVBufferRelease(buffer);
+            NSLog(@"appendPixelBuffer:withPresentationTime failed");
+            NSLog(@"videoWriter.status = %ld", self.videoWriter.status);
+            NSLog(@"videoWriter.error = %@", self.videoWriter.error);
+            
+            self.videoWriterFailed = YES;
         }
-        */
     }
 
     if (buffer)
@@ -246,16 +301,28 @@
         CGImageRelease((webCGImageRef));
     }
     
-    self.frameCount++;
-    self.currentTime += self.frameTimeInterval;
-    
-    if (self.currentTime > self.endTime)
+    if (self.videoWriterFailed == NO)
     {
-        [self finishWritingVideo];
+        self.frameCount++;
+        self.currentTime += self.frameTimeInterval;
+        
+        if (self.currentTime > self.endTime)
+        {
+            //[self finishWritingVideo];
+            [self performSelector:@selector(finishWritingVideo) withObject:NULL afterDelay:1];
+        }
+        else
+        {
+            [self getNextFrameImage];
+        }
     }
     else
     {
-        [self getNextFrameImage];
+        // error detected, stop video output
+        [self.hostWindow endSheet:self.generatingHTML5VideoSheet returnCode:NSModalResponseStop];
+        [self.generatingHTML5VideoSheet orderOut:self];
+        
+        // TODO: add an error message for user here
     }
 }
 
@@ -264,7 +331,7 @@
 - (void)finishWritingVideo
 {
     [self.writerInput markAsFinished];
-    
+
     [self.videoWriter finishWritingWithCompletionHandler:^
     {
         if (self.videoWriter.status != AVAssetWriterStatusFailed && self.videoWriter.status == AVAssetWriterStatusCompleted)
@@ -276,8 +343,9 @@
             
             NSLog(@"SVGtoVideoConverter error - %@", assetWriterError);
         }
+        
+        //self.videoWriter = NULL;
     }];
-    
     
     [self.hostWindow endSheet:self.generatingHTML5VideoSheet returnCode:NSModalResponseStop];
     [self.generatingHTML5VideoSheet orderOut:self];
