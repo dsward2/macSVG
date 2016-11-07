@@ -67,6 +67,7 @@
 
 - (NSArray *)selectedItems 
 {
+    // returns a flat array of selected items
     NSMutableArray *items = [NSMutableArray array];
     NSIndexSet * selectedRows = self.selectedRowIndexes;
     if (selectedRows != nil) 
@@ -213,6 +214,7 @@
 }
 
 
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
     NSEventModifierFlags modifiers = theEvent.modifierFlags;
@@ -231,6 +233,8 @@
 
         XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
         MacSVGDocumentWindowController * macSVGDocumentWindowController = xmlOutlineController.macSVGDocumentWindowController;
+        
+        xmlOutlineController.holdSelectedItems = NULL;
 
         if (macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
         {
@@ -264,6 +268,11 @@
 
         if (doDeselectAll == YES)
         {
+            // workaround for NSXMLOutlineView problem when click-selecting on a child item in an active selection path
+            // in XMLOutlineController, outlineView:writeItems:toPasteboard: may reselect the items
+            
+            xmlOutlineController.holdSelectedItems = [self selectedItems];  // these items should be reselected if dragging occurs
+        
             [self deselectAll:self];
         }
 

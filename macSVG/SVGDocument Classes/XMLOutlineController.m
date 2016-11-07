@@ -2497,12 +2497,48 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 }
 
 //==================================================================================
+//	outlineView:restoreDraggedNodes:
+//==================================================================================
+
+- (void)welectItemsForCurrentElement:(NSXMLElement *)currentElement
+        restoreDraggedNodes:(NSMutableArray *)restoreDraggedNodes
+{
+    NSXMLNode * parentNode = [currentElement parent];
+    
+    if ([parentNode kind] == NSXMLElementKind)
+    {
+        NSXMLElement * parentElement = (NSXMLElement *)parentNode;
+        if ([restoreDraggedNodes containsObject:parentElement] == NO)
+        {
+            [restoreDraggedNodes addObject:currentElement];
+        }
+    }
+}
+
+//==================================================================================
 //	outlineView:writeItems:toPasteboard:
 //==================================================================================
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
     self.draggedNodes = items;
+    
+    if (self.holdSelectedItems != NULL)
+    {
+        // workaround NSOutlineView issue where selecting an item within an active selection path delayed for a few seconds
+        //self.draggedNodes = self.holdSelectedItems;
+        //[outlineView setSelectedItems:self.draggedNodes];
+        
+        NSMutableArray * restoreDraggedNodes = [NSMutableArray array];
+        for (NSXMLElement * aDraggedElement in self.draggedNodes)
+        {
+            [self welectItemsForCurrentElement:aDraggedElement restoreDraggedNodes:restoreDraggedNodes];
+        }
+        self.draggedNodes = restoreDraggedNodes;
+        [outlineView setSelectedItems:self.holdSelectedItems];
+        
+        self.holdSelectedItems = NULL;
+    }
 
     // Provide data for our custom type, and simple NSStrings.
     [pboard declareTypes:@[XML_OUTLINE_PBOARD_TYPE, NSStringPboardType, NSFilesPromisePboardType] owner:self];
@@ -2511,7 +2547,8 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     [pboard setData:[NSData data] forType:XML_OUTLINE_PBOARD_TYPE]; 
     
     NSMutableString * nodesString = [NSMutableString string];
-    for (NSXMLNode * aNode in items)
+    //for (NSXMLNode * aNode in items)
+    for (NSXMLNode * aNode in self.draggedNodes)
     {
         NSString * nodeXml = [aNode XMLStringWithOptions:NSXMLNodePreserveCDATA];
         [nodesString appendString:nodeXml];

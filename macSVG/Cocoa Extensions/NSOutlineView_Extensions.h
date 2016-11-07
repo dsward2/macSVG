@@ -58,7 +58,7 @@
 
 @interface NSOutlineView (MyExtensions)
 
-@property (copy) NSArray *selectedItems;
+@property (copy) NSArray * selectedItems;
 
 //- (void)highlightSelectionInClipRect:(NSRect)theClipRect;
 

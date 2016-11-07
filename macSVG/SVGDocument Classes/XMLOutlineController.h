@@ -34,6 +34,8 @@
 @property(strong) IBOutlet NSTextField * editErrorTextField;
 @property(strong) IBOutlet NSTextView * xmlTextEditView;
 
+@property (strong) NSArray * holdSelectedItems;
+
 @property(assign) BOOL draggingActive;
 
 @property(strong) NSXMLElement * editElement;
