@@ -2497,10 +2497,10 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 }
 
 //==================================================================================
-//	outlineView:restoreDraggedNodes:
+//	selectItemsForCurrentElement:restoreDraggedNodes:
 //==================================================================================
 
-- (void)welectItemsForCurrentElement:(NSXMLElement *)currentElement
+- (void)selectItemsForCurrentElement:(NSXMLElement *)currentElement
         restoreDraggedNodes:(NSMutableArray *)restoreDraggedNodes
 {
     NSXMLNode * parentNode = [currentElement parent];
@@ -2532,7 +2532,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         NSMutableArray * restoreDraggedNodes = [NSMutableArray array];
         for (NSXMLElement * aDraggedElement in self.draggedNodes)
         {
-            [self welectItemsForCurrentElement:aDraggedElement restoreDraggedNodes:restoreDraggedNodes];
+            [self selectItemsForCurrentElement:aDraggedElement restoreDraggedNodes:restoreDraggedNodes];
         }
         self.draggedNodes = restoreDraggedNodes;
         [outlineView setSelectedItems:self.holdSelectedItems];
