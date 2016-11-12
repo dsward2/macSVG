@@ -11,7 +11,6 @@
 		0E96DC5F17A5AFB90097A267 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E96DC5D17A5AFB90097A267 /* InfoPlist.strings */; };
 		0E96DC6B17A5BE130097A267 /* ImageElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DC6717A5B02E0097A267 /* ImageElementEditor.m */; };
 		0E96DC6C17A5BE1B0097A267 /* ImageElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E96DC6817A5B0E90097A267 /* ImageElementEditor.xib */; };
-		0ECCB00A1DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0091DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42EC1D7114F9001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42EB1D7114F9001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -115,7 +114,7 @@
 		0E96DC4917A5AFB90097A267 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 			};
 			buildConfigurationList = 0E96DC4C17A5AFB90097A267 /* Build configuration list for PBXProject "ImageElementEditor" */;
@@ -141,7 +140,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E96DC5F17A5AFB90097A267 /* InfoPlist.strings in Resources */,
-				0ECCB00A1DB4AA2E001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E96DC6C17A5BE1B0097A267 /* ImageElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

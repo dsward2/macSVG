@@ -16,7 +16,6 @@
 		0E420E4917C2BA2300239733 /* TextPathPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E420E4817C2BA2300239733 /* TextPathPopoverViewController.m */; };
 		0E46D9FA17CB1B5000314429 /* TspanPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */; };
 		0E693CFA1D7054D800006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF91D7054D800006B21 /* MacSVGPlugin.framework */; };
-		0ECCB01A1DB4AB71001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0ED1B97D17B44109003E282F /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97C17B44109003E282F /* SZJsonParser.m */; };
 		0ED1B98017B47630003E282F /* FontPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97F17B47630003E282F /* FontPopoverViewController.m */; };
 		0ED1B98317B49482003E282F /* BrowserFonts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ED1B98117B49482003E282F /* BrowserFonts.plist */; };
@@ -162,7 +161,7 @@
 		0E26CD5217A6326C0053B3D4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 			};
 			buildConfigurationList = 0E26CD5517A6326C0053B3D4 /* Build configuration list for PBXProject "TextElementEditor" */;
@@ -187,7 +186,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ECCB01A1DB4AB71001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E26CD7517A633580053B3D4 /* TextElementEditor.xib in Resources */,
 				0E26CD6817A6326C0053B3D4 /* InfoPlist.strings in Resources */,
 				0ED1B98317B49482003E282F /* BrowserFonts.plist in Resources */,

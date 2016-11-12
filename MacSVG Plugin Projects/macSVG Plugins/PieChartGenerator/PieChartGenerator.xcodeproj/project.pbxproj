@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0E693CF41D70549300006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF31D70549300006B21 /* MacSVGPlugin.framework */; };
-		0ECCB0121DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0111DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0ED841081800C8C1003985CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ED841071800C8C1003985CD /* Cocoa.framework */; };
 		0ED841121800C8C1003985CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0ED841101800C8C1003985CD /* InfoPlist.strings */; };
 		0ED8411B1800C962003985CD /* PieChartGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8411A1800C962003985CD /* PieChartGenerator.m */; };
@@ -134,7 +133,7 @@
 		0ED840FC1800C8C1003985CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 			};
 			buildConfigurationList = 0ED840FF1800C8C1003985CD /* Build configuration list for PBXProject "PieChartGenerator" */;
@@ -160,7 +159,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0ED841121800C8C1003985CD /* InfoPlist.strings in Resources */,
-				0ECCB0121DB4AAEE001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0ED8411D1800C9B0003985CD /* PieChartGenerator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

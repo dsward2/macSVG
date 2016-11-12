@@ -10,7 +10,6 @@
 		0E06F8861D57B7F300265FA2 /* PathElementEditorFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */; };
 		0E6E00381D37126A0060154A /* PathSegmentEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */; };
 		0EA47BEA1D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA47BE91D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m */; };
-		0ECCB00E1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EDEB22D1501AE0E008CA4AF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */; };
 		0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDEB2351501AE0E008CA4AF /* InfoPlist.strings */; };
 		0EDEB2421501AEA4008CA4AF /* PathElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDEB2411501AEA4008CA4AF /* PathElementEditor.m */; };
@@ -131,7 +130,7 @@
 		0EDEB2201501AE0E008CA4AF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 			};
 			buildConfigurationList = 0EDEB2231501AE0E008CA4AF /* Build configuration list for PBXProject "PathElementEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -156,7 +155,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */,
-				0ECCB00E1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EDEB2441501AEED008CA4AF /* PathElementEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

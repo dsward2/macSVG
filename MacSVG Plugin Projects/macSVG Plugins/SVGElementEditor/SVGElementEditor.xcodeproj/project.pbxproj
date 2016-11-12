@@ -12,7 +12,6 @@
 		0E25EEE3179688B100EFC1EF /* SVGElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E25EEE1179688B100EFC1EF /* SVGElementEditor.xib */; };
 		0E693CF81D7054C600006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF71D7054C600006B21 /* MacSVGPlugin.framework */; };
 		0E92539F17969B0900E04FAD /* SVGElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E25EEE01796877A00EFC1EF /* SVGElementEditor.m */; };
-		0ECCB0181DB4AB4A001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0171DB4AB4A001A6085 /* macSVGPluginConfig.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,7 +128,7 @@
 		0E25EEC01796873500EFC1EF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 			};
 			buildConfigurationList = 0E25EEC31796873500EFC1EF /* Build configuration list for PBXProject "SVGElementEditor" */;
@@ -155,7 +154,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E25EEE3179688B100EFC1EF /* SVGElementEditor.xib in Resources */,
-				0ECCB0181DB4AB4A001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E25EED61796873500EFC1EF /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

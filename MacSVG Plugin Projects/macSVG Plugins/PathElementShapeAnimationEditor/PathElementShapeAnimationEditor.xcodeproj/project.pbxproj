@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0ECCB0101DB4AA86001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EEE3AEC17BC03740040846F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EEE3AEB17BC03740040846F /* Cocoa.framework */; };
 		0EEE3AF617BC03740040846F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EEE3AF417BC03740040846F /* InfoPlist.strings */; };
 		0EEE3AFF17BC041A0040846F /* PathElementShapeAnimationEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3AFE17BC041A0040846F /* PathElementShapeAnimationEditor.m */; };
@@ -125,7 +124,7 @@
 		0EEE3AE017BC03740040846F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 			};
 			buildConfigurationList = 0EEE3AE317BC03740040846F /* Build configuration list for PBXProject "PathElementShapeAnimationEditor" */;
@@ -151,7 +150,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EEE3AF617BC03740040846F /* InfoPlist.strings in Resources */,
-				0ECCB0101DB4AA86001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0EEE3B0817BC34F20040846F /* PathElementShapeAnimationEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

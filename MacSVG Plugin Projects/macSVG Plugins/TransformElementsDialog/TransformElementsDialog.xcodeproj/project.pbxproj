@@ -11,7 +11,6 @@
 		0E5AE6001D5BD8C8000C1643 /* TransformElementsDialogWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5AE5FF1D5BD8C8000C1643 /* TransformElementsDialogWindowController.m */; };
 		0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5AE6031D5BEF5A000C1643 /* TransformElementsDialog.xib */; };
 		0E693CFE1D70551300006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFD1D70551300006B21 /* MacSVGPlugin.framework */; };
-		0ECCB0201DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,7 +110,7 @@
 		0E5AE5EA1D5BD57F000C1643 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 				TargetAttributes = {
 					0E5AE5F11D5BD57F000C1643 = {
@@ -141,7 +140,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ECCB0201DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E5AE6041D5BEF5A000C1643 /* TransformElementsDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

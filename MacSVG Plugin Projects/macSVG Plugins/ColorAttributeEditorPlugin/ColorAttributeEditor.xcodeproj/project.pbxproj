@@ -17,7 +17,6 @@
 		0E2EEF9B14B793DF00A88ED9 /* ColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EEF9914B793DF00A88ED9 /* ColorSwatchCell.m */; };
 		0E5CC08217E283D0006ABDDA /* GradientEditorPopoverViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E5CC08017E283D0006ABDDA /* GradientEditorPopoverViewController.h */; };
 		0E5CC08317E283D0006ABDDA /* GradientEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5CC08117E283D0006ABDDA /* GradientEditorPopoverViewController.m */; };
-		0ECCB0061DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0051DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42E81D7114B7001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E71D7114B7001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -145,7 +144,7 @@
 		0E18CA0B14B5B8AE00AB9F78 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 			};
 			buildConfigurationList = 0E18CA0E14B5B8AE00AB9F78 /* Build configuration list for PBXProject "ColorAttributeEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -169,7 +168,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ECCB0061DB4A9EE001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E18CA2214B5B8AE00AB9F78 /* InfoPlist.strings in Resources */,
 				0E08F52814B6B1C7008E6ADD /* ColorAttributeEditor.xib in Resources */,
 				0E08F69414B6EC6A008E6ADD /* svg_colors.xml in Resources */,

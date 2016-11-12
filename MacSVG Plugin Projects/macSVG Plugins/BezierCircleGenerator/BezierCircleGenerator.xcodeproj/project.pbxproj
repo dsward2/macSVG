@@ -10,7 +10,6 @@
 		0E81A96B1D34E62A00EA824A /* BezierCircleGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E81A96A1D34E62A00EA824A /* BezierCircleGenerator.m */; };
 		0E81A96E1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E81A96D1D34F00B00EA824A /* BezierCircleGeneratorWindowController.m */; };
 		0E81A9711D34F2D700EA824A /* BezierCircleGenerator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E81A9701D34F2D700EA824A /* BezierCircleGenerator.xib */; };
-		0ECCB0031DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */; };
 		0EFA42E61D711497001FDE91 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA42E51D711497001FDE91 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -112,7 +111,7 @@
 		0E81A9581D34E54F00EA824A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 				TargetAttributes = {
 					0E81A95F1D34E54F00EA824A = {
@@ -142,7 +141,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ECCB0031DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E81A9711D34F2D700EA824A /* BezierCircleGenerator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
