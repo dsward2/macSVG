@@ -1961,9 +1961,7 @@
 		0E5AE6071D5C1A7A000C1643 /* TransformElementsDialog.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = TransformElementsDialog.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		0E5FAA551DDD5234006EB7E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0E5FAA5B1DDD83A9006EB7E6 /* PkgInfo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PkgInfo; sourceTree = "<group>"; };
 		0E5FAA611DDD83C4006EB7E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = index.html; sourceTree = "<group>"; };
-		0E5FAA7F1DDD83DA006EB7E6 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
 		0E67EE311DDEA23900D87B5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = macSVG.help.helpindex; sourceTree = "<group>"; };
 		0E69F15E14ABC5C10065E2F0 /* WebServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebServerController.h; sourceTree = "<group>"; };
 		0E69F15F14ABC5C10065E2F0 /* WebServerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebServerController.m; sourceTree = "<group>"; };
@@ -2958,7 +2956,6 @@
 			isa = PBXGroup;
 			children = (
 				0E5FAA551DDD5234006EB7E6 /* Info.plist */,
-				0E5FAA5B1DDD83A9006EB7E6 /* PkgInfo */,
 				0E5FAA521DDD51DB006EB7E6 /* Resources */,
 			);
 			path = Contents;
@@ -2969,7 +2966,6 @@
 			children = (
 				0E5FAA5D1DDD83C4006EB7E6 /* en.lproj */,
 				0E5FAA831DDD8FDC006EB7E6 /* GlobalArt */,
-				0E5FAA7F1DDD83DA006EB7E6 /* version.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";

@@ -5,9 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en-us</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.macSVG.help</string>
+	<string>com.arkphone.macSVG.help</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>macSVG</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,8 +30,12 @@
 	<string>http://macsvg.org/wordpress/index.php/helpbook/?s=&apos;query&apos;&amp;l=&apos;lang&apos;&amp;p=&apos;product&apos;</string>
 	<key>HPDBookRemoteURL</key>
 	<string>http://macsvg.org/wordpress/index.php</string>
+	<key>HPDBookTitle</key>
+	<string>macSVG Help</string>
 	<key>HPDBookType</key>
 	<string>3</string>
+	<key>HPDBookTopicListCSSPath</key>
+	<string>Style/MyStyleSheet.css</string>
 	<key>HPDBookUsesExternalViewer</key>
 	<false/>
 	<key>HPDClipTOCWidth</key>
