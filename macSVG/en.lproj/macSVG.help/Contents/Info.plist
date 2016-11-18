@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en-us</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.apple.macSVG.help</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.5</string>
+	<key>CFBundleSignature</key>
+	<string>hbwr</string>
+	<key>CFBundleVersion</key>
+	<string>0.5</string>
+	<key>HPDBookAccessPath</key>
+	<string>index.html</string>
+	<key>HPDBookIconPath</key>
+	<string>../GlobalArt/AppIconDefault_macSVG.png</string>
+	<key>HPDBookIndexPath</key>
+	<string>macSVG.help.helpindex</string>
+	<key>HPDBookKBProduct</key>
+	<string>macSVG</string>
+	<key>HPDBookKBURL</key>
+	<string>http://macsvg.org/wordpress/index.php/helpbook/?s=&apos;query&apos;&amp;l=&apos;lang&apos;&amp;p=&apos;product&apos;</string>
+	<key>HPDBookRemoteURL</key>
+	<string>http://macsvg.org/wordpress/index.php</string>
+	<key>HPDBookType</key>
+	<string>3</string>
+	<key>HPDBookUsesExternalViewer</key>
+	<false/>
+	<key>HPDClipTOCWidth</key>
+	<integer>190</integer>
+	<key>HPDMaxWindowWidth</key>
+	<integer>938</integer>
+</dict>
+</plist>

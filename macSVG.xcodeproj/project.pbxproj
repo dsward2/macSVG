@@ -1422,6 +1422,8 @@
 		0E4312951459F8FD0091DD03 /* translate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = translate.png; sourceTree = "<group>"; };
 		0E47A9D614B3986500AC9A28 /* EmbeddedFontEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = EmbeddedFontEncoder.h; path = "SVG Functions/EmbeddedFontEncoder.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E47A9D714B3986500AC9A28 /* EmbeddedFontEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = EmbeddedFontEncoder.m; path = "SVG Functions/EmbeddedFontEncoder.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0E4918251DDE8C7D00AF3056 /* AppIconDefault_macSVG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIconDefault_macSVG.png; sourceTree = "<group>"; };
+		0E4918261DDE8C7D00AF3056 /* AppLanding_macSVG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLanding_macSVG.png; sourceTree = "<group>"; };
 		0E4DAF1F17DDEFAE00E5BAEB /* DOMSelectionControlsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DOMSelectionControlsManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E4DAF2017DDEFAE00E5BAEB /* DOMSelectionControlsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DOMSelectionControlsManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E4DAF2217DE574500E5BAEB /* path.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = path.svg; sourceTree = "<group>"; };
@@ -1958,6 +1960,11 @@
 		0E527C831D55C41F002AB772 /* types-dom-svgtransformable-01-f.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = "types-dom-svgtransformable-01-f.svg"; sourceTree = "<group>"; };
 		0E5AE6071D5C1A7A000C1643 /* TransformElementsDialog.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = TransformElementsDialog.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		0E5FAA551DDD5234006EB7E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E5FAA5B1DDD83A9006EB7E6 /* PkgInfo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PkgInfo; sourceTree = "<group>"; };
+		0E5FAA611DDD83C4006EB7E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = index.html; sourceTree = "<group>"; };
+		0E5FAA7F1DDD83DA006EB7E6 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
+		0E67EE311DDEA23900D87B5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = macSVG.help.helpindex; sourceTree = "<group>"; };
 		0E69F15E14ABC5C10065E2F0 /* WebServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebServerController.h; sourceTree = "<group>"; };
 		0E69F15F14ABC5C10065E2F0 /* WebServerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebServerController.m; sourceTree = "<group>"; };
 		0E71452D142BDEFD002F8E1F /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
@@ -2939,6 +2946,52 @@
 			path = svg;
 			sourceTree = "<group>";
 		};
+		0E5FAA4D1DDD5180006EB7E6 /* macSVG.help */ = {
+			isa = PBXGroup;
+			children = (
+				0E5FAA511DDD51DB006EB7E6 /* Contents */,
+			);
+			path = macSVG.help;
+			sourceTree = "<group>";
+		};
+		0E5FAA511DDD51DB006EB7E6 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				0E5FAA551DDD5234006EB7E6 /* Info.plist */,
+				0E5FAA5B1DDD83A9006EB7E6 /* PkgInfo */,
+				0E5FAA521DDD51DB006EB7E6 /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		0E5FAA521DDD51DB006EB7E6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0E5FAA5D1DDD83C4006EB7E6 /* en.lproj */,
+				0E5FAA831DDD8FDC006EB7E6 /* GlobalArt */,
+				0E5FAA7F1DDD83DA006EB7E6 /* version.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0E5FAA5D1DDD83C4006EB7E6 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				0E67EE301DDEA23900D87B5E /* macSVG.help.helpindex */,
+				0E5FAA601DDD83C4006EB7E6 /* index.html */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		0E5FAA831DDD8FDC006EB7E6 /* GlobalArt */ = {
+			isa = PBXGroup;
+			children = (
+				0E4918251DDE8C7D00AF3056 /* AppIconDefault_macSVG.png */,
+				0E4918261DDE8C7D00AF3056 /* AppLanding_macSVG.png */,
+			);
+			path = GlobalArt;
+			sourceTree = "<group>";
+		};
 		0E69F15914ABC5C10065E2F0 /* WebServer Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -3299,6 +3352,7 @@
 				0EA2B4C11D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */,
 				0EA2B4C31D9C96FC00100631 /* TextDocument.xib */,
 				0EA2B4C51D9C96FC00100631 /* ToolPaletteWindow.xib */,
+				0E5FAA4D1DDD5180006EB7E6 /* macSVG.help */,
 			);
 			name = en.lproj;
 			path = macSVG/en.lproj;
@@ -3622,6 +3676,7 @@
 				0E18CB2014B5BF6400AB9F78 /* CopyFiles */,
 				0E8DFB701D55C6D000870B72 /* CopyFiles */,
 				0E1C05671D57031A004E7B62 /* CopyFiles */,
+				0E5FAA821DDD873B006EB7E6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3755,6 +3810,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0E5FAA821DDD873B006EB7E6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# - copy macSVG.help Help Book bundle to application\nrsync -av ${SRCROOT}/macSVG/en.lproj/macSVG.help ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\n\n#echo ${SRCROOT}/macSVG/en.lproj/macSVG.help\n#echo ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0EB6637414286398003723F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3856,6 +3927,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		0E5FAA601DDD83C4006EB7E6 /* index.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0E5FAA611DDD83C4006EB7E6 /* en */,
+			);
+			name = index.html;
+			sourceTree = "<group>";
+		};
+		0E67EE301DDEA23900D87B5E /* macSVG.help.helpindex */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0E67EE311DDEA23900D87B5E /* en */,
+			);
+			name = macSVG.help.helpindex;
+			sourceTree = "<group>";
+		};
 		0EA2B4B51D9C96FC00100631 /* AppIcons.iconset */ = {
 			isa = PBXVariantGroup;
 			children = (

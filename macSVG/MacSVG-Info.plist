@@ -86,6 +86,10 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>macSVG.help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>com.arkphone.macSVG.help</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcons</string>
 	<key>CFBundleIdentifier</key>
