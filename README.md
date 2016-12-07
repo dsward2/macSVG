@@ -23,6 +23,7 @@ The macSVG product website is under development at http://macsvg.org/
 <img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/animate_stroke-dasharray_on_path.svg">
 
 # Coming soon:
+
 A project website.
 
 Documentation.
