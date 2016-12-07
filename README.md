@@ -13,7 +13,7 @@ The macSVG product website is under development at http://macsvg.org/
 
 #
 
-<img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/README_images/macsvg-logo-animation.svg">
+<img src="https://cdn.rawgit.com/dsward2/macSVG/master/README_images/macsvg-logo-animation.svg">
 
 #
 
