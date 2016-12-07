@@ -1,7 +1,10 @@
 # macSVG
-macSVG - An open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation
 
-Copyright (c) 2016 by ArkPhone, LLC
+<img src="https://cdn.rawgit.com/dsward2/macSVG/master/README_images/macsvg-logo-animation.svg" width="660" height="105">
+
+macSVG - An MIT-licensed open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation
+
+Copyright (c) 2016 by ArkPhone, LLC.
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
@@ -10,10 +13,6 @@ The macSVG product website is under development at http://macsvg.org/
 # Examples:
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/path_animation_and_shape_morphing.svg">
-
-#
-
-<img src="https://cdn.rawgit.com/dsward2/macSVG/master/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
 #
 
