@@ -76,6 +76,7 @@
 		0E4EA2E91D40ADAB00C5145C /* svg_presentation_attributes_help.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E4EA2E71D40AD7500C5145C /* svg_presentation_attributes_help.txt */; };
 		0E5AE6081D5C1A9A000C1643 /* TransformElementsDialog.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E5AE6071D5C1A7A000C1643 /* TransformElementsDialog.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E5B3CEF1D02AB96008FDD23 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */; };
+		0E65AC501DF7F6DC000DBDF9 /* macsvg-logo-animation.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */; };
 		0E69F16214ABC5C10065E2F0 /* WebServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E69F15F14ABC5C10065E2F0 /* WebServerController.m */; };
 		0E714538142C037A002F8E1F /* HorizontalRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E714537142C037A002F8E1F /* HorizontalRulerView.m */; };
 		0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E71453A142C0CD4002F8E1F /* VerticalRulerView.m */; };
@@ -1962,6 +1963,7 @@
 		0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		0E5FAA551DDD5234006EB7E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E5FAA611DDD83C4006EB7E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = index.html; sourceTree = "<group>"; };
+		0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "macsvg-logo-animation.svg"; sourceTree = "<group>"; };
 		0E67EE311DDEA23900D87B5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = macSVG.help.helpindex; sourceTree = "<group>"; };
 		0E69F15E14ABC5C10065E2F0 /* WebServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebServerController.h; sourceTree = "<group>"; };
 		0E69F15F14ABC5C10065E2F0 /* WebServerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebServerController.m; sourceTree = "<group>"; };
@@ -3532,6 +3534,7 @@
 			isa = PBXGroup;
 			children = (
 				0ECCB0241DB51B58001A6085 /* macsvg-screenshot.jpg */,
+				0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */,
 			);
 			path = README_images;
 			sourceTree = "<group>";
@@ -3788,6 +3791,7 @@
 				0EA2B4CF1D9C96FC00100631 /* ToolPaletteWindow.xib in Resources */,
 				0E1F75191D83BD79008AFEAB /* SVG Logo.svg in Resources */,
 				0E1F752D1D83C132008AFEAB /* translate.png in Resources */,
+				0E65AC501DF7F6DC000DBDF9 /* macsvg-logo-animation.svg in Resources */,
 				0E1F751F1D83C132008AFEAB /* crosshair.png in Resources */,
 				0E1F751E1D83C132008AFEAB /* circle.png in Resources */,
 				0EE22BB817F7539E00B58D6D /* Untitled-Banner.xhtml in Resources */,

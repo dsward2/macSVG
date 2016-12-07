@@ -96,6 +96,12 @@
             result = animationTimespan.beginSeconds;
         }
     }
+    
+    if (result == FLT_MAX)
+    {
+        NSLog(@"earliestBeginSeconds = FLT_MAX");
+    }
+    
     return result;
 }
 

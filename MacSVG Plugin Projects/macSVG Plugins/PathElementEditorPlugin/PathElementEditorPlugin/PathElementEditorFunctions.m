@@ -30,6 +30,11 @@
         [self convertCurvesToAbsoluteCubicBezier];
     }
 
+    if ([functionTitle isEqualToString:@"Convert Path to Absolute Cubic Bezier"] == YES)
+    {
+        [self convertPathToAbsoluteCubicBezier];
+    }
+
     if ([functionTitle isEqualToString:@"Scale Path Coordinates"] == YES)
     {
         [self scalePathCoordinates];
@@ -144,6 +149,18 @@
     [self.pathElementEditor updateDocumentViews];
 }
 
+//==================================================================================
+//	convertPathToAbsoluteCubicBezier
+//==================================================================================
+
+- (void)convertPathToAbsoluteCubicBezier
+{
+    NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
+            convertPathToAbsoluteCubicBezier:self.pathElementEditor.pluginTargetXMLElement];
+
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateDocumentViews];
+}
 
 //==================================================================================
 //	reversePath

@@ -89,7 +89,7 @@
 	<key>CFBundleHelpBookFolder</key>
 	<string>macSVG.help</string>
 	<key>CFBundleHelpBookName</key>
-	<string>com.arkphone.macSVG.help</string>
+	<string>com.arkphone.macsvg.help</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcons</string>
 	<key>CFBundleIdentifier</key>

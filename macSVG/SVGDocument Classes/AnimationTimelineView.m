@@ -185,6 +185,8 @@
     if (stringLength == 0)
     {
         NSLog(@"allocTimeComponentsDictionary - Error: stringLength is zero");
+        
+        trimmedBeginTime = @"0";
     }
     
     //NSLog(@"allocTimeComponentsDictionary beginTime=%@", beginTime);
@@ -479,6 +481,7 @@
 //	timelineSort()
 //==================================================================================
 
+/*
 NSComparisonResult timelineSort(id element1, id element2, void *context)
 {
     NSComparisonResult sortResult = NSOrderedSame;
@@ -520,6 +523,40 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     
     return sortResult;
 }
+*/
+
+// sort by earliest begin time
+NSComparisonResult timelineSort(id element1, id element2, void *context)
+{
+    NSComparisonResult sortResult = NSOrderedSame;
+
+    float beginSeconds1 = [element1 earliestBeginSeconds];
+    float beginSeconds2 = [element2 earliestBeginSeconds];
+
+    if (beginSeconds1 > beginSeconds2) 
+    {
+        sortResult = (NSComparisonResult)NSOrderedDescending;
+    }
+    else if (beginSeconds1 < beginSeconds2) 
+    {
+        sortResult = (NSComparisonResult)NSOrderedAscending;
+    }
+    else
+    {
+        //sortResult = (NSComparisonResult)NSOrderedSame;
+
+        AnimationTimelineElement * animationElement1 = element1;
+        AnimationTimelineElement * animationElement2 = element2;
+        
+        NSString * parentID1 = animationElement1.parentID;
+        NSString * parentID2 = animationElement2.parentID;
+
+        sortResult = [parentID1 compare:parentID2];
+    }
+    
+    return sortResult;
+}
+
 
 //==================================================================================
 //	durationForAnimationElement:
@@ -533,20 +570,23 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     
     NSString * durationAttribute = attributesDictionary[@"dur"];
     
-    // FIXME: also needs support for 'end' time value attribute
-    
-    NSMutableDictionary * durationTimeDictionary = [self allocTimeComponentsDictionary:durationAttribute];
-    
-    NSString * timeMethod = durationTimeDictionary[@"method"];
-    
-    if ([timeMethod isEqualToString:@"absoluteTime"] == YES)
+    if (durationAttribute != NULL)
     {
-        NSString * aTimeValue = durationTimeDictionary[@"value"];
-        durationTime = aTimeValue.floatValue;
-    }
-    else if ([timeMethod isEqualToString:@"event"] == YES)
-    {
-        NSLog(@"durationForAnimationElement for event ???");
+        // FIXME: also needs support for 'end' time value attribute
+        
+        NSMutableDictionary * durationTimeDictionary = [self allocTimeComponentsDictionary:durationAttribute];
+        
+        NSString * timeMethod = durationTimeDictionary[@"method"];
+        
+        if ([timeMethod isEqualToString:@"absoluteTime"] == YES)
+        {
+            NSString * aTimeValue = durationTimeDictionary[@"value"];
+            durationTime = aTimeValue.floatValue;
+        }
+        else if ([timeMethod isEqualToString:@"event"] == YES)
+        {
+            NSLog(@"durationForAnimationElement for event ???");
+        }
     }
     
     return durationTime;
@@ -601,6 +641,19 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     }
     
     [infoString appendString:parentID];
+
+    if ([tagName isEqualToString:@"set"] == YES)
+    {
+        [infoString appendString:@" \""];
+        [infoString appendString:typeAttribute];
+        [infoString appendString:@"\""];
+    }
+    else if ([tagName isEqualToString:@"animate"] == YES)
+    {
+        [infoString appendString:@" \""];
+        [infoString appendString:typeAttribute];
+        [infoString appendString:@"\""];
+    }
     
     return infoString;
 }
@@ -650,6 +703,14 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             }
             
             NSString * transformType = attributesDictionary[@"type"];
+            if ([aTagName isEqualToString:@"animate"] == YES)
+            {
+                transformType = attributesDictionary[@"attributeName"];
+            }
+            if ([aTagName isEqualToString:@"set"] == YES)
+            {
+                transformType = attributesDictionary[@"attributeName"];
+            }
             if (transformType == NULL)
             {
                 transformType = @"";

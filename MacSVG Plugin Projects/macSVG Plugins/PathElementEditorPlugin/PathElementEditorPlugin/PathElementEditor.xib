@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="101000" identifier="macosx"/>
-        <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PathElementEditor">
@@ -63,11 +63,11 @@
                             <tabViewItems>
                                 <tabViewItem label="Drawing" identifier="1" id="e2z-rx-xLZ">
                                     <view key="view" id="ocq-fe-6CR">
-                                        <rect key="frame" x="10" y="25" width="244" height="210"/>
+                                        <rect key="frame" x="10" y="29" width="244" height="206"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <button id="19">
-                                                <rect key="frame" x="16" y="162" width="213" height="18"/>
+                                                <rect key="frame" x="16" y="158" width="213" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="check" title="Relative Path Coordinates" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="51">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -78,7 +78,7 @@
                                                 </connections>
                                             </button>
                                             <button id="dG0-K1-eEZ">
-                                                <rect key="frame" x="16" y="126" width="213" height="18"/>
+                                                <rect key="frame" x="16" y="122" width="213" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="check" title="Curve Segment Continuity" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="POQ-5m-83M">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -89,7 +89,7 @@
                                                 </connections>
                                             </button>
                                             <button id="20">
-                                                <rect key="frame" x="16" y="144" width="213" height="18"/>
+                                                <rect key="frame" x="16" y="140" width="213" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="check" title="Close Path Automatically" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="50">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -100,7 +100,7 @@
                                                 </connections>
                                             </button>
                                             <popUpButton verticalHuggingPriority="750" id="28">
-                                                <rect key="frame" x="75" y="183" width="155" height="22"/>
+                                                <rect key="frame" x="75" y="179" width="155" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="31">
                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -141,7 +141,7 @@
                                                 </popUpButtonCell>
                                             </popUpButton>
                                             <button verticalHuggingPriority="750" id="29">
-                                                <rect key="frame" x="14" y="97" width="83" height="28"/>
+                                                <rect key="frame" x="14" y="93" width="83" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="push" title="Close Path" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="30">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -152,7 +152,7 @@
                                                 </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="LXz-LU-Eik">
-                                                <rect key="frame" x="17" y="188" width="55" height="14"/>
+                                                <rect key="frame" x="17" y="184" width="55" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Segment:" id="KtN-Ur-Qws">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -161,7 +161,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <button verticalHuggingPriority="750" id="46f-hu-Gdc">
-                                                <rect key="frame" x="95" y="97" width="89" height="28"/>
+                                                <rect key="frame" x="95" y="93" width="89" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="push" title="Extend Path" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bcb-CI-yGa">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -172,7 +172,7 @@
                                                 </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gqz-Vx-3vx">
-                                                <rect key="frame" x="17" y="81" width="71" height="14"/>
+                                                <rect key="frame" x="17" y="77" width="71" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Path Length:" id="LYV-58-hNp">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -181,7 +181,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Pk3-am-SYS">
-                                                <rect key="frame" x="92" y="81" width="143" height="14"/>
+                                                <rect key="frame" x="92" y="77" width="143" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="drg-AL-l6h">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -190,7 +190,7 @@
                                                 </textFieldCell>
                                             </textField>
                                             <button verticalHuggingPriority="750" id="d3V-75-BxJ">
-                                                <rect key="frame" x="182" y="97" width="44" height="28"/>
+                                                <rect key="frame" x="182" y="93" width="44" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="push" title="Arc" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UK6-se-Fdd">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -383,6 +383,9 @@
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem title="Convert Curves to Absolute Cubic Bezier" id="8kc-PW-QH7">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="Convert Path to Absolute Cubic Bezier" id="0Uo-7L-Y99">
                                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                                             </menuItem>
                                                             <menuItem isSeparatorItem="YES" id="3uU-XA-RVH"/>

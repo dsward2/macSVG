@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en-us</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.arkphone.macSVG.help</string>
+	<string>com.arkphone.macsvg.help</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -27,15 +27,15 @@
 	<key>HPDBookKBProduct</key>
 	<string>macSVG</string>
 	<key>HPDBookKBURL</key>
-	<string>http://macsvg.org/wordpress/index.php/helpbook/?s=&apos;query&apos;&amp;l=&apos;lang&apos;&amp;p=&apos;product&apos;</string>
+	<string>http://macsvg.org/helpbook?s=&apos;query&apos;&amp;amp;l=&apos;lang&apos;&amp;amp;=&apos;product&apos;</string>
 	<key>HPDBookRemoteURL</key>
-	<string>http://macsvg.org/wordpress/index.php</string>
+	<string>http://macsvg.org/</string>
 	<key>HPDBookTitle</key>
 	<string>macSVG Help</string>
 	<key>HPDBookType</key>
 	<string>3</string>
 	<key>HPDBookTopicListCSSPath</key>
-	<string>Style/MyStyleSheet.css</string>
+	<string>../Style/MyStyleSheet.css</string>
 	<key>HPDBookUsesExternalViewer</key>
 	<false/>
 	<key>HPDClipTOCWidth</key>

@@ -466,6 +466,27 @@
 }
 
 
+
+
+- (NSMutableArray *)convertPathToAbsoluteCubicBezier:(NSXMLElement *)pathElement
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id pathFunctions = [macSVGDocumentWindowController pathFunctions];
+    return [pathFunctions convertPathToAbsoluteCubicBezier:pathElement];
+}
+
+
+- (NSMutableArray *)convertPathToAbsoluteCubicBezierWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id pathFunctions = [macSVGDocumentWindowController pathFunctions];
+    return [pathFunctions convertPathToAbsoluteCubicBezierWithPathSegmentsArray:pathSegmentsArray];
+}
+
+
+
+
+
 - (NSMutableArray *)reversePathWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
