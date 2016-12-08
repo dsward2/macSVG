@@ -32,5 +32,6 @@
         pixelPerSecond:(float)pixelsPerSecond frameRect:(NSRect)frameRect rowIndex:(NSUInteger)rowIndex;
         
 @property (readonly) float earliestBeginSeconds;
+@property (readonly) float earliestDurationSeconds;
 
 @end

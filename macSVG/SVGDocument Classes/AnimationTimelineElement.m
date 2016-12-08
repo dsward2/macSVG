@@ -100,6 +100,28 @@
     if (result == FLT_MAX)
     {
         NSLog(@"earliestBeginSeconds = FLT_MAX");
+        result = 0;
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//	earliestDurationSeconds
+//==================================================================================
+
+-(float) earliestDurationSeconds
+{
+    float result = 0;
+    float earliestTime = FLT_MAX;
+    
+    for (AnimationTimespan * animationTimespan in self.animationTimespanArray)
+    {
+        if (animationTimespan.beginSeconds < earliestTime)
+        {
+            earliestTime = animationTimespan.beginSeconds;
+            result = animationTimespan.durationSeconds;
+        }
     }
     
     return result;

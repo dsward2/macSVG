@@ -544,14 +544,31 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     else
     {
         //sortResult = (NSComparisonResult)NSOrderedSame;
-
+        
         AnimationTimelineElement * animationElement1 = element1;
         AnimationTimelineElement * animationElement2 = element2;
-        
+
         NSString * parentID1 = animationElement1.parentID;
         NSString * parentID2 = animationElement2.parentID;
-
         sortResult = [parentID1 compare:parentID2];
+        
+        if (sortResult == NSOrderedSame)
+        {
+            float durationSeconds1 = [element1 earliestDurationSeconds];
+            float durationSeconds2 = [element2 earliestDurationSeconds];
+            
+            if (durationSeconds1 > durationSeconds2)
+            {
+                sortResult = (NSComparisonResult)NSOrderedDescending;
+            }
+            else if (durationSeconds1 < durationSeconds2)
+            {
+                sortResult = (NSComparisonResult)NSOrderedAscending;
+            }
+            else
+            {
+            }
+        }
     }
     
     return sortResult;
