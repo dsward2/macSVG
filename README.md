@@ -1,6 +1,6 @@
 # macSVG
 
-<img src="https://rawgit.com/dsward2/macSVG/master/README_images/macsvg-logo-animation.svg" width="660" height="105">
+<img src="https://cdn.rawgit.com/dsward2/macSVG/master/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
 macSVG - An MIT-licensed open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation
 
