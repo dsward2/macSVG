@@ -26,7 +26,7 @@
   </svgElement>
   <svgElement id="animateMotion">
     <docref>animate.html#AnimateMotionElement</docref>
-    <prototype>animateMotion begin="0s" dur="3s" values="50 50;300 300;" repeatCount="indefinite" calcMode="" keyTimes="0;1;" keySplines="0.5 0 0.5 1"  additive="replace" accumulate="none" fill="freeze"</prototype>
+    <prototype>animateMotion begin="0s" dur="3s" values="50 50;300 300;" repeatCount="indefinite" calcMode="" keyTimes="0;1" keySplines="0.5 0 0.5 1"  additive="replace" accumulate="none" fill="freeze"</prototype>
   </svgElement>
   <svgElement id="animateTransform">
     <docref>animate.html#AnimateTransformElement</docref>

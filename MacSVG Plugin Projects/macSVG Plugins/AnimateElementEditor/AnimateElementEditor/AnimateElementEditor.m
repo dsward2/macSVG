@@ -855,7 +855,7 @@
         
         if (keySplinesString.length > 0)
         {
-            // apparent webkit bug - don't end last spline with semicolon
+            // apparent Chrome bug (formerly in WebKit) - don't end last spline with semicolon
             if (keySplinesAttributeString.length > 0)
             {
                 [keySplinesAttributeString appendString:@";"];

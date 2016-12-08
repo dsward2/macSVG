@@ -177,7 +177,7 @@
 
 - (IBAction)presetsPopUpButtonAction:(id)sender
 {
-    NSString * keyTimesString = @"0;1;";
+    NSString * keyTimesString = @"0;1";
     NSString * keySplinesString = @"0 0 1 1;";
     NSString * keyPointsString = @"";
     
@@ -186,43 +186,43 @@
     switch (presetIndex)
     {
         case 1:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0 0 1 1;";
             keyPointsString = @"";
             break;
 
         case 2:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0.5 0 0.5 1;";
             keyPointsString = @"";
             break;
 
         case 3:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0 0.75 0.25 1;";
             keyPointsString = @"";
             break;
 
         case 4:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0 0.25 1 0.75;";
             keyPointsString = @"";
             break;
 
         case 5:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0 0 0 1;";
             keyPointsString = @"";
             break;
 
         case 6:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"0 0 1 0;";
             keyPointsString = @"";
             break;
 
         case 7:
-            keyTimesString = @"0;1;";
+            keyTimesString = @"0;1";
             keySplinesString = @"1 0 0.25 0.25;";
             keyPointsString = @"";
             break;
