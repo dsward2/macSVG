@@ -2,13 +2,11 @@
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
-macSVG - An MIT-licensed open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation
-
-Copyright (c) 2016 by ArkPhone, LLC.
+**macSVG - An MIT-licensed open-source macOS app for designing HTML5 SVG (Scalable Vector Graphics) art and animation**
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
-The macSVG product website is under development at http://macsvg.org/
+**The macSVG product website is under development at http://macsvg.org/**
 
 # Examples:
 
@@ -48,3 +46,5 @@ macSVG.app includes a built-in HTTP server, which allows the current document wi
 Currently, this project uses Apple's standard WebKit.framework, not a custom version of WebKit.  However, two pre-built static libraries are members of this project: libcrypto.a, and libssh2.a built with DFSSHWrapper.
 
 Developing...
+
+Copyright (c) 2016 by ArkPhone, LLC.
