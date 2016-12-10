@@ -6,7 +6,7 @@
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
-**The macSVG product website is under development at http://macsvg.org/**
+**The macSVG website is under construction at http://macsvg.org/**
 
 # Examples:
 
