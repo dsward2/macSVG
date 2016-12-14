@@ -602,7 +602,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
         }
         else if ([timeMethod isEqualToString:@"event"] == YES)
         {
-            NSLog(@"durationForAnimationElement for event ???");
+            NSLog(@"syncbase events are not valid clocktimes for dur attributes %@", animationElementDictionary);
         }
     }
     
