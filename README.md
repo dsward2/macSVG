@@ -18,7 +18,8 @@
 
 #
 
-<img src="https://cdn.rawgit.com/dsward2/macSVG/master/macSVG/Resources/macsvg_examples/svg/animate_stroke-dasharray_on_path.svg">
+<img src="https://cdn.rawgit.com/dsward2/macSVG/238a59b65010ad2e77c8da4005fb37338b2669c4/macSVG/Resources/macsvg_examples/svg/animate_stroke-dasharray_on_path.svg">
+
 
 # Coming soon:
 
