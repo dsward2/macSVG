@@ -6,6 +6,8 @@
 
 ![macSVG Screenshot](https://raw.githubusercontent.com/dsward2/macSVG/master/README_images/macsvg-screenshot.jpg)
 
+macSVG can produce dynamic, high-quality graphics and animation for HTML5 web views that work on most major desktop and mobile platforms, including iOS, Android, macOS, Microsoft Windows and Linux.
+
 **The macSVG website is under construction at http://macsvg.org/**
 
 # Examples:
