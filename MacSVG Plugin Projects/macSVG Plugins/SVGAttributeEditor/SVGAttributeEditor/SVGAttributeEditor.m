@@ -89,6 +89,46 @@
 }
 
 //==================================================================================
+//	attributeString:endsWithSuffix:
+//==================================================================================
+
+- (BOOL)attributeString:(NSString *)attributeString endsWithSuffix:(NSString *)suffix
+{
+    BOOL result = NO;
+
+    NSInteger attributeStringLength = attributeString.length;
+    NSInteger suffixLength = suffix.length;
+    
+    if (attributeStringLength > suffixLength)
+    {
+        NSRange unitRange = [attributeString rangeOfString:suffix];
+        
+        if (unitRange.location == (attributeStringLength - suffixLength))
+        {
+            BOOL allNumericValue = YES;
+            
+            for (NSInteger i = 0; i < unitRange.location; i++)
+            {
+                unichar valueChar = [attributeString characterAtIndex:i];
+                
+                if ((valueChar < '0') || (valueChar > '9'))
+                {
+                    allNumericValue = NO;
+                    break;
+                }
+            }
+            
+            if (allNumericValue == YES)
+            {
+                result = YES;
+            }
+        }
+    }
+    
+    return result;
+}
+
+//==================================================================================
 //	unitForAttribute:
 //==================================================================================
 
@@ -99,94 +139,55 @@
     NSString * resultUnit = NULL;
     NSInteger attributeStringLength = attributeString.length;
 
-    NSRange unitRange = NSMakeRange(NSNotFound, NSNotFound);
-    
-    NSRange lastCharactersRange = NSMakeRange(NSNotFound, NSNotFound);
-    if (attributeStringLength >= 2)
+    if ([self attributeString:attributeString endsWithSuffix:@"em"] == YES)
     {
-        lastCharactersRange = NSMakeRange(attributeStringLength - 2, 2);
+        resultUnit = @"em";
     }
-    if (attributeStringLength >= 3)
+    else if ([self attributeString:attributeString endsWithSuffix:@"ex"] == YES)
     {
-        lastCharactersRange = NSMakeRange(attributeStringLength - 3, 3);
+        resultUnit = @"ex";
     }
-    
-    if (lastCharactersRange.location != NSNotFound)
+    else if ([self attributeString:attributeString endsWithSuffix:@"px"] == YES)
     {
-        unitRange = [attributeString rangeOfString:@"em"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"em";
-        }
-        unitRange = [attributeString rangeOfString:@"ex"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"ex";
-        }
-        unitRange = [attributeString rangeOfString:@"px"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"px";
-        }
-        unitRange = [attributeString rangeOfString:@"pt"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"pt";
-        }
-        unitRange = [attributeString rangeOfString:@"pc"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"pc";
-        }
-        unitRange = [attributeString rangeOfString:@"cm"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"cm";
-        }
-        unitRange = [attributeString rangeOfString:@"mm"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"mm";
-        }
-        unitRange = [attributeString rangeOfString:@"in"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"in";
-        }
-        unitRange = [attributeString rangeOfString:@"h"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"h";
-        }
-        unitRange = [attributeString rangeOfString:@"min"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"min";
-        }
-        unitRange = [attributeString rangeOfString:@"s"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"s";
-        }
-        unitRange = [attributeString rangeOfString:@"ms"];
-        if (unitRange.location != NSNotFound)
-        {
-            resultUnit = @"ms";
-        }
+        resultUnit = @"px";
     }
-    
-    if (resultUnit == NULL)
+    else if ([self attributeString:attributeString endsWithSuffix:@"pt"] == YES)
     {
-        if (attributeStringLength >= 2)
-        {
-            unichar lastCharacter = [attributeString characterAtIndex:(attributeStringLength - 1)];
-            if (lastCharacter == '%')
-            {
-                resultUnit = @"%";
-            }
-        }
+        resultUnit = @"pt";
     }
-    
+    else if ([self attributeString:attributeString endsWithSuffix:@"pc"] == YES)
+    {
+        resultUnit = @"pc";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"cm"] == YES)
+    {
+        resultUnit = @"cm";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"mm"] == YES)
+    {
+        resultUnit = @"mm";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"in"] == YES)
+    {
+        resultUnit = @"in";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"h"] == YES)
+    {
+        resultUnit = @"h";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"min"] == YES)
+    {
+        resultUnit = @"min";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"s"] == YES)
+    {
+        resultUnit = @"s";
+    }
+    else if ([self attributeString:attributeString endsWithSuffix:@"%"] == YES)
+    {
+        resultUnit = @"%";
+    }
+
     if (resultUnit == NULL)
     {
         resultUnit = @"";
