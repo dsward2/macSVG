@@ -86,7 +86,7 @@
 
     // create a new window, offscreen.
     self.hiddenWindow = [[NSWindow alloc]
-            initWithContentRect: NSMakeRect( -1000,-1000, self.movieWidth, self.movieHeight)
+            initWithContentRect: NSMakeRect( -2000,-2000, self.movieWidth, self.movieHeight)
             styleMask: NSTitledWindowMask | NSClosableWindowMask backing:NSBackingStoreNonretained defer:NO];
 
     self.hiddenWebView = [[WebView alloc] initWithFrame:webViewFrame];

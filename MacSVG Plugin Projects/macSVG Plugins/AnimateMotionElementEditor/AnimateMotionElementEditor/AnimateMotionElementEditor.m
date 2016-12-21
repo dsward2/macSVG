@@ -302,47 +302,27 @@
 
     [self setAttribute:@"begin" element:animateMotionElement textField:beginTextField];
 
-    fromXTextField.stringValue = @"";
-    fromYTextField.stringValue = @"";
+    fromTextField.stringValue = @"";
     NSXMLNode * fromAttributeNode = [animateMotionElement attributeForName:@"from"];
     if (fromAttributeNode != NULL)
     {
         NSString * fromAttributeValue = fromAttributeNode.stringValue;
-        NSArray * fromAttributeArray = [fromAttributeValue componentsSeparatedByString:@" "];
-        if (fromAttributeArray.count > 1)
-        {
-            NSString * fromXAttributeValue = fromAttributeArray[0];
-            NSString * fromYAttributeValue = fromAttributeArray[1];
-            fromXTextField.stringValue = fromXAttributeValue;
-            fromYTextField.stringValue = fromYAttributeValue;
-        }
+        fromTextField.stringValue = fromAttributeValue;
+        [animateMotionTabView selectTabViewItemAtIndex:0];
     }
 
-    toXTextField.stringValue = @"";
-    toYTextField.stringValue = @"";
+    toTextField.stringValue = @"";
     NSXMLNode * toAttributeNode = [animateMotionElement attributeForName:@"to"];
     if (toAttributeNode != NULL)
     {
         NSString * toAttributeValue = toAttributeNode.stringValue;
-        NSArray * toAttributeArray = [toAttributeValue componentsSeparatedByString:@" "];
-        if (toAttributeArray.count > 1)
-        {
-            NSString * toXAttributeValue = toAttributeArray[0];
-            NSString * toYAttributeValue = toAttributeArray[1];
-            toXTextField.stringValue = toXAttributeValue;
-            toYTextField.stringValue = toYAttributeValue;
-            
-            [animateMotionTabView selectTabViewItemAtIndex:0];
-        }
+        toTextField.stringValue = toAttributeValue;
+        [animateMotionTabView selectTabViewItemAtIndex:0];
     }
 
-    //[valuesTextView setString:@""];
     NSXMLNode * valuesAttributeNode = [animateMotionElement attributeForName:@"values"];
     if (valuesAttributeNode != NULL)
     {
-        //NSString * valuesAttributeValue = [valuesAttributeNode stringValue];
-        //[valuesTextView setString:valuesAttributeValue];
-        
         [self configureValuesTableView];
         
         [animateMotionTabView selectTabViewItemAtIndex:1];
@@ -895,10 +875,8 @@
     NSTabViewItem * animateMotionTabViewItem = animateMotionTabView.selectedTabViewItem;
     NSInteger animateMotionTabIndex = [animateMotionTabView indexOfTabViewItem:animateMotionTabViewItem];
     
-    NSString * fromXString = fromXTextField.stringValue;
-    NSString * fromYString = fromYTextField.stringValue;
-    NSString * toXString = toXTextField.stringValue;
-    NSString * toYString = toYTextField.stringValue;
+    NSString * fromString = fromTextField.stringValue;
+    NSString * toString = toTextField.stringValue;
     
     NSMutableString * valuesString = [NSMutableString string];
     for (NSArray * rowArray in self.valuesArray)
@@ -936,12 +914,10 @@
     {
         case 0:
         {
-            NSString * fromString = [NSString stringWithFormat:@"%@ %@", fromXString, fromYString];
-            NSString * toString = [NSString stringWithFormat:@"%@ %@", toXString, toYString];
             [self setAttributeName:@"from" value:fromString element:self.pluginTargetXMLElement];
             [self setAttributeName:@"to" value:toString element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"values" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"path" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"values"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"path"];
             [self setAttributeName:@"rotate" value:@"" element:self.pluginTargetXMLElement];
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
@@ -952,10 +928,10 @@
         }
         case 1:
         {
-            [self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"from"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"to"];
             [self setAttributeName:@"values" value:valuesString element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"path" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"path"];
             [self setAttributeName:@"rotate" value:@"" element:self.pluginTargetXMLElement];
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
@@ -966,9 +942,9 @@
         }
         case 2:
         {
-            [self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"values" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"from"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"to"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"values"];
             [self setAttributeName:@"path" value:pathString element:self.pluginTargetXMLElement];
             [self setAttributeName:@"rotate" value:pathRotateString element:self.pluginTargetXMLElement];
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
@@ -980,10 +956,10 @@
         }
         case 3:
         {
-            [self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"values" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"path" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"from"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"to"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"values"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"path"];
             NSArray * mpathElementsArray = [animateMotionElement elementsForName:@"mpath"];
             for (NSXMLElement * aMpathElement in mpathElementsArray)
             {

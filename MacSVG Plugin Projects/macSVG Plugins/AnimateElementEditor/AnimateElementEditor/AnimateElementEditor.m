@@ -303,38 +303,22 @@
 
     [self setAttribute:@"begin" element:animateElement textField:beginTextField];
 
-    fromXTextField.stringValue = @"";
-    fromYTextField.stringValue = @"";
+    fromTextField.stringValue = @"";
     NSXMLNode * fromAttributeNode = [animateElement attributeForName:@"from"];
     if (fromAttributeNode != NULL)
     {
         NSString * fromAttributeValue = fromAttributeNode.stringValue;
-        NSArray * fromAttributeArray = [fromAttributeValue componentsSeparatedByString:@" "];
-        if (fromAttributeArray.count > 1)
-        {
-            NSString * fromXAttributeValue = fromAttributeArray[0];
-            NSString * fromYAttributeValue = fromAttributeArray[1];
-            fromXTextField.stringValue = fromXAttributeValue;
-            fromYTextField.stringValue = fromYAttributeValue;
-        }
+        fromTextField.stringValue = fromAttributeValue;
+        [animateElementTabView selectTabViewItemAtIndex:0];
     }
 
-    toXTextField.stringValue = @"";
-    toYTextField.stringValue = @"";
+    toTextField.stringValue = @"";
     NSXMLNode * toAttributeNode = [animateElement attributeForName:@"to"];
     if (toAttributeNode != NULL)
     {
         NSString * toAttributeValue = toAttributeNode.stringValue;
-        NSArray * toAttributeArray = [toAttributeValue componentsSeparatedByString:@" "];
-        if (toAttributeArray.count > 1)
-        {
-            [animateElementTabView selectTabViewItemAtIndex:0];
-
-            NSString * toXAttributeValue = toAttributeArray[0];
-            NSString * toYAttributeValue = toAttributeArray[1];
-            toXTextField.stringValue = toXAttributeValue;
-            toYTextField.stringValue = toYAttributeValue;
-        }
+        toTextField.stringValue = toAttributeValue;
+        [animateElementTabView selectTabViewItemAtIndex:0];
     }
 
     //[valuesTextView setString:@""];
@@ -779,10 +763,8 @@
     NSTabViewItem * animateElementTabViewItem = animateElementTabView.selectedTabViewItem;
     NSInteger animateElementTabIndex = [animateElementTabView indexOfTabViewItem:animateElementTabViewItem];
     
-    NSString * fromXString = fromXTextField.stringValue;
-    NSString * fromYString = fromYTextField.stringValue;
-    NSString * toXString = toXTextField.stringValue;
-    NSString * toYString = toYTextField.stringValue;
+    NSString * fromString = fromTextField.stringValue;
+    NSString * toString = toTextField.stringValue;
     
     //NSString * valuesString = [valuesTextView string];
     //valuesString = [valuesString stringByReplacingOccurrencesOfString:@";\n" withString:@";"];
@@ -818,18 +800,20 @@
     {
         case 0:
         {
-            NSString * fromString = [NSString stringWithFormat:@"%@ %@", fromXString, fromYString];
-            NSString * toString = [NSString stringWithFormat:@"%@ %@", toXString, toYString];
             [self setAttributeName:@"from" value:fromString element:self.pluginTargetXMLElement];
             [self setAttributeName:@"to" value:toString element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"values" value:@"" element:self.pluginTargetXMLElement];
+            //[self setAttributeName:@"values" value:@"" element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"values"];
             break;
         }
         case 1:
         {
-            [self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
-            [self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
+            //[self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
+            //[self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
             [self setAttributeName:@"values" value:valuesString element:self.pluginTargetXMLElement];
+            [self.pluginTargetXMLElement removeAttributeForName:@"from"];
+            [self.pluginTargetXMLElement removeAttributeForName:@"to"];
+
             break;
         }
         default:

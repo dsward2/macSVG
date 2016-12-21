@@ -17,11 +17,8 @@
     IBOutlet NSTextField * durTextField;
     IBOutlet NSComboBox * repeatCountComboBox;
     IBOutlet NSTabView * animateElementTabView;
-    IBOutlet NSTextField * fromXTextField;
-    IBOutlet NSTextField * fromYTextField;
-    IBOutlet NSTextField * toXTextField;
-    IBOutlet NSTextField * toYTextField;
-    //IBOutlet NSTextView * valuesTextView;
+    IBOutlet NSTextField * fromTextField;
+    IBOutlet NSTextField * toTextField;
     IBOutlet NSTableView * valuesTableView;
 
     IBOutlet NSButton * addValuesRowButton;
