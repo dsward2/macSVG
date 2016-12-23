@@ -2354,14 +2354,14 @@ Gw
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="VLS-7i-fiK">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="270" height="253"/>
+            <rect key="contentRect" x="196" y="240" width="482" height="251"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
-            <view key="contentView" id="MvP-o3-3fe">
-                <rect key="frame" x="0.0" y="0.0" width="270" height="253"/>
+            <view key="contentView" misplaced="YES" id="MvP-o3-3fe">
+                <rect key="frame" x="0.0" y="0.0" width="482" height="251"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Amr-F9-7oS">
-                        <rect key="frame" x="104" y="191" width="44" height="17"/>
+                        <rect key="frame" x="104" y="189" width="44" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Width:" id="nqf-pb-X1l">
                             <font key="font" metaFont="system"/>
@@ -2370,7 +2370,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Wfa-qv-SdS">
-                        <rect key="frame" x="100" y="159" width="48" height="17"/>
+                        <rect key="frame" x="100" y="157" width="48" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Height:" id="fcq-G8-QLt">
                             <font key="font" metaFont="system"/>
@@ -2379,7 +2379,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="G6x-bU-7mh">
-                        <rect key="frame" x="76" y="127" width="72" height="17"/>
+                        <rect key="frame" x="76" y="125" width="72" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Start Time:" id="JPi-YO-nfu">
                             <font key="font" metaFont="system"/>
@@ -2388,7 +2388,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="I6U-M6-Pep">
-                        <rect key="frame" x="83" y="95" width="65" height="17"/>
+                        <rect key="frame" x="83" y="93" width="65" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="End Time:" id="la6-rq-lOJ">
                             <font key="font" metaFont="system"/>
@@ -2397,7 +2397,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="crZ-UC-7Uf">
-                        <rect key="frame" x="24" y="63" width="124" height="17"/>
+                        <rect key="frame" x="24" y="61" width="124" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Frames per second:" id="C3v-u7-qWD">
                             <font key="font" metaFont="system"/>
@@ -2406,7 +2406,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="wLL-AE-7g5">
-                        <rect key="frame" x="154" y="188" width="96" height="22"/>
+                        <rect key="frame" x="154" y="186" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="BXd-uf-QMU">
                             <font key="font" metaFont="system"/>
@@ -2415,7 +2415,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="fTC-Bg-yS1">
-                        <rect key="frame" x="154" y="156" width="96" height="22"/>
+                        <rect key="frame" x="154" y="154" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="cnt-6I-XLG">
                             <font key="font" metaFont="system"/>
@@ -2424,7 +2424,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="1R3-fl-HqM">
-                        <rect key="frame" x="154" y="124" width="96" height="22"/>
+                        <rect key="frame" x="154" y="122" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="MaY-2o-Eiz">
                             <font key="font" metaFont="system"/>
@@ -2433,7 +2433,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="PUC-YN-hNz">
-                        <rect key="frame" x="154" y="92" width="96" height="22"/>
+                        <rect key="frame" x="154" y="90" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="wBX-ZS-zrJ">
                             <font key="font" metaFont="system"/>
@@ -2442,7 +2442,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="ejN-9q-rP6">
-                        <rect key="frame" x="154" y="60" width="96" height="22"/>
+                        <rect key="frame" x="154" y="58" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="aV8-6m-cb9">
                             <font key="font" metaFont="system"/>
@@ -2450,8 +2450,8 @@ Gw
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" id="mCV-pp-Tk1">
-                        <rect key="frame" x="186" y="13" width="70" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="mCV-pp-Tk1">
+                        <rect key="frame" x="389" y="13" width="70" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yJW-XK-cVf">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2461,8 +2461,8 @@ Gw
                             <action selector="saveVideoButtonAction:" target="-2" id="HpM-25-F2p"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="Mx3-k5-ZId">
-                        <rect key="frame" x="104" y="13" width="82" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="Mx3-k5-ZId">
+                        <rect key="frame" x="307" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8ip-Nk-WlY">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2475,18 +2475,36 @@ Gw
                             <action selector="cancelVideoButtonAction:" target="-2" id="Wx0-68-ufL"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="IgQ-M8-Z0S">
-                        <rect key="frame" x="35" y="224" width="201" height="17"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="puc-J2-IV7">
+                        <rect key="frame" x="256" y="157" width="208" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Height should be an even number" id="fqF-VR-aRw">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="d3Y-7i-cMv">
+                        <rect key="frame" x="256" y="188" width="199" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Width should be a multiple of 16" id="3H2-PE-6zg">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="IgQ-M8-Z0S">
+                        <rect key="frame" x="136" y="224" width="211" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Generate HTML5 MPEG-4 Video" id="AuY-W8-eVR">
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="1121" y="743"/>
+            <point key="canvasLocation" x="1160" y="1081"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="RhA-1R-Mm8">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>

@@ -246,7 +246,7 @@
             NSString * eventID = [trimmedBeginTime substringToIndex:(timeQualifierOffset)];
             NSString * eventQualifier = [trimmedBeginTime substringFromIndex:(timeQualifierOffset + 1)];
 
-            [resultDictionary setObject:@"event" forKey:@"method"];
+            [resultDictionary setObject:@"eventTime" forKey:@"method"];
             [resultDictionary setObject:eventID forKey:@"eventID"];
             [resultDictionary setObject:eventQualifier forKey:@"eventQualifier"];
         }
@@ -287,7 +287,7 @@
             NSString * eventID = [trimmedBeginTime substringToIndex:(timeQualifierOffset)];
             NSString * eventQualifier = [trimmedBeginTime substringFromIndex:(timeQualifierOffset + 1)];
 
-            resultDictionary[@"method"] = @"event";
+            resultDictionary[@"method"] = @"eventTime";
             resultDictionary[@"eventID"] = eventID;
             resultDictionary[@"eventQualifier"] = eventQualifier;
         }
@@ -600,7 +600,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
             NSString * aTimeValue = durationTimeDictionary[@"value"];
             durationTime = aTimeValue.floatValue;
         }
-        else if ([timeMethod isEqualToString:@"event"] == YES)
+        else if ([timeMethod isEqualToString:@"eventTime"] == YES)
         {
             NSLog(@"syncbase events are not valid clocktimes for dur attributes %@", animationElementDictionary);
         }
@@ -697,11 +697,12 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
 
         if (elementIndex != NSNotFound)
         {
-            isRepeatElement = YES;  // a timeline element already exists, so a repeat
+            isRepeatElement = YES;  // a timeline element already exists, so this is a repeating timeline element
             animationTimelineElement = (self.timelineElementsArray)[elementIndex];
         }
         else
         {
+            // create a new animationTimelineElement
             animationTimelineElement = [[AnimationTimelineElement alloc] init];
                         
             NSMutableDictionary * attributesDictionary = animationElementDictionary[@"attributes"];
@@ -897,57 +898,60 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
     
     if (timelineIndex != NSNotFound)
     {
-        // a timeline does not exist for current element, create a new one
+        // the event was found in timeline
         float duration = [self durationForAnimationElement:animationElementDictionary];
         
         AnimationTimelineElement * animationTimelineElement = (self.timelineElementsArray)[timelineIndex];
         
         NSMutableArray * animationTimespanArray = animationTimelineElement.animationTimespanArray;
         
-        AnimationTimespan * animationTimespan = animationTimespanArray.lastObject;
+        //AnimationTimespan * animationTimespan = animationTimespanArray.lastObject;
         
-        float previousBeginSeconds = animationTimespan.beginSeconds;
-        float previousDurationSeconds = animationTimespan.durationSeconds;
-        
-        float beginSeconds = 0;
-        
-        /*
-        if ([eventQualifier isEqualToString:@"begin"] == YES)
+        for (AnimationTimespan * animationTimespan in animationTimespanArray)
         {
-            beginSeconds = previousBeginSeconds;
-        }
-        else if ([eventQualifier isEqualToString:@"end"] == YES)
-        {
-            beginSeconds = previousBeginSeconds + previousDurationSeconds;
-        }
-        */
-        
-        NSString * syncbaseOffsetString = @"";
-
-        NSRange beginRange = [eventQualifier rangeOfString:@"begin"];
-        NSRange endRange = [eventQualifier rangeOfString:@"end"];
-        if (beginRange.location == 0)
-        {
-            beginSeconds = previousBeginSeconds;
+            float previousBeginSeconds = animationTimespan.beginSeconds;
+            float previousDurationSeconds = animationTimespan.durationSeconds;
             
-            syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"begin" withString:@""];
-        }
-        else if (endRange.location == 0)
-        {
-            beginSeconds = previousBeginSeconds + previousDurationSeconds;
+            float beginSeconds = 0;
             
-            syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"end" withString:@""];
-        }
-        
-        CGFloat syncbaseOffsetFloat = syncbaseOffsetString.floatValue;
-        beginSeconds += syncbaseOffsetFloat;
-        
-        //NSLog(@"%@.%@ %@", eventID, eventQualifier, beginSecondsString);
-        
-        NSString * beginSecondsString = [self allocFloatString:beginSeconds];
+            /*
+            if ([eventQualifier isEqualToString:@"begin"] == YES)
+            {
+                beginSeconds = previousBeginSeconds;
+            }
+            else if ([eventQualifier isEqualToString:@"end"] == YES)
+            {
+                beginSeconds = previousBeginSeconds + previousDurationSeconds;
+            }
+            */
+            
+            NSString * syncbaseOffsetString = @"";
 
-        result = [self addTimelineItemForElement:animationElementDictionary 
-                beginSeconds:beginSecondsString durationSeconds:duration method:@"eventTime"];
+            NSRange beginRange = [eventQualifier rangeOfString:@"begin"];
+            NSRange endRange = [eventQualifier rangeOfString:@"end"];
+            if (beginRange.location == 0)
+            {
+                beginSeconds = previousBeginSeconds;
+                
+                syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"begin" withString:@""];
+            }
+            else if (endRange.location == 0)
+            {
+                beginSeconds = previousBeginSeconds + previousDurationSeconds;
+                
+                syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"end" withString:@""];
+            }
+            
+            CGFloat syncbaseOffsetFloat = syncbaseOffsetString.floatValue;
+            beginSeconds += syncbaseOffsetFloat;
+            
+            //NSLog(@"%@.%@ %@", eventID, eventQualifier, beginSecondsString);
+            
+            NSString * beginSecondsString = [self allocFloatString:beginSeconds];
+
+            result = result | [self addTimelineItemForElement:animationElementDictionary
+                    beginSeconds:beginSecondsString durationSeconds:duration method:@"eventTime"]; // OR the result
+        }
     }
             
     return result;

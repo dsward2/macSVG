@@ -352,16 +352,103 @@
 }
 
 
-- (CVPixelBufferRef) newPixelBufferFromCGImage: (CGImageRef) image andFrameSize:(CGSize)frameSize
+
+-(void)imageDump:(CGImageRef)cgimage
 {
+    size_t width  = CGImageGetWidth(cgimage);
+    size_t height = CGImageGetHeight(cgimage);
+
+    size_t bpr = CGImageGetBytesPerRow(cgimage);
+    size_t bpp = CGImageGetBitsPerPixel(cgimage);
+    size_t bpc = CGImageGetBitsPerComponent(cgimage);
+    size_t bytes_per_pixel = bpp / bpc;
+
+    CGBitmapInfo info = CGImageGetBitmapInfo(cgimage);
+
+    NSLog(
+        @"\n"
+        "CGImageGetWidth: %d\n"
+        "CGImageGetHeight:  %d\n"
+        "CGImageGetColorSpace: %@\n"
+        "CGImageGetBitsPerPixel:     %d\n"
+        "CGImageGetBitsPerComponent: %d\n"
+        "CGImageGetBytesPerRow:      %d\n"
+        "CGImageGetBitmapInfo: 0x%.8X\n"
+        "  kCGBitmapAlphaInfoMask     = %s\n"
+        "  kCGBitmapFloatComponents   = %s\n"
+        "  kCGBitmapByteOrderMask     = 0x%.8X\n"
+        "  kCGBitmapByteOrderDefault  = %s\n"
+        "  kCGBitmapByteOrder16Little = %s\n"
+        "  kCGBitmapByteOrder32Little = %s\n"
+        "  kCGBitmapByteOrder16Big    = %s\n"
+        "  kCGBitmapByteOrder32Big    = %s\n",
+        (int)width,
+        (int)height,
+        CGImageGetColorSpace(cgimage),
+        (int)bpp,
+        (int)bpc,
+        (int)bpr,
+        (unsigned)info,
+        (info & kCGBitmapAlphaInfoMask)     ? "YES" : "NO",
+        (info & kCGBitmapFloatComponents)   ? "YES" : "NO",
+        (info & kCGBitmapByteOrderMask),
+        ((info & kCGBitmapByteOrderMask) == kCGBitmapByteOrderDefault)  ? "YES" : "NO",
+        ((info & kCGBitmapByteOrderMask) == kCGBitmapByteOrder16Little) ? "YES" : "NO",
+        ((info & kCGBitmapByteOrderMask) == kCGBitmapByteOrder32Little) ? "YES" : "NO",
+        ((info & kCGBitmapByteOrderMask) == kCGBitmapByteOrder16Big)    ? "YES" : "NO",
+        ((info & kCGBitmapByteOrderMask) == kCGBitmapByteOrder32Big)    ? "YES" : "NO"
+    );
+
+    CGDataProviderRef provider = CGImageGetDataProvider(cgimage);
+    NSData* data = (id)CFBridgingRelease(CGDataProviderCopyData(provider));
+    const uint8_t* bytes = [data bytes];
+
+    printf("Pixel Data:\n");
+    //for(size_t row = 0; row < height; row++)
+    for(size_t row = height / 2; row <= height / 2; row++)  // just sample the middle row
+    {
+        for(size_t col = 0; col < width; col++)
+        {
+            const uint8_t* pixel =
+                &bytes[row * bpr + col * bytes_per_pixel];
+
+            printf("(");
+            for(size_t x = 0; x < bytes_per_pixel; x++)
+            {
+                printf("%.2X", pixel[x]);
+                if( x < bytes_per_pixel - 1 )
+                    printf(",");
+            }
+
+            printf(")");
+            if( col < width - 1 )
+                printf(", ");
+        }
+
+        printf("\n");
+    }
+}
+
+
+- (CVPixelBufferRef) newPixelBufferFromCGImage:(CGImageRef)image andFrameSize:(CGSize)frameSize
+{
+    //[self imageDump:image];
+    
+    size_t imageWidth = CGImageGetWidth(image);
+    size_t imageHeight = CGImageGetHeight(image);
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(image);
+
     NSDictionary *options = @{(id)kCVPixelBufferCGImageCompatibilityKey: @YES,
             (id)kCVPixelBufferCGBitmapContextCompatibilityKey: @YES};
     
     CVPixelBufferRef pxbuffer = NULL;
     
-    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, frameSize.width,
-        frameSize.height, kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) options,
-        &pxbuffer);
+    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault,
+            frameSize.width,
+            frameSize.height,
+            kCVPixelFormatType_32ARGB,
+            (__bridge CFDictionaryRef)options,
+            &pxbuffer);
     
     NSParameterAssert(status == kCVReturnSuccess && pxbuffer != NULL);
 
@@ -371,12 +458,17 @@
     
     NSParameterAssert(pxdata != NULL);
 
-    CGColorSpaceRef genericRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+    //CGColorSpaceRef genericRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+    CGColorSpaceRef genericRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
     
-    CGContextRef context = CGBitmapContextCreate(pxdata, frameSize.width,
-            frameSize.height, 8, 4 * frameSize.width,
+    CGContextRef context = CGBitmapContextCreate(pxdata,
+            frameSize.width,
+            frameSize.height,
+            8,
+            4 * frameSize.width,
             genericRGBColorSpace,
-            kCGImageAlphaNoneSkipFirst);
+            //kCGImageAlphaNoneSkipFirst);
+            kCGImageAlphaPremultipliedFirst);
     
     NSParameterAssert(context);
     
@@ -384,8 +476,7 @@
     
     CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
     
-    CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), 
-            CGImageGetHeight(image)), image);
+    CGContextDrawImage(context, CGRectMake(0, 0, imageWidth, imageHeight), image);
     
     CGColorSpaceRelease(genericRGBColorSpace);
     
