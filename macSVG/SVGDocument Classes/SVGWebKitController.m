@@ -346,7 +346,7 @@
     
     [self removeXMLAnimationElements:[tempXMLDocument rootElement]];
 
-    NSData * finalXmlData = tempXMLDocument.XMLData;
+    NSData * finalXmlData = tempXMLDocument.XMLData;    // the svg document with animation elements filtered out
 
     NSString * mimeType = @"image/svg+xml";
     if ([fileType isEqualToString:@"xhtml"] == YES)

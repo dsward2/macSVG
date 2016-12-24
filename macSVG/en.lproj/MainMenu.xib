@@ -61,11 +61,15 @@
                 <outlet property="openNetworkBrowseFilesButton" destination="XVC-Ig-Gk7" id="glT-Es-Gmj"/>
                 <outlet property="openNetworkConnectionTypePopUpButton" destination="sj0-Bb-loB" id="qhQ-VU-HLs"/>
                 <outlet property="openNetworkConnectionWindow" destination="HXd-nB-mae" id="WDb-hf-VVy"/>
+                <outlet property="openNetworkHostNameLabel" destination="hmQ-gv-QsV" id="Rhv-jT-z2C"/>
                 <outlet property="openNetworkHostNameTextField" destination="Y7B-kI-FaR" id="yHZ-qM-1f3"/>
                 <outlet property="openNetworkOpenButton" destination="2Bg-DB-kdP" id="mG7-2R-GdC"/>
+                <outlet property="openNetworkPasswordLabel" destination="omh-qF-14R" id="PZw-4f-uN8"/>
                 <outlet property="openNetworkPasswordTextField" destination="0Bv-54-039" id="t1O-IU-cn4"/>
+                <outlet property="openNetworkPortNumberLabel" destination="Zs1-0L-cWV" id="PVE-eU-fuP"/>
                 <outlet property="openNetworkPortNumberTextField" destination="a6v-Dn-MTV" id="zqd-ao-y2Y"/>
                 <outlet property="openNetworkUrlFilePathTextField" destination="Oem-YR-xYw" id="8CD-xP-3qh"/>
+                <outlet property="openNetworkUserNameLabel" destination="XbB-mp-clM" id="nTy-GP-D0s"/>
                 <outlet property="openNetworkUserNameTextField" destination="QYG-Qr-Ddr" id="HN7-im-MQP"/>
                 <outlet property="saveAsNetworkBookmarksPopUpButton" destination="cC5-Hk-soo" id="pvT-kC-7L6"/>
                 <outlet property="saveAsNetworkBrowseDirectoriesButton" destination="A7K-XR-2bv" id="q9c-fQ-bse"/>
@@ -1247,17 +1251,20 @@ Gw
                     <popUpButton verticalHuggingPriority="750" id="sj0-Bb-loB">
                         <rect key="frame" x="131" y="158" width="141" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="SSH Connection" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="19D-cg-To8" id="Q1x-1R-lTG">
+                        <popUpButtonCell key="cell" type="push" title="HTTP Web Server" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="xmj-n2-lIM" id="Q1x-1R-lTG">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" title="OtherViews" id="kz0-k2-mD3">
                                 <items>
-                                    <menuItem title="HTTP Web Server" id="xmj-n2-lIM"/>
+                                    <menuItem title="HTTP Web Server" state="on" id="xmj-n2-lIM"/>
                                     <menuItem title="SFTP Server" id="Qdw-i6-aKb"/>
-                                    <menuItem title="SSH Connection" state="on" id="19D-cg-To8"/>
+                                    <menuItem title="SSH Connection" id="19D-cg-To8"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
+                        <connections>
+                            <action selector="openNetworkConnectionTypePopupButtonAction:" target="Ebx-nu-GoV" id="mHu-4u-E6H"/>
+                        </connections>
                     </popUpButton>
                     <textField verticalHuggingPriority="750" id="Y7B-kI-FaR">
                         <rect key="frame" x="133" y="96" width="198" height="22"/>
@@ -1297,7 +1304,7 @@ Gw
                     <textField verticalHuggingPriority="750" id="Oem-YR-xYw">
                         <rect key="frame" x="133" y="128" width="299" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/var/www/html/" drawsBackground="YES" id="FH2-hD-Yrf">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="https://www.w3.org/Icons/SVG/svg-logo-v.svg" drawsBackground="YES" id="FH2-hD-Yrf">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

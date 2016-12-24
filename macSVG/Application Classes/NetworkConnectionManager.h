@@ -26,9 +26,13 @@
     IBOutlet NSPopUpButton * openNetworkBookmarksPopUpButton;
     IBOutlet NSPopUpButton * openNetworkConnectionTypePopUpButton;
     IBOutlet NSTextField * openNetworkUrlFilePathTextField;
+    IBOutlet NSTextField * openNetworkHostNameLabel;
     IBOutlet NSTextField * openNetworkHostNameTextField;
+    IBOutlet NSTextField * openNetworkPortNumberLabel;
     IBOutlet NSTextField * openNetworkPortNumberTextField;
+    IBOutlet NSTextField * openNetworkUserNameLabel;
     IBOutlet NSTextField * openNetworkUserNameTextField;
+    IBOutlet NSTextField * openNetworkPasswordLabel;
     IBOutlet NSTextField * openNetworkPasswordTextField;
     IBOutlet NSButton * openNetworkBrowseFilesButton;
     IBOutlet NSButton * openNetworkOpenButton;
@@ -66,6 +70,8 @@
 
 @property (strong) NSDictionary * workingConnectionDictionary;
 @property (strong) NSArray * networkFileDirectoryArray;
+
+- (IBAction)openNetworkConnectionTypePopupButtonAction:(id)sender;
 
 - (IBAction)openNetworkConnectionCancelButtonAction:(id)sender;
 - (IBAction)openNetworkConnectionOpenButtonAction:(id)sender;

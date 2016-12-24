@@ -266,9 +266,9 @@
 
 - (IBAction)openMacSVGDocumentWithNetworkConnection:(id)sender
 {
-    [self openNetworkConnectionTextFieldAction:self];
-
     [openNetworkConnectionWindow makeKeyAndOrderFront:self];
+
+    [self openNetworkConnectionTextFieldAction:self];
 }
 
 //==================================================================================
@@ -277,6 +277,8 @@
 
 - (IBAction)openNetworkConnectionTextFieldAction:(id)sender
 {
+    [self openNetworkConnectionTypePopupButtonAction:self];
+
     NSString * connectionTypeString = openNetworkConnectionTypePopUpButton.titleOfSelectedItem;
     NSString * urlFilePathString = openNetworkUrlFilePathTextField.stringValue;
     //NSString * hostNameString = [openNetworkHostNameTextField stringValue];
@@ -383,6 +385,50 @@
 }
 
 //==================================================================================
+//	openNetworkConnectionTypePopupButtonAction:
+//==================================================================================
+
+- (IBAction)openNetworkConnectionTypePopupButtonAction:(id)sender
+{
+    NSString * connectionTypeString = openNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+
+    if ([connectionTypeString isEqualToString:@"HTTP Web Server"] == YES)
+    {
+        openNetworkHostNameLabel.hidden = YES;
+        openNetworkHostNameTextField.hidden = YES;
+        openNetworkPortNumberLabel.hidden = YES;
+        openNetworkPortNumberTextField.hidden = YES;
+        openNetworkUserNameLabel.hidden = YES;
+        openNetworkUserNameTextField.hidden = YES;
+        openNetworkPasswordLabel.hidden = YES;
+        openNetworkPasswordTextField.hidden = YES;
+    }
+    else if ([connectionTypeString isEqualToString:@"SFTP Server"] == YES)
+    {
+        openNetworkHostNameLabel.hidden = NO;
+        openNetworkHostNameTextField.hidden = NO;
+        openNetworkPortNumberLabel.hidden = YES;
+        openNetworkPortNumberTextField.hidden = YES;
+        openNetworkUserNameLabel.hidden = NO;
+        openNetworkUserNameTextField.hidden = NO;
+        openNetworkPasswordLabel.hidden = NO;
+        openNetworkPasswordTextField.hidden = NO;
+    }
+    else if ([connectionTypeString isEqualToString:@"SSH Connection"] == YES)
+    {
+        openNetworkHostNameLabel.hidden = NO;
+        openNetworkHostNameTextField.hidden = NO;
+        openNetworkPortNumberLabel.hidden = NO;
+        openNetworkPortNumberTextField.hidden = NO;
+        openNetworkPortNumberTextField.stringValue = @"22";
+        openNetworkUserNameLabel.hidden = NO;
+        openNetworkUserNameTextField.hidden = NO;
+        openNetworkPasswordLabel.hidden = NO;
+        openNetworkPasswordTextField.hidden = NO;
+    }
+}
+
+//==================================================================================
 //	networkFileBrowserDirectoryPopUpButtonAction:
 //==================================================================================
 
@@ -440,9 +486,38 @@
 
 - (IBAction)openNetworkConnectionOpenButtonAction:(id)sender
 {
-    [openNetworkConnectionWindow orderOut:self];
+    NSString * connectionTypeString = openNetworkConnectionTypePopUpButton.titleOfSelectedItem;
+    NSString * urlFilePathString = openNetworkUrlFilePathTextField.stringValue;
+    NSString * hostNameString = openNetworkHostNameTextField.stringValue;
+    NSString * portNumberString = openNetworkPortNumberTextField.stringValue;
+    NSString * userNameString = openNetworkUserNameTextField.stringValue;
+    NSString * passwordString = openNetworkPasswordTextField.stringValue;
+
+    NSString * hostAddrString = [NSHost hostWithName:hostNameString].address;
+
+    NSDictionary * connectionDictionary = @{@"connectionType": connectionTypeString,
+            @"urlFilePath": urlFilePathString,
+            @"hostName": hostAddrString,
+            @"portNumber": portNumberString,
+            @"userName": userNameString,
+            @"password": passwordString};
     
-    [self openFileListingItem:self];
+    self.workingConnectionDictionary = connectionDictionary;
+ 
+    [openNetworkConnectionWindow orderOut:self];
+
+    if ([connectionTypeString isEqualToString:@"HTTP Web Server"] == YES)
+    {
+        [self openMacSVGDocumentWithHTTPConnection];
+    }
+    else if ([connectionTypeString isEqualToString:@"SFTP Server"] == YES)
+    {
+        [self openMacSVGDocumentWithSftpConnection];
+    }
+    else if ([connectionTypeString isEqualToString:@"SSH Connection"] == YES)
+    {
+        [self openMacSVGDocumentWithScpConnection];
+    }
 }
 
 //==================================================================================
@@ -1162,6 +1237,74 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
     
     NSData * fileData = [sftpDownload execSFTPDownloadHostaddr:hostAddrString user:userNameString
             password:passwordString sftppath:urlFilePath sftpError:&sftpError];
+
+    if (fileData != NULL)
+    {
+        //NSString * fileString = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
+        //NSLog(@"fileData = %@", fileString);
+
+        NSError * docError = NULL;
+
+        MacSVGDocument * macSVGDocument = [[NSDocumentController sharedDocumentController]
+                openUntitledDocumentAndDisplay:NO error:&docError];
+        
+        NSString * typeName = urlFilePath.pathExtension;
+        
+        BOOL result = [macSVGDocument readFromData:fileData
+                ofType:typeName error:&docError];
+        
+        if (result == YES)
+        {
+            macSVGDocument.fileNameExtension = typeName;
+            macSVGDocument.networkConnectionDictionary = self.workingConnectionDictionary;
+        
+            [macSVGDocument makeWindowControllers];
+            [macSVGDocument showWindows];
+        }
+        else
+        {
+            [macSVGDocument close];
+        }
+    }
+}
+
+//==================================================================================
+//	openMacSVGDocumentWithHTTPConnection
+//==================================================================================
+
+- (void)openMacSVGDocumentWithHTTPConnection
+{
+    //NSString * networkAccessMethod = [self.workingConnectionDictionary objectForKey:@"connectionType"];
+    NSString * urlFilePath = (self.workingConnectionDictionary)[@"urlFilePath"];
+    //NSString * hostNameString = (self.workingConnectionDictionary)[@"hostName"];
+    //NSString * portNumberString = [self.workingConnectionDictionary objectForKey:@"portNumber"];
+    //NSString * userNameString = (self.workingConnectionDictionary)[@"userName"];
+    //NSString * passwordString = (self.workingConnectionDictionary)[@"password"];
+
+    NSString * svgString = NULL;
+
+    NSURL * svgURL = [NSURL URLWithString:urlFilePath];
+    
+    if (svgURL != NULL)
+    {
+        NSError * svgError = NULL;
+        svgString = [[NSString alloc] initWithContentsOfURL:svgURL encoding:NSUTF8StringEncoding error:&svgError];
+        
+        if (svgString != NULL)
+        {
+            NSRange svgStartRange = [svgString rangeOfString:@"<svg"];
+            
+            if (svgStartRange.location != NSNotFound) 
+            {
+                svgString = [svgString substringFromIndex:svgStartRange.location];
+            }
+        }
+    }
+
+    //NSData * fileData = [sftpDownload execSFTPDownloadHostaddr:hostAddrString user:userNameString
+    //        password:passwordString sftppath:urlFilePath sftpError:&sftpError];
+    
+    NSData * fileData = [svgString dataUsingEncoding:NSUTF8StringEncoding];
 
     if (fileData != NULL)
     {

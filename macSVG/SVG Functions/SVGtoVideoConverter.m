@@ -86,10 +86,18 @@
 
     // create a new window, offscreen.
     self.hiddenWindow = [[NSWindow alloc]
-            initWithContentRect: NSMakeRect( -2000,-2000, self.movieWidth, self.movieHeight)
-            styleMask: NSTitledWindowMask | NSClosableWindowMask backing:NSBackingStoreNonretained defer:NO];
+            initWithContentRect: NSMakeRect( -2000,-2000, self.movieWidth, self.movieHeight)    // init offscreen
+            //initWithContentRect: NSMakeRect( 100,100, self.movieWidth, self.movieHeight)  // init onscreen for testing
+            styleMask: NSTitledWindowMask | NSClosableWindowMask
+            //backing:NSBackingStoreNonretained
+            backing:NSBackingStoreBuffered
+            defer:NO];
+    
+    //[self.hiddenWindow makeKeyAndOrderFront:self];    // for testing purposes, when 'hiddenWindow' is init onscreen
 
     self.hiddenWebView = [[WebView alloc] initWithFrame:webViewFrame];
+    
+    self.hiddenWebView.drawsBackground = NO;
 
     (self.hiddenWindow).contentView = self.hiddenWebView;
     
@@ -200,6 +208,8 @@
 
 - (void)getNextFrameImage
 {
+    // TODO: FIXME: Investigate use of RequestAnimationFrame() and callback, instead of setCurrentTime() and delay
+
     DOMDocument * domDocument = (self.hiddenWebView).mainFrame.DOMDocument;
     DOMElement * svgElement = domDocument.documentElement;
     
