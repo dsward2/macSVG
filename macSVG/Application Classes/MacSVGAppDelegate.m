@@ -19,6 +19,7 @@
 #import "WebKitInterface.h"
 #import "NetworkConnectionManager.h"
 #import "ToolSettingsPopoverViewController.h"
+#import "WebServerController.h"
 
 @implementation MacSVGAppDelegate
 
@@ -45,12 +46,12 @@
     {
 		NSApp.delegate = self;
 
+        [self registerDefaultsForMacSVGPreferences];
+
         self.svgDtdData = [[SVGDTDData alloc] init];
 
         webKitInterface = [[WebKitInterface alloc] init];
         
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"WebKitDeveloperExtras": @YES}];
-
         self.svgDocumentPrototypeName = @"Untitled";
         self.svgDocumentPrototypeExtension = @"svg";
         
@@ -130,6 +131,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
 {
     //NSString * localizedName = [[NSHost currentHost] localizedName];
+    [self enableHTTPServer];
 }
 
 
@@ -221,6 +223,140 @@
 - (void)panelSelectionDidChange:(id)sender
 {
 
+}
+
+//==================================================================================
+//	registerDefaultsForMacSVGPreferences
+//==================================================================================
+
+- (void) registerDefaultsForMacSVGPreferences
+{
+    NSDictionary * defaultsDictionary = @{
+            @"EnableHTTPServer": [NSNumber numberWithBool:0],
+            @"HTTPServerPort": [NSNumber numberWithInteger:8080]};
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDictionary];
+}
+
+//==================================================================================
+//	openMacSVGPreferences
+//==================================================================================
+
+- (IBAction)openMacSVGPreferences:(id)sender
+{
+    [self registerDefaultsForMacSVGPreferences];
+
+    BOOL enableHTTPServer = [[NSUserDefaults standardUserDefaults] boolForKey:@"EnableHTTPServer"];
+    NSInteger httpServerPort = [[NSUserDefaults standardUserDefaults] integerForKey:@"HTTPServerPort"];
+
+    self.enableHTTPServerCheckboxButton.state = enableHTTPServer;
+    self.httpServerPortTextField.integerValue = httpServerPort;
+    
+    [self refreshMacSVGPreferences:self];
+
+    NSModalSession session = [NSApp beginModalSessionForWindow:self.macSVGPreferencesWindow];
+
+    NSInteger result = NSModalResponseContinue;
+
+    while (result == NSModalResponseContinue)
+    {
+        //run the modal session
+        //once the modal window finishes, it will return a different result and break out of the loop
+        result = [NSApp runModalSession:session];
+
+        //this gives the main run loop some time so your other code processes
+        [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
+
+        //do some other non-intensive task if necessary
+    }
+
+    [NSApp endModalSession:session];
+    
+    if (result == NSModalResponseStop)
+    {
+        enableHTTPServer = self.enableHTTPServerCheckboxButton.state;
+        httpServerPort = self.httpServerPortTextField.integerValue;
+        
+        if (httpServerPort == 0)
+        {
+            httpServerPort = 8080;
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setBool:enableHTTPServer forKey:@"EnableHTTPServer"];
+        [[NSUserDefaults standardUserDefaults] setInteger:httpServerPort forKey:@"HTTPServerPort"];
+        
+        BOOL synchronizeResult = [[NSUserDefaults standardUserDefaults] synchronize];
+        #pragma unused(synchronizeResult)
+        
+        [self enableHTTPServer];
+        
+        [self updateHTTPServerSettings];
+    }
+
+    [self.macSVGPreferencesWindow orderOut:self];
+}
+
+//==================================================================================
+//	refreshMacSVGPreferences:
+//==================================================================================
+
+- (IBAction)refreshMacSVGPreferences:(id)sender
+{
+}
+
+//==================================================================================
+//	cancelMacSVGPreferences:
+//==================================================================================
+
+- (IBAction)cancelMacSVGPreferences:(id)sender
+{
+    [NSApp stopModalWithCode:NSModalResponseAbort];
+}
+
+//==================================================================================
+//	saveMacSVGPreferences:
+//==================================================================================
+
+- (IBAction)saveMacSVGPreferences:(id)sender
+{
+    [NSApp stopModalWithCode:NSModalResponseStop];
+}
+
+//==================================================================================
+//	enableHTTPServer
+//==================================================================================
+
+- (void)enableHTTPServer
+{
+    [self.webServerController stopProcessing];
+    self.webServerController = NULL;
+ 
+    BOOL enableHTTPServer = [[NSUserDefaults standardUserDefaults] boolForKey:@"EnableHTTPServer"];
+   
+    if (enableHTTPServer == YES)
+    {
+        self.webServerController = [[WebServerController alloc] init];
+    }
+}
+
+//==================================================================================
+//	updateHTTPServerSettings
+//==================================================================================
+
+- (void)updateHTTPServerSettings
+{
+    NSArray * windowsArray = [NSApplication sharedApplication].orderedWindows;
+    
+    for (NSWindow * aWindow in windowsArray)
+    {
+        NSWindowController * aWindowController = aWindow.windowController;
+        
+        if ([aWindowController isKindOfClass:[MacSVGDocumentWindowController class]] == YES)
+        {
+            MacSVGDocumentWindowController * macSVGDocumentWindowController = (MacSVGDocumentWindowController *)aWindowController;
+            [macSVGDocumentWindowController showWebBrowserPreviewURL];
+        }
+    }
 }
 
 //==================================================================================
@@ -367,7 +503,6 @@
 		NSLog(@"OpenUntitledTextDocument failed");
 	}
 }
-
 
 //==================================================================================
 //	applicationOpenUntitledFile

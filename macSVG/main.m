@@ -55,6 +55,10 @@ int main(int argc, char *argv[])
     [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"WebKitScriptDebugger"];
     [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"IncludeInternalDebugMenu"];
     [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"IncludeDebugMenu"];
+    
+    //[[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"EnableHTTPServer"];
+    //[[NSUserDefaults standardUserDefaults] setInteger:8080 forKey:@"HTTPServerPort"];
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     return NSApplicationMain(argc, (const char **)argv);

@@ -30,6 +30,8 @@
     [textEditorTextView setAutomaticDataDetectionEnabled:NO];
     [textEditorTextView setAutomaticSpellingCorrectionEnabled:NO];
     [textEditorTextView setAutomaticTextReplacementEnabled:NO];
+    
+    [textEditorTextView setUsesFindPanel:YES];
 
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             editorUIFrameController.macSVGDocumentWindowController;

@@ -21,6 +21,10 @@
     IBOutlet NetworkConnectionManager * networkConnectionManager;
 }
 
+@property (weak) IBOutlet NSWindow * macSVGPreferencesWindow;
+@property (weak) IBOutlet NSButton * enableHTTPServerCheckboxButton;
+@property (weak) IBOutlet NSTextField * httpServerPortTextField;
+
 @property (strong) IBOutlet WebServerController * webServerController;
 
 @property (strong) SVGDTDData * svgDtdData;
@@ -56,6 +60,13 @@
 @property (weak) IBOutlet NSColorWell * backgroundRectColorWell;
 @property (weak) IBOutlet NSButton * cancelCreateNewDocumentButton;
 @property (weak) IBOutlet NSButton * createNewDocumentButton;
+
+- (void)enableHTTPServer;
+
+- (IBAction)openMacSVGPreferences:(id)sender;
+- (IBAction)cancelMacSVGPreferences:(id)sender;
+- (IBAction)saveMacSVGPreferences:(id)sender;
+- (IBAction)refreshMacSVGPreferences:(id)sender;
 
 - (IBAction)openUntitledMacSVGDocument:(id)sender;
 - (IBAction)openUntitledSVGBannerDocument:(id)sender;

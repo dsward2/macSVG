@@ -206,6 +206,9 @@
 {
     //NSWindow * aWindow = [notification object];
     //NSLog(@"MacSVGDocumentWindowController - windowDidBecomeKey %@", aWindow);
+
+
+    [self showWebBrowserPreviewURL];
 }
 
 //==================================================================================
@@ -265,6 +268,8 @@
     NSString * itemTitle = @"No Plug-Ins Enabled";
     NSMenuItem * newPluginMenuItem = [plugInsMenu addItemWithTitle:itemTitle action:NULL keyEquivalent:@""];
     [newPluginMenuItem setEnabled:NO];
+
+    [self showWebBrowserPreviewURL];
 }
 
 
@@ -1047,6 +1052,8 @@
     [xmlElementTextView setEditable:NO];
     [xmlElementTextView setContinuousSpellCheckingEnabled:NO];
     [xmlElementTextView setGrammarCheckingEnabled:NO];
+
+    [xmlElementTextView setUsesFindPanel:YES];
     
     //[self.editorUIFrameController setValidAttributesView];
     [self.editorUIFrameController setEmptyView];
@@ -1057,6 +1064,12 @@
     [self reloadAllViews];
     
     [self.xmlOutlineController expandAllNodes];
+    
+    BOOL enableHTTPServer = [[NSUserDefaults standardUserDefaults] boolForKey:@"EnableHTTPServer"];
+    if (enableHTTPServer == YES)
+    {
+    
+    }
     
     [self showWebBrowserPreviewURL];
 
@@ -2011,12 +2024,20 @@
 
 - (NSString *)webPreviewURLString
 {
-    NSString * hostString = [self hostString];
-    //NSString * hostString = [[NSHost currentHost] localizedName]; // doesn't work - Safari won't find capitalized hosts
-    
-    NSString * portString = [self portString];
+    NSString * urlString = @"HTTP Server Not Enabled";
 
-    NSString * urlString = [NSString stringWithFormat:@"http://%@:%@", hostString, portString];
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+    WebServerController * webServerController = macSVGAppDelegate.webServerController;
+    
+    if (webServerController.httpServer != NULL)
+    {
+        NSString * hostString = [self hostString];
+        //NSString * hostString = [[NSHost currentHost] localizedName]; // doesn't work - Safari won't find capitalized hosts
+        
+        NSString * portString = [self portString];
+
+        urlString = [NSString stringWithFormat:@"http://%@:%@", hostString, portString];
+    }
     
     return urlString;
 }
@@ -2028,6 +2049,18 @@
     NSString * urlString = [self webPreviewURLString];
 
     webBrowserPreviewButton.title = urlString;
+
+    MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+    WebServerController * webServerController = macSVGAppDelegate.webServerController;
+    
+    if (webServerController.httpServer != NULL)
+    {
+        webBrowserPreviewButton.enabled = YES;
+    }
+    else
+    {
+        webBrowserPreviewButton.enabled = NO;
+    }
 }
 
 // ================================================================

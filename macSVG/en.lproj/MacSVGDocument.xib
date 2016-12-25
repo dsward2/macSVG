@@ -821,7 +821,7 @@
                 <outlet property="delegate" destination="-2" id="100050"/>
                 <outlet property="initialFirstResponder" destination="100223" id="xdn-Qu-jqZ"/>
             </connections>
-            <point key="canvasLocation" x="440" y="472"/>
+            <point key="canvasLocation" x="566" y="437"/>
         </window>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Trh-Of-KTR" userLabel="SVGXMLDOMSelectionManager" customClass="SVGXMLDOMSelectionManager">
@@ -1700,9 +1700,9 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="W5c-GM-C25">
                         <rect key="frame" x="1" y="1" width="270" height="349"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView importsGraphics="NO" richText="NO" allowsUndo="YES" id="100878">
+                            <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" id="100878">
                                 <rect key="frame" x="0.0" y="0.0" width="270" height="349"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2256,7 +2256,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="ZgR-se-6gy">
                             <rect key="frame" x="1" y="1" width="423" height="191"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="NmF-6Q-pjy">
                                     <rect key="frame" x="0.0" y="0.0" width="423" height="191"/>

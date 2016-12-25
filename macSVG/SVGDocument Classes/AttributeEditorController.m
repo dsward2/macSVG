@@ -32,6 +32,8 @@
     [attributeEditorTextView setRichText:NO];
     [attributeEditorTextView setContinuousSpellCheckingEnabled:NO];
     [attributeEditorTextView setGrammarCheckingEnabled:NO];
+    
+    [attributeEditorTextView setUsesFindPanel:YES];
 
     XMLAttributesTableController * xmlAttributesTableController =
             editorUIFrameController.macSVGDocumentWindowController.xmlAttributesTableController;

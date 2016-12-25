@@ -33,58 +33,81 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 @implementation WebServerController
 
 //==================================================================================
-//	awakeFromNib
-//==================================================================================
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-
-    self.webServerPort = 8080;
-
-    // For CocoaHTTPServer
-	// Configure our logging framework.
-	// To keep things simple and fast, we're just going to log to the Xcode console.
-	[DDLog addLogger:[DDTTYLogger sharedInstance]];
-	
-	// Initalize our http server
-	httpServer = [[HTTPServer alloc] init];
-	
-	// Tell server to use our custom SVGHTTPConnection class.
-	[httpServer setConnectionClass:[SVGHTTPConnection class]];
-	
-	// Tell the server to broadcast its presence via Bonjour.
-	// This allows browsers such as Safari to automatically discover our service.
-	//[httpServer setType:@"_http._tcp."];
-	
-	// Normally there's no need to run our server on any specific port.
-	// Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
-	// However, for easy testing you may want force a certain port so you can just hit the refresh button.
-	[httpServer setPort:self.webServerPort];
-	
-	// Serve files from our embedded Web folder
-	NSString * webPath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"Web"];
-	//DDLogVerbose(@"Setting document root: %@", webPath);
-	
-	[httpServer setDocumentRoot:webPath];
-	
-	// Start the server (and check for problems)
-	
-	NSError *error;
-	BOOL success = [httpServer start:&error];
-	
-	if(!success)
-	{
-		DDLogError(@"Error starting HTTP Server: %@", error);
-	}
-}
-
-//==================================================================================
 //	dealloc
 //==================================================================================
 
 - (void)dealloc
 {
+    if (self.httpServer != NULL)
+    {
+        [self stopProcessing];
+    }
+}
+
+//==================================================================================
+//	init
+//==================================================================================
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self startProcessing];
+    }
+    return self;
+}
+
+//==================================================================================
+//	startProcessing
+//==================================================================================
+
+- (void)startProcessing
+{
+    if (self.httpServer == NULL)
+    {
+        NSInteger httpServerPort = [[NSUserDefaults standardUserDefaults] integerForKey:@"HTTPServerPort"];
+        if (httpServerPort <= 0)
+        {
+            httpServerPort = 8080;
+        }
+        self.webServerPort = httpServerPort;
+
+        // For CocoaHTTPServer
+        // Configure our logging framework.
+        // To keep things simple and fast, we're just going to log to the Xcode console.
+        [DDLog addLogger:[DDTTYLogger sharedInstance]];
+        
+        // Initalize our http server
+        self.httpServer = [[HTTPServer alloc] init];
+        
+        // Tell server to use our custom SVGHTTPConnection class.
+        [self.httpServer setConnectionClass:[SVGHTTPConnection class]];
+        
+        // Tell the server to broadcast its presence via Bonjour.
+        // This allows browsers such as Safari to automatically discover our service.
+        //[httpServer setType:@"_http._tcp."];
+        
+        // Normally there's no need to run our server on any specific port.
+        // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
+        // However, for easy testing you may want force a certain port so you can just hit the refresh button.
+        [self.httpServer setPort:self.webServerPort];
+        
+        // Serve files from our embedded Web folder
+        NSString * webPath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"Web"];
+        //DDLogVerbose(@"Setting document root: %@", webPath);
+        
+        [self.httpServer setDocumentRoot:webPath];
+        
+        // Start the server (and check for problems)
+        
+        NSError *error;
+        BOOL success = [self.httpServer start:&error];
+        
+        if(!success)
+        {
+            DDLogError(@"Error starting HTTP Server: %@", error);
+        }
+    }
 }
 
 //==================================================================================
@@ -93,6 +116,9 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (void)stopProcessing
 {
+    [self.httpServer stop];
+    
+    self.httpServer = NULL;
 }
 
 @end

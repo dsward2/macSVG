@@ -14,11 +14,12 @@
 
 @interface WebServerController : NSObject 
 {
-	HTTPServer *httpServer;
 }
 
+@property(strong) HTTPServer * httpServer;
 @property(assign) NSUInteger webServerPort;
 
+- (void)startProcessing;
 - (void)stopProcessing;
 
 @end

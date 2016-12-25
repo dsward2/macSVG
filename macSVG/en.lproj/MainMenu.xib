@@ -25,10 +25,13 @@
                 <outlet property="detachWebKitInspectorMenuItem" destination="dBJ-iA-Bg4" id="wB6-Ij-agk"/>
                 <outlet property="disableJavasScriptMenuItem" destination="9Pq-xF-qDv" id="scs-yv-kB0"/>
                 <outlet property="documentKindPopUpButton" destination="kko-ad-rjf" id="2IB-Xl-gj8"/>
+                <outlet property="enableHTTPServerCheckboxButton" destination="gle-9n-EAp" id="A6f-3W-ufq"/>
                 <outlet property="enableJavaScriptProfilingMenuItem" destination="dN1-vN-tHH" id="8TN-M8-FnK"/>
                 <outlet property="enableTimelineProfilingMenuItem" destination="SBb-5X-sxa" id="x70-j5-DiS"/>
                 <outlet property="heightTextField" destination="dVz-xq-Wbx" id="a6n-9F-6ZM"/>
+                <outlet property="httpServerPortTextField" destination="jxj-pt-Jrx" id="V4T-TT-zP7"/>
                 <outlet property="includeBackgroundRectCheckBoxButton" destination="iTh-jh-39A" id="dhv-a9-kRb"/>
+                <outlet property="macSVGPreferencesWindow" destination="Sl7-Oq-I1h" id="5No-ow-EB3"/>
                 <outlet property="networkConnectionManager" destination="Ebx-nu-GoV" id="jkM-g5-t3e"/>
                 <outlet property="presetSizesPopUpButton" destination="0b4-EA-gLz" id="w4F-4w-3fe"/>
                 <outlet property="showWebKitInspectorMenuItem" destination="l9K-Ob-lbx" id="SjC-kZ-5Yg"/>
@@ -39,7 +42,6 @@
                 <outlet property="svgExampleTableView" destination="92j-vb-qoc" id="q2z-v4-Qo1"/>
                 <outlet property="svgExampleTextView" destination="tbY-nP-17b" id="3FL-PO-dsa"/>
                 <outlet property="svgExampleWebView" destination="2r4-oT-yYS" id="rZi-Xw-bTR"/>
-                <outlet property="webServerController" destination="533" id="Jed-rX-oA0"/>
                 <outlet property="widthTextField" destination="C30-Ib-YgG" id="o20-lO-Pln"/>
             </connections>
         </customObject>
@@ -94,7 +96,6 @@
                 <outlet property="saveNetworkDirectoryBrowserTableView" destination="kia-ck-0lM" id="ru9-aU-yir"/>
             </connections>
         </customObject>
-        <customObject id="533" customClass="WebServerController"/>
         <customObject id="419" customClass="NSFontManager"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
@@ -110,7 +111,11 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129">
+                                <connections>
+                                    <action selector="openMacSVGPreferences:" target="530" id="m4f-uZ-yie"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -2365,6 +2370,82 @@ Gw
                 </subviews>
             </view>
             <point key="canvasLocation" x="481.5" y="1176.5"/>
+        </window>
+        <window title="macSVG Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Sl7-Oq-I1h" userLabel="MacSVG Preferences Window">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <view key="contentView" id="scM-Ph-qdZ">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button misplaced="YES" id="gle-9n-EAp">
+                        <rect key="frame" x="18" y="234" width="144" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Enable HTTP Server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fY3-F8-6qw">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="refreshMacSVGPreferences:" target="530" id="AV1-Mc-efd"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="m6G-6J-sWt">
+                        <rect key="frame" x="194" y="235" width="34" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port:" id="Q9m-xw-B7a">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" misplaced="YES" id="jxj-pt-Jrx">
+                        <rect key="frame" x="234" y="232" width="96" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="myc-aK-4zq">
+                            <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="wvw-zH-tUC">
+                                <real key="minimum" value="1"/>
+                                <real key="maximum" value="65535"/>
+                            </numberFormatter>
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <action selector="refreshMacSVGPreferences:" target="530" id="Q6g-KM-FQO"/>
+                        </connections>
+                    </textField>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="X4j-ZH-hpz">
+                        <rect key="frame" x="396" y="13" width="59" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hx0-Hz-Jea">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="saveMacSVGPreferences:" target="530" id="4bC-v1-yUf"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="A8o-14-3o5">
+                        <rect key="frame" x="314" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UcD-15-rVN">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelMacSVGPreferences:" target="530" id="Vdv-1d-dFM"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
         </window>
     </objects>
     <resources>

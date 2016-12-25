@@ -250,6 +250,8 @@
 
 @property (readonly, copy) NSArray *selectedItemsInOutlineView;
 
+- (void)showWebBrowserPreviewURL;
+
 - (void) updateXMLOutlineViewSelections;
 - (void) updateXMLTextContent:(NSString *)textContent macsvgid:(NSString *)macsvgid;
 
