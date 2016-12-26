@@ -512,20 +512,28 @@
 - (IBAction)itemTextFieldUpdated:(id)sender
 {
     NSInteger rowIndex = [valuesTableView rowForView:sender];
-    NSInteger columnIndex = [valuesTableView columnForView:sender];
     
-    NSString * stringValue = [sender stringValue];
-    
-    stringValue = [stringValue copy];
-    
-    if (rowIndex <= ((self.valuesArray).count - 1))
+    if (rowIndex >= 0)
     {
-        NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
+        NSInteger columnIndex = [valuesTableView columnForView:sender];
         
-        rowArray[(columnIndex - 1)] = stringValue;
+        NSString * stringValue = [sender stringValue];
         
-        NSTextField * textField = sender;
-        textField.backgroundColor = [NSColor clearColor];
+        stringValue = [stringValue copy];
+        
+        if (rowIndex <= ((self.valuesArray).count - 1))
+        {
+            NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
+            
+            rowArray[(columnIndex - 1)] = stringValue;
+            
+            NSTextField * textField = sender;
+            textField.backgroundColor = [NSColor clearColor];
+        }
+        else
+        {
+            NSBeep();
+        }
     }
     else
     {

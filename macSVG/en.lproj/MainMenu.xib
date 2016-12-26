@@ -2374,14 +2374,14 @@ Gw
         <window title="macSVG Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Sl7-Oq-I1h" userLabel="MacSVG Preferences Window">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="contentRect" x="196" y="240" width="350" height="102"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
-            <view key="contentView" id="scM-Ph-qdZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+            <view key="contentView" misplaced="YES" id="scM-Ph-qdZ">
+                <rect key="frame" x="0.0" y="0.0" width="350" height="102"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button misplaced="YES" id="gle-9n-EAp">
-                        <rect key="frame" x="18" y="234" width="144" height="18"/>
+                        <rect key="frame" x="18" y="66" width="144" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Enable HTTP Server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fY3-F8-6qw">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -2392,7 +2392,7 @@ Gw
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="m6G-6J-sWt">
-                        <rect key="frame" x="194" y="235" width="34" height="17"/>
+                        <rect key="frame" x="194" y="67" width="34" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port:" id="Q9m-xw-B7a">
                             <font key="font" metaFont="system"/>
@@ -2401,7 +2401,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" misplaced="YES" id="jxj-pt-Jrx">
-                        <rect key="frame" x="234" y="232" width="96" height="22"/>
+                        <rect key="frame" x="234" y="64" width="96" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="myc-aK-4zq">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="wvw-zH-tUC">
@@ -2417,7 +2417,7 @@ Gw
                         </connections>
                     </textField>
                     <button verticalHuggingPriority="750" misplaced="YES" id="X4j-ZH-hpz">
-                        <rect key="frame" x="396" y="13" width="59" height="32"/>
+                        <rect key="frame" x="277" y="13" width="59" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hx0-Hz-Jea">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2431,7 +2431,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" misplaced="YES" id="A8o-14-3o5">
-                        <rect key="frame" x="314" y="13" width="82" height="32"/>
+                        <rect key="frame" x="195" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UcD-15-rVN">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2446,6 +2446,7 @@ Gw
                     </button>
                 </subviews>
             </view>
+            <point key="canvasLocation" x="56" y="431"/>
         </window>
     </objects>
     <resources>
