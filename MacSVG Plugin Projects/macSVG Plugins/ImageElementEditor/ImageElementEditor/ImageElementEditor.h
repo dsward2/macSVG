@@ -34,5 +34,6 @@
 - (IBAction)chooseFileButtonAction:(id)sender;
 - (IBAction)getClipboardButtonAction:(id)sender;
 - (IBAction)updateImageSettings:(id)sender;
+- (IBAction)setXlinkHrefButtonAction:(id)sender;
 
 @end

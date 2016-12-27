@@ -1348,6 +1348,7 @@ style=\"zoom: 1;\">";
             attributesDictionary[@"width"] = @"161px";
             attributesDictionary[@"height"] = @"240px";
             attributesDictionary[@"xlink:href"] = @"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg";
+            attributesDictionary[@"xlink:role"] = @"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg";
         }
         else
         {
@@ -1377,18 +1378,21 @@ style=\"zoom: 1;\">";
             if ([imageReferenceOptionString isEqualToString:@"Link to Image"] == YES)
             {
                 attributesDictionary[@"xlink:href"] = imageURLString;
+                attributesDictionary[@"xlink:role"] = imageURLString;
             }
             else if ([imageReferenceOptionString isEqualToString:@"Embed PNG"] == YES)
             {
                 NSData * tiffData = previewImage.TIFFRepresentation;
                 NSString * pngEmbeddedDataString = [self xmlStringForEmbeddedImageData:tiffData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
                 attributesDictionary[@"xlink:href"] = pngEmbeddedDataString;
+                attributesDictionary[@"xlink:role"] = imageURLString;
             }
             else if ([imageReferenceOptionString isEqualToString:@"Embed JPEG"] == YES)
             {
                 NSData * tiffData = previewImage.TIFFRepresentation;
                 NSString * jpegEmbeddedDataString = [self xmlStringForEmbeddedImageData:tiffData outputFormat:@"jpeg" jpegCompressionNumber:jpegCompressionNumber];
                 attributesDictionary[@"xlink:href"] = jpegEmbeddedDataString;
+                attributesDictionary[@"xlink:role"] = imageURLString;
             }
         }
     }
@@ -1622,7 +1626,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         NSString * base64String = [self allocEncodeBase64Data:jpegImageData];
         
-        xmlString = [NSString stringWithFormat:@"data:image/png;base64,%@", base64String];
+        xmlString = [NSString stringWithFormat:@"data:image/jpeg;base64,%@", base64String];
     }
     
     return xmlString;
@@ -1682,9 +1686,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
         NSString * MacsvgidString = [self newMacsvgid];
 
-        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" xlink:role=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
         
-        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, imageURLString, MacsvgidString];
+        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, imageURLString, imageURLString, MacsvgidString];
         
         NSError * xmlError = NULL;
 
@@ -1696,7 +1700,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 // ================================================================
 
--(NSXMLElement *)makePNGImageElementWithEmbeddedData:(NSData *)tiffImageData
+-(NSXMLElement *)makePNGImageElementWithEmbeddedData:(NSData *)tiffImageData imageURLString:(NSString *)imageURLString
 {
     NSXMLElement * imageElement = NULL;
 
@@ -1730,6 +1734,18 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSError * xmlError = NULL;
 
         imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
+        
+        if (imageURLString != NULL)
+        {
+            if ([imageURLString length] > 0)
+            {
+                NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                xlinkRoleAttributeNode.name = @"xlink:role";
+                xlinkRoleAttributeNode.stringValue = [[NSString alloc] initWithString:imageURLString];
+                
+                [imageElement addAttribute:xlinkRoleAttributeNode];
+            }
+        }
     }
     
     return imageElement;
@@ -1737,7 +1753,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 // ================================================================
 
--(NSXMLElement *)makeJPEGImageElementWithEmbeddedData:(NSData *)jpegData
+-(NSXMLElement *)makeJPEGImageElementWithEmbeddedData:(NSData *)jpegData imageURLString:(NSString *)imageURLString
 {
     NSXMLElement * imageElement = NULL;
 
@@ -1771,6 +1787,18 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSError * xmlError = NULL;
 
         imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
+
+        if (imageURLString != NULL)
+        {
+            if ([imageURLString length] > 0)
+            {
+                NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                xlinkRoleAttributeNode.name = @"xlink:role";
+                xlinkRoleAttributeNode.stringValue = [[NSString alloc] initWithString:imageURLString];
+                
+                [imageElement addAttribute:xlinkRoleAttributeNode];
+            }
+        }
     }
     
     return imageElement;
@@ -1810,7 +1838,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 }
 
 // ================================================================
-
 
 - (BOOL)dropElementsToXmlDocument:(id <NSDraggingInfo>)info 
         item:(id)item childIndex:(NSInteger)childIndex 
@@ -2039,7 +2066,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 }
                 else
                 {
-                    NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:tiffImageData];
+                    NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:tiffImageData imageURLString:NULL];
                     
                     xmlString = imageElement.XMLString;
                     
@@ -2099,7 +2126,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 {
                     NSData * jpegData = [[NSData alloc] initWithContentsOfFile:filepath];
 
-                    NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData];
+                    NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:NULL];
                     
                     xmlString = imageElement.XMLString;
                     
