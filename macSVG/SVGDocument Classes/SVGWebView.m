@@ -110,7 +110,16 @@
     XMLOutlineController * xmlOutlineController = macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
 
+    NSInteger numberOfRows = xmlOutlineView.numberOfRows;
     NSInteger selectedRowIndex = xmlOutlineView.selectedRow;
+
+    if (selectedRowIndex == -1)
+    {
+        if (numberOfRows > 0)
+        {
+            selectedRowIndex = 0;
+        }
+    }
 
     if (selectedRowIndex != -1)
     {
