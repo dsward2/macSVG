@@ -968,6 +968,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         if (aImage != NULL)
         {
+            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+
             CGFloat widthFloat = aImage.size.width;
             NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
 
@@ -984,9 +986,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             heightAttributeNode.stringValue = heightString;
             [self.pluginTargetXMLElement addAttribute:heightAttributeNode];
 
-            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
-
             xlinkHrefAttributeNode.stringValue = imageURLTextFieldString;
+
+            NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+            newXlinkRoleNode.name = @"xlink:role";
+            newXlinkRoleNode.stringValue = imageURLTextFieldString;
+            [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
 
             [self getImageFromURLButtonAction:self];
             
@@ -999,6 +1004,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if ([requestURL length] > 0)
         {
             [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+            
+            if (xlinkRoleAttributeString == NULL)
+            {
+                if (xlinkHrefAttributeString != NULL)
+                {
+                    NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                    newXlinkRoleNode.name = @"xlink:role";
+                    newXlinkRoleNode.stringValue = xlinkHrefAttributeString;
+                    [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
+                }
+            }
 
             NSData * tiffData = previewImage.TIFFRepresentation;
             NSString * pngEmbeddedDataString = [self xmlStringForEmbeddedImageData:tiffData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
@@ -1014,6 +1030,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if ([requestURL length] > 0)
         {
             [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+
+            if (xlinkRoleAttributeString == NULL)
+            {
+                if (xlinkHrefAttributeString != NULL)
+                {
+                    NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                    newXlinkRoleNode.name = @"xlink:role";
+                    newXlinkRoleNode.stringValue = xlinkHrefAttributeString;
+                    [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
+                }
+            }
 
             NSData * tiffData = previewImage.TIFFRepresentation;
             NSString * jpegEmbeddedDataString = [self xmlStringForEmbeddedImageData:tiffData outputFormat:@"jpeg" jpegCompressionNumber:jpegCompressionNumber];
