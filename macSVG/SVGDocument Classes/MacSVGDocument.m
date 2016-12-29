@@ -19,6 +19,7 @@
 #import "DOMSelectionControlsManager.h"
 #import "SelectedElementsManager.h"
 #import "NetworkConnectionManager.h"
+#import "SVGWebView.h"
 
 
 @implementation MacSVGDocument
@@ -1686,13 +1687,34 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
         NSString * MacsvgidString = [self newMacsvgid];
 
-        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" xlink:role=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+        //NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" xlink:role=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
         
-        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, imageURLString, imageURLString, MacsvgidString];
+        //NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, imageURLString, imageURLString, MacsvgidString];
+        
+        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+        
+        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, MacsvgidString];
         
         NSError * xmlError = NULL;
 
         imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
+        
+        if (xmlError != NULL)
+        {
+            NSLog(@"MacSVGDocument makeImageElementWithURL error %@", xmlError);
+        }
+        
+        [imageElement addNamespace:[NSXMLNode namespaceWithName:@"xlink" stringValue:@"http://www.w3.org/1999/xlink"]];
+        
+        NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+        xlinkHrefAttributeNode.name = @"xlink:href";
+        xlinkHrefAttributeNode.stringValue = imageURLString;
+        [imageElement addAttribute:xlinkHrefAttributeNode];
+        
+        NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+        xlinkRoleAttributeNode.name = @"xlink:role";
+        xlinkRoleAttributeNode.stringValue = imageURLString;
+        [imageElement addAttribute:xlinkRoleAttributeNode];
     }
     
     return imageElement;
@@ -1843,6 +1865,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         item:(id)item childIndex:(NSInteger)childIndex 
 {
     //NSLog(@"XMLOutlineController - acceptDrop");
+    
+    NSPoint draggingLocation = [info draggingLocation];
+    NSPoint draggedImageLocationInWindow = [info draggedImageLocation];
+    NSImage * draggedImage = [info draggedImage];
+    SVGWebView * svgWebView = self.macSVGDocumentWindowController.svgWebKitController.svgWebView;
+    NSPoint locationInWebView = [svgWebView convertPoint:draggedImageLocationInWindow fromView:NULL];
     
     XMLOutlineController * xmlOutlineController = self.macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
