@@ -176,7 +176,7 @@
         if (dragOperation == NSDragOperationGeneric)
         {
             result = [macSVGDocument dropElementsToXmlDocument:draggingInfo
-                    item:targetNode childIndex:childIndex];
+                    item:targetNode childIndex:childIndex caller:self];
         }
     }
             

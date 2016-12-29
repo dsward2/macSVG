@@ -49,7 +49,7 @@
 - (NSString *) downloadSVGFromURL:(NSString *)svgURLString;
 
 - (BOOL) dropElementsToXmlDocument:(id <NSDraggingInfo>)info 
-        item:(id)item childIndex:(NSInteger)childIndex;
+        item:(id)item childIndex:(NSInteger)childIndex caller:(id)caller;
         
 - (NSString *) xmlStringForEmbeddedImageData:(NSData *)originalImageData outputFormat:(NSString *)outputFormat jpegCompressionNumber:(NSNumber *)jpegCompressionNumber;
 

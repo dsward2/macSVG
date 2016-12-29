@@ -1886,17 +1886,30 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 // ================================================================
 
 - (BOOL)dropElementsToXmlDocument:(id <NSDraggingInfo>)info 
-        item:(id)item childIndex:(NSInteger)childIndex 
+        item:(id)item childIndex:(NSInteger)childIndex caller:(id)caller
 {
     //NSLog(@"XMLOutlineController - acceptDrop");
-    
-    NSPoint draggingLocation = [info draggingLocation];
-    NSPoint draggedImageLocationInWindow = [info draggedImageLocation];
+
     SVGWebView * svgWebView = self.macSVGDocumentWindowController.svgWebKitController.svgWebView;
-    NSPoint draggingLocationInWebView = [svgWebView convertPoint:draggingLocation fromView:NULL];
     NSRect svgWebViewBounds = svgWebView.bounds;
-    draggingLocationInWebView.x = draggingLocationInWebView.x + draggedImageLocationInWindow.x;
-    draggingLocationInWebView.y = svgWebViewBounds.size.height - draggingLocationInWebView.y;
+ 
+    NSPoint draggingLocation = NSZeroPoint;
+    NSPoint draggedImageLocationInWindow = NSZeroPoint;
+    NSPoint draggingLocationInWebView = NSZeroPoint;
+
+    if ([caller isKindOfClass:[SVGWebView class]] == YES)
+    {
+        draggingLocation = [info draggingLocation];
+        draggedImageLocationInWindow = [info draggedImageLocation];
+        draggingLocationInWebView = [svgWebView convertPoint:draggingLocation fromView:NULL];
+        draggingLocationInWebView.x = draggingLocationInWebView.x + draggedImageLocationInWindow.x;
+        draggingLocationInWebView.y = svgWebViewBounds.size.height - draggingLocationInWebView.y;
+    }
+    else
+    {
+        draggingLocationInWebView.x = 10.0f;
+        draggingLocationInWebView.y = 10.0f;
+    }
     
     XMLOutlineController * xmlOutlineController = self.macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;

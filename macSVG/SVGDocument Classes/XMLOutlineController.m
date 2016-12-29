@@ -3151,7 +3151,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     //NSString * availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
     
     BOOL result = [macSVGDocument dropElementsToXmlDocument:info
-            item:item childIndex:index];
+            item:item childIndex:index caller:self];
     
     acceptingDrop = NO;
     
