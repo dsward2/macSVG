@@ -366,6 +366,11 @@
     float scale = vScale;
     if (hScale < vScale) scale = hScale;
     
+    if (isSVGfile == YES)
+    {
+        scale = 1.0f;
+    }
+    
     //[clipView scaleUnitSquareToSize:NSMakeSize((1.0f / webViewUnitSquareScale), (1.0f / webViewUnitSquareScale))];
     
     clipView.bounds = clipView.frame;
@@ -373,13 +378,13 @@
     [clipView scaleUnitSquareToSize:NSMakeSize(scale, scale)];
     
     [clipView setNeedsDisplay:YES];
+    [documentView setNeedsDisplay:YES];
     
     webViewUnitSquareScale = scale;
 
     //NSLog(@"clipView after scale -");
     //NSLog(@"frame = %f, %f, %f, %f", clipView.frame.origin.x, clipView.frame.origin.y, clipView.frame.size.width, clipView.frame.size.height);
     //NSLog(@"bounds = %f, %f, %f, %f", clipView.bounds.origin.x, clipView.bounds.origin.y, clipView.bounds.size.width, clipView.bounds.size.height);
-
 }
 
 //==================================================================================
@@ -813,51 +818,53 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
     NSImage * previewImage = (self.macSVGPluginCallbacks).imageDictionary[@"previewImage"];
 
+    // get the element's existing xlink:href value
     NSString * xlinkHrefAttributeString = NULL;
     NSXMLNode * xlinkHrefAttributeNode = [self.pluginTargetXMLElement attributeForName:@"xlink:href"];
     if (xlinkHrefAttributeNode != NULL)
     {
-        xlinkHrefAttributeString = [xlinkHrefAttributeNode stringValue];
+        NSString * linkAttributeString = [xlinkHrefAttributeNode stringValue];
 
-        hrefHttpRange = [xlinkHrefAttributeString rangeOfString:@"http://"];
-        hrefHttpsRange = [xlinkHrefAttributeString rangeOfString:@"https://"];
-        hrefFileRange = [xlinkHrefAttributeString rangeOfString:@"file://"];
+        hrefHttpRange = [linkAttributeString rangeOfString:@"http://"];
+        hrefHttpsRange = [linkAttributeString rangeOfString:@"https://"];
+        hrefFileRange = [linkAttributeString rangeOfString:@"file://"];
 
         if (hrefHttpRange.location == 0)
         {
-            xlinkHrefAttributeString = xlinkHrefAttributeString;
-        }
-        else if (hrefFileRange.location == 0)
-        {
-            xlinkHrefAttributeString = xlinkHrefAttributeString;
+            xlinkHrefAttributeString = linkAttributeString;
         }
         else if (hrefHttpsRange.location == 0)
         {
-            xlinkHrefAttributeString = xlinkHrefAttributeString;
+            xlinkHrefAttributeString = linkAttributeString;
+        }
+        else if (hrefFileRange.location == 0)
+        {
+            xlinkHrefAttributeString = linkAttributeString;
         }
     }
 
+    // get the element's existing xlink:role value
     NSString * xlinkRoleAttributeString = NULL;
     NSXMLNode * xlinkRoleAttributeNode = [self.pluginTargetXMLElement attributeForName:@"xlink:role"];
     if (xlinkRoleAttributeNode != NULL)
     {
-        xlinkRoleAttributeString = [xlinkRoleAttributeNode stringValue];
+        NSString * linkAttributeString = [xlinkRoleAttributeNode stringValue];
 
-        roleHttpRange = [xlinkRoleAttributeString rangeOfString:@"http://"];
-        roleHttpsRange = [xlinkRoleAttributeString rangeOfString:@"https://"];
-        roleFileRange = [xlinkRoleAttributeString rangeOfString:@"file://"];
+        roleHttpRange = [linkAttributeString rangeOfString:@"http://"];
+        roleHttpsRange = [linkAttributeString rangeOfString:@"https://"];
+        roleFileRange = [linkAttributeString rangeOfString:@"file://"];
 
         if (roleHttpRange.location == 0)
         {
-            xlinkRoleAttributeString = xlinkRoleAttributeString;
+            xlinkRoleAttributeString = linkAttributeString;
         }
         else if (roleHttpsRange.location == 0)
         {
-            xlinkRoleAttributeString = xlinkRoleAttributeString;
+            xlinkRoleAttributeString = linkAttributeString;
         }
         else if (roleFileRange.location == 0)
         {
-            xlinkRoleAttributeString = xlinkRoleAttributeString;
+            xlinkRoleAttributeString = linkAttributeString;
         }
     }
     
@@ -869,6 +876,15 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     else if (xlinkRoleAttributeString != NULL)
     {
         requestURL = xlinkRoleAttributeString;
+    }
+    
+    NSString * imageURLTextFieldString = imageURLTextField.stringValue;
+    if ([imageReferenceOptionString isEqualToString:@"Link to Image"] == YES)
+    {
+        if ([imageURLTextFieldString length] > 0)
+        {
+            requestURL = imageURLTextFieldString;
+        }
     }
 
     if ([requestURL length] > 0)
@@ -887,27 +903,19 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         {
             mimeType = @"image/png";
         }
+        else if ([pathExtension isEqualToString:@"svg"] == YES)
+        {
+            mimeType = @"image/svg+xml";
+        }
     }
     else
     {
         if (xlinkHrefAttributeString != NULL)
         {
-            httpRange = [xlinkHrefAttributeString rangeOfString:@"http://"];
-            httpsRange = [xlinkHrefAttributeString rangeOfString:@"https://"];
-            fileRange = [xlinkHrefAttributeString rangeOfString:@"https://"];
             jpegDataRange = [xlinkHrefAttributeString rangeOfString:@"data:image/jpeg;base64,"];
             pngDataRange = [xlinkHrefAttributeString rangeOfString:@"data:image/png;base64,"];
             
-            if (httpRange.location == 0)
-            {
-            }
-            else if (httpsRange.location == 0)
-            {
-            }
-            else if (fileRange.location == 0)
-            {
-            }
-            else if (pngDataRange.location == 0)
+            if (pngDataRange.location == 0)
             {
                 mimeType = @"image/png";
                 pathExtension = @"pgn";
@@ -919,29 +927,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             }
         }
     }
-
-
-
-    /*
-    if ((httpRange.location != NSNotFound) || (httpsRange.location != NSNotFound) || (fileRange.location != NSNotFound))
-    {
-        if (xlinkHrefAttributeString != NULL)
-        {
-            imageURLTextField.stringValue = xlinkHrefAttributeString;
-        }
-    }
-    else if ((roleHttpRange.location != NSNotFound) || (roleHttpsRange.location != NSNotFound) || (roleFileRange.location != NSNotFound))
-    {
-        if (xlinkRoleAttributeString != NULL)
-        {
-            imageURLTextField.stringValue = xlinkRoleAttributeString;
-        }
-    }
-    */
-
-
-
-    NSString * imageURLTextFieldString = imageURLTextField.stringValue;
     
     textFieldHttpRange = [xlinkHrefAttributeString rangeOfString:@"http://"];
     textFieldHttpsRange = [xlinkHrefAttributeString rangeOfString:@"https://"];
@@ -955,49 +940,120 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             jpegCompressionNumber, @"jpegCompressionNumber",
             previewImage, @"previewImage",
             nil];
-    
-    (self.macSVGPluginCallbacks).imageDictionary = self.imageDictionary;
-    
-    self.imageDictionary = imageDictionary;
 
-   
     if ([imageReferenceOptionString isEqualToString:@"Link to Image"] == YES)
     {
-        NSURL * imageURL = [NSURL URLWithString:imageURLTextFieldString];
-        NSImage * aImage = [[NSImage alloc] initWithContentsOfURL:imageURL];
-        
-        if (aImage != NULL)
+        if ([pathExtension isEqualToString:@"svg"])
         {
-            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
-
-            CGFloat widthFloat = aImage.size.width;
-            NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
-
-            CGFloat heightFloat = aImage.size.height;
-            NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
+            NSURL * svgURL = [NSURL URLWithString:imageURLTextFieldString];
             
-            NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            widthAttributeNode.name = @"width";
-            widthAttributeNode.stringValue = widthString;
-            [self.pluginTargetXMLElement addAttribute:widthAttributeNode];
-
-            NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            heightAttributeNode.name = @"height";
-            heightAttributeNode.stringValue = heightString;
-            [self.pluginTargetXMLElement addAttribute:heightAttributeNode];
-
-            xlinkHrefAttributeNode.stringValue = imageURLTextFieldString;
-
-            NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            newXlinkRoleNode.name = @"xlink:role";
-            newXlinkRoleNode.stringValue = imageURLTextFieldString;
-            [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
-
-            [self getImageFromURLButtonAction:self];
+            NSError * xmlStringError = NULL;
+            NSString * aSVGXMLString = [[NSString alloc] initWithContentsOfURL:svgURL encoding:NSUTF8StringEncoding error:&xmlStringError];
             
-            [self updateDocumentViews];
+            if (aSVGXMLString != NULL)
+            {
+                [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+                
+                NSError * xmlError = NULL;
+                NSXMLDocument * previewSVGXMLDocument = [[NSXMLDocument alloc] initWithXMLString:aSVGXMLString options:0 error:&xmlError];
+                
+                NSXMLElement * rootElement = [previewSVGXMLDocument rootElement];
+
+                NSString * widthString = @"100";
+                NSXMLNode * widthNode = [rootElement attributeForName:@"width"];
+                if (widthNode != NULL)
+                {
+                    widthString = widthNode.stringValue;
+                }
+
+                NSString * heightString = @"100";
+                NSXMLNode * heightNode = [rootElement attributeForName:@"height"];
+                if (heightNode != NULL)
+                {
+                    heightString = heightNode.stringValue;
+                }
+                
+                if ((widthNode == NULL) && (heightNode == NULL))
+                {
+                    NSXMLNode * viewBoxNode = [rootElement attributeForName:@"viewBox"];
+                    if (viewBoxNode != NULL)
+                    {
+                        NSString * viewBoxString = viewBoxNode.stringValue;
+                        
+                        NSArray * viewBoxComponentsArray = [viewBoxString componentsSeparatedByString:@" "];
+                        if ([viewBoxComponentsArray count] == 4)
+                        {
+                            widthString = [viewBoxComponentsArray objectAtIndex:2];
+                            heightString = [viewBoxComponentsArray objectAtIndex:3];
+                        }
+                    }
+                }
+                
+                NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                widthAttributeNode.name = @"width";
+                widthAttributeNode.stringValue = widthString;
+                [self.pluginTargetXMLElement addAttribute:widthAttributeNode];
+
+                NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                heightAttributeNode.name = @"height";
+                heightAttributeNode.stringValue = heightString;
+                [self.pluginTargetXMLElement addAttribute:heightAttributeNode];
+
+                xlinkHrefAttributeNode.stringValue = imageURLTextFieldString;
+
+                NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                newXlinkRoleNode.name = @"xlink:role";
+                newXlinkRoleNode.stringValue = imageURLTextFieldString;
+                [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
+
+                (self.macSVGPluginCallbacks).imageDictionary = self.imageDictionary;
+                self.imageDictionary = imageDictionary;
+                
+                [self getImageFromURLButtonAction:self];
+                
+                [self updateDocumentViews];
+            }
         }
-        
+        else
+        {
+            NSURL * imageURL = [NSURL URLWithString:imageURLTextFieldString];
+            NSImage * aImage = [[NSImage alloc] initWithContentsOfURL:imageURL];
+            
+            if (aImage != NULL)
+            {
+                [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+
+                CGFloat widthFloat = aImage.size.width;
+                NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
+
+                CGFloat heightFloat = aImage.size.height;
+                NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
+                
+                NSXMLNode * widthAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                widthAttributeNode.name = @"width";
+                widthAttributeNode.stringValue = widthString;
+                [self.pluginTargetXMLElement addAttribute:widthAttributeNode];
+
+                NSXMLNode * heightAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                heightAttributeNode.name = @"height";
+                heightAttributeNode.stringValue = heightString;
+                [self.pluginTargetXMLElement addAttribute:heightAttributeNode];
+
+                xlinkHrefAttributeNode.stringValue = imageURLTextFieldString;
+
+                NSXMLNode * newXlinkRoleNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                newXlinkRoleNode.name = @"xlink:role";
+                newXlinkRoleNode.stringValue = imageURLTextFieldString;
+                [self.pluginTargetXMLElement addAttribute:newXlinkRoleNode];
+
+                (self.macSVGPluginCallbacks).imageDictionary = self.imageDictionary;
+                self.imageDictionary = imageDictionary;
+
+                [self getImageFromURLButtonAction:self];
+                
+                [self updateDocumentViews];
+            }
+        }
     }
     else if ([imageReferenceOptionString isEqualToString:@"Embed PNG"] == YES)
     {
@@ -1021,6 +1077,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             xlinkHrefAttributeNode.stringValue = pngEmbeddedDataString;
             mimeType = @"image/png";
             pathExtension = @"pgn";
+
+            (self.macSVGPluginCallbacks).imageDictionary = self.imageDictionary;
+            self.imageDictionary = imageDictionary;
 
             [self updateDocumentViews];
         }
@@ -1048,12 +1107,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             mimeType = @"image/jpeg";
             pathExtension = @"jpg";
 
+            (self.macSVGPluginCallbacks).imageDictionary = self.imageDictionary;
+            self.imageDictionary = imageDictionary;
+
             [self updateDocumentViews];
         }
     }
-    
-
-
 }
 
 @end

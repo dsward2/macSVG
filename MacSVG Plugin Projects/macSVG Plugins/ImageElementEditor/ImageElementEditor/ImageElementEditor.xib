@@ -25,11 +25,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView misplaced="YES" id="ykH-CG-6lc" customClass="FlippedView">
-            <rect key="frame" x="0.0" y="0.0" width="287" height="312"/>
+            <rect key="frame" x="0.0" y="0.0" width="287" height="305"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView id="z0U-xS-Zzg">
-                    <rect key="frame" x="0.0" y="0.0" width="287" height="312"/>
+                    <rect key="frame" x="0.0" y="-7" width="287" height="312"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Evd-Mf-Riu">
@@ -227,7 +227,7 @@
                         <button verticalHuggingPriority="750" misplaced="YES" id="ASq-3n-Ksu">
                             <rect key="frame" x="15" y="13" width="257" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Set Image xlink:href Attribute" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wnv-eE-Uza">
+                            <buttonCell key="cell" type="push" title="Set xlink:href and xlink:role" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wnv-eE-Uza">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                             </buttonCell>
@@ -238,7 +238,7 @@
                     </subviews>
                 </customView>
             </subviews>
-            <point key="canvasLocation" x="371.5" y="380"/>
+            <point key="canvasLocation" x="371.5" y="376.5"/>
         </customView>
     </objects>
 </document>
