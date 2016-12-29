@@ -1892,12 +1892,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     NSPoint draggingLocation = [info draggingLocation];
     NSPoint draggedImageLocationInWindow = [info draggedImageLocation];
-    NSPoint draggedImageLocation = draggingLocation;
-    draggedImageLocation.x += draggedImageLocationInWindow.x;
-    draggedImageLocation.y += draggedImageLocationInWindow.y;
-    NSImage * draggedImage = [info draggedImage];
     SVGWebView * svgWebView = self.macSVGDocumentWindowController.svgWebKitController.svgWebView;
-    NSPoint locationInWebView = [svgWebView convertPoint:draggedImageLocation fromView:NULL];
+    NSPoint draggingLocationInWebView = [svgWebView convertPoint:draggingLocation fromView:NULL];
+    NSRect svgWebViewBounds = svgWebView.bounds;
+    draggingLocationInWebView.x = draggingLocationInWebView.x + draggedImageLocationInWindow.x;
+    draggingLocationInWebView.y = svgWebViewBounds.size.height - draggingLocationInWebView.y;
     
     XMLOutlineController * xmlOutlineController = self.macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
@@ -2009,6 +2008,18 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                         if (tiffData != NULL)
                         {
                             NSXMLElement * imageElement = [self makeImageElementWithURL:pasteboardString];
+
+                            NSString * xString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.x];
+                            NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                            xAttributeNode.name = @"x";
+                            xAttributeNode.stringValue = xString;
+                            [imageElement addAttribute:xAttributeNode];
+
+                            NSString * yString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.y];
+                            NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                            yAttributeNode.name = @"y";
+                            yAttributeNode.stringValue = yString;
+                            [imageElement addAttribute:yAttributeNode];
                             
                             if (imageElement != NULL)
                             {
@@ -2122,6 +2133,18 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 else
                 {
                     NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:tiffImageData imageURLString:NULL];
+
+                    NSString * xString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.x];
+                    NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                    xAttributeNode.name = @"x";
+                    xAttributeNode.stringValue = xString;
+                    [imageElement addAttribute:xAttributeNode];
+
+                    NSString * yString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.y];
+                    NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                    yAttributeNode.name = @"y";
+                    yAttributeNode.stringValue = yString;
+                    [imageElement addAttribute:yAttributeNode];
                     
                     xmlString = imageElement.XMLString;
                     
@@ -2132,75 +2155,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         
         if (xmlString == nil)
         {
-            // Try a PNG image
-
-/*
-            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-            NSString * filename = filepath.lastPathComponent;
-
-            if (filename != nil) 
-            {
-                NSUInteger filenameLength = filename.length;
-                NSRange suffixRange = [filename rangeOfString:@".png"];
-                if (suffixRange.location == filenameLength - 4)
-                {
-                    NSData * pngData = [[NSData alloc] initWithContentsOfFile:filepath];
-                    if (pngData != NULL)
-                    {
-                        NSNumber * jpegCompressionNumber = (self.macSVGDocumentWindowController.imageDictionary)[@"jpegCompressionNumber"];
-                        NSString * imageDataString = [self xmlStringForEmbeddedImageData:pngData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
-
-                        NSImage * aImage = [[NSImage alloc] initWithData:pngData];
-
-                        CGFloat xFloat = 10;
-                        NSString * xString = [NSString stringWithFormat:@"%fpx", xFloat];
-
-                        CGFloat yFloat = 10;
-                        NSString * yString = [NSString stringWithFormat:@"%fpx", yFloat];
-
-                        CGFloat widthFloat = aImage.size.width;
-                        NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
-
-                        CGFloat heightFloat = aImage.size.height;
-                        NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
-                        
-                        NSString * newIDString = [self uniqueIDForElementTagName:@"image" pendingIDs:NULL];
-
-                        NSString * MacsvgidString = [self newMacsvgid];
-
-                        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
-                        
-                        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, MacsvgidString];
-                        
-                        NSError * xmlError = NULL;
-
-                        NSXMLElement * imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
-                        
-                        if (xmlError != NULL)
-                        {
-                            NSLog(@"MacSVGDocument makeImageElementWithURL error %@", xmlError);
-                        }
-                        
-                        [imageElement addNamespace:[NSXMLNode namespaceWithName:@"xlink" stringValue:@"http://www.w3.org/1999/xlink"]];
-                        
-                        NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                        xlinkHrefAttributeNode.name = @"xlink:href";
-                        xlinkHrefAttributeNode.stringValue = imageDataString;
-                        [imageElement addAttribute:xlinkHrefAttributeNode];
-                        
-                        NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-                        xlinkRoleAttributeNode.name = @"xlink:role";
-                        xlinkRoleAttributeNode.stringValue = filepath;
-                        [imageElement addAttribute:xlinkRoleAttributeNode];
-
-                        xmlString = [imageElement XMLString];
-                        pasteboardType = NSFilenamesPboardType;
-                    }
-                }
-            }
-            */
-
-
             // Try a PNG image
             NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
             NSString * filename = filepath.lastPathComponent;
@@ -2223,7 +2177,22 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
                     if (pngData != NULL)
                     {
-                        NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:pngData imageURLString:filepath];
+                        NSURL * filePathURL = [NSURL fileURLWithPath:filepath];
+                        NSString * imageFilePathURLString = [filePathURL absoluteString];
+                    
+                        NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:pngData imageURLString:imageFilePathURLString];
+                        
+                        NSString * xString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.x];
+                        NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        xAttributeNode.name = @"x";
+                        xAttributeNode.stringValue = xString;
+                        [imageElement addAttribute:xAttributeNode];
+
+                        NSString * yString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.y];
+                        NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        yAttributeNode.name = @"y";
+                        yAttributeNode.stringValue = yString;
+                        [imageElement addAttribute:yAttributeNode];
 
                         xmlString = [imageElement XMLString];
                         pasteboardType = NSFilenamesPboardType;
@@ -2263,6 +2232,18 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     if (jpegData != NULL)
                     {
                         NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:filepath];
+
+                        NSString * xString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.x];
+                        NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        xAttributeNode.name = @"x";
+                        xAttributeNode.stringValue = xString;
+                        [imageElement addAttribute:xAttributeNode];
+
+                        NSString * yString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.y];
+                        NSXMLNode * yAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        yAttributeNode.name = @"y";
+                        yAttributeNode.stringValue = yString;
+                        [imageElement addAttribute:yAttributeNode];
 
                         xmlString = [imageElement XMLString];
                         pasteboardType = NSFilenamesPboardType;

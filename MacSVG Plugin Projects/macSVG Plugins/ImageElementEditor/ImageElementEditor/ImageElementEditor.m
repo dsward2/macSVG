@@ -378,7 +378,7 @@
     [clipView scaleUnitSquareToSize:NSMakeSize(scale, scale)];
     
     [clipView setNeedsDisplay:YES];
-    [documentView setNeedsDisplay:YES];
+    //[documentView setNeedsDisplay:YES];
     
     webViewUnitSquareScale = scale;
 
