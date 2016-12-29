@@ -1749,22 +1749,34 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
         NSString * MacsvgidString = [self newMacsvgid];
 
-        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
         
-        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, pngDataString, MacsvgidString];
+        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, MacsvgidString];
         
         NSError * xmlError = NULL;
 
         imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
         
+        [imageElement addNamespace:[NSXMLNode namespaceWithName:@"xlink" stringValue:@"http://www.w3.org/1999/xlink"]];
+        
+        if (pngDataString != NULL)
+        {
+            if ([pngDataString length] > 0)
+            {
+                NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                xlinkHrefAttributeNode.name = @"xlink:href";
+                xlinkHrefAttributeNode.stringValue = pngDataString;
+                [imageElement addAttribute:xlinkHrefAttributeNode];
+            }
+        }
+                
         if (imageURLString != NULL)
         {
             if ([imageURLString length] > 0)
             {
                 NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                 xlinkRoleAttributeNode.name = @"xlink:role";
-                xlinkRoleAttributeNode.stringValue = [[NSString alloc] initWithString:imageURLString];
-                
+                xlinkRoleAttributeNode.stringValue = imageURLString;
                 [imageElement addAttribute:xlinkRoleAttributeNode];
             }
         }
@@ -1802,22 +1814,34 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
         NSString * MacsvgidString = [self newMacsvgid];
 
-        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" xlink:href=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
         
-        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, jpegDataString, MacsvgidString];
+        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, MacsvgidString];
         
         NSError * xmlError = NULL;
 
         imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
 
+        [imageElement addNamespace:[NSXMLNode namespaceWithName:@"xlink" stringValue:@"http://www.w3.org/1999/xlink"]];
+        
+        if (jpegDataString != NULL)
+        {
+            if ([jpegDataString length] > 0)
+            {
+                NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                xlinkHrefAttributeNode.name = @"xlink:href";
+                xlinkHrefAttributeNode.stringValue = jpegDataString;
+                [imageElement addAttribute:xlinkHrefAttributeNode];
+            }
+        }
+                
         if (imageURLString != NULL)
         {
             if ([imageURLString length] > 0)
             {
                 NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                 xlinkRoleAttributeNode.name = @"xlink:role";
-                xlinkRoleAttributeNode.stringValue = [[NSString alloc] initWithString:imageURLString];
-                
+                xlinkRoleAttributeNode.stringValue = imageURLString;
                 [imageElement addAttribute:xlinkRoleAttributeNode];
             }
         }
@@ -1868,9 +1892,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     NSPoint draggingLocation = [info draggingLocation];
     NSPoint draggedImageLocationInWindow = [info draggedImageLocation];
+    NSPoint draggedImageLocation = draggingLocation;
+    draggedImageLocation.x += draggedImageLocationInWindow.x;
+    draggedImageLocation.y += draggedImageLocationInWindow.y;
     NSImage * draggedImage = [info draggedImage];
     SVGWebView * svgWebView = self.macSVGDocumentWindowController.svgWebKitController.svgWebView;
-    NSPoint locationInWebView = [svgWebView convertPoint:draggedImageLocationInWindow fromView:NULL];
+    NSPoint locationInWebView = [svgWebView convertPoint:draggedImageLocation fromView:NULL];
     
     XMLOutlineController * xmlOutlineController = self.macSVGDocumentWindowController.xmlOutlineController;
     XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
@@ -2106,6 +2133,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil)
         {
             // Try a PNG image
+
+/*
             NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
             NSString * filename = filepath.lastPathComponent;
 
@@ -2119,7 +2148,84 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     if (pngData != NULL)
                     {
                         NSNumber * jpegCompressionNumber = (self.macSVGDocumentWindowController.imageDictionary)[@"jpegCompressionNumber"];
-                        xmlString = [self xmlStringForEmbeddedImageData:pngData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
+                        NSString * imageDataString = [self xmlStringForEmbeddedImageData:pngData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
+
+                        NSImage * aImage = [[NSImage alloc] initWithData:pngData];
+
+                        CGFloat xFloat = 10;
+                        NSString * xString = [NSString stringWithFormat:@"%fpx", xFloat];
+
+                        CGFloat yFloat = 10;
+                        NSString * yString = [NSString stringWithFormat:@"%fpx", yFloat];
+
+                        CGFloat widthFloat = aImage.size.width;
+                        NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
+
+                        CGFloat heightFloat = aImage.size.height;
+                        NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
+                        
+                        NSString * newIDString = [self uniqueIDForElementTagName:@"image" pendingIDs:NULL];
+
+                        NSString * MacsvgidString = [self newMacsvgid];
+
+                        NSString * formatString = @"<image x=\"%@\" y=\"%@\" width=\"%@\" height=\"%@\" id=\"%@\" transform=\"\" macsvgid=\"%@\"/>";
+                        
+                        NSString * imageXmlString = [NSString stringWithFormat:formatString, xString, yString, widthString, heightString, newIDString, MacsvgidString];
+                        
+                        NSError * xmlError = NULL;
+
+                        NSXMLElement * imageElement = [[NSXMLElement alloc] initWithXMLString:imageXmlString error:&xmlError];
+                        
+                        if (xmlError != NULL)
+                        {
+                            NSLog(@"MacSVGDocument makeImageElementWithURL error %@", xmlError);
+                        }
+                        
+                        [imageElement addNamespace:[NSXMLNode namespaceWithName:@"xlink" stringValue:@"http://www.w3.org/1999/xlink"]];
+                        
+                        NSXMLNode * xlinkHrefAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        xlinkHrefAttributeNode.name = @"xlink:href";
+                        xlinkHrefAttributeNode.stringValue = imageDataString;
+                        [imageElement addAttribute:xlinkHrefAttributeNode];
+                        
+                        NSXMLNode * xlinkRoleAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                        xlinkRoleAttributeNode.name = @"xlink:role";
+                        xlinkRoleAttributeNode.stringValue = filepath;
+                        [imageElement addAttribute:xlinkRoleAttributeNode];
+
+                        xmlString = [imageElement XMLString];
+                        pasteboardType = NSFilenamesPboardType;
+                    }
+                }
+            }
+            */
+
+
+            // Try a PNG image
+            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
+            NSString * filename = filepath.lastPathComponent;
+
+            if (filename != nil) 
+            {
+                NSUInteger filenameLength = filename.length;
+                
+                BOOL isPNGFile = NO;
+                
+                NSRange suffixRange = [filename rangeOfString:@".png"];
+                if (suffixRange.location == filenameLength - 4)
+                {
+                    isPNGFile = YES;
+                }
+                
+                if (isPNGFile == YES)
+                {
+                    NSData * pngData = [[NSData alloc] initWithContentsOfFile:filepath];
+
+                    if (pngData != NULL)
+                    {
+                        NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:pngData imageURLString:filepath];
+
+                        xmlString = [imageElement XMLString];
                         pasteboardType = NSFilenamesPboardType;
                     }
                 }
@@ -2154,11 +2260,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 {
                     NSData * jpegData = [[NSData alloc] initWithContentsOfFile:filepath];
 
-                    NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:NULL];
-                    
-                    xmlString = imageElement.XMLString;
-                    
-                    pasteboardType = NSTIFFPboardType;
+                    if (jpegData != NULL)
+                    {
+                        NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:filepath];
+
+                        xmlString = [imageElement XMLString];
+                        pasteboardType = NSFilenamesPboardType;
+                    }
                 }
             }
         }
