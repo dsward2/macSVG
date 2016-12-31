@@ -421,7 +421,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
     CTFontDescriptorRef cfFontDescriptor = CTFontManagerCreateFontDescriptorFromData((__bridge CFDataRef)fontData);
     
-    NSDictionary * fontDescriptorDictionary = CFBridgingRelease(cfFontDescriptor);
+    CFDictionaryRef fontDescriptorCFDictionary = CTFontDescriptorCopyAttributes(cfFontDescriptor);
+    NSDictionary * fontDescriptorDictionary = CFBridgingRelease(fontDescriptorCFDictionary);
     
     fontName = fontDescriptorDictionary[@"NSFontNameAttribute"];
     
