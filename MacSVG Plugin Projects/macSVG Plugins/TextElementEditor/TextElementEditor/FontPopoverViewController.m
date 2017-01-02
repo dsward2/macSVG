@@ -468,7 +468,15 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     if (fontURL != NULL)
     {
-        fontName = [self fontNameFromURLData:fontURL];
+        NSString * fontFileNameExtension = [fontURLString pathExtension];
+        if ([fontFileNameExtension isEqualToString:@"ttf"] == YES)
+        {
+            fontName = [self fontNameFromTruetypeFontURL:fontURL];
+        }
+        else
+        {
+            fontName = [self fontNameFromURLData:fontURL];
+        }
     }
 
     return fontName;
@@ -784,7 +792,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 
 //==================================================================================
-//	chooseTruetypeFontFileButtonAction
+//	previewImportedFontButtonAction
 //==================================================================================
 
 - (IBAction)previewImportedFontButtonAction:(id)sender
@@ -1007,7 +1015,10 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 {
     NSString * result = @"Missing Result";
     
-    result = (self.definedFontsArray)[rowIndex];
+    if (rowIndex >= 0)
+    {
+        result = (self.definedFontsArray)[rowIndex];
+    }
     
     return result;
 }

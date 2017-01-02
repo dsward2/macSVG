@@ -77,6 +77,28 @@
 }
 
 //==================================================================================
+//	fontNameFromTruetypeFontURL
+//==================================================================================
+
+- (NSString *)fontNameFromTruetypeFontURL:(NSURL *)fontURL
+{
+    // test file:////Users/dsward/Downloads/Cabin_Condensed/CabinCondensed-Regular.ttf
+    
+    NSString * fontName = NULL;
+    
+    NSData * fontData = [NSData dataWithContentsOfURL:fontURL];
+
+    CTFontDescriptorRef cfFontDescriptor = CTFontManagerCreateFontDescriptorFromData((__bridge CFDataRef)fontData);
+    
+    CFDictionaryRef fontDescriptorCFDictionary = CTFontDescriptorCopyAttributes(cfFontDescriptor);
+    NSDictionary * fontDescriptorDictionary = CFBridgingRelease(fontDescriptorCFDictionary);
+    
+    fontName = fontDescriptorDictionary[@"NSFontNameAttribute"];
+    
+    return fontName;
+}
+
+//==================================================================================
 //	fontNameFromURLData
 //==================================================================================
 
@@ -113,9 +135,24 @@
     
     NSURL * fontURL = [NSURL URLWithString:fontURLString];
     
+    /*
     if (fontURL != NULL)
     {
         fontName = [self fontNameFromURLData:fontURL];
+    }
+    */
+
+    if (fontURL != NULL)
+    {
+        NSString * fontFileNameExtension = [fontURLString pathExtension];
+        if ([fontFileNameExtension isEqualToString:@"ttf"] == YES)
+        {
+            fontName = [self fontNameFromTruetypeFontURL:fontURL];
+        }
+        else
+        {
+            fontName = [self fontNameFromURLData:fontURL];
+        }
     }
 
     return fontName;
