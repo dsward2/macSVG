@@ -94,8 +94,8 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="lHh-er-klF">
-                            <rect key="frame" x="53" y="166" width="44" height="19"/>
+                        <textField verticalHuggingPriority="750" misplaced="YES" id="lHh-er-klF">
+                            <rect key="frame" x="53" y="166" width="42" height="19"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="sd8-dp-CZV">
                                 <font key="font" metaFont="smallSystem"/>
@@ -258,7 +258,7 @@
                     </subviews>
                 </customView>
             </subviews>
-            <point key="canvasLocation" x="115" y="393"/>
+            <point key="canvasLocation" x="-26" y="1023"/>
         </customView>
         <viewController id="HOn-k0-Fu2" userLabel="Fonts Popover View Controller" customClass="FontPopoverViewController">
             <connections>

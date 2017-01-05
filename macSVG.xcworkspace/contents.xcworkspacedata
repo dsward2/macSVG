@@ -57,6 +57,9 @@
             location = "group:PointsAttributeEditor/PointsAttributeEditor.xcodeproj">
          </FileRef>
          <FileRef
+            location = "group:StyleAttributeEditor/StyleAttributeEditor.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:SVGAttributeEditor/SVGAttributeEditor.xcodeproj">
          </FileRef>
          <FileRef

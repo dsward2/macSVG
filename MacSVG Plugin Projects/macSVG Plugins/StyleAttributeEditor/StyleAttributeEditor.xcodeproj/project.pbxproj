@@ -1,0 +1,300 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E2EB2191E1AFF7E00F36593 /* StyleAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */; };
+		0E2EB21C1E1AFFF500F36593 /* StyleAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */; };
+		0E2EB21E1E1B009E00F36593 /* CSSProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21D1E1B009E00F36593 /* CSSProperties.json */; };
+		0E2EB2211E1B089500F36593 /* StylePropertiesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */; };
+		0E2EB2231E1B099E00F36593 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */; };
+		0E2EB2251E1B0A4000F36593 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0E2EB20E1E1AFE3B00F36593 /* StyleAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StyleAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E2EB2111E1AFE3B00F36593 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E2EB2171E1AFF7E00F36593 /* StyleAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyleAttributeEditor.h; sourceTree = "<group>"; };
+		0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyleAttributeEditor.m; sourceTree = "<group>"; };
+		0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StyleAttributeEditor.xib; sourceTree = "<group>"; };
+		0E2EB21D1E1B009E00F36593 /* CSSProperties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CSSProperties.json; sourceTree = "<group>"; };
+		0E2EB21F1E1B089500F36593 /* StylePropertiesTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StylePropertiesTableRowView.h; sourceTree = "<group>"; };
+		0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StylePropertiesTableRowView.m; sourceTree = "<group>"; };
+		0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
+		0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0E2EB20B1E1AFE3B00F36593 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E2EB2251E1B0A4000F36593 /* MacSVGPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E2EB2051E1AFE3B00F36593 = {
+			isa = PBXGroup;
+			children = (
+				0E2EB2101E1AFE3B00F36593 /* StyleAttributeEditor */,
+				0E2EB20F1E1AFE3B00F36593 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0E2EB20F1E1AFE3B00F36593 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E2EB20E1E1AFE3B00F36593 /* StyleAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E2EB2101E1AFE3B00F36593 /* StyleAttributeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				0E2EB2171E1AFF7E00F36593 /* StyleAttributeEditor.h */,
+				0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */,
+				0E2EB21F1E1B089500F36593 /* StylePropertiesTableRowView.h */,
+				0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */,
+				0E2EB21A1E1AFFA900F36593 /* Supporting Files */,
+			);
+			path = StyleAttributeEditor;
+			sourceTree = "<group>";
+		};
+		0E2EB21A1E1AFFA900F36593 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */,
+				0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */,
+				0E2EB2111E1AFE3B00F36593 /* Info.plist */,
+				0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */,
+				0E2EB21D1E1B009E00F36593 /* CSSProperties.json */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E2EB20D1E1AFE3B00F36593 /* StyleAttributeEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0E2EB2141E1AFE3B00F36593 /* Build configuration list for PBXNativeTarget "StyleAttributeEditor" */;
+			buildPhases = (
+				0E2EB20A1E1AFE3B00F36593 /* Sources */,
+				0E2EB20B1E1AFE3B00F36593 /* Frameworks */,
+				0E2EB20C1E1AFE3B00F36593 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StyleAttributeEditor;
+			productName = StyleAttributeEditor;
+			productReference = 0E2EB20E1E1AFE3B00F36593 /* StyleAttributeEditor.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0E2EB2061E1AFE3B00F36593 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0E2EB20D1E1AFE3B00F36593 = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0E2EB2091E1AFE3B00F36593 /* Build configuration list for PBXProject "StyleAttributeEditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0E2EB2051E1AFE3B00F36593;
+			productRefGroup = 0E2EB20F1E1AFE3B00F36593 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E2EB20D1E1AFE3B00F36593 /* StyleAttributeEditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0E2EB20C1E1AFE3B00F36593 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E2EB21E1E1B009E00F36593 /* CSSProperties.json in Resources */,
+				0E2EB2231E1B099E00F36593 /* macSVGPluginConfig.xcconfig in Resources */,
+				0E2EB21C1E1AFFF500F36593 /* StyleAttributeEditor.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0E2EB20A1E1AFE3B00F36593 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E2EB2191E1AFF7E00F36593 /* StyleAttributeEditor.m in Sources */,
+				0E2EB2211E1B089500F36593 /* StylePropertiesTableRowView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0E2EB2121E1AFE3B00F36593 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0E2EB2131E1AFE3B00F36593 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0E2EB2151E1AFE3B00F36593 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = StyleAttributeEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.StyleAttributeEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0E2EB2161E1AFE3B00F36593 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
+				INFOPLIST_FILE = StyleAttributeEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.StyleAttributeEditor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E2EB2091E1AFE3B00F36593 /* Build configuration list for PBXProject "StyleAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E2EB2121E1AFE3B00F36593 /* Debug */,
+				0E2EB2131E1AFE3B00F36593 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0E2EB2141E1AFE3B00F36593 /* Build configuration list for PBXNativeTarget "StyleAttributeEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E2EB2151E1AFE3B00F36593 /* Debug */,
+				0E2EB2161E1AFE3B00F36593 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0E2EB2061E1AFE3B00F36593 /* Project object */;
+}

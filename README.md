@@ -35,4 +35,4 @@ Open "macSVG.xcworkspace" in Xcode, set the build target to "macSVG Debug", buil
 
 #
 
-Copyright (c) 2016 by ArkPhone, LLC.
+Copyright (c) 2016-2017 by ArkPhone, LLC.

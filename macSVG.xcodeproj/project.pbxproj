@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8881D59ADC700265FA2 /* PathFunctions.m */; };
+		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; };
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
 		0E0AEDB51D8AE6A9004D82C3 /* pattern_example2.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */; };
@@ -768,6 +769,7 @@
 				0E47E11E17ECCABE00C029DD /* PathElementShapeAnimationEditor.plugin in CopyFiles */,
 				0ED841221800FCCA003985CD /* PieChartGenerator.plugin in CopyFiles */,
 				0EA78C3B1D84180900C9D4C8 /* PointsAttributeEditor.plugin in CopyFiles */,
+				0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in CopyFiles */,
 				0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in CopyFiles */,
 				0E47E12017ECCABE00C029DD /* SVGElementEditor.plugin in CopyFiles */,
 				0E47E12117ECCABE00C029DD /* TextElementEditor.plugin in CopyFiles */,
@@ -1360,6 +1362,7 @@
 		0E06F8871D59ADC700265FA2 /* PathFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PathFunctions.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E06F8881D59ADC700265FA2 /* PathFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PathFunctions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E0799711D8A53C9001064D5 /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacSVGPluginCallbacks.h; sourceTree = "<group>"; };
+		0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = StyleAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E0AED991D8A932F004D82C3 /* path_markers_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_markers_example.svg; sourceTree = "<group>"; };
 		0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example.svg; sourceTree = "<group>"; };
 		0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example2.svg; sourceTree = "<group>"; };
@@ -2325,6 +2328,7 @@
 				0EEFBB2A17EA2C03006887CA /* PathElementShapeAnimationEditor.plugin */,
 				0ED841201800FCAB003985CD /* PieChartGenerator.plugin */,
 				0EA78C3A1D8417E600C9D4C8 /* PointsAttributeEditor.plugin */,
+				0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */,
 				0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */,
 				0EEFBB2C17EA2C03006887CA /* SVGElementEditor.plugin */,
 				0EEFBB2D17EA2C03006887CA /* TextElementEditor.plugin */,
