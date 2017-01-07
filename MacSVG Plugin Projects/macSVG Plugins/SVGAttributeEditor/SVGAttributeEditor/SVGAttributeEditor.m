@@ -27,6 +27,7 @@
     self = [super init];
     if (self) {
         // Initialization code here.
+        self.iriReferencesArray = [NSMutableArray array];
     }
     
     return self;
@@ -465,6 +466,35 @@
             }
         }
     }
+
+    [self buildIRIReferencesArrayForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement
+            attributeName:newAttributeName existingValue:existingValue];
+    
+    BOOL dividerWasAdded = NO;
+    
+    for (NSXMLElement * aXMLElement in self.iriReferencesArray)
+    {
+        //NSLog(@"aXMLElement=%@", aXMLElement);
+        NSXMLNode * idAttributeNode = [aXMLElement attributeForName:@"id"];
+        
+        if (idAttributeNode != NULL)
+        {
+            NSString * idAttributeString = idAttributeNode.stringValue;
+            if (idAttributeString.length > 0)
+            {
+                if (dividerWasAdded == NO)
+                {
+                    [[definedValuePopUpButton menu] addItem:[NSMenuItem separatorItem]];
+                    
+                    dividerWasAdded = YES;
+                }
+            
+                NSString * valueString = [NSString stringWithFormat:@"url(#%@)", idAttributeString];
+
+                [definedValuePopUpButton addItemWithTitle:valueString];
+            }
+        }
+    }
     
     if (definedItemsFound == YES)
     {
@@ -507,5 +537,167 @@
         [self setValueButtonAction:self];
     }
 }
+
+//==================================================================================
+//	buildIRIReferencesArrayForXMLElement:domElement:attributeName:existingValue:
+//==================================================================================
+
+- (void)buildIRIReferencesArrayForXMLElement:(NSXMLElement *)newPluginTargetXMLElement
+        domElement:(DOMElement *)newPluginTargetDOMElement
+        attributeName:(NSString *)newAttributeName
+        existingValue:(NSString *)existingValue
+{
+    NSString * xpathQuery = @"*";
+
+    NSString * elementName = newPluginTargetXMLElement.name;
+
+    // check elements first
+    if ([elementName isEqualToString:@"a"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"altGlyph"] == YES)
+    {
+        xpathQuery = @".//altGlyphDef|.//glyph";
+    }
+    else if ([elementName isEqualToString:@"animate"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"animateColor"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"animateMotion"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"animateTransform"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"color-profile"] == YES)
+    {
+        xpathQuery = @"*";      // TODO: FIXME:
+    }
+    else if ([elementName isEqualToString:@"cursor"] == YES)
+    {
+        xpathQuery = @".//cursor";
+    }
+    else if ([elementName isEqualToString:@"feImage"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"filter"] == YES)
+    {
+        xpathQuery = @".//filter";
+    }
+    else if ([elementName isEqualToString:@"image"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"linearGradient"] == YES)
+    {
+        xpathQuery = @".//linearGradient|.//radialGradient";
+    }
+    else if ([elementName isEqualToString:@"marker"] == YES)
+    {
+        xpathQuery = @".//marker";
+    }
+    else if ([elementName isEqualToString:@"pattern"] == YES)
+    {
+        xpathQuery = @".//pattern";
+    }
+    else if ([elementName isEqualToString:@"radialGradient"] == YES)
+    {
+        xpathQuery = @".//linearGradient|.//radialGradient";
+    }
+    else if ([elementName isEqualToString:@"script"] == YES)
+    {
+        xpathQuery = @"";   // TODO: FIXME:
+    }
+    else if ([elementName isEqualToString:@"textPath"] == YES)
+    {
+        xpathQuery = @".//path";
+    }
+    else if ([elementName isEqualToString:@"tref"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"set"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([elementName isEqualToString:@"use"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    
+    // check attributes next
+    if ([newAttributeName isEqualToString:@"clip-path"] == YES)
+    {
+        xpathQuery = @".//clipPath";
+    }
+    else if ([newAttributeName isEqualToString:@"color-profile"] == YES)
+    {
+        xpathQuery = @".//color-profile";
+    }
+    else if ([newAttributeName isEqualToString:@"cursor"] == YES)
+    {
+        xpathQuery = @"*";
+    }
+    else if ([newAttributeName isEqualToString:@"fill"] == YES)
+    {
+        xpathQuery = @".//linearGradient|.//radialGradient|.//pattern";
+    }
+    else if ([newAttributeName isEqualToString:@"filter"] == YES)
+    {
+        xpathQuery = @".//filter";
+    }
+    else if ([newAttributeName isEqualToString:@"marker-start"] == YES)
+    {
+        xpathQuery = @".//marker";
+    }
+    else if ([newAttributeName isEqualToString:@"marker-mid"] == YES)
+    {
+        xpathQuery = @".//marker";
+    }
+    else if ([newAttributeName isEqualToString:@"marker-end"] == YES)
+    {
+        xpathQuery = @".//marker";
+    }
+    else if ([newAttributeName isEqualToString:@"mask"] == YES)
+    {
+        xpathQuery = @".//mask";
+    }
+    else if ([newAttributeName isEqualToString:@"stroke"] == YES)
+    {
+        xpathQuery = @".//linearGradient|.//radialGradient|.//pattern";
+    }
+    
+    NSXMLElement * rootElement = [self.svgXmlDocument rootElement];
+    
+    NSError * error = NULL;
+
+    NSArray * xpathResultsArray = [rootElement nodesForXPath:xpathQuery error:&error];
+    
+    [self.iriReferencesArray removeAllObjects];
+    
+    for (NSXMLElement * aXMLElement in xpathResultsArray)
+    {
+        NSXMLNode * idAttributeNode = [aXMLElement attributeForName:@"id"];
+        
+        if (idAttributeNode != NULL)
+        {
+            NSString * idAttributeString = idAttributeNode.stringValue;
+            
+            if (idAttributeString.length > 0)
+            {
+                [self.iriReferencesArray addObject:aXMLElement];
+            }
+        }
+    }
+}
+
 
 @end

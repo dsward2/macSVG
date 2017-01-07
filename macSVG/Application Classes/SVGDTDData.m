@@ -638,6 +638,7 @@
     textPathDictionary[@"tspan"] = @"tspan";
     
     // customize DTD attribute rules
+    
     NSArray * allElementKeys = (self.elementsDictionary).allKeys;
     
     // set default opacity value 1.0f
@@ -655,7 +656,7 @@
                 NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange opacityRange = [attributeName rangeOfString:@"opacity"];
-                if (opacityRange.location != NSNotFound)
+                if (opacityRange.location == 0)
                 {
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"1.0"];
                     aAttributeDictionary[@"default_value"] = defaultValuesArray;
@@ -684,7 +685,10 @@
                 {
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
-                    [attributeTypeArray addObject:@"indefinite"];
+                    
+                    //[attributeTypeArray addObject:@"indefinite"];
+                    [self addValue:@"indefinite" toArray:attributeTypeArray];
+                    
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"0"];
                     aAttributeDictionary[@"default_value"] = defaultValuesArray;
@@ -709,12 +713,17 @@
                 NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"repeatDur"];
-                if (repeatCountRange.location != NSNotFound)
+                if (repeatCountRange.location == 0)
                 {
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
-                    [attributeTypeArray addObject:@"indefinite"];
-                    [attributeTypeArray addObject:@"media"];
+                    
+                    //[attributeTypeArray addObject:@"indefinite"];
+                    //[attributeTypeArray addObject:@"media"];
+                    
+                    [self addValue:@"indefinite" toArray:attributeTypeArray];
+                    [self addValue:@"media" toArray:attributeTypeArray];
+                    
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"indefinite"];
                     aAttributeDictionary[@"default_value"] = defaultValuesArray;
@@ -744,6 +753,8 @@
                 {
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
+                    
+                    /*
                     [attributeTypeArray addObject:@"none"];
                     
                     [attributeTypeArray addObject:@"xMinYMin meet"];
@@ -765,6 +776,29 @@
                     [attributeTypeArray addObject:@"xMaxYMin slice"];
                     [attributeTypeArray addObject:@"xMaxYMid slice"];
                     [attributeTypeArray addObject:@"xMaxYMax slice"];
+                    */
+
+                    [self addValue:@"none" toArray:attributeTypeArray];
+
+                    [self addValue:@"xMinYMin meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMinYMid meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMinYMax meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMin meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMid meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMax meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMin meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMid meet" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMax meet" toArray:attributeTypeArray];
+                    
+                    [self addValue:@"xMinYMin slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMinYMid slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMinYMax slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMin slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMid slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMidYMax slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMin slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMid slice" toArray:attributeTypeArray];
+                    [self addValue:@"xMaxYMax slice" toArray:attributeTypeArray];
                     
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"xMidYMid meet"];
@@ -794,7 +828,10 @@
                 {
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
-                    [attributeTypeArray addObject:@"none"];
+                    
+                    //[attributeTypeArray addObject:@"none"];
+                    [self addValue:@"none" toArray:attributeTypeArray];
+                    
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                     NSMutableArray * defaultValuesArray = [NSMutableArray arrayWithObject:@"0s"];
                     aAttributeDictionary[@"default_value"] = defaultValuesArray;
@@ -806,23 +843,27 @@
     // add several fill attribute defined values for all elements where fill is a valid attribute
     for (NSString * aElementKey in allElementKeys)
     {
-        NSDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
-        NSDictionary * attributesDictionary = aElementDictionary[@"attributes"];
+        NSMutableDictionary * aElementDictionary = (self.elementsDictionary)[aElementKey];
+        NSMutableDictionary * attributesDictionary = aElementDictionary[@"attributes"];
         
         BOOL isAnimateElement = NO;
-        if ([aElementKey isEqualToString:@"animate"] == YES)
+        if ([aElementKey isEqualToString:@"set"] == YES)
         {
             isAnimateElement = YES;
         }
-        if ([aElementKey isEqualToString:@"animateColor"] == YES)
+        else if ([aElementKey isEqualToString:@"animate"] == YES)
         {
             isAnimateElement = YES;
         }
-        if ([aElementKey isEqualToString:@"animateMotion"] == YES)
+        else if ([aElementKey isEqualToString:@"animateColor"] == YES)
         {
             isAnimateElement = YES;
         }
-        if ([aElementKey isEqualToString:@"animateTransform"] == YES)
+        else if ([aElementKey isEqualToString:@"animateMotion"] == YES)
+        {
+            isAnimateElement = YES;
+        }
+        else if ([aElementKey isEqualToString:@"animateTransform"] == YES)
         {
             isAnimateElement = YES;
         }
@@ -830,25 +871,36 @@
         if (attributesDictionary != NULL)
         {
             NSArray * allAttributeKeys = attributesDictionary.allKeys;
+            
+            BOOL fillAttributeFound = NO;
+            
             for (NSString * attributeKey in allAttributeKeys)
             {
                 NSMutableDictionary * aAttributeDictionary = attributesDictionary[attributeKey];
                 NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
-                NSRange repeatCountRange = [attributeName rangeOfString:@"fill"];
-                if (repeatCountRange.location != NSNotFound)
+                NSRange fillRange = [attributeName rangeOfString:@"fill"];
+                if (fillRange.location == 0)
                 {
+                    fillAttributeFound = YES;
+                
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
-                    [attributeTypeArray addObject:@"none"];
+                    
+                    //[attributeTypeArray addObject:@"none"];
+                    [self addValue:@"none" toArray:attributeTypeArray];
 
                     if (isAnimateElement == YES)
                     {
-                        [attributeTypeArray addObject:@"freeze"];
-                        [attributeTypeArray addObject:@"remove"];
+                        //[attributeTypeArray addObject:@"freeze"];
+                        //[attributeTypeArray addObject:@"remove"];
+                        
+                        [self addValue:@"freeze" toArray:attributeTypeArray];
+                        [self addValue:@"remove" toArray:attributeTypeArray];
                     }
                     else
                     {
+                        /*
                         [attributeTypeArray addObject:@"currentColor"];
                         [attributeTypeArray addObject:@"black"];
                         [attributeTypeArray addObject:@"white"];
@@ -860,6 +912,19 @@
                         [attributeTypeArray addObject:@"yellow"];
                         [attributeTypeArray addObject:@"#000000"];
                         [attributeTypeArray addObject:@"url(#aElementID)"];
+                        */
+
+                        //[self addValue:@"currentColor" toArray:attributeTypeArray];
+                        [self addValue:@"black" toArray:attributeTypeArray];
+                        [self addValue:@"white" toArray:attributeTypeArray];
+                        [self addValue:@"red" toArray:attributeTypeArray];
+                        [self addValue:@"blue" toArray:attributeTypeArray];
+                        [self addValue:@"green" toArray:attributeTypeArray];
+                        [self addValue:@"cyan" toArray:attributeTypeArray];
+                        [self addValue:@"magenta" toArray:attributeTypeArray];
+                        [self addValue:@"#000000" toArray:attributeTypeArray];
+                        //[self addValue:@"url(#aElementID)" toArray:attributeTypeArray];
+                        
                     }
                     
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
@@ -883,10 +948,12 @@
                 NSString * attributeName = aAttributeDictionary[@"attribute_name"];
                 
                 NSRange repeatCountRange = [attributeName rangeOfString:@"stroke"];
-                if (repeatCountRange.location != NSNotFound)
+                if (repeatCountRange.location == 0)
                 {
                     NSArray * existingAttributeTypeArray = aAttributeDictionary[@"attribute_type"];
                     NSMutableArray * attributeTypeArray = [NSMutableArray arrayWithArray:existingAttributeTypeArray];
+                    
+                    /*
                     [attributeTypeArray addObject:@"none"];
                     [attributeTypeArray addObject:@"currentColor"];
                     [attributeTypeArray addObject:@"black"];
@@ -899,6 +966,19 @@
                     [attributeTypeArray addObject:@"yellow"];
                     [attributeTypeArray addObject:@"#000000"];
                     [attributeTypeArray addObject:@"url(#aElementID)"];
+                    */
+
+                    [self addValue:@"none" toArray:attributeTypeArray];
+                    //[self addValue:@"currentColor" toArray:attributeTypeArray];
+                    [self addValue:@"black" toArray:attributeTypeArray];
+                    [self addValue:@"white" toArray:attributeTypeArray];
+                    [self addValue:@"red" toArray:attributeTypeArray];
+                    [self addValue:@"blue" toArray:attributeTypeArray];
+                    [self addValue:@"green" toArray:attributeTypeArray];
+                    [self addValue:@"cyan" toArray:attributeTypeArray];
+                    [self addValue:@"magenta" toArray:attributeTypeArray];
+                    [self addValue:@"#000000" toArray:attributeTypeArray];
+                    //[self addValue:@"url(#aElementID)" toArray:attributeTypeArray];
                     
                     aAttributeDictionary[@"attribute_type"] = attributeTypeArray;
                 }
@@ -913,6 +993,27 @@
     //NSLog(@"datatypesDictionary = %@", datatypesDictionary);
     //NSLog(@"elementsDictionary = %@", elementsDictionary);    
     //NSLog(@"elementContentsDictionary = %@", elementContentsDictionary);    
+}
+
+//==================================================================================
+
+- (void)addValue:(NSString *)valueString toArray:(NSMutableArray *)aMutableArray
+{
+    BOOL valueFound = NO;
+    
+    for (NSString * aAttributeName in aMutableArray)
+    {
+        if ([aAttributeName isEqualToString:valueString] == YES)
+        {
+            valueFound = YES;
+            break;
+        }
+    }
+    
+    if (valueFound == NO)
+    {
+        [aMutableArray addObject:[NSString stringWithString:valueString]];
+    }
 }
 
 //==================================================================================

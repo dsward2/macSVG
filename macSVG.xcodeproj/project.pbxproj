@@ -719,7 +719,6 @@
 		0EEECD281D913A090050AC2F /* macSVG.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD271D913A090050AC2F /* macSVG.svg */; };
 		0EEECD2A1D923BD80050AC2F /* xhtml_with_javascript.xhtml in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */; };
 		0EF29D991D7955BC00267844 /* AnimateTransformElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		0EF29DBC1D7B9FD000267844 /* IRIReferenceAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF29DBB1D7B9FBA00267844 /* IRIReferenceAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EF420DF1D75588200A667D9 /* linearGradient_element.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF420DD1D75586400A667D9 /* linearGradient_element.svg */; };
 		0EF420E31D7561CE00A667D9 /* gaussian_blur_filter_element.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF420E01D75618400A667D9 /* gaussian_blur_filter_element.svg */; };
 		0EF420E51D758E4100A667D9 /* clipPath_element_and_clip-path_attribute.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EF420E41D758E3400A667D9 /* clipPath_element_and_clip-path_attribute.svg */; };
@@ -764,7 +763,6 @@
 				0E47E11917ECCABE00C029DD /* ColorAttributeEditor.plugin in CopyFiles */,
 				0E47E11A17ECCABE00C029DD /* CoordinatesAttributeEditor.plugin in CopyFiles */,
 				0E47E11B17ECCABE00C029DD /* ImageElementEditor.plugin in CopyFiles */,
-				0EF29DBC1D7B9FD000267844 /* IRIReferenceAttributeEditor.plugin in CopyFiles */,
 				0E47E11D17ECCABE00C029DD /* PathElementEditor.plugin in CopyFiles */,
 				0E47E11E17ECCABE00C029DD /* PathElementShapeAnimationEditor.plugin in CopyFiles */,
 				0ED841221800FCCA003985CD /* PieChartGenerator.plugin in CopyFiles */,
@@ -2257,7 +2255,6 @@
 		0EEFBB2D17EA2C03006887CA /* TextElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = TextElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEFBB4217EA2C46006887CA /* TransformAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = TransformAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimateTransformElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		0EF29DBB1D7B9FBA00267844 /* IRIReferenceAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = IRIReferenceAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF420DD1D75586400A667D9 /* linearGradient_element.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = linearGradient_element.svg; sourceTree = "<group>"; };
 		0EF420E01D75618400A667D9 /* gaussian_blur_filter_element.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gaussian_blur_filter_element.svg; sourceTree = "<group>"; };
 		0EF420E21D7561AF00A667D9 /* animated_text_on_a_continuous_loop.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = animated_text_on_a_continuous_loop.svg; sourceTree = "<group>"; };
@@ -2323,7 +2320,6 @@
 				0EEFBB2517EA2C03006887CA /* ColorAttributeEditor.plugin */,
 				0EEFBB2617EA2C03006887CA /* CoordinatesAttributeEditor.plugin */,
 				0EEFBB2717EA2C03006887CA /* ImageElementEditor.plugin */,
-				0EF29DBB1D7B9FBA00267844 /* IRIReferenceAttributeEditor.plugin */,
 				0EEFBB2917EA2C03006887CA /* PathElementEditor.plugin */,
 				0EEFBB2A17EA2C03006887CA /* PathElementShapeAnimationEditor.plugin */,
 				0ED841201800FCAB003985CD /* PieChartGenerator.plugin */,

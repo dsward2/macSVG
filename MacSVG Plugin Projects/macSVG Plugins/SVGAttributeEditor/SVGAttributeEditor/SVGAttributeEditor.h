@@ -20,6 +20,9 @@
     IBOutlet NSButton * setDefinedValueButton;
 }
 
+@property (strong) NSMutableArray * iriReferencesArray;
+
+
 - (IBAction)setValueButtonAction:(id)sender;
 - (IBAction)setDefinedValueButtonAction:(id)sender;
 - (IBAction)definedValuePopUpButtonAction:(id)sender;
