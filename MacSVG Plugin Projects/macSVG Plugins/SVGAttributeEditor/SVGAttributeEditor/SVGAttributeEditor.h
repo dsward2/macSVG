@@ -12,20 +12,20 @@
 {
     IBOutlet NSTextField * elementNameTextField;
     IBOutlet NSTextField * attributeNameTextField;
-    IBOutlet NSTextField * attributeValueTextField;
     IBOutlet NSPopUpButton * attributeUnitPopUpButton;
     IBOutlet NSStepper * attributeStepper;
-    IBOutlet NSPopUpButton * definedValuePopUpButton;
     IBOutlet NSButton * setAttributeValueButton;
-    IBOutlet NSButton * setDefinedValueButton;
+    IBOutlet NSButton * selectIRIReferenceElementButton;
+    IBOutlet NSComboBox * attributeValueComboBox;
 }
 
 @property (strong) NSMutableArray * iriReferencesArray;
 
+@property (strong) NSMutableArray * comboBoxValuesArray;
 
 - (IBAction)setValueButtonAction:(id)sender;
-- (IBAction)setDefinedValueButtonAction:(id)sender;
-- (IBAction)definedValuePopUpButtonAction:(id)sender;
 - (IBAction)attributeStepperAction:(id)sender;
+- (IBAction)itemTextFieldUpdated:(id)sender;
+- (IBAction)selectIRIReferenceElementButtonAction:(id)sender;
 
 @end

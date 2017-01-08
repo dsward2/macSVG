@@ -10,26 +10,25 @@
                 <outlet property="attributeNameTextField" destination="kUv-Qm-CiB" id="4JZ-xF-lQf"/>
                 <outlet property="attributeStepper" destination="BNc-Mk-02j" id="g6U-bR-eXM"/>
                 <outlet property="attributeUnitPopUpButton" destination="IgH-1m-Nk7" id="4aY-vv-nX4"/>
-                <outlet property="attributeValueTextField" destination="azE-qA-PVm" id="Z2O-Uz-8wR"/>
-                <outlet property="definedValuePopUpButton" destination="4Pj-tA-gmX" id="MCv-Ge-KsX"/>
+                <outlet property="attributeValueComboBox" destination="H5t-vh-jJ6" id="Pzh-sC-2fZ"/>
                 <outlet property="elementNameTextField" destination="UzM-Kk-jmR" id="roV-ux-c0E"/>
                 <outlet property="pluginView" destination="YrP-aU-j3D" id="lfr-gp-Fw9"/>
+                <outlet property="selectIRIReferenceElementButton" destination="ufx-Sp-5HL" id="RMD-Mm-qqo"/>
                 <outlet property="setAttributeValueButton" destination="13K-Ce-eha" id="M0Z-Vt-2gw"/>
-                <outlet property="setDefinedValueButton" destination="KJN-hG-hTp" id="ZJR-1D-cfV"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="YrP-aU-j3D" customClass="FlippedView">
-            <rect key="frame" x="0.0" y="0.0" width="275" height="204"/>
+        <customView misplaced="YES" id="YrP-aU-j3D" customClass="FlippedView">
+            <rect key="frame" x="0.0" y="0.0" width="275" height="152"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
-                <customView id="a2d-RA-Qgn">
-                    <rect key="frame" x="-1" y="0.0" width="275" height="204"/>
+                <customView misplaced="YES" id="a2d-RA-Qgn">
+                    <rect key="frame" x="0.0" y="0.0" width="275" height="152"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <popUpButton verticalHuggingPriority="750" id="IgH-1m-Nk7">
-                            <rect key="frame" x="192" y="120" width="46" height="22"/>
+                        <popUpButton verticalHuggingPriority="750" misplaced="YES" id="IgH-1m-Nk7">
+                            <rect key="frame" x="192" y="84" width="46" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="04j-vO-fwv" id="bL9-dt-FW8">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -38,6 +37,9 @@
                                     <items>
                                         <menuItem state="on" id="04j-vO-fwv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="itemTextFieldUpdated:" target="-2" id="rLe-e0-JrQ"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="em" id="UHC-ck-857"/>
                                         <menuItem title="ex" id="JRa-QC-ki5"/>
@@ -64,8 +66,8 @@
                                 </menu>
                             </popUpButtonCell>
                         </popUpButton>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="geq-Bc-1wZ">
-                            <rect key="frame" x="18" y="150" width="65" height="14"/>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="geq-Bc-1wZ">
+                            <rect key="frame" x="18" y="114" width="65" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Attribute:" id="2t8-Pe-B1V">
                                 <font key="font" metaFont="smallSystem"/>
@@ -73,20 +75,8 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="azE-qA-PVm">
-                            <rect key="frame" x="21" y="123" width="166" height="19"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="uIP-PX-4fc">
-                                <font key="font" metaFont="smallSystem"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                            <connections>
-                                <action selector="setValueButtonAction:" target="-2" id="hV1-jK-7yS"/>
-                            </connections>
-                        </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="UzM-Kk-jmR">
-                            <rect key="frame" x="85" y="170" width="169" height="14"/>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="UzM-Kk-jmR">
+                            <rect key="frame" x="85" y="134" width="169" height="14"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Element Name" id="2v5-Ui-UbW">
                                 <font key="font" metaFont="smallSystem"/>
@@ -94,8 +84,8 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="mFL-AT-vDI">
-                            <rect key="frame" x="24" y="170" width="59" height="14"/>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="mFL-AT-vDI">
+                            <rect key="frame" x="24" y="134" width="59" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Element:" id="t8c-H5-515">
                                 <font key="font" metaFont="smallSystem"/>
@@ -103,19 +93,8 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <button verticalHuggingPriority="750" id="KJN-hG-hTp">
-                            <rect key="frame" x="107" y="14" width="149" height="28"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Set Defined Value" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fgi-3r-QJB">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="smallSystem"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="setDefinedValueButtonAction:" target="-2" id="QPQ-2G-t6z"/>
-                            </connections>
-                        </button>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kUv-Qm-CiB">
-                            <rect key="frame" x="85" y="150" width="169" height="14"/>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="kUv-Qm-CiB">
+                            <rect key="frame" x="85" y="114" width="169" height="14"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Attribute Name" id="Ddn-k6-j2h">
                                 <font key="font" metaFont="smallSystem"/>
@@ -123,60 +102,54 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <box verticalHuggingPriority="750" boxType="separator" id="9Ff-DZ-MbN">
-                            <rect key="frame" x="21" y="86" width="230" height="5"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        </box>
-                        <popUpButton verticalHuggingPriority="750" id="4Pj-tA-gmX">
-                            <rect key="frame" x="18" y="43" width="236" height="22"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="mVv-7d-F5N" id="Afn-DH-y5n">
-                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="smallSystem"/>
-                                <menu key="menu" title="OtherViews" id="NNw-8g-XZy">
-                                    <items>
-                                        <menuItem title="Item 1" state="on" id="mVv-7d-F5N"/>
-                                        <menuItem title="Item 2" id="cbY-RH-buG"/>
-                                        <menuItem title="Item 3" id="sVi-4r-34Z"/>
-                                    </items>
-                                </menu>
-                            </popUpButtonCell>
-                            <connections>
-                                <action selector="definedValuePopUpButtonAction:" target="-2" id="PG4-Dx-fkX"/>
-                            </connections>
-                        </popUpButton>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="zoc-eO-fuT">
-                            <rect key="frame" x="18" y="66" width="236" height="14"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Defined Values and IRI References:" id="hkF-2R-MMQ">
-                                <font key="font" metaFont="smallSystem"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
-                        <button verticalHuggingPriority="750" id="13K-Ce-eha">
-                            <rect key="frame" x="164" y="91" width="96" height="28"/>
+                        <button verticalHuggingPriority="750" misplaced="YES" id="13K-Ce-eha">
+                            <rect key="frame" x="13" y="46" width="245" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="Set Value" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SGc-qi-fuj">
+                            <buttonCell key="cell" type="push" title="Set Attribute Value" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SGc-qi-fuj">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="smallSystem"/>
+                                <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
                                 <action selector="setValueButtonAction:" target="-2" id="Qa8-hs-OrK"/>
                             </connections>
                         </button>
-                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="BNc-Mk-02j">
-                            <rect key="frame" x="240" y="118" width="19" height="27"/>
+                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" id="BNc-Mk-02j">
+                            <rect key="frame" x="240" y="82" width="19" height="27"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="mpp-kd-chd"/>
                             <connections>
-                                <action selector="attributeStepperAction:" target="-2" id="iOu-d0-eR7"/>
+                                <action selector="itemTextFieldUpdated:" target="-2" id="gX5-mw-1BE"/>
                             </connections>
                         </stepper>
+                        <comboBox verticalHuggingPriority="750" misplaced="YES" id="H5t-vh-jJ6">
+                            <rect key="frame" x="19" y="82" width="170" height="26"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="2hx-Rh-VkG">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </comboBoxCell>
+                            <connections>
+                                <action selector="itemTextFieldUpdated:" target="-2" id="QpD-Zy-9VY"/>
+                                <outlet property="dataSource" destination="-2" id="zgT-Ao-tQc"/>
+                                <outlet property="delegate" destination="-2" id="ZKJ-n4-fVh"/>
+                            </connections>
+                        </comboBox>
+                        <button verticalHuggingPriority="750" misplaced="YES" id="ufx-Sp-5HL">
+                            <rect key="frame" x="14" y="13" width="244" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="push" title="Select IRI Reference Element" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sua-hm-r2C">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="selectIRIReferenceElementButtonAction:" target="-2" id="Dda-4e-OIE"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </customView>
             </subviews>
-            <point key="canvasLocation" x="294.5" y="360"/>
+            <point key="canvasLocation" x="294.5" y="476"/>
         </customView>
     </objects>
 </document>

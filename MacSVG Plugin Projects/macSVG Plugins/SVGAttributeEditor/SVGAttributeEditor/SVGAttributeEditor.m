@@ -7,6 +7,7 @@
 //
 
 #import "SVGAttributeEditor.h"
+#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 
 @implementation SVGAttributeEditor
 
@@ -27,6 +28,8 @@
     self = [super init];
     if (self) {
         // Initialization code here.
+        
+        self.comboBoxValuesArray = [NSMutableArray array];
         self.iriReferencesArray = [NSMutableArray array];
     }
     
@@ -130,15 +133,14 @@
 }
 
 //==================================================================================
-//	unitForAttribute:
+//	unitForAttributeString:
 //==================================================================================
 
-- (NSString *)unitForAttributeNode:(NSXMLNode *)attributeNode
+- (NSString *)unitForAttributeString:(NSString *)attributeString
 {
-    NSString * attributeString = attributeNode.stringValue;
+    //NSString * attributeString = attributeNode.stringValue;
 
     NSString * resultUnit = NULL;
-    NSInteger attributeStringLength = attributeString.length;
 
     if ([self attributeString:attributeString endsWithSuffix:@"em"] == YES)
     {
@@ -203,7 +205,7 @@
 
 - (IBAction)setValueButtonAction:(id)sender
 {
-    NSString * attributeValueString = attributeValueTextField.stringValue;
+    NSString * attributeValueString = attributeValueComboBox.stringValue;
 
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
     if (attributeNode != NULL)
@@ -230,33 +232,40 @@
 }
 
 //==================================================================================
-//	setDefinedValueButtonAction:
+//	setComboBoxAndUnit:
 //==================================================================================
 
-- (IBAction)setDefinedValueButtonAction:(id)sender
+- (void)setComboBoxAndUnit:(NSString *)stringValue attributeName:(NSString *)attributeName
 {
-    NSString * definedValueString = definedValuePopUpButton.titleOfSelectedItem;
-    
-    attributeValueTextField.stringValue = definedValueString;
+    NSMutableString * textFieldValue = [stringValue mutableCopy];
 
-    NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
-    if (attributeNode != NULL)
+    if (stringValue.length > 0)
     {
-        attributeNode.stringValue = definedValueString;
+        NSString * valueUnit = [self unitForAttributeString:stringValue];
+        [attributeUnitPopUpButton selectItemWithTitle:valueUnit];
+        
+        if ([valueUnit isEqualToString:@""] == NO)
+        {
+            NSRange lastCharactersRange = NSMakeRange(NSNotFound, NSNotFound);
+            NSInteger attributeStringLength = stringValue.length;
+            if (attributeStringLength >= 2)
+            {
+                NSInteger valueUnitLength = valueUnit.length;
+                lastCharactersRange = NSMakeRange(attributeStringLength - valueUnitLength, valueUnitLength);
+                [textFieldValue deleteCharactersInRange:lastCharactersRange];
+            }
+        }
+        
+        float existingValueFloat = textFieldValue.floatValue;
+        
+        [self setStepperFloatValue:existingValueFloat attributeName:attributeName];
+    }
+    else
+    {
+        [attributeUnitPopUpButton selectItemAtIndex:0];
     }
 
-    [self updateDocumentViews];
-}
-
-//==================================================================================
-//	definedValuePopUpButtonAction:
-//==================================================================================
-
-- (IBAction)definedValuePopUpButtonAction:(id)sender
-{
-    NSMenuItem * selectedItem = definedValuePopUpButton.selectedItem;
-    BOOL selectedItemIsEnabled = selectedItem.enabled;
-    setDefinedValueButton.enabled = selectedItemIsEnabled;
+    attributeValueComboBox.stringValue = textFieldValue;
 }
 
 //==================================================================================
@@ -270,7 +279,7 @@
     float stepperIncrement = 1.0f;
     
     NSRange opacityRange = [attributeName rangeOfString:@"opacity"];
-    if (opacityRange.location != NSNotFound)
+    if (opacityRange.location == 0)
     {
         minStepperValue = 0.0f;
         maxStepperValue = 1.0f;
@@ -278,7 +287,23 @@
     }
     
     NSRange widthRange = [attributeName rangeOfString:@"width"];
-    if (widthRange.location != NSNotFound)
+    if (widthRange.location == 0)
+    {
+        minStepperValue = 0.0f;
+        maxStepperValue = 1000000.0f;
+        stepperIncrement = 0.5f;
+    }
+    
+    NSRange heightRange = [attributeName rangeOfString:@"height"];
+    if (heightRange.location == 0)
+    {
+        minStepperValue = 0.0f;
+        maxStepperValue = 1000000.0f;
+        stepperIncrement = 0.5f;
+    }
+    
+    NSRange strokeWidthRange = [attributeName rangeOfString:@"stroke-width"];
+    if (strokeWidthRange.location == 0)
     {
         minStepperValue = 0.0f;
         maxStepperValue = 1000000.0f;
@@ -305,7 +330,8 @@
             domElement:newPluginTargetDOMElement attributeName:newAttributeName
             existingValue:existingValue];
 
-    [definedValuePopUpButton setAutoenablesItems:NO];
+    self.comboBoxValuesArray = [NSMutableArray array];
+    self.iriReferencesArray = [NSMutableArray array];
 
     NSString * tagName = newPluginTargetXMLElement.name;
     
@@ -328,41 +354,17 @@
     }
 
     elementNameTextField.stringValue = elementName;
-
     attributeNameTextField.stringValue = newAttributeName;
     
-    NSMutableString * textFieldValue = [NSMutableString stringWithString:existingValue];
+    //NSMutableString * textFieldValue = [NSMutableString stringWithString:existingValue];
     
-    NSXMLNode * editAttributeNode = [newPluginTargetXMLElement attributeForName:newAttributeName];
-    if (editAttributeNode != NULL)
-    {
-        NSString * valueUnit = [self unitForAttributeNode:editAttributeNode];
-        [attributeUnitPopUpButton selectItemWithTitle:valueUnit];
-        
-        if ([valueUnit isEqualToString:@""] == NO)
-        {
-            NSRange lastCharactersRange = NSMakeRange(NSNotFound, NSNotFound);
-            NSInteger attributeStringLength = textFieldValue.length;
-            if (attributeStringLength >= 2)
-            {
-                NSInteger valueUnitLength = valueUnit.length;
-                lastCharactersRange = NSMakeRange(attributeStringLength - valueUnitLength, valueUnitLength);
-                [textFieldValue deleteCharactersInRange:lastCharactersRange];
-            }
-        }
-        
-        float existingValueFloat = textFieldValue.floatValue;
-        [self setStepperFloatValue:existingValueFloat attributeName:newAttributeName];
-    }
-    else
-    {
-        [attributeUnitPopUpButton selectItemAtIndex:0];
-        //NSLog(@"beginEditForXMLElement:domElement:attributeName:existingValue: - missing attribute node");
-    }
+    //NSXMLNode * editAttributeNode = [newPluginTargetXMLElement attributeForName:newAttributeName];
     
-    attributeValueTextField.stringValue = textFieldValue;
+    //attributeValueComboBox.stringValue = textFieldValue;
     
-    [definedValuePopUpButton removeAllItems];
+    //[self setComboBoxAndUnit:textFieldValue];
+    
+    [self.comboBoxValuesArray removeAllObjects];
     
     BOOL definedItemsFound = NO;
     
@@ -378,42 +380,32 @@
             if (aAttributeDictionary != NULL)
             {
                 NSArray * defaultValuesArray = aAttributeDictionary[@"default_value"];
-                
+
                 if (defaultValuesArray != NULL)
                 {
                     for (NSString * aDefaultValue in defaultValuesArray)
                     {
                         if (aDefaultValue.length > 0)
                         {
-                            NSMenuItem * existingMenuItem = [definedValuePopUpButton itemWithTitle:aDefaultValue];
-                            
-                            if (existingMenuItem == NULL)
+                            NSInteger existingComboBoxIndex = [self indexOfComboBoxItem:aDefaultValue];
+
+                            NSString * enableMenuItem = @"1";
+
+                            if (existingComboBoxIndex < 0)
                             {
-                                [definedValuePopUpButton addItemWithTitle:aDefaultValue];
-                                
-                                BOOL disableMenuItem = NO;
-                                
                                 unichar firstChar = [aDefaultValue characterAtIndex:0];
                                 if (firstChar == '#')
                                 {
-                                    disableMenuItem = YES;
+                                    enableMenuItem = @"0";
                                 }
                                 
                                 if ([aDefaultValue isEqualToString:@"ID"] == YES)
                                 {
-                                    disableMenuItem = YES;
-                                }
-                                
-                                if (disableMenuItem == YES)
-                                {
-                                    NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:aDefaultValue];
-                                    [aMenuItem setEnabled:NO];
-                                }
-                                else
-                                {
-                                    definedItemsFound = YES;
+                                    enableMenuItem = @"0";
                                 }
                             }
+                            
+                            [self addComboBoxItem:aDefaultValue enable:enableMenuItem];
                         }
                     }
                 }
@@ -429,36 +421,30 @@
                         {
                             if (valueString.length > 0)
                             {
-                                NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:valueString];
-                                
-                                if (aMenuItem == NULL)
+                                NSInteger existingComboBoxIndex = [self indexOfComboBoxItem:valueString];
+
+                                NSString * enableMenuItem = @"1";
+
+                                if (existingComboBoxIndex < 0)
                                 {
                                     definedItemsFound = YES;
-                                    
-                                    [definedValuePopUpButton addItemWithTitle:valueString];
-                                    
-                                    BOOL disableMenuItem = NO;
-                                    
+
                                     unichar firstChar = [valueString characterAtIndex:0];
                                     if (firstChar == '#')
                                     {
                                         if ([valueString isEqualToString:@"#000000"] == NO)
                                         {
-                                            disableMenuItem = YES;
+                                            enableMenuItem = @"0";
                                         }
                                     }
                                     
-                                    if ([valueString isEqualToString:@"CDATA"])
+                                    if ([valueString isEqualToString:@"CDATA"] == YES)
                                     {
-                                        disableMenuItem = YES;
-                                    }
-
-                                    if (disableMenuItem == YES)
-                                    {
-                                        NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:valueString];
-                                        [aMenuItem setEnabled:NO];
+                                        enableMenuItem = @"0";
                                     }
                                 }
+                                
+                                [self addComboBoxItem:valueString enable:enableMenuItem];
                             }
                         }
                     }
@@ -484,39 +470,74 @@
             {
                 if (dividerWasAdded == NO)
                 {
-                    [[definedValuePopUpButton menu] addItem:[NSMenuItem separatorItem]];
+                    //[self addComboBoxItem:@"-" enable:@"0"];
                     
                     dividerWasAdded = YES;
                 }
             
                 NSString * valueString = [NSString stringWithFormat:@"url(#%@)", idAttributeString];
 
-                [definedValuePopUpButton addItemWithTitle:valueString];
+                [self addComboBoxItem:valueString enable:@"1"];
             }
         }
     }
     
     if (definedItemsFound == YES)
     {
-        NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:existingValue];
-        if (aMenuItem != NULL)
-        {
-            [definedValuePopUpButton selectItem:aMenuItem];
-        }
+        //attributeValueComboBox.stringValue = existingValue;
+        
+        [self setComboBoxAndUnit:existingValue attributeName:newAttributeName];
     }
     else
     {
-        NSString * noValuesString = @"(No values defined)";
-        [definedValuePopUpButton addItemWithTitle:noValuesString];
-        NSMenuItem * aMenuItem = [definedValuePopUpButton itemWithTitle:noValuesString];
-        [aMenuItem setEnabled:NO];
+        //[self addComboBoxItem:@"(No values defined)" enable:@"0"];
+        //attributeValueComboBox.stringValue = @"";
+
+        [self setComboBoxAndUnit:@"" attributeName:@""];
     }
     
-    NSMenuItem * selectedItem = definedValuePopUpButton.selectedItem;
-    BOOL selectedItemIsEnabled = selectedItem.enabled;
-    setDefinedValueButton.enabled = selectedItemIsEnabled;
+    [self itemTextFieldUpdated:self];
+    
+    return result;
+}
+
+//==================================================================================
+//	indexOfComboBoxItem:
+//==================================================================================
+
+- (NSInteger)indexOfComboBoxItem:(NSString *)valueString
+{
+    NSInteger result = -1;
+    
+    for (NSDictionary * itemDictionary in self.comboBoxValuesArray)
+    {
+        NSString * aValueString = [itemDictionary objectForKey:@"value"];
+        
+        if ([valueString isEqualToString:aValueString] == YES)
+        {
+            result = [self.comboBoxValuesArray indexOfObject:itemDictionary];
+            break;
+        }
+    }
 
     return result;
+}
+
+//==================================================================================
+//	addComboBoxItem:enable:
+//==================================================================================
+
+- (void) addComboBoxItem:(NSString *)aDefaultValue enable:(NSString *)enableMenuItem
+{
+    if ([enableMenuItem isEqualToString:@"1"] == YES)
+    {
+        NSMutableDictionary * itemDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                aDefaultValue, @"value",
+                enableMenuItem, @"enable",
+                NULL];
+        
+        [self.comboBoxValuesArray addObject:itemDictionary];
+    }
 }
 
 //==================================================================================
@@ -525,14 +546,14 @@
 
 - (IBAction)attributeStepperAction:(id)sender
 {
-    NSString * attributeValueString = attributeValueTextField.stringValue;
+    NSString * attributeValueString = attributeValueComboBox.stringValue;
     
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     NSNumber * aNumber = [numberFormatter numberFromString:attributeValueString];
     
     if (aNumber != NULL)
     {
-        attributeValueTextField.stringValue = attributeStepper.stringValue;
+        attributeValueComboBox.stringValue = attributeStepper.stringValue;
 
         [self setValueButtonAction:self];
     }
@@ -697,6 +718,123 @@
             }
         }
     }
+}
+
+//==================================================================================
+//	numberOfItemsInComboBox
+//==================================================================================
+
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox
+{
+    NSInteger result = self.comboBoxValuesArray.count;
+    
+    return result;
+}
+
+//==================================================================================
+//	comboBox:objectValueForItemAtIndex:
+//==================================================================================
+
+- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index
+{
+    NSMutableDictionary * itemDictionary = (self.comboBoxValuesArray)[index];
+    
+    NSString * result = [itemDictionary objectForKey:@"value"];
+    
+    return result;
+}
+
+//==================================================================================
+//	selectIRIReferenceElementButtonAction:
+//==================================================================================
+
+- (IBAction)selectIRIReferenceElementButtonAction:(id)sender
+{
+    NSString * valueString = attributeValueComboBox.stringValue;
+    
+    NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    
+    valueString = [valueString stringByTrimmingCharactersInSet:whitespaceSet];
+    
+    NSRange urlRange = [valueString rangeOfString:@"url(#"];
+    
+    if (urlRange.location == 0)
+    {
+        NSRange parenthesisRange = [valueString rangeOfString:@")"];
+        
+        if (parenthesisRange.location == (valueString.length - 1))
+        {
+            // valid IRI form found
+            
+            NSRange elementNameRange = NSMakeRange(5, valueString.length - 6);
+            
+            NSString * elementName = [valueString substringWithRange:elementNameRange];
+            
+            NSXMLElement * rootElement = [self.svgXmlDocument rootElement];
+            
+            NSString * xpathQuery = [NSString stringWithFormat:@"//*[@id='%@']", elementName];
+            
+            NSError * error = NULL;
+            
+            NSArray * resultArray = [rootElement nodesForXPath:xpathQuery error:&error];
+            
+            if (resultArray.count > 0)
+            {
+                NSXMLElement * iriElement = [resultArray objectAtIndex:0];
+            
+                [self.macSVGPluginCallbacks selectXMLElement:iriElement];
+            }
+            else
+            {
+                NSBeep();
+            }
+        }
+        else
+        {
+            NSBeep();
+        }
+    }
+    else
+    {
+        NSBeep();
+    }
+}
+
+//==================================================================================
+//	itemTextFieldUpdated:
+//==================================================================================
+
+- (IBAction)itemTextFieldUpdated:(id)sender
+{
+    selectIRIReferenceElementButton.enabled = NO;
+    
+    NSString * valueString = attributeValueComboBox.stringValue;
+    
+    NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    
+    valueString = [valueString stringByTrimmingCharactersInSet:whitespaceSet];
+    
+    NSRange urlRange = [valueString rangeOfString:@"url(#"];
+    
+    if (urlRange.location == 0)
+    {
+        NSRange parenthesisRange = [valueString rangeOfString:@")"];
+        
+        if (parenthesisRange.location == (valueString.length - 1))
+        {
+            selectIRIReferenceElementButton.enabled = YES;
+        }
+    }
+}
+
+//==================================================================================
+//	textDidChange:
+//==================================================================================
+
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    [self itemTextFieldUpdated:self];
 }
 
 
