@@ -3320,7 +3320,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 newPathSegmentDictionary[@"absoluteStartX"] = absoluteStartX;
                 newPathSegmentDictionary[@"absoluteStartY"] = absoluteStartY;
                 
-                NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
+                //NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
                 
                 if ([selectedPathMode isEqualToString:@"Move To"] == YES)
                 {

@@ -168,7 +168,7 @@
                                                     <font key="font" metaFont="smallSystem"/>
                                                 </buttonCell>
                                                 <connections>
-                                                    <action selector="closePathNowButtonAction:" target="-2" id="Kj8-GG-LhW"/>
+                                                    <action selector="extendPathButtonAction:" target="-2" id="xFb-O9-f5Y"/>
                                                 </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gqz-Vx-3vx">

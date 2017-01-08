@@ -363,6 +363,35 @@
     [self.macSVGPluginCallbacks restartLastPathSegment];
 }
 
+//==================================================================================
+//	extendPathButtonAction:
+//==================================================================================
+
+- (IBAction)extendPathButtonAction:(id)sender
+{
+    MacSVGDocumentWindowController * macSVGDocumentWindowController =
+            [self.macSVGDocument macSVGDocumentWindowController];
+
+    [macSVGDocumentWindowController setToolMode:toolModePath];
+    
+    NSXMLElement * pathElement = self.macSVGPluginCallbacks.svgPathEditorSelectedPathElement;
+    
+    // add an extra path segment, it will be deleted with path drawing restarts
+    NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
+    NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
+    [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
+    [pathSegmentsArray addObject:newPathSegmentDictionary];
+    
+    [self.macSVGPluginCallbacks setActiveXMLElement:pathElement];
+
+    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
+    id domMouseEventsController = [svgWebKitController domMouseEventsController];
+    [domMouseEventsController setMouseMode:MOUSE_HOVERING];
+
+    [self updateSVGPathEditorAction:self];
+}
+
+
 // -------------------------------------------------------------------------------
 //  arcSettingsButtonAction:
 // -------------------------------------------------------------------------------

@@ -79,6 +79,8 @@
 
 - (IBAction)closePathNowButtonAction:(id)sender;
 
+- (IBAction)extendPathButtonAction:(id)sender;
+
 - (IBAction)arcSettingsButtonAction:(id)sender;
 
 - (IBAction)subdivideSegmentButtonAction:(id)sender;

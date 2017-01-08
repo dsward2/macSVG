@@ -764,11 +764,13 @@
         
         if (parenthesisRange.location == (valueString.length - 1))
         {
-            // valid IRI form found
+            // valid IRI reference found
             
             NSRange elementNameRange = NSMakeRange(5, valueString.length - 6);
             
             NSString * elementName = [valueString substringWithRange:elementNameRange];
+            
+            elementName = [elementName stringByTrimmingCharactersInSet:whitespaceSet];
             
             NSXMLElement * rootElement = [self.svgXmlDocument rootElement];
             
