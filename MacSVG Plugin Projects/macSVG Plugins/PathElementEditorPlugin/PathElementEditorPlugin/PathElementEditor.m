@@ -374,6 +374,11 @@
 
     [macSVGDocumentWindowController setToolMode:toolModePath];
     
+    DOMSelectionControlsManager * domSelectionControlsManager =
+    macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
+
+    [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
+    
     NSXMLElement * pathElement = self.macSVGPluginCallbacks.svgPathEditorSelectedPathElement;
     
     // add an extra path segment, it will be deleted with path drawing restarts
