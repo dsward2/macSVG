@@ -33,6 +33,10 @@ To build macSVG.app, open "macSVG.xcworkspace" in Xcode, set the build target to
 
 A downloadable Apple ID-signed application.  Until then, macSVG can be built from source code on this repository.
 
+# Future project goals:
+
+Migration to Swift language.
+
 Support for SVG 2 standards, as those features become available in the macOS WebKit framework.
 
 #
