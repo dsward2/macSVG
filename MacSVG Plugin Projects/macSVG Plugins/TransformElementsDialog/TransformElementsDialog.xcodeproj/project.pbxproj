@@ -115,6 +115,8 @@
 				TargetAttributes = {
 					0E5AE5F11D5BD57F000C1643 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -250,14 +252,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../macSVG/Application Classes\"",
 					"\"$(SRCROOT)/../../../macSVG/SVGDocument Classes\"",
 				);
 				INFOPLIST_FILE = TransformElementsDialog/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.TransformElementsDialog;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.TransformElementsDialog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
@@ -268,14 +272,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB01F1DB4ABCF001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../macSVG/Application Classes\"",
 					"\"$(SRCROOT)/../../../macSVG/SVGDocument Classes\"",
 				);
 				INFOPLIST_FILE = TransformElementsDialog/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.TransformElementsDialog;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.TransformElementsDialog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;

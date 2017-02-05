@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E31630B17A871230030D657 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E31630A17A871230030D657 /* Cocoa.framework */; };
 		0E31631517A871230030D657 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E31631317A871230030D657 /* InfoPlist.strings */; };
 		0E31632117A873230030D657 /* CoordinatesAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E31632017A873230030D657 /* CoordinatesAttributeEditor.m */; };
 		0EC2E93E17A88B7A00AFFFDC /* CoordinatesAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E31632217A873530030D657 /* CoordinatesAttributeEditor.xib */; };
@@ -33,7 +32,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EFA42EA1D7114DC001FDE91 /* MacSVGPlugin.framework in Frameworks */,
-				0E31630B17A871230030D657 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +114,12 @@
 			attributes = {
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0E31630617A871230030D657 = {
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0E31630217A871230030D657 /* Build configuration list for PBXProject "CoordinatesAttributeEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -208,7 +212,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -247,7 +251,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -256,14 +260,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.CoordinatesAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -272,14 +279,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0071DB4AA0E001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.CoordinatesAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0E2C85B21809B2C90002B9F5 /* KeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C85B11809B2C90002B9F5 /* KeyValuesPopoverViewController.m */; };
 		0E2C85B51809FC860002B9F5 /* KeySplinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C85B41809FC860002B9F5 /* KeySplinesView.m */; };
-		0E46DA0817CBFD7800314429 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E46DA0717CBFD7800314429 /* Cocoa.framework */; };
 		0E46DA1217CBFD7800314429 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1017CBFD7800314429 /* InfoPlist.strings */; };
 		0E46DA1D17CBFE1200314429 /* AnimateMotionElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46DA1C17CBFE1200314429 /* AnimateMotionElementEditor.m */; };
 		0E46DA2017CBFE5800314429 /* AnimateMotionElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1E17CBFE5800314429 /* AnimateMotionElementEditor.xib */; };
@@ -42,7 +41,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EFA42E41D71147D001FDE91 /* MacSVGPlugin.framework in Frameworks */,
-				0E46DA0817CBFD7800314429 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +129,12 @@
 			attributes = {
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0E46DA0317CBFD7800314429 = {
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0E46D9FF17CBFD7800314429 /* Build configuration list for PBXProject "AnimateMotionElementEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -282,14 +286,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AnimateMotionElementEditor/AnimateMotionElementEditor-Prefix.pch";
 				INFOPLIST_FILE = "AnimateMotionElementEditor/AnimateMotionElementEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.AnimateMotionElementEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -298,14 +305,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCAFFE1DB4A93C001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AnimateMotionElementEditor/AnimateMotionElementEditor-Prefix.pch";
 				INFOPLIST_FILE = "AnimateMotionElementEditor/AnimateMotionElementEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.AnimateMotionElementEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;

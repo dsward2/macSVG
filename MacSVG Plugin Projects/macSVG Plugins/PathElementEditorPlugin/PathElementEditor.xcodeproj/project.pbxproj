@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0E06F8861D57B7F300265FA2 /* PathElementEditorFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */; };
+		0E3F0F4B1E44606A001FDDD7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */; };
 		0E6E00381D37126A0060154A /* PathSegmentEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */; };
 		0EA47BEA1D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA47BE91D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m */; };
-		0EDEB22D1501AE0E008CA4AF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */; };
 		0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDEB2351501AE0E008CA4AF /* InfoPlist.strings */; };
 		0EDEB2421501AEA4008CA4AF /* PathElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDEB2411501AEA4008CA4AF /* PathElementEditor.m */; };
 		0EDEB2441501AEED008CA4AF /* PathElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDEB2431501AEED008CA4AF /* PathElementEditor.xib */; };
@@ -41,8 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3F0F4B1E44606A001FDDD7 /* Cocoa.framework in Frameworks */,
 				0EFA42F01D71153F001FDE91 /* MacSVGPlugin.framework in Frameworks */,
-				0EDEB22D1501AE0E008CA4AF /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +131,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
+				TargetAttributes = {
+					0EDEB2281501AE0E008CA4AF = {
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0EDEB2231501AE0E008CA4AF /* Build configuration list for PBXProject "PathElementEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -223,7 +229,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -258,7 +264,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -268,17 +274,19 @@
 			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PathElementEditorPlugin/PathElementEditor-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = "PathElementEditorPlugin/PathElementEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.PathElementEditor;
 				PRODUCT_NAME = PathElementEditor;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -288,17 +296,19 @@
 			baseConfigurationReference = 0ECCB00D1DB4AA6B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PathElementEditorPlugin/PathElementEditor-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = "PathElementEditorPlugin/PathElementEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.PathElementEditor;
 				PRODUCT_NAME = PathElementEditor;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;

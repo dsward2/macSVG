@@ -116,6 +116,8 @@
 				TargetAttributes = {
 					0E81A95F1D34E54F00EA824A = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -200,7 +202,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -241,7 +243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -251,11 +253,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				INFOPLIST_FILE = BezierCircleGenerator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.BezierCircleGenerator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.BezierCircleGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
@@ -266,11 +269,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0021DB4A9AC001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				INFOPLIST_FILE = BezierCircleGenerator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.BezierCircleGenerator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.BezierCircleGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;

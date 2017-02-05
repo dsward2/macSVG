@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0E693CF61D7054B100006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF51D7054B100006B21 /* MacSVGPlugin.framework */; };
-		0EDED41717A637CE00482EEA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDED41617A637CE00482EEA /* Cocoa.framework */; };
 		0EDED42117A637CE00482EEA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDED41F17A637CE00482EEA /* InfoPlist.strings */; };
 		0EDED42D17A6388B00482EEA /* SVGAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDED42C17A6388B00482EEA /* SVGAttributeEditor.xib */; };
 		0EDED42E17A6388E00482EEA /* SVGAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDED42B17A6385C00482EEA /* SVGAttributeEditor.m */; };
@@ -36,7 +35,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E693CF61D7054B100006B21 /* MacSVGPlugin.framework in Frameworks */,
-				0EDED41717A637CE00482EEA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +128,12 @@
 			attributes = {
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0EDED41217A637CE00482EEA = {
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0EDED40E17A637CE00482EEA /* Build configuration list for PBXProject "SVGAttributeEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -222,7 +226,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -261,7 +265,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -270,15 +274,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0151DB4AB2B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SVGAttributeEditor/SVGAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "SVGAttributeEditor/SVGAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.SVGAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -287,15 +293,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0151DB4AB2B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SVGAttributeEditor/SVGAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "SVGAttributeEditor/SVGAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.SVGAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;

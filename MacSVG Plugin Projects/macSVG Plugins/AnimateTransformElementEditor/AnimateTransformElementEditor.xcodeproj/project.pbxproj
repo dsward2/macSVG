@@ -126,6 +126,8 @@
 				TargetAttributes = {
 					0EF29D7F1D791ACB00267844 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -263,10 +265,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.AnimateTransformElementEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.AnimateTransformElementEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
@@ -277,10 +281,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ECCB0001DB4A95D001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				INFOPLIST_FILE = AnimateTransformElementEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.AnimateTransformElementEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.AnimateTransformElementEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;

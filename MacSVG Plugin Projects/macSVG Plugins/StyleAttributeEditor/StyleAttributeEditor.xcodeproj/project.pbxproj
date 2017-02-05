@@ -11,8 +11,7 @@
 		0E2EB21C1E1AFFF500F36593 /* StyleAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */; };
 		0E2EB21E1E1B009E00F36593 /* CSSProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21D1E1B009E00F36593 /* CSSProperties.json */; };
 		0E2EB2211E1B089500F36593 /* StylePropertiesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */; };
-		0E2EB2231E1B099E00F36593 /* macSVGPluginConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */; };
-		0E2EB2251E1B0A4000F36593 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */; };
+		0E3F0F4F1E446115001FDDD7 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3F0F4E1E446115001FDDD7 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +25,7 @@
 		0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StylePropertiesTableRowView.m; sourceTree = "<group>"; };
 		0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0E3F0F4E1E446115001FDDD7 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/macSVG-cbglzytiyakrxdgzceaijuhsscsk/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,7 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E2EB2251E1B0A4000F36593 /* MacSVGPlugin.framework in Frameworks */,
+				0E3F0F4F1E446115001FDDD7 /* MacSVGPlugin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +45,7 @@
 			children = (
 				0E2EB2101E1AFE3B00F36593 /* StyleAttributeEditor */,
 				0E2EB20F1E1AFE3B00F36593 /* Products */,
+				0E3F0F4D1E446114001FDDD7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +81,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0E3F0F4D1E446114001FDDD7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F4E1E446115001FDDD7 /* MacSVGPlugin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,11 +115,12 @@
 		0E2EB2061E1AFE3B00F36593 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 				TargetAttributes = {
 					0E2EB20D1E1AFE3B00F36593 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = MMFBWVS455;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -138,7 +148,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E2EB21E1E1B009E00F36593 /* CSSProperties.json in Resources */,
-				0E2EB2231E1B099E00F36593 /* macSVGPluginConfig.xcconfig in Resources */,
 				0E2EB21C1E1AFFF500F36593 /* StyleAttributeEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,6 +185,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -223,6 +233,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -248,11 +259,13 @@
 		0E2EB2151E1AFE3B00F36593 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = StyleAttributeEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.StyleAttributeEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.StyleAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
@@ -262,11 +275,13 @@
 		0E2EB2161E1AFE3B00F36593 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = StyleAttributeEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.StyleAttributeEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.StyleAttributeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;

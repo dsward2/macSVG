@@ -726,6 +726,258 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0E3F0ECB1E442C58001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E96DC5117A5AFB90097A267;
+			remoteInfo = ImageElementEditor;
+		};
+		0E3F0ECE1E442C58001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EDEB2291501AE0E008CA4AF;
+			remoteInfo = PathElementEditor;
+		};
+		0E3F0ED11E442C58001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6C1E442BF30031EE60 /* SVGElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E25EEC81796873500EFC1EF;
+			remoteInfo = SVGElementEditor;
+		};
+		0E3F0ED61E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E81A9601D34E54F00EA824A;
+			remoteInfo = BezierCircleGenerator;
+		};
+		0E3F0EDF1E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E31630717A871230030D657;
+			remoteInfo = CoordinatesAttributeEditor;
+		};
+		0E3F0EE21E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0ED841041800C8C1003985CD;
+			remoteInfo = PieChartGenerator;
+		};
+		0E3F0EE51E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EA78C0E1D840FA900C9D4C8;
+			remoteInfo = PointsAttributeEditor;
+		};
+		0E3F0EF21E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5E1E442BF30031EE60 /* AnimateElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EADC69A1D7C1E2600A61333;
+			remoteInfo = AnimateElementEditor;
+		};
+		0E3F0EF51E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5F1E442BF30031EE60 /* AnimateMotionElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E46DA0417CBFD7800314429;
+			remoteInfo = AnimateMotionElementEditor;
+		};
+		0E3F0EF81E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EEE3AE817BC03740040846F;
+			remoteInfo = PathElementShapeAnimationEditor;
+		};
+		0E3F0EFB1E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E2EB20E1E1AFE3B00F36593;
+			remoteInfo = StyleAttributeEditor;
+		};
+		0E3F0EFE1E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6F1E442BF30031EE60 /* TransformElementsDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E5AE5F21D5BD57F000C1643;
+			remoteInfo = TransformElementsDialog;
+		};
+		0E3F0F031E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6E1E442BF30031EE60 /* TransformAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EDF158314D1FCD000E872DA;
+			remoteInfo = TransformAttributeEditor;
+		};
+		0E3F0F0D1E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EF29D801D791ACB00267844;
+			remoteInfo = AnimateTransformElementEditor;
+		};
+		0E3F0F141E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E18CA1414B5B8AE00AB9F78;
+			remoteInfo = ColorAttributeEditor;
+		};
+		0E3F0F171E442C59001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6B1E442BF30031EE60 /* SVGAttributeEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EDED41317A637CE00482EEA;
+			remoteInfo = SVGAttributeEditor;
+		};
+		0E3F0F1C1E442C5A001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6D1E442BF30031EE60 /* TextElementEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E26CD5A17A6326C0053B3D4;
+			remoteInfo = TextElementEditor;
+		};
+		0E3F0F211E442C5A001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5B1E442BF30031EE60 /* MacSVGPlugin.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E05D336178F35C4000B910E;
+			remoteInfo = MacSVGPlugin;
+		};
+		0E3F0F231E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5B1E442BF30031EE60 /* MacSVGPlugin.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E05D335178F35C4000B910E;
+			remoteInfo = MacSVGPlugin;
+		};
+		0E3F0F251E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5E1E442BF30031EE60 /* AnimateElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EADC6991D7C1E2600A61333;
+			remoteInfo = AnimateElementEditor;
+		};
+		0E3F0F271E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C5F1E442BF30031EE60 /* AnimateMotionElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E46DA0317CBFD7800314429;
+			remoteInfo = AnimateMotionElementEditor;
+		};
+		0E3F0F291E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EF29D7F1D791ACB00267844;
+			remoteInfo = AnimateTransformElementEditor;
+		};
+		0E3F0F2B1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E81A95F1D34E54F00EA824A;
+			remoteInfo = BezierCircleGenerator;
+		};
+		0E3F0F2D1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E18CA1314B5B8AE00AB9F78;
+			remoteInfo = ColorAttributeEditor;
+		};
+		0E3F0F2F1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E31630617A871230030D657;
+			remoteInfo = CoordinatesAttributeEditor;
+		};
+		0E3F0F311E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E96DC5017A5AFB90097A267;
+			remoteInfo = ImageElementEditor;
+		};
+		0E3F0F351E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EDEB2281501AE0E008CA4AF;
+			remoteInfo = PathElementEditor;
+		};
+		0E3F0F371E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EEE3AE717BC03740040846F;
+			remoteInfo = PathElementShapeAnimationEditor;
+		};
+		0E3F0F391E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0ED841031800C8C1003985CD;
+			remoteInfo = PieChartGenerator;
+		};
+		0E3F0F3B1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EA78C0D1D840FA900C9D4C8;
+			remoteInfo = PointsAttributeEditor;
+		};
+		0E3F0F3D1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E2EB20D1E1AFE3B00F36593;
+			remoteInfo = StyleAttributeEditor;
+		};
+		0E3F0F3F1E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6B1E442BF30031EE60 /* SVGAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EDED41217A637CE00482EEA;
+			remoteInfo = SVGAttributeEditor;
+		};
+		0E3F0F411E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6C1E442BF30031EE60 /* SVGElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E25EEC71796873500EFC1EF;
+			remoteInfo = SVGElementEditor;
+		};
+		0E3F0F431E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6D1E442BF30031EE60 /* TextElementEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E26CD5917A6326C0053B3D4;
+			remoteInfo = TextElementEditor;
+		};
+		0E3F0F451E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6E1E442BF30031EE60 /* TransformAttributeEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EDF158214D1FCD000E872DA;
+			remoteInfo = TransformAttributeEditor;
+		};
+		0E3F0F471E442C9E001FDDD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EA59C6F1E442BF30031EE60 /* TransformElementsDialog.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E5AE5F11D5BD57F000C1643;
+			remoteInfo = TransformElementsDialog;
+		};
 		0E82B0F71D730812005D0634 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
@@ -2102,6 +2354,26 @@
 		0EA2B4C61D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ToolPaletteWindow.xib; sourceTree = "<group>"; };
 		0EA47BEB1D886B9C005B2FF3 /* SVGLineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGLineEditor.h; sourceTree = "<group>"; };
 		0EA47BEC1D886B9C005B2FF3 /* SVGLineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGLineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0EA59C531E42D7F10031EE60 /* macSVG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macSVG.entitlements; sourceTree = "<group>"; };
+		0EA59C5B1E442BF30031EE60 /* MacSVGPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = MacSVGPlugin.xcodeproj; sourceTree = "<group>"; };
+		0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = macSVGPluginConfig.xcconfig; sourceTree = "<group>"; };
+		0EA59C5E1E442BF30031EE60 /* AnimateElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AnimateElementEditor.xcodeproj; path = AnimateElementEditor/AnimateElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C5F1E442BF30031EE60 /* AnimateMotionElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AnimateMotionElementEditor.xcodeproj; path = AnimateMotionElementEditor/AnimateMotionElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AnimateTransformElementEditor.xcodeproj; path = AnimateTransformElementEditor/AnimateTransformElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BezierCircleGenerator.xcodeproj; path = BezierCircleGenerator/BezierCircleGenerator.xcodeproj; sourceTree = "<group>"; };
+		0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ColorAttributeEditor.xcodeproj; path = ColorAttributeEditorPlugin/ColorAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoordinatesAttributeEditor.xcodeproj; path = CoordinatesAttributeEditor/CoordinatesAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ImageElementEditor.xcodeproj; path = ImageElementEditor/ImageElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PathElementEditor.xcodeproj; path = PathElementEditorPlugin/PathElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PathElementShapeAnimationEditor.xcodeproj; path = PathElementShapeAnimationEditor/PathElementShapeAnimationEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PieChartGenerator.xcodeproj; path = PieChartGenerator/PieChartGenerator.xcodeproj; sourceTree = "<group>"; };
+		0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PointsAttributeEditor.xcodeproj; path = PointsAttributeEditor/PointsAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StyleAttributeEditor.xcodeproj; path = StyleAttributeEditor/StyleAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6B1E442BF30031EE60 /* SVGAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SVGAttributeEditor.xcodeproj; path = SVGAttributeEditor/SVGAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6C1E442BF30031EE60 /* SVGElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SVGElementEditor.xcodeproj; path = SVGElementEditor/SVGElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6D1E442BF30031EE60 /* TextElementEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TextElementEditor.xcodeproj; path = TextElementEditor/TextElementEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6E1E442BF30031EE60 /* TransformAttributeEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TransformAttributeEditor.xcodeproj; path = TransformAttributeEditorPlugin/TransformAttributeEditor.xcodeproj; sourceTree = "<group>"; };
+		0EA59C6F1E442BF30031EE60 /* TransformElementsDialog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TransformElementsDialog.xcodeproj; path = TransformElementsDialog/TransformElementsDialog.xcodeproj; sourceTree = "<group>"; };
 		0EA78C3A1D8417E600C9D4C8 /* PointsAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = PointsAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA9DF23149D3100001672D1 /* AnimationTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AnimationTimelineView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0EA9DF24149D3100001672D1 /* AnimationTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AnimationTimelineView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -2382,6 +2654,150 @@
 				0EEC4F9315097C1C007D7F27 /* MacSVGPluginCallbacks.m */,
 			);
 			name = "Editor Panels";
+			sourceTree = "<group>";
+		};
+		0E3F0EC11E442C58001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0ECC1E442C58001FDDD7 /* ImageElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EC31E442C58001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0ECF1E442C58001FDDD7 /* PathElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EC51E442C58001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0ED21E442C58001FDDD7 /* SVGElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0ED31E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0ED71E442C59001FDDD7 /* BezierCircleGenerator.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0ED81E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EE31E442C59001FDDD7 /* PieChartGenerator.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EDA1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EE61E442C59001FDDD7 /* PointsAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EDC1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EE01E442C59001FDDD7 /* CoordinatesAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EE71E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EFC1E442C59001FDDD7 /* StyleAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EE91E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EF61E442C59001FDDD7 /* AnimateMotionElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EEB1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EF91E442C59001FDDD7 /* PathElementShapeAnimationEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EED1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EFF1E442C59001FDDD7 /* TransformElementsDialog.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0EEF1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0EF31E442C59001FDDD7 /* AnimateElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F001E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F041E442C59001FDDD7 /* TransformAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F0A1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F0E1E442C59001FDDD7 /* AnimateTransformElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F0F1E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F151E442C59001FDDD7 /* ColorAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F111E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F181E442C59001FDDD7 /* SVGAttributeEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F191E442C59001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F1D1E442C5A001FDDD7 /* TextElementEditor.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0E3F0F1E1E442C5A001FDDD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E3F0F221E442C5A001FDDD7 /* MacSVGPlugin.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0E47A9D414B3982500AC9A28 /* SVG Functions */ = {
@@ -3358,6 +3774,50 @@
 			path = macSVG/en.lproj;
 			sourceTree = SOURCE_ROOT;
 		};
+		0EA59C5D1E442BF30031EE60 /* MacSVG Plugin Framework */ = {
+			isa = PBXGroup;
+			children = (
+				0EA59C5B1E442BF30031EE60 /* MacSVGPlugin.xcodeproj */,
+				0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */,
+			);
+			name = "MacSVG Plugin Framework";
+			path = "macSVGPlugin Framework";
+			sourceTree = "<group>";
+		};
+		0EA59C701E442BF30031EE60 /* MacSVG Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				0EA59C5E1E442BF30031EE60 /* AnimateElementEditor.xcodeproj */,
+				0EA59C5F1E442BF30031EE60 /* AnimateMotionElementEditor.xcodeproj */,
+				0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */,
+				0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */,
+				0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */,
+				0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */,
+				0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */,
+				0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */,
+				0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */,
+				0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */,
+				0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */,
+				0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */,
+				0EA59C6B1E442BF30031EE60 /* SVGAttributeEditor.xcodeproj */,
+				0EA59C6C1E442BF30031EE60 /* SVGElementEditor.xcodeproj */,
+				0EA59C6D1E442BF30031EE60 /* TextElementEditor.xcodeproj */,
+				0EA59C6E1E442BF30031EE60 /* TransformAttributeEditor.xcodeproj */,
+				0EA59C6F1E442BF30031EE60 /* TransformElementsDialog.xcodeproj */,
+			);
+			name = "MacSVG Plugins";
+			path = "macSVG Plugins";
+			sourceTree = "<group>";
+		};
+		0EA59C711E442BF30031EE60 /* MacSVG Plugin Projects */ = {
+			isa = PBXGroup;
+			children = (
+				0EA59C5D1E442BF30031EE60 /* MacSVG Plugin Framework */,
+				0EA59C701E442BF30031EE60 /* MacSVG Plugins */,
+			);
+			path = "MacSVG Plugin Projects";
+			sourceTree = "<group>";
+		};
 		0EB6636D14286398003723F0 = {
 			isa = PBXGroup;
 			children = (
@@ -3367,6 +3827,7 @@
 				0EB6638214286398003723F0 /* macSVG */,
 				0EB6637B14286398003723F0 /* Frameworks */,
 				0EB6637914286398003723F0 /* Products */,
+				0EA59C711E442BF30031EE60 /* MacSVG Plugin Projects */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3400,6 +3861,7 @@
 		0EB6638214286398003723F0 /* macSVG */ = {
 			isa = PBXGroup;
 			children = (
+				0EA59C531E42D7F10031EE60 /* macSVG.entitlements */,
 				0EDC2EBB1472F8C600747907 /* macSVG Tech Specs.rtf */,
 				0EB663A5142865EB003723F0 /* Application Classes */,
 				0EB663E1142866C4003723F0 /* macSVGDocument Classes */,
@@ -3670,6 +4132,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0EB6639914286399003723F0 /* Build configuration list for PBXNativeTarget "macSVG" */;
 			buildPhases = (
+				0E25D39A1E4599630035883F /* ShellScript */,
 				0EB6637414286398003723F0 /* Sources */,
 				0EB6637514286398003723F0 /* Frameworks */,
 				0EB6637614286398003723F0 /* Resources */,
@@ -3682,6 +4145,24 @@
 			buildRules = (
 			);
 			dependencies = (
+				0E3F0F241E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F261E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F281E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F2A1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F2C1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F2E1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F301E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F321E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F361E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F381E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F3A1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F3C1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F3E1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F401E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F421E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F441E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F461E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E3F0F481E442C9E001FDDD7 /* PBXTargetDependency */,
 			);
 			name = macSVG;
 			productName = "SVG Composer";
@@ -3698,10 +4179,11 @@
 				ORGANIZATIONNAME = "ArkPhone, LLC";
 				TargetAttributes = {
 					0EB6637714286398003723F0 = {
-						DevelopmentTeam = AB47VWB582;
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -3720,8 +4202,80 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 0E3F0EEF1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C5E1E442BF30031EE60 /* AnimateElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EE91E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C5F1E442BF30031EE60 /* AnimateMotionElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F0A1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0ED31E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */;
+				},
+				{
 					ProductGroup = 0E82AF7B1D730810005D0634 /* Products */;
 					ProjectRef = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F0F1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EDC1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EC11E442C58001FDDD7 /* Products */;
+					ProjectRef = 0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F1E1E442C5A001FDDD7 /* Products */;
+					ProjectRef = 0EA59C5B1E442BF30031EE60 /* MacSVGPlugin.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EC31E442C58001FDDD7 /* Products */;
+					ProjectRef = 0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EEB1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0ED81E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EDA1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EE71E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F111E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6B1E442BF30031EE60 /* SVGAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EC51E442C58001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6C1E442BF30031EE60 /* SVGElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F191E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6D1E442BF30031EE60 /* TextElementEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0F001E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6E1E442BF30031EE60 /* TransformAttributeEditor.xcodeproj */;
+				},
+				{
+					ProductGroup = 0E3F0EED1E442C59001FDDD7 /* Products */;
+					ProjectRef = 0EA59C6F1E442BF30031EE60 /* TransformElementsDialog.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -3732,6 +4286,132 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0E3F0ECC1E442C58001FDDD7 /* ImageElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ImageElementEditor.plugin;
+			remoteRef = 0E3F0ECB1E442C58001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0ECF1E442C58001FDDD7 /* PathElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PathElementEditor.plugin;
+			remoteRef = 0E3F0ECE1E442C58001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0ED21E442C58001FDDD7 /* SVGElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SVGElementEditor.plugin;
+			remoteRef = 0E3F0ED11E442C58001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0ED71E442C59001FDDD7 /* BezierCircleGenerator.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BezierCircleGenerator.plugin;
+			remoteRef = 0E3F0ED61E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EE01E442C59001FDDD7 /* CoordinatesAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CoordinatesAttributeEditor.plugin;
+			remoteRef = 0E3F0EDF1E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EE31E442C59001FDDD7 /* PieChartGenerator.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PieChartGenerator.plugin;
+			remoteRef = 0E3F0EE21E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EE61E442C59001FDDD7 /* PointsAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PointsAttributeEditor.plugin;
+			remoteRef = 0E3F0EE51E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EF31E442C59001FDDD7 /* AnimateElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AnimateElementEditor.plugin;
+			remoteRef = 0E3F0EF21E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EF61E442C59001FDDD7 /* AnimateMotionElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AnimateMotionElementEditor.plugin;
+			remoteRef = 0E3F0EF51E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EF91E442C59001FDDD7 /* PathElementShapeAnimationEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PathElementShapeAnimationEditor.plugin;
+			remoteRef = 0E3F0EF81E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EFC1E442C59001FDDD7 /* StyleAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = StyleAttributeEditor.plugin;
+			remoteRef = 0E3F0EFB1E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0EFF1E442C59001FDDD7 /* TransformElementsDialog.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TransformElementsDialog.plugin;
+			remoteRef = 0E3F0EFE1E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F041E442C59001FDDD7 /* TransformAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TransformAttributeEditor.plugin;
+			remoteRef = 0E3F0F031E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F0E1E442C59001FDDD7 /* AnimateTransformElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AnimateTransformElementEditor.plugin;
+			remoteRef = 0E3F0F0D1E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F151E442C59001FDDD7 /* ColorAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ColorAttributeEditor.plugin;
+			remoteRef = 0E3F0F141E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F181E442C59001FDDD7 /* SVGAttributeEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SVGAttributeEditor.plugin;
+			remoteRef = 0E3F0F171E442C59001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F1D1E442C5A001FDDD7 /* TextElementEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TextElementEditor.plugin;
+			remoteRef = 0E3F0F1C1E442C5A001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E3F0F221E442C5A001FDDD7 /* MacSVGPlugin.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MacSVGPlugin.framework;
+			remoteRef = 0E3F0F211E442C5A001FDDD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		0E82B0F81D730812005D0634 /* CocoaAsyncSocket.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3813,6 +4493,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0E25D39A1E4599630035883F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# increment build number\n\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(echo $buildNumber | sed 's/0*//')\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04d\" $buildNumber)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n";
+		};
 		0E5FAA821DDD873B006EB7E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3824,7 +4517,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# - copy macSVG.help Help Book bundle to application\nrsync -av ${SRCROOT}/macSVG/en.lproj/macSVG.help ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\n\n#echo ${SRCROOT}/macSVG/en.lproj/macSVG.help\n#echo ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/";
+			shellScript = "# - copy macSVG.help Help Book bundle to application\nrsync -av ${SRCROOT}/macSVG/en.lproj/macSVG.help \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n\n#echo ${SRCROOT}/macSVG/en.lproj/macSVG.help\n#echo ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3927,6 +4620,99 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0E3F0F241E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MacSVGPlugin;
+			targetProxy = 0E3F0F231E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F261E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AnimateElementEditor;
+			targetProxy = 0E3F0F251E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F281E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AnimateMotionElementEditor;
+			targetProxy = 0E3F0F271E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F2A1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AnimateTransformElementEditor;
+			targetProxy = 0E3F0F291E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F2C1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BezierCircleGenerator;
+			targetProxy = 0E3F0F2B1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F2E1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ColorAttributeEditor;
+			targetProxy = 0E3F0F2D1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F301E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CoordinatesAttributeEditor;
+			targetProxy = 0E3F0F2F1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F321E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ImageElementEditor;
+			targetProxy = 0E3F0F311E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F361E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PathElementEditor;
+			targetProxy = 0E3F0F351E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F381E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PathElementShapeAnimationEditor;
+			targetProxy = 0E3F0F371E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F3A1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PieChartGenerator;
+			targetProxy = 0E3F0F391E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F3C1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PointsAttributeEditor;
+			targetProxy = 0E3F0F3B1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F3E1E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = StyleAttributeEditor;
+			targetProxy = 0E3F0F3D1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F401E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SVGAttributeEditor;
+			targetProxy = 0E3F0F3F1E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F421E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SVGElementEditor;
+			targetProxy = 0E3F0F411E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F441E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TextElementEditor;
+			targetProxy = 0E3F0F431E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F461E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TransformAttributeEditor;
+			targetProxy = 0E3F0F451E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+		0E3F0F481E442C9E001FDDD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TransformElementsDialog;
+			targetProxy = 0E3F0F471E442C9E001FDDD7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0E5FAA601DDD83C4006EB7E6 /* index.html */ = {
@@ -4042,6 +4828,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(INHERITED)";
@@ -4063,6 +4852,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lssh2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SYMROOT = "";
 				VALID_ARCHS = "i386 x86_64";
@@ -4083,6 +4873,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(INHERITED)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4099,6 +4892,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "-lssh2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SYMROOT = "";
 				VALID_ARCHS = "i386 x86_64";
@@ -4110,9 +4904,12 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -4124,6 +4921,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;
 				PRODUCT_NAME = macSVG;
@@ -4139,10 +4937,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4153,6 +4954,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;
 				PRODUCT_NAME = macSVG;

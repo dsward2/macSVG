@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0E4CF18F14D9182500A94168 /* skewY.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4CF18E14D9182500A94168 /* skewY.png */; };
 		0E693CFC1D7054FE00006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CFB1D7054FE00006B21 /* MacSVGPlugin.framework */; };
-		0EDF158714D1FCD000E872DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDF158614D1FCD000E872DA /* Cocoa.framework */; };
 		0EDF159114D1FCD000E872DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF158F14D1FCD000E872DA /* InfoPlist.strings */; };
 		0EDF159C14D1FEC900E872DA /* TransformAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDF159B14D1FEC900E872DA /* TransformAttributeEditor.m */; };
 		0EDF159E14D1FFB000E872DA /* TransformAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDF159D14D1FFB000E872DA /* TransformAttributeEditor.xib */; };
@@ -45,7 +44,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E693CFC1D7054FE00006B21 /* MacSVGPlugin.framework in Frameworks */,
-				0EDF158714D1FCD000E872DA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +149,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
+				TargetAttributes = {
+					0EDF158214D1FCD000E872DA = {
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0EDF157D14D1FCCF00E872DA /* Build configuration list for PBXProject "TransformAttributeEditor" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -246,7 +250,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -283,7 +287,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -294,16 +298,19 @@
 			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransformAttributeEditorPlugin/TransformAttributeEditor-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = "TransformAttributeEditorPlugin/TransformAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.TransformAttributeEditor;
 				PRODUCT_NAME = TransformAttributeEditor;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Debug;
@@ -313,16 +320,19 @@
 			baseConfigurationReference = 0ECCB01B1DB4AB8B001A6085 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransformAttributeEditorPlugin/TransformAttributeEditor-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../macSVG\"/**";
 				INFOPLIST_FILE = "TransformAttributeEditorPlugin/TransformAttributeEditor-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arkphone.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macSVGPlugIn.TransformAttributeEditor;
 				PRODUCT_NAME = TransformAttributeEditor;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;

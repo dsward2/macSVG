@@ -446,7 +446,7 @@
     
     size_t imageWidth = CGImageGetWidth(image);
     size_t imageHeight = CGImageGetHeight(image);
-    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(image);
+    //CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(image);
 
     NSDictionary *options = @{(id)kCVPixelBufferCGImageCompatibilityKey: @YES,
             (id)kCVPixelBufferCGBitmapContextCompatibilityKey: @YES};
