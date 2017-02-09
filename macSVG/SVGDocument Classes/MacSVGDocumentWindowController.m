@@ -1535,8 +1535,8 @@
     
     if (self.currentToolMode == toolModeCrosshairCursor)
     {
-        NSInteger selectedElementCount = [self.svgXMLDOMSelectionManager.selectedElementsManager selectedElementsCount];
-        if (selectedElementCount == 1)
+        NSInteger drawableSelectedElementCount = [self.svgXMLDOMSelectionManager.selectedElementsManager drawableSelectedElementsCount]; // omit counting of non-drawable elements like 'animate', etc.
+        if (drawableSelectedElementCount == 1)
         {
             NSXMLElement * selectedElement = [self.svgXMLDOMSelectionManager.selectedElementsManager xmlElementAtIndex:0];
             [self.svgXMLDOMSelectionManager selectXMLElement:selectedElement];

@@ -8,6 +8,8 @@
 
 #import "SelectedElementsManager.h"
 #import <WebKit/WebKit.h>
+#import "MacSVGDocumentWindowController.h"
+#import "SVGWebView.h"
 #import "SVGWebKitController.h"
 
 @interface SelectedElementsManager()
@@ -91,6 +93,42 @@
 - (NSUInteger)selectedElementsCount
 {
     return selectedElementsDictionariesArray.count;
+}
+
+//==================================================================================
+//	drawableSelectedElementsCount
+//==================================================================================
+
+- (NSInteger)drawableSelectedElementsCount
+{
+    NSInteger result = 0;
+    
+    NSDictionary * drawableObjectsDictionary = @{@"rect": @"rect",
+                                                 @"circle": @"circle",
+                                                 @"ellipse": @"ellipse",
+                                                 @"text": @"text",
+                                                 @"image": @"image",
+                                                 @"line": @"line",
+                                                 @"polyline": @"polyline",
+                                                 @"polygon": @"polygon",
+                                                 @"path": @"path",
+                                                 @"use": @"use",
+                                                 @"g": @"g",
+                                                 @"foreignObject": @"foreignObject"};
+    
+    for (NSDictionary * selectedElementDictionary in selectedElementsDictionariesArray)
+    {
+        NSXMLElement * aXMLElement = [selectedElementDictionary objectForKey:@"xmlElement"];
+        
+        NSXMLNode * elementName = [aXMLElement name];
+        
+        if ([drawableObjectsDictionary objectForKey:elementName] != NULL)
+        {
+            result++;
+        }
+    }
+
+    return result;
 }
 
 //==================================================================================
@@ -182,7 +220,46 @@
 
     if (domElement == NULL)
     {
-        NSLog(@"ERROR - SelectedElementsManager domElement is NULL");
+        BOOL isFilteredAnimationElement = NO;
+        
+        NSInteger animationEnabled = self.macSVGDocumentWindowController.enableAnimationCheckbox.state;
+        if (animationEnabled == NO)
+        {
+            NSString * xmlElementName = [xmlElement name];
+            
+            if ([xmlElementName isEqualToString:@"animate"] == YES)
+            {
+                isFilteredAnimationElement = YES;
+            }
+            else if ([xmlElementName isEqualToString:@"animateColor"] == YES)
+            {
+                isFilteredAnimationElement = YES;
+            }
+            else if ([xmlElementName isEqualToString:@"animateMotion"] == YES)
+            {
+                isFilteredAnimationElement = YES;
+            }
+            else if ([xmlElementName isEqualToString:@"animateTransform"] == YES)
+            {
+                isFilteredAnimationElement = YES;
+            }
+            else if ([xmlElementName isEqualToString:@"set"] == YES)
+            {
+                isFilteredAnimationElement = YES;
+            }
+        }
+        
+        if (isFilteredAnimationElement == YES)
+        {
+            // the corresponding dom element was not found in webview because animation mode is disabled,
+            // so make a standalone dummy dom element for the xml element
+            
+            domElement = [self createTemporaryDOMElementForXMLElement:xmlElement];
+        }
+        else
+        {
+            NSLog(@"ERROR - SelectedElementsManager domElement is NULL");
+        }
     }
     else
     {
@@ -197,6 +274,77 @@
             domElement, @"domElement",
             nil];
     [selectedElementsDictionariesArray addObject:elementDictionary];
+}
+
+//==================================================================================
+//	createTemporaryDOMElementForXMLElement
+//==================================================================================
+
+-(DOMElement *)createTemporaryDOMElementForXMLElement:(NSXMLElement *)aXmlElement
+{
+    DOMElement * aDomElement = NULL;
+    
+    if (aXmlElement != NULL)
+    {
+        // also recursively creates temporary parents
+        NSString * tagName = aXmlElement.name;
+        
+        DOMDocument * domDocument = (self.macSVGDocumentWindowController.svgWebKitController.svgWebView).mainFrame.DOMDocument;
+        
+        aDomElement = [domDocument createElementNS:svgNamespace
+                                     qualifiedName:tagName];
+        
+        NSArray * xmlAttributeNodes = aXmlElement.attributes;
+        
+        for (NSXMLNode * aXMLAttributeNode in xmlAttributeNodes)
+        {
+            NSString * attributeName = aXMLAttributeNode.name;
+            NSString * attributeValue = aXMLAttributeNode.stringValue;
+            
+            [aDomElement setAttribute:attributeName value:attributeValue];
+        }
+        
+        NSString * stringValue = aXmlElement.stringValue;
+        
+        NSString * copyStringValue = [[NSString alloc] initWithString:stringValue];
+        
+        aDomElement.textContent = copyStringValue;
+        
+        // try to find matching parent element
+        BOOL endParentSearch = NO;
+        if ([tagName isEqualToString:@"svg"] == NO) endParentSearch = YES;
+        if ([tagName isEqualToString:@"html"] == NO) endParentSearch = YES;
+        if (aXmlElement.parent == NULL) endParentSearch = YES;
+        
+        if (endParentSearch == NO)
+        {
+            NSXMLElement * parentXmlElement = (NSXMLElement *)aXmlElement.parent;
+            if (parentXmlElement != NULL)
+            {
+                DOMElement * parentDOMElement = NULL;
+                
+                NSXMLNode * parentMacsvgidNode = [aXmlElement attributeForName:@"macsvgid"];
+                if (parentMacsvgidNode != NULL)
+                {
+                    NSString * parentMacsvgid = parentMacsvgidNode.stringValue;
+                    
+                    parentDOMElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:parentMacsvgid];
+                }
+                
+                if (parentDOMElement == NULL)
+                {
+                    parentDOMElement = [self createTemporaryDOMElementForXMLElement:parentXmlElement];
+                }
+                
+                if (parentDOMElement != NULL)
+                {
+                    [parentDOMElement appendChild:aDomElement];
+                }
+            }
+        }
+    }
+    
+    return aDomElement;
 }
 
 //==================================================================================

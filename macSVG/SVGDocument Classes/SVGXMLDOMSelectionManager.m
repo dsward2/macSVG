@@ -46,6 +46,7 @@
     {
         // Initialization code here.
         self.selectedElementsManager = [[SelectedElementsManager alloc] init];
+        self.selectedElementsManager.macSVGDocumentWindowController = macSVGDocumentWindowController;
         self.activeXMLElement = NULL;
     }
     

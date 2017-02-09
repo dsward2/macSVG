@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -975,7 +975,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="PgQ-qT-sCB">
                             <rect key="frame" x="1" y="0.0" width="425" height="207"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="yVw-H3-RYW" viewBased="YES" id="RfQ-Jj-Twc">
                                     <rect key="frame" x="0.0" y="0.0" width="450" height="190"/>
@@ -1645,7 +1645,7 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="GEJ-m5-RcT">
                             <rect key="frame" x="1" y="0.0" width="425" height="207"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="18" headerView="ARm-ja-bLh" viewBased="YES" id="kia-ck-0lM">
                                     <rect key="frame" x="0.0" y="0.0" width="425" height="190"/>
@@ -1961,17 +1961,17 @@ Gw
                         <rect key="frame" x="20" y="388" width="758" height="97"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="pWX-Go-AiA">
-                            <rect key="frame" x="1" y="1" width="741" height="95"/>
+                            <rect key="frame" x="1" y="1" width="756" height="95"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" id="92j-vb-qoc">
-                                    <rect key="frame" x="0.0" y="0.0" width="741" height="95"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="756" height="95"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn editable="NO" width="737" minWidth="40" maxWidth="1000" id="N9R-eZ-rDl">
+                                        <tableColumn editable="NO" width="753" minWidth="40" maxWidth="1000" id="N9R-eZ-rDl">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1997,7 +1997,7 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="2U4-Vt-x6c">
-                            <rect key="frame" x="742" y="1" width="15" height="95"/>
+                            <rect key="frame" x="741" y="1" width="16" height="95"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -2023,14 +2023,14 @@ Gw
                         <rect key="frame" x="518" y="59" width="260" height="321"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" id="Tq3-8O-4dt">
-                            <rect key="frame" x="1" y="1" width="243" height="319"/>
+                            <rect key="frame" x="1" y="1" width="258" height="319"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="tbY-nP-17b">
                                     <rect key="frame" x="0.0" y="0.0" width="243" height="319"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="243" height="319"/>
+                                    <size key="minSize" width="258" height="319"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -2042,7 +2042,7 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="R4R-c4-U0u">
-                            <rect key="frame" x="244" y="1" width="15" height="319"/>
+                            <rect key="frame" x="243" y="1" width="16" height="319"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -2091,6 +2091,9 @@ Gw
                     </searchField>
                 </subviews>
             </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="92j-vb-qoc" id="Dg4-7r-pe0"/>
+            </connections>
             <point key="canvasLocation" x="417" y="1066"/>
         </window>
         <window title="Create New MacSVG Document" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="IkZ-Nv-kEM" userLabel="CreateNewDocumentWindow">

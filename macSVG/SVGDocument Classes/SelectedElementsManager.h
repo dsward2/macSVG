@@ -11,6 +11,7 @@
 @class NSXMLElement;
 @class DOMElement;
 @class DOMSVGSVGElement;
+@class MacSVGDocumentWindowController;
 
 @interface SelectedElementsManager : NSObject
 {
@@ -19,6 +20,8 @@
 @property (readonly, copy) NSMutableArray *selectedElementsArray;
 @property (readonly, copy) NSArray *selectedXMLElementIDs;
 @property (readonly) NSUInteger selectedElementsCount;
+@property (readonly) NSInteger drawableSelectedElementsCount;
+@property (strong) MacSVGDocumentWindowController * macSVGDocumentWindowController;
 
 - (NSDictionary *)elementDictionaryAtIndex:(NSUInteger)elementIndex;
 - (NSXMLElement *)xmlElementAtIndex:(NSUInteger)elementIndex;
