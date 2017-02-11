@@ -84,6 +84,7 @@
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 
 @property (readonly, strong) id svgPathEditorSelectedPathElement;   // returns NSXMLElement
+- (void)buildPathSegmentsArray:(NSXMLElement *)pathElement;
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
 
 - (void)walkDOMNodeTree:(DOMNode *)parent level:(unsigned int)level;

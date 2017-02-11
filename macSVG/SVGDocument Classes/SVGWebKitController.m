@@ -1462,6 +1462,13 @@
 
 // ================================================================
 
+- (void)buildPathSegmentsArray:(NSXMLElement *)pathElement
+{
+    [self.domMouseEventsController.svgPathEditor buildPathSegmentsArray:pathElement];
+}
+
+// ================================================================
+
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement
 {
     SVGPathEditor * svgPathEditor = self.domMouseEventsController.svgPathEditor;

@@ -537,6 +537,14 @@
     
     [self updatePathSegmentsAbsoluteValues:newPathSegmentsArray];
     
+    if (newPathSegmentsArray.count == 0)
+    {
+        if (pathStringLength > 0)
+        {
+            NSLog(@"buildPathSegmentsArrayWithPathString - empty newPathSegmentsArray result");
+        }
+    }
+    
     return newPathSegmentsArray;
 }
 

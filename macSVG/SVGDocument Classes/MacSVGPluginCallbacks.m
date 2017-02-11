@@ -103,6 +103,15 @@
     return pathSegmentsArray;
 }
 
+
+- (void)buildPathSegmentsArray:(NSXMLElement *)pathElement
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    [svgWebKitController buildPathSegmentsArray:pathElement];
+}
+
+
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];

@@ -372,6 +372,8 @@
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
 
+    [macSVGDocumentWindowController setToolMode:toolModeCrosshairCursor];
+
     [macSVGDocumentWindowController setToolMode:toolModePath];
     
     DOMSelectionControlsManager * domSelectionControlsManager =
@@ -381,19 +383,34 @@
     
     NSXMLElement * pathElement = self.macSVGPluginCallbacks.svgPathEditorSelectedPathElement;
     
-    // add an extra path segment, it will be deleted with path drawing restarts
-    NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
-    NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
-    [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
-    [pathSegmentsArray addObject:newPathSegmentDictionary];
+    if (pathElement == NULL)
+    {
+        // Try to set the path element selection
+        [self.macSVGPluginCallbacks buildPathSegmentsArray:self.pluginTargetXMLElement];
+        
+        pathElement = self.macSVGPluginCallbacks.svgPathEditorSelectedPathElement;
+    }
     
-    [self.macSVGPluginCallbacks setActiveXMLElement:pathElement];
+    if (pathElement != NULL)
+    {
+        // add an extra path segment, it will be deleted with path drawing restarts
+        NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
+        NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
+        [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
+        [pathSegmentsArray addObject:newPathSegmentDictionary];
+        
+        [self.macSVGPluginCallbacks setActiveXMLElement:pathElement];
 
-    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
-    id domMouseEventsController = [svgWebKitController domMouseEventsController];
-    [domMouseEventsController setMouseMode:MOUSE_HOVERING];
+        id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
+        id domMouseEventsController = [svgWebKitController domMouseEventsController];
+        [domMouseEventsController setMouseMode:MOUSE_HOVERING];
 
-    [self updateSVGPathEditorAction:self];
+        [self updateSVGPathEditorAction:self];
+    }
+    else
+    {
+        NSBeep();
+    }
 }
 
 

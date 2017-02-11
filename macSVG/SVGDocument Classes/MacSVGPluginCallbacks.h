@@ -27,6 +27,7 @@
 @property (readonly, strong) id mouseEventsControllerActiveDOMElement;    // returns DOMElement
 @property (copy) NSMutableArray *pathSegmentsArray;          // array of dictionaries for path segments
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
+- (void)buildPathSegmentsArray:(NSXMLElement *)pathElement;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)aPathSegmentsArray;
 - (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;
