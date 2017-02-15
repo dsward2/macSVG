@@ -120,7 +120,7 @@
     {
         NSXMLElement * aXMLElement = [selectedElementDictionary objectForKey:@"xmlElement"];
         
-        NSXMLNode * elementName = [aXMLElement name];
+        NSString * elementName = [aXMLElement name];
         
         if ([drawableObjectsDictionary objectForKey:elementName] != NULL)
         {

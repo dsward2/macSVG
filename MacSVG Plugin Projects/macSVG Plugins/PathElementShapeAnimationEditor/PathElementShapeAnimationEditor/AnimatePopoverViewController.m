@@ -286,6 +286,8 @@
     if (fillString == NULL) fillString = @"";
     animateAttributesDictionary[@"fill"] = fillString;
     
+    NSXMLElement * originalPluginTargetXMLElement = pathElementShapeAnimationEditor.pluginTargetXMLElement;
+    
     if (createNewAnimateElement == YES)
     {
         [pathElementShapeAnimationEditor createNewAnimateElement];
@@ -293,9 +295,23 @@
         createNewAnimateElement = NO;
     }
     
+    NSIndexSet * selectedRowsIndexSet = [pathElementShapeAnimationEditor.animateElementsTableView selectedRowIndexes];
+    
     [pathElementShapeAnimationEditor setAttributesWithDictionary:animateAttributesDictionary];
 
     [animatePopover performClose:self];
+    
+    if (originalPluginTargetXMLElement != NULL)
+    {
+        NSString * elementName = originalPluginTargetXMLElement.name;
+        
+        if ([elementName isEqualToString:@"path"])
+        {
+            [pathElementShapeAnimationEditor.macSVGPluginCallbacks selectXMLElement:originalPluginTargetXMLElement];
+            
+            [pathElementShapeAnimationEditor.animateElementsTableView selectRowIndexes:selectedRowsIndexSet byExtendingSelection:NO];
+        }
+    }
 }
 
 //==================================================================================

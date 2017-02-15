@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -765,7 +765,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="1043" height="128"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <clipView key="contentView" id="1jh-GN-guP">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="1028" height="113"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="1043" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <view id="100409" customClass="AnimationTimelineView">
@@ -783,11 +783,11 @@
                                                                     </subviews>
                                                                 </clipView>
                                                                 <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="100408">
-                                                                    <rect key="frame" x="0.0" y="113" width="1028" height="15"/>
+                                                                    <rect key="frame" x="0.0" y="112" width="1043" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
                                                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="100407">
-                                                                    <rect key="frame" x="1028" y="0.0" width="15" height="113"/>
+                                                                    <rect key="frame" x="1027" y="0.0" width="16" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
                                                             </scrollView>
@@ -1568,7 +1568,7 @@
                     <rect key="frame" x="0.0" y="32" width="287" height="351"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="fvq-bM-71s">
-                        <rect key="frame" x="1" y="1" width="270" height="349"/>
+                        <rect key="frame" x="1" y="1" width="285" height="349"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" usesFontPanel="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="100856">
@@ -1699,8 +1699,8 @@
                     <rect key="frame" x="0.0" y="32" width="287" height="351"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="W5c-GM-C25">
-                        <rect key="frame" x="1" y="1" width="270" height="349"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <rect key="frame" x="1" y="1" width="285" height="349"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" id="100878">
                                 <rect key="frame" x="0.0" y="0.0" width="270" height="349"/>
@@ -2255,8 +2255,8 @@
                         <rect key="frame" x="20" y="57" width="440" height="193"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="ZgR-se-6gy">
-                            <rect key="frame" x="1" y="1" width="423" height="191"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <rect key="frame" x="1" y="1" width="438" height="191"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="NmF-6Q-pjy">
                                     <rect key="frame" x="0.0" y="0.0" width="423" height="191"/>

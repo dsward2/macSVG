@@ -1128,6 +1128,10 @@
 
 - (IBAction)pausePlayAnimationButtonClicked:(id)sender
 {
+    NSInteger originalEnableAnimationCheckboxState = self.macSVGDocumentWindowController.enableAnimationCheckbox.state;
+    
+    self.macSVGDocumentWindowController.enableAnimationCheckbox.state = 1;
+
     DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
 	DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
@@ -1142,8 +1146,6 @@
         if ([webKitInterface animationsPausedForSvgElement:svgElement] == YES)
         {
             // play animations
-            self.macSVGDocumentWindowController.enableAnimationCheckbox.state = 1;
-            
             [webKitInterface unpauseAnimationsForSvgElement:svgElement];
             
             NSImage * buttonImage = [NSImage imageNamed:@"Pause16"];
@@ -1156,6 +1158,11 @@
             
             NSImage * buttonImage = [NSImage imageNamed:@"NSGoRightTemplate"];
             (self.macSVGDocumentWindowController.pausePlayAnimationButton).image = buttonImage;
+            
+            if (originalEnableAnimationCheckboxState == 0)
+            {
+                [self.macSVGDocumentWindowController reloadAllViews];
+            }
         }
     }
 }

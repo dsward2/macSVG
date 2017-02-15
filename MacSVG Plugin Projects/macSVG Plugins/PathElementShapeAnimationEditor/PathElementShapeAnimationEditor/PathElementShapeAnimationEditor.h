@@ -13,7 +13,7 @@
 
 @interface PathElementShapeAnimationEditor : MacSVGPlugin
 {
-    IBOutlet NSTableView * animateElementsTableView;
+    //IBOutlet NSTableView * animateElementsTableView;
     IBOutlet NSButton * addAnimateElementButton;
     IBOutlet NSButton * editAnimateElementButton;
     IBOutlet NSButton * deleteAnimateElementButton;
@@ -25,6 +25,8 @@
     IBOutlet NSPopover * animationPathsPopover;
     IBOutlet AnimationPathsPopoverViewController * animationPathsPopoverViewController;
 }
+
+@property (weak) IBOutlet NSTableView * animateElementsTableView;
 
 
 - (IBAction)addAnimateElementButtonAction:(id)sender;

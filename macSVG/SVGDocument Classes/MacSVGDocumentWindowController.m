@@ -1965,6 +1965,17 @@
 - (IBAction)enableAnimationCheckboxAction:(id)sender;
 {
     [self reloadAllViews];
+    
+    if (self.enableAnimationCheckbox.state == YES)
+    {
+        NSImage * buttonImage = [NSImage imageNamed:@"Pause16"];
+        (self.pausePlayAnimationButton).image = buttonImage;
+    }
+    else
+    {
+        NSImage * buttonImage = [NSImage imageNamed:@"NSGoRightTemplate"];
+        (self.pausePlayAnimationButton).image = buttonImage;
+    }
 }
 
 // ================================================================

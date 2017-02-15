@@ -158,7 +158,7 @@
 
 - (void) loadSettingsForElement
 {
-    [animateElementsTableView reloadData];
+    [self.animateElementsTableView reloadData];
 }
 
 //==================================================================================
@@ -195,7 +195,7 @@
     // configure the preferred position of the popover
     [animatePopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
     
-    NSInteger selectedAnimateElementIndex = animateElementsTableView.selectedRow;
+    NSInteger selectedAnimateElementIndex = self.animateElementsTableView.selectedRow;
     
     NSXMLElement * animateElement = [self animateElementAtCount:selectedAnimateElementIndex];
     
@@ -216,7 +216,7 @@
 
 - (IBAction)manageAnimationPathButtonAction:(id)sender
 {
-    NSInteger selectedRow = animateElementsTableView.selectedRow;
+    NSInteger selectedRow = self.animateElementsTableView.selectedRow;
     
     if (selectedRow != -1)
     {
@@ -267,7 +267,7 @@
 
 - (void) setAttributesWithDictionary:(NSMutableDictionary *)animateAttributesDictionary
 {
-    NSInteger selectedAnimateElementIndex = animateElementsTableView.selectedRow;
+    NSInteger selectedAnimateElementIndex = self.animateElementsTableView.selectedRow;
     
     NSXMLElement * animateElement = [self animateElementAtCount:selectedAnimateElementIndex];
 
@@ -384,7 +384,7 @@
 {
     NSInteger result = 0;
     
-    if (aTableView == animateElementsTableView)
+    if (aTableView == self.animateElementsTableView)
     {
         result = [self countAnimateElements];
     }
@@ -499,7 +499,7 @@
 {
     NSString * result = @"Missing Result";
     
-    if (aTableView == animateElementsTableView)
+    if (aTableView == self.animateElementsTableView)
     {
         result = [self animateElementsTableViewObjectValueForTableColumn:aTableColumn row:rowIndex];
     }
@@ -514,7 +514,7 @@
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	id aTableView = aNotification.object;
-    if (aTableView == animateElementsTableView)
+    if (aTableView == self.animateElementsTableView)
     {
         [self enableButtons];
     }
@@ -580,13 +580,13 @@
         //[self.pluginTargetXMLElement addChild:newAnimateElement];  // add animate element to path element
         [targetElement addChild:newAnimateElement];  // add animate element to path element
         
-        [animateElementsTableView reloadData];
+        [self.animateElementsTableView reloadData];
         
         NSInteger animateElementsCount = [self countAnimateElements];
 
         NSIndexSet * newRowIndex = [NSIndexSet indexSetWithIndex:(animateElementsCount - 1)];
 
-        [animateElementsTableView selectRowIndexes:newRowIndex byExtendingSelection:NO];
+        [self.animateElementsTableView selectRowIndexes:newRowIndex byExtendingSelection:NO];
         
         [self enableButtons];
     }
@@ -610,7 +610,7 @@
     }
     else
     {
-        NSInteger selectedRow = animateElementsTableView.selectedRow;
+        NSInteger selectedRow = self.animateElementsTableView.selectedRow;
         if (selectedRow == -1)
         {
             [editAnimateElementButton setEnabled:NO];
