@@ -388,6 +388,22 @@
     }
 
     [polylineElement setAttribute:@"points" value:newPointsString];
+
+    NSMutableArray * polylinePointsArray = [NSMutableArray array];
+    for (NSInteger i = 0; i < pointsArray.count; i += 2)
+    {
+        NSString * xString = [pointsArray objectAtIndex:i];
+        NSString * yString = [pointsArray objectAtIndex:i + 1];
+        
+        NSMutableDictionary * aPointDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+            xString, @"x",
+            yString, @"y",
+            NULL];
+        
+        [polylinePointsArray addObject:aPointDictionary];
+    }
+
+    [self.svgPolylineEditor updatePolylineInDOMForElement:polylineElement polylinePointsArray:polylinePointsArray];
 }
 
 
@@ -1871,7 +1887,7 @@
             
             if ([tagName isEqualToString:@"polyline"] == YES)
             {
-                coordinateType = @"xyxyxy";
+                coordinateType = @"xyxyxy";     // not the best description, but it will do for now
             }
             
             if ([tagName isEqualToString:@"polygon"] == YES)
@@ -1943,7 +1959,7 @@
                     [locatableElement setAttribute:@"y2" value:newY2String];
                 }
             }
-            else if ([coordinateType isEqualToString:@"xyxyxy"] == YES)
+            else if ([coordinateType isEqualToString:@"xyxyxy"] == YES)     // it is a polyline or polygon, see above
             {
                 [self offsetPolyline:locatableElement deltaX:deltaX deltaY:deltaY];
             }
