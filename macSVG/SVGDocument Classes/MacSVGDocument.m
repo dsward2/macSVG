@@ -1319,6 +1319,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"stroke-width"] = strokeWidthString;
         attributesDictionary[@"text-anchor"] = @"middle";
+        attributesDictionary[@"text-rendering"] = @"geometricPrecision";
         attributesDictionary[@"x"] = xString;
         attributesDictionary[@"y"] = yString;
         attributesDictionary[@"transform"] = @"";

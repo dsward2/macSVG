@@ -290,7 +290,7 @@
   </svgElement>
   <svgElement id="text">
     <docref>text.html#TextElement</docref>
-    <prototype>text x="150" y="150" font-family="Verdana" font-size="55" text-anchor="middle" transform=""</prototype>
+    <prototype>text x="150" y="150" font-family="Verdana" font-size="55" text-anchor="middle" text-rendering="geometricPrecision" transform=""</prototype>
   </svgElement>
   <svgElement id="textPath">
     <docref>text.html#TextPathElement</docref>
