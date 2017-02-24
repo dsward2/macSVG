@@ -13,8 +13,10 @@
 @interface AnimateElementEditor : MacSVGPlugin <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSControlTextEditingDelegate>
 {
     IBOutlet NSPopUpButton * calcModePopUpButton;
+    IBOutlet NSPopUpButton * attributeTypePopUpButton;
     IBOutlet NSTextField * beginTextField;
     IBOutlet NSTextField * durTextField;
+    IBOutlet NSComboBox * attributeNameComboBox;
     IBOutlet NSComboBox * repeatCountComboBox;
     IBOutlet NSTabView * animateElementTabView;
     IBOutlet NSTextField * fromTextField;

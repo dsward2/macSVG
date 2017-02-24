@@ -9,6 +9,9 @@
 #import "AnimateElementEditor.h"
 #import "AnimateElementKeyValuesPopoverViewController.h"
 #import "AnimateElementTableRowView.h"
+#import "MacSVGDocument.h"
+#import "MacSVGDocumentWindowController.h"
+#import "SVGHelpManager.h"
 
 @implementation AnimateElementEditor
 
@@ -293,6 +296,11 @@
 - (void)loadAnimateSettings
 {
     NSXMLElement * animateElement = self.pluginTargetXMLElement;
+    NSTabViewItem * selectedTabViewItem = [animateElementTabView selectedTabViewItem];
+    
+    [self setAttribute:@"attributeName" element:animateElement comboBox:attributeNameComboBox];
+    
+    [self setAttribute:@"attributeType" element:animateElement popUpButton:attributeTypePopUpButton];
     
     [self setAttribute:@"calcMode" element:animateElement popUpButton:calcModePopUpButton];
     
@@ -303,13 +311,20 @@
 
     [self setAttribute:@"begin" element:animateElement textField:beginTextField];
 
+    BOOL tabViewWasSelected = NO;
+
     fromTextField.stringValue = @"";
     NSXMLNode * fromAttributeNode = [animateElement attributeForName:@"from"];
     if (fromAttributeNode != NULL)
     {
         NSString * fromAttributeValue = fromAttributeNode.stringValue;
         fromTextField.stringValue = fromAttributeValue;
-        [animateElementTabView selectTabViewItemAtIndex:0];
+        
+        if ([animateElementTabView indexOfTabViewItem:selectedTabViewItem] == 2)
+        {
+            [animateElementTabView selectTabViewItemAtIndex:1];
+            tabViewWasSelected = YES;
+        }
     }
 
     toTextField.stringValue = @"";
@@ -318,20 +333,31 @@
     {
         NSString * toAttributeValue = toAttributeNode.stringValue;
         toTextField.stringValue = toAttributeValue;
-        [animateElementTabView selectTabViewItemAtIndex:0];
+        
+        if ([animateElementTabView indexOfTabViewItem:selectedTabViewItem] == 2)
+        {
+            [animateElementTabView selectTabViewItemAtIndex:1];
+            tabViewWasSelected = YES;
+        }
     }
 
     //[valuesTextView setString:@""];
     NSXMLNode * valuesAttributeNode = [animateElement attributeForName:@"values"];
     if (valuesAttributeNode != NULL)
     {
-        [animateElementTabView selectTabViewItemAtIndex:1];
+        
+        if ([animateElementTabView indexOfTabViewItem:selectedTabViewItem] == 1)
+        {
+            [animateElementTabView selectTabViewItemAtIndex:2];
+            tabViewWasSelected = YES;
+        }
         
         [self configureValuesTableView];
-
-        //NSString * valuesAttributeString = [valuesAttributeNode stringValue];
-        //valuesAttributeString = [valuesAttributeString stringByReplacingOccurrencesOfString:@";" withString:@";\n"];
-        //[valuesTextView setString:valuesAttributeString];
+    }
+    
+    if (tabViewWasSelected == NO)
+    {
+        [animateElementTabView selectTabViewItemAtIndex:0];
     }
 }
 
@@ -436,8 +462,6 @@
     return (self.valuesArray).count;
 }
 
-
-
 //==================================================================================
 //	itemTextFieldUpdated:
 //==================================================================================
@@ -445,23 +469,27 @@
 - (IBAction)itemTextFieldUpdated:(id)sender
 {
     NSInteger rowIndex = [valuesTableView rowForView:sender];
-    NSInteger columnIndex = [valuesTableView columnForView:sender];
     
-    NSInteger adjustedColumnIndex = columnIndex - 1;
-    
-    NSString * stringValue = [sender stringValue];
-    
-    stringValue = [stringValue copy];
-    
-    NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
-    
-    if (adjustedColumnIndex >= rowArray.count)
+    if (rowIndex >= 0)
     {
-        [rowArray addObject:stringValue];
-    }
-    else
-    {
-        rowArray[(adjustedColumnIndex)] = stringValue;
+        NSInteger columnIndex = [valuesTableView columnForView:sender];
+        
+        NSInteger adjustedColumnIndex = columnIndex - 1;
+        
+        NSString * stringValue = [sender stringValue];
+        
+        stringValue = [stringValue copy];
+        
+        NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
+        
+        if (adjustedColumnIndex >= rowArray.count)
+        {
+            [rowArray addObject:stringValue];
+        }
+        else
+        {
+            rowArray[(adjustedColumnIndex)] = stringValue;
+        }
     }
     
     NSTextField * textField = sender;
@@ -671,6 +699,24 @@
 }
 
 //==================================================================================
+//	numberOfItemsInComboBox:
+//==================================================================================
+
+- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)comboBox
+{
+    NSInteger result = 0;
+
+    if (comboBox == attributeNameComboBox)
+    {
+        NSArray * attributeNamesArray = [self filteredParentAttributeNames];
+        
+        result = [attributeNamesArray count];
+    }
+    
+    return result;
+}
+
+//==================================================================================
 //	objectValueForItemAtIndex
 //==================================================================================
 
@@ -681,6 +727,10 @@
     if (aComboBox == repeatCountComboBox)
     {
         result = [self repeatCountComboBoxObjectValueAtIndex:index];
+    }
+    else if (aComboBox == attributeNameComboBox)
+    {
+        result = [self attributeNameComboBoxObjectValueAtIndex:index];
     }
     
     return result;
@@ -711,6 +761,124 @@
     
     return result;
 }
+
+//==================================================================================
+//	attributeNameComboBoxObjectValueAtIndex
+//==================================================================================
+
+- (NSString *)attributeNameComboBoxObjectValueAtIndex:(NSInteger)index
+{
+    NSString * result = @"Missing Item";
+    
+    NSArray * filteredParentAttributeNames = [self filteredParentAttributeNames];
+    
+    if (filteredParentAttributeNames != NULL)
+    {
+        if (index < filteredParentAttributeNames.count)
+        {
+            result = [filteredParentAttributeNames objectAtIndex:index];
+        }
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//	filteredParentAttributeNames
+//==================================================================================
+
+- (NSArray *)filteredParentAttributeNames
+{
+    NSMutableArray * result = NULL;
+
+    NSXMLElement * parentElement = (NSXMLElement *)self.pluginTargetXMLElement.parent;
+    
+    if (parentElement != NULL)
+    {
+        NSArray * parentAttributesArray = [parentElement attributes];
+        
+        for (NSXMLNode * attributeNode in parentAttributesArray)
+        {
+            if (attributeNode.kind == NSXMLAttributeKind)
+            {
+                NSString * attributeName = [attributeNode name];
+                
+                if (result == NULL)
+                {
+                    result = [NSMutableArray array];
+                }
+                
+                BOOL addItem = YES;
+                
+                if ([attributeName isEqualToString:@"macsvgid"] == YES)
+                {
+                    addItem = NO;
+                }
+                else
+                {
+                    addItem = [self attributeIsAnimatable:attributeName];
+                }
+                
+                if (addItem == YES)
+                {
+                    [result addObject:attributeName];
+                }
+            }
+        }
+        
+        NSArray * sortedArray = [result
+            sortedArrayUsingFunction:attributeNameSort context:NULL];
+        
+        result = [sortedArray mutableCopy];
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//	directoryListingSort()
+//==================================================================================
+
+NSComparisonResult attributeNameSort(id name1, id name2, void *context)
+{
+    NSComparisonResult sortResult = NSOrderedSame;
+
+    sortResult = [name1 compare:name2];
+
+    return sortResult;
+}
+
+//==================================================================================
+//	attributeIsAnimatable:
+//==================================================================================
+
+- (BOOL)attributeIsAnimatable:(NSString *)attributeName
+{
+    BOOL result = NO;
+
+    MacSVGDocumentWindowController * macSVGDocumentWindowController =
+            [self.macSVGDocument macSVGDocumentWindowController];
+
+    for (NSDictionary * attributeHelpDictionary in macSVGDocumentWindowController.svgHelpManager.attributesHelpArray)
+    {
+        NSString * aAttributeName = attributeHelpDictionary[@"attributeName"];
+        
+        if ([attributeName isEqualToString:aAttributeName])
+        {
+            NSString * attributeAnimatableString = [attributeHelpDictionary objectForKey:@"attributeAnimatable"];
+            
+            if ([attributeAnimatableString isEqualToString:@"1"] == YES)
+            {
+                result = YES;
+            }
+            
+            break;
+        }
+    }
+    
+    return result;
+}
+
 
 //==================================================================================
 //	cancelButtonAction
@@ -755,6 +923,8 @@
 {
     //NSXMLElement * animateElement = self.pluginTargetXMLElement;
     
+    NSString * attributeName = attributeNameComboBox.stringValue;
+    NSString * attributeType = attributeTypePopUpButton.stringValue;
     NSString * calcModeString = calcModePopUpButton.titleOfSelectedItem;
     NSString * beginString = beginTextField.stringValue;
     NSString * durString = durTextField.stringValue;
@@ -791,14 +961,36 @@
         }
     }
     
+    [self setAttributeName:@"attributeName" value:attributeName element:self.pluginTargetXMLElement];
+    [self setAttributeName:@"attributeType" value:attributeType element:self.pluginTargetXMLElement];
     [self setAttributeName:@"calcMode" value:calcModeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"begin" value:beginString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"dur" value:durString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"repeatCount" value:repeatCountString element:self.pluginTargetXMLElement];
     
+    if (animateElementTabIndex == 0)
+    {
+        if (valuesString.length > 0)
+        {
+            animateElementTabIndex = 2;
+        }
+        else if (fromString.length > 0)
+        {
+            animateElementTabIndex = 1;
+        }
+        else if (toString.length > 0)
+        {
+            animateElementTabIndex = 1;
+        }
+        else
+        {
+            animateElementTabIndex = 2;
+        }
+    }
+    
     switch (animateElementTabIndex)
     {
-        case 0:
+        case 1:
         {
             [self setAttributeName:@"from" value:fromString element:self.pluginTargetXMLElement];
             [self setAttributeName:@"to" value:toString element:self.pluginTargetXMLElement];
@@ -806,7 +998,7 @@
             [self.pluginTargetXMLElement removeAttributeForName:@"values"];
             break;
         }
-        case 1:
+        case 2:
         {
             //[self setAttributeName:@"from" value:@"" element:self.pluginTargetXMLElement];
             //[self setAttributeName:@"to" value:@"" element:self.pluginTargetXMLElement];
