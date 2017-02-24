@@ -2874,9 +2874,61 @@
 
 - (IBAction)showElementDocumentation:(id)sender
 {
-    NSInteger selectedRow = (self.svgElementsTableController.elementsTableView).selectedRow;
     
-    NSString * elementTag = (self.svgElementsTableController.svgElementsArray)[selectedRow];
+    NSString * elementTag = @"svg";
+    
+    BOOL tryOutlineFirst = NO;
+
+    if (self.window.firstResponder == self.xmlOutlineController.xmlOutlineView)
+    {
+        tryOutlineFirst = YES;
+    }
+    
+    if (svgElementsButton.state == 1)
+    {
+        tryOutlineFirst = NO;
+    }
+    
+    if (tryOutlineFirst == YES)
+    {
+        NSArray * outlineSelectedItemsArray = self.xmlOutlineController.selectedItems;
+        
+        if (outlineSelectedItemsArray.count > 0)
+        {
+            NSXMLElement * selectedElement = [outlineSelectedItemsArray objectAtIndex:0];
+            
+            elementTag = selectedElement.name;
+        }
+        else
+        {
+            NSInteger selectedRow = (self.svgElementsTableController.elementsTableView).selectedRow;
+
+            if (selectedRow >= 0)
+            {
+                elementTag = (self.svgElementsTableController.svgElementsArray)[selectedRow];
+            }
+        }
+    }
+    else
+    {
+        NSInteger selectedRow = (self.svgElementsTableController.elementsTableView).selectedRow;
+
+        if (selectedRow >= 0)
+        {
+            elementTag = (self.svgElementsTableController.svgElementsArray)[selectedRow];
+        }
+        else
+        {
+            NSArray * outlineSelectedItemsArray = self.xmlOutlineController.selectedItems;
+            
+            if (outlineSelectedItemsArray.count > 0)
+            {
+                NSXMLElement * selectedElement = [outlineSelectedItemsArray objectAtIndex:0];
+                
+                elementTag = selectedElement.name;
+            }
+        }
+    }
 
     [self.svgHelpManager showDocumentationForElement:elementTag];
 }
