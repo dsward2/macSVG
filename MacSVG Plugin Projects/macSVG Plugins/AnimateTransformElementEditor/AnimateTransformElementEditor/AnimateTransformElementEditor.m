@@ -294,6 +294,8 @@
 {
     NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
     
+    [self setAttribute:@"type" element:animateTransformElement popUpButton:typePopUpButton];
+    
     [self setAttribute:@"calcMode" element:animateTransformElement popUpButton:calcModePopUpButton];
     
     [self setAttribute:@"begin" element:animateTransformElement textField:beginTextField];
@@ -336,7 +338,62 @@
 
 - (void)configureValuesTableView
 {
+    NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
+
     self.valuesArray = [NSMutableArray array];
+
+
+
+    NSXMLNode * valuesAttributeNode = [animateTransformElement attributeForName:@"values"];
+    if (valuesAttributeNode != NULL)
+    {
+        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
+        
+        NSArray * valueRowsArray = [valuesAttributeString componentsSeparatedByString:@";"];
+        
+        for (NSString * aValuesString in valueRowsArray)
+        {
+            NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+            NSString * trimmedValuesString = [aValuesString stringByTrimmingCharactersInSet:whitespaceSet];
+
+            NSInteger aValuesStringLength = trimmedValuesString.length;
+        
+            if (aValuesStringLength > 0)
+            {
+                NSMutableString * filteredValuesString = [NSMutableString string];
+                
+                unichar prevChar = ' ';
+                
+                for (NSInteger i = 0; i < aValuesStringLength; i++)
+                {
+                    unichar aChar = [trimmedValuesString characterAtIndex:i];
+                    NSString * aCharString = [NSString stringWithFormat:@"%C", aChar];
+                    
+                    if (aChar == ' ')
+                    {
+                        if (prevChar != ' ')
+                        {
+                            [filteredValuesString appendString:aCharString];
+                        }
+                    }
+                    else
+                    {
+                        [filteredValuesString appendString:aCharString];
+                    }
+                    
+                    prevChar = aChar;
+                }
+            
+                NSArray * valueItemsArray = [filteredValuesString componentsSeparatedByString:@" "];
+                
+                valueItemsArray = [valueItemsArray mutableCopy];
+                
+                [self.valuesArray addObject:valueItemsArray];
+            }
+        }
+    }
+
+
 
     while(valuesTableView.tableColumns.count > 0)
     {
@@ -354,15 +411,7 @@
     
     CGFloat tableWidth = valuesTableView.bounds.size.width - 30.0f;
     
-    NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
-
-    NSString * typeAttributeString = @"translate";
-    
-    NSXMLNode * typeAttributeNode = [animateTransformElement attributeForName:@"type"];
-    if (typeAttributeNode != NULL)
-    {
-        typeAttributeString = typeAttributeNode.stringValue;
-    }
+    NSString * typeAttributeString = typePopUpButton.titleOfSelectedItem;
     
     if ([typeAttributeString isEqualToString:@"translate"] == YES)
     {
@@ -447,55 +496,6 @@
         yTableColumn.maxWidth = 100.0f;
         [valuesTableView addTableColumn:yTableColumn];
     }
-
-    NSXMLNode * valuesAttributeNode = [animateTransformElement attributeForName:@"values"];
-    if (valuesAttributeNode != NULL)
-    {
-        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
-        
-        NSArray * valueRowsArray = [valuesAttributeString componentsSeparatedByString:@";"];
-        
-        for (NSString * aValuesString in valueRowsArray)
-        {
-            NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-            NSString * trimmedValuesString = [aValuesString stringByTrimmingCharactersInSet:whitespaceSet];
-
-            NSInteger aValuesStringLength = trimmedValuesString.length;
-        
-            if (aValuesStringLength > 0)
-            {
-                NSMutableString * filteredValuesString = [NSMutableString string];
-                
-                unichar prevChar = ' ';
-                
-                for (NSInteger i = 0; i < aValuesStringLength; i++)
-                {
-                    unichar aChar = [trimmedValuesString characterAtIndex:i];
-                    NSString * aCharString = [NSString stringWithFormat:@"%C", aChar];
-                    
-                    if (aChar == ' ')
-                    {
-                        if (prevChar != ' ')
-                        {
-                            [filteredValuesString appendString:aCharString];
-                        }
-                    }
-                    else
-                    {
-                        [filteredValuesString appendString:aCharString];
-                    }
-                    
-                    prevChar = aChar;
-                }
-            
-                NSArray * valueItemsArray = [filteredValuesString componentsSeparatedByString:@" "];
-                
-                valueItemsArray = [valueItemsArray mutableCopy];
-                
-                [self.valuesArray addObject:valueItemsArray];
-            }
-        }
-    }
     
     [valuesTableView reloadData];
     
@@ -511,7 +511,48 @@
     return (self.valuesArray).count;
 }
 
+//==================================================================================
+//	typePopupButtonAction:
+//==================================================================================
 
+- (IBAction)typePopupButtonAction:(id)sender
+{
+    [self configureValuesTableView];
+
+    NSString * typeString = typePopUpButton.titleOfSelectedItem;
+
+    NSInteger expectedColumnsCount = 0;
+    if ([typeString isEqualToString:@"transform"] == YES)
+    {
+        expectedColumnsCount = 2;
+    }
+    else if ([typeString isEqualToString:@"scale"] == YES)
+    {
+        expectedColumnsCount = 2;
+    }
+    else if ([typeString isEqualToString:@"rotate"] == YES)
+    {
+        expectedColumnsCount = 3;
+    }
+    else if ([typeString isEqualToString:@"skewX"] == YES)
+    {
+        expectedColumnsCount = 1;
+    }
+    else if ([typeString isEqualToString:@"skewY"] == YES)
+    {
+        expectedColumnsCount = 1;
+    }
+    
+    for (NSMutableArray * rowArray in self.valuesArray)
+    {
+        while (rowArray.count < expectedColumnsCount)
+        {
+            [rowArray addObject:@"0"];
+        }
+    }
+    
+    [valuesTableView reloadData];
+}
 
 //==================================================================================
 //	itemTextFieldUpdated:
@@ -528,14 +569,36 @@
     
     NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
     
-    if (columnIndex >= rowArray.count)
+    NSString * typeString = typePopUpButton.titleOfSelectedItem;
+
+    NSInteger expectedColumnsCount = 0;
+    if ([typeString isEqualToString:@"transform"] == YES)
     {
-        [rowArray addObject:stringValue];
+        expectedColumnsCount = 2;
     }
-    else
+    else if ([typeString isEqualToString:@"scale"] == YES)
     {
-        rowArray[(columnIndex - 1)] = stringValue;
+        expectedColumnsCount = 2;
     }
+    else if ([typeString isEqualToString:@"rotate"] == YES)
+    {
+        expectedColumnsCount = 3;
+    }
+    else if ([typeString isEqualToString:@"skewX"] == YES)
+    {
+        expectedColumnsCount = 1;
+    }
+    else if ([typeString isEqualToString:@"skewY"] == YES)
+    {
+        expectedColumnsCount = 1;
+    }
+    
+    while (rowArray.count < expectedColumnsCount)
+    {
+        [rowArray addObject:@"0"];
+    }
+
+    rowArray[(columnIndex - 1)] = stringValue;
     
     NSTextField * textField = sender;
     textField.backgroundColor = [NSColor clearColor];
@@ -637,18 +700,16 @@
         resultView.target = self;
         resultView.action = @selector(itemTextFieldUpdated:);
     
-        NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
-        
-        NSArray * rowArray = (self.valuesArray)[row];
-        NSInteger rowArrayCount = rowArray.count;
+        NSArray * rowArray = NULL;
+        NSInteger rowArrayCount = 0;
 
-        NSString * typeAttributeString = @"translate";
-        
-        NSXMLNode * typeAttributeNode = [animateTransformElement attributeForName:@"type"];
-        if (typeAttributeNode != NULL)
+        if (self.valuesArray.count > 0)
         {
-            typeAttributeString = typeAttributeNode.stringValue;
+            rowArray = (self.valuesArray)[row];
+            rowArrayCount = rowArray.count;
         }
+
+        NSString * typeAttributeString = typePopUpButton.titleOfSelectedItem;
         
         if ([typeAttributeString isEqualToString:@"translate"] == YES)
         {
@@ -818,8 +879,7 @@
 
 - (IBAction)applyChangesButtonAction:(id)sender
 {
-    NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
-    
+    NSString * typeString = typePopUpButton.titleOfSelectedItem;
     NSString * calcModeString = calcModePopUpButton.titleOfSelectedItem;
     NSString * beginString = beginTextField.stringValue;
     NSString * durString = durTextField.stringValue;
@@ -831,32 +891,25 @@
     NSString * fromString = fromTextField.stringValue;
     NSString * toString = toTextField.stringValue;
 
-    NSString * typeAttributeString = @"translate";
-    NSInteger rowArrayCount = 2;
-
-    NSXMLNode * typeAttributeNode = [animateTransformElement attributeForName:@"type"];
-    if (typeAttributeNode != NULL)
-    {
-        typeAttributeString = typeAttributeNode.stringValue;
-    }
-
-    if ([typeAttributeString isEqualToString:@"translate"] == YES)
+    NSInteger rowArrayCount = 0;
+    
+    if ([typeString isEqualToString:@"translate"] == YES)
     {
         rowArrayCount = 2;
     }
-    else if ([typeAttributeString isEqualToString:@"scale"] == YES)
+    else if ([typeString isEqualToString:@"scale"] == YES)
     {
         rowArrayCount = 2;
     }
-    else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
+    else if ([typeString isEqualToString:@"rotate"] == YES)
     {
         rowArrayCount = 3;
     }
-    else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
+    else if ([typeString isEqualToString:@"skewX"] == YES)
     {
         rowArrayCount = 1;
     }
-    else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
+    else if ([typeString isEqualToString:@"skewY"] == YES)
     {
         rowArrayCount = 1;
     }
@@ -890,6 +943,7 @@
         }
     }
     
+    [self setAttributeName:@"type" value:typeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"calcMode" value:calcModeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"begin" value:beginString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"dur" value:durString element:self.pluginTargetXMLElement];

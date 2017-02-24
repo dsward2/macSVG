@@ -11,6 +11,7 @@
 
 @interface AnimateTransformElementEditor : MacSVGPlugin <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSControlTextEditingDelegate>
 {
+    IBOutlet NSPopUpButton * typePopUpButton;
     IBOutlet NSPopUpButton * calcModePopUpButton;
     IBOutlet NSTextField * beginTextField;
     IBOutlet NSTextField * durTextField;
@@ -31,6 +32,8 @@
 }
 
 @property (strong) NSMutableArray * valuesArray;
+
+- (IBAction)typePopupButtonAction:(id)sender;
 
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)applyChangesButtonAction:(id)sender;

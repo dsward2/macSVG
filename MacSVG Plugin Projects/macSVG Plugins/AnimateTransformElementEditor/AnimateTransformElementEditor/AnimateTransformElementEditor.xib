@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1217" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
@@ -22,6 +22,7 @@
                 <outlet property="pluginView" destination="HRd-M5-MS5" id="a5G-Bb-wdu"/>
                 <outlet property="repeatCountComboBox" destination="I0L-YC-t2E" id="Uwr-i9-e02"/>
                 <outlet property="toTextField" destination="uKf-C4-VMm" id="J74-df-8PJ"/>
+                <outlet property="typePopUpButton" destination="Xg7-B5-6Mb" id="ddA-Oq-4zP"/>
                 <outlet property="valuesTableView" destination="2un-go-wJf" id="dpr-Qe-cbh"/>
             </connections>
         </customObject>
@@ -261,10 +262,19 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </comboBoxCell>
                         </comboBox>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="dVj-7Q-bWp">
-                            <rect key="frame" x="10" y="265" width="55" height="14"/>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="dVj-7Q-bWp">
+                            <rect key="frame" x="123" y="269" width="55" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="calcMode" id="UHg-Ub-vVq">
+                                <font key="font" metaFont="smallSystem"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="6jK-pq-Zge">
+                            <rect key="frame" x="10" y="269" width="28" height="14"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="type" id="Kgp-cL-doK">
                                 <font key="font" metaFont="smallSystem"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -282,8 +292,8 @@
                                 <outlet property="nextKeyView" destination="BKD-00-G6l" id="6t5-Qa-qF7"/>
                             </connections>
                         </textField>
-                        <popUpButton verticalHuggingPriority="750" id="3fX-A6-KvA">
-                            <rect key="frame" x="76" y="260" width="77" height="22"/>
+                        <popUpButton verticalHuggingPriority="750" misplaced="YES" id="3fX-A6-KvA">
+                            <rect key="frame" x="184" y="264" width="77" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Adb-HE-SK0" id="cbx-G8-hFu">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -582,6 +592,28 @@ Gw
                                 <action selector="applyChangesButtonAction:" target="-2" id="K6q-e8-0sy"/>
                             </connections>
                         </button>
+                        <popUpButton verticalHuggingPriority="750" misplaced="YES" id="Xg7-B5-6Mb">
+                            <rect key="frame" x="41" y="264" width="77" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="push" title="translate" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="yJ3-W0-7Ye" id="I6S-Vc-L2l">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                                <menu key="menu" title="OtherViews" id="8I3-8N-KOT">
+                                    <items>
+                                        <menuItem title="translate" state="on" id="yJ3-W0-7Ye"/>
+                                        <menuItem title="scale" id="syK-ed-D9e"/>
+                                        <menuItem title="rotate" id="tGC-Iu-mbw"/>
+                                        <menuItem title="skewX" id="NXl-Xa-wg1"/>
+                                        <menuItem title="skewY" id="rqP-VC-Wyx">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="typePopupButtonAction:" target="-2" id="sv1-Ul-kBy"/>
+                            </connections>
+                        </popUpButton>
                     </subviews>
                 </customView>
             </subviews>
