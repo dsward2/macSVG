@@ -924,7 +924,7 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
     //NSXMLElement * animateElement = self.pluginTargetXMLElement;
     
     NSString * attributeName = attributeNameComboBox.stringValue;
-    NSString * attributeType = attributeTypePopUpButton.stringValue;
+    NSString * attributeType = attributeTypePopUpButton.titleOfSelectedItem;
     NSString * calcModeString = calcModePopUpButton.titleOfSelectedItem;
     NSString * beginString = beginTextField.stringValue;
     NSString * durString = durTextField.stringValue;
