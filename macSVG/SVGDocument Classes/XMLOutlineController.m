@@ -2830,6 +2830,16 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                         pasteboardType = NSURLPboardType;
                                     }
                                 }
+                                
+                                if (xmlString == NULL)
+                                {
+                                    suffixRange = [filename rangeOfString:@".otf"];
+                                    if (suffixRange.location == filenameLength - 4)
+                                    {
+                                        xmlString = @"<font-face />";
+                                        pasteboardType = NSURLPboardType;
+                                    }
+                                }
                             }
                         }
                     }
@@ -2897,6 +2907,16 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                 pasteboardType = NSURLPboardType;
                             }
                         }
+                        
+                        if (xmlString == NULL)
+                        {
+                            suffixRange = [filename rangeOfString:@".otf"];
+                            if (suffixRange.location == filenameLength - 4)
+                            {
+                                xmlString = @"<font-face />";
+                                pasteboardType = NSURLPboardType;
+                            }
+                        }
                     }
                 }
             }
@@ -2956,6 +2976,16 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                         if (xmlString == NULL)
                         {
                             suffixRange = [filename rangeOfString:@".ttf"];
+                            if (suffixRange.location == filenameLength - 4)
+                            {
+                                xmlString = @"<font-face />";
+                                pasteboardType = NSURLPboardType;
+                            }
+                        }
+                        
+                        if (xmlString == NULL)
+                        {
+                            suffixRange = [filename rangeOfString:@".otf"];
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<font-face />";

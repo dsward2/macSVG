@@ -473,6 +473,10 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         {
             fontName = [self fontNameFromTruetypeFontURL:fontURL];
         }
+        else if ([fontFileNameExtension isEqualToString:@"otf"] == YES)
+        {
+            fontName = [self fontNameFromTruetypeFontURL:fontURL];
+        }
         else
         {
             fontName = [self fontNameFromURLData:fontURL];
@@ -679,6 +683,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         result = YES;
     }
 
+    if ([pathExtension isEqualToString:@"otf"] == YES)
+    {
+        result = YES;
+    }
+
     BOOL isDirectory;
     [[NSFileManager defaultManager] fileExistsAtPath:url.path isDirectory:&isDirectory];
     
@@ -715,6 +724,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             NSString * pathExtension = fontURL.pathExtension;
 
             if ([pathExtension isEqualToString:@"ttf"] == YES)
+            {
+                // Open  the document.
+                NSString * urlString = fontURL.absoluteString;
+                
+                webfontPathTextField.stringValue = urlString;
+                
+                NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
+                
+                [self previewTruetypeSelectionWithURL:urlString fontName:fontName];
+            }
+            else if ([pathExtension isEqualToString:@"otf"] == YES)
             {
                 // Open  the document.
                 NSString * urlString = fontURL.absoluteString;
@@ -1164,6 +1184,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         BOOL isTrueTypeFontFile = NO;
         
         NSRange suffixRange = [filename rangeOfString:@".ttf"];
+        if (suffixRange.location == filenameLength - 4)
+        {
+            isTrueTypeFontFile = YES;
+        }
+        
+        suffixRange = [filename rangeOfString:@".otf"];
         if (suffixRange.location == filenameLength - 4)
         {
             isTrueTypeFontFile = YES;

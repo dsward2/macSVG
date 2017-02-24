@@ -814,6 +814,10 @@ height=\"94px\" viewBox=\"0 0 354 94\" preserveAspectRatio=\"xMidYMid meet\">";
         {
             fontName = [self fontNameFromTruetypeFontURL:fontURL];
         }
+        else if ([fontFileNameExtension isEqualToString:@"otf"] == YES)
+        {
+            fontName = [self fontNameFromTruetypeFontURL:fontURL];
+        }
         else
         {
             fontName = [self fontNameFromURLData:fontURL];

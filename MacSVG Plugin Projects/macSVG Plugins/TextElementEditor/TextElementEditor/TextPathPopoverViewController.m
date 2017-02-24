@@ -149,6 +149,10 @@
         {
             fontName = [self fontNameFromTruetypeFontURL:fontURL];
         }
+        else if ([fontFileNameExtension isEqualToString:@"otf"] == YES)
+        {
+            fontName = [self fontNameFromTruetypeFontURL:fontURL];
+        }
         else
         {
             fontName = [self fontNameFromURLData:fontURL];

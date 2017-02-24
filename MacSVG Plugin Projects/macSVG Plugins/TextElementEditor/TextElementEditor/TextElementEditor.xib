@@ -53,7 +53,7 @@
                         </textField>
                         <button id="3HY-6R-Idy">
                             <rect key="frame" x="170" y="163" width="68" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="square" title="Text Styles" bezelStyle="shadowlessSquare" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="B3w-ke-Blw">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
@@ -97,7 +97,7 @@
                         </textField>
                         <textField verticalHuggingPriority="750" misplaced="YES" id="lHh-er-klF">
                             <rect key="frame" x="53" y="166" width="42" height="19"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="sd8-dp-CZV">
                                 <font key="font" metaFont="smallSystem"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -146,7 +146,7 @@
                         </popUpButton>
                         <popUpButton verticalHuggingPriority="750" id="hNy-CU-6g6">
                             <rect key="frame" x="99" y="164" width="48" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" title="px" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Ghg-YQ-hJh" id="fGF-vr-0gn">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
@@ -200,7 +200,7 @@
                         </textField>
                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="fnA-JO-p6X">
                             <rect key="frame" x="149" y="164" width="15" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" minValue="1" maxValue="1000" doubleValue="1" id="bx0-Vs-iev"/>
                             <connections>
                                 <action selector="fontSizeStepperAction:" target="-2" id="oz5-aS-Mrv"/>

@@ -2284,6 +2284,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     isTrueTypeFontFile = YES;
                 }
                 
+                suffixRange = [filename rangeOfString:@".otf"];
+                if (suffixRange.location == filenameLength - 4)
+                {
+                    isTrueTypeFontFile = YES;
+                }
+                
                 if (isTrueTypeFontFile == YES)
                 {
                     NSString * fontFamilyString = [filename substringToIndex:(filenameLength - 4)];
