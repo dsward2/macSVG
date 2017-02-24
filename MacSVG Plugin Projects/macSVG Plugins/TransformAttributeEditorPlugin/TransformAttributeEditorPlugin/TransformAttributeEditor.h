@@ -1,6 +1,6 @@
 //
-//  TransformPlugin.h
-//  transformEditorPlugin
+//  TransformAttributeEditor.h
+//  TransformAttributeEditor
 //
 //  Created by Douglas Ward on 1/26/12.
 //  Copyright © 2016 ArkPhone LLC. All rights reserved.

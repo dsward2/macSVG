@@ -1,6 +1,6 @@
 //
-//  TransformPlugin.m
-//  transformEditorPlugin
+//  TransformAttributeEditor.m
+//  TransformAttributeEditor
 //
 //  Created by Douglas Ward on 1/26/12.
 //  Copyright © 2016 ArkPhone LLC. All rights reserved.
@@ -1140,6 +1140,16 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             degreesString = rotateTransformDictionary[@"degrees"];
             xString = rotateTransformDictionary[@"x"];
             yString = rotateTransformDictionary[@"y"];
+            
+            if (xString == NULL)
+            {
+                xString = @"0";
+            }
+            
+            if (yString == NULL)
+            {
+                yString = @"0";
+            }
         }
         else
         {
