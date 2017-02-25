@@ -12,8 +12,6 @@ macSVG uses the standard macOS WebKit framework for interactive editing and rend
 
 An Apple ID-signed application is available for download at http://macsvg.org/download/
 
-macSVG may be available on Apple's Mac App Store in the near future, if Apple approve the submission.
-
 **See the macSVG website for more information and documentation - http://macsvg.org/**
 
 # Examples:
