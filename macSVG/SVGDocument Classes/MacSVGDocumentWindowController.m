@@ -1470,12 +1470,14 @@
         case toolModePolyline:
             if (sender != polylineToolButton)
             {
+                [self.svgWebKitController.domMouseEventsController.svgPolylineEditor deleteLastLineInPolyline];
                 [self endPolylineDrawing];
             }
             break;
         case toolModePolygon:
             if (sender != polygonToolButton)
             {
+                [self.svgWebKitController.domMouseEventsController.svgPolylineEditor deleteLastLineInPolyline];
                 [self endPolylineDrawing];
             }
             break;

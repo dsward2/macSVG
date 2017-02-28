@@ -440,11 +440,13 @@
             
             NSUInteger pointsArrayCount = pointsArray.count;
 
+            /*
             NSString * newXString = [self allocFloatString:self.currentMousePoint.x];
             NSString * newYString = [self allocFloatString:self.currentMousePoint.y];
             
             pointsArray[(pointsArrayCount - 2)] = newXString;
             pointsArray[(pointsArrayCount - 1)] = newYString;
+            */
             
             NSString * xString = @"0";
             NSString * yString = @"0";
@@ -453,7 +455,7 @@
             
             NSInteger outputPointsArrayCount = pointsArrayCount - 2;
             
-            for (int i = 0; i < outputPointsArrayCount; i+=2) 
+            for (int i = 0; i <= outputPointsArrayCount; i+=2)
             {
                 xString = pointsArray[i];
                 yString = pointsArray[(i + 1)];
@@ -527,6 +529,18 @@
         if (macSVGDocumentWindowController.currentToolMode == toolModePath)
         {
             self.mouseMode = MOUSE_DISENGAGED;
+            
+            if (self.svgPathEditor.closePathAutomatically == YES)
+            {
+                id currentPlugin = macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
+                
+                NSString * pluginName = [currentPlugin pluginName];
+                
+                if ([pluginName isEqualToString:@"Path Element Editor"] == YES)
+                {
+                    [currentPlugin closePath];
+                }
+            }
 
             [self.svgPathEditor deleteLastSegmentInPath];
                         
@@ -2503,6 +2517,9 @@
 
 -(void) handleMouseDoubleClickEvent:(DOMEvent *)event
 {
+    [self.svgPolylineEditor deleteLastLineInPolyline];
+    [self.svgPathEditor deleteLastSegmentInPath];
+
     [self endPathDrawing];
     [self endPolylineDrawing];
     
@@ -2514,8 +2531,6 @@
     self.clickTarget = NULL;
     self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
 }
-
-
 
 //==================================================================================
 //	handleMouseUpEvent:

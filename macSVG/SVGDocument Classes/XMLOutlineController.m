@@ -22,6 +22,7 @@
 #import "SVGWebKitController.h"
 #import "SVGWebView.h"
 #import "SVGPathEditor.h"
+#import "SVGPolylineEditor.h"
 #import "DOMMouseEventsController.h"
 #import "MacSVGAppDelegate.h"
 #import "WebKitInterface.h"
@@ -1036,17 +1037,19 @@
 
 - (void) expandElementInOutline:(NSXMLElement *)aElement
 {
-    NSXMLElement * parentElement = (id)aElement.parent;
-    
-    [self.xmlOutlineView expandItem:parentElement expandChildren:YES];    
-    
-    [self.xmlOutlineView expandItem:aElement expandChildren:YES];
+    if ([self.xmlOutlineView isItemExpanded:aElement] == NO)
+    {
+        NSXMLElement * parentElement = (id)aElement.parent;
+        
+        [self.xmlOutlineView expandItem:parentElement expandChildren:YES];    
+        
+        [self.xmlOutlineView expandItem:aElement expandChildren:YES];
+    }
 
     NSArray * selectedItems = @[aElement];
 
     [self.xmlOutlineView setSelectedItems:selectedItems];
 }
-
 
 // ================================================================
 
@@ -3256,125 +3259,141 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 }
 
 //==================================================================================
-//	tableViewSelectionDidChange:
+//	outlineViewSelectionDidChange:
 //==================================================================================
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
-	id aOutlineView = aNotification.object;
-	if (aOutlineView == self.xmlOutlineView)
-	{
-        if (self.macSVGDocumentWindowController.creatingNewElement == NO)
+    // a mutex lock to block handleOutlineViewSelectionDidChange
+    @synchronized (self) {
+        [self handleOutlineViewSelectionDidChange];
+    }
+}
+
+//==================================================================================
+//	handleOutlineViewSelectionDidChange
+//==================================================================================
+
+- (void)handleOutlineViewSelectionDidChange
+{
+    if (self.macSVGDocumentWindowController.creatingNewElement == NO)
+    {
+        if ((self.macSVGDocumentWindowController.currentToolMode == toolModePolyline) ||
+                (self.macSVGDocumentWindowController.currentToolMode == toolModePolygon))
         {
+            [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController.svgPolylineEditor deleteLastLineInPolyline];
             [self.macSVGDocumentWindowController endPolylineDrawing];
+            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];
+        }
+        else if (self.macSVGDocumentWindowController.currentToolMode == toolModePath)
+        {
             [self.macSVGDocumentWindowController endPathDrawing];
-            //[self.macSVGDocumentWindowController endLineDrawing];
+            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];
+        }
+    }
+    
+    // moved from outlineViewAction
+    // Usually a click to select an element or node
+    NSArray * selectedNodes = [self selectedNodes];
+    unsigned long selectedNodesCount = selectedNodes.count;
+
+    if (selectedNodesCount > 1) 
+    {
+        // select first element
+        [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
+                setSelectedXMLElements:selectedNodes];
+
+        // update attributes table view
+        NSXMLNode * selectedNode = selectedNodes[0];
+        
+        NSString * context = @"element";
+        NSXMLNodeKind selectedNodeKind = selectedNode.kind;
+        if (selectedNodeKind == NSXMLTextKind)
+        {
+            selectedNode = selectedNode.parent;
+            context = @"text";
+        }
+        [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
+        
+        NSString * elementName = selectedNode.name;
+
+        //[self selectElement:selectedNode];
+
+        [self.macSVGDocumentWindowController.editorUIFrameController
+                setValidEditorsForXMLNode:selectedNode
+                elementName:elementName
+                attributeName:NULL context:context];
+
+    }
+    else if (selectedNodesCount == 1) 
+    {
+        // select one element
+        [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
+                setSelectedXMLElements:selectedNodes];
+
+        // update attributes table view
+        NSXMLNode * selectedNode = selectedNodes[0];
+
+        NSString * context = @"element";
+        NSXMLNodeKind selectedNodeKind = selectedNode.kind;
+        if (selectedNodeKind == NSXMLTextKind)
+        {
+            selectedNode = selectedNode.parent;
+            context = @"text";
         }
         
-        // moved from outlineViewAction
-        // Usually a click to select an element or node
-        NSArray * selectedNodes = [self selectedNodes];
-        unsigned long selectedNodesCount = selectedNodes.count;
+        [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
 
-        if (selectedNodesCount > 1) 
+        NSString * elementName = selectedNode.name;
+
+        //[self selectElement:selectedNode];
+
+        [self.macSVGDocumentWindowController.editorUIFrameController
+                setValidEditorsForXMLNode:selectedNode
+                elementName:elementName
+                attributeName:NULL context:context];
+        
+        if (self.macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
         {
-            // select first element
-            [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
-                    setSelectedXMLElements:selectedNodes];
-
-            // update attributes table view
-            //id selectedNode = [selectedNodes objectAtIndex:0];
-            NSXMLNode * selectedNode = selectedNodes[0];
-            
-            NSString * context = @"element";
-            NSXMLNodeKind selectedNodeKind = selectedNode.kind;
-            if (selectedNodeKind == NSXMLTextKind)
+            if ([elementName isEqualToString:@"path"] == YES)
             {
-                selectedNode = selectedNode.parent;
-                context = @"text";
+                [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
+                        handleCrosshairToolSelectionForPathXMLElement:(NSXMLElement *)selectedNode
+                        handleDOMElement:NULL];
             }
-            [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
-            
-            NSString * elementName = selectedNode.name;
-
-            //[self selectElement:selectedNode];
-
-            [self.macSVGDocumentWindowController.editorUIFrameController
-                    setValidEditorsForXMLNode:selectedNode
-                    elementName:elementName
-                    attributeName:NULL context:context];
-
-        }
-        else if (selectedNodesCount == 1) 
-        {
-            // select one element
-            [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
-                    setSelectedXMLElements:selectedNodes];
-
-            // update attributes table view
-            NSXMLNode * selectedNode = selectedNodes[0];
-
-            NSString * context = @"element";
-            NSXMLNodeKind selectedNodeKind = selectedNode.kind;
-            if (selectedNodeKind == NSXMLTextKind)
+            else if ([elementName isEqualToString:@"polyline"] == YES)
             {
-                selectedNode = selectedNode.parent;
-                context = @"text";
+                [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
+                        handleCrosshairToolSelectionForPolylineXMLElement:(NSXMLElement *)selectedNode
+                        handleDOMElement:NULL];
             }
-            
-            [self.macSVGDocumentWindowController setAttributesForXMLNode:selectedNode];
-
-            NSString * elementName = selectedNode.name;
-
-            //[self selectElement:selectedNode];
-
-            [self.macSVGDocumentWindowController.editorUIFrameController
-                    setValidEditorsForXMLNode:selectedNode
-                    elementName:elementName
-                    attributeName:NULL context:context];
-            
-            if (self.macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
+            else if ([elementName isEqualToString:@"polygon"] == YES)
             {
-                if ([elementName isEqualToString:@"path"] == YES)
-                {
-                    [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
-                            handleCrosshairToolSelectionForPathXMLElement:(NSXMLElement *)selectedNode
-                            handleDOMElement:NULL];
-                }
-                else if ([elementName isEqualToString:@"polyline"] == YES)
-                {
-                    [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
-                            handleCrosshairToolSelectionForPolylineXMLElement:(NSXMLElement *)selectedNode
-                            handleDOMElement:NULL];
-                }
-                else if ([elementName isEqualToString:@"polygon"] == YES)
-                {
-                    [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
-                            handleCrosshairToolSelectionForPolylineXMLElement:(NSXMLElement *)selectedNode
-                            handleDOMElement:NULL];
-                }
-                else if ([elementName isEqualToString:@"line"] == YES)
-                {
-                    [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
-                            handleCrosshairToolSelectionForLineXMLElement:(NSXMLElement *)selectedNode
-                            handleDOMElement:NULL];
-                }
+                [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
+                        handleCrosshairToolSelectionForPolylineXMLElement:(NSXMLElement *)selectedNode
+                        handleDOMElement:NULL];
+            }
+            else if ([elementName isEqualToString:@"line"] == YES)
+            {
+                [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController
+                        handleCrosshairToolSelectionForLineXMLElement:(NSXMLElement *)selectedNode
+                        handleDOMElement:NULL];
             }
         }
-        else 
-        {
-            // nothing selected
-            [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
-                    setSelectedXMLElements:selectedNodes];
+    }
+    else 
+    {
+        // nothing selected
+        [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager
+                setSelectedXMLElements:selectedNodes];
 
-            [self.macSVGDocumentWindowController setAttributesForXMLNode:NULL];
+        [self.macSVGDocumentWindowController setAttributesForXMLNode:NULL];
 
-            [self.macSVGDocumentWindowController.editorUIFrameController
-                    setValidEditorsForXMLNode:NULL
-                    elementName:@""
-                    attributeName:NULL context:@"disable"];
-        }
-	}
+        [self.macSVGDocumentWindowController.editorUIFrameController
+                setValidEditorsForXMLNode:NULL
+                elementName:@""
+                attributeName:NULL context:@"disable"];
+    }
 }
 
 

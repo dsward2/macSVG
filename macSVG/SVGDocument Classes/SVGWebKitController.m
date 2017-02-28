@@ -7,7 +7,6 @@
 //
 
 #import "SVGWebKitController.h"
-#import <WebKit/WebKit.h>
 #import "MacSVGDocument.h"
 #import "MacSVGDocumentWindowController.h"
 #import "SVGXMLDOMSelectionManager.h"
@@ -777,9 +776,9 @@
         NSString * tagName = targetElement.tagName;
         #pragma unused(tagName)
 
-        if ([eventType isEqualToString:@"dblclick"] == YES)
+        if ([eventType isEqualToString:@"dblclick"] == YES) // no longer used, check mouseUp instead
         {
-            [self.domMouseEventsController handleMouseDoubleClickEvent:event];
+            //[self.domMouseEventsController handleMouseDoubleClickEvent:event];
         }
         else if ([eventType isEqualToString:@"mousedown"] == YES)
         {
@@ -791,7 +790,35 @@
         }
         else if ([eventType isEqualToString:@"mouseup"] == YES)
         {
+            //[self.domMouseEventsController handleMouseUpEvent:event];
+            
+            // check for a double-click ("dblclick") here by
+            
+            BOOL isDoubleClick = NO;
+            DOMTimeStamp newTimeStamp = event.timeStamp;    // milliseconds
+            
+            if (self.lastMouseUpDOMTimeStamp > 0)
+            {
+                DOMTimeStamp mouseUpMSInterval = (newTimeStamp - self.lastMouseUpDOMTimeStamp);
+                
+                CGFloat mouseUpSeconds = mouseUpMSInterval / 1000.0f;
+                
+                NSTimeInterval doubleClickInterval = [NSEvent doubleClickInterval];
+                
+                if (mouseUpSeconds < (doubleClickInterval / 4.0f))
+                {
+                    isDoubleClick = YES;
+                }
+            }
+
             [self.domMouseEventsController handleMouseUpEvent:event];
+            
+            if (isDoubleClick == YES)
+            {
+                [self.domMouseEventsController handleMouseDoubleClickEvent:event];
+            }
+            
+            self.lastMouseUpDOMTimeStamp = newTimeStamp;
         }
         else if ([eventType isEqualToString:@"focus"] == YES)
         {
@@ -831,7 +858,7 @@
     [domDocument.documentElement addEventListener:@"mousedown" listener:(id)self useCapture:NO];
     [domDocument.documentElement addEventListener:@"mousemove" listener:(id)self useCapture:NO];
     [domDocument.documentElement addEventListener:@"mouseup" listener:(id)self useCapture:NO];
-    [domDocument.documentElement addEventListener:@"dblclick" listener:(id)self useCapture:NO];
+    // [domDocument.documentElement addEventListener:@"dblclick" listener:(id)self useCapture:NO];  // use mouseUp instead
     [domDocument.documentElement addEventListener:@"focus" listener:(id)self useCapture:NO];
     [domDocument.documentElement addEventListener:@"blur" listener:(id)self useCapture:NO];
     [domDocument.documentElement addEventListener:@"keydown" listener:(id)self useCapture:NO];

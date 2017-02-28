@@ -2159,7 +2159,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     NSString * tagName = targetElement.tagName;
     #pragma unused(tagName)
 
-    if ([eventType isEqualToString:@"dblclick"] == YES)
+    if ([eventType isEqualToString:@"dblclick"] == YES) // use mouseUp instead
     {
         //NSLog(@"handlePluginEvent dblclick");
     }

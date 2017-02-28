@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
 @class MacSVGDocumentWindowController;
 @class SVGWebView;
@@ -42,6 +43,8 @@
 
 @property (assign) NSPoint mainFrameScrollToPoint;
 @property (assign) BOOL scrollToPointAfterMainFrameLoad;
+
+@property (assign) DOMTimeStamp lastMouseUpDOMTimeStamp;
 
 - (IBAction)showWebKitInspectorAction:(id)sender;
 - (IBAction)detachWebKitInspectorAction:(id)sender;

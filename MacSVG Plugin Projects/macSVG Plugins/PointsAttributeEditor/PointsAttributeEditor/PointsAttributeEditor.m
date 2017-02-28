@@ -561,8 +561,10 @@
 {
     // subclasses can override as needed
     
-    NSArray * aPointsArray = infoData;
-    #pragma unused(aPointsArray)
+    //NSArray * aPointsArray = infoData;
+    //#pragma unused(aPointsArray)
+    
+    self.pointsArray = infoData;
     
     [self loadPointsData];
     

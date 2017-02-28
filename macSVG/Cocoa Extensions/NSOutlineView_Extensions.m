@@ -59,6 +59,7 @@
 #import "DOMMouseEventsController.h"
 #import "SVGXMLDOMSelectionManager.h"
 #import "SVGWebKitController.h"
+#import "SVGPolylineEditor.h"
 #import "MacSVGDocumentWindowController.h"
 
 @implementation NSOutlineView(MyExtensions)
@@ -457,22 +458,52 @@
         }
         
         case '\x1b':    // escape key
+        case '\r':      // return key
+        case ' ':       // space key
         {
+            BOOL drawingToolIsActive = NO;
+
             XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
-
-            DOMMouseEventsController * domMouseEventsController =
-                    xmlOutlineController.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController;
-        
-            [domMouseEventsController endPathDrawing];
-            [domMouseEventsController endPolylineDrawing];
             
-            domMouseEventsController.mouseMode = MOUSE_DISENGAGED;
+            if (xmlOutlineController.macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
+            {
+                drawingToolIsActive = YES;
+            }
+            else if (xmlOutlineController.macSVGDocumentWindowController.currentToolMode == toolModePolyline)
+            {
+                drawingToolIsActive = YES;
+            }
+            else if (xmlOutlineController.macSVGDocumentWindowController.currentToolMode == toolModePolygon)
+            {
+                drawingToolIsActive = YES;
+            }
+            else if (xmlOutlineController.macSVGDocumentWindowController.currentToolMode == toolModePath)
+            {
+                drawingToolIsActive = YES;
+            }
 
-            //self.clickPoint = self.currentMousePoint;
-            domMouseEventsController.clickTarget = NULL;
-            domMouseEventsController.svgXMLDOMSelectionManager.activeXMLElement = NULL;
+            if (drawingToolIsActive == YES)
+            {
+                XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
 
-            skipSuperclassKeyDown = YES;
+                DOMMouseEventsController * domMouseEventsController =
+                        xmlOutlineController.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController;
+            
+                [domMouseEventsController endPathDrawing];
+
+                [domMouseEventsController.svgPolylineEditor deleteLastLineInPolyline];
+                [domMouseEventsController endPolylineDrawing];
+                
+                domMouseEventsController.mouseMode = MOUSE_DISENGAGED;
+
+                //self.clickPoint = self.currentMousePoint;
+                domMouseEventsController.clickTarget = NULL;
+                domMouseEventsController.svgXMLDOMSelectionManager.activeXMLElement = NULL;
+
+                [xmlOutlineController.macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
+
+                skipSuperclassKeyDown = YES;
+            }
 
             break;
         }

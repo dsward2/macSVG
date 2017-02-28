@@ -461,7 +461,7 @@
     {
         NSString * pointsString = [polylineElement getAttribute:@"points"];
                 
-        self.polylinePointsArray = [self buildPolylinePointsArrayWithPointsString:pointsString];;
+        self.polylinePointsArray = [self buildPolylinePointsArrayWithPointsString:pointsString];
 
         NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
         NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
@@ -681,7 +681,42 @@
     return newEditingMode;
 }
 
+//==================================================================================
+//	deleteLastLineInPolyline
+//==================================================================================
 
+-(void) deleteLastLineInPolyline
+{
+    NSUInteger polylinePointsCount = (self.polylinePointsArray).count;
+    
+    /*
+    if (polylinePointsCount > 1)
+    {
+        if (self.polylinePointIndex > 1)
+        {
+            [self.polylinePointsArray removeLastObject];
+            self.polylinePointIndex--;
+            [self updateActivePolylineInDOM];
+        }
+    }
+    */
+
+    if (polylinePointsCount > 1)
+    {
+        [self.polylinePointsArray removeLastObject];
+        
+        if (self.polylinePointIndex >= 0)
+        {
+            if (self.polylinePointIndex >= polylinePointsCount)
+            {
+                self.polylinePointIndex = polylinePointsCount - 1;
+            }
+        }
+        
+        [self updateActivePolylineInDOM];
+    }
+
+}
 
 
 @end

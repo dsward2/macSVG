@@ -106,6 +106,9 @@
 // Plugin implementations should override this method to be notified when the host application is ending the plugin's session
 - (void)endEdit;
 
+// Used for automatic path closing
+- (void)closePath;
+
 // Plugin implementations should override this method to be notified when the host application is resizing the plugin panel in it's scrollview
 - (void)resizePluginViewSizeForScrollView:(NSScrollView *)scrollView;
 

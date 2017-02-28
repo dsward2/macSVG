@@ -62,4 +62,6 @@
 - (NSInteger)didBeginPolylineEditingWithTargetXMLElement:(NSXMLElement *)targetXmlElement
         handleDOMElement:(DOMElement *)handleDOMElement;
 
+-(void) deleteLastLineInPolyline;
+
 @end

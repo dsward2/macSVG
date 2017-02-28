@@ -323,6 +323,14 @@
     }
 }
 
+//==================================================================================
+//	closePath
+//==================================================================================
+
+- (void)closePath
+{
+    [self closePathNowButtonAction:self];
+}
 
 //==================================================================================
 //	closePathNowButtonAction:
@@ -330,37 +338,82 @@
 
 - (IBAction)closePathNowButtonAction:(id)sender
 {
-    NSXMLNode * pathAttributeNode = [self.pluginTargetXMLElement attributeForName:@"d"];
-    NSString * pathAttributeString = pathAttributeNode.stringValue;
-    
+    MacSVGDocumentWindowController * macSVGDocumentWindowController =
+            [self.macSVGDocument macSVGDocumentWindowController];
+
     BOOL useRelativePathCoordinates = (self.macSVGPluginCallbacks).useRelativePathCoordinates;
     
-    NSMutableDictionary * closePathDictionary = [NSMutableDictionary dictionary];
+    NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
+    NSInteger pathSegmentsArrayCount = pathSegmentsArray.count;
+    if (pathSegmentsArrayCount > 2)
+    {
+        NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
+        
+        NSMutableDictionary * lastPathSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
+
+        NSString * lastPathSegmentCommand = [lastPathSegmentDictionary objectForKey:@"command"];
+        if ([lastPathSegmentCommand isEqualToString:@"C"] == YES)
+        {
+            NSMutableDictionary * firstPathSegmentDictionary = [pathSegmentsArray objectAtIndex:0];
+            NSString * firstPathSegmentCommand = [firstPathSegmentDictionary objectForKey:@"command"];
+            if ([firstPathSegmentCommand isEqualToString:@"M"] == YES)
+            {
+                NSMutableDictionary * secondPathSegmentDictionary = [pathSegmentsArray objectAtIndex:1];
+                NSString * secondPathSegmentCommand = [secondPathSegmentDictionary objectForKey:@"command"];
+                if ([secondPathSegmentCommand isEqualToString:@"C"] == YES)
+                {
+                    NSString * xString =  [firstPathSegmentDictionary objectForKey:@"x"];
+                    NSString * yString =  [firstPathSegmentDictionary objectForKey:@"y"];
+                    
+                    NSString * x1String =  [secondPathSegmentDictionary objectForKey:@"x1"];
+                    NSString * y1String =  [secondPathSegmentDictionary objectForKey:@"y1"];
+                    
+                    CGFloat x = [xString floatValue];
+                    CGFloat y = [yString floatValue];
+                    CGFloat x1 = [x1String floatValue];
+                    CGFloat y1 = [y1String floatValue];
+                    
+                    CGFloat x2 = x - (x1 - x);
+                    CGFloat y2 = y - (y1 - y);
+                    
+                    NSString * x2String = [self allocFloatString:x2];
+                    NSString * y2String = [self allocFloatString:y2];
+                    
+                    [lastPathSegmentDictionary setObject:xString forKey:@"x"];
+                    [lastPathSegmentDictionary setObject:yString forKey:@"y"];
+                    [lastPathSegmentDictionary setObject:x2String forKey:@"x2"];
+                    [lastPathSegmentDictionary setObject:y2String forKey:@"y2"];
+                }
+            }
+        }
+    }
     
+    NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionary];
     if (useRelativePathCoordinates == YES)
     {
-        closePathDictionary[@"command"] = @"z";
+        [closePathSegmentDictionary setObject:@"z" forKey:@"command"];
     }
     else
     {
-        closePathDictionary[@"command"] = @"Z";
+        [closePathSegmentDictionary setObject:@"Z" forKey:@"command"];
     }
-
-    NSMutableArray * pathSegmentsArray = [self.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
-    NSInteger pathSegmentsArrayCount = pathSegmentsArray.count;
+    [pathSegmentsArray addObject:closePathSegmentDictionary];   // add the Z or z segment twice, the final one will be removed
     
-    NSInteger lastSegmentIndex = pathSegmentsArrayCount;
+    /*
+    NSMutableDictionary * copyClosePathSegmentDictionary = [closePathSegmentDictionary mutableCopy];
     
-    [pathSegmentsArray insertObject:closePathDictionary atIndex:lastSegmentIndex];
+    [pathSegmentsArray addObject:copyClosePathSegmentDictionary];
+    */
 
     [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
     
     [self updateWithPathSegmentsArray:pathSegmentsArray];
+
+    [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
     
     [self updateDocumentViews];
     
-    [self.macSVGPluginCallbacks restartLastPathSegment];
 }
 
 //==================================================================================
@@ -393,7 +446,7 @@
     
     if (pathElement != NULL)
     {
-        // add an extra path segment, it will be deleted with path drawing restarts
+        // add an extra path segment, it will be deleted when path drawing restarts
         NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
         NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
         [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
@@ -1158,7 +1211,7 @@
     NSString * tagName = targetElement.tagName;
     #pragma unused(tagName)
 
-    if ([eventType isEqualToString:@"dblclick"] == YES)
+    if ([eventType isEqualToString:@"dblclick"] == YES) // use mouseUp instead
     {
         //NSLog(@"handlePluginEvent dblclick");
     }
