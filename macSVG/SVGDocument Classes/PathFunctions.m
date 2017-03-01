@@ -4256,16 +4256,178 @@
     return newSegmentsArray;
 }
 
+//==================================================================================
+//	rotateSegmentsWithPathSegmentsArray:offset:
+//==================================================================================
+
+- (NSMutableArray *)rotateSegmentsWithPathSegmentsArray:(NSMutableArray *)mixedPathSegmentsArray offset:(NSInteger)offset
+{
+    // this method will convert the path segments to use absolute coordinates before segment rotation.
+    // Typical offset values: 1 = rotate segments to right one position, -1 = rotate segments to left one position
+    
+    NSMutableArray * pathSegmentsArray = [self convertToAbsoluteCoordinatesWithPathSegmentsArray:mixedPathSegmentsArray];
+    
+    NSInteger pathSegmentsArrayCount = pathSegmentsArray.count;
+    
+    NSMutableArray * newSegmentsArray = NULL;
+    
+    if ((pathSegmentsArrayCount > 3) && (offset < pathSegmentsArrayCount))
+    {
+        NSMutableDictionary * firstSegmentDictionary = [pathSegmentsArray objectAtIndex:0];
+        NSString * firstSegmentCommand = [firstSegmentDictionary objectForKey:@"command"];
+        
+        if ([firstSegmentCommand isEqualToString:@"M"] == YES)
+        {
+            BOOL closePathFound = NO;
+            NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
+
+            NSMutableDictionary * lastSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
+            NSString * lastSegmentCommand = [lastSegmentDictionary objectForKey:@"command"];
+            if ([lastSegmentCommand isEqualToString:@"Z"] == YES)
+            {
+                closePathFound = YES;
+                lastSegmentIndex--;
+            }
+        
+            newSegmentsArray = [NSMutableArray array];
+
+            if (offset < 0)
+            {
+                // left rotation
+
+                NSMutableDictionary * startSegmentDictionary = [pathSegmentsArray objectAtIndex:-offset];
+                NSNumber * startXNumber = [startSegmentDictionary objectForKey:@"absoluteX"];
+                NSNumber * startYNumber = [startSegmentDictionary objectForKey:@"absoluteY"];
+                
+                NSString * startX = [startXNumber stringValue];
+                NSString * startY = [startYNumber stringValue];
+                
+                NSMutableDictionary * newFirstSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                        @"M", @"command",
+                        [startXNumber copy], @"absoluteX",
+                        [startYNumber copy], @"absoluteY",
+                        [startXNumber copy], @"absoluteStartX",
+                        [startYNumber copy], @"absoluteStartY",
+                        startX, @"x",
+                        startY, @"y",
+                        NULL];
+                
+                [newSegmentsArray addObject:newFirstSegmentDictionary];
+                
+                for (NSInteger i = -offset + 1; i <= lastSegmentIndex; i++)
+                {
+                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    
+                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+
+                    [newSegmentsArray addObject:newSegmentDictionary];
+                }
+
+                for (NSInteger i = 1; i <= -offset; i++)
+                {
+                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    
+                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+
+                    [newSegmentsArray addObject:newSegmentDictionary];
+                }
+                
+                if (closePathFound == YES)
+                {
+                    NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                            @"Z", @"command",
+                            NULL];
+                    
+                    [newSegmentsArray addObject:closePathSegmentDictionary];
+                }
+
+            }
+            else if (offset > 0)
+            {
+                // right rotation
+
+                NSMutableDictionary * startSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex - offset];
+                NSNumber * startXNumber = [startSegmentDictionary objectForKey:@"absoluteX"];
+                NSNumber * startYNumber = [startSegmentDictionary objectForKey:@"absoluteY"];
+                
+                NSString * startX = [startXNumber stringValue];
+                NSString * startY = [startYNumber stringValue];
+                
+                NSMutableDictionary * newFirstSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                        @"M", @"command",
+                        [startXNumber copy], @"absoluteX",
+                        [startYNumber copy], @"absoluteY",
+                        [startXNumber copy], @"absoluteStartX",
+                        [startYNumber copy], @"absoluteStartY",
+                        startX, @"x",
+                        startY, @"y",
+                        NULL];
+                
+                [newSegmentsArray addObject:newFirstSegmentDictionary];
+                
+                for (NSInteger i = pathSegmentsArrayCount - offset ; i <= lastSegmentIndex; i++)
+                {
+                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+
+                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+
+                    [newSegmentsArray addObject:newSegmentDictionary];
+                }
+                
+
+                for (NSInteger i = 1; i <= lastSegmentIndex - offset; i++)
+                {
+                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    
+                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+
+                    [newSegmentsArray addObject:newSegmentDictionary];
+                }
+                
+                if (closePathFound == YES)
+                {
+                    NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                            @"Z", @"command",
+                            NULL];
+                    
+                    [newSegmentsArray addObject:closePathSegmentDictionary];
+                }
+            }
+            
+            [self.macSVGDocumentWindowController.svgWebKitController updatePathSegmentsAbsoluteValues:newSegmentsArray];
+        }
+    }
+    
+    if (newSegmentsArray == NULL)
+    {
+        newSegmentsArray = pathSegmentsArray;   // rotation failed, but return the absolute path instead of original
+    }
+    
+    return newSegmentsArray;
+}
+
+
+//==================================================================================
+//	degreesToRadians()
+//==================================================================================
 
 CGFloat degreesToRadians(CGFloat degree)
 {
     return (degree * M_PI) / 180;
 }
 
+//==================================================================================
+//	radiansToDegrees()
+//==================================================================================
+
 CGFloat radiansToDegrees(CGFloat radians)
 {
     return (radians * 180) / (M_PI);
 }
+
+//==================================================================================
+//	convertArcToEndPointWithRotation:angleStart:angleExtent:
+//==================================================================================
 
 /**
  * Conversion from center to endpoint parameterization

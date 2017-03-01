@@ -560,6 +560,13 @@
 
 }
 
+- (NSMutableArray *)rotateSegmentsWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray offset:(NSInteger)offset
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id pathFunctions = [macSVGDocumentWindowController pathFunctions];
+    return [pathFunctions rotateSegmentsWithPathSegmentsArray:pathSegmentsArray offset:offset];
+}
+
 
 - (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
         cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry

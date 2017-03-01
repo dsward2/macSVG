@@ -69,6 +69,14 @@
     {
         [self mirrorPathVertically];
     }
+    if ([functionTitle isEqualToString:@"Rotate Path Segments Left"] == YES)
+    {
+        [self rotatePathSegmentsLeft];
+    }
+    if ([functionTitle isEqualToString:@"Rotate Path Segments Right"] == YES)
+    {
+        [self rotatePathSegmentsRight];
+    }
 }
 
 //==================================================================================
@@ -308,6 +316,42 @@
     NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             rotatePathCoordinatesWithPathSegmentsArray:pathSegmentsArray
             x:rotateX y:rotateY degrees:degrees];
+    
+    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
+    [self.pathElementEditor updateDocumentViews];
+}
+
+//==================================================================================
+//	rotatePathSegmentsLeft
+//==================================================================================
+
+- (void)rotatePathSegmentsLeft
+{
+    NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
+    
+    NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
+    
+    NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
+            rotateSegmentsWithPathSegmentsArray:pathSegmentsArray offset:-1];
+    
+    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
+    [self.pathElementEditor updateDocumentViews];
+}
+
+//==================================================================================
+//	rotatePathSegmentsRight
+//==================================================================================
+
+- (void)rotatePathSegmentsRight
+{
+    NSXMLNode * pathAttributeNode = [self.pathElementEditor.pluginTargetXMLElement attributeForName:@"d"];
+    NSString * pathAttributeString = pathAttributeNode.stringValue;
+    
+    NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
+    
+    NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
+            rotateSegmentsWithPathSegmentsArray:pathSegmentsArray offset:1];
     
     [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
     [self.pathElementEditor updateDocumentViews];
