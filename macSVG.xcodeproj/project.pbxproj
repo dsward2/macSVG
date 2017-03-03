@@ -671,6 +671,7 @@
 		0EADC6901D7BFAA600A61333 /* embedded_video_in_svg_document.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EADC68F1D7BFA7E00A61333 /* embedded_video_in_svg_document.svg */; };
 		0EADC6B71D7C276300A61333 /* AnimateElementEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EADC6B51D7C273A00A61333 /* AnimateElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EADC6B91D7C3DCD00A61333 /* viewbox_pan_and_zoom_animation.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EADC6B81D7C3DC200A61333 /* viewbox_pan_and_zoom_animation.svg */; };
+		0EAF6E821E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0EAF6E811E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg */; };
 		0EB483ED142906BD005ADB73 /* XMLAttributesTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB483EC142906BD005ADB73 /* XMLAttributesTableController.m */; };
 		0EB6637D14286398003723F0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB6637C14286398003723F0 /* Cocoa.framework */; };
 		0EB6638A14286398003723F0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB6638914286398003723F0 /* main.m */; };
@@ -1034,6 +1035,7 @@
 			dstPath = macsvg_examples/svg;
 			dstSubfolderSpec = 7;
 			files = (
+				0EAF6E821E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg in CopyFiles */,
 				0E1C056C1D5726FE004E7B62 /* animated_text_on_a_path.svg in CopyFiles */,
 				0E9C42051E0115D500E3A668 /* animate_stroke-dasharray_on_path.svg in CopyFiles */,
 				0E1C05701D57413D004E7B62 /* animate_rotation.svg in CopyFiles */,
@@ -2385,6 +2387,7 @@
 		0EADC68F1D7BFA7E00A61333 /* embedded_video_in_svg_document.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = embedded_video_in_svg_document.svg; sourceTree = "<group>"; };
 		0EADC6B51D7C273A00A61333 /* AnimateElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimateElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EADC6B81D7C3DC200A61333 /* viewbox_pan_and_zoom_animation.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = viewbox_pan_and_zoom_animation.svg; sourceTree = "<group>"; };
+		0EAF6E811E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = animate_path_of_elliptical_arc_segments.svg; path = macSVG/Resources/macsvg_examples/svg/animate_path_of_elliptical_arc_segments.svg; sourceTree = "<group>"; };
 		0EB02B93145B699D00D31216 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		0EB02B96145B69A800D31216 /* freehand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = freehand.png; sourceTree = "<group>"; };
 		0EB483EB142906BD005ADB73 /* XMLAttributesTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAttributesTableController.h; sourceTree = "<group>"; };
@@ -3821,6 +3824,7 @@
 		0EB6636D14286398003723F0 = {
 			isa = PBXGroup;
 			children = (
+				0EAF6E811E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg */,
 				0ECCAFDE1DB4A6A0001A6085 /* README.md */,
 				0ECCB0231DB51B57001A6085 /* README_images */,
 				0ECCB0211DB4B60A001A6085 /* LICENSE */,
