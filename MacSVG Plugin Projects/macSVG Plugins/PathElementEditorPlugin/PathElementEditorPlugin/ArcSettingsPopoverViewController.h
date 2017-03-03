@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class PathElementEditor;
+
 @interface ArcSettingsPopoverViewController : NSViewController
 {
     IBOutlet NSPopover * arcSettingsPopover;
@@ -15,6 +17,8 @@
     IBOutlet NSButton * applyButton;
     IBOutlet NSButton * cancelButton;
 }
+
+@property (strong) IBOutlet PathElementEditor * pathElementEditor;
 
 @property (strong) IBOutlet NSButton * pathLargeArcCheckbox;
 @property (strong) IBOutlet NSButton * pathSweepCheckbox;

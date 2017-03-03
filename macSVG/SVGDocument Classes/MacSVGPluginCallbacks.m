@@ -560,6 +560,14 @@
 
 }
 
+- (NSMutableArray *)closePathWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id pathFunctions = [macSVGDocumentWindowController pathFunctions];
+    return [pathFunctions closePathWithPathSegmentsArray:pathSegmentsArray];
+}
+
+
 - (NSMutableArray *)rotateSegmentsWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray offset:(NSInteger)offset
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];

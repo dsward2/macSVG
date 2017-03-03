@@ -867,6 +867,7 @@ DQ
                 <outlet property="applyButton" destination="4hd-uU-nZk" id="A5V-vm-d12"/>
                 <outlet property="arcSettingsPopover" destination="5MA-0m-lkR" id="f8n-TN-ojm"/>
                 <outlet property="cancelButton" destination="pRT-OI-j1K" id="ERM-Oh-acN"/>
+                <outlet property="pathElementEditor" destination="-2" id="ob5-GQ-1Tr"/>
                 <outlet property="pathLargeArcCheckbox" destination="21" id="LLe-IY-yCb"/>
                 <outlet property="pathRadiusXTextField" destination="23" id="ybk-Rq-Wnd"/>
                 <outlet property="pathRadiusYTextField" destination="26" id="CKh-HP-ATF"/>
@@ -966,6 +967,9 @@ DQ
                     <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FBd-9G-r62">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                     </buttonCell>
                     <connections>
                         <action selector="applyButtonAction:" target="VIV-xH-PXy" id="IXm-eh-dFL"/>

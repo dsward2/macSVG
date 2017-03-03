@@ -7,6 +7,7 @@
 //
 
 #import "ArcSettingsPopoverViewController.h"
+#import "PathElementEditor.h"
 
 @interface ArcSettingsPopoverViewController ()
 
@@ -25,6 +26,8 @@
 
 - (IBAction)applyButtonAction:(id)sender
 {
+    [self.pathElementEditor updateSVGPathEditorAction:self];
+
     [arcSettingsPopover performClose:self];
 }
 
