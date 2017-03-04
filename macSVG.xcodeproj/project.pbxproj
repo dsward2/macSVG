@@ -1654,6 +1654,7 @@
 		0E27FF621D7783C400277F03 /* drop_shadow_filter.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = drop_shadow_filter.svg; sourceTree = "<group>"; };
 		0E27FF7B1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedElementsInfoPopoverViewController.h; sourceTree = "<group>"; };
 		0E27FF7C1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedElementsInfoPopoverViewController.m; sourceTree = "<group>"; };
+		0E299D151E695EFB00DCC063 /* animate_path_of_elliptical_arc_segments.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = animate_path_of_elliptical_arc_segments.svg; sourceTree = "<group>"; };
 		0E3426731780F786009D7DCF /* Pause16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pause16.png; path = ../Images/Pause16.png; sourceTree = "<group>"; };
 		0E346CD11794CD850041560C /* ToolSettingsPopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolSettingsPopoverViewController.h; sourceTree = "<group>"; };
 		0E346CD21794CD850041560C /* ToolSettingsPopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolSettingsPopoverViewController.m; sourceTree = "<group>"; };
@@ -2616,6 +2617,7 @@
 		0E1C05651D56FBE5004E7B62 /* svg */ = {
 			isa = PBXGroup;
 			children = (
+				0E299D151E695EFB00DCC063 /* animate_path_of_elliptical_arc_segments.svg */,
 				0E1C056F1D574135004E7B62 /* animate_rotation.svg */,
 				0E9C42041E01132C00E3A668 /* animate_stroke-dasharray_on_path.svg */,
 				0E82B1391D733527005D0634 /* animate_stroke-dasharray_on_path-old.svg */,
