@@ -28,5 +28,6 @@
 - (void)setEnabled:(BOOL)enabled;
 - (void) handlePluginEvent:(DOMEvent *)event;
 - (void)loadElementEditorPlugIn:(NSString *)selectedElementEditorPlugIn;
+- (NSMutableArray *) contextMenuItemsForPlugin;
 
 @end

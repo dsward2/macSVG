@@ -1056,6 +1056,47 @@
 }
 
 //==================================================================================
+//	webView:contextMenuItemsForElement:defaultMenuItems:
+//==================================================================================
+
+- (NSArray *)webView:(WebView *)sender contextMenuItemsForElement:(NSDictionary *)element defaultMenuItems:(NSArray *)defaultMenuItems
+{
+    // handle right-click in web view
+    DOMNode * webElementDOMNode = element[@"WebElementDOMNode"];
+    //WebFrame * webElementFrame = element[@"WebElementFrame"];
+    //NSNumber * webElementIsContentEditableKey = element[@"WebElementIsContentEditableKey"];
+    NSNumber * webElementIsInScrollBar = element[@"WebElementIsInScrollBar"];
+    NSNumber * webElementIsSelected = element[@"WebElementIsSelected"];
+    //NSNumber * webElementLinkIsLive = element[@"WebElementLinkIsLive"];
+    
+    NSMutableArray * contextMenuItems = [self.macSVGDocumentWindowController contextMenuItemsForPlugin];
+    
+    if (webElementDOMNode != NULL)
+    {
+        if ([webElementIsInScrollBar boolValue] == NO)
+        {
+            //if ([webElementIsSelected boolValue] == YES)
+            if (YES)
+            {
+                for (NSMenuItem * menuItem in defaultMenuItems)
+                {
+                    if ([menuItem.title isEqualToString:@"Copy"])
+                    {
+                        [contextMenuItems addObject:menuItem];
+                    }
+                    else if ([menuItem.title isEqualToString:@"Inspect Element"])
+                    {
+                        [contextMenuItems addObject:menuItem];
+                    }
+                }
+            }
+        }
+    }
+    
+    return contextMenuItems;
+}
+
+//==================================================================================
 //	setScrollToPoint:
 //==================================================================================
 
@@ -1570,7 +1611,7 @@
 - (BOOL)webView:(WebView *)webView shouldBeginEditingInDOMRange:(DOMRange *)range
 {
     //NSLog(@"webView:shouldBeginEditingInDOMRange");
-    return YES;
+    return NO;
 }
 
 // ================================================================

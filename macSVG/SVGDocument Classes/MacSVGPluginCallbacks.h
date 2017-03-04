@@ -44,6 +44,7 @@
 
 @property (readonly, copy) NSMutableArray *selectedElementsArray;
 - (void)setToolMode:(NSInteger)newToolMode;
+- (NSInteger)currentToolMode;
 - (void)selectXMLElement:(NSXMLElement *)aXMLElement;
 - (void)setActiveXMLElement:(NSXMLElement *)aXMLElement;
 - (void)updateDOMSelectionRectsAndHandles;

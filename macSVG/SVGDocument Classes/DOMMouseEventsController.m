@@ -927,369 +927,372 @@
 {
     //NSLog(@"handleMouseDownEvent");
 
-    // for selecting elements or to initiate dragging for element creation
-    self.mouseMode = MOUSE_DRAGGING;
+    DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
 
-    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
-    
-    DOMNode * targetNode = event.target;    // either a document node, or an editing handle node
-    
-    if ([macSVGDocument.fileNameExtension isEqualToString:@"svg"] == YES)
+    if (mouseEvent.button == 0) // left mouse click
     {
-        if ([targetNode isKindOfClass:[DOMHTMLElement class]] == YES)
+        // for selecting elements or to initiate dragging for element creation
+        self.mouseMode = MOUSE_DRAGGING;
+
+        MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
+        
+        DOMNode * targetNode = event.target;    // either a document node, or an editing handle node
+        
+        if ([macSVGDocument.fileNameExtension isEqualToString:@"svg"] == YES)
         {
-            // user clicked on an HTML-class element, is it contained within a foreignObject element?
-            id parentElement = targetNode;    // either a document element, or an editing handle element
-            BOOL continueSearch = YES;
-            while (continueSearch == YES)
+            if ([targetNode isKindOfClass:[DOMHTMLElement class]] == YES)
             {
-                if (parentElement == NULL)
+                // user clicked on an HTML-class element, is it contained within a foreignObject element?
+                id parentElement = targetNode;    // either a document element, or an editing handle element
+                BOOL continueSearch = YES;
+                while (continueSearch == YES)
                 {
-                    continueSearch = NO;
-                }
-                else
-                {
-                    NSString * parentElementName = [parentElement tagName];
-                    if ([parentElementName isEqualToString:@"foreignObject"] == YES)
+                    if (parentElement == NULL)
                     {
                         continueSearch = NO;
-                        targetNode = parentElement;     // change selection to the parent SVG-class foreignObject element
                     }
-                }
-                
-                if (continueSearch == YES)
-                {
-                    parentElement = [parentElement parentElement];
+                    else
+                    {
+                        NSString * parentElementName = [parentElement tagName];
+                        if ([parentElementName isEqualToString:@"foreignObject"] == YES)
+                        {
+                            continueSearch = NO;
+                            targetNode = parentElement;     // change selection to the parent SVG-class foreignObject element
+                        }
+                    }
+                    
+                    if (continueSearch == YES)
+                    {
+                        parentElement = [parentElement parentElement];
+                    }
                 }
             }
         }
-    }
 
-    DOMElement * targetElement = (DOMElement *)targetNode;  // the real target element
-
-    DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    
-    CGFloat zoomFactor = svgWebView.zoomFactor;
-    self.currentMousePoint = NSMakePoint((float)mouseEvent.pageX * (1.0f / zoomFactor), (float)mouseEvent.pageY * (1.0f / zoomFactor));
-    
-    NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
-
-    // 20160627 - added check for toolModeArrowCursor
-    if (currentToolMode == toolModeArrowCursor)
-    {
-        CGEventRef event = CGEventCreate(NULL);
-        CGEventFlags modifiers = CGEventGetFlags(event);
-        CFRelease(event);
-        CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
-        if ((modifiers & flags) == 0)
-        {
-            // shift key or command key are not pressed
-            self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
-        }
-    }
-    else
-    {
-        CGEventRef event = CGEventCreate(NULL);
-        CGEventFlags modifiers = CGEventGetFlags(event);
-        CFRelease(event);
-        CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
-        if ((modifiers & flags) != 0)
-        {
-            // shift key or command key are pressed
-            self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
-        }
-    }
-
-    self.clickPoint = self.currentMousePoint;
-    
-    self.previousMousePoint = self.currentMousePoint;
-    
-    [event preventDefault];
-    [event stopPropagation];
-
-    NSString * newElementTagName = NULL;
+        DOMElement * targetElement = (DOMElement *)targetNode;  // the real target element
         
-    NSXMLElement * targetXMLElement = NULL;
-    
-    if (self.svgXMLDOMSelectionManager.activeXMLElement != NULL)
-    {
-        targetXMLElement = self.svgXMLDOMSelectionManager.activeXMLElement;
-    }
-    else
-    {
-        NSString * newTargetElementMacsvgid = [targetElement getAttribute:@"_macsvg_master_Macsvgid"];
-        if (newTargetElementMacsvgid.length != 0)
+        CGFloat zoomFactor = svgWebView.zoomFactor;
+        self.currentMousePoint = NSMakePoint((float)mouseEvent.pageX * (1.0f / zoomFactor), (float)mouseEvent.pageY * (1.0f / zoomFactor));
+        
+        NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
+
+        // 20160627 - added check for toolModeArrowCursor
+        if (currentToolMode == toolModeArrowCursor)
         {
-            // user clicked in a control handle, change the target to the owner of the handle
-            NSXMLElement * newTargetElement = [macSVGDocument xmlElementForMacsvgid:newTargetElementMacsvgid];
-            if (newTargetElement != NULL)
+            CGEventRef event = CGEventCreate(NULL);
+            CGEventFlags modifiers = CGEventGetFlags(event);
+            CFRelease(event);
+            CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+            if ((modifiers & flags) == 0)
             {
-                self.svgXMLDOMSelectionManager.activeXMLElement = newTargetElement;
-                targetXMLElement = newTargetElement;
+                // shift key or command key are not pressed
+                self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
             }
         }
         else
         {
-            // targetXMLElement is a document element, not a handle
-            NSString * macsvgid = [targetElement getAttribute:@"macsvgid"];
-            targetXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
-            self.svgXMLDOMSelectionManager.activeXMLElement = targetXMLElement;
-        }
-    }
-
-    // test for click in existing selection handle
-    selectionHandleClicked = NO;
-    handle_orientation = NULL;
-    NSString * classAttribute = [targetElement getAttribute:@"class"];
-    if ([classAttribute isEqualToString:@"_macsvg_selectionHandle"] == YES)
-    {
-        selectionHandleClicked = YES;
-        handle_orientation = NULL;
-        NSString * newHandleOrientation = [targetElement getAttribute:@"_macsvg_handle_orientation"];
-        
-        // assign a string value to handle_orientation
-        if ([newHandleOrientation isEqualToString:@"top"] == YES)
-        {
-            handle_orientation = @"top";
-        }
-        else if ([newHandleOrientation isEqualToString:@"left"] == YES)
-        {
-            handle_orientation = @"left";
-        }
-        else if ([newHandleOrientation isEqualToString:@"bottom"] == YES)
-        {
-            handle_orientation = @"bottom";
-        }
-        else if ([newHandleOrientation isEqualToString:@"right"] == YES)
-        {
-            handle_orientation = @"right";
-        }
-        else if ([newHandleOrientation isEqualToString:@"topLeft"] == YES)
-        {
-            handle_orientation = @"topLeft";
-        }
-        else if ([newHandleOrientation isEqualToString:@"topRight"] == YES)
-        {
-            handle_orientation = @"topRight";
-        }
-        else if ([newHandleOrientation isEqualToString:@"bottomLeft"] == YES)
-        {
-            handle_orientation = @"bottomLeft";
-        }
-        else if ([newHandleOrientation isEqualToString:@"bottomRight"] == YES)
-        {
-            handle_orientation = @"bottomRight";
-        }
-        
-        //NSLog(@"handleMouseDownEvent - handle_orientation=%@", handle_orientation);
-    }
-    
-    mouseMoveCount = 0;
-
-    if ((currentToolMode != toolModeCrosshairCursor) && (currentToolMode != toolModePath) && (currentToolMode != toolModePolyline)  && (currentToolMode != toolModePolygon)&& (currentToolMode != toolModeLine))
-    {
-        [self.svgPathEditor resetPathSegmentsArray];
-        [self.svgPolylineEditor resetPolylinePointsArray];
-        [self.svgLineEditor resetLinePoints];
-        
-        [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
-    }
-
-    switch (currentToolMode) 
-    {
-        case toolModeNone:
-            break;
-        case toolModeArrowCursor:
-        {
-            if (selectionHandleClicked == NO)
+            CGEventRef event = CGEventCreate(NULL);
+            CGEventFlags modifiers = CGEventGetFlags(event);
+            CFRelease(event);
+            CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+            if ((modifiers & flags) != 0)
             {
-                MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
-                NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
-                NSXMLElement * rootXMLElement = [svgXmlDocument rootElement];
-                if (targetXMLElement == rootXMLElement)
+                // shift key or command key are pressed
+                self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+            }
+        }
+
+        self.clickPoint = self.currentMousePoint;
+        
+        self.previousMousePoint = self.currentMousePoint;
+        
+        [event preventDefault];
+        [event stopPropagation];
+
+        NSString * newElementTagName = NULL;
+            
+        NSXMLElement * targetXMLElement = NULL;
+        
+        if (self.svgXMLDOMSelectionManager.activeXMLElement != NULL)
+        {
+            targetXMLElement = self.svgXMLDOMSelectionManager.activeXMLElement;
+        }
+        else
+        {
+            NSString * newTargetElementMacsvgid = [targetElement getAttribute:@"_macsvg_master_Macsvgid"];
+            if (newTargetElementMacsvgid.length != 0)
+            {
+                // user clicked in a control handle, change the target to the owner of the handle
+                NSXMLElement * newTargetElement = [macSVGDocument xmlElementForMacsvgid:newTargetElementMacsvgid];
+                if (newTargetElement != NULL)
                 {
-                    XMLOutlineController * xmlOutlineController = macSVGDocumentWindowController.xmlOutlineController;
-                    NSOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
-                    [(id)xmlOutlineView selectNone:self];
+                    self.svgXMLDOMSelectionManager.activeXMLElement = newTargetElement;
+                    targetXMLElement = newTargetElement;
+                }
+            }
+            else
+            {
+                // targetXMLElement is a document element, not a handle
+                NSString * macsvgid = [targetElement getAttribute:@"macsvgid"];
+                targetXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
+                self.svgXMLDOMSelectionManager.activeXMLElement = targetXMLElement;
+            }
+        }
+
+        // test for click in existing selection handle
+        selectionHandleClicked = NO;
+        handle_orientation = NULL;
+        NSString * classAttribute = [targetElement getAttribute:@"class"];
+        if ([classAttribute isEqualToString:@"_macsvg_selectionHandle"] == YES)
+        {
+            selectionHandleClicked = YES;
+            handle_orientation = NULL;
+            NSString * newHandleOrientation = [targetElement getAttribute:@"_macsvg_handle_orientation"];
+            
+            // assign a string value to handle_orientation
+            if ([newHandleOrientation isEqualToString:@"top"] == YES)
+            {
+                handle_orientation = @"top";
+            }
+            else if ([newHandleOrientation isEqualToString:@"left"] == YES)
+            {
+                handle_orientation = @"left";
+            }
+            else if ([newHandleOrientation isEqualToString:@"bottom"] == YES)
+            {
+                handle_orientation = @"bottom";
+            }
+            else if ([newHandleOrientation isEqualToString:@"right"] == YES)
+            {
+                handle_orientation = @"right";
+            }
+            else if ([newHandleOrientation isEqualToString:@"topLeft"] == YES)
+            {
+                handle_orientation = @"topLeft";
+            }
+            else if ([newHandleOrientation isEqualToString:@"topRight"] == YES)
+            {
+                handle_orientation = @"topRight";
+            }
+            else if ([newHandleOrientation isEqualToString:@"bottomLeft"] == YES)
+            {
+                handle_orientation = @"bottomLeft";
+            }
+            else if ([newHandleOrientation isEqualToString:@"bottomRight"] == YES)
+            {
+                handle_orientation = @"bottomRight";
+            }
+            
+            //NSLog(@"handleMouseDownEvent - handle_orientation=%@", handle_orientation);
+        }
+        
+        mouseMoveCount = 0;
+
+        if ((currentToolMode != toolModeCrosshairCursor) && (currentToolMode != toolModePath) && (currentToolMode != toolModePolyline)  && (currentToolMode != toolModePolygon)&& (currentToolMode != toolModeLine))
+        {
+            [self.svgPathEditor resetPathSegmentsArray];
+            [self.svgPolylineEditor resetPolylinePointsArray];
+            [self.svgLineEditor resetLinePoints];
+            
+            [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
+        }
+
+        switch (currentToolMode) 
+        {
+            case toolModeNone:
+                break;
+            case toolModeArrowCursor:
+            {
+                if (selectionHandleClicked == NO)
+                {
+                    MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
+                    NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
+                    NSXMLElement * rootXMLElement = [svgXmlDocument rootElement];
+                    if (targetXMLElement == rootXMLElement)
+                    {
+                        XMLOutlineController * xmlOutlineController = macSVGDocumentWindowController.xmlOutlineController;
+                        NSOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
+                        [(id)xmlOutlineView selectNone:self];
+                    }
+                    else
+                    {
+                        [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
+                    }
+                }
+                break;
+            }
+            case toolModeCrosshairCursor:
+            {
+                if (selectionHandleClicked == NO)
+                {
+                    [self handleCrosshairToolSelectionWithTargetXMLElement:targetXMLElement handleDOMElement:targetElement];
+                }
+                break;
+            }
+            case toolModeRect:
+            {
+                newElementTagName = @"rect";
+                break;
+            }
+            case toolModeCircle:
+            {
+                newElementTagName = @"circle";
+                break;
+            }
+            case toolModeEllipse:
+            {
+                newElementTagName = @"ellipse";
+                break;
+            }
+            case toolModeText:
+            {
+                newElementTagName = @"text";
+                break;
+            }
+            case toolModeImage:
+            {
+                newElementTagName = @"image";
+                break;
+            }
+            case toolModeLine:
+            {
+                newElementTagName = @"line";
+                break;
+            }
+            case toolModePolyline:
+            {
+                BOOL extendExistingPolyline = NO;
+                
+                DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
+                if (activeDOMElement != NULL)
+                {
+                    NSString * tagName = activeDOMElement.tagName;
+                    if ([tagName isEqualToString:@"polyline"] == YES)
+                    {
+                        extendExistingPolyline = YES;
+                    }
+                }
+                
+                if (extendExistingPolyline == YES)
+                {   
+                    [self extendPolyline];
                 }
                 else
                 {
-                    [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
+                    newElementTagName = @"polyline";
+                    self.mouseMode = MOUSE_HOVERING;
                 }
+                break;
             }
-            break;
-        }
-        case toolModeCrosshairCursor:
-        {
-            if (selectionHandleClicked == NO)
+            case toolModePolygon:
             {
-                [self handleCrosshairToolSelectionWithTargetXMLElement:targetXMLElement handleDOMElement:targetElement];
-            }
-            break;
-        }
-        case toolModeRect:
-        {
-            newElementTagName = @"rect";
-            break;
-        }
-        case toolModeCircle:
-        {
-            newElementTagName = @"circle";
-            break;
-        }
-        case toolModeEllipse:
-        {
-            newElementTagName = @"ellipse";
-            break;
-        }
-        case toolModeText:
-        {
-            newElementTagName = @"text";
-            break;
-        }
-        case toolModeImage:
-        {
-            newElementTagName = @"image";
-            break;
-        }
-        case toolModeLine:
-        {
-            newElementTagName = @"line";
-            break;
-        }
-        case toolModePolyline:
-        {
-            BOOL extendExistingPolyline = NO;
-            
-            DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-            if (activeDOMElement != NULL)
-            {
-                NSString * tagName = activeDOMElement.tagName;
-                if ([tagName isEqualToString:@"polyline"] == YES)
+                BOOL extendExistingPolyline = NO;
+                
+                DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
+                if (activeDOMElement != NULL)
                 {
-                    extendExistingPolyline = YES;
+                    NSString * tagName = activeDOMElement.tagName;
+                    if ([tagName isEqualToString:@"polygon"] == YES)
+                    {
+                        extendExistingPolyline = YES;
+                    }
                 }
-            }
-            
-            if (extendExistingPolyline == YES)
-            {   
-                [self extendPolyline];
-            }
-            else
-            {
-                newElementTagName = @"polyline";
-                self.mouseMode = MOUSE_HOVERING;
-            }
-            break;
-        }
-        case toolModePolygon:
-        {
-            BOOL extendExistingPolyline = NO;
-            
-            DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-            if (activeDOMElement != NULL)
-            {
-                NSString * tagName = activeDOMElement.tagName;
-                if ([tagName isEqualToString:@"polygon"] == YES)
+                
+                if (extendExistingPolyline == YES)
+                {   
+                    [self extendPolyline];
+                }
+                else
                 {
-                    extendExistingPolyline = YES;
+                    newElementTagName = @"polygon";
+                    self.mouseMode = MOUSE_HOVERING;
                 }
+                break;
             }
-            
-            if (extendExistingPolyline == YES)
-            {   
-                [self extendPolyline];
-            }
-            else
+            case toolModePath:
             {
-                newElementTagName = @"polygon";
-                self.mouseMode = MOUSE_HOVERING;
-            }
-            break;
-        }
-        case toolModePath:
-        {
-            //NSLog(@"handleMouseDownEvent - toolModePath");
-            BOOL editExistingPath = NO;
-            
-            DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
-            if (activeDOMElement != NULL)
-            {
-                NSString * tagName = activeDOMElement.tagName;
-                if ([tagName isEqualToString:@"path"] == YES)
+                //NSLog(@"handleMouseDownEvent - toolModePath");
+                BOOL editExistingPath = NO;
+                
+                DOMElement * activeDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
+                if (activeDOMElement != NULL)
                 {
-                    editExistingPath = YES;
-                    
-                    [macSVGDocument pushUndoRedoDocumentChanges];
+                    NSString * tagName = activeDOMElement.tagName;
+                    if ([tagName isEqualToString:@"path"] == YES)
+                    {
+                        editExistingPath = YES;
+                        
+                        [macSVGDocument pushUndoRedoDocumentChanges];
+                    }
                 }
+                
+                if (editExistingPath == NO)
+                {
+                    newElementTagName = @"path";
+                }
+                break;
             }
-            
-            if (editExistingPath == NO)
-            {
-                newElementTagName = @"path";
-            }
+            default:
             break;
         }
-        default:
-        break;
-    }
 
-    if (selectionHandleClicked == YES)
-    {
-        // user clicked on a selection handle
-        newElementTagName = NULL;       // not creating a new element, just modifying an existing one
-        
-        NSString * handle_Macsvgid = [targetElement getAttribute:@"_macsvg_master_Macsvgid"];
-        NSXMLElement * handleXMLElement = [macSVGDocument xmlElementForMacsvgid:handle_Macsvgid];
-        
-        self.svgXMLDOMSelectionManager.activeXMLElement = handleXMLElement;
-    }
-
-    // create the new element according to the tool selection
-    if (newElementTagName != NULL)
-    {
-        macSVGDocumentWindowController.creatingNewElement = YES;
-
-        [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
-
-        [macSVGDocument pushUndoRedoDocumentChanges];
-        
-        NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.clickPoint];
-       
-        if (newXMLElement != NULL)
+        if (selectionHandleClicked == YES)
         {
-            [self.svgXMLDOMSelectionManager selectXMLElement:newXMLElement];
+            // user clicked on a selection handle
+            newElementTagName = NULL;       // not creating a new element, just modifying an existing one
+            
+            NSString * handle_Macsvgid = [targetElement getAttribute:@"_macsvg_master_Macsvgid"];
+            NSXMLElement * handleXMLElement = [macSVGDocument xmlElementForMacsvgid:handle_Macsvgid];
+            
+            self.svgXMLDOMSelectionManager.activeXMLElement = handleXMLElement;
+        }
 
-            if (currentToolMode == toolModePath)
+        // create the new element according to the tool selection
+        if (newElementTagName != NULL)
+        {
+            macSVGDocumentWindowController.creatingNewElement = YES;
+
+            [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
+
+            [macSVGDocument pushUndoRedoDocumentChanges];
+            
+            NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.clickPoint];
+           
+            if (newXMLElement != NULL)
             {
-                [self.svgPathEditor startPath];       // set the moveto path segment
-            }
-            else if (currentToolMode == toolModePolyline)
-            {
-                [self.svgPolylineEditor startPolyline];
-            }
-            else if (currentToolMode == toolModePolygon)
-            {
-                [self.svgPolylineEditor startPolyline];
+                [self.svgXMLDOMSelectionManager selectXMLElement:newXMLElement];
+
+                if (currentToolMode == toolModePath)
+                {
+                    [self.svgPathEditor startPath];       // set the moveto path segment
+                }
+                else if (currentToolMode == toolModePolyline)
+                {
+                    [self.svgPolylineEditor startPolyline];
+                }
+                else if (currentToolMode == toolModePolygon)
+                {
+                    [self.svgPolylineEditor startPolyline];
+                }
+                
+                self.svgXMLDOMSelectionManager.activeXMLElement = newXMLElement;
             }
             
-            self.svgXMLDOMSelectionManager.activeXMLElement = newXMLElement;
-        }
-        
-        macSVGDocumentWindowController.creatingNewElement = NO;
-        
-        // this code allows multiple mouse click to place images without having to click the Image tool icon each time
-        if ([newElementTagName isEqualToString:@"image"] == YES)
-        {
-            if (macSVGDocumentWindowController.currentToolMode != toolModeImage)
+            macSVGDocumentWindowController.creatingNewElement = NO;
+            
+            // this code allows multiple mouse click to place images without having to click the Image tool icon each time
+            if ([newElementTagName isEqualToString:@"image"] == YES)
             {
-                [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
+                if (macSVGDocumentWindowController.currentToolMode != toolModeImage)
+                {
+                    [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
+                }
+                else
+                {
+                    (macSVGDocumentWindowController.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
+                }
+                [macSVGDocumentWindowController reloadAllViews];
             }
-            else
-            {
-                (macSVGDocumentWindowController.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
-            }
-            [macSVGDocumentWindowController reloadAllViews];
         }
     }
 }

@@ -63,4 +63,6 @@
         elementName:(NSString *)aElementName
         attributeName:(NSString *)aAttributeName context:(NSString *)aContext;
 
+- (NSMutableArray *) contextMenuItemsForPlugin;
+
 @end

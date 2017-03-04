@@ -30,5 +30,6 @@
 
 - (void) handlePluginEvent:(DOMEvent *)event;
 - (void)loadAttributeEditorPlugIn:(NSString *)selectedAttributeEditorPlugIn;
+- (NSMutableArray *) contextMenuItemsForPlugin;
 
 @end

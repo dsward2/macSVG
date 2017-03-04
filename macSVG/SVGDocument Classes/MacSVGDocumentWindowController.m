@@ -1964,6 +1964,13 @@
 
 // ================================================================
 
+- (NSMutableArray *) contextMenuItemsForPlugin
+{
+    return [self.editorUIFrameController contextMenuItemsForPlugin];
+}
+
+// ================================================================
+
 - (IBAction)enableAnimationCheckboxAction:(id)sender;
 {
     [self reloadAllViews];

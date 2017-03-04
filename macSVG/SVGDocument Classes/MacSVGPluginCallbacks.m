@@ -47,6 +47,12 @@
     [macSVGDocumentWindowController setToolMode:newToolMode];
 }
 
+- (NSInteger)currentToolMode
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    return [macSVGDocumentWindowController currentToolMode];
+}
+
 - (void)beginPluginEditorToolMode
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];

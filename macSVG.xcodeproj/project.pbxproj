@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8881D59ADC700265FA2 /* PathFunctions.m */; };
-		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; };
+		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
 		0E0AEDB51D8AE6A9004D82C3 /* pattern_example2.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */; };
@@ -19,6 +19,7 @@
 		0E10817014C7691C00908087 /* svg-logo-v.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E10816B14C7691C00908087 /* svg-logo-v.png */; };
 		0E10817114C7691C00908087 /* svg-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E10816C14C7691C00908087 /* svg-logo.png */; };
 		0E10CC0414B11F550072B18D /* TextEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10CC0314B11F550072B18D /* TextEditorController.m */; };
+		0E12CD631E6A67D100736B62 /* path_element_with_subpath.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E12CD621E6A67D100736B62 /* path_element_with_subpath.svg */; };
 		0E1C05681D570331004E7B62 /* macsvg_example.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E1C05661D5702CE004E7B62 /* macsvg_example.svg */; };
 		0E1C056A1D5722AE004E7B62 /* text_on_a_path.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E1C05691D57222B004E7B62 /* text_on_a_path.svg */; };
 		0E1C056C1D5726FE004E7B62 /* animated_text_on_a_path.svg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0E1C056B1D572604004E7B62 /* animated_text_on_a_path.svg */; };
@@ -1048,6 +1049,7 @@
 				0EF420DF1D75588200A667D9 /* linearGradient_element.svg in CopyFiles */,
 				0EC671841D696EBB0086943C /* multi-line_text_with_foreignobject_and_html.svg in CopyFiles */,
 				0E1C05741D574E62004E7B62 /* path_animation_and_shape_morphing.svg in CopyFiles */,
+				0E12CD631E6A67D100736B62 /* path_element_with_subpath.svg in CopyFiles */,
 				0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in CopyFiles */,
 				0E1C05721D574AB9004E7B62 /* path_segments.svg in CopyFiles */,
 				0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in CopyFiles */,
@@ -1631,6 +1633,8 @@
 		0E10816C14C7691C00908087 /* svg-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svg-logo.png"; sourceTree = "<group>"; };
 		0E10CC0214B11F550072B18D /* TextEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditorController.h; sourceTree = "<group>"; };
 		0E10CC0314B11F550072B18D /* TextEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEditorController.m; sourceTree = "<group>"; };
+		0E12CD5E1E6A67B700736B62 /* path_element_with_subpath.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_element_with_subpath.svg; sourceTree = "<group>"; };
+		0E12CD621E6A67D100736B62 /* path_element_with_subpath.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = path_element_with_subpath.svg; path = macSVG/Resources/macsvg_examples/svg/path_element_with_subpath.svg; sourceTree = "<group>"; };
 		0E1996B1142E7E3500A3E0AC /* crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshair.png; sourceTree = "<group>"; };
 		0E1ABD441D70DB1300757E7B /* Gear.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Gear.svg; path = "macSVG/Resources/Tools Icons/Tools SVG Design/Gear.svg"; sourceTree = SOURCE_ROOT; };
 		0E1ABD451D70DB1300757E7B /* Outline View Icons.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Outline View Icons.svg"; path = "macSVG/Resources/Tools Icons/Tools SVG Design/Outline View Icons.svg"; sourceTree = SOURCE_ROOT; };
@@ -2626,6 +2630,7 @@
 				0E1C05661D5702CE004E7B62 /* macsvg_example.svg */,
 				0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */,
 				0E1C05731D574E5A004E7B62 /* path_animation_and_shape_morphing.svg */,
+				0E12CD5E1E6A67B700736B62 /* path_element_with_subpath.svg */,
 				0E0AED991D8A932F004D82C3 /* path_markers_example.svg */,
 				0E1C05711D574AB5004E7B62 /* path_segments.svg */,
 				0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */,
@@ -3824,6 +3829,7 @@
 		0EB6636D14286398003723F0 = {
 			isa = PBXGroup;
 			children = (
+				0E12CD621E6A67D100736B62 /* path_element_with_subpath.svg */,
 				0EAF6E811E695B8E00A8016E /* animate_path_of_elliptical_arc_segments.svg */,
 				0ECCAFDE1DB4A6A0001A6085 /* README.md */,
 				0ECCB0231DB51B57001A6085 /* README_images */,

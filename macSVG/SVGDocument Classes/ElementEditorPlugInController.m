@@ -203,4 +203,24 @@
     }
 }
 
+//==================================================================================
+//	contextMenuItemsForPlugin
+//==================================================================================
+
+- (NSMutableArray *) contextMenuItemsForPlugin
+{
+    NSMutableArray * result = [NSMutableArray array];
+
+    if (self.currentPlugin != NULL)
+    {
+        if ([self.currentPlugin respondsToSelector:@selector(contextMenuItemsForPlugin)] == YES)
+        {
+            result = [self.currentPlugin contextMenuItemsForPlugin];
+        }
+    }
+    
+    return result;
+}
+
+
 @end

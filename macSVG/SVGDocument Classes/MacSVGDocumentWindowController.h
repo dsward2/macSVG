@@ -323,6 +323,8 @@
 - (IBAction) cancelExportingImagesButtonAction:(id)sender;
 - (IBAction) exportingImagesDoneAction:(id)sender;
 
+- (NSMutableArray *) contextMenuItemsForPlugin;
+
 @end
 
 // values of defines should correspond to toolButtonsArray in implementation

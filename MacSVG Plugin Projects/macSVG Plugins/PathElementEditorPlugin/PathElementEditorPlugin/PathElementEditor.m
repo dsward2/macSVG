@@ -1971,8 +1971,110 @@
     return resultPoint;
 };
 
+//==================================================================================
+//	contextMenuItemsForPlugin
+//==================================================================================
+
+- (NSMutableArray *) contextMenuItemsForPlugin
+{
+    // override to customize contextual menu for right-click in web view
+    NSMutableArray * contextMenuItems = [NSMutableArray array];
+    
+    if ([self.macSVGPluginCallbacks currentToolMode] == toolModePath)
+    {
+        NSMenuItem * testMenuItem = [[NSMenuItem alloc] initWithTitle:@"Close Path" action:@selector(closePathNowButtonAction:) keyEquivalent:@""];
+        [testMenuItem setTarget:self];
+        [contextMenuItems addObject:testMenuItem];
+        
+        NSString * pathMode = pathModePopupButton.titleOfSelectedItem;
+
+        NSMenuItem * movetoMenuItem = [[NSMenuItem alloc] initWithTitle:@"Move To" action:@selector(setPathMode:) keyEquivalent:@""];
+        [movetoMenuItem setTarget:self];
+        [contextMenuItems addObject:movetoMenuItem];
+
+        NSMenuItem * linetoMenuItem = [[NSMenuItem alloc] initWithTitle:@"Line To" action:@selector(setPathMode:) keyEquivalent:@""];
+        [linetoMenuItem setTarget:self];
+        [contextMenuItems addObject:linetoMenuItem];
+
+        NSMenuItem * cubicCurveMenuItem = [[NSMenuItem alloc] initWithTitle:@"Cubic Curve" action:@selector(setPathMode:) keyEquivalent:@""];
+        [cubicCurveMenuItem setTarget:self];
+        [contextMenuItems addObject:cubicCurveMenuItem];
+
+        NSMenuItem * ellipticalArcMenuItem = [[NSMenuItem alloc] initWithTitle:@"Elliptical Arc" action:@selector(setPathMode:) keyEquivalent:@""];
+        [ellipticalArcMenuItem setTarget:self];
+        [contextMenuItems addObject:ellipticalArcMenuItem];
+        
+        if ([pathMode isEqualToString:@"Elliptical Arc"] == YES)
+        {
+            NSString * largeArcTitle = @"Large Arc On";
+            NSString * largeArcFlagString = (self.macSVGPluginCallbacks).largeArcFlagString;
+            if ([largeArcFlagString isEqualToString:@"1"] == YES)
+            {
+                largeArcTitle = @"Large Arc Off";
+            }
+            NSMenuItem * largeArcMenuItem = [[NSMenuItem alloc] initWithTitle:largeArcTitle action:@selector(toggleLargeArcValue) keyEquivalent:@""];
+            [largeArcMenuItem setTarget:self];
+            [contextMenuItems addObject:largeArcMenuItem];
+
+            NSString * sweepFlagTitle = @"Sweep Flag On";
+            NSString * sweepFlagString = (self.macSVGPluginCallbacks).sweepFlagString;
+            if ([sweepFlagString isEqualToString:@"1"] == YES)
+            {
+                sweepFlagTitle = @"Sweep Flag Off";
+            }
+            NSMenuItem * sweepFlagMenuItem = [[NSMenuItem alloc] initWithTitle:sweepFlagTitle action:@selector(toggleSweepFlagValue) keyEquivalent:@""];
+            [sweepFlagMenuItem setTarget:self];
+            [contextMenuItems addObject:sweepFlagMenuItem];
+        }
+    }
+    
+    return contextMenuItems;
+}
+
+-(IBAction)setPathMode:(NSMenuItem *)menuItem
+{
+    NSString * pathMode = [menuItem title];
+    
+    [pathModePopupButton selectItemWithTitle:pathMode];
+
+    [self updateSVGPathEditorAction:self];
+}
 
 
+-(IBAction)toggleLargeArcValue
+{
+    NSString * largeArcFlagString = (self.macSVGPluginCallbacks).largeArcFlagString;
+    if ([largeArcFlagString isEqualToString:@"1"] == YES)
+    {
+        //(self.macSVGPluginCallbacks).largeArcFlagString = @"0";
+        (self.arcSettingsPopoverViewController.pathLargeArcCheckbox).state = 0;
+    }
+    else
+    {
+        //(self.macSVGPluginCallbacks).largeArcFlagString = @"1";
+        (self.arcSettingsPopoverViewController.pathLargeArcCheckbox).state = 1;
+    }
+
+    [self updateSVGPathEditorAction:self];
+}
+
+
+-(IBAction)toggleSweepFlagValue
+{
+    NSString * sweepFlagString = (self.macSVGPluginCallbacks).sweepFlagString;
+    if ([sweepFlagString isEqualToString:@"1"] == YES)
+    {
+        //(self.macSVGPluginCallbacks).sweepFlagString = @"0";
+        (self.arcSettingsPopoverViewController.pathSweepCheckbox).state = 0;
+    }
+    else
+    {
+        //(self.macSVGPluginCallbacks).sweepFlagString = @"1";
+        (self.arcSettingsPopoverViewController.pathSweepCheckbox).state = 1;
+    }
+
+    [self updateSVGPathEditorAction:self];
+}
 
 
 @end

@@ -566,5 +566,18 @@
     return YES;
 }
 
+//==================================================================================
+//	contextMenuItemsForPlugin
+//==================================================================================
+
+- (NSMutableArray *) contextMenuItemsForPlugin
+{
+    // override to customize contextual menu for right-click in web view
+    NSMutableArray * result = [NSMutableArray array];
+    
+    return result;
+}
+
+
 
 @end

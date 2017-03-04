@@ -122,4 +122,7 @@
 
 @property (getter=isValidMenuItemSelection, readonly) BOOL validMenuItemSelection;
 
+// Customize contextual menu for right-clicks in web view
+- (NSMutableArray *) contextMenuItemsForPlugin;
+
 @end

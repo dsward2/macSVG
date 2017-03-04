@@ -297,6 +297,31 @@
 }
 
 //==================================================================================
+//	contextMenuItemsForPlugin
+//==================================================================================
+
+- (NSMutableArray *) contextMenuItemsForPlugin
+{
+    NSMutableArray * result = [NSMutableArray array];
+
+    NSInteger currentEditorIndex = (self.editorPanelPopUpButton).indexOfSelectedItem;
+    NSDictionary * currentEditorSelectionDictionary = (self.editorPanelsArray)[currentEditorIndex];
+    
+    NSString * currentEditorKind = currentEditorSelectionDictionary[@"kind"];
+
+    if ([currentEditorKind isEqualToString:@"element"] == YES)
+    {
+        result = [self.elementEditorPlugInController contextMenuItemsForPlugin];
+    }
+    else if ([currentEditorKind isEqualToString:@"attribute"] == YES)
+    {
+        result = [self.attributeEditorPlugInController contextMenuItemsForPlugin];
+    }
+    
+    return result;
+}
+
+//==================================================================================
 //	setCurrentEditor
 //==================================================================================
 
