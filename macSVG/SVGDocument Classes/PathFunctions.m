@@ -4271,9 +4271,33 @@
     NSInteger pathSegmentsArrayCount = pathSegmentsArray.count;
     if (pathSegmentsArrayCount > 2)
     {
+        NSInteger firstSegmentIndex = 0;
+        NSInteger secondSegmentIndex = 1;
         NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
         
-        NSMutableDictionary * firstPathSegmentDictionary = [pathSegmentsArray objectAtIndex:0];
+        for (NSMutableDictionary * aPathSegmentDictionary in pathSegmentsArray)
+        {
+            NSString * aPathSegmentCommandString = [aPathSegmentDictionary objectForKey:@"command"];
+            unichar aPathSegmentCommand = [aPathSegmentCommandString characterAtIndex:0];
+            NSInteger aPathSegmentIndex = [pathSegmentsArray indexOfObject:aPathSegmentDictionary];
+            
+            if (aPathSegmentIndex < lastSegmentIndex - 2)
+            {
+                switch (aPathSegmentCommand)
+                {
+                    case 'Z':
+                    case 'z':
+                    {
+                        firstSegmentIndex = aPathSegmentIndex + 1;
+                        secondSegmentIndex = aPathSegmentIndex + 2;
+                        break;
+                    }
+                }
+            }
+        }
+    
+        
+        NSMutableDictionary * firstPathSegmentDictionary = [pathSegmentsArray objectAtIndex:firstSegmentIndex];
         NSString * firstPathSegmentCommandString = [firstPathSegmentDictionary objectForKey:@"command"];
         unichar firstPathSegmentCommand = [firstPathSegmentCommandString characterAtIndex:0];
 
@@ -4283,7 +4307,7 @@
         CGFloat firstAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:firstPathSegmentDictionary];
         CGFloat firstAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:firstPathSegmentDictionary];
 
-        NSMutableDictionary * secondPathSegmentDictionary = [pathSegmentsArray objectAtIndex:1];
+        NSMutableDictionary * secondPathSegmentDictionary = [pathSegmentsArray objectAtIndex:secondSegmentIndex];
         NSString * secondPathSegmentCommandString = [secondPathSegmentDictionary objectForKey:@"command"];
         unichar secondPathSegmentCommand = [secondPathSegmentCommandString characterAtIndex:0];
 
@@ -4585,14 +4609,14 @@
         
         if ([firstSegmentCommand isEqualToString:@"M"] == YES)
         {
-            BOOL closePathFound = NO;
+            BOOL lastSegmentIsClosePath = NO;
             NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
 
             NSMutableDictionary * lastSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
             NSString * lastSegmentCommand = [lastSegmentDictionary objectForKey:@"command"];
             if ([lastSegmentCommand isEqualToString:@"Z"] == YES)
             {
-                closePathFound = YES;
+                lastSegmentIsClosePath = YES;
                 lastSegmentIndex--;
             }
         
@@ -4639,7 +4663,7 @@
                     [newSegmentsArray addObject:newSegmentDictionary];
                 }
                 
-                if (closePathFound == YES)
+                if (lastSegmentIsClosePath == YES)
                 {
                     NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                             @"Z", @"command",
@@ -4692,7 +4716,7 @@
                     [newSegmentsArray addObject:newSegmentDictionary];
                 }
                 
-                if (closePathFound == YES)
+                if (lastSegmentIsClosePath == YES)
                 {
                     NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                             @"Z", @"command",

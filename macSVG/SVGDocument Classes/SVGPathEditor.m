@@ -1358,8 +1358,36 @@
 
     if ([selectedPathMode isEqualToString:@"Cubic Curve"] == YES)
     {
-        // we are currently drawing the first segment of a cubic curve
+        // check for now drawing the first segment of a cubic curve, possibly a subpath
+        
+        BOOL isMovetoForCubic = NO;
+        
         if ((pathSegmentsCount == 1) && (segmentIndex == 0))
+        {
+            isMovetoForCubic = YES;
+        }
+        else
+        {
+            if (domMouseEventsController.mouseMode == MOUSE_DRAGGING)
+            {
+                if (pathSegmentsCount > 0)
+                {
+                    if (segmentIndex == pathSegmentsCount - 1)
+                    {
+                        // starting a new cubic subpath, use the moveto point to draw handles for next segment x1,y1
+                        NSMutableDictionary * previousSegmentDictionary = [self.pathSegmentsArray objectAtIndex:segmentIndex];
+                        NSString * previousSegmentCommandString = [previousSegmentDictionary objectForKey:@"command"];
+                        unichar previousSegmentCommand = [previousSegmentCommandString characterAtIndex:0];
+                        if ((previousSegmentCommand == 'M') || (previousSegmentCommand == 'm'))
+                        {
+                            isMovetoForCubic = YES;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (isMovetoForCubic == YES)
         {
             // reflect a control point for the first segment
             NSString * x1PxString = [self allocPxString:domMouseEventsController.clickPoint.x];
@@ -1406,7 +1434,8 @@
                     [self makeHandleCircleDOMElementWithCx:x2PxString cy:y2PxString
                     strokeWidth:pathCurvePointStrokeWidthString radius:pathCurvePointRadiusString
                     masterID:selectedElementMacsvgid segmentIndex:segmentIndexString
-                    handlePoint:@"x1y1"];
+                    //handlePoint:@"x1y1"];
+                    handlePoint:@"x2y2"];
 
             [pathHandlesGroup appendChild:handleX2Y2CircleElement];
         }
@@ -2064,6 +2093,8 @@
     [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_pathHandlesGroup"];
     
     NSUInteger pathSegmentsCount = (self.pathSegmentsArray).count;
+    
+    unichar previousPathCommand = ' ';
             
     for (NSUInteger segmentIdx = 0; segmentIdx < pathSegmentsCount; segmentIdx++)
     {
@@ -2099,9 +2130,21 @@
             case 'c':     // cubic Bezier curveto
             {
                 BOOL reflectX1Y1 = NO;
-                if (segmentIdx == 1) reflectX1Y1 = YES;
                 BOOL reflectX2Y2 = NO;
-                if (segmentIdx >= (pathSegmentsCount - 1)) reflectX2Y2 = YES;
+                
+                //if (segmentIdx == 1) reflectX1Y1 = YES;
+                
+                if (segmentIdx >= (pathSegmentsCount - 1))
+                {
+                    reflectX1Y1 = YES;
+                    reflectX2Y2 = YES;
+                }
+                
+                if ((previousPathCommand == 'M') || (previousPathCommand == 'm'))
+                {
+                    reflectX1Y1 = YES;
+                    reflectX2Y2 = YES;
+                }
 
                 [self addHandleForCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx 
                         reflectX1Y1:reflectX1Y1
@@ -2134,6 +2177,8 @@
                 [self addHandleForClosePath:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
                 break;
         }
+        
+        previousPathCommand = commandChar;
     }
     
     [domSelectionControlsManager setMacsvgTopGroupChild:newPathHandlesGroup];
@@ -3245,7 +3290,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 - (void)extendPath
 {
     // called on mouseup event, assumes a previous path command exists in pathSegmentsArray, e.g. 'M'
-    
+        
     BOOL extendPathSuccess = YES;
     NSMutableDictionary * newPathSegmentDictionary = NULL;
 
@@ -3256,12 +3301,31 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else
     {
+        // find the last path close command, if one exists
+        NSInteger lastClosePathIndex = -1;
+        for (NSDictionary * aPathSegmentDictionary in self.pathSegmentsArray)
+        {
+            NSInteger aPathSegmentIndex = [self.pathSegmentsArray indexOfObject:aPathSegmentDictionary];
+            NSString * aPathCommandString = aPathSegmentDictionary[@"command"];
+            unichar aPathCommand = [aPathCommandString characterAtIndex:0];
+            
+            switch (aPathCommand)
+            {
+                case 'Z':
+                case 'z':
+                {
+                    lastClosePathIndex = aPathSegmentIndex;
+                    break;
+                }
+            }
+        }
+    
         if (self.selectedPathElement != NULL)
         {
             if ((self.pathSegmentsArray).count == 0)
             {
                 [self buildPathSegmentsArray:self.selectedPathElement];
-                NSInteger pathSegmentsArrayCount = (self.pathSegmentsArray).count;
+                NSInteger pathSegmentsArrayCount = self.pathSegmentsArray.count;
                 if (pathSegmentsArrayCount > 0)
                 {
                     self.pathSegmentIndex = (self.pathSegmentsArray).count - 1;
@@ -3296,132 +3360,248 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 self.pathSegmentIndex = -1;
             }
         }
+        
+        BOOL indexRangeIsValid = NO;
     
         if (self.pathSegmentIndex >= 0)
         {
             if (self.pathSegmentIndex < (self.pathSegmentsArray).count)
             {
-                NSMutableDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[self.pathSegmentIndex];
-                NSString * previousPathCommandString = pathSegmentDictionary[@"command"];
-                unichar previousPathCommand = [previousPathCommandString characterAtIndex:0];
-                
-                BOOL pathWasRelative = NO;
-                if (previousPathCommand >= 'a')
+                indexRangeIsValid = YES;
+            }
+        }
+        
+        if (indexRangeIsValid == YES)
+        {
+            NSMutableDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[self.pathSegmentIndex];
+            NSString * previousPathCommandString = pathSegmentDictionary[@"command"];
+            unichar previousPathCommand = [previousPathCommandString characterAtIndex:0];
+            
+            //NSLog(@"extendPath %ld %@", (self.pathSegmentsArray).count, previousPathCommandString);
+            
+            if (self.pathSegmentIndex > 2)
+            {
+                if (previousPathCommand == 'M')
                 {
-                    if (previousPathCommand <= 'z')
+                    NSMutableDictionary * secondPreviousPathSegmentDictionary = (self.pathSegmentsArray)[self.pathSegmentIndex - 1];
+                    NSString * secondPreviousPathCommandString = secondPreviousPathSegmentDictionary[@"command"];
+                    unichar secondPreviousPathCommand = [secondPreviousPathCommandString characterAtIndex:0];
+                    
+                    if (secondPreviousPathCommand == 'Z')
                     {
-                        pathWasRelative = YES;
+                    
                     }
                 }
-                
-                NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-                NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+            }
+            
+            BOOL pathWasRelative = NO;
+            if (previousPathCommand >= 'a')
+            {
+                if (previousPathCommand <= 'z')
+                {
+                    pathWasRelative = YES;
+                }
+            }
+            
+            NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
+            NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-                NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
-                NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
+            NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
+            NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
 
-                newPathSegmentDictionary = [[NSMutableDictionary alloc] init];
-                
-                NSPoint startPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                NSNumber * absoluteStartX = [NSNumber numberWithFloat:startPathPoint.x];
-                NSNumber * absoluteStartY = [NSNumber numberWithFloat:startPathPoint.y];
-                newPathSegmentDictionary[@"absoluteStartX"] = absoluteStartX;
-                newPathSegmentDictionary[@"absoluteStartY"] = absoluteStartY;
-                
-                //NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
-                
-                if ([selectedPathMode isEqualToString:@"Move To"] == YES)
+            newPathSegmentDictionary = [[NSMutableDictionary alloc] init];
+            
+            NSPoint startPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+            NSNumber * absoluteStartX = [NSNumber numberWithFloat:startPathPoint.x];
+            NSNumber * absoluteStartY = [NSNumber numberWithFloat:startPathPoint.y];
+            newPathSegmentDictionary[@"absoluteStartX"] = absoluteStartX;
+            newPathSegmentDictionary[@"absoluteStartY"] = absoluteStartY;
+            
+            //NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
+            
+            if ([selectedPathMode isEqualToString:@"Move To"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
                 {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"m";
+                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                    newPathSegmentDictionary[@"y"] = newRelYString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"M";
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                    newPathSegmentDictionary[@"y"] = newYString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Line To"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
+                {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"l";
+                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                    newPathSegmentDictionary[@"y"] = newRelYString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"L";
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                    newPathSegmentDictionary[@"y"] = newYString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Horizontal Line"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
+                {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                
+                    newPathSegmentDictionary[@"command"] = @"h";
+                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"H";
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Vertical Line"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
+                {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"v";
+                    
+                    newPathSegmentDictionary[@"y"] = newRelYString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"V";
+                    
+                    newPathSegmentDictionary[@"y"] = newYString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Cubic Curve"] == YES)
+            {
+                if (previousPathCommand == 'C')
+                {
+                    NSString * previousX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
+                    NSString * previousY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
+
+                    float previousX2 = previousX2String.floatValue;
+                    float previousY2 = previousY2String.floatValue;
+
+                    float previousX = previousXString.floatValue;
+                    float previousY = previousYString.floatValue;
+
+                    float deltaX = previousX - previousX2;
+                    float deltaY = previousY - previousY2;
+                    
+                    float newX1 = previousX + deltaX;
+                    float newY1 = previousY + deltaY;
+                    
+                    if (self.curveSegmentContinuity == NO)
+                    {
+                        newX1 = previousX;
+                        newY1 = previousY;
+                    }
+                    
                     if (self.useRelativePathCoordinates == YES)
                     {
                         NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                        NSString * newRelYString = [self allocFloatString:newRelY];
+                        float relX = newX1 - currentPathPoint.x;
+                        float relY = newY1 - currentPathPoint.y;
                     
-                        newPathSegmentDictionary[@"command"] = @"m";
+                        NSString * relX1String = [self allocFloatString:relX];
+                        NSString * relY1String = [self allocFloatString:relY];
+                    
+                        newPathSegmentDictionary[@"command"] = @"c";
                         
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                        newPathSegmentDictionary[@"y"] = newRelYString;
+                        newPathSegmentDictionary[@"x1"] = relX1String;
+                        newPathSegmentDictionary[@"y1"] = relY1String;
+                        
+                        newPathSegmentDictionary[@"x2"] = relX1String;
+                        newPathSegmentDictionary[@"y2"] = relY1String;
+                        
+                        newPathSegmentDictionary[@"x"] = relX1String;
+                        newPathSegmentDictionary[@"y"] = relY1String;
                     }
                     else
                     {
-                        newPathSegmentDictionary[@"command"] = @"M";
+                        NSString * newX1String = [self allocFloatString:newX1];
+                        NSString * newY1String = [self allocFloatString:newY1];
+                    
+                        newPathSegmentDictionary[@"command"] = @"C";
                         
                         newPathSegmentDictionary[@"x"] = newXString;
                         newPathSegmentDictionary[@"y"] = newYString;
+                        
+                        newPathSegmentDictionary[@"x1"] = newX1String;
+                        newPathSegmentDictionary[@"y1"] = newY1String;
+                        
+                        newPathSegmentDictionary[@"x2"] = newXString;
+                        newPathSegmentDictionary[@"y2"] = newYString;
                     }
                 }
-                else if ([selectedPathMode isEqualToString:@"Line To"] == YES)
+                else if (previousPathCommand == 'c')
                 {
                     if (self.useRelativePathCoordinates == YES)
                     {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                        NSString * newRelYString = [self allocFloatString:newRelY];
+                        NSString * previousXString = pathSegmentDictionary[@"x"];
+                        NSString * previousYString = pathSegmentDictionary[@"y"];
+                        NSString * previousX2String = pathSegmentDictionary[@"x2"];
+                        NSString * previousY2String = pathSegmentDictionary[@"y2"];
                     
-                        newPathSegmentDictionary[@"command"] = @"l";
+                        float previousX = previousXString.floatValue;
+                        float previousY = previousYString.floatValue;
+                        float previousX2 = previousX2String.floatValue;
+                        float previousY2 = previousY2String.floatValue;
                         
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                        newPathSegmentDictionary[@"y"] = newRelYString;
+                        float deltaX = previousX - previousX2;
+                        float deltaY = previousY - previousY2;
+                        
+                        NSString * newX1String = [self allocFloatString:deltaX];
+                        NSString * newY1String = [self allocFloatString:deltaY];
+
+                        newPathSegmentDictionary[@"command"] = @"c";
+                        
+                        newPathSegmentDictionary[@"x1"] = newX1String;
+                        newPathSegmentDictionary[@"y1"] = newY1String;
+                        
+                        newPathSegmentDictionary[@"x2"] = @"0";
+                        newPathSegmentDictionary[@"y2"] = @"0";
+                        
+                        newPathSegmentDictionary[@"x"] = @"0";
+                        newPathSegmentDictionary[@"y"] = @"0";
                     }
                     else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"L";
-                        
-                        newPathSegmentDictionary[@"x"] = newXString;
-                        newPathSegmentDictionary[@"y"] = newYString;
-                    }
-                }
-                else if ([selectedPathMode isEqualToString:@"Horizontal Line"] == YES)
-                {
-                    if (self.useRelativePathCoordinates == YES)
-                    {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                    
-                        newPathSegmentDictionary[@"command"] = @"h";
-                        
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                    }
-                    else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"H";
-                        
-                        newPathSegmentDictionary[@"x"] = newXString;
-                    }
-                }
-                else if ([selectedPathMode isEqualToString:@"Vertical Line"] == YES)
-                {
-                    if (self.useRelativePathCoordinates == YES)
-                    {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelYString = [self allocFloatString:newRelY];
-                    
-                        newPathSegmentDictionary[@"command"] = @"v";
-                        
-                        newPathSegmentDictionary[@"y"] = newRelYString;
-                    }
-                    else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"V";
-                        
-                        newPathSegmentDictionary[@"y"] = newYString;
-                    }
-                }
-                else if ([selectedPathMode isEqualToString:@"Cubic Curve"] == YES)
-                {
-                    if (previousPathCommand == 'C')
                     {
                         NSString * previousX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
                         NSString * previousY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
@@ -3437,116 +3617,51 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         
                         float newX1 = previousX + deltaX;
                         float newY1 = previousY + deltaY;
+
+                        NSString * newX1String = [self allocFloatString:newX1];
+                        NSString * newY1String = [self allocFloatString:newY1];
+                    
+                        newPathSegmentDictionary[@"command"] = @"C";
                         
-                        if (self.curveSegmentContinuity == NO)
-                        {
-                            newX1 = previousX;
-                            newY1 = previousY;
-                        }
+                        newPathSegmentDictionary[@"x"] = newXString;
+                        newPathSegmentDictionary[@"y"] = newYString;
                         
-                        if (self.useRelativePathCoordinates == YES)
-                        {
-                            NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                            float relX = newX1 - currentPathPoint.x;
-                            float relY = newY1 - currentPathPoint.y;
+                        newPathSegmentDictionary[@"x1"] = newX1String;
+                        newPathSegmentDictionary[@"y1"] = newY1String;
                         
-                            NSString * relX1String = [self allocFloatString:relX];
-                            NSString * relY1String = [self allocFloatString:relY];
-                        
-                            newPathSegmentDictionary[@"command"] = @"c";
-                            
-                            newPathSegmentDictionary[@"x1"] = relX1String;
-                            newPathSegmentDictionary[@"y1"] = relY1String;
-                            
-                            newPathSegmentDictionary[@"x2"] = relX1String;
-                            newPathSegmentDictionary[@"y2"] = relY1String;
-                            
-                            newPathSegmentDictionary[@"x"] = relX1String;
-                            newPathSegmentDictionary[@"y"] = relY1String;
-                        }
-                        else
-                        {
-                            NSString * newX1String = [self allocFloatString:newX1];
-                            NSString * newY1String = [self allocFloatString:newY1];
-                        
-                            newPathSegmentDictionary[@"command"] = @"C";
-                            
-                            newPathSegmentDictionary[@"x"] = newXString;
-                            newPathSegmentDictionary[@"y"] = newYString;
-                            
-                            newPathSegmentDictionary[@"x1"] = newX1String;
-                            newPathSegmentDictionary[@"y1"] = newY1String;
-                            
-                            newPathSegmentDictionary[@"x2"] = newXString;
-                            newPathSegmentDictionary[@"y2"] = newYString;
-                        }
+                        newPathSegmentDictionary[@"x2"] = newXString;
+                        newPathSegmentDictionary[@"y2"] = newYString;
                     }
-                    else if (previousPathCommand == 'c')
+                }
+                else
+                {
+                    // set starting point for first cubic path segment
+                    if ((previousPathCommand == 'Z') || (previousPathCommand == 'z'))
                     {
                         if (self.useRelativePathCoordinates == YES)
                         {
-                            NSString * previousXString = pathSegmentDictionary[@"x"];
-                            NSString * previousYString = pathSegmentDictionary[@"y"];
-                            NSString * previousX2String = pathSegmentDictionary[@"x2"];
-                            NSString * previousY2String = pathSegmentDictionary[@"y2"];
+                            NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                            float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                            float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                            
+                            NSString * newRelXString = [self allocFloatString:newRelX];
+                            NSString * newRelYString = [self allocFloatString:newRelY];
                         
-                            float previousX = previousXString.floatValue;
-                            float previousY = previousYString.floatValue;
-                            float previousX2 = previousX2String.floatValue;
-                            float previousY2 = previousY2String.floatValue;
+                            newPathSegmentDictionary[@"command"] = @"m";
                             
-                            float deltaX = previousX - previousX2;
-                            float deltaY = previousY - previousY2;
-                            
-                            NSString * newX1String = [self allocFloatString:deltaX];
-                            NSString * newY1String = [self allocFloatString:deltaY];
-
-                            newPathSegmentDictionary[@"command"] = @"c";
-                            
-                            newPathSegmentDictionary[@"x1"] = newX1String;
-                            newPathSegmentDictionary[@"y1"] = newY1String;
-                            
-                            newPathSegmentDictionary[@"x2"] = @"0";
-                            newPathSegmentDictionary[@"y2"] = @"0";
-                            
-                            newPathSegmentDictionary[@"x"] = @"0";
-                            newPathSegmentDictionary[@"y"] = @"0";
+                            newPathSegmentDictionary[@"x"] = newRelXString;
+                            newPathSegmentDictionary[@"y"] = newRelYString;
                         }
                         else
                         {
-                            NSString * previousX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
-                            NSString * previousY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
-
-                            float previousX2 = previousX2String.floatValue;
-                            float previousY2 = previousY2String.floatValue;
-
-                            float previousX = previousXString.floatValue;
-                            float previousY = previousYString.floatValue;
-
-                            float deltaX = previousX - previousX2;
-                            float deltaY = previousY - previousY2;
-                            
-                            float newX1 = previousX + deltaX;
-                            float newY1 = previousY + deltaY;
-
-                            NSString * newX1String = [self allocFloatString:newX1];
-                            NSString * newY1String = [self allocFloatString:newY1];
-                        
-                            newPathSegmentDictionary[@"command"] = @"C";
+                            newPathSegmentDictionary[@"command"] = @"M";
                             
                             newPathSegmentDictionary[@"x"] = newXString;
                             newPathSegmentDictionary[@"y"] = newYString;
-                            
-                            newPathSegmentDictionary[@"x1"] = newX1String;
-                            newPathSegmentDictionary[@"y1"] = newY1String;
-                            
-                            newPathSegmentDictionary[@"x2"] = newXString;
-                            newPathSegmentDictionary[@"y2"] = newYString;
                         }
                     }
                     else
                     {
-                        // set starting point for first cubic path segment
                         if (self.useRelativePathCoordinates == YES)
                         {
                             NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
@@ -3582,199 +3697,195 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         }
                     }
                 }
-                else if ([selectedPathMode isEqualToString:@"Smooth Cubic Curve"] == YES)
+            }
+            else if ([selectedPathMode isEqualToString:@"Smooth Cubic Curve"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
                 {
-                    if (self.useRelativePathCoordinates == YES)
-                    {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                        NSString * newRelYString = [self allocFloatString:newRelY];
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
                     
-                        newPathSegmentDictionary[@"command"] = @"s";
-                        
-                        newPathSegmentDictionary[@"x2"] = newRelXString;
-                        newPathSegmentDictionary[@"y2"] = newRelYString;
-                                        
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                        newPathSegmentDictionary[@"y"] = newRelYString;
-                    }
-                    else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"S";
-                        
-                        newPathSegmentDictionary[@"x2"] = newXString;
-                        newPathSegmentDictionary[@"y2"] = newYString;
-                        
-                        newPathSegmentDictionary[@"x"] = newXString;
-                        newPathSegmentDictionary[@"y"] = newYString;
-                    }
-                }
-                else if ([selectedPathMode isEqualToString:@"Quadratic Curve"] == YES)
-                {
-                    if (self.useRelativePathCoordinates == YES)
-                    {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                        NSString * newRelYString = [self allocFloatString:newRelY];
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"s";
                     
-                        newPathSegmentDictionary[@"command"] = @"q";
-                        
-                        newPathSegmentDictionary[@"x1"] = newRelXString;
-                        newPathSegmentDictionary[@"y1"] = newRelYString;
-                                        
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                        newPathSegmentDictionary[@"y"] = newRelYString;
-                    }
-                    else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"Q";
-                        
-                        newPathSegmentDictionary[@"x1"] = newXString;
-                        newPathSegmentDictionary[@"y1"] = newYString;
-                        
-                        newPathSegmentDictionary[@"x"] = newXString;
-                        newPathSegmentDictionary[@"y"] = newYString;
-                    }
+                    newPathSegmentDictionary[@"x2"] = newRelXString;
+                    newPathSegmentDictionary[@"y2"] = newRelYString;
+                                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                    newPathSegmentDictionary[@"y"] = newRelYString;
                 }
-                else if ([selectedPathMode isEqualToString:@"Smooth Quadratic Curve"] == YES)
+                else
                 {
-                    if (self.useRelativePathCoordinates == YES)
-                    {
-                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                        
-                        NSString * newRelXString = [self allocFloatString:newRelX];
-                        NSString * newRelYString = [self allocFloatString:newRelY];
+                    newPathSegmentDictionary[@"command"] = @"S";
                     
-                        newPathSegmentDictionary[@"command"] = @"t";
-                        
-                        newPathSegmentDictionary[@"x"] = newRelXString;
-                        newPathSegmentDictionary[@"y"] = newRelYString;
-                    }
-                    else
-                    {
-                        newPathSegmentDictionary[@"command"] = @"T";
-                        
-                        newPathSegmentDictionary[@"x"] = newXString;
-                        newPathSegmentDictionary[@"y"] = newYString;
-                    }
-                }
-                else if ([selectedPathMode isEqualToString:@"Elliptical Arc"] == YES)
-                {
-                    if (previousPathCommand == 'A')
-                    {
-                        if (self.useRelativePathCoordinates == YES)
-                        {
-                            NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                            float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                            float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                            
-                            NSString * newRelXString = [self allocFloatString:newRelX];
-                            NSString * newRelYString = [self allocFloatString:newRelY];
-                            
-                            newPathSegmentDictionary[@"command"] = @"a";
-                            
-                            newPathSegmentDictionary[@"x"] = newRelXString;
-                            newPathSegmentDictionary[@"y"] = newRelYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                        else
-                        {
-                            newPathSegmentDictionary[@"command"] = @"A";
-                            
-                            newPathSegmentDictionary[@"x"] = newXString;
-                            newPathSegmentDictionary[@"y"] = newYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                    }
-                    else if (previousPathCommand == 'a')
-                    {
-                        if (self.useRelativePathCoordinates == YES)
-                        {
-                            float newRelX = 0;
-                            float newRelY = 0;
-                            
-                            NSString * newRelXString = [self allocFloatString:newRelX];
-                            NSString * newRelYString = [self allocFloatString:newRelY];
-                            
-                            newPathSegmentDictionary[@"command"] = @"a";
-                            
-                            newPathSegmentDictionary[@"x"] = newRelXString;
-                            newPathSegmentDictionary[@"y"] = newRelYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                        else
-                        {
-                            newPathSegmentDictionary[@"command"] = @"A";
-                            
-                            newPathSegmentDictionary[@"x"] = newXString;
-                            newPathSegmentDictionary[@"y"] = newYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                    }
-                    else
-                    {
-                        // setting first point for elliptical arc
-                        if (self.useRelativePathCoordinates == YES)
-                        {
-                            NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                            float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                            float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
-                            
-                            NSString * newRelXString = [self allocFloatString:newRelX];
-                            NSString * newRelYString = [self allocFloatString:newRelY];
-                            
-                            newPathSegmentDictionary[@"command"] = @"a";
-                            
-                            newPathSegmentDictionary[@"x"] = newRelXString;
-                            newPathSegmentDictionary[@"y"] = newRelYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                        else
-                        {
-                            newPathSegmentDictionary[@"command"] = @"A";
-                            
-                            newPathSegmentDictionary[@"x"] = newXString;
-                            newPathSegmentDictionary[@"y"] = newYString;
-                            newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
-                            newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
-                            newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
-                            newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
-                            newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
-                        }
-                    }
+                    newPathSegmentDictionary[@"x2"] = newXString;
+                    newPathSegmentDictionary[@"y2"] = newYString;
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                    newPathSegmentDictionary[@"y"] = newYString;
                 }
             }
-            else
+            else if ([selectedPathMode isEqualToString:@"Quadratic Curve"] == YES)
             {
-                extendPathSuccess = NO;
+                if (self.useRelativePathCoordinates == YES)
+                {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"q";
+                    
+                    newPathSegmentDictionary[@"x1"] = newRelXString;
+                    newPathSegmentDictionary[@"y1"] = newRelYString;
+                                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                    newPathSegmentDictionary[@"y"] = newRelYString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"Q";
+                    
+                    newPathSegmentDictionary[@"x1"] = newXString;
+                    newPathSegmentDictionary[@"y1"] = newYString;
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                    newPathSegmentDictionary[@"y"] = newYString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Smooth Quadratic Curve"] == YES)
+            {
+                if (self.useRelativePathCoordinates == YES)
+                {
+                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                    float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    
+                    NSString * newRelXString = [self allocFloatString:newRelX];
+                    NSString * newRelYString = [self allocFloatString:newRelY];
+                
+                    newPathSegmentDictionary[@"command"] = @"t";
+                    
+                    newPathSegmentDictionary[@"x"] = newRelXString;
+                    newPathSegmentDictionary[@"y"] = newRelYString;
+                }
+                else
+                {
+                    newPathSegmentDictionary[@"command"] = @"T";
+                    
+                    newPathSegmentDictionary[@"x"] = newXString;
+                    newPathSegmentDictionary[@"y"] = newYString;
+                }
+            }
+            else if ([selectedPathMode isEqualToString:@"Elliptical Arc"] == YES)
+            {
+                if (previousPathCommand == 'A')
+                {
+                    if (self.useRelativePathCoordinates == YES)
+                    {
+                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                        
+                        NSString * newRelXString = [self allocFloatString:newRelX];
+                        NSString * newRelYString = [self allocFloatString:newRelY];
+                        
+                        newPathSegmentDictionary[@"command"] = @"a";
+                        
+                        newPathSegmentDictionary[@"x"] = newRelXString;
+                        newPathSegmentDictionary[@"y"] = newRelYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                    else
+                    {
+                        newPathSegmentDictionary[@"command"] = @"A";
+                        
+                        newPathSegmentDictionary[@"x"] = newXString;
+                        newPathSegmentDictionary[@"y"] = newYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                }
+                else if (previousPathCommand == 'a')
+                {
+                    if (self.useRelativePathCoordinates == YES)
+                    {
+                        float newRelX = 0;
+                        float newRelY = 0;
+                        
+                        NSString * newRelXString = [self allocFloatString:newRelX];
+                        NSString * newRelYString = [self allocFloatString:newRelY];
+                        
+                        newPathSegmentDictionary[@"command"] = @"a";
+                        
+                        newPathSegmentDictionary[@"x"] = newRelXString;
+                        newPathSegmentDictionary[@"y"] = newRelYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                    else
+                    {
+                        newPathSegmentDictionary[@"command"] = @"A";
+                        
+                        newPathSegmentDictionary[@"x"] = newXString;
+                        newPathSegmentDictionary[@"y"] = newYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                }
+                else
+                {
+                    // setting first point for elliptical arc
+                    if (self.useRelativePathCoordinates == YES)
+                    {
+                        NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
+                        float newRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                        float newRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                        
+                        NSString * newRelXString = [self allocFloatString:newRelX];
+                        NSString * newRelYString = [self allocFloatString:newRelY];
+                        
+                        newPathSegmentDictionary[@"command"] = @"a";
+                        
+                        newPathSegmentDictionary[@"x"] = newRelXString;
+                        newPathSegmentDictionary[@"y"] = newRelYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                    else
+                    {
+                        newPathSegmentDictionary[@"command"] = @"A";
+                        
+                        newPathSegmentDictionary[@"x"] = newXString;
+                        newPathSegmentDictionary[@"y"] = newYString;
+                        newPathSegmentDictionary[@"x-axis-rotation"] = self.xAxisRotationString;
+                        newPathSegmentDictionary[@"large-arc-flag"] = self.largeArcFlagString;
+                        newPathSegmentDictionary[@"sweep-flag"] = self.sweepFlagString;
+                        newPathSegmentDictionary[@"rx"] = self.pathRadiusXString;
+                        newPathSegmentDictionary[@"ry"] = self.pathRadiusYString;
+                    }
+                }
             }
         }
         else

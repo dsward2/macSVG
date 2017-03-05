@@ -926,7 +926,7 @@
 -(void) handleMouseDownEvent:(DOMEvent *)event
 {
     //NSLog(@"handleMouseDownEvent");
-
+    
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
 
     if (mouseEvent.button == 0) // left mouse click

@@ -337,20 +337,34 @@
     
     if (pathSegmentsArrayCount > 0)
     {
-        NSMutableArray * closePathSegmentDictionary = [pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1];
-    
+        CGEventRef event = CGEventCreate(NULL);
+        CGEventFlags modifiers = CGEventGetFlags(event);
+        CFRelease(event);
+        //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+        CGEventFlags flags = kCGEventFlagMaskAlternate;   // check for option key
+
+        NSMutableArray * closePathSegmentDictionary = [[pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1] mutableCopy];
         [pathSegmentsArray addObject:closePathSegmentDictionary];   // add a second the Z or z segment, the final one will be removed
-        
+
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
         [self updateWithPathSegmentsArray:pathSegmentsArray];
 
-        MacSVGDocumentWindowController * macSVGDocumentWindowController =
-                [self.macSVGDocument macSVGDocumentWindowController];
+        if ((modifiers & flags) == 0)
+        {
+            // option key is not pressed
+            MacSVGDocumentWindowController * macSVGDocumentWindowController =
+                    [self.macSVGDocument macSVGDocumentWindowController];
 
-        [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
-        
-        [self updateDocumentViews];
+            [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
+            
+            [self updateDocumentViews];
+        }
+        else
+        {
+            // option key is  pressed
+            [self extendPathButtonAction:self];
+        }
     }
 }
 
