@@ -3188,6 +3188,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'A':     // elliptical arc absolute
                 {
+                    // vary the arc x and y radius with mouse dragging
                     NSString * xString = pathSegmentDictionary[@"x"];
                     NSString * yString = pathSegmentDictionary[@"y"];
                     
@@ -3197,41 +3198,73 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float deltaX = domMouseEventsController.currentMousePoint.x - x;
                     float deltaY = domMouseEventsController.currentMousePoint.y - y;
                     
-                    float newX = x - deltaX;
-                    float newY = y - deltaY;
-                                    
-                    NSString * newXString = [self allocFloatString:newX];
-                    NSString * newYString = [self allocFloatString:newY];
+                    deltaX = fabs(deltaX);
+                    deltaY = fabs(deltaY);
 
-                    pathSegmentDictionary[@"x"] = newXString;
-                    pathSegmentDictionary[@"y"] = newYString;
+                    CGEventRef event = CGEventCreate(NULL);
+                    CGEventFlags modifiers = CGEventGetFlags(event);
+                    CFRelease(event);
+                    //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+                    CGEventFlags flags = (kCGEventFlagMaskAlternate);   // check for option key
+                    if ((modifiers & flags) == 0)
+                    {
+                        // option key not pressed
+                        if (deltaX > deltaY)
+                        {
+                            deltaY = deltaX;
+                        }
+                        else
+                        {
+                            deltaX = deltaY;
+                        }
+                    }
+
+                    NSString * radiusXString = [self allocFloatString:deltaX];
+                    NSString * radiusYString = [self allocFloatString:deltaY];
+                    
+                    pathSegmentDictionary[@"rx"] = radiusXString;    // radius x
+                    pathSegmentDictionary[@"ry"] = radiusYString;    // radius y
 
                     break;
                 }
                 case 'a':     // elliptical arc relative
                 {
-                    NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
-
+                    // vary the arc x and y radius with mouse dragging
                     NSString * xString = pathSegmentDictionary[@"x"];
                     NSString * yString = pathSegmentDictionary[@"y"];
-
+                    
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float mouseRelX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float mouseRelY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float deltaX = domMouseEventsController.currentMousePoint.x - x;
+                    float deltaY = domMouseEventsController.currentMousePoint.y - y;
                     
-                    float deltaX = x - mouseRelX ;
-                    float deltaY = y - mouseRelY;
-                   
-                    float newX = x + deltaX;
-                    float newY = y + deltaY;
-                    
-                    NSString * newXString = [self allocFloatString:newX];
-                    NSString * newYString = [self allocFloatString:newY];
+                    deltaX = fabs(deltaX);
+                    deltaY = fabs(deltaY);
 
-                    pathSegmentDictionary[@"x"] = newXString;
-                    pathSegmentDictionary[@"y"] = newYString;
+                    CGEventRef event = CGEventCreate(NULL);
+                    CGEventFlags modifiers = CGEventGetFlags(event);
+                    CFRelease(event);
+                    //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+                    CGEventFlags flags = (kCGEventFlagMaskAlternate);   // check for option key
+                    if ((modifiers & flags) == 0)
+                    {
+                        // option key not pressed
+                        if (deltaX > deltaY)
+                        {
+                            deltaY = deltaX;
+                        }
+                        else
+                        {
+                            deltaX = deltaY;
+                        }
+                    }
+
+                    NSString * radiusXString = [self allocFloatString:deltaX];
+                    NSString * radiusYString = [self allocFloatString:deltaY];
+                    
+                    pathSegmentDictionary[@"rx"] = radiusXString;    // radius x
+                    pathSegmentDictionary[@"ry"] = radiusYString;    // radius y
 
                     break;
                 }
