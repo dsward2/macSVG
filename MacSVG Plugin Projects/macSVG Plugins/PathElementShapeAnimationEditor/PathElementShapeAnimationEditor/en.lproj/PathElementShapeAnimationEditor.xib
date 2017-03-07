@@ -253,7 +253,7 @@ DQ
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="PathID" width="74" minWidth="40" maxWidth="1000" id="Nrh-kx-LHw">
+                                    <tableColumn identifier="PathID" editable="NO" width="74" minWidth="40" maxWidth="1000" id="Nrh-kx-LHw">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Path ID">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -266,7 +266,7 @@ DQ
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
-                                    <tableColumn identifier="PathLocation" width="96" minWidth="10" maxWidth="3.4028234663852886e+38" id="SZE-hY-wtg">
+                                    <tableColumn identifier="PathLocation" editable="NO" width="96" minWidth="10" maxWidth="3.4028234663852886e+38" id="SZE-hY-wtg">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Location">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -314,7 +314,7 @@ DQ
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="PathIndex" width="40" minWidth="40" maxWidth="1000" id="aPV-bg-mup">
+                                    <tableColumn identifier="PathIndex" editable="NO" width="40" minWidth="40" maxWidth="1000" id="aPV-bg-mup">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="#">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -327,7 +327,7 @@ DQ
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
-                                    <tableColumn identifier="PathData" width="130" minWidth="10" maxWidth="3.4028234663852886e+38" id="M7c-JD-UWY">
+                                    <tableColumn identifier="PathData" editable="NO" width="130" minWidth="10" maxWidth="3.4028234663852886e+38" id="M7c-JD-UWY">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Path Data">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
