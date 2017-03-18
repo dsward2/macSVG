@@ -5,8 +5,6 @@
 //  Created by Douglas Ward on 7/9/13.
 //
 //
-//  *** NOTE 1: this unit should be marked "-fno-objc-arc" for no automatic reference counting at compile time ***
-//  *** NOTE 2: disregard Note 1 ***
 
 #import "WebKitInterface.h"
 #import <WebKit/WebKit.h>
