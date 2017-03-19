@@ -22,7 +22,10 @@
 @property (readonly, strong) id svgWebKitController;                      // returns SVGWebKitController
 @property (readonly, strong) id svgWebView;                               // returns SVGWebView
 @property (readonly) CGFloat zoomFactor;
-@property (readonly, strong) id svgPathEditorSelectedPathElement;           // returns NSXMLElement
+
+//@property (readonly, strong) id svgPathEditorSelectedPathElement;           // returns NSXMLElement
+- (id)svgPathEditorSelectedPathElement;  // returns NSXMLElement
+
 - (void)svgPathEditorSetSelectedPathElement:(NSXMLElement *)aSelectedPathElement;
 @property (readonly, strong) id mouseEventsControllerActiveDOMElement;    // returns DOMElement
 @property (copy) NSMutableArray *pathSegmentsArray;          // array of dictionaries for path segments

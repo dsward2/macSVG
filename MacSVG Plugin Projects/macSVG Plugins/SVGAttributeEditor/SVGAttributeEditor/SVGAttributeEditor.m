@@ -7,7 +7,6 @@
 //
 
 #import "SVGAttributeEditor.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 
 @implementation SVGAttributeEditor
 

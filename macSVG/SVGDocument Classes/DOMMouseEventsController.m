@@ -20,12 +20,11 @@
 #import "AnimationTimelineView.h"
 #import "SVGXMLDOMSelectionManager.h"
 #import "SelectedElementsManager.h"
-#import "WebKitInterface.h"
 #import "MacSVGAppDelegate.h"
 #import "DOMSelectionControlsManager.h"
 #import "EditorUIFrameController.h"
 #import "ElementEditorPlugInController.h"
-#import "MacSVGPlugin/MacSVGPlugin.h"
+#import <MacSVGPlugin/MacSVGPlugin.h>
 
 #import "DOMSelectionCacheRecord.h"
 
@@ -532,7 +531,7 @@
             
             if (self.svgPathEditor.closePathAutomatically == YES)
             {
-                id currentPlugin = macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
+                MacSVGPlugin * currentPlugin = macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
                 
                 NSString * pluginName = [currentPlugin pluginName];
                 

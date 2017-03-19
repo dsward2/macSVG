@@ -7,8 +7,6 @@
 //
 
 #import "SVGElementEditor.h"
-#import "MacSVGPlugin/MacSVGPlugin.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 
 @implementation SVGElementEditor
 

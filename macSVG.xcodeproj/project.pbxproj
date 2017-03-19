@@ -21,6 +21,8 @@
 		0E10CC0414B11F550072B18D /* TextEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10CC0314B11F550072B18D /* TextEditorController.m */; };
 		0E12A57F1E7D1BAC005BA053 /* animate_path_of_elliptical_arc_segments.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E299D151E695EFB00DCC063 /* animate_path_of_elliptical_arc_segments.svg */; };
 		0E12A5831E7D1C0E005BA053 /* path_element_with_subpath.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E12CD5E1E6A67B700736B62 /* path_element_with_subpath.svg */; };
+		0E12A6121E7EB1A1005BA053 /* ConvertPathsDialog.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0E12A6111E7EB1A1005BA053 /* ConvertPathsDialog.plugin */; };
+		0E12A6131E7EB1BA005BA053 /* ConvertPathsDialog.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E12A6111E7EB1A1005BA053 /* ConvertPathsDialog.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E1C05681D570331004E7B62 /* macsvg_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C05661D5702CE004E7B62 /* macsvg_example.svg */; };
 		0E1C056A1D5722AE004E7B62 /* text_on_a_path.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C05691D57222B004E7B62 /* text_on_a_path.svg */; };
 		0E1C056C1D5726FE004E7B62 /* animated_text_on_a_path.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C056B1D572604004E7B62 /* animated_text_on_a_path.svg */; };
@@ -727,6 +729,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0E12A5FC1E7E828E005BA053 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E12A5EF1E7E828D005BA053;
+			remoteInfo = ConvertPathsDialog;
+		};
+		0E12A6141E7EB1CA005BA053 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E12A5EE1E7E828D005BA053;
+			remoteInfo = ConvertPathsDialog;
+		};
 		0E3F0ECB1E442C58001FDDD7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */;
@@ -1014,6 +1030,7 @@
 				0EF29D991D7955BC00267844 /* AnimateTransformElementEditor.plugin in Copy Plugins Files */,
 				0E81A9761D34F52900EA824A /* BezierCircleGenerator.plugin in Copy Plugins Files */,
 				0E47E11917ECCABE00C029DD /* ColorAttributeEditor.plugin in Copy Plugins Files */,
+				0E12A6131E7EB1BA005BA053 /* ConvertPathsDialog.plugin in Copy Plugins Files */,
 				0E47E11A17ECCABE00C029DD /* CoordinatesAttributeEditor.plugin in Copy Plugins Files */,
 				0E47E11B17ECCABE00C029DD /* ImageElementEditor.plugin in Copy Plugins Files */,
 				0E47E11D17ECCABE00C029DD /* PathElementEditor.plugin in Copy Plugins Files */,
@@ -1636,6 +1653,8 @@
 		0E10816C14C7691C00908087 /* svg-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "svg-logo.png"; sourceTree = "<group>"; };
 		0E10CC0214B11F550072B18D /* TextEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditorController.h; sourceTree = "<group>"; };
 		0E10CC0314B11F550072B18D /* TextEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEditorController.m; sourceTree = "<group>"; };
+		0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ConvertPathsDialog.xcodeproj; path = ConvertPathsDialog/ConvertPathsDialog.xcodeproj; sourceTree = "<group>"; };
+		0E12A6111E7EB1A1005BA053 /* ConvertPathsDialog.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ConvertPathsDialog.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E12CD5E1E6A67B700736B62 /* path_element_with_subpath.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_element_with_subpath.svg; sourceTree = "<group>"; };
 		0E1996B1142E7E3500A3E0AC /* crosshair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshair.png; sourceTree = "<group>"; };
 		0E1ABD441D70DB1300757E7B /* Gear.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Gear.svg; path = "macSVG/Resources/Tools Icons/Tools SVG Design/Gear.svg"; sourceTree = SOURCE_ROOT; };
@@ -2587,6 +2606,14 @@
 			path = "File Icons";
 			sourceTree = "<group>";
 		};
+		0E12A5F91E7E828D005BA053 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E12A5FD1E7E828E005BA053 /* ConvertPathsDialog.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		0E1688E9177C02A700021E1E /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -2595,6 +2622,7 @@
 				0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */,
 				0E81A9741D34F4D300EA824A /* BezierCircleGenerator.plugin */,
 				0EEFBB2517EA2C03006887CA /* ColorAttributeEditor.plugin */,
+				0E12A6111E7EB1A1005BA053 /* ConvertPathsDialog.plugin */,
 				0EEFBB2617EA2C03006887CA /* CoordinatesAttributeEditor.plugin */,
 				0EEFBB2717EA2C03006887CA /* ImageElementEditor.plugin */,
 				0EEFBB2917EA2C03006887CA /* PathElementEditor.plugin */,
@@ -3798,6 +3826,7 @@
 				0EA59C601E442BF30031EE60 /* AnimateTransformElementEditor.xcodeproj */,
 				0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */,
 				0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */,
+				0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */,
 				0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */,
 				0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */,
 				0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */,
@@ -4154,6 +4183,7 @@
 				0E3F0F2A1E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F2C1E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F2E1E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E12A6151E7EB1CA005BA053 /* PBXTargetDependency */,
 				0E3F0F301E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F321E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F361E442C9E001FDDD7 /* PBXTargetDependency */,
@@ -4229,6 +4259,10 @@
 					ProjectRef = 0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */;
 				},
 				{
+					ProductGroup = 0E12A5F91E7E828D005BA053 /* Products */;
+					ProjectRef = 0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */;
+				},
+				{
 					ProductGroup = 0E3F0EDC1E442C59001FDDD7 /* Products */;
 					ProjectRef = 0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */;
 				},
@@ -4289,6 +4323,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0E12A5FD1E7E828E005BA053 /* ConvertPathsDialog.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ConvertPathsDialog.plugin;
+			remoteRef = 0E12A5FC1E7E828E005BA053 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		0E3F0ECC1E442C58001FDDD7 /* ImageElementEditor.plugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -4448,6 +4489,7 @@
 				0E1F75261D83C132008AFEAB /* plugin.png in Resources */,
 				0E4EA2E61D40999A00C5145C /* svg_attributes_help.txt in Resources */,
 				0E1F75231D83C132008AFEAB /* line.png in Resources */,
+				0E12A6121E7EB1A1005BA053 /* ConvertPathsDialog.plugin in Resources */,
 				0EA2B4CC1D9C96FC00100631 /* MainMenu.xib in Resources */,
 				0E4EA2E91D40ADAB00C5145C /* svg_presentation_attributes_help.txt in Resources */,
 				0E1F75251D83C132008AFEAB /* path-pdf.pdf in Resources */,
@@ -4626,6 +4668,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0E12A6151E7EB1CA005BA053 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ConvertPathsDialog;
+			targetProxy = 0E12A6141E7EB1CA005BA053 /* PBXContainerItemProxy */;
+		};
 		0E3F0F241E442C9E001FDDD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MacSVGPlugin;
@@ -4906,6 +4953,7 @@
 		0EB6639A14286399003723F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
@@ -4939,6 +4987,7 @@
 		0EB6639B14286399003723F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;

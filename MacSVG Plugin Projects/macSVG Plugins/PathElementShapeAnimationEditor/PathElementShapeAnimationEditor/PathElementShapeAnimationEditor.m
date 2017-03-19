@@ -9,7 +9,6 @@
 #import "PathElementShapeAnimationEditor.h"
 #import "AnimatePopoverViewController.h"
 #import "AnimationPathsPopoverViewController.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 
 @implementation PathElementShapeAnimationEditor
 

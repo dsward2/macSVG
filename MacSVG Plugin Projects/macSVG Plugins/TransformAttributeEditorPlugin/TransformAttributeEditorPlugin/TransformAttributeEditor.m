@@ -15,8 +15,6 @@
 
 #import "TransformAttributeEditor.h"
 #import <WebKit/WebKit.h>
-#import "WebKitInterface.h"
-#import "MacSVGPluginCallbacks.h"
 
 
 #define transformToolModeNone 0

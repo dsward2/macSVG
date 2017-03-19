@@ -28,7 +28,6 @@
 
 #import "PathSegmentEditorPopoverViewController.h"
 #import "PathElementEditor.h"
-#import "MacSVGPluginCallbacks.h"
 
 #import <WebKit/WebKit.h>
 

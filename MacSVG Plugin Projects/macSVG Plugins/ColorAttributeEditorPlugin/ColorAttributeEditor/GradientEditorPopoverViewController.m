@@ -8,7 +8,6 @@
 
 #import "GradientEditorPopoverViewController.h"
 #import "ColorAttributeEditor.h"
-#import "MacSVGPluginCallbacks.h"
 
 @interface GradientEditorPopoverViewController ()
 

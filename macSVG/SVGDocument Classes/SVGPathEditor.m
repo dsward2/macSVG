@@ -12,13 +12,12 @@
 #import "MacSVGDocumentWindowController.h"
 #import "DOMMouseEventsController.h"
 #import "SVGXMLDOMSelectionManager.h"
-#import "WebKitInterface.h"
 #import "MacSVGAppDelegate.h"
 #import "SelectedElementsManager.h"
 #import "ToolSettingsPopoverViewController.h"
 #import "EditorUIFrameController.h"
 #import "ElementEditorPluginController.h"
-#import "MacSVGPlugin/MacSVGPlugin.h"
+#import <MacSVGPlugin/MacSVGPlugin.h>
 #import "MacSVGDocument.h"
 #import "DOMSelectionControlsManager.h"
 
@@ -2526,7 +2525,7 @@
 
     [pathElement setAttribute:@"d" value:newPathString];
     
-    id currentPlugin = macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
+    MacSVGPlugin * currentPlugin = macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
     
     NSString * pluginName = [currentPlugin pluginName];
     

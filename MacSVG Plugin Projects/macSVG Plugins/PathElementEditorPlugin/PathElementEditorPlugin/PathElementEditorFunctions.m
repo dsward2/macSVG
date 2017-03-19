@@ -8,7 +8,6 @@
 
 #import "PathElementEditorFunctions.h"
 #import "PathElementEditor.h"
-#import "MacSVGPluginCallbacks.h"
 
 @implementation PathElementEditorFunctions
 

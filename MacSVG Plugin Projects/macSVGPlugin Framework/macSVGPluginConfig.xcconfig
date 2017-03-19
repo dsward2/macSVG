@@ -17,12 +17,12 @@ CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES
 //:configuration = Debug
 HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../"/**  $(inherited) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
 
-FRAMEWORKS_SEARCH_PATHS = "$(SRCROOT)/../../../"/**
+FRAMEWORKS_SEARCH_PATHS = ${TARGET_BUILD_DIR} "$(SRCROOT)/../../../"/**
 
 //:configuration = Release
 HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../"/**  $(inherited) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
 
-FRAMEWORKS_SEARCH_PATHS = "$(SRCROOT)/../../../"/**
+FRAMEWORKS_SEARCH_PATHS = ${TARGET_BUILD_DIR} "$(SRCROOT)/../../../"/**
 
 
 

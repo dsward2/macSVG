@@ -13,7 +13,7 @@
 		0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05D367178F397B000B910E /* MacSVGPlugin.m */; };
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E05D36F178F397B000B910E /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05D36A178F397B000B910E /* MacSVGPluginView.xib */; };
-		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; };
+		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,7 +145,7 @@
 		0E05D32D178F35C4000B910E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "ArkPhone LLC";
 				TargetAttributes = {
 					0E05D335178F35C4000B910E = {
@@ -292,8 +292,9 @@
 		0E05D35F178F35C5000B910E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -312,8 +313,9 @@
 		0E05D360178F35C5000B910E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

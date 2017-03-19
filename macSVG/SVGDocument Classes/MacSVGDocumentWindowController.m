@@ -28,7 +28,6 @@
 #import "SelectedElementsManager.h"
 #import "WebServerController.h"
 #import "SVGWebView.h"
-#import "WebKitInterface.h"
 #import "SVGPathEditor.h"
 #import "SVGPolylineEditor.h"
 #import "SVGLineEditor.h"
@@ -147,7 +146,7 @@
                 elementsDictionary:elementsDictionary
                 elementContentsDictionary:elementContentsDictionary];
         
-        if (macSVGPlugin.menuPlugIn == YES)
+        if (macSVGPlugin.isMenuPlugIn == YES)
         {
             [self.menuPlugInsArray addObject:macSVGPlugin];
         }

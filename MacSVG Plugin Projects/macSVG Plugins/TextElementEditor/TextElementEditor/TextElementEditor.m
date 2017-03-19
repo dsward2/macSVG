@@ -10,7 +10,6 @@
 #import "TextStylesPopoverViewController.h"
 #import "TextPathPopoverViewController.h"
 #import "TspanPopoverViewController.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
 
 
 @implementation TextElementEditor

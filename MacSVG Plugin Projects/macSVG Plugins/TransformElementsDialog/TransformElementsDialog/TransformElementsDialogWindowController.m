@@ -9,7 +9,6 @@
 #import "TransformElementsDialogWindowController.h"
 #import "TransformElementsDialog.h"
 #import "MacSVGPlugin/MacSVGPluginCallbacks.h"
-#import "WebKitInterface.h"
 #import "SVGWebKitController.h"
 #import "SVGWebView.h"
 
