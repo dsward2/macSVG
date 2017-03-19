@@ -717,7 +717,6 @@
 		0EEE3ABA17B9F1790040846F /* SCPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3AB917B9F1790040846F /* SCPDownload.m */; };
 		0EEE3ABD17BA8B1E0040846F /* CheckeredBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3ABC17BA8B1E0040846F /* CheckeredBackgroundView.m */; };
 		0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3B1017BD4EDB0040846F /* XMLOutlineRowView.m */; };
-		0EEECD261D911D290050AC2F /* Installer.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD251D911D290050AC2F /* Installer.pdf */; };
 		0EEECD281D913A090050AC2F /* macSVG.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EEECD271D913A090050AC2F /* macSVG.svg */; };
 		0EEECD2A1D923BD80050AC2F /* xhtml_with_javascript.xhtml in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */; };
 		0EF29D991D7955BC00267844 /* AnimateTransformElementEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EF29D981D7955B700267844 /* AnimateTransformElementEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -2521,9 +2520,6 @@
 		0EEE3ABC17BA8B1E0040846F /* CheckeredBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CheckeredBackgroundView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EEE3B0F17BD4EDB0040846F /* XMLOutlineRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLOutlineRowView.h; sourceTree = "<group>"; };
 		0EEE3B1017BD4EDB0040846F /* XMLOutlineRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLOutlineRowView.m; sourceTree = "<group>"; };
-		0EEECD0A1D91106B0050AC2F /* Installer.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Installer.svg; sourceTree = "<group>"; };
-		0EEECD0B1D91106B0050AC2F /* Installer.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Installer.tiff; sourceTree = "<group>"; };
-		0EEECD251D911D290050AC2F /* Installer.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Installer.pdf; sourceTree = "<group>"; };
 		0EEECD271D913A090050AC2F /* macSVG.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = macSVG.svg; sourceTree = "<group>"; };
 		0EEECD291D923BBC0050AC2F /* xhtml_with_javascript.xhtml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = xhtml_with_javascript.xhtml; sourceTree = "<group>"; };
 		0EEFBB2417EA2C03006887CA /* AnimateMotionElementEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = AnimateMotionElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3958,9 +3954,6 @@
 				0E1F752F1D83FDCC008AFEAB /* PlayHead.tiff */,
 				0E1F75311D83FDFD008AFEAB /* PlayHeadSelected-Graphite.tiff */,
 				0EB663D01428666B003723F0 /* SvgElementsDictionary.xml */,
-				0EEECD0A1D91106B0050AC2F /* Installer.svg */,
-				0EEECD0B1D91106B0050AC2F /* Installer.tiff */,
-				0EEECD251D911D290050AC2F /* Installer.pdf */,
 				0EEECD271D913A090050AC2F /* macSVG.svg */,
 				0EE997D617ED3C2F00F833D1 /* update_executable_path.sh */,
 			);
@@ -4472,7 +4465,6 @@
 				0E1F75291D83C132008AFEAB /* rotate.png in Resources */,
 				0E1F752C1D83C132008AFEAB /* text.png in Resources */,
 				0EA2B4CE1D9C96FC00100631 /* TextDocument.xib in Resources */,
-				0EEECD261D911D290050AC2F /* Installer.pdf in Resources */,
 				0E1F751C1D83C028008AFEAB /* Pause16.png in Resources */,
 				0EA2B4C71D9C96FC00100631 /* AppIcons.iconset in Resources */,
 				0E1F75201D83C132008AFEAB /* ellipse.png in Resources */,
