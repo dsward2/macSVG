@@ -998,6 +998,9 @@
     [self hideAllFields];
     
     [self setPathSegmentData:pathSegmentDictionary];
+    
+    [textfield1 becomeFirstResponder];
 }
+
 
 @end

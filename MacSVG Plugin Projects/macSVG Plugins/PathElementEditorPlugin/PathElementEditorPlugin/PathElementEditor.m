@@ -983,7 +983,7 @@
     [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
     
     (self.pathSegmentEditorPopoverViewController.applyButton).title = @"Apply";
-    
+        
     // configure the preferred position of the popover
     [pathSegmentEditorPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
