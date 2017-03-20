@@ -282,6 +282,15 @@
         if (i < pathStringLength)
         {
             aChar = [pathString characterAtIndex:i];
+            
+            if (i == 0)
+            {
+                if (aChar == 'm')
+                {
+                    // first segment command is 'm' relative Moveto, change it to 'M' absolute Moveto
+                    aChar = 'M';
+                }
+            }
         }
         
         switch (aChar) 
