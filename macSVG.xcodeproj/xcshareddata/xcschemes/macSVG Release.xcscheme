@@ -98,10 +98,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E96DC5017A5AFB90097A267"
-               BuildableName = "ImageElementEditor.plugin"
-               BlueprintName = "ImageElementEditor"
-               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/ImageElementEditor/ImageElementEditor.xcodeproj">
+               BlueprintIdentifier = "0E12A5EE1E7E828D005BA053"
+               BuildableName = "ConvertPathsDialog.plugin"
+               BlueprintName = "ConvertPathsDialog"
+               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/ConvertPathsDialog/ConvertPathsDialog.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -112,10 +112,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0EF29DA81D7B7BF300267844"
-               BuildableName = "IRIReferenceAttributeEditor.plugin"
-               BlueprintName = "IRIReferenceAttributeEditor"
-               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/IRIReferenceAttributeEditor/IRIReferenceAttributeEditor.xcodeproj">
+               BlueprintIdentifier = "0E31630617A871230030D657"
+               BuildableName = "CoordinatesAttributeEditor.plugin"
+               BlueprintName = "CoordinatesAttributeEditor"
+               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/CoordinatesAttributeEditor/CoordinatesAttributeEditor.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0E96DC5017A5AFB90097A267"
+               BuildableName = "ImageElementEditor.plugin"
+               BlueprintName = "ImageElementEditor"
+               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/ImageElementEditor/ImageElementEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -172,6 +186,20 @@
                BuildableName = "PointsAttributeEditor.plugin"
                BlueprintName = "PointsAttributeEditor"
                ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/PointsAttributeEditor/PointsAttributeEditor.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0E2EB20D1E1AFE3B00F36593"
+               BuildableName = "StyleAttributeEditor.plugin"
+               BlueprintName = "StyleAttributeEditor"
+               ReferencedContainer = "container:MacSVG Plugin Projects/macSVG Plugins/StyleAttributeEditor/StyleAttributeEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

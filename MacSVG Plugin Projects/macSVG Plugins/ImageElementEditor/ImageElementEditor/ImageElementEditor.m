@@ -7,6 +7,7 @@
 //
 
 #import "ImageElementEditor.h"
+//#import <MacSVGPlugin/MacSVGPluginCallbacks.h>
 
 @implementation ImageElementEditor
 

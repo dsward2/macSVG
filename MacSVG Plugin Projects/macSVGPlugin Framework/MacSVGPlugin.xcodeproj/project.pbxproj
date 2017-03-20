@@ -12,7 +12,6 @@
 		0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D366178F397B000B910E /* MacSVGPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05D367178F397B000B910E /* MacSVGPlugin.m */; };
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0E05D36F178F397B000B910E /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05D36A178F397B000B910E /* MacSVGPluginView.xib */; };
 		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -29,7 +28,6 @@
 		0E05D366178F397B000B910E /* MacSVGPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacSVGPlugin.h; sourceTree = "<group>"; };
 		0E05D367178F397B000B910E /* MacSVGPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacSVGPlugin.m; sourceTree = "<group>"; };
 		0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGPluginCallbacks.h; path = "../../../macSVG/SVGDocument Classes/MacSVGPluginCallbacks.h"; sourceTree = "<group>"; };
-		0E05D36A178F397B000B910E /* MacSVGPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MacSVGPluginView.xib; sourceTree = "<group>"; };
 		0EDA099A178F52A400E97D95 /* WebKitInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebKitInterface.h; path = "../../../macSVG/Application Classes/WebKitInterface.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,7 +87,6 @@
 				0E05D367178F397B000B910E /* MacSVGPlugin.m */,
 				0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */,
 				0EDA099A178F52A400E97D95 /* WebKitInterface.h */,
-				0E05D36A178F397B000B910E /* MacSVGPluginView.xib */,
 				0E05D340178F35C4000B910E /* Supporting Files */,
 			);
 			path = MacSVGPlugin;
@@ -150,6 +147,7 @@
 				TargetAttributes = {
 					0E05D335178F35C4000B910E = {
 						DevelopmentTeam = MMFBWVS455;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -176,7 +174,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E05D36F178F397B000B910E /* MacSVGPluginView.xib in Resources */,
 				0E05D344178F35C4000B910E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +243,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DmacSVGPluginFrameworkBuild";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -284,6 +282,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CFLAGS = "-DmacSVGPluginFrameworkBuild";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -292,6 +291,7 @@
 		0E05D35F178F35C5000B910E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -303,9 +303,12 @@
 				GCC_PREFIX_HEADER = "MacSVGPlugin/MacSVGPlugin-Prefix.pch";
 				INFOPLIST_FILE = "MacSVGPlugin/MacSVGPlugin-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.MacSVGPlugin;
 				PRODUCT_NAME = MacSVGPlugin;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -313,6 +316,7 @@
 		0E05D360178F35C5000B910E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -324,9 +328,11 @@
 				GCC_PREFIX_HEADER = "MacSVGPlugin/MacSVGPlugin-Prefix.pch";
 				INFOPLIST_FILE = "MacSVGPlugin/MacSVGPlugin-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.MacSVGPlugin;
 				PRODUCT_NAME = MacSVGPlugin;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

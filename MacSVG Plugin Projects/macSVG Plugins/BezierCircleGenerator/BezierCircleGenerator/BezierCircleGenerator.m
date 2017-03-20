@@ -11,7 +11,7 @@
 
 #import "BezierCircleGenerator.h"
 #import "BezierCircleGeneratorWindowController.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
+#import <MacSVGPlugin/MacSVGPluginCallbacks.h>
 
 @implementation BezierCircleGenerator
 

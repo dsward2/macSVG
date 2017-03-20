@@ -8,7 +8,7 @@
 
 #import "StyleAttributeEditor.h"
 #import "StylePropertiesTableRowView.h"
-#import "MacSVGPlugin/MacSVGPluginCallbacks.h"
+#import <MacSVGPlugin/MacSVGPluginCallbacks.h>
 #import "MacSVGDocumentWindowController.h"
 #import "SVGWebKitController.h"
 #import "StylePropertiesTableRowView.h"
