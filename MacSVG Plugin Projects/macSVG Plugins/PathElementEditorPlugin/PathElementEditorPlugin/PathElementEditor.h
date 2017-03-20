@@ -78,6 +78,7 @@
 - (IBAction)deletePathSegmentButtonAction:(id)sender;
 
 - (IBAction)closePathNowButtonAction:(id)sender;
+- (IBAction)closePathAndContinueAction:(id)sender;
 
 - (IBAction)extendPathButtonAction:(id)sender;
 

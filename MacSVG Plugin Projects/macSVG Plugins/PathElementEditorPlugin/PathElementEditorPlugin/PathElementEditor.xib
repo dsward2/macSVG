@@ -160,8 +160,8 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <button verticalHuggingPriority="750" id="46f-hu-Gdc">
-                                                <rect key="frame" x="95" y="93" width="89" height="28"/>
+                                            <button verticalHuggingPriority="750" misplaced="YES" id="46f-hu-Gdc">
+                                                <rect key="frame" x="14" y="67" width="89" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <buttonCell key="cell" type="push" title="Extend Path" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bcb-CI-yGa">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -171,8 +171,8 @@
                                                     <action selector="extendPathButtonAction:" target="-2" id="xFb-O9-f5Y"/>
                                                 </connections>
                                             </button>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gqz-Vx-3vx">
-                                                <rect key="frame" x="17" y="77" width="71" height="14"/>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="gqz-Vx-3vx">
+                                                <rect key="frame" x="17" y="51" width="71" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Path Length:" id="LYV-58-hNp">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -180,8 +180,8 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Pk3-am-SYS">
-                                                <rect key="frame" x="92" y="77" width="143" height="14"/>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Pk3-am-SYS">
+                                                <rect key="frame" x="92" y="51" width="143" height="14"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="drg-AL-l6h">
                                                     <font key="font" metaFont="smallSystem"/>
@@ -189,15 +189,26 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <button verticalHuggingPriority="750" id="d3V-75-BxJ">
-                                                <rect key="frame" x="182" y="93" width="44" height="28"/>
+                                            <button verticalHuggingPriority="750" misplaced="YES" id="d3V-75-BxJ">
+                                                <rect key="frame" x="101" y="67" width="91" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                <buttonCell key="cell" type="push" title="Arc" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UK6-se-Fdd">
+                                                <buttonCell key="cell" type="push" title="Arc Settings" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UK6-se-Fdd">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="smallSystem"/>
                                                 </buttonCell>
                                                 <connections>
                                                     <action selector="arcSettingsButtonAction:" target="-2" id="skT-lM-0GB"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" misplaced="YES" id="9bZ-W1-lhg">
+                                                <rect key="frame" x="95" y="93" width="137" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <buttonCell key="cell" type="push" title="Close and Continue" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Yvk-Qg-xaz">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="smallSystem"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="closePathAndContinueAction:" target="-2" id="iN1-Rc-m3h"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -523,7 +534,7 @@
                 </customView>
             </subviews>
             <accessibility description="PathElementEditorView"/>
-            <point key="canvasLocation" x="466" y="344"/>
+            <point key="canvasLocation" x="550" y="357"/>
         </customView>
         <customView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koh-iS-iHt" userLabel="PathSegmentEditorView">
             <rect key="frame" x="0.0" y="0.0" width="259" height="412"/>

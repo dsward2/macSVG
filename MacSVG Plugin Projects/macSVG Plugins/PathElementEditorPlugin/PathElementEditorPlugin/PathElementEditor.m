@@ -329,6 +329,30 @@
 
 - (void)closePath
 {
+    CGEventRef event = CGEventCreate(NULL);
+    CGEventFlags modifiers = CGEventGetFlags(event);
+    CFRelease(event);
+    //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+    CGEventFlags flags = kCGEventFlagMaskAlternate;   // check for option key
+
+    if ((modifiers & flags) == 0)
+    {
+        // option key is not pressed
+        [self closePathAndContinue:NO]; // close path and exit path drawing mode
+    }
+    else
+    {
+        // option key is  pressed
+        [self closePathAndContinue:YES];    // close path and continue path drawing mode
+    }
+}
+
+//==================================================================================
+//	closePathAndContinue:
+//==================================================================================
+
+- (void)closePathAndContinue:(BOOL)continuePath
+{
     NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
     
     pathSegmentsArray = [self.macSVGPluginCallbacks closePathWithPathSegmentsArray:pathSegmentsArray];
@@ -337,12 +361,6 @@
     
     if (pathSegmentsArrayCount > 0)
     {
-        CGEventRef event = CGEventCreate(NULL);
-        CGEventFlags modifiers = CGEventGetFlags(event);
-        CFRelease(event);
-        //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
-        CGEventFlags flags = kCGEventFlagMaskAlternate;   // check for option key
-
         NSMutableArray * closePathSegmentDictionary = [[pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1] mutableCopy];
         [pathSegmentsArray addObject:closePathSegmentDictionary];   // add a second the Z or z segment, the final one will be removed
 
@@ -350,9 +368,8 @@
         
         [self updateWithPathSegmentsArray:pathSegmentsArray];
 
-        if ((modifiers & flags) == 0)
+        if (continuePath == NO)
         {
-            // option key is not pressed
             MacSVGDocumentWindowController * macSVGDocumentWindowController =
                     [self.macSVGDocument macSVGDocumentWindowController];
 
@@ -362,7 +379,6 @@
         }
         else
         {
-            // option key is  pressed
             [self extendPathButtonAction:self];
         }
     }
@@ -374,7 +390,16 @@
 
 - (IBAction)closePathNowButtonAction:(id)sender
 {
-    [self closePath];
+    [self closePath];   // checks for option key to continue path
+}
+
+//==================================================================================
+//	closePathAndContinueAction:
+//==================================================================================
+
+- (IBAction)closePathAndContinueAction:(id)sender
+{
+    [self closePathAndContinue:YES];
 }
 
 //==================================================================================
@@ -1996,12 +2021,14 @@
     
     if ([self.macSVGPluginCallbacks currentToolMode] == toolModePath)
     {
-        NSMenuItem * testMenuItem = [[NSMenuItem alloc] initWithTitle:@"Close Path" action:@selector(closePathNowButtonAction:) keyEquivalent:@""];
-        [testMenuItem setTarget:self];
-        [contextMenuItems addObject:testMenuItem];
+        NSMenuItem * closePathMenuItem = [[NSMenuItem alloc] initWithTitle:@"Close Path" action:@selector(closePathNowButtonAction:) keyEquivalent:@""];
+        [closePathMenuItem setTarget:self];
+        [contextMenuItems addObject:closePathMenuItem];
         
-        NSString * pathMode = pathModePopupButton.titleOfSelectedItem;
-
+        NSMenuItem * closePathAndContinueMenuItem = [[NSMenuItem alloc] initWithTitle:@"Close Path and Continue" action:@selector(closePathAndContinueAction:) keyEquivalent:@""];
+        [closePathAndContinueMenuItem setTarget:self];
+        [contextMenuItems addObject:closePathAndContinueMenuItem];
+        
         NSMenuItem * movetoMenuItem = [[NSMenuItem alloc] initWithTitle:@"Move To" action:@selector(setPathMode:) keyEquivalent:@""];
         [movetoMenuItem setTarget:self];
         [contextMenuItems addObject:movetoMenuItem];
@@ -2017,6 +2044,8 @@
         NSMenuItem * ellipticalArcMenuItem = [[NSMenuItem alloc] initWithTitle:@"Elliptical Arc" action:@selector(setPathMode:) keyEquivalent:@""];
         [ellipticalArcMenuItem setTarget:self];
         [contextMenuItems addObject:ellipticalArcMenuItem];
+
+        NSString * pathMode = pathModePopupButton.titleOfSelectedItem;
         
         if ([pathMode isEqualToString:@"Elliptical Arc"] == YES)
         {
