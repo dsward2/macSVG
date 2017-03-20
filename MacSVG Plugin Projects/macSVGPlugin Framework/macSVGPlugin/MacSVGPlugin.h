@@ -14,10 +14,13 @@
 #import <WebKit/WebKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 
+// umbrella header references for usage with Swift, should be marked public in build phases
+#import "MacSVGPluginCallbacks.h"
+#import "WebKitInterface.h"
+
 @class WebView;
-@class MacSVGPluginCallbacks;
 @class DOMElement;
-@class WebKitInterface;
+@class MacSVGPluginSwiftInterface;
 
 @interface MacSVGPlugin : NSObject
 {
@@ -47,7 +50,10 @@
 @property(strong) WebKitInterface * webKitInterface;
 @property(assign) JSContextRef globalContext;
 
-@property (readonly, copy) NSString *pluginName;
+//@property (readonly, copy) NSString *pluginName;
+- (NSString *)pluginName;
+
+@property (weak) IBOutlet MacSVGPluginSwiftInterface * macSVGPluginSwiftInterface;
 
 - (void)setMacSVGDocumentObject:(id)aMacSVGDocument;
 
@@ -56,7 +62,8 @@
 - (void)unloadPluginView;
 
 // Override and return a label if this editor is for Plug-Ins menu
-@property (readonly, copy) NSString *pluginMenuTitle;
+//@property (readonly, copy) NSString *pluginMenuTitle;
+- (NSString *)pluginMenuTitle;
 
 // Override and return a label if this editor can edit specified element tag name, or nil if not applicable
 - (NSString *)isEditorForElement:(NSXMLElement *)aElement elementName:(NSString *)elementName;
@@ -98,7 +105,8 @@
 - (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData;
 
 // For menu plug-ins, override this method to begin plugin session
-@property (readonly) BOOL beginMenuPlugIn;
+//@property (readonly) BOOL beginMenuPlugIn;
+- (BOOL)beginMenuPlugIn;
 
 // Plugin implementations should call this method after changes are applied to update the host application user interfaces
 - (void)updateDocumentViews;
@@ -112,7 +120,8 @@
 // Plugin implementations should override this method to be notified when the host application is resizing the plugin panel in it's scrollview
 - (void)resizePluginViewSizeForScrollView:(NSScrollView *)scrollView;
 
-@property (getter=isMenuPlugIn, readonly) BOOL menuPlugIn;
+//@property (getter=isMenuPlugIn, readonly) BOOL menuPlugIn;
+- (BOOL)isMenuPlugIn;
 
 - (void)assignMacsvgidsForNode:(NSXMLNode *)aNode;  // for plug-ins that create new elements, call after creation
 

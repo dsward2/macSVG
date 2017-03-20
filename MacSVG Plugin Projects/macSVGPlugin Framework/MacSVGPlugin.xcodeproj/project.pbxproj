@@ -12,6 +12,8 @@
 		0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D366178F397B000B910E /* MacSVGPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05D367178F397B000B910E /* MacSVGPlugin.m */; };
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E3F77FF1E7F925600599EC0 /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */; };
+		0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */; };
 		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -28,6 +30,8 @@
 		0E05D366178F397B000B910E /* MacSVGPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacSVGPlugin.h; sourceTree = "<group>"; };
 		0E05D367178F397B000B910E /* MacSVGPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacSVGPlugin.m; sourceTree = "<group>"; };
 		0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGPluginCallbacks.h; path = "../../../macSVG/SVGDocument Classes/MacSVGPluginCallbacks.h"; sourceTree = "<group>"; };
+		0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MacSVGPluginView.xib; path = macSVGPlugin/MacSVGPluginView.xib; sourceTree = SOURCE_ROOT; };
+		0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacSVGPluginSwiftInterface.swift; path = macSVGPlugin/MacSVGPluginSwiftInterface.swift; sourceTree = SOURCE_ROOT; };
 		0EDA099A178F52A400E97D95 /* WebKitInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebKitInterface.h; path = "../../../macSVG/Application Classes/WebKitInterface.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +91,7 @@
 				0E05D367178F397B000B910E /* MacSVGPlugin.m */,
 				0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */,
 				0EDA099A178F52A400E97D95 /* WebKitInterface.h */,
+				0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */,
 				0E05D340178F35C4000B910E /* Supporting Files */,
 			);
 			path = MacSVGPlugin;
@@ -95,6 +100,7 @@
 		0E05D340178F35C4000B910E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */,
 				0E05D342178F35C4000B910E /* InfoPlist.strings */,
 				0E05D364178F3950000B910E /* MacSVGPlugin-Info.plist */,
 				0E05D345178F35C4000B910E /* MacSVGPlugin-Prefix.pch */,
@@ -174,6 +180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3F77FF1E7F925600599EC0 /* MacSVGPluginView.xib in Resources */,
 				0E05D344178F35C4000B910E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +192,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */,
 				0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
