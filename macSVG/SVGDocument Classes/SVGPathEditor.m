@@ -254,9 +254,9 @@
 #define kCommandMode 1
 #define kValueMode 2
 
-
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)aPathString
 {
+    // two-pass path data parser, building an array of dictionaries
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
     NSString * pathString = [aPathString stringByTrimmingCharactersInSet:whitespaceSet];
@@ -265,32 +265,25 @@
     
     NSUInteger pathStringLength = pathString.length;
     
+    // First pass
     int previousMode = kSeparatorMode;
     int newMode = kSeparatorMode;
     unichar newCommand = '?';
-            
+    
     NSArray * currentParameterNames = NULL;
     
     NSMutableDictionary * currentSegmentDictionary = [[NSMutableDictionary alloc] init];
     
     NSMutableString * valueString = [[NSMutableString alloc] init];
     
-    for (int i = 0; i <= pathStringLength; i++) // intentionally one character past end of string length
+    for (NSInteger i = 0; i <= pathStringLength; i++) // intentionally one character past end of string length
     {
         unichar aChar = ' ';    // a space character for padding at end of pathString
+        unichar originalCommand = ' ';
         
         if (i < pathStringLength)
         {
             aChar = [pathString characterAtIndex:i];
-            
-            if (i == 0)
-            {
-                if (aChar == 'm')
-                {
-                    // first segment command is 'm' relative Moveto, change it to 'M' absolute Moveto
-                    aChar = 'M';
-                }
-            }
         }
         
         switch (aChar) 
@@ -342,6 +335,7 @@
             case 'z':     // closepath
                 newMode = kCommandMode;  // command mode
                 newCommand = aChar;
+                originalCommand = aChar;
                 break;
 
             default:
@@ -394,42 +388,25 @@
         
         if (endOfParameterFound == YES)
         {
-            NSUInteger parameterNamesCount = currentParameterNames.count;
-            NSUInteger currentSegmentDictionaryCount = currentSegmentDictionary.count;
-            NSInteger parametersCount = currentSegmentDictionaryCount - 1;
-            
-            if ((newCommand != 'z') && (newCommand != 'Z'))
+            NSInteger parametersCount = 0;
+            for (NSString * aParameterName in currentParameterNames)
             {
-                if (parametersCount < 0)
+                if (currentSegmentDictionary[aParameterName] == NULL)
                 {
-                    // a new segment is started, apparently a repeat of the previous command, omitting the command character, as Inkscape does
-                    NSInteger segmentsCount = newPathSegmentsArray.count;
-                    if (segmentsCount > 0)
-                    {
-                        NSDictionary * previousSegmentDictionary = newPathSegmentsArray[segmentsCount - 1];
-                        NSString * previousSegmentCommand = previousSegmentDictionary[@"command"];
-                        currentSegmentDictionary[@"command"] = previousSegmentCommand;
-                        parametersCount = 0;
-                    }
+                    break;
                 }
+                parametersCount++;
+            }
 
-                NSString * newParameter = [[NSString alloc] initWithString:valueString];
-                
-                NSString * keyForParameter = currentParameterNames[parametersCount];
-                
-                currentSegmentDictionary[keyForParameter] = newParameter;
-                parametersCount++;
-            }
-            else
-            {
-                NSString * newParameter = [[NSString alloc] initWithString:valueString];
-                
-                NSString * keyForParameter = currentParameterNames[parametersCount];
-                
-                currentSegmentDictionary[keyForParameter] = newParameter;
-                parametersCount++;
-            }
+            NSString * newParameter = [[NSString alloc] initWithString:valueString];
+
+            NSString * keyForParameter = currentParameterNames[parametersCount];
             
+            currentSegmentDictionary[keyForParameter] = newParameter;
+            
+            parametersCount++;
+            
+            NSUInteger parameterNamesCount = currentParameterNames.count;
             if (parametersCount >= parameterNamesCount)
             {
                 endOfSegment = YES;
@@ -470,8 +447,7 @@
         
         if (newMode == kCommandMode)
         {
-            // start new command
-            switch (aChar) 
+            switch (newCommand)
             {
                 case 'M':     // moveto
                 case 'm':     // moveto
@@ -522,14 +498,19 @@
                 case 'z':     // closepath
                     currentParameterNames = self.parametersClosepath;
                     break;
+                default:
+                    //NSLog(@"Invalid SVG path command '%C' at position %ld in \"%@\"", newCommand, i, pathString);
+                    break;
             }
             
             //NSMutableDictionary * segmentDictionary = [[NSMutableDictionary alloc] init];
             [currentSegmentDictionary removeAllObjects];
             
-            NSString * newModeString = [[NSString alloc] initWithFormat:@"%C", aChar];
-            
+            NSString * newModeString = [[NSString alloc] initWithFormat:@"%C", newCommand];
             currentSegmentDictionary[@"command"] = newModeString;
+            
+            NSString * originalCommandString = [[NSString alloc] initWithFormat:@"%C", originalCommand];
+            currentSegmentDictionary[@"originalCommand"] = originalCommandString;
             
             [valueString setString:@""];
         }
@@ -543,6 +524,186 @@
         previousMode = newMode;
     }
     
+    // Second pass
+    // Although not in the official SVG standard, some clipart and browsers interpret
+    // consecutive Moveto commands as Lineto commands.  Change those segments to Lineto commands.
+    unichar previousCommand = '?';
+    for (NSMutableDictionary * aSegmentDictionary in newPathSegmentsArray)
+    {
+        NSInteger currentSegmentIndex = [newPathSegmentsArray indexOfObject:aSegmentDictionary];
+        
+        unichar currentCommand = '?';
+        unichar originalCommand = '?';
+        
+        NSString * currentCommandString = [aSegmentDictionary objectForKey:@"command"];
+        if (currentCommandString != NULL)
+        {
+            if (currentCommandString.length == 1)
+            {
+                currentCommand = [currentCommandString characterAtIndex:0];
+            }
+        }
+        
+        NSString * originalCommandString = [aSegmentDictionary objectForKey:@"originalCommand"];
+        if (originalCommandString != NULL)
+        {
+            if (originalCommandString.length == 1)
+            {
+                originalCommand = [originalCommandString characterAtIndex:0];
+            }
+        }
+        
+        switch (currentCommand)
+        {
+            case 'M':     // moveto
+            case 'm':     // moveto
+            case 'L':     // lineto
+            case 'l':     // lineto
+            case 'H':     // horizontal lineto
+            case 'h':     // horizontal lineto
+            case 'V':     // vertical lineto
+            case 'v':     // vertical lineto
+            case 'C':     // curveto
+            case 'c':     // curveto
+            case 'S':     // smooth curveto
+            case 's':     // smooth curveto
+            case 'Q':     // quadratic Bezier curve
+            case 'q':     // quadratic Bezier curve
+            case 'T':     // smooth quadratic Bezier curve
+            case 't':     // smooth quadratic Bezier curve
+            case 'A':     // elliptical arc
+            case 'a':     // elliptical arc
+            case 'Z':     // closepath
+            case 'z':     // closepath
+                break;
+            default:
+                currentCommand = previousCommand;
+        }
+
+        if (currentSegmentIndex == 0)
+        {
+            if (originalCommand == 'm')
+            {
+                currentCommand = 'M';
+            }
+        }
+        else
+        {
+            if (currentCommand == 'M')
+            {
+                if ((previousCommand == 'M') || (previousCommand == 'm'))
+                {
+                    currentCommand = 'L';
+                }
+            }
+            else if (currentCommand == 'm')
+            {
+                if ((previousCommand == 'M') || (previousCommand == 'm'))
+                {
+                    currentCommand = 'l';
+                }
+            }
+        }
+
+        NSString * newCurrentCommandString = [NSString stringWithFormat:@"%C", currentCommand];
+        [aSegmentDictionary setObject:newCurrentCommandString forKey:@"command"];
+        
+         if (originalCommandString != NULL)
+        {
+            if (originalCommandString.length == 1)
+            {
+                previousCommand = originalCommand;
+            }
+        }
+    }
+
+    // cleanup segments
+    for (NSMutableDictionary * aSegmentDictionary in newPathSegmentsArray)
+    {
+        [aSegmentDictionary removeObjectForKey:@"originalCommand"];
+
+        unichar currentCommand = '?';
+        unichar originalCommand = '?';
+        
+        NSString * currentCommandString = [aSegmentDictionary objectForKey:@"command"];
+        if (currentCommandString != NULL)
+        {
+            if (currentCommandString.length == 1)
+            {
+                currentCommand = [currentCommandString characterAtIndex:0];
+            }
+            
+            NSArray * currentParameterNames = NULL;
+            switch (newCommand)
+            {
+                case 'M':     // moveto
+                case 'm':     // moveto
+                    currentParameterNames = self.parametersMoveto;
+                    break;
+
+                case 'L':     // lineto
+                case 'l':     // lineto
+                    currentParameterNames = self.parametersLineto;
+                    break;
+
+                case 'H':     // horizontal lineto
+                case 'h':     // horizontal lineto
+                    currentParameterNames = self.parametersHorizontalLineto;
+                    break;
+
+                case 'V':     // vertical lineto
+                case 'v':     // vertical lineto
+                    currentParameterNames = self.parametersVerticalLineto;
+                    break;
+
+                case 'C':     // curveto
+                case 'c':     // curveto
+                    currentParameterNames = self.parametersCubicCurveto;
+                    break;
+
+                case 'S':     // smooth curveto
+                case 's':     // smooth curveto
+                    currentParameterNames = self.parametersCubicCurvetoSmooth;
+                    break;
+
+                case 'Q':     // quadratic Bezier curve
+                case 'q':     // quadratic Bezier curve
+                    currentParameterNames = self.parametersQuadraticCurveto;
+                    break;
+
+                case 'T':     // smooth quadratic Bezier curve
+                case 't':     // smooth quadratic Bezier curve
+                    currentParameterNames = self.parametersQuadraticCurvetoSmooth;
+                    break;
+
+                case 'A':     // elliptical arc
+                case 'a':     // elliptical arc
+                    currentParameterNames = self.parametersEllipticalArc;
+                    break;
+
+                case 'Z':     // closepath
+                case 'z':     // closepath
+                    currentParameterNames = self.parametersClosepath;
+                    break;
+                default:
+                    currentParameterNames = NULL;
+                    break;
+            }
+            
+            if (currentParameterNames != NULL)
+            {
+                for (NSString * aParameterName in currentParameterNames)
+                {
+                    if ([aSegmentDictionary objectForKey:currentParameterNames] == NULL)
+                    {
+                        [aSegmentDictionary setObject:@"0" forKey:aParameterName];  // add missing parameter for command
+                    }
+                }
+            }
+        }
+
+    }
+
     [self updatePathSegmentsAbsoluteValues:newPathSegmentsArray];
     
     if (newPathSegmentsArray.count == 0)

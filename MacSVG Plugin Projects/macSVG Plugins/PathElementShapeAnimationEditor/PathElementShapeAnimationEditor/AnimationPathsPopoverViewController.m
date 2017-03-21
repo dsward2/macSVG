@@ -338,8 +338,23 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 {
     self.originalPathElement = masterPathElement;
     self.originalAnimateElement = animateElement;
+    
+    // temporarily remove attributes containing namespaces to avoid failure with NSXMLElement initWithXMLString
+    NSArray * originalPathElementAttributes = self.originalPathElement.attributes;
+    NSMutableArray * removedAttributes = [NSMutableArray array];
+    for (NSXMLNode * attributeNode in originalPathElementAttributes)
+    {
+        NSString * attributeName = attributeNode.name;
+        NSArray * attributeNameArray = [attributeName componentsSeparatedByString:@":"];
+        if (attributeNameArray.count == 2)
+        {
+            [removedAttributes addObject:attributeNode];
+            [self.originalPathElement removeAttributeForName:attributeName];
+        }
+    }
 
     NSString * originalPathElementXMLString = (self.originalPathElement).XMLString;
+    
     NSString * originalAnimateElementXMLString = (self.originalAnimateElement).XMLString;
 
     NSError * pathError;
@@ -369,7 +384,12 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
     [self makeAnimationPreviewSVG];
     NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
     [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
-
+    
+    // restore the removed attributes that contained namespaces
+    for (NSXMLNode * removedAttribute in removedAttributes)
+    {
+        [self.originalPathElement addAttribute:removedAttribute];
+    }
 }
 
 //==================================================================================
