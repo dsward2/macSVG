@@ -23,6 +23,7 @@
 #define transformToolModeRotate 3
 #define transformToolModeSkewX 4
 #define transformToolModeSkewY 5
+#define transformToolModeMatrix 6
 
 #define PI 3.1415926535
 #define radiansToDegrees 57.29577951308232		/* 180.0 / PI */
@@ -541,6 +542,24 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             NSString * degreesString = transformDictionary[@"degrees"];
             transformValues = degreesString;
         }
+        else if ([transformFunction isEqualToString:@"matrix"] == YES)
+        {
+            NSString * m1String = transformDictionary[@"m1"];
+            NSString * m2String = transformDictionary[@"m2"];
+            NSString * m3String = transformDictionary[@"m3"];
+            NSString * m4String = transformDictionary[@"m4"];
+            NSString * m5String = transformDictionary[@"m5"];
+            NSString * m6String = transformDictionary[@"m6"];
+            
+            if (m1String == NULL) m1String = @"0";
+            if (m2String == NULL) m2String = @"0";
+            if (m3String == NULL) m3String = @"0";
+            if (m4String == NULL) m4String = @"0";
+            if (m5String == NULL) m5String = @"0";
+            if (m6String == NULL) m6String = @"0";
+            
+            transformValues = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@", m1String, m2String, m3String, m4String, m5String ,m6String];
+        }
         
         objectValue = [NSString stringWithFormat:@"%@(%@)", transformFunction, transformValues];
     } 
@@ -713,13 +732,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     [label1TextField setHidden:NO];
-    label1TextField.stringValue = @"x";
+    label1TextField.stringValue = @"x:";
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = xString;
     
     [label2TextField setHidden:NO];
-    label2TextField.stringValue = @"y";
+    label2TextField.stringValue = @"y:";
 
     [value2TextField setHidden:NO];
     value2TextField.stringValue = yString;
@@ -729,6 +748,26 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
+
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+    
+    functionButton.hidden = YES;
     
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = value2TextField;
@@ -878,6 +917,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+
+    functionButton.hidden = YES;
 
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = value2TextField;
@@ -1214,6 +1264,18 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [value3TextField setHidden:NO];
     value3TextField.stringValue = yString;
 
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+
+    functionButton.hidden = NO;
+    functionButton.title = @"Set Rotation at Center";
+
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = value2TextField;
     value2TextField.nextKeyView = value3TextField;
@@ -1418,6 +1480,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+
+    functionButton.hidden = YES;
 
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = transformsTableView;
@@ -1631,6 +1704,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
 
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+
+    functionButton.hidden = YES;
+
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = transformsTableView;
     [value2TextField setNextKeyView:NULL];
@@ -1775,6 +1859,123 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         }
     }
 }    
+
+//==================================================================================
+//	beginMatrixTransform
+//==================================================================================
+
+-(void) beginMatrixTransform
+{
+    NSInteger selectedRow = transformsTableView.selectedRow;
+    
+    BOOL makeNewTranslateItem = NO;
+    
+    NSString * m1String = @"1";     // identity matrix
+    NSString * m2String = @"0";
+    NSString * m3String = @"0";
+    NSString * m4String = @"1";
+    NSString * m5String = @"0";
+    NSString * m6String = @"0";
+    
+    if (selectedRow == -1)
+    {
+        makeNewTranslateItem = YES;
+    }
+    else
+    {
+        NSMutableDictionary * selectedTransformDictionary =
+                (self.transformsArray)[selectedRow];
+        
+        NSString * selectedFunction = selectedTransformDictionary[@"function"];
+        
+        if ([selectedFunction isEqualToString:@"matrix"] == YES)
+        {
+            m1String = selectedTransformDictionary[@"m1"];
+            m2String = selectedTransformDictionary[@"m2"];
+            m3String = selectedTransformDictionary[@"m3"];
+            m4String = selectedTransformDictionary[@"m4"];
+            m5String = selectedTransformDictionary[@"m5"];
+            m6String = selectedTransformDictionary[@"m6"];
+        }
+        else
+        {
+            // current selection is not a translate, so append a new translate function
+            makeNewTranslateItem = YES;
+        }
+    }
+    
+    if (makeNewTranslateItem == YES)
+    {
+        // no row selected, create a new item for the command
+        NSMutableDictionary * newTransformDictionary =   [[NSMutableDictionary alloc] init];
+        
+        newTransformDictionary[@"function"] = @"matrix";
+        newTransformDictionary[@"m1"] = @"1";   // identity matrix
+        newTransformDictionary[@"m2"] = @"0";
+        newTransformDictionary[@"m3"] = @"0";
+        newTransformDictionary[@"m4"] = @"1";
+        newTransformDictionary[@"m5"] = @"0";
+        newTransformDictionary[@"m6"] = @"0";
+        
+        selectedRow++;
+        
+        //[transformsArray addObject:newTransformDictionary];
+        [self.transformsArray insertObject:newTransformDictionary atIndex:selectedRow];
+        
+        [transformsTableView reloadData];
+        
+        //selectedRow = [transformsArray count] - 1;
+        
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
+    
+    [label1TextField setHidden:NO];
+    label1TextField.stringValue = @"m1:";
+
+    [value1TextField setHidden:NO];
+    value1TextField.stringValue = m1String;
+    
+    [label2TextField setHidden:NO];
+    label2TextField.stringValue = @"m2:";
+
+    [value2TextField setHidden:NO];
+    value2TextField.stringValue = m2String;
+
+    [label3TextField setHidden:NO];
+    label3TextField.stringValue = @"m3:";
+    
+    [value3TextField setHidden:NO];
+    value3TextField.stringValue = m3String;
+
+    [label4TextField setHidden:NO];
+    label4TextField.stringValue = @"m4:";
+    
+    [value4TextField setHidden:NO];
+    value4TextField.stringValue = m4String;
+
+    [label5TextField setHidden:NO];
+    label5TextField.stringValue = @"m5:";
+    
+    [value5TextField setHidden:NO];
+    value5TextField.stringValue = m5String;
+
+    [label6TextField setHidden:NO];
+    label6TextField.stringValue = @"m6:";
+
+    [value6TextField setHidden:NO];
+    value6TextField.stringValue = m6String;
+
+    functionButton.hidden = YES;
+    
+    transformsTableView.nextKeyView = value1TextField;
+    value1TextField.nextKeyView = value2TextField;
+    value2TextField.nextKeyView = transformsTableView;
+    [value3TextField setNextKeyView:NULL];
+    
+    [self setTransformAttribute];
+}
 
 //==================================================================================
 //	calculateViewingScale
@@ -2439,6 +2640,26 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
 
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
+
+    [value4TextField setHidden:YES];
+    value4TextField.stringValue = @"";
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
+
+    [value5TextField setHidden:YES];
+    value5TextField.stringValue = @"";
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
+
+    [value6TextField setHidden:YES];
+    value6TextField.stringValue = @"";
+
+    functionButton.hidden = YES;
+
     [transformsTableView deselectAll:self];
 
     [self buildTransformsArrayForElement];
@@ -2468,6 +2689,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     NSString * value1String = value1TextField.stringValue;
     NSString * value2String = value2TextField.stringValue;
     NSString * value3String = value3TextField.stringValue;
+    NSString * value4String = value4TextField.stringValue;
+    NSString * value5String = value5TextField.stringValue;
+    NSString * value6String = value6TextField.stringValue;
     
     NSString * function = transformDictionary[@"function"];
     
@@ -2507,6 +2731,26 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     {
         NSString * degreesString = [[NSString alloc] initWithString:value1String];
         transformDictionary[@"degrees"] = degreesString;
+    }
+    else if ([function isEqualToString:@"matrix"] == YES)
+    {
+        NSString * m1String = [[NSString alloc] initWithString:value1String];
+        transformDictionary[@"m1"] = m1String;
+
+        NSString * m2String = [[NSString alloc] initWithString:value2String];
+        transformDictionary[@"m2"] = m2String;
+
+        NSString * m3String = [[NSString alloc] initWithString:value3String];
+        transformDictionary[@"m3"] = m3String;
+
+        NSString * m4String = [[NSString alloc] initWithString:value4String];
+        transformDictionary[@"m4"] = m4String;
+
+        NSString * m5String = [[NSString alloc] initWithString:value5String];
+        transformDictionary[@"m5"] = m5String;
+
+        NSString * m6String = [[NSString alloc] initWithString:value6String];
+        transformDictionary[@"m6"] = m6String;
     }
 
     [transformsTableView reloadData];
@@ -2572,6 +2816,20 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             else if ([selectedFunction isEqualToString:@"skewY"] == YES)
             {
                 [self selectToolButton:skewYToolButton];
+            }
+            else if ([selectedFunction isEqualToString:@"matrix"] == YES)
+            {
+                //[self selectToolButton:matrixToolButton];
+                
+                // matrixToolButton doesn't exist yet
+                currentTransformToolMode = transformToolModeMatrix;
+                translateToolButton.state = NSOffState;
+                scaleToolButton.state = NSOffState;
+                rotateToolButton.state = NSOffState;
+                skewXToolButton.state = NSOffState;
+                skewYToolButton.state = NSOffState;
+                
+                [self beginMatrixTransform];
             }
 
             [self.macSVGDocument beginPluginEditorToolMode];
@@ -2681,6 +2939,53 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
 }
 
+//==================================================================================
+//	functionButtonAction:
+//==================================================================================
+
+- (IBAction)functionButtonAction:(id)sender
+{
+     NSInteger selectedRow = transformsTableView.selectedRow;
+
+    if (selectedRow != -1)
+    {
+        NSMutableDictionary * transformDictionary = (self.transformsArray)[selectedRow];
+        NSString * functionString = transformDictionary[@"function"];
+        
+        if ([functionString isEqualToString:@"rotate"] == YES)
+        {
+            NSString * originalRotationValue = value1TextField.stringValue;
+            value1TextField.stringValue = @"0";
+
+            [self copyTextFieldValuesToTransformDictionary:transformDictionary];    // temporarily set rotation to zero
+        
+            NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
+            float bboxX = boundingBox.origin.x;
+            float bboxY = boundingBox.origin.y;
+            float bboxWidth = boundingBox.size.width;
+            float bboxHeight = boundingBox.size.height;
+            
+            
+            float bboxXMax = bboxX + bboxWidth;
+            float bboxYMax = bboxY + bboxHeight;
+            
+            float bboxXCenter = (bboxX + bboxXMax) * 0.5f;
+            float bboxYCenter = (bboxY + bboxYMax) * 0.5f;
+            
+            NSString * centerXString = [self allocFloatString:bboxXCenter];
+            NSString * centerYString = [self allocFloatString:bboxYCenter];
+            
+            value1TextField.stringValue = originalRotationValue;    // restore original rotation and set new center point
+            value2TextField.stringValue = centerXString;
+            value3TextField.stringValue = centerYString;
+
+            [self copyTextFieldValuesToTransformDictionary:transformDictionary];
+        
+            [transformsTableView reloadData];
+        }
+    }    
+
+}
 
 
 @end

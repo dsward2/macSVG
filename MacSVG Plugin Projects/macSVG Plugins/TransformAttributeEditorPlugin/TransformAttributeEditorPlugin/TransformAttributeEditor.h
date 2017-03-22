@@ -23,10 +23,18 @@
     IBOutlet NSTextField * label1TextField;
     IBOutlet NSTextField * label2TextField;
     IBOutlet NSTextField * label3TextField;
+    IBOutlet NSTextField * label4TextField;
+    IBOutlet NSTextField * label5TextField;
+    IBOutlet NSTextField * label6TextField;
     
     IBOutlet NSTextField * value1TextField;
     IBOutlet NSTextField * value2TextField;
     IBOutlet NSTextField * value3TextField;
+    IBOutlet NSTextField * value4TextField;
+    IBOutlet NSTextField * value5TextField;
+    IBOutlet NSTextField * value6TextField;
+    
+    IBOutlet NSButton * functionButton;
     
     IBOutlet NSTableView * transformsTableView;
         
@@ -57,6 +65,8 @@
 - (IBAction)transformToolTextFieldAction:(id)sender;
 - (IBAction)transformToolButtonAction:(id)sender;
 - (IBAction)transformToolDeleteButtonAction:(id)sender;
+
+- (IBAction)functionButtonAction:(id)sender;
 
 @end
 
