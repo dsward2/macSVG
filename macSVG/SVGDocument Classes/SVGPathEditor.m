@@ -623,7 +623,6 @@
         [aSegmentDictionary removeObjectForKey:@"originalCommand"];
 
         unichar currentCommand = '?';
-        unichar originalCommand = '?';
         
         NSString * currentCommandString = [aSegmentDictionary objectForKey:@"command"];
         if (currentCommandString != NULL)
@@ -634,7 +633,7 @@
             }
             
             NSArray * currentParameterNames = NULL;
-            switch (newCommand)
+            switch (currentCommand)
             {
                 case 'M':     // moveto
                 case 'm':     // moveto
@@ -685,6 +684,7 @@
                 case 'z':     // closepath
                     currentParameterNames = self.parametersClosepath;
                     break;
+                    
                 default:
                     currentParameterNames = NULL;
                     break;
@@ -694,14 +694,13 @@
             {
                 for (NSString * aParameterName in currentParameterNames)
                 {
-                    if ([aSegmentDictionary objectForKey:currentParameterNames] == NULL)
+                    if ([aSegmentDictionary objectForKey:aParameterName] == NULL)
                     {
                         [aSegmentDictionary setObject:@"0" forKey:aParameterName];  // add missing parameter for command
                     }
                 }
             }
         }
-
     }
 
     [self updatePathSegmentsAbsoluteValues:newPathSegmentsArray];
