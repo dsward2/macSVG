@@ -206,7 +206,7 @@
   </svgElement>
   <svgElement id="image">
     <docref>struct.html#ImageElement</docref>
-    <prototype>image xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" x="50" y="50" width="161" height="240" transform="" preserveAspectRatio="xMidYMid meet"</prototype>
+    <prototype>image xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" xlink:role="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/161px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" x="50" y="50" width="161" height="240" transform="" preserveAspectRatio="xMidYMid meet"</prototype>
   </svgElement>
   <svgElement id="line">
     <docref>shapes.html#LineElement</docref>
