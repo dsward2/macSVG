@@ -159,6 +159,8 @@
         result = [pluginBundle loadNibNamed:pluginNameString owner:self topLevelObjects:&topLevelObjects];
     }
 
+    scrollView.verticalScroller.floatValue = 0;
+
     scrollView.documentView = self.pluginView;
 
     [self resizePluginViewSizeForScrollView:scrollView];

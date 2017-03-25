@@ -713,6 +713,7 @@
     }
     else
     {
+        [self.svgPolylineEditor resetPolylinePointsArray];
         [self.svgPathEditor resetPathSegmentsArray];
 
         NSString * tagName = pathXMLElement.name;
@@ -1124,7 +1125,59 @@
             {
                 if (selectionHandleClicked == NO)
                 {
-                    [self handleCrosshairToolSelectionWithTargetXMLElement:targetXMLElement handleDOMElement:targetElement];
+                    NSString * classAttributeString = [targetElement getAttribute:@"class"];
+                    if (classAttributeString != NULL)
+                    {
+                        BOOL pathOrPointHandleSelected = NO;
+                        
+                        if ([classAttributeString isEqualToString:@"_macsvg_path_handle"] == YES)
+                        {
+                            pathOrPointHandleSelected = YES;
+                        }
+                        else if ([classAttributeString isEqualToString:@"_macsvg_polyline_handle"] == YES)
+                        {
+                            pathOrPointHandleSelected = YES;
+                        }
+                        else if ([classAttributeString isEqualToString:@"_macsvg_line_handle"] == YES)
+                        {
+                            pathOrPointHandleSelected = YES;
+                        }
+                        
+                        if (pathOrPointHandleSelected == YES)
+                        {
+                            [self handleCrosshairToolSelectionWithTargetXMLElement:targetXMLElement handleDOMElement:targetElement];
+                        }
+                        else
+                        {
+                            NSString * targetXMLElementName = [targetXMLElement name];
+                            
+                            BOOL validSelectionForCrosshairCursor = NO;
+                            
+                            if ([targetXMLElementName isEqualToString:@"polyline"] == YES)
+                            {
+                                validSelectionForCrosshairCursor = YES;
+                            }
+                            else if ([targetXMLElementName isEqualToString:@"polygon"] == YES)
+                            {
+                                validSelectionForCrosshairCursor = YES;
+                            }
+                            else if ([targetXMLElementName isEqualToString:@"line"] == YES)
+                            {
+                                validSelectionForCrosshairCursor = YES;
+                            }
+                            else if ([targetXMLElementName isEqualToString:@"path"] == YES)
+                            {
+                                validSelectionForCrosshairCursor = YES;
+                            }
+                            
+                            if (validSelectionForCrosshairCursor == YES)
+                            {
+                                [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
+
+                                [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
+                            }
+                        }
+                    }
                 }
                 break;
             }

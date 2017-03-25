@@ -27,16 +27,14 @@ An Apple ID-signed application is available for download at http://macsvg.org/do
 <img src="https://cdn.rawgit.com/dsward2/macSVG/238a59b65010ad2e77c8da4005fb37338b2669c4/macSVG/Resources/macsvg_examples/svg/animate_stroke-dasharray_on_path.svg">
 
 
-To build macSVG.app, open "macSVG.xcworkspace" in Xcode, set the build target to "macSVG Debug", build and run.
+Apple’s free Xcode system is required to build the macOS application from the source code. Most of the application source code is written in Objective-C language, but a Swift language target has been added recently for a plug-in editor bundle.  To build macSVG.app, open "macSVG.xcworkspace" in Xcode, set the build target to "macSVG Debug", build and run.
 
 **See the macSVG.org Developer page for more info: http://macsvg.org/developer/**
 
 
 # Future project goals:
 
-Migration to Swift language.
-
-Support for SVG 2 standards, as those features become available in the macOS WebKit framework.
+Migration to Swift language, and Swift Package Manager for importing third-party code.
 
 #
 
