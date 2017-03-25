@@ -1173,7 +1173,10 @@
                             if (validSelectionForCrosshairCursor == YES)
                             {
                                 [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
-
+                                
+                                self.svgPathEditor.pathSegmentIndex = -1;
+                                self.svgPolylineEditor.polylinePointIndex = -1;
+                                
                                 [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
                             }
                         }
