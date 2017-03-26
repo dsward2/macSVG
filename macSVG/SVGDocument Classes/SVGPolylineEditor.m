@@ -320,7 +320,8 @@
     DOMElement * newPolylineHandlesGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
     [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polylineHandlesGroup"];
-        
+    [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_polylineHandlesGroup"];
+    
     NSUInteger polylinePointsCount = (self.polylinePointsArray).count;
             
     for (NSUInteger pointIdx = 0; pointIdx < polylinePointsCount; pointIdx++)

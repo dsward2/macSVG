@@ -552,6 +552,7 @@
 
     [self removeMacsvgTopGroupChildByID:@"_macsvg_selectedRectsGroup"];
     
+    // remove any superimposed highlights, if the highlight segment checkbox option was enabled to create those
     [self removeMacsvgTopGroupChildByID:@"_macsvg_highlightPathSegmentGroup"];
     [self removeMacsvgTopGroupChildByID:@"_macsvg_highlightPolylinePointGroup"];
     [self removeMacsvgTopGroupChildByID:@"_macsvg_highlightLinePointGroup"];

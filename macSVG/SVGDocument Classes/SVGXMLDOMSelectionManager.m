@@ -656,6 +656,9 @@
             {
                 [self.selectedElementsManager removeAllElements];  // remove all selected elements
                 [self.domSelectionControlsManager removeDOMSelectionRectsAndHandles];
+                [svgWebKitController.domMouseEventsController.svgLineEditor removeLineHandles];
+                [svgWebKitController.domMouseEventsController.svgPolylineEditor removePolylineHandles];
+                [svgWebKitController.domMouseEventsController.svgPathEditor removePathHandles];
             }
         }
     }

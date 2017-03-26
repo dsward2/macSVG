@@ -580,7 +580,7 @@
 }
 
 //==================================================================================
-//	handleCrosshairToolSelection:targetXmlElement:handleDOMElement:
+//	handleCrosshairToolSelectionWithTargetXMLElement:handleDOMElement:
 //==================================================================================
 
 -(void) handleCrosshairToolSelectionWithTargetXMLElement:(NSXMLElement *)targetXMLElement
@@ -715,6 +715,7 @@
     {
         [self.svgPolylineEditor resetPolylinePointsArray];
         [self.svgPathEditor resetPathSegmentsArray];
+        [self.svgLineEditor resetLinePoints];
 
         NSString * tagName = pathXMLElement.name;
         
@@ -855,7 +856,7 @@
                 handleDOMElement:handleDOMElement];
     }
 
-    if (lineEditingMode != kPolylineEditingModeNotActive)
+    if (lineEditingMode != kLineEditingModeNotActive)
     {
         NSXMLElement * xmlLineElement = self.svgLineEditor.selectedLineElement;
     
@@ -881,7 +882,7 @@
         
         if (validElementFound == YES)
         {
-            NSInteger result = [self.svgPolylineEditor setActiveDOMHandle:handleDOMElement];
+            NSInteger result = [self.svgLineEditor setActiveDOMHandle:handleDOMElement];
             #pragma unused(result)
 
             [self.svgLineEditor updateActiveLineInDOM];
@@ -906,9 +907,11 @@
         
         if (validElementFound == YES)
         {
+            [self.svgLineEditor resetLinePoints];
+        
             self.svgLineEditor.selectedLineElement = lineXMLElement;
 
-            [self.svgPolylineEditor updateActivePolylineInDOM];
+            [self.svgLineEditor updateActiveLineInDOM];
 
             [self.svgXMLDOMSelectionManager selectXMLElement:lineXMLElement];
             
@@ -929,7 +932,7 @@
     
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
 
-    if (mouseEvent.button == 0) // left mouse click
+    if (mouseEvent.button == 0) // left button mouse click
     {
         // for selecting elements or to initiate dragging for element creation
         self.mouseMode = MOUSE_DRAGGING;
@@ -1156,19 +1159,28 @@
                             if ([targetXMLElementName isEqualToString:@"polyline"] == YES)
                             {
                                 validSelectionForCrosshairCursor = YES;
+                                //[self.svgLineEditor removeLineHandles];
+                                //[self.svgPathEditor removePathHandles];
                             }
                             else if ([targetXMLElementName isEqualToString:@"polygon"] == YES)
                             {
                                 validSelectionForCrosshairCursor = YES;
+                                //[self.svgLineEditor removeLineHandles];
+                                //[self.svgPathEditor removePathHandles];
                             }
                             else if ([targetXMLElementName isEqualToString:@"line"] == YES)
                             {
                                 validSelectionForCrosshairCursor = YES;
+                                //[self.svgLineEditor removeLineHandles];
+                                //[self.svgPolylineEditor removePolylineHandles];
+                                //[self.svgPathEditor removePathHandles];
                             }
                             else if ([targetXMLElementName isEqualToString:@"path"] == YES)
                             {
                                 validSelectionForCrosshairCursor = YES;
-                            }
+                                //[self.svgLineEditor removeLineHandles];
+                                //[self.svgPolylineEditor removePolylineHandles];
+                           }
                             
                             if (validSelectionForCrosshairCursor == YES)
                             {
@@ -1176,6 +1188,7 @@
                                 
                                 self.svgPathEditor.pathSegmentIndex = -1;
                                 self.svgPolylineEditor.polylinePointIndex = -1;
+                                self.svgLineEditor.linePointIndex = -1;
                                 
                                 [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
                             }

@@ -259,6 +259,7 @@
     DOMElement * newLineHandlesGroup = [domDocument createElementNS:svgNamespace
             qualifiedName:@"g"];
     [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_lineHandlesGroup"];
+    [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_lineHandlesGroup"];
 
     DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
     
@@ -433,7 +434,7 @@
         
         if (handleDOMElement == NULL)
         {
-            result = kLineEditingModeActive;
+            //result = kLineEditingModeActive;
         }
     }
     
