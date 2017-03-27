@@ -1602,7 +1602,6 @@
                     [self makeHandleCircleDOMElementWithCx:x2PxString cy:y2PxString
                     strokeWidth:pathCurvePointStrokeWidthString radius:pathCurvePointRadiusString
                     masterID:selectedElementMacsvgid segmentIndex:segmentIndexString
-                    //handlePoint:@"x1y1"];
                     handlePoint:@"x2y2"];
 
             [pathHandlesGroup appendChild:handleX2Y2CircleElement];
@@ -4719,6 +4718,9 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         if (self.pathSegmentIndex < pathSegmentCount)
         {
             NSMutableDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[self.pathSegmentIndex];
+            
+            NSDictionary * originalPathSegmentDictionary = [NSDictionary dictionaryWithDictionary:pathSegmentDictionary];
+            
             NSString * pathCommandString = pathSegmentDictionary[@"command"];
             unichar pathCommand = [pathCommandString characterAtIndex:0];
 
@@ -4821,6 +4823,173 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 case 'z':     // closepath
                 {
                     break;
+                }
+            }
+
+
+            NSLog(@"pathSegmentIndex=%ld, pathEditingKey=%@", self.pathSegmentIndex, self.pathEditingKey);
+
+
+            // For closed paths, modify joining segments
+            CGEventRef event = CGEventCreate(NULL);
+            CGEventFlags modifiers = CGEventGetFlags(event);
+            CFRelease(event);
+            //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+            CGEventFlags flags = (kCGEventFlagMaskAlternate);   // check for option key
+            if ((modifiers & flags) == 0)
+            {
+                // option key not pressed
+                
+                // search for a matching segment point
+                NSNumber * originalAbsoluteXNumber = originalPathSegmentDictionary[@"absoluteX"];
+                NSNumber * originalAbsoluteYNumber = originalPathSegmentDictionary[@"absoluteY"];
+                
+                CGFloat originalAbsoluteX = originalAbsoluteXNumber.floatValue;
+                CGFloat originalAbsoluteY = originalAbsoluteYNumber.floatValue;
+                
+                for (NSInteger i = 0; i < pathSegmentCount; i++)
+                {
+                    if (i != self.pathSegmentIndex) // don't check current segment, only other segments
+                    {
+                        NSMutableDictionary * aPathSegmentDictionary = (self.pathSegmentsArray)[i];
+                        
+                        NSString * aPathCommandString = aPathSegmentDictionary[@"command"];
+                        unichar aPathCommand = [aPathCommandString characterAtIndex:0];
+                        
+                        switch (aPathCommand)
+                        {
+                            case 'M':     // moveto absolute
+                            {
+                                if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
+                                {
+                                    NSNumber * absoluteXNumber = aPathSegmentDictionary[@"absoluteX"];
+                                    NSNumber * absoluteYNumber = aPathSegmentDictionary[@"absoluteY"];
+
+                                    CGFloat absoluteX = absoluteXNumber.floatValue;
+                                    CGFloat absoluteY = absoluteYNumber.floatValue;
+
+                                    if ((originalAbsoluteX == absoluteX) &&
+                                            (originalAbsoluteY == absoluteY))
+                                    {
+                                        // modify this Moveto found in a different segment within the path,
+                                        // this can preserve a smooth closed path, typically between the last cubic segment
+                                        // and the first segment, but this seems to work for subpath matches too.
+                                        NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                        self.pathSegmentIndex = i;
+                                        [self editPathSegmentMoveto:aPathSegmentDictionary];
+                                        self.pathSegmentIndex = tempPathSegmentIndex;
+             
+                                        [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                                    }
+                                }
+
+                                break;
+                            }
+                            case 'm':     // moveto relative
+                            case 'L':     // lineto absolute
+                            case 'l':     // lineto relative
+                            case 'H':     // horizontal lineto absolute
+                            case 'h':     // horizontal lineto relative
+                            case 'V':     // vertical lineto absolute
+                            case 'v':     // vertical lineto relative
+                                break;
+                            case 'C':     // cubic curveto absolute
+                            {
+                                if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
+                                {
+                                    if (i != self.pathSegmentIndex - 1) // don't check previous segment, it is already adjusted
+                                    {
+                                        NSNumber * absoluteX2Number = aPathSegmentDictionary[@"absoluteX2"];
+                                        NSNumber * absoluteY2Number = aPathSegmentDictionary[@"absoluteY2"];
+                                        NSNumber * absoluteXNumber = aPathSegmentDictionary[@"absoluteX"];
+                                        NSNumber * absoluteYNumber = aPathSegmentDictionary[@"absoluteY"];
+
+                                        CGFloat absoluteX2 = absoluteX2Number.floatValue;
+                                        CGFloat absoluteY2 = absoluteY2Number.floatValue;
+                                        CGFloat absoluteX = absoluteXNumber.floatValue;
+                                        CGFloat absoluteY = absoluteYNumber.floatValue;
+                                        
+                                        CGFloat reflectX2 = absoluteX - (absoluteX2 - absoluteX);
+                                        CGFloat reflectY2 = absoluteY - (absoluteY2 - absoluteY);
+
+                                        NSNumber * originalAbsoluteX1Number = originalPathSegmentDictionary[@"absoluteX1"];
+                                        NSNumber * originalAbsoluteY1Number = originalPathSegmentDictionary[@"absoluteY1"];
+                                        
+                                        CGFloat originalAbsoluteX1 = originalAbsoluteX1Number.floatValue;
+                                        CGFloat originalAbsoluteY1 = originalAbsoluteY1Number.floatValue;
+
+                                        if ((originalAbsoluteX1 == reflectX2) &&
+                                                (originalAbsoluteY1 == reflectY2))
+                                        {
+                                            // reflect x1y1 from current cubic curve found to x2y2 in a different segment.
+                                            NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                            NSString * tempPathEditingKey = self.pathEditingKey;
+                                            self.pathEditingKey = @"x3y3";
+                                            self.pathSegmentIndex = i;
+                                            [self editPathSegmentCubicCurve:aPathSegmentDictionary];
+                                            self.pathEditingKey = tempPathEditingKey;
+                                            self.pathSegmentIndex = tempPathSegmentIndex;
+                 
+                                            [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                                        }
+                                    }
+                                }
+                                else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
+                                {
+                                    if (i != self.pathSegmentIndex + 1) // don't check next segment, it is already adjusted
+                                    {
+                                        NSNumber * absoluteX1Number = aPathSegmentDictionary[@"absoluteX1"];
+                                        NSNumber * absoluteY1Number = aPathSegmentDictionary[@"absoluteY1"];
+                                        NSNumber * absoluteStartXNumber = aPathSegmentDictionary[@"absoluteStartX"];
+                                        NSNumber * absoluteStartYNumber = aPathSegmentDictionary[@"absoluteStartY"];
+
+                                        CGFloat absoluteX1 = absoluteX1Number.floatValue;
+                                        CGFloat absoluteY1 = absoluteY1Number.floatValue;
+                                        CGFloat absoluteStartX = absoluteStartXNumber.floatValue;
+                                        CGFloat absoluteStartY = absoluteStartYNumber.floatValue;
+                                        
+                                        CGFloat reflectX1 = absoluteStartX - (absoluteX1 - absoluteStartX);
+                                        CGFloat reflectY1 = absoluteStartY - (absoluteY1 - absoluteStartY);
+
+                                        NSNumber * originalAbsoluteX2Number = originalPathSegmentDictionary[@"absoluteX2"];
+                                        NSNumber * originalAbsoluteY2Number = originalPathSegmentDictionary[@"absoluteY2"];
+                                        
+                                        CGFloat originalAbsoluteX2 = originalAbsoluteX2Number.floatValue;
+                                        CGFloat originalAbsoluteY2 = originalAbsoluteY2Number.floatValue;
+
+                                        if ((originalAbsoluteX2 == reflectX1) &&
+                                                (originalAbsoluteY2 == reflectY1))
+                                        {
+                                            // reflect x2y2 from current cubic curve found to x1y1 in a different segment.
+                                            NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                            NSString * tempPathEditingKey = self.pathEditingKey;
+                                            self.pathEditingKey = @"x0y0";
+                                            self.pathSegmentIndex = i;
+                                            [self editPathSegmentCubicCurve:aPathSegmentDictionary];
+                                            self.pathEditingKey = tempPathEditingKey;
+                                            self.pathSegmentIndex = tempPathSegmentIndex;
+                 
+                                            [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                            case 'c':     // cubic curveto relative
+                            case 'S':     // smooth cubic curveto absolute
+                            case 's':     // smooth cubic curveto relative
+                            case 'Q':     // quadratic curveto absolute
+                            case 'q':     // quadratic curveto relative
+                            case 'T':     // smooth quadratic curveto absolute
+                            case 't':     // smooth quadratic curveto relative
+                            case 'A':     // elliptical arc absolute
+                            case 'a':     // elliptical arc relative
+                            case 'Z':     // closepath absolute
+                            case 'z':     // closepath
+                                break;
+                        }
+                    }
                 }
             }
 

@@ -4345,31 +4345,82 @@
                     }
                     case 'L':     // lineto
                     {
+                        NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"L";
+
                         break;
                     }
                     
                     case 'l':     // lineto
                     {
+                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+
+                        NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"l";
+
                         break;
                     }
 
                     case 'H':     // horizontal lineto
                     {
+                        NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"L";
+
                         break;
                     }
 
                     case 'h':     // horizontal lineto
                     {
+                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+
+                        NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"l";
+
                         break;
                     }
 
                     case 'V':     // vertical lineto
                     {
+                        NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"L";
+
                         break;
                     }
                     
                     case 'v':     // vertical lineto
                     {
+                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+
+                        NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
+                        NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
+
+                        lastPathSegmentDictionary[@"x"] = newXString;
+                        lastPathSegmentDictionary[@"y"] = newYString;
+                        lastPathSegmentDictionary[@"command"] = @"l";
+
                         break;
                     }
 
