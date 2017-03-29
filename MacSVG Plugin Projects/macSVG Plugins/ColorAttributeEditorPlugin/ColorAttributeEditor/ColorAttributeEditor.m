@@ -9,6 +9,8 @@
 #import "ColorAttributeEditor.h"
 //#import <WebKit/WebKit.h>
 #import "GradientEditorPopoverViewController.h"
+#import "MacSVGDocumentWindowController.h"
+#import "XMLAttributesTableController.h"
 
 @implementation ColorAttributeEditor
 
@@ -774,6 +776,10 @@
 
 - (IBAction)setColorButtonAction:(id)sender
 {
+    XMLAttributesTableController * xmlAttributesTableController =
+            [self.macSVGPluginCallbacks.macSVGDocumentWindowController xmlAttributesTableController];
+    NSString * selectedAttributeName = [xmlAttributesTableController selectedAttributeName];
+
     NSXMLNode * attributeNode = [self.pluginTargetXMLElement attributeForName:self.activeAttributeName];
     if (attributeNode != NULL)
     {
@@ -787,6 +793,13 @@
     }
     
     [self updateDocumentViews];
+
+    if (self.macSVGPluginCallbacks.currentToolMode == toolModeCrosshairCursor)
+    {
+        [self.macSVGPluginCallbacks.macSVGDocumentWindowController performSelector:@selector(beginCrosshairToolMode) withObject:NULL afterDelay:0.05f];  // workaround for a problem that incorrectly added both selection rect/handles and path/polyline/polygon/line handles
+
+        [xmlAttributesTableController performSelector:@selector(selectAttributeWithName:) withObject:selectedAttributeName afterDelay:0.1f];
+    }
 }
 
 //==================================================================================
@@ -795,6 +808,10 @@
 
 - (void)setGradientElement:(NSXMLElement *)gradientElement;
 {
+    XMLAttributesTableController * xmlAttributesTableController =
+            [self.macSVGPluginCallbacks.macSVGDocumentWindowController xmlAttributesTableController];
+    NSString * selectedAttributeName = [xmlAttributesTableController selectedAttributeName];
+
     NSXMLNode * gradientElementIDNode = [gradientElement attributeForName:@"id"];
     NSString * gradientElementIDString = gradientElementIDNode.stringValue;
     
@@ -806,6 +823,13 @@
     attributeNode.stringValue = gradientURLString;
     
     [self updateDocumentViews];
+
+    if (self.macSVGPluginCallbacks.currentToolMode == toolModeCrosshairCursor)
+    {
+        [self.macSVGPluginCallbacks.macSVGDocumentWindowController performSelector:@selector(beginCrosshairToolMode) withObject:NULL afterDelay:0.05f];  // workaround for a problem that incorrectly added both selection rect/handles and path/polyline/polygon/line handles
+
+        [xmlAttributesTableController performSelector:@selector(selectAttributeWithName:) withObject:selectedAttributeName afterDelay:0.1f];
+    }
 }
 
 //==================================================================================

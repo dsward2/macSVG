@@ -1658,6 +1658,13 @@
 
 // ================================================================
 
+- (void)beginCrosshairToolMode
+{
+    [self toolButtonAction:crosshairToolButton];
+}
+
+// ================================================================
+
 - (void) addDOMElementForXMLElement:(NSXMLElement *)aElement
 {
     [self.svgWebKitController addDOMElementForXMLElement:aElement];

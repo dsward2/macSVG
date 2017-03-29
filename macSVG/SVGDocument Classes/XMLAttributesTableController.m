@@ -592,6 +592,48 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     [macSVGDocumentWindowController reloadAllViews];
 }
 
+//==================================================================================
+//	selectedAttributeName
+//==================================================================================
+
+- (NSString *)selectedAttributeName
+{
+    NSString * result = NULL;
+
+    NSInteger selectedRow = self.xmlAttributesTableView.selectedRow;
+    
+    if (selectedRow >= 0)
+    {
+        NSDictionary * attributeDictionary = [self.xmlAttributesArray objectAtIndex:selectedRow];
+        
+        result = [attributeDictionary objectForKey:@"name"];
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//	selectAttributeWithName:
+//==================================================================================
+
+- (void)selectAttributeWithName:(NSString *)attributeName
+{
+    for (NSDictionary * attributeDictionary in self.xmlAttributesArray)
+    {
+        NSString * aAttributeName = [attributeDictionary objectForKey:@"name"];
+        
+        if ([aAttributeName isEqualToString:attributeName] == YES)
+        {
+            NSInteger rowIndex = [self.xmlAttributesArray indexOfObject:attributeDictionary];
+            
+            NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+            
+            [self.xmlAttributesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
+            
+            break;
+        }
+    }
+}
 
 
 
