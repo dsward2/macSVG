@@ -14,7 +14,7 @@
 #import "EmbeddedFontEncoder.h"
 #import "NSOutlineView_Extensions.h"
 #import "MacSVGPluginCallbacks.h"
-#import "svgXMLDOMSelectionManager.h"
+#import "SVGXMLDOMSelectionManager.h"
 #import "SVGWebKitController.h"
 #import "DOMSelectionControlsManager.h"
 #import "SelectedElementsManager.h"

@@ -1066,7 +1066,7 @@
     //WebFrame * webElementFrame = element[@"WebElementFrame"];
     //NSNumber * webElementIsContentEditableKey = element[@"WebElementIsContentEditableKey"];
     NSNumber * webElementIsInScrollBar = element[@"WebElementIsInScrollBar"];
-    NSNumber * webElementIsSelected = element[@"WebElementIsSelected"];
+    //NSNumber * webElementIsSelected = element[@"WebElementIsSelected"];
     //NSNumber * webElementLinkIsLive = element[@"WebElementLinkIsLive"];
     
     NSMutableArray * contextMenuItems = [self.macSVGDocumentWindowController contextMenuItemsForPlugin];

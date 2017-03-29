@@ -26,7 +26,7 @@
 #import "DOMMouseEventsController.h"
 #import "MacSVGAppDelegate.h"
 #import "WebKitInterface.h"
-#import "SvgWebKitController.h"
+#import "SVGWebKitController.h"
 #import "SVGIconTableHeaderCell.h"
 #import "SVGIconCell.h"
 

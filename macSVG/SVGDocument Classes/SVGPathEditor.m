@@ -16,7 +16,7 @@
 #import "SelectedElementsManager.h"
 #import "ToolSettingsPopoverViewController.h"
 #import "EditorUIFrameController.h"
-#import "ElementEditorPluginController.h"
+#import "ElementEditorPlugInController.h"
 #import <MacSVGPlugin/MacSVGPlugin.h>
 #import "MacSVGDocument.h"
 #import "DOMSelectionControlsManager.h"
