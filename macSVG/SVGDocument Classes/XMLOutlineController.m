@@ -3283,12 +3283,12 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         {
             [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController.svgPolylineEditor deleteLastLineInPolyline];
             [self.macSVGDocumentWindowController endPolylineDrawing];
-            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];
+            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];   // note - calls setCurrentToolMode, not setToolMode
         }
         else if (self.macSVGDocumentWindowController.currentToolMode == toolModePath)
         {
             [self.macSVGDocumentWindowController endPathDrawing];
-            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];
+            [self.macSVGDocumentWindowController setCurrentToolMode:toolModeArrowCursor];   // note - calls setCurrentToolMode, not setToolMode
         }
     }
     

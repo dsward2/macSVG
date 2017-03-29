@@ -31,4 +31,7 @@
 @property (copy) NSXMLElement *xmlElementForAttributesTable;
 - (void)unsetXmlElementForAttributesTable;
 
+- (NSString *)selectedAttributeName;
+- (void)selectAttributeWithName:(NSString *)attributeName;
+
 @end

@@ -294,6 +294,7 @@
 - (void) setDOMVisibility:(NSString *)visibility forMacsvgid:(NSString *)macsvgid;
 
 - (void)beginArrowToolMode;
+- (void)beginCrosshairToolMode;
 
 - (void)beginPluginEditorToolMode;  // called from MacSVGDocument when a plugin needs mouse control
 - (void) handlePluginEvent:(DOMEvent *)event;
