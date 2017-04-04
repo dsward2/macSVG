@@ -2303,14 +2303,14 @@
                 
                 if (segmentIdx >= (pathSegmentsCount - 1))
                 {
-                    reflectX1Y1 = YES;
+                    //reflectX1Y1 = YES;
                     reflectX2Y2 = YES;
                 }
                 
                 if ((previousPathCommand == 'M') || (previousPathCommand == 'm'))
                 {
                     reflectX1Y1 = YES;
-                    reflectX2Y2 = YES;
+                    //reflectX2Y2 = YES;
                 }
 
                 [self addHandleForCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx 
