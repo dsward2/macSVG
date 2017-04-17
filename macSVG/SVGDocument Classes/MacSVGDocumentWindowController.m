@@ -1062,7 +1062,12 @@
     
     [self reloadAllViews];
     
-    [self.xmlOutlineController expandAllNodes];
+    MacSVGDocument * macSVGDocument = self.document;
+    NSInteger elementCount = [macSVGDocument countAllXMLElements];
+    if (elementCount <= 100)
+    {
+        [self.xmlOutlineController expandAllNodes];
+    }
     
     BOOL enableHTTPServer = [[NSUserDefaults standardUserDefaults] boolForKey:@"EnableHTTPServer"];
     if (enableHTTPServer == YES)

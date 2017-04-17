@@ -38,6 +38,8 @@
 - (void) setAttributesForXMLElement:(NSMutableDictionary *)attributesDictionary;
 - (void) setAttributes:(NSMutableDictionary *)newAttributesDictionary forElement:(NSXMLElement *)aElement;
 
+- (NSInteger)countAllXMLElements;
+
 - (void) updateXMLTextContent:(NSString *)textContent macsvgid:(NSString *)macsvgid;
 
 -(void) assignNewMacsvgidsForNode:(NSXMLNode *)aNode;

@@ -141,8 +141,52 @@
     
     [self.macSVGDocumentWindowController reloadAllViews];
 
-    [self.macSVGDocumentWindowController.xmlOutlineController expandAllNodes];
+    NSInteger elementCount = [self countAllXMLElements];
+    if (elementCount <= 100)
+    {
+        [self.macSVGDocumentWindowController.xmlOutlineController expandAllNodes];
+    }
     
+    return result;
+}
+
+//==================================================================================
+//	countAllXMLElements
+//==================================================================================
+
+- (NSInteger)countAllXMLElements
+{
+    NSInteger result = 0;
+    
+    NSXMLElement * rootElement = self.svgXmlDocument.rootElement;
+    
+    if (rootElement != NULL)
+    {
+        result = 1;
+        
+        result += [self countChildXMLElementsInParent:rootElement];
+    }
+
+    return result;
+}
+
+//==================================================================================
+//	countChildXMLElementsInParent
+//==================================================================================
+
+- (NSInteger)countChildXMLElementsInParent:(NSXMLElement *)parentElement
+{
+    NSInteger result = 0;
+    
+    NSArray * childElements = [parentElement children];
+    
+    for (NSXMLElement * aChildElement in childElements)
+    {
+        result += 1;
+        
+        result += [self countChildXMLElementsInParent:aChildElement];
+    }
+ 
     return result;
 }
 
