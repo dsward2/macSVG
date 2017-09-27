@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0EB8CAD31F78D195004B6D05 /* PathTextGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAD21F78D195004B6D05 /* PathTextGenerator.m */; };
+		0EB8CAD51F78D25F004B6D05 /* PathTextGenerator.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CAD41F78D25F004B6D05 /* PathTextGenerator.xib */; };
+		0EB8CAD71F78D349004B6D05 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB8CAD61F78D349004B6D05 /* MacSVGPlugin.framework */; };
+		0EB8CADE1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CADD1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m */; };
+		0EB8CAE41F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAE31F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0EB8CAEA1F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */; };
+		0EB8CAEC1F78FBB3004B6D05 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB8CAEB1F78FBB3004B6D05 /* Cocoa.framework */; };
+		0EB8CAEF1F78FC96004B6D05 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */; };
+		0EB8CAF11F79038E004B6D05 /* BrowserFonts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0EB8CABF1F78D11E004B6D05 /* PathTextGenerator.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathTextGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EB8CAC21F78D11E004B6D05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EB8CAD11F78D195004B6D05 /* PathTextGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathTextGenerator.h; sourceTree = "<group>"; };
+		0EB8CAD21F78D195004B6D05 /* PathTextGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathTextGenerator.m; sourceTree = "<group>"; };
+		0EB8CAD41F78D25F004B6D05 /* PathTextGenerator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PathTextGenerator.xib; sourceTree = "<group>"; };
+		0EB8CAD61F78D349004B6D05 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
+		0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
+		0EB8CADC1F78D8C3004B6D05 /* PathTextGeneratorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathTextGeneratorWindowController.h; sourceTree = "<group>"; };
+		0EB8CADD1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathTextGeneratorWindowController.m; sourceTree = "<group>"; };
+		0EB8CAE21F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+EMMBezierPath.h"; sourceTree = "<group>"; };
+		0EB8CAE31F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+EMMBezierPath.m"; sourceTree = "<group>"; };
+		0EB8CAE81F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+DirectoryLocations.h"; path = "NSFileManager_DirectoryLocations/NSFileManager+DirectoryLocations.h"; sourceTree = "<group>"; };
+		0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+DirectoryLocations.m"; path = "NSFileManager_DirectoryLocations/NSFileManager+DirectoryLocations.m"; sourceTree = "<group>"; };
+		0EB8CAEB1F78FBB3004B6D05 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		0EB8CAED1F78FC96004B6D05 /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZJsonParser.h; path = "json-objc-parser-master/JSON Parser/SZJsonParser.h"; sourceTree = "<group>"; };
+		0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZJsonParser.m; path = "json-objc-parser-master/JSON Parser/SZJsonParser.m"; sourceTree = "<group>"; };
+		0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BrowserFonts.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0EB8CABC1F78D11E004B6D05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EB8CAEC1F78FBB3004B6D05 /* Cocoa.framework in Frameworks */,
+				0EB8CAD71F78D349004B6D05 /* MacSVGPlugin.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0EB8CAB61F78D11E004B6D05 = {
+			isa = PBXGroup;
+			children = (
+				0EB8CAC11F78D11E004B6D05 /* PathTextGenerator */,
+				0EB8CAD91F78D368004B6D05 /* Frameworks */,
+				0EB8CAC01F78D11E004B6D05 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0EB8CAC01F78D11E004B6D05 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CABF1F78D11E004B6D05 /* PathTextGenerator.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0EB8CAC11F78D11E004B6D05 /* PathTextGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CAD11F78D195004B6D05 /* PathTextGenerator.h */,
+				0EB8CAD21F78D195004B6D05 /* PathTextGenerator.m */,
+				0EB8CADC1F78D8C3004B6D05 /* PathTextGeneratorWindowController.h */,
+				0EB8CADD1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m */,
+				0EB8CAE21F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.h */,
+				0EB8CAE31F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m */,
+				0EB8CAE81F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.h */,
+				0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */,
+				0EB8CAED1F78FC96004B6D05 /* SZJsonParser.h */,
+				0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */,
+				0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */,
+				0EB8CAD81F78D357004B6D05 /* Supporting Files */,
+			);
+			path = PathTextGenerator;
+			sourceTree = "<group>";
+		};
+		0EB8CAD81F78D357004B6D05 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CAD41F78D25F004B6D05 /* PathTextGenerator.xib */,
+				0EB8CAC21F78D11E004B6D05 /* Info.plist */,
+				0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0EB8CAD91F78D368004B6D05 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CAEB1F78FBB3004B6D05 /* Cocoa.framework */,
+				0EB8CAD61F78D349004B6D05 /* MacSVGPlugin.framework */,
+			);
+			name = Frameworks;
+			path = PathTextGenerator;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0EB8CABE1F78D11E004B6D05 /* PathTextGenerator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0EB8CAC51F78D11E004B6D05 /* Build configuration list for PBXNativeTarget "PathTextGenerator" */;
+			buildPhases = (
+				0EB8CABB1F78D11E004B6D05 /* Sources */,
+				0EB8CABC1F78D11E004B6D05 /* Frameworks */,
+				0EB8CABD1F78D11E004B6D05 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PathTextGenerator;
+			productName = PathTextGenerator;
+			productReference = 0EB8CABF1F78D11E004B6D05 /* PathTextGenerator.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0EB8CAB71F78D11E004B6D05 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "ArkPhone LLC";
+				TargetAttributes = {
+					0EB8CABE1F78D11E004B6D05 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = MMFBWVS455;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0EB8CABA1F78D11E004B6D05 /* Build configuration list for PBXProject "PathTextGenerator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0EB8CAB61F78D11E004B6D05;
+			productRefGroup = 0EB8CAC01F78D11E004B6D05 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0EB8CABE1F78D11E004B6D05 /* PathTextGenerator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0EB8CABD1F78D11E004B6D05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EB8CAF11F79038E004B6D05 /* BrowserFonts.plist in Resources */,
+				0EB8CAD51F78D25F004B6D05 /* PathTextGenerator.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EB8CABB1F78D11E004B6D05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EB8CAD31F78D195004B6D05 /* PathTextGenerator.m in Sources */,
+				0EB8CAEA1F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m in Sources */,
+				0EB8CAEF1F78FC96004B6D05 /* SZJsonParser.m in Sources */,
+				0EB8CADE1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m in Sources */,
+				0EB8CAE41F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0EB8CAC31F78D11E004B6D05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0EB8CAC41F78D11E004B6D05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0EB8CAC61F78D11E004B6D05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
+				INFOPLIST_FILE = PathTextGenerator/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PathTextGenerator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		0EB8CAC71F78D11E004B6D05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EB8CADA1F78D397004B6D05 /* macSVGPluginConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = MMFBWVS455;
+				INFOPLIST_FILE = PathTextGenerator/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PathTextGenerator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0EB8CABA1F78D11E004B6D05 /* Build configuration list for PBXProject "PathTextGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EB8CAC31F78D11E004B6D05 /* Debug */,
+				0EB8CAC41F78D11E004B6D05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0EB8CAC51F78D11E004B6D05 /* Build configuration list for PBXNativeTarget "PathTextGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EB8CAC61F78D11E004B6D05 /* Debug */,
+				0EB8CAC71F78D11E004B6D05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0EB8CAB71F78D11E004B6D05 /* Project object */;
+}

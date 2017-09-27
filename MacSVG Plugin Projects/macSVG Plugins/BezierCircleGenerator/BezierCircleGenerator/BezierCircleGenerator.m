@@ -272,7 +272,15 @@
 
     if (childIndex != -1)
     {
-        [parentElement insertChild:pathElement atIndex:childIndex];
+        //[parentElement insertChild:pathElement atIndex:childIndex];
+        if (childIndex < parentElement.childCount)
+        {
+            [parentElement insertChild:pathElement atIndex:childIndex];
+        }
+        else
+        {
+            [parentElement addChild:pathElement];
+        }
     }
     else
     {

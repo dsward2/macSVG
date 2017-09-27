@@ -227,7 +227,15 @@
 
     if (childIndex != -1)
     {
-        [parentElement insertChild:pieChartGroupElement atIndex:childIndex];
+        //[parentElement insertChild:pieChartGroupElement atIndex:childIndex];
+        if (childIndex < pieChartGroupElement.childCount)
+        {
+            [parentElement insertChild:pieChartGroupElement atIndex:childIndex];
+        }
+        else
+        {
+            [parentElement addChild:pieChartGroupElement];
+        }
     }
     else
     {

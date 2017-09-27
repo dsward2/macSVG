@@ -689,6 +689,7 @@
 		0EB663EB142866C4003723F0 /* MacSVGDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E5142866C4003723F0 /* MacSVGDocumentWindowController.m */; };
 		0EB663EC142866C4003723F0 /* SVGWebKitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E7142866C4003723F0 /* SVGWebKitController.m */; };
 		0EB663ED142866C4003723F0 /* XMLOutlineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E9142866C4003723F0 /* XMLOutlineController.m */; };
+		0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */; };
 		0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E281D7039FD00931DC4 /* libssh2.a */; };
 		0EC22E2B1D703C4100931DC4 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E2A1D703C4100931DC4 /* libcrypto.a */; };
 		0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -1017,6 +1018,13 @@
 			remoteGlobalIDString = 7D8B70C41BCFA15700D8E273;
 			remoteInfo = "tvOS CocoaAsyncSocket";
 		};
+		0EB8CACF1F78D11F004B6D05 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EB8CABF1F78D11E004B6D05;
+			remoteInfo = PathTextGenerator;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1035,6 +1043,7 @@
 				0E47E11A17ECCABE00C029DD /* CoordinatesAttributeEditor.plugin in Copy Plugins Files */,
 				0E47E11B17ECCABE00C029DD /* ImageElementEditor.plugin in Copy Plugins Files */,
 				0E47E11D17ECCABE00C029DD /* PathElementEditor.plugin in Copy Plugins Files */,
+				0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */,
 				0E47E11E17ECCABE00C029DD /* PathElementShapeAnimationEditor.plugin in Copy Plugins Files */,
 				0ED841221800FCCA003985CD /* PieChartGenerator.plugin in Copy Plugins Files */,
 				0EA78C3B1D84180900C9D4C8 /* PointsAttributeEditor.plugin in Copy Plugins Files */,
@@ -2440,6 +2449,8 @@
 		0EB663E7142866C4003723F0 /* SVGWebKitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGWebKitController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EB663E8142866C4003723F0 /* XMLOutlineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLOutlineController.h; sourceTree = "<group>"; };
 		0EB663E9142866C4003723F0 /* XMLOutlineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLOutlineController.m; sourceTree = "<group>"; };
+		0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PathTextGenerator.xcodeproj; path = PathTextGenerator/PathTextGenerator.xcodeproj; sourceTree = "<group>"; };
+		0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = PathTextGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBD6DE614D2268B00564EC2 /* plugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plugin.png; sourceTree = "<group>"; };
 		0EC22E251D7021A200931DC4 /* make_libssh.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = make_libssh.sh; path = "DFSSHWrapper-master/make_libssh.sh"; sourceTree = SOURCE_ROOT; };
 		0EC22E261D7021A200931DC4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "DFSSHWrapper-master/README.md"; sourceTree = SOURCE_ROOT; };
@@ -2630,6 +2641,7 @@
 				0EEFBB2717EA2C03006887CA /* ImageElementEditor.plugin */,
 				0EEFBB2917EA2C03006887CA /* PathElementEditor.plugin */,
 				0EEFBB2A17EA2C03006887CA /* PathElementShapeAnimationEditor.plugin */,
+				0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */,
 				0ED841201800FCAB003985CD /* PieChartGenerator.plugin */,
 				0EA78C3A1D8417E600C9D4C8 /* PointsAttributeEditor.plugin */,
 				0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */,
@@ -3835,6 +3847,7 @@
 				0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */,
 				0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */,
 				0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */,
+				0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */,
 				0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */,
 				0EA59C691E442BF30031EE60 /* PointsAttributeEditor.xcodeproj */,
 				0EA59C6A1E442BF30031EE60 /* StyleAttributeEditor.xcodeproj */,
@@ -4019,6 +4032,14 @@
 			);
 			name = "macSVGDocument Classes";
 			path = "SVGDocument Classes";
+			sourceTree = "<group>";
+		};
+		0EB8CAC91F78D11E004B6D05 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CAD01F78D11F004B6D05 /* PathTextGenerator.plugin */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0EC22E271D7039FD00931DC4 /* lib */ = {
@@ -4287,6 +4308,10 @@
 					ProjectRef = 0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */;
 				},
 				{
+					ProductGroup = 0EB8CAC91F78D11E004B6D05 /* Products */;
+					ProjectRef = 0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */;
+				},
+				{
 					ProductGroup = 0E3F0ED81E442C59001FDDD7 /* Products */;
 					ProjectRef = 0EA59C681E442BF30031EE60 /* PieChartGenerator.xcodeproj */;
 				},
@@ -4479,6 +4504,13 @@
 			fileType = wrapper.framework;
 			path = CocoaAsyncSocket.framework;
 			remoteRef = 0E82B0FB1D730812005D0634 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EB8CAD01F78D11F004B6D05 /* PathTextGenerator.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PathTextGenerator.plugin;
+			remoteRef = 0EB8CACF1F78D11F004B6D05 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

@@ -1,9 +1,7 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf760
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
 {\colortbl;\red255\green255\blue255;\red100\green56\blue32;\red196\green26\blue22;\red92\green38\blue153;
-\red0\green0\blue255;\red163\green21\blue21;}
-{\*\expandedcolortbl;;\csgenericrgb\c39216\c21961\c12549;\csgenericrgb\c76863\c10196\c8627;\csgenericrgb\c36078\c14902\c60000;
-\csgenericrgb\c0\c0\c100000;\csgenericrgb\c63922\c8235\c8235;}
+\red43\green131\blue159;\red0\green0\blue255;\red163\green21\blue21;}
 \margl1440\margr1440\vieww9000\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
@@ -178,8 +176,8 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 \b Plug-in Development Process:\
 \pard\pardeftab720\partightenfactor0
 
-\b0 \cf0 	In XCode, select the "MacSVG Plugin Projects/MacSVG Plugins" folder in the Project navigator.\
-	Create a new MacOS Bundle project by selecting the Bundle template in the Framework & Bundle category.  \
+\b0 \cf0 	In XCode, select the "MacSVG Plugin Projects/MacSVG Plugins" folder in the Project navigator, then choose the "New Project" command under the File menu.\
+	Create a new MacOS Bundle project by selecting the "Bundle" template in the Framework & Bundle category.  \
 	For this example, the plugin project product name is "XyzElementEditor" for an element editor, or "XyzAttributeEditor" for an attribute editor.\
 		Company identifier: "com.arkphone"\
 		Framework: Cocoa\
@@ -210,18 +208,30 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 
 \f0\fs24 \cf0 \CocoaLigature1 	Add the "MacSVGPlugin.framework" to the project navigator items.\
 	Add the file named "macSVGPluginConfig.xcconfig" to the project navigator items.\
-	Add the "macSVGPluginConfig.xcconfig" to the project navigator items.\
+	Set "macSVGPluginConfig" in the Project -> Info -> Configurations for Debug and Release targets..\
 	For menu plug-ins -\
 		Implement  
-\f1\fs22 \CocoaLigature0 - (\cf5 BOOL\cf0 )beginMenuPlugIn
+\f1\fs22 \CocoaLigature0 - (\cf5 NSString\cf0  *)pluginMenuTitle
+\f0\fs24 \CocoaLigature1 \
+			Should return name of the menu plugin\
+		Implement  
+\f1\fs22 \CocoaLigature0 - (\cf6 BOOL\cf0 )isMenuPlugIn
+\f0\fs24 \CocoaLigature1 \
+			Should return YES\
+		Implement  
+\f1\fs22 \CocoaLigature0 - (\cf6 BOOL\cf0 )beginMenuPlugIn
 \f0\fs24 \CocoaLigature1 \
 			If needed, in the NIB editor, create a new NSPanel modal window for the plug-in main view\
 			Menu plug-ins are responsible for opening and closing their windows.\
+		Implement a window controller, if needed.  \
+			Typically, a separate window would be used with 
+\f1\fs22 \CocoaLigature0 runModalForWindow:
+\f0\fs24 \CocoaLigature1 .\
 	\
 	The plugin is now ready to start using your custom implementation.\
 	\
 It may be useful in the plugin's Build Settings "HEADER_SEARCH_PATH" to add "$(SRCROOT)/../../../macSVG" with recursive searching, if your plugin needs direct access into the main application.  Then the 
-\f1\fs22 \cf5 \CocoaLigature0 #import \cf6 "MacSVGDocumentWindowController.h"
+\f1\fs22 \cf6 \CocoaLigature0 #import \cf7 "MacSVGDocumentWindowController.h"
 \f0\fs24 \cf0 \CocoaLigature1  directive can be used in your plugin's source code.\
 \
 	Element editors should return a string in the 
@@ -234,9 +244,12 @@ It may be useful in the plugin's Build Settings "HEADER_SEARCH_PATH" to add "$(S
 \f0\fs24 \CocoaLigature1  method, and return null in the 
 \f1\fs22 \CocoaLigature0 isEditorForElement:elementName:
 \f0\fs24 \CocoaLigature1  method.\
+	Menu plug-in should implement 
+\f1\fs22 \CocoaLigature0 isMenuPlugIn
+\f0\fs24 \CocoaLigature1 , as noted above.\
 \
-	To embed the plugin, add the plugin bundle to the main app's  file list in the main application's Plugins group.  In the File Inspector, set that copy of the plugin to use the Location "Relative to Build Products".  \
-	Then, add that copy of the plugin to the main application's Build Phases, in the Copy Files phase where the Destination is set to "Plugins".\
+	To embed the plugin, do an initial build of the plugin, then add the built plugin bundle product to the main app's  file list in the main application's Plugins group, with "Add to targets" not checkmarked.  In the File Inspector, set that copy of the plugin to use the Location "Relative to Build Products".  \
+	Finally, add that copy of the plugin to the main application's Build Phases in the "Copy Plugins Files" phase ,where the Destination is set to "Plugins".\
 \
 	\
 =================================================================================================\
