@@ -14,6 +14,7 @@
 
 #import "XMLOutlineController.h"
 #import "XMLAttributesTableController.h"
+#import "XMLAttributesTableView.h"
 #import "SVGWebKitController.h"
 #import "SVGElementsTableController.h"
 #import "EditorUIFrameController.h"
@@ -36,8 +37,6 @@
 #import "DOMSelectionControlsManager.h"
 #import "SVGHelpManager.h"
 #import "SVGtoCoreGraphicsConverter.h"
-#import "XMLAttributesTableController.h"
-#import "XMLAttributesTableView.h"
 #import "SVGtoVideoConverter.h"
 #import "SVGtoImagesConverter.h"
 
@@ -1057,7 +1056,6 @@
     //[self.editorUIFrameController setValidAttributesView];
     [self.editorUIFrameController setEmptyView];
     
-    //self.xmlAttributesTableController.xmlElementForAttributesTable = NULL;
     [self.xmlAttributesTableController unsetXmlElementForAttributesTable];
     
     [self reloadAllViews];

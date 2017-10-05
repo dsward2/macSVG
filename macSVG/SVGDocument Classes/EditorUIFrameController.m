@@ -246,6 +246,8 @@
         [copyXMLElement removeAttributeForName:@"macsvgid"];
         NSString * filteredElementText = [copyXMLElement XMLStringWithOptions:NSXMLNodePreserveCDATA];
 
+        //xmlElementTextView.string = filteredElementText;
+
         [xmlElementTextView.textStorage beginEditing];
         xmlElementTextView.string = filteredElementText;
         [xmlElementTextView.textStorage endEditing];

@@ -11,7 +11,7 @@
 @class MacSVGDocumentWindowController;
 @class XMLAttributesTableView;
 
-@interface XMLAttributesTableController : NSObject <NSTableViewDelegate, NSTableViewDataSource>
+@interface XMLAttributesTableController : NSObject <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSControlTextEditingDelegate>
 {
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
 }
@@ -33,5 +33,7 @@
 
 - (NSString *)selectedAttributeName;
 - (void)selectAttributeWithName:(NSString *)attributeName;
+
+- (void)removeAllTableRows;
 
 @end

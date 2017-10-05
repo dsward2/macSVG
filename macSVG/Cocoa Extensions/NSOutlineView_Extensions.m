@@ -53,6 +53,7 @@
  
  */
 
+#import "Cocoa/Cocoa.h"
 #import "MacSVGAppDelegate.h"
 #import "NSOutlineView_Extensions.h"
 #import "XMLOutlineController.h"
@@ -61,6 +62,8 @@
 #import "SVGWebKitController.h"
 #import "SVGPolylineEditor.h"
 #import "MacSVGDocumentWindowController.h"
+#import "XMLAttributesTableController.h"
+#import "XMLAttributesTableView.h"
 
 @implementation NSOutlineView(MyExtensions)
 
@@ -274,6 +277,9 @@
             
             xmlOutlineController.holdSelectedItems = [self selectedItems];  // these items should be reselected if dragging occurs
         
+            XMLAttributesTableController * xmlAttributesTableController = xmlOutlineController.macSVGDocumentWindowController.xmlAttributesTableController;
+            [xmlAttributesTableController removeAllTableRows];      // to reduce animation
+            
             [self deselectAll:self];
         }
 

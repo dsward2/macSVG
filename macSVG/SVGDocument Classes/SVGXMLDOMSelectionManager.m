@@ -21,6 +21,8 @@
 #import "SVGPathEditor.h"
 #import "SVGPolylineEditor.h"
 #import "SVGLineEditor.h"
+#import "XMLAttributesTableController.h"
+#import "XMLAttributesTableView.h"
 
 @implementation SVGXMLDOMSelectionManager
 
