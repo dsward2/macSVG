@@ -223,7 +223,6 @@
         
         NSString * newCommandString = [NSString stringWithFormat:@"%C", newCommand];
         newPathSegmentDictionary[@"command"] = newCommandString;
-
         [self loadPathSegmentData:newPathSegmentDictionary];
     }
 }
@@ -258,8 +257,19 @@
         {
             commonKeyFound = YES;
         }
+        else
+        {
+            for (NSString * aValidAttribute in validAttributesArray)
+            {
+                if ([aKey isEqualToString:aValidAttribute] == YES)
+                {
+                    commonKeyFound = YES;
+                    break;
+                }
+            }
+        }
         
-        if (attributeIndex == NSNotFound)
+        if (commonKeyFound == NO)
         {
             [pathSegmentDictionary removeObjectForKey:aKey];
         }
