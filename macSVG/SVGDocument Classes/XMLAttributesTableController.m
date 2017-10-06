@@ -198,11 +198,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     [macSVGDocumentWindowController.editorUIFrameController.validAttributesController
             setValidAttributesForElement:self.currentXmlElementForAttributesTable];
 
-    NSInteger newRowsCount = self.xmlAttributesArray.count;
-    if (originalRowsCount != newRowsCount)
-    {
-        [self.xmlAttributesTableView noteNumberOfRowsChanged];
-    }
+    [self.xmlAttributesTableView reloadData];
     
     [self reloadData];    
 }
@@ -213,9 +209,13 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (void)removeAllTableRows
 {
+    //[self.xmlAttributesTableView beginUpdates];
+
     NSInteger rowCount = [self.xmlAttributesTableView.dataSource numberOfRowsInTableView:self.xmlAttributesTableView];
     NSIndexSet * allRowsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, rowCount)];
     [self.xmlAttributesTableView removeRowsAtIndexes:allRowsIndexSet withAnimation:NO];
+
+    //[self.xmlAttributesTableView endUpdates];
 }
 
 //==================================================================================
@@ -354,6 +354,9 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     NSTextField * resultView = (NSTextField *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
 
+    //NSLog(@"tableView: viewForTableColumn:%@ row:%ld %@", tableColumnIdentifier, row, resultView);
+
+    /*
     if (resultView == nil)
     {
         resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
@@ -362,6 +365,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         resultView.bordered = NO;
         resultView.backgroundColor = [NSColor clearColor];
     }
+    */
 
     NSString * resultString = @"";
 
@@ -461,7 +465,8 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 	{
         NSInteger rowIndex = (self.xmlAttributesTableView).selectedRow;
 
-		[self buildAttributesTableForElement];
+		//[self buildAttributesTableForElement];
+		[self reloadData];
         
         EditorUIFrameController * editorUIFrameController =
                 macSVGDocumentWindowController.editorUIFrameController;
@@ -740,6 +745,11 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     id sender = aNotification.object;
     
+    NSDictionary * endEditingDictionary = aNotification.userInfo;
+    
+    NSNumber * textMovementNumber = [endEditingDictionary objectForKey:@"NSTextMovement"];
+    NSInteger textMovement = textMovementNumber.integerValue;
+    
     NSTextField * textField = sender;
     
     //[self itemTextFieldUpdated:sender];
@@ -770,12 +780,31 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable
             attributes:self.xmlAttributesArray];
 
-    //NSIndexSet * emptyIndexSet = [NSIndexSet indexSet];
-    //[self.xmlAttributesTableView selectRowIndexes:emptyIndexSet byExtendingSelection:NO];
-    
     [macSVGDocumentWindowController updateSelections];
 
     [macSVGDocumentWindowController reloadAllViews];
+
+    [[self.xmlAttributesTableView window] makeFirstResponder:self.xmlAttributesTableView];
+
+    NSIndexSet * restoreSelectionIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+    [self.xmlAttributesTableView selectRowIndexes:restoreSelectionIndexSet byExtendingSelection:NO];
+    
+    if ((textMovement == NSTabTextMovement) || (textMovement == NSBacktabTextMovement))
+    {
+        NSInteger editColumnIndex = 0;
+        if (textField.tag == 0)
+        {
+            editColumnIndex = 1;
+        }
+        
+        NSTextField * nextTextField = [self.xmlAttributesTableView viewAtColumn:editColumnIndex row:rowIndex makeIfNecessary:YES];
+        
+        textField.nextKeyView = nextTextField;
+
+        [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
+        
+        //NSLog(@"editColumn:%ld row:%ld", editColumnIndex, rowIndex);
+    }
 }
 
 //==================================================================================

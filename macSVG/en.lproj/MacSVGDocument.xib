@@ -573,6 +573,7 @@
                                                                                                     </textFieldCell>
                                                                                                     <connections>
                                                                                                         <outlet property="delegate" destination="100256" id="Pm2-8R-5Pe"/>
+                                                                                                        <outlet property="nextKeyView" destination="dbg-RP-Qsm" id="sNK-OG-3Pa"/>
                                                                                                     </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
@@ -600,6 +601,7 @@
                                                                                                     </textFieldCell>
                                                                                                     <connections>
                                                                                                         <outlet property="delegate" destination="100256" id="E55-Tr-yw9"/>
+                                                                                                        <outlet property="nextKeyView" destination="SSv-PB-YSa" id="hzP-bJ-eow"/>
                                                                                                     </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
