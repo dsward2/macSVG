@@ -745,65 +745,72 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     id sender = aNotification.object;
     
-    NSDictionary * endEditingDictionary = aNotification.userInfo;
-    
-    NSNumber * textMovementNumber = [endEditingDictionary objectForKey:@"NSTextMovement"];
-    NSInteger textMovement = textMovementNumber.integerValue;
-    
-    NSTextField * textField = sender;
-    
-    //[self itemTextFieldUpdated:sender];
-    
     NSInteger rowIndex = self.xmlAttributesTableView.selectedRow;
 
-    NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
-    
-    NSString * newName = oldAttributeRecordDictionary[@"name"];
-    NSString * newValue = oldAttributeRecordDictionary[@"value"];
-    
-    if (textField.tag == 0)
+    if (rowIndex >= 0)
     {
-        newName = textField.stringValue;
-    } 
-    else if (textField.tag == 1)
-    {
-        newValue = textField.stringValue;
-    } 
-    
-    NSMutableDictionary * newAttributeRecordDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-            newName, @"name",
-            newValue, @"value",
-            nil];
-
-    (self.xmlAttributesArray)[rowIndex] = newAttributeRecordDictionary;
-
-    [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable
-            attributes:self.xmlAttributesArray];
-
-    [macSVGDocumentWindowController updateSelections];
-
-    [macSVGDocumentWindowController reloadAllViews];
-
-    [[self.xmlAttributesTableView window] makeFirstResponder:self.xmlAttributesTableView];
-
-    NSIndexSet * restoreSelectionIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
-    [self.xmlAttributesTableView selectRowIndexes:restoreSelectionIndexSet byExtendingSelection:NO];
-    
-    if ((textMovement == NSTabTextMovement) || (textMovement == NSBacktabTextMovement))
-    {
-        NSInteger editColumnIndex = 0;
+        NSDictionary * endEditingDictionary = aNotification.userInfo;
+        
+        NSNumber * textMovementNumber = [endEditingDictionary objectForKey:@"NSTextMovement"];
+        NSInteger textMovement = textMovementNumber.integerValue;
+        
+        NSTextField * textField = sender;
+        
+        //[self itemTextFieldUpdated:sender];
+        NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
+        
+        NSString * newName = oldAttributeRecordDictionary[@"name"];
+        NSString * newValue = oldAttributeRecordDictionary[@"value"];
+        
         if (textField.tag == 0)
         {
-            editColumnIndex = 1;
-        }
+            newName = textField.stringValue;
+        } 
+        else if (textField.tag == 1)
+        {
+            newValue = textField.stringValue;
+        } 
         
-        NSTextField * nextTextField = [self.xmlAttributesTableView viewAtColumn:editColumnIndex row:rowIndex makeIfNecessary:YES];
-        
-        textField.nextKeyView = nextTextField;
+        NSMutableDictionary * newAttributeRecordDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                newName, @"name",
+                newValue, @"value",
+                nil];
 
-        [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
+        (self.xmlAttributesArray)[rowIndex] = newAttributeRecordDictionary;
+
+        [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable
+                attributes:self.xmlAttributesArray];
+
+        [macSVGDocumentWindowController updateSelections];
+
+        [macSVGDocumentWindowController reloadAllViews];
+
+        [[self.xmlAttributesTableView window] makeFirstResponder:self.xmlAttributesTableView];
+
+        NSIndexSet * restoreSelectionIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+        [self.xmlAttributesTableView selectRowIndexes:restoreSelectionIndexSet byExtendingSelection:NO];
         
-        //NSLog(@"editColumn:%ld row:%ld", editColumnIndex, rowIndex);
+        if ((textMovement == NSTabTextMovement) || (textMovement == NSBacktabTextMovement))
+        {
+            NSInteger editColumnIndex = 0;
+            if (textField.tag == 0)
+            {
+                editColumnIndex = 1;
+            }
+            
+            NSTextField * nextTextField = [self.xmlAttributesTableView viewAtColumn:editColumnIndex row:rowIndex makeIfNecessary:YES];
+            
+            textField.nextKeyView = nextTextField;
+
+            [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
+            
+            //NSLog(@"editColumn:%ld row:%ld", editColumnIndex, rowIndex);
+        }
+    }
+    else
+    {
+        // editing did not end properly
+        NSBeep();
     }
 }
 

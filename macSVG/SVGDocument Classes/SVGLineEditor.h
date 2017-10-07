@@ -43,7 +43,9 @@
 
 - (void)updateLineInDOMForElement:(DOMElement *)lineDOMElement xmlElement:(NSXMLElement *)lineXMLElement;
 
-- (void) makeLineHandles;
+//- (void) makeLineHandles;
+- (void) makeLineHandlesForXMLElement:(NSXMLElement *)lineXMLElement;
+
 - (void)removeLineHandles;
 
 - (void)resetLinePoints;

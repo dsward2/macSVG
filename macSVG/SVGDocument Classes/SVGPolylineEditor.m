@@ -310,6 +310,7 @@
 //	makePolylineHandles
 //==================================================================================
 
+/*
 -(void) makePolylineHandles
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
@@ -343,7 +344,84 @@
     {
         [domSelectionControlsManager removeDOMPolylinePointHighlight];
     }
+}
+*/
 
+//==================================================================================
+//	makePolylineHandlesForXMLElement
+//==================================================================================
+
+-(void) makePolylineHandlesForXMLElement:(NSXMLElement *)polylineXMLElement
+{
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
+
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
+    
+    DOMElement * newPolylineHandlesGroup = [domDocument createElementNS:svgNamespace
+            qualifiedName:@"g"];
+    [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polylineHandlesGroup"];
+    [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_polylineHandlesGroup"];
+
+    NSXMLNode * transformAttributeNode = [polylineXMLElement attributeForName:@"transform"];
+    if (transformAttributeNode != NULL)
+    {
+        NSString * transformAttribureString = transformAttributeNode.stringValue;
+        [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribureString];
+    }
+    
+    NSUInteger polylinePointsCount = (self.polylinePointsArray).count;
+            
+    for (NSUInteger pointIdx = 0; pointIdx < polylinePointsCount; pointIdx++)
+    {
+        NSDictionary * polylinePointDictionary = (self.polylinePointsArray)[pointIdx];
+
+        [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup];
+    }
+
+
+
+    // create parent group elements to match transforms for selected element
+    DOMElement * topGroupChild = newPolylineHandlesGroup;
+    NSXMLElement * pathParentElement = (NSXMLElement *)polylineXMLElement.parent;
+    NSInteger groupIndex = 0;
+    while (pathParentElement != NULL)
+    {
+        if (pathParentElement.kind == NSXMLElementKind)
+        {
+            NSXMLNode * transformAttributeNode = [pathParentElement attributeForName:@"transform"];
+            if (transformAttributeNode != NULL)
+            {
+                NSString * transformValueString = transformAttributeNode.stringValue;
+                if (transformValueString.length > 0)
+                {
+                    DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polyline_transform_group"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_polyline_transform_group"];
+                    
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
+                    
+                    [transformGroupElement appendChild:topGroupChild];
+                    topGroupChild = transformGroupElement;
+                    
+                    groupIndex++;
+                }
+            }
+        }
+        pathParentElement = (NSXMLElement *)pathParentElement.parent;
+    }
+    [domSelectionControlsManager setMacsvgTopGroupChild:topGroupChild];
+
+    [domSelectionControlsManager highlightPolylinePoint];
+
+    if (self.highlightSelectedPoint == YES)
+    {
+        [domSelectionControlsManager highlightPolylinePoint];
+    }
+    else
+    {
+        [domSelectionControlsManager removeDOMPolylinePointHighlight];
+    }
 }
 
 //==================================================================================
@@ -416,15 +494,30 @@
         DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
         if (activeDOMElement != NULL)
         {
-            [self updatePolylineInDOMForElement:activeDOMElement
-                    polylinePointsArray:self.polylinePointsArray];
+            NSString * activeDOMElementName = activeDOMElement.tagName;
+            if (([activeDOMElementName isEqualToString:@"polyline"] == YES) ||
+                ([activeDOMElementName isEqualToString:@"polygon"] == YES))
+            {
+                [self updatePolylineInDOMForElement:activeDOMElement
+                        polylinePointsArray:self.polylinePointsArray];
+            }
         }
         
         [svgXMLDOMSelectionManager syncSelectedDOMElementsToXMLDocument];
         
         [macSVGDocumentWindowController reloadAttributesTableData];
-        
-        [self makePolylineHandles];
+
+        //[self makePolylineHandles];
+        NSXMLElement * activeXMLElement = (NSXMLElement *)[svgXMLDOMSelectionManager activeXMLElement];
+        if (activeXMLElement != NULL)
+        {
+            NSString * activeXMLElementName = activeXMLElement.name;
+            if (([activeXMLElementName isEqualToString:@"polyline"] == YES) ||
+                    ([activeXMLElementName isEqualToString:@"polygon"] == YES))
+            {
+                [self makePolylineHandlesForXMLElement:activeXMLElement];
+            }
+        }
     }
 }
 
@@ -515,6 +608,9 @@
     
     [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_polylineHandlesGroup"];
+
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
+            removeMacsvgTopGroupChildByID:@"_macsvg_polyline_transform_group"];
 }
 
 //==================================================================================

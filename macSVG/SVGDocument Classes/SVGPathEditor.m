@@ -2247,6 +2247,7 @@
 //	makePathHandles
 //==================================================================================
 
+/*
 -(void) makePathHandles
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
@@ -2349,6 +2350,163 @@
     }
     
     [domSelectionControlsManager setMacsvgTopGroupChild:newPathHandlesGroup];
+
+    if (self.highlightSelectedSegment == YES)
+    {
+        [domSelectionControlsManager highlightPathSegment];
+    }
+    else
+    {
+        [domSelectionControlsManager removeDOMPathSegmentHighlight];
+    }
+}
+*/
+
+//==================================================================================
+//	makePathHandlesForXMLElement:
+//==================================================================================
+
+-(void) makePathHandlesForXMLElement:(NSXMLElement *)pathXMLElement
+{
+    // pathSegmentArray should already be populated with data from pathXMLElement
+    
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
+
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
+    
+    DOMElement * newPathHandlesGroup = [domDocument createElementNS:svgNamespace 
+            qualifiedName:@"g"];
+    [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_pathHandlesGroup"];
+    [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_pathHandlesGroup"];
+    
+    NSXMLNode * transformAttributeNode = [pathXMLElement attributeForName:@"transform"];
+    if (transformAttributeNode != NULL)
+    {
+        NSString * transformAttribureString = transformAttributeNode.stringValue;
+        [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribureString];
+    }
+    
+    NSUInteger pathSegmentsCount = (self.pathSegmentsArray).count;
+    
+    unichar previousPathCommand = ' ';
+            
+    for (NSUInteger segmentIdx = 0; segmentIdx < pathSegmentsCount; segmentIdx++)
+    {
+        NSDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[segmentIdx];
+
+        NSString * pathCommand = pathSegmentDictionary[@"command"];
+        
+        unichar commandChar = [pathCommand characterAtIndex:0];
+
+        switch (commandChar) 
+        {
+            case 'M':     // moveto
+            case 'm':     // moveto
+                [self addHandleForMoveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'L':     // lineto
+            case 'l':     // lineto
+                [self addHandleForLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'H':     // horizontal lineto
+            case 'h':     // horizontal lineto
+                [self addHandleForHorizontalLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'V':     // vertical lineto
+            case 'v':     // vertical lineto
+                [self addHandleForVerticalLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'C':     // cubic Bezier curveto
+            case 'c':     // cubic Bezier curveto
+            {
+                BOOL reflectX1Y1 = NO;
+                BOOL reflectX2Y2 = NO;
+                
+                //if (segmentIdx == 1) reflectX1Y1 = YES;
+                
+                if (segmentIdx >= (pathSegmentsCount - 1))
+                {
+                    //reflectX1Y1 = YES;
+                    reflectX2Y2 = YES;
+                }
+                
+                if ((previousPathCommand == 'M') || (previousPathCommand == 'm'))
+                {
+                    reflectX1Y1 = YES;
+                    //reflectX2Y2 = YES;
+                }
+
+                [self addHandleForCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx 
+                        reflectX1Y1:reflectX1Y1
+                        reflectX2Y2:reflectX2Y2
+                        pathHandlesGroup:newPathHandlesGroup];
+                break;
+            }
+            case 'S':     // smooth cubic Bezier curveto
+            case 's':     // smooth cubic Bezier curveto
+                [self addHandleForSmoothCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'Q':     // quadratic Bezier curve
+            case 'q':     // quadratic Bezier curve
+                [self addHandleForQuadraticCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'T':     // smooth quadratic Bezier curve
+            case 't':     // smooth quadratic Bezier curve
+                [self addHandleForSmoothQuadraticCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'A':     // elliptical arc
+            case 'a':     // elliptical arc
+                [self addHandleForEllipicalArc:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+
+            case 'Z':     // closepath
+            case 'z':     // closepath
+                [self addHandleForClosePath:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
+                break;
+        }
+        
+        previousPathCommand = commandChar;
+    }
+    
+    // create parent group elements to match transforms for selected element
+    DOMElement * topGroupChild = newPathHandlesGroup;
+    NSXMLElement * pathParentElement = (NSXMLElement *)pathXMLElement.parent;
+    NSInteger groupIndex = 0;
+    while (pathParentElement != NULL)
+    {
+        if (pathParentElement.kind == NSXMLElementKind)
+        {
+            NSXMLNode * transformAttributeNode = [pathParentElement attributeForName:@"transform"];
+            if (transformAttributeNode != NULL)
+            {
+                NSString * transformValueString = transformAttributeNode.stringValue;
+                if (transformValueString.length > 0)
+                {
+                    DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_path_transform_group"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_path_transform_group"];
+                    
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
+                    
+                    [transformGroupElement appendChild:topGroupChild];
+                    topGroupChild = transformGroupElement;
+                    
+                    groupIndex++;
+                }
+            }
+        }
+        pathParentElement = (NSXMLElement *)pathParentElement.parent;
+    }
+    
+    [domSelectionControlsManager setMacsvgTopGroupChild:topGroupChild];
 
     if (self.highlightSelectedSegment == YES)
     {
@@ -2725,15 +2883,28 @@
         DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
         if (activeDOMElement != NULL)
         {
-            [self updatePathInDOMForElement:activeDOMElement
-                    pathSegmentsArray:self.pathSegmentsArray];
+            NSString * activeDOMElementName = activeDOMElement.tagName;
+            if ([activeDOMElementName isEqualToString:@"path"] == YES)
+            {
+                [self updatePathInDOMForElement:activeDOMElement
+                        pathSegmentsArray:self.pathSegmentsArray];
+            }
         }
         
         [svgXMLDOMSelectionManager syncSelectedDOMElementsToXMLDocument];
         
         [macSVGDocumentWindowController reloadAttributesTableData];
         
-        [self makePathHandles];
+        //[self makePathHandles];
+        NSXMLElement * activeXMLElement = [svgXMLDOMSelectionManager activeXMLElement];
+        if (activeXMLElement != NULL)
+        {
+            NSString * activeXMLElementName = activeXMLElement.name;
+            if ([activeXMLElementName isEqualToString:@"path"] == YES)
+            {
+                [self makePathHandlesForXMLElement:activeXMLElement];
+            }
+        }
     }
 }
 
@@ -2769,6 +2940,9 @@
     
     [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_pathHandlesGroup"];
+
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
+            removeMacsvgTopGroupChildByID:@"_macsvg_path_transform_group"];
 }
 
 //==================================================================================

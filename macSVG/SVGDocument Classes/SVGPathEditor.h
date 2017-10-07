@@ -80,7 +80,8 @@
 
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)aPathSegmentsArray;
 
--(void) makePathHandles;
+//-(void) makePathHandles;
+-(void) makePathHandlesForXMLElement:(NSXMLElement *)pathXMLElement;
 
 - (void)resetPathSegmentsArray;
 

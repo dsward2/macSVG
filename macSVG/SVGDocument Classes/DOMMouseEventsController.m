@@ -733,7 +733,8 @@
             
             [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
-            [self.svgPathEditor makePathHandles];
+            //[self.svgPathEditor makePathHandles];
+            [self.svgPathEditor makePathHandlesForXMLElement:pathXMLElement];
         }
     }
 }
@@ -831,7 +832,8 @@
             
             [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
-            [self.svgPolylineEditor makePolylineHandles];
+            //[self.svgPolylineEditor makePolylineHandles];
+            [self.svgPolylineEditor makePolylineHandlesForXMLElement:polylineXMLElement];
         }
     }
 }
@@ -917,7 +919,8 @@
             
             [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
-            [self.svgLineEditor makeLineHandles];
+            //[self.svgLineEditor makeLineHandles];
+            [self.svgLineEditor makeLineHandlesForXMLElement:lineXMLElement];
         }
     }
 }

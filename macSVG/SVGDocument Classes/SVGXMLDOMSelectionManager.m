@@ -771,19 +771,23 @@
         {
             if ([tagName isEqualToString:@"path"] == YES)
             {
-                [svgWebKitController.domMouseEventsController.svgPathEditor makePathHandles];
+                //[svgWebKitController.domMouseEventsController.svgPathEditor makePathHandles];
+                [svgWebKitController.domMouseEventsController.svgPathEditor makePathHandlesForXMLElement:aXMLElement];
             }
             else if ([tagName isEqualToString:@"polyline"] == YES)
             {
-                [svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandles];
+                //[svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandles];
+                [svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandlesForXMLElement:aXMLElement];
             }
             else if ([tagName isEqualToString:@"polygon"] == YES)
             {
-                [svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandles];
+                //[svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandles];
+                [svgWebKitController.domMouseEventsController.svgPolylineEditor makePolylineHandlesForXMLElement:aXMLElement];
             }
             else if ([tagName isEqualToString:@"line"] == YES)
             {
-                [svgWebKitController.domMouseEventsController.svgLineEditor makeLineHandles];
+                //[svgWebKitController.domMouseEventsController.svgLineEditor makeLineHandles];
+                [svgWebKitController.domMouseEventsController.svgLineEditor makeLineHandlesForXMLElement:aXMLElement];
             }
         }
     }

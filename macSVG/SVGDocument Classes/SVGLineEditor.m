@@ -176,6 +176,7 @@
 //	addHandleForLineElement:pointIndex:lineHandlesGroup:
 //==================================================================================
 
+/*
 -(void) addHandleForLineElement:(DOMElement *)lineElement
         pointIndex:(NSUInteger)pointIndex lineHandlesGroup:(DOMElement *)lineHandlesGroup
 {
@@ -244,11 +245,90 @@
 
     [lineHandlesGroup appendChild:handleCircleElement];
 }
+*/
+
+//==================================================================================
+//	addHandleForLineXMLElement:pointIndex:lineHandlesGroup:
+//==================================================================================
+
+-(void) addHandleForLineXMLElement:(NSXMLElement *)lineElement
+        pointIndex:(NSUInteger)pointIndex lineHandlesGroup:(DOMElement *)lineHandlesGroup
+{
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
+    
+    NSXMLNode * x1AttributeNode = [lineElement attributeForName:@"x1"];
+    NSXMLNode * y1AttributeNode = [lineElement attributeForName:@"y1"];
+    NSXMLNode * x2AttributeNode = [lineElement attributeForName:@"x2"];
+    NSXMLNode * y2AttributeNode = [lineElement attributeForName:@"y2"];
+
+    NSString * x1String = x1AttributeNode.stringValue;
+    NSString * y1String = y1AttributeNode.stringValue;
+    NSString * x2String = x2AttributeNode.stringValue;
+    NSString * y2String = y2AttributeNode.stringValue;
+    
+    //NSString * x1PxString = [x1String stringByAppendingString:@"px"];
+    //NSString * y1PxString = [y1String stringByAppendingString:@"px"];
+    //NSString * x2PxString = [x2String stringByAppendingString:@"px"];
+    //NSString * y2PxString = [y2String stringByAppendingString:@"px"];
+
+    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    
+    NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
+    CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
+    linePointStrokeWidthFloat *= reciprocalZoomFactor;
+    linePointStrokeWidthString = [self allocPxString:linePointStrokeWidthFloat];
+
+    NSString * lineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
+    CGFloat lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
+    lineLineStrokeWidthFloat *= reciprocalZoomFactor;
+    lineLineStrokeWidthString = [self allocPxString:lineLineStrokeWidthFloat];
+
+    NSString * linePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
+    CGFloat linePointRadiusFloat = linePointRadiusString.floatValue;
+    linePointRadiusFloat *= reciprocalZoomFactor;
+    linePointRadiusString = [self allocPxString:linePointRadiusFloat];
+    
+    NSString * cxString = x1String;
+    NSString * cyString = y1String;
+    
+    if (pointIndex == 1)
+    {
+        cxString = x2String;
+        cyString = y2String;
+    }
+
+    DOMElement * handleCircleElement = [domDocument createElementNS:svgNamespace
+            qualifiedName:@"circle" ];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_line_handle"];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"pointer-events" value:@"all"]; // allow selection
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"cx" value:cxString];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"cy" value:cyString];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"fill"
+            value:toolSettingsPopoverViewController.pathEndpointFillColor];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"stroke"
+            value:toolSettingsPopoverViewController.pathEndpointStrokeColor];
+    
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"stroke-width"
+            value:linePointStrokeWidthString];
+    
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"r"
+            value:linePointRadiusString];
+    
+    NSString * pointIndexString = [NSString stringWithFormat:@"%ld", pointIndex];
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_line_point_index" value:pointIndexString];
+
+    NSXMLNode * MacsvgidNode = [self.selectedLineElement attributeForName:@"macsvgid"];
+    NSString * selectedElementMacsvgid = MacsvgidNode.stringValue;
+
+    [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:selectedElementMacsvgid];
+
+    [lineHandlesGroup appendChild:handleCircleElement];
+}
 
 //==================================================================================
 //	makeLineHandles
 //==================================================================================
-
+/*
 -(void) makeLineHandles
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
@@ -267,6 +347,74 @@
     [self addHandleForLineElement:activeDOMElement pointIndex:1 lineHandlesGroup:newLineHandlesGroup];
     
     [domSelectionControlsManager setMacsvgTopGroupChild:newLineHandlesGroup];
+
+    [domSelectionControlsManager highlightLinePoint];
+}
+*/
+
+//==================================================================================
+//	makeLineHandlesForXMLElement:
+//==================================================================================
+
+-(void) makeLineHandlesForXMLElement:(NSXMLElement *)lineXMLElement
+{
+    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
+
+    DOMSelectionControlsManager * domSelectionControlsManager =
+            svgXMLDOMSelectionManager.domSelectionControlsManager;
+    
+    DOMElement * newLineHandlesGroup = [domDocument createElementNS:svgNamespace
+            qualifiedName:@"g"];
+    [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_lineHandlesGroup"];
+    [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_lineHandlesGroup"];
+
+    NSXMLNode * transformAttributeNode = [lineXMLElement attributeForName:@"transform"];
+    if (transformAttributeNode != NULL)
+    {
+        NSString * transformAttribureString = transformAttributeNode.stringValue;
+        [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribureString];
+    }
+
+    //DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
+    
+    //[self addHandleForLineElement:activeDOMElement pointIndex:0 lineHandlesGroup:newLineHandlesGroup];
+    //[self addHandleForLineElement:activeDOMElement pointIndex:1 lineHandlesGroup:newLineHandlesGroup];
+
+    [self addHandleForLineXMLElement:lineXMLElement pointIndex:0 lineHandlesGroup:newLineHandlesGroup];
+    [self addHandleForLineXMLElement:lineXMLElement pointIndex:1 lineHandlesGroup:newLineHandlesGroup];
+
+    //[domSelectionControlsManager setMacsvgTopGroupChild:newLineHandlesGroup];
+
+    // create parent group elements to match transforms for selected element
+    DOMElement * topGroupChild = newLineHandlesGroup;
+    NSXMLElement * pathParentElement = (NSXMLElement *)lineXMLElement.parent;
+    NSInteger groupIndex = 0;
+    while (pathParentElement != NULL)
+    {
+        if (pathParentElement.kind == NSXMLElementKind)
+        {
+            NSXMLNode * transformAttributeNode = [pathParentElement attributeForName:@"transform"];
+            if (transformAttributeNode != NULL)
+            {
+                NSString * transformValueString = transformAttributeNode.stringValue;
+                if (transformValueString.length > 0)
+                {
+                    DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_line_transform_group"];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_line_transform_group"];
+                    
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
+                    
+                    [transformGroupElement appendChild:topGroupChild];
+                    topGroupChild = transformGroupElement;
+                    
+                    groupIndex++;
+                }
+            }
+        }
+        pathParentElement = (NSXMLElement *)pathParentElement.parent;
+    }
+    [domSelectionControlsManager setMacsvgTopGroupChild:topGroupChild];
 
     [domSelectionControlsManager highlightLinePoint];
 }
@@ -326,7 +474,16 @@
         
         [macSVGDocumentWindowController reloadAttributesTableData];
         
-        [self makeLineHandles];
+        //[self makeLineHandles];
+        NSXMLElement * activeXMLElement = (NSXMLElement *)[svgXMLDOMSelectionManager activeXMLElement];
+        if (activeXMLElement != NULL)
+        {
+            NSString * activeXMLElementName = activeXMLElement.name;
+            if ([activeXMLElementName isEqualToString:@"line"] == YES)
+            {
+                [self makeLineHandlesForXMLElement:activeXMLElement];
+            }
+        }
     }
 }
 
@@ -389,6 +546,9 @@
     
     [svgXMLDOMSelectionManager.domSelectionControlsManager
             removeMacsvgTopGroupChildByID:@"_macsvg_lineHandlesGroup"];
+
+    [svgXMLDOMSelectionManager.domSelectionControlsManager
+            removeMacsvgTopGroupChildByID:@"_macsvg_line_transform_group"];
 }
 
 //==================================================================================

@@ -52,7 +52,9 @@
 - (NSMutableArray *)buildPolylinePointsArrayWithPointsString:(NSString *)pointsString;
 - (NSString *)buildStringWithPolylinePointsArray:(NSArray *)aPolylinePointsArray;
 
-- (void) makePolylineHandles;
+//- (void) makePolylineHandles;
+- (void) makePolylineHandlesForXMLElement:(NSXMLElement *)polylineXMLElement;
+
 - (void)removePolylineHandles;
 
 - (void)resetPolylinePointsArray;
