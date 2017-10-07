@@ -12,6 +12,8 @@
 		0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D366178F397B000B910E /* MacSVGPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05D367178F397B000B910E /* MacSVGPlugin.m */; };
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E083F441F8918B900AD1285 /* SZJsonParser.h */; };
+		0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E083F451F8918B900AD1285 /* SZJsonParser.m */; };
 		0E3F77FF1E7F925600599EC0 /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */; };
 		0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */; };
 		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +32,8 @@
 		0E05D366178F397B000B910E /* MacSVGPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacSVGPlugin.h; sourceTree = "<group>"; };
 		0E05D367178F397B000B910E /* MacSVGPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacSVGPlugin.m; sourceTree = "<group>"; };
 		0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGPluginCallbacks.h; path = "../../../macSVG/SVGDocument Classes/MacSVGPluginCallbacks.h"; sourceTree = "<group>"; };
+		0E083F441F8918B900AD1285 /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZJsonParser.h; sourceTree = "<group>"; };
+		0E083F451F8918B900AD1285 /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZJsonParser.m; sourceTree = "<group>"; };
 		0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MacSVGPluginView.xib; path = macSVGPlugin/MacSVGPluginView.xib; sourceTree = SOURCE_ROOT; };
 		0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacSVGPluginSwiftInterface.swift; path = macSVGPlugin/MacSVGPluginSwiftInterface.swift; sourceTree = SOURCE_ROOT; };
 		0EDA099A178F52A400E97D95 /* WebKitInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebKitInterface.h; path = "../../../macSVG/Application Classes/WebKitInterface.h"; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 				0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */,
 				0EDA099A178F52A400E97D95 /* WebKitInterface.h */,
 				0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */,
+				0E083F441F8918B900AD1285 /* SZJsonParser.h */,
+				0E083F451F8918B900AD1285 /* SZJsonParser.m */,
 				0E05D340178F35C4000B910E /* Supporting Files */,
 			);
 			path = MacSVGPlugin;
@@ -115,6 +121,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */,
 				0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */,
 				0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */,
 				0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */,
@@ -193,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */,
+				0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */,
 				0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

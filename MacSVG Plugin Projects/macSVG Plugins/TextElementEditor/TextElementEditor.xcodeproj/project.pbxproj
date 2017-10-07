@@ -15,7 +15,6 @@
 		0E420E4917C2BA2300239733 /* TextPathPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E420E4817C2BA2300239733 /* TextPathPopoverViewController.m */; };
 		0E46D9FA17CB1B5000314429 /* TspanPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */; };
 		0E693CFA1D7054D800006B21 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E693CF91D7054D800006B21 /* MacSVGPlugin.framework */; };
-		0ED1B97D17B44109003E282F /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97C17B44109003E282F /* SZJsonParser.m */; };
 		0ED1B98017B47630003E282F /* FontPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED1B97F17B47630003E282F /* FontPopoverViewController.m */; };
 		0ED1B98317B49482003E282F /* BrowserFonts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ED1B98117B49482003E282F /* BrowserFonts.plist */; };
 /* End PBXBuildFile section */
@@ -42,8 +41,6 @@
 		0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TspanPopoverViewController.m; sourceTree = "<group>"; };
 		0E693CF91D7054D800006B21 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ECCB0191DB4AB71001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
-		0ED1B97B17B44109003E282F /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZJsonParser.h; path = "json-objc-parser-master/JSON Parser/SZJsonParser.h"; sourceTree = "<group>"; };
-		0ED1B97C17B44109003E282F /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZJsonParser.m; path = "json-objc-parser-master/JSON Parser/SZJsonParser.m"; sourceTree = "<group>"; };
 		0ED1B97E17B47630003E282F /* FontPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontPopoverViewController.h; sourceTree = "<group>"; };
 		0ED1B97F17B47630003E282F /* FontPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontPopoverViewController.m; sourceTree = "<group>"; };
 		0ED1B98217B49482003E282F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/BrowserFonts.plist; sourceTree = "<group>"; };
@@ -111,8 +108,6 @@
 				0E420E4817C2BA2300239733 /* TextPathPopoverViewController.m */,
 				0E46D9F817CB1B5000314429 /* TspanPopoverViewController.h */,
 				0E46D9F917CB1B5000314429 /* TspanPopoverViewController.m */,
-				0ED1B97B17B44109003E282F /* SZJsonParser.h */,
-				0ED1B97C17B44109003E282F /* SZJsonParser.m */,
 				0E420E4117C1918F00239733 /* NSFileManager+DirectoryLocations.h */,
 				0E420E4217C1918F00239733 /* NSFileManager+DirectoryLocations.m */,
 				0E26CD6417A6326C0053B3D4 /* Supporting Files */,
@@ -209,7 +204,6 @@
 				0ED1B98017B47630003E282F /* FontPopoverViewController.m in Sources */,
 				0E420E4917C2BA2300239733 /* TextPathPopoverViewController.m in Sources */,
 				0E46D9FA17CB1B5000314429 /* TspanPopoverViewController.m in Sources */,
-				0ED1B97D17B44109003E282F /* SZJsonParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

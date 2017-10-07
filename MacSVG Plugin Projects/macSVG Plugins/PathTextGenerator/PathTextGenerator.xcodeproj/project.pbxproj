@@ -14,7 +14,6 @@
 		0EB8CAE41F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAE31F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EB8CAEA1F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */; };
 		0EB8CAEC1F78FBB3004B6D05 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB8CAEB1F78FBB3004B6D05 /* Cocoa.framework */; };
-		0EB8CAEF1F78FC96004B6D05 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */; };
 		0EB8CAF11F79038E004B6D05 /* BrowserFonts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */; };
 /* End PBXBuildFile section */
 
@@ -33,8 +32,6 @@
 		0EB8CAE81F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+DirectoryLocations.h"; path = "NSFileManager_DirectoryLocations/NSFileManager+DirectoryLocations.h"; sourceTree = "<group>"; };
 		0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+DirectoryLocations.m"; path = "NSFileManager_DirectoryLocations/NSFileManager+DirectoryLocations.m"; sourceTree = "<group>"; };
 		0EB8CAEB1F78FBB3004B6D05 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		0EB8CAED1F78FC96004B6D05 /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZJsonParser.h; path = "json-objc-parser-master/JSON Parser/SZJsonParser.h"; sourceTree = "<group>"; };
-		0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZJsonParser.m; path = "json-objc-parser-master/JSON Parser/SZJsonParser.m"; sourceTree = "<group>"; };
 		0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BrowserFonts.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,8 +76,6 @@
 				0EB8CAE31F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m */,
 				0EB8CAE81F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.h */,
 				0EB8CAE91F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m */,
-				0EB8CAED1F78FC96004B6D05 /* SZJsonParser.h */,
-				0EB8CAEE1F78FC96004B6D05 /* SZJsonParser.m */,
 				0EB8CAF01F79038E004B6D05 /* BrowserFonts.plist */,
 				0EB8CAD81F78D357004B6D05 /* Supporting Files */,
 			);
@@ -179,7 +174,6 @@
 			files = (
 				0EB8CAD31F78D195004B6D05 /* PathTextGenerator.m in Sources */,
 				0EB8CAEA1F78FAEF004B6D05 /* NSFileManager+DirectoryLocations.m in Sources */,
-				0EB8CAEF1F78FC96004B6D05 /* SZJsonParser.m in Sources */,
 				0EB8CADE1F78D8C3004B6D05 /* PathTextGeneratorWindowController.m in Sources */,
 				0EB8CAE41F78DEC3004B6D05 /* NSBezierPath+EMMBezierPath.m in Sources */,
 			);
@@ -328,6 +322,7 @@
 				0EB8CAC71F78D11E004B6D05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
