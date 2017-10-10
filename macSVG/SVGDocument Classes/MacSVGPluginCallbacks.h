@@ -97,7 +97,7 @@
         cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry;
 - (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
         rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise;
-- (CGFloat)scaleForDOMElementHandles:(NSXMLElement *)aXMLElement;
+- (CGFloat)scaleForDOMElementHandles:(DOMElement *)aDOMElement;
 
 @end
 

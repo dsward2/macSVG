@@ -765,6 +765,19 @@
     
     if (self.macSVGDocumentWindowController.currentToolMode == toolModePlugin)
     {
+        NSString * eventType = event.type;
+        if (([eventType isEqualToString:@"mousedown"] == YES) ||
+                ([eventType isEqualToString:@"mousemove"] == YES) ||
+                ([eventType isEqualToString:@"mouseup"] == YES))
+        {
+            DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            self.domMouseEventsController.previousMousePoint = self.domMouseEventsController.currentMousePoint;
+            CGFloat zoomFactor = self.svgWebView.zoomFactor;
+            self.domMouseEventsController.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+
+            [self updateLiveCoordinates];
+        }
+
         [self.macSVGDocumentWindowController handlePluginEvent:event];
     }
     else

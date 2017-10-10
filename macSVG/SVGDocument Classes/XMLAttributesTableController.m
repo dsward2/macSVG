@@ -214,7 +214,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     @try {
         NSInteger rowCount = [self.xmlAttributesTableView.dataSource numberOfRowsInTableView:self.xmlAttributesTableView];
         NSIndexSet * allRowsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, rowCount)];
-        [self.xmlAttributesTableView removeRowsAtIndexes:allRowsIndexSet withAnimation:NO];
+        [self.xmlAttributesTableView removeRowsAtIndexes:allRowsIndexSet withAnimation:NO]; // throws if row count changed
     } @catch (NSException *exception) {
         //
     } @finally {

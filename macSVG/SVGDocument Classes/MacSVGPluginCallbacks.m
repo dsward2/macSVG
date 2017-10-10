@@ -91,12 +91,12 @@
 
 
 
-- (CGFloat)scaleForDOMElementHandles:(NSXMLElement *)aXMLElement
+- (CGFloat)scaleForDOMElementHandles:(DOMElement *)aDOMElement
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
 
-    CGFloat scaleFactor = [svgWebKitController scaleForDOMElementHandles:aXMLElement];
+    CGFloat scaleFactor = [svgWebKitController scaleForDOMElementHandles:aDOMElement];
     return scaleFactor;
 }
 

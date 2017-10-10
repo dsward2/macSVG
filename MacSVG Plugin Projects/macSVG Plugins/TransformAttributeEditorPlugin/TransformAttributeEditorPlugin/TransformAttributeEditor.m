@@ -1295,38 +1295,18 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [self setTransformAttribute];
 
-    float currentDegrees = 0.0f;
-    NSString * degreesAttribute = rotateTransformDictionary[@"degrees"];
-    if (degreesAttribute != NULL)
-    {
-        if (degreesAttribute.length > 0)
-        {
-            currentDegrees = degreesAttribute.floatValue;
-        }
-    }
+    NSPoint pointA = NSMakePoint(xString.floatValue, yString.floatValue - 1000);
+    pointA = [self translatePoint:pointA targetElement:self.pluginTargetDOMElement.parentElement];
 
-    NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
-    float bboxX = boundingBox.origin.x;
-    float bboxY = boundingBox.origin.y;
-    float bboxWidth = boundingBox.size.width;
-    float bboxHeight = boundingBox.size.height;
+    NSPoint pointB = NSMakePoint(xString.floatValue, yString.floatValue);
+    pointB = [self translatePoint:pointB targetElement:self.pluginTargetDOMElement.parentElement];
     
-    float bboxXMax = bboxX + bboxWidth;
-    float bboxYMax = bboxY + bboxHeight;
+    NSPoint pointC = [self translatePoint:currentMousePoint targetElement:self.pluginTargetDOMElement.parentElement];
     
-    float bboxXCenter = (bboxX + bboxXMax) / 2.0f;
-    float bboxYCenter = (bboxY + bboxYMax) / 2.0f;
-    
-    NSPoint pointA = NSMakePoint(bboxXCenter, 0);
-    pointA.x *= currentScale;
+    //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
 
-    NSPoint pointB = NSMakePoint(bboxXCenter, bboxYCenter);
-    pointB.x *= currentScale;
-    pointB.y *= currentScale;
+    handleDegrees = getAngleABC(pointA, pointB, pointC);
 
-    NSPoint pointC = currentMousePoint;
-    
-    handleDegrees = getAngleABC(pointA, pointB, pointC) - currentDegrees;
 }
 
 
@@ -1343,46 +1323,17 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     if (selectedRow != -1)
     {
         NSMutableDictionary * rotateDictionary = (self.transformsArray)[selectedRow];
-                    
-        NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
+        
+        NSString * xString = [rotateDictionary objectForKey:@"x"];
+        NSString * yString = [rotateDictionary objectForKey:@"y"];
+        
+        NSPoint pointA = NSMakePoint(xString.floatValue, yString.floatValue - 1000);
+        pointA = [self translatePoint:pointA targetElement:self.pluginTargetDOMElement.parentElement];
 
-        //NSLog(@"rotate bBox1 = %f, %f, %f, %f", boundingBox.origin.x, boundingBox.origin.y,
-        //        boundingBox.size.width, boundingBox.size.height);
-
-        DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
-        DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
-        DOMElement * svgRootElement = NULL;
-        if (svgElementsList.length > 0)
-        {
-            DOMNode * svgElementNode = [svgElementsList item:0];
-            svgRootElement = (DOMElement *)svgElementNode;
-            boundingBox = [self.webKitInterface pageRectForElement:self.pluginTargetDOMElement svgRootElement:svgRootElement];
-
-            //NSLog(@"rotate bBox2 = %f, %f, %f, %f", boundingBox.origin.x, boundingBox.origin.y,
-            //        boundingBox.size.width, boundingBox.size.height);
-        }
+        NSPoint pointB = NSMakePoint(xString.floatValue, yString.floatValue);
+        pointB = [self translatePoint:pointB targetElement:self.pluginTargetDOMElement.parentElement];
         
-        float bboxX = boundingBox.origin.x;
-        float bboxY = boundingBox.origin.y;
-        float bboxWidth = boundingBox.size.width;
-        float bboxHeight = boundingBox.size.height;
-        
-        float bboxXMax = bboxX + bboxWidth;
-        float bboxYMax = bboxY + bboxHeight;
-        
-        float bboxXCenter = (bboxX + bboxXMax) / 2.0f;
-        float bboxYCenter = (bboxY + bboxYMax) / 2.0f;
-
-        NSPoint pointA = NSMakePoint(bboxXCenter, 0);
-        pointA.x *= currentScale;
-        
-        NSPoint pointB = NSMakePoint(bboxXCenter, bboxYCenter);
-        pointB.x *= currentScale;
-        pointB.y *= currentScale;
-        
-        NSPoint pointC = currentMousePoint;
-        pointC.x *= currentScale;
-        pointC.y *= currentScale;
+        NSPoint pointC = [self translatePoint:currentMousePoint targetElement:self.pluginTargetDOMElement.parentElement];
         
         //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
 
