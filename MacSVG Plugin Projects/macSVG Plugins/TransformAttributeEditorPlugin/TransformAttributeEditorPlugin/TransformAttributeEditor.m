@@ -248,7 +248,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 }
 
 //==================================================================================
-//	translatePoint
+//	translatePoint:targetElement:
 //==================================================================================
 
 -(NSPoint) translatePoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement
@@ -899,6 +899,16 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
+
+    if ([xString isEqualToString:@"inf"] == YES)
+    {
+        yString = @"1";
+    }
+    
+    if ([yString isEqualToString:@"inf"] == YES)
+    {
+        yString = @"1";
+    }
     
     [label1TextField setHidden:NO];
     label1TextField.stringValue = @"x";
@@ -960,8 +970,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             float scaleX = scaleXString.floatValue;
             float scaleY = scaleYString.floatValue;
 
-
-
             NSRect offsetRect = NSMakeRect(self.pluginTargetDOMElement.offsetLeft, self.pluginTargetDOMElement.offsetTop,
                     self.pluginTargetDOMElement.offsetWidth, self.pluginTargetDOMElement.offsetHeight);
 
@@ -1001,6 +1009,10 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             if ([elementTagName isEqualToString:@"polygon"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"path"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"text"] == YES) useBoundingBox = YES;
+            
+            if ([elementTagName isEqualToString:@"g"] == YES) useBoundingBox = YES;
+            if ([elementTagName isEqualToString:@"foreignObject"] == YES) useBoundingBox = YES;
+            if ([elementTagName isEqualToString:@"use"] == YES) useBoundingBox = YES;
             
             if (useXY == YES)
             {
@@ -1511,7 +1523,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     handleDegrees = currentDegrees;
 }
-
 
 //==================================================================================
 //	handleMouseMoveEventForSkewX:
@@ -2068,8 +2079,23 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     DOMElement * eventTargetElement = event.target;
 
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
-    currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+    
+    //CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
+    //currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+
+    NSPoint mouseEventPoint = NSMakePoint(mouseEvent.pageX, mouseEvent.pageY);
+    
+    //NSPoint transformedMousePoint = [webKitInterface transformPoint:aMousePoint fromElement:svgElement toElement:targetElement];
+    NSPoint transformedMousePoint = [self translatePoint:mouseEventPoint targetElement:eventTargetElement.parentElement];
+    
+    //NSLog(@"event mouse: %f,%f transformed %f,%f", mouseEventPoint.x, mouseEventPoint.y, transformedMousePoint.x, transformedMousePoint.y);
+    
+    currentMousePoint = transformedMousePoint;
+    
+    CGFloat zoomFactor = [self.macSVGPluginCallbacks scaleForDOMElementHandles:eventTargetElement];
+    
+
+
 
 /*
     float clientX = mouseEvent.clientX;
@@ -2221,8 +2247,20 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     previousMousePoint = currentMousePoint;
     
-    CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
-    currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+    //CGFloat zoomFactor = (self.macSVGPluginCallbacks).zoomFactor;
+    //currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+
+    NSPoint mouseEventPoint = NSMakePoint(mouseEvent.pageX, mouseEvent.pageY);
+    
+    NSPoint transformedMousePoint = [self translatePoint:mouseEventPoint targetElement:targetElement.parentElement];
+    
+    //NSLog(@"event mouse: %f,%f transformed %f,%f", mouseEventPoint.x, mouseEventPoint.y, transformedMousePoint.x, transformedMousePoint.y);
+    
+    currentMousePoint = transformedMousePoint;
+    
+    CGFloat zoomFactor = [self.macSVGPluginCallbacks scaleForDOMElementHandles:targetElement];
+
+
 
     [event preventDefault];
     [event stopPropagation];

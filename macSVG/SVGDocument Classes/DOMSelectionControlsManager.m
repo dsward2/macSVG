@@ -829,7 +829,10 @@
                     NSString * selectionStrokeColor = toolSettingsPopoverViewController.selectionStrokeColor;
                     NSString * selectionStrokeWidth = toolSettingsPopoverViewController.selectionStrokeWidth;
                     
-                    CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+                    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+                    //CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:controlParentElement];
+                    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:aSelectedSvgElement];
+
                     CGFloat selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
                     selectionStrokeWidthFloat = selectionStrokeWidthFloat * reciprocalZoomFactor;
                     selectionStrokeWidth = [self allocPxString:selectionStrokeWidthFloat];
@@ -906,7 +909,9 @@
     NSString * selectionHandleColor = toolSettingsPopoverViewController.selectionHandleColor;
     NSString * selectionHandleSize = toolSettingsPopoverViewController.selectionHandleSize;
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+
     CGFloat handleStrokeWidthFloat = 0.0625f * reciprocalZoomFactor;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
@@ -1385,7 +1390,9 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:polylineDOMElement];
+
     CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
     
     NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
@@ -1677,7 +1684,9 @@
 {
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineDOMElement];
+
     CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
     
     NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
@@ -1922,7 +1931,9 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathDOMElement];
+
     CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
     
     NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];

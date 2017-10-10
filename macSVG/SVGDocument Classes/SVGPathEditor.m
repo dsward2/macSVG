@@ -1492,7 +1492,8 @@
 
     NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1637,7 +1638,8 @@
     
     NSString * segmentIndexString = [NSString stringWithFormat:@"%ld", segmentIndex];
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1682,8 +1684,9 @@
 
     NSString * yPxString = [self allocPxString:currentPoint.y];
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
     pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
@@ -1727,8 +1730,8 @@
     NSString * yString = pathSegmentDictionary[@"y"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
-
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1768,7 +1771,14 @@
     
     if (pathSegmentDictionary != NULL)
     {
-        CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        
+        //CGPoint currentCTMScalePoint = CGPointMake(1, 1);
+        //[self getCTMScaleForDOMElement:pathHandlesGroup resultPoint:&currentCTMScalePoint];
+        //reciprocalZoomFactor *= (1.0f / currentCTMScalePoint.x);
+        
+        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        
 
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1977,7 +1987,8 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2064,7 +2075,8 @@
         NSString * currentYPxString = [self allocPxString:currentPoint.y];
 
 
-        CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2139,7 +2151,8 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2199,7 +2212,8 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;

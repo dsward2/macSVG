@@ -1310,6 +1310,88 @@
     return result;
 }
 
+/*  from svg.js - https://github.com/svgdotjs/svg.js/
+    // Extract individual transformations
+    extract: function() {
+      // find delta transform points
+      var px    = deltaTransformPoint(this, 0, 1)
+        , py    = deltaTransformPoint(this, 1, 0)
+        , skewX = 180 / Math.PI * Math.atan2(px.y, px.x) - 90
+
+      return {
+        // translation
+        x:        this.e
+      , y:        this.f
+      , transformedX:(this.e * Math.cos(skewX * Math.PI / 180) + this.f * Math.sin(skewX * Math.PI / 180)) / Math.sqrt(this.a * this.a + this.b * this.b)
+      , transformedY:(this.f * Math.cos(skewX * Math.PI / 180) + this.e * Math.sin(-skewX * Math.PI / 180)) / Math.sqrt(this.c * this.c + this.d * this.d)
+        // skew
+      , skewX:    -skewX
+      , skewY:    180 / Math.PI * Math.atan2(py.y, py.x)
+        // scale
+      , scaleX:   Math.sqrt(this.a * this.a + this.b * this.b)
+      , scaleY:   Math.sqrt(this.c * this.c + this.d * this.d)
+        // rotation
+      , rotation: skewX
+      , a: this.a
+      , b: this.b
+      , c: this.c
+      , d: this.d
+      , e: this.e
+      , f: this.f
+      , matrix: new SVG.Matrix(this)
+      }
+    }
+*/
+
+//==================================================================================
+//	scaleForDOMElementHandles:
+//==================================================================================
+
+- (CGFloat) scaleForDOMElementHandles:(DOMElement *)domElement
+{
+    CGFloat reciprocalZoomFactor = 1.0f / self.svgWebView.zoomFactor;
+
+    // decompose the CTM to extract scale values
+    CGPoint scalePoint = CGPointMake(1, 1);
+
+    if (domElement != NULL)
+    {
+        id ctmMatrix = [domElement callWebScriptMethod:@"getCTM" withArguments:NULL];  // call JavaScript function
+        
+        if (ctmMatrix != NULL)
+        {
+            NSString * ctmMatrixAString = [ctmMatrix valueForKey:@"a"];
+            NSString * ctmMatrixBString = [ctmMatrix valueForKey:@"b"];
+            NSString * ctmMatrixCString = [ctmMatrix valueForKey:@"c"];
+            NSString * ctmMatrixDString = [ctmMatrix valueForKey:@"d"];
+            NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
+            NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
+            
+            CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
+            CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
+            CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
+            CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
+            CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
+            CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
+            
+            scalePoint.x = sqrtf((ctmMatrixA * ctmMatrixA) + (ctmMatrixB * ctmMatrixB));
+            scalePoint.y = sqrtf((ctmMatrixC * ctmMatrixC) + (ctmMatrixD * ctmMatrixD));
+            
+            //NSLog(@"scalePoint %f, %f", scalePoint.x, scalePoint.y);
+        }
+    }
+    
+    CGFloat largerScale = scalePoint.x;
+    if (scalePoint.y > scalePoint.x)
+    {
+        largerScale = scalePoint.y;
+    }
+    
+    CGFloat result = reciprocalZoomFactor * (1.0f / largerScale);
+    
+    return result;
+}
+
 //==================================================================================
 //	findSVGElementInElement:
 //==================================================================================

@@ -211,9 +211,15 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     //[self.xmlAttributesTableView beginUpdates];
 
-    NSInteger rowCount = [self.xmlAttributesTableView.dataSource numberOfRowsInTableView:self.xmlAttributesTableView];
-    NSIndexSet * allRowsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, rowCount)];
-    [self.xmlAttributesTableView removeRowsAtIndexes:allRowsIndexSet withAnimation:NO];
+    @try {
+        NSInteger rowCount = [self.xmlAttributesTableView.dataSource numberOfRowsInTableView:self.xmlAttributesTableView];
+        NSIndexSet * allRowsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, rowCount)];
+        [self.xmlAttributesTableView removeRowsAtIndexes:allRowsIndexSet withAnimation:NO];
+    } @catch (NSException *exception) {
+        //
+    } @finally {
+        //
+    }
 
     //[self.xmlAttributesTableView endUpdates];
 }
@@ -244,15 +250,22 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         NSTableRowView * tableRowView = [self.xmlAttributesTableView rowViewAtRow:i makeIfNecessary:NO];
         if (tableRowView != NULL)
         {
-            NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[i];
-            NSString * attributeName = [attributeRecordDictionary objectForKey:@"name"];
-            NSString * attributeValue = [attributeRecordDictionary objectForKey:@"value"];
-        
-            NSTextField * attributeNameTextField = [tableRowView viewAtColumn:0];
-            attributeNameTextField.stringValue = attributeName;
+            if (i < self.xmlAttributesArray.count)
+            {
+                NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[i];
+                NSString * attributeName = [attributeRecordDictionary objectForKey:@"name"];
+                NSString * attributeValue = [attributeRecordDictionary objectForKey:@"value"];
+            
+                NSTextField * attributeNameTextField = [tableRowView viewAtColumn:0];
+                attributeNameTextField.stringValue = attributeName;
 
-            NSTextField * attributeValueTextField = [tableRowView viewAtColumn:1];
-            attributeValueTextField.stringValue = attributeValue;
+                NSTextField * attributeValueTextField = [tableRowView viewAtColumn:1];
+                attributeValueTextField.stringValue = attributeValue;
+            }
+            else
+            {
+                NSLog(@"XMLAttributesTableController reloadData - error on row %ld, xmlAttributesArray.count %ld", i, self.xmlAttributesArray.count);
+            }
         }
     }
 

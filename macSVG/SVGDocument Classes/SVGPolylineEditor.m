@@ -261,7 +261,8 @@
     NSString * xPxString = [xString stringByAppendingString:@"px"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:polylineHandlesGroup];
     
     NSString * polylinePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat polylinePointStrokeWidthFloat = polylinePointStrokeWidthString.floatValue;

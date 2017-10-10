@@ -192,8 +192,9 @@
     //NSString * x2PxString = [x2String stringByAppendingString:@"px"];
     //NSString * y2PxString = [y2String stringByAppendingString:@"px"];
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineHandlesGroup];
+ 
     NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
     linePointStrokeWidthFloat *= reciprocalZoomFactor;
@@ -271,7 +272,8 @@
     //NSString * x2PxString = [x2String stringByAppendingString:@"px"];
     //NSString * y2PxString = [y2String stringByAppendingString:@"px"];
 
-    CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineHandlesGroup];
     
     NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
