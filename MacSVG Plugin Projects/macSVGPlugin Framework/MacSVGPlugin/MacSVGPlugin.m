@@ -580,6 +580,15 @@
     return result;
 }
 
+//==================================================================================
+//	addPluginSelectionHandlesWithDOMElement:handlesGroup:
+//==================================================================================
+
+-(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+{
+    // override to customize handles for plugin
+}
 
 
 @end

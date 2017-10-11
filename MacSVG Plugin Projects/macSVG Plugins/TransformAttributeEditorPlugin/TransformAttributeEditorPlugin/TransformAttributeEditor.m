@@ -672,6 +672,51 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     return YES;
 }
 */
+
+//==================================================================================
+//	addPluginSelectionHandlesWithDOMElement:handlesGroup:
+//==================================================================================
+
+-(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+{
+    NSUInteger rowCount = transformsTableView.numberOfRows;
+    #pragma unused(rowCount)
+    NSUInteger transformsArrayCount = (self.transformsArray).count;
+    #pragma unused(transformsArrayCount)
+
+    NSInteger selectedRow = transformsTableView.selectedRow;
+    
+    if (selectedRow != -1)
+    {
+        NSMutableDictionary * selectedTransformDictionary =
+                (self.transformsArray)[selectedRow];
+        
+        NSString * selectedFunction = selectedTransformDictionary[@"function"];
+        
+        if ([selectedFunction isEqualToString:@"translate"] == YES)
+        {
+        }
+        else if ([selectedFunction isEqualToString:@"scale"] == YES)
+        {
+        }
+        else if ([selectedFunction isEqualToString:@"rotate"] == YES)
+        {
+            [self addRotationSelectionHandlesWithDOMElement:aDomElement
+                    handlesGroup:newSelectionHandlesGroup];
+        }
+        else if ([selectedFunction isEqualToString:@"skewX"] == YES)
+        {
+        }
+        else if ([selectedFunction isEqualToString:@"skewY"] == YES)
+        {
+        }
+        else if ([selectedFunction isEqualToString:@"matrix"] == YES)
+        {
+        }
+    }
+}
+
 //==================================================================================
 //	beginTranslateTransform
 //==================================================================================
@@ -1167,6 +1212,51 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         }
     }
 }    
+
+//==================================================================================
+//	addRotationSelectionHandlesWithDOMElement:handlesGroup:
+//==================================================================================
+
+-(void) addRotationSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+{
+    NSInteger selectedRow = transformsTableView.selectedRow;
+    
+    if (selectedRow != -1)
+    {
+        NSDictionary * rotateTransformDictionary =
+                (self.transformsArray)[selectedRow];
+        
+        NSString * selectedFunction = rotateTransformDictionary[@"function"];
+        
+        if ([selectedFunction isEqualToString:@"rotate"] == YES)
+        {
+            NSString * degreesString = rotateTransformDictionary[@"degrees"];
+            NSString * xString = rotateTransformDictionary[@"x"];
+            NSString * yString = rotateTransformDictionary[@"y"];
+            
+            if (xString == NULL)
+            {
+                xString = @"0";
+            }
+            
+            if (yString == NULL)
+            {
+                yString = @"0";
+            }
+    
+            CGFloat x = xString.floatValue;
+            CGFloat y = yString.floatValue;
+
+            NSString * handleName = @"_macsvg_center_of_rotation";
+
+            [self.macSVGPluginCallbacks addPluginSelectionHandleWithDOMElement:aDomElement
+                handlesGroup:newSelectionHandlesGroup
+                x:x y:y handleName:handleName
+                pluginName:self.pluginName];
+        }
+    }
+}
 
 //==================================================================================
 //	beginRotateTransform

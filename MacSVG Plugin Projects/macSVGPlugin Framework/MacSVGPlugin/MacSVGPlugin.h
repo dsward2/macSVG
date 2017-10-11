@@ -134,4 +134,7 @@
 // Customize contextual menu for right-clicks in web view
 - (NSMutableArray *) contextMenuItemsForPlugin;
 
+-(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup;
+
 @end

@@ -101,7 +101,18 @@
 }
 
 
-
+- (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        pluginName:(NSString *)pluginName
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id domSelectionControlsManager = [svgWebKitController domSelectionControlsManager];
+    [domSelectionControlsManager addPluginSelectionHandleWithDOMElement:aDomElement
+            handlesGroup:newSelectionHandlesGroup
+            x:x y:y handleName:handleName pluginName:pluginName];
+}
 
 
 //@interface SVGWebKitController

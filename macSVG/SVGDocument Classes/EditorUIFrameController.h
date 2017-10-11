@@ -22,6 +22,7 @@
 @class AttributeEditorController;
 @class TextEditorController;
 @class ValidAttributesController;
+@class MacSVGPlugin;
 
 @interface EditorUIFrameController : NSObject
 {
@@ -46,6 +47,8 @@
 @property(strong) NSString * currentEditorKind;
 
 @property(strong) NSMutableArray * editorPanelsArray;
+
+- (MacSVGPlugin *)currentPlugin;
 
 - (IBAction)setEditorFrameContent:(id)sender;
 

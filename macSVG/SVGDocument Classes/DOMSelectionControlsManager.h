@@ -56,4 +56,9 @@
 - (void)setMacsvgTopGroupChild:(DOMElement *)childElement;
 - (void)removeMacsvgTopGroupChildByID:(NSString *)idString;
 
+- (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        pluginName:(NSString *)pluginName;
+
 @end

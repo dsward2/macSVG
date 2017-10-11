@@ -66,6 +66,26 @@
 }
 
 //==================================================================================
+//	currentPlugin
+//==================================================================================
+
+- (MacSVGPlugin *)currentPlugin
+{
+    MacSVGPlugin * currentPlugin = NULL;
+    
+    if ([_currentEditorKind isEqualToString:@"attribute"] == YES)
+    {
+        currentPlugin = self.attributeEditorPlugInController.currentPlugin;
+    }
+    else if ([_currentEditorKind isEqualToString:@"element"] == YES)
+    {
+        currentPlugin = self.elementEditorPlugInController.currentPlugin;
+    }
+
+    return currentPlugin;
+}
+
+//==================================================================================
 //	setElementEditorPlugInView
 //==================================================================================
 

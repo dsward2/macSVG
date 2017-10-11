@@ -9,13 +9,14 @@
 #import "DOMSelectionControlsManager.h"
 #import <WebKit/WebKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
+#import <MacSVGPlugin/MacSVGPlugin.h>
 #import "MacSVGDocumentWindowController.h"
 #import "MacSVGDocument.h"
 #import "SVGXMLDOMSelectionManager.h"
 #import "SVGWebKitController.h"
 #import "SVGWebView.h"
 #import "MacSVGAppDelegate.h"
-#import "WebKitInterface.h"
+//#import "WebKitInterface.h"
 #import "DOMSelectionCacheRecord.h"
 #import "SelectedElementsManager.h"
 #import "ToolSettingsPopoverViewController.h"
@@ -25,6 +26,8 @@
 #import "SVGLineEditor.h"
 #import "DOMMouseEventsController.h"
 #import "AnimationTimelineView.h"
+#import "EditorUIFrameController.h"
+#import "ElementEditorPlugInController.h"
 
 @implementation DOMSelectionControlsManager
 
@@ -893,7 +896,7 @@
 
 
 //==================================================================================
-//	makeDOMSelectionHandleAtPoint
+//	makeDOMSelectionHandleAtPoint:macsvgid:handleOwnerElement:handleParentElement:orientation:
 //==================================================================================
 
 -(DOMElement *) makeDOMSelectionHandleAtPoint:(NSPoint)handlePoint macsvgid:(NSString *)macsvgid
@@ -989,6 +992,69 @@
     
     [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:macsvgid];
     [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_handle_orientation" value:orientation];
+    
+    [handleParentElement appendChild:selectedItemRectElement];
+    
+    return selectedItemRectElement;
+}
+
+
+
+//==================================================================================
+//	makeDOMPluginHandleAtPoint:macsvgid:handleOwnerElement:handleParentElement:handleName:
+//==================================================================================
+
+-(DOMElement *) makeDOMPluginHandleAtPoint:(NSPoint)handlePoint macsvgid:(NSString *)macsvgid
+        handleOwnerElement:(DOMElement *)handleOwnerElement
+        handleParentElement:(DOMElement *)handleParentElement
+        handleName:(NSString *)handleName
+        pluginName:(NSString *)pluginName
+{
+    NSString * pluginHandleStrokeWidth = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
+    NSString * pluginHandleStrokeColor = toolSettingsPopoverViewController.pathEndpointStrokeColor;
+    NSString * pluginHandleFillColor = toolSettingsPopoverViewController.pathEndpointFillColor;
+    NSString * pluginHandleSize = toolSettingsPopoverViewController.pathEndpointRadius;
+
+    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
+    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+
+    //CGFloat handleStrokeWidthFloat = 0.0625f * reciprocalZoomFactor;
+    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * reciprocalZoomFactor;
+    NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
+    
+    NSMutableString * mutablePluginHandleSize = [NSMutableString stringWithString:pluginHandleSize];
+    [mutablePluginHandleSize replaceOccurrencesOfString:@"px"
+            withString:@"" options:0 range:NSMakeRange(0, mutablePluginHandleSize.length)];
+    float pluginHandleSizeFloat = mutablePluginHandleSize.floatValue;
+    
+    pluginHandleSizeFloat *= reciprocalZoomFactor;
+    
+    NSString * xString = [self allocPxString:handlePoint.x];
+    NSString * yString = [self allocPxString:handlePoint.y];
+
+    DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
+
+    NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
+    CGFloat pointRadius = pointRadiusString.floatValue;
+    //pointRadius *= 2.0f;
+    pointRadiusString = [NSString stringWithFormat:@"%f", pointRadius];
+
+    DOMElement * selectedItemRectElement = [domDocument createElementNS:svgNamespace
+            qualifiedName:@"circle" ];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"fill" value:pluginHandleFillColor];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"stroke" value:pluginHandleStrokeColor];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"pointer-events" value:@"all"]; // allow selection of handles
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_selectionHandle"];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"cx" value:xString];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"cy" value:yString];
+    //[selectedItemRectElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:@"0.0625px"];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"r" value:pointRadiusString];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:handleStrokeWidth];
+    
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:macsvgid];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_handle_orientation" value:@"plugin"];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_handle_name" value:handleName];
+    [selectedItemRectElement setAttributeNS:NULL qualifiedName:@"_macsvg_handle_plugin" value:pluginName];
     
     [handleParentElement appendChild:selectedItemRectElement];
     
@@ -1281,12 +1347,55 @@
         {
             //NSLog(@"makeDOMSelectionHandles aDomElement is NULL");
         }
+        
+        [self addPluginSelectionHandlesWithDOMElement:aDomElement handlesGroup:newSelectionHandlesGroup];
 
         // inject new selectionHandlesGroup into DOM
         
         //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
         [self setMacsvgTopGroupChild:newSelectionHandlesGroup];
     }
+}
+
+//==================================================================================
+//	addPluginSelectionHandlesWithDOMElement:handlesGroup:
+//==================================================================================
+
+-(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+{
+    MacSVGPlugin * currentPlugin = [macSVGDocumentWindowController.editorUIFrameController currentPlugin];
+    
+    if (currentPlugin != NULL)
+    {
+        [currentPlugin addPluginSelectionHandlesWithDOMElement:aDomElement handlesGroup:newSelectionHandlesGroup];
+    }
+}
+
+//==================================================================================
+//	addPluginSelectionHandlesWithDOMElement:handlesGroup:x:y:handleName:
+//==================================================================================
+
+- (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
+        handlesGroup:(DOMElement *)newSelectionHandlesGroup
+        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        pluginName:(NSString *)pluginName
+{
+    // callback from plug-in, e.g. for center-of-rotation in transform attribute editor
+
+    NSPoint handlePoint = NSMakePoint(x, y);
+    
+    NSString * macsvgid = [aDomElement getAttribute:@"macsvgid"];
+
+    DOMElement * aPluginEditorHandle = [self makeDOMPluginHandleAtPoint:handlePoint macsvgid:macsvgid
+            handleOwnerElement:aDomElement handleParentElement:newSelectionHandlesGroup handleName:handleName
+            pluginName:pluginName];
+    
+    //NSPoint offsetPoint = NSMakePoint(-2.0f, 0.0f);
+    NSPoint offsetPoint = NSMakePoint(0.0f, 0.0f);
+    [self copyChildAnimationFromDOMElement:aDomElement toDOMElement:aPluginEditorHandle offsetPoint:offsetPoint];
+    
+    [newSelectionHandlesGroup appendChild:aPluginEditorHandle];
 }
 
 //==================================================================================
