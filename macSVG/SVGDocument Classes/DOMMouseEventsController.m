@@ -50,9 +50,9 @@
     {
         // Initialization code here.
         self.mouseMode = MOUSE_DISENGAGED;
-        self.clickPoint = NSMakePoint(0, 0);
-        self.currentMousePoint = self.clickPoint;
-        self.previousMousePoint = self.clickPoint;
+        self.clickPoint = NSZeroPoint;
+        self.currentMousePoint = NSZeroPoint;
+        self.previousMousePoint = NSZeroPoint;
         self.clickTarget = NULL;
         mouseMoveCount = 0;
         selectionHandleClicked = NO;
@@ -297,9 +297,11 @@
     }
     
     NSUInteger pointsArrayCount = pointsArray.count;
+    
+    NSPoint translatedCurrentMousePoint = [self translatePoint:self.currentMousePoint targetElement:polylineElement.parentElement];
 
-    NSString * newXString = [self allocFloatString:self.currentMousePoint.x];
-    NSString * newYString = [self allocFloatString:self.currentMousePoint.y];
+    NSString * newXString = [self allocFloatString:translatedCurrentMousePoint.x];
+    NSString * newYString = [self allocFloatString:translatedCurrentMousePoint.y];
     
     pointsArray[(pointsArrayCount - 2)] = newXString;
     pointsArray[(pointsArrayCount - 1)] = newYString;
@@ -1326,24 +1328,49 @@
             [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
 
             [macSVGDocument pushUndoRedoDocumentChanges];
+
+            //NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.clickPoint];
             
-            NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.clickPoint];
+            NSPoint translatedClickPoint = self.clickPoint;
+            if ([newElementTagName isEqualToString:@"line"] == YES)
+            {
+                NSXMLElement * tempLineElement = [[NSXMLElement alloc] initWithName:@"line"];
+                NSDictionary * parentDictionary = [macSVGDocument validParentForNewElement:tempLineElement];
+                if (parentDictionary != NULL)
+                {
+                    NSXMLElement * parentXMLElement = parentDictionary[@"parentElement"];
+                    NSXMLNode * parentMacsvgidAttribute = [parentXMLElement attributeForName:@"macsvgid"];
+                    NSString * parentMacsvgid = parentMacsvgidAttribute.stringValue;
+                    DOMElement * parentDOMElement = [svgWebKitController domElementForMacsvgid:parentMacsvgid];
+
+                    translatedClickPoint = [self translatePoint:self.clickPoint targetElement:parentDOMElement];
+                }
+            }
+            
+            NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:translatedClickPoint];
            
             if (newXMLElement != NULL)
             {
+                NSXMLElement * parentXMLElement = (NSXMLElement *)newXMLElement.parent;
+
+                NSXMLNode * parentMacsvgidNode = [parentXMLElement attributeForName:@"macsvgid"];
+                NSString * parentMacsvgid = parentMacsvgidNode.stringValue;
+
+                DOMElement * parentDOMElement = [svgWebKitController domElementForMacsvgid:parentMacsvgid];
+
                 [self.svgXMLDOMSelectionManager selectXMLElement:newXMLElement];
 
                 if (currentToolMode == toolModePath)
                 {
-                    [self.svgPathEditor startPath];       // set the moveto path segment
+                    [self.svgPathEditor startPathWithParentDOMElement:parentDOMElement];       // set the moveto path segment
                 }
                 else if (currentToolMode == toolModePolyline)
                 {
-                    [self.svgPolylineEditor startPolyline];
+                    [self.svgPolylineEditor startPolylineWithParentDOMElement:parentDOMElement];
                 }
                 else if (currentToolMode == toolModePolygon)
                 {
-                    [self.svgPolylineEditor startPolyline];
+                    [self.svgPolylineEditor startPolylineWithParentDOMElement:parentDOMElement];
                 }
                 
                 self.svgXMLDOMSelectionManager.activeXMLElement = newXMLElement;
@@ -1375,7 +1402,7 @@
 -(void) dragHandleForDOMElement:(DOMElement *)aDomElement
 {
     //NSLog(@"dragHandleForDOMElement:%@", aDomElement);
-    
+
     NSString * tagName = aDomElement.tagName;
     
     NSString * elementName = aDomElement.nodeName;
@@ -1391,10 +1418,22 @@
             NSString * widthString = [aDomElement getAttribute:@"width"];
             NSString * heightString = [aDomElement getAttribute:@"height"];
             
+            NSPoint xyPoint = NSMakePoint(xString.floatValue, yString.floatValue);
+            NSPoint sizePoint = NSMakePoint(widthString.floatValue, heightString.floatValue);
+            
+            NSPoint translatedXyPoint = [self translatePoint:xyPoint targetElement:aDomElement];
+            NSPoint translatedSizePoint = [self translatePoint:sizePoint targetElement:aDomElement];
+            
+            NSString * translatedXString = [self allocPxString:translatedXyPoint.x];
+            NSString * translatedYString = [self allocPxString:translatedXyPoint.y];
+            NSString * translatedWidthString = [self allocPxString:translatedSizePoint.x];
+            NSString * translatedHeightString = [self allocPxString:translatedSizePoint.y];
+            
             if ((xString != NULL) && (yString != NULL) &&
                     (widthString != NULL) && (heightString != NULL) &&
                     (handle_orientation != NULL))
             {
+                // clicked in selection handle for rect, image or foreignObject element
                 float x = xString.floatValue;
                 float y = yString.floatValue;
                 float width = widthString.floatValue;
@@ -1402,7 +1441,6 @@
 
                 float deltaX = self.currentMousePoint.x - x;
                 float deltaY = self.currentMousePoint.y - y;
-
                 
                 if ([handle_orientation isEqualToString:@"left"] == YES)
                 {
@@ -1606,8 +1644,7 @@
             
             [macSVGDocumentWindowController reloadAttributesTableData];
         }
-        
-        if ([tagName isEqualToString:@"circle"] == YES)
+        else if ([tagName isEqualToString:@"circle"] == YES)
         {
             NSString * cxString = [aDomElement getAttribute:@"cx"];
             NSString * cyString = [aDomElement getAttribute:@"cy"];
@@ -1749,8 +1786,7 @@
             
             [macSVGDocumentWindowController reloadAttributesTableData];
         }
-        
-        if ([tagName isEqualToString:@"ellipse"] == YES)
+        else if ([tagName isEqualToString:@"ellipse"] == YES)
         {
             NSString * cxString = [aDomElement getAttribute:@"cx"];
             NSString * cyString = [aDomElement getAttribute:@"cy"];
@@ -1886,31 +1922,30 @@
             
             [macSVGDocumentWindowController reloadAttributesTableData];
         }
-        
-        if ([tagName isEqualToString:@"line"] == YES)
+        else if ([tagName isEqualToString:@"line"] == YES)
         {
         }
-        
-        if ([tagName isEqualToString:@"polyline"] == YES)
+        else if ([tagName isEqualToString:@"polyline"] == YES)
         {
         }
-        
-        if ([tagName isEqualToString:@"polygon"] == YES)
+        else if ([tagName isEqualToString:@"polygon"] == YES)
         {
         }
-        
-        if ([tagName isEqualToString:@"path"] == YES)
+        else if ([tagName isEqualToString:@"path"] == YES)
+        {
+        }
+        else
         {
         }
         
         // apply update selection rectangles
-        // TEST 20130709
         NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
         if (currentToolMode != toolModeCrosshairCursor)
         {
             [domSelectionControlsManager updateDOMSelectionRectsAndHandles];
         }
     }
+    
 }
 
 //==================================================================================
@@ -2090,6 +2125,16 @@
 
     DOMElement * updateDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
 
+
+
+
+
+    CGFloat zoomFactor = svgWebView.zoomFactor;
+    DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+    self.currentMousePoint = NSMakePoint((float)mouseEvent.pageX * (1.0f / zoomFactor), (float)mouseEvent.pageY * (1.0f / zoomFactor));
+
+
+
     if (updateDOMElement != NULL)
     {
         // update the element, projected to current mouse position
@@ -2104,13 +2149,13 @@
         if (objectWidth < 0) 
         {
             objectOriginX = self.currentMousePoint.x;
-            objectWidth = self.clickPoint.x - self.currentMousePoint.x;
+            objectWidth = fabs(self.clickPoint.x - self.currentMousePoint.x);
         }
         
         if (objectHeight < 0) 
         {
             objectOriginY = self.currentMousePoint.y;
-            objectHeight = self.clickPoint.y - self.currentMousePoint.y;
+            objectHeight = fabs(self.clickPoint.y - self.currentMousePoint.y);
         }
         
         NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
@@ -2201,9 +2246,10 @@
             }
             case toolModeLine:
             {
+                /*
                 float diffx = self.currentMousePoint.x - self.clickPoint.x;
                 float diffy = self.currentMousePoint.y - self.clickPoint.y;
-
+                
                 NSString * x2String = [self allocPxString:self.currentMousePoint.x];
                 NSString * y2String = [self allocPxString:self.currentMousePoint.y];
                 
@@ -2212,6 +2258,23 @@
                 
                 objectWidth = diffx;
                 objectHeight = diffy;
+                */
+
+                NSPoint translatedCurrentMousePoint = [self translatePoint:self.currentMousePoint targetElement:updateDOMElement];
+                NSPoint translatedClickPoint = [self translatePoint:self.clickPoint targetElement:updateDOMElement];
+
+                float diffx = translatedCurrentMousePoint.x - translatedClickPoint.x;
+                float diffy = translatedCurrentMousePoint.y - translatedClickPoint.y;
+                
+                NSString * x2String = [self allocPxString:translatedCurrentMousePoint.x];
+                NSString * y2String = [self allocPxString:translatedCurrentMousePoint.y];
+                
+                [updateDOMElement setAttribute:@"x2" value:x2String];
+                [updateDOMElement setAttribute:@"y2" value:y2String];
+                
+                objectWidth = diffx;
+                objectHeight = diffy;
+
                 break;
             }
             case toolModePolyline:
@@ -2341,9 +2404,9 @@
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
     self.previousMousePoint = self.currentMousePoint;
     CGFloat zoomFactor = svgWebView.zoomFactor;
-    self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+    NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
-    self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+    self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
 
     [event preventDefault];
     [event stopPropagation];
@@ -2475,9 +2538,9 @@
         DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
         self.previousMousePoint = self.currentMousePoint;
         CGFloat zoomFactor = svgWebView.zoomFactor;
-        self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+        NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
-        self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+        self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
 
         [event preventDefault];
         [event stopPropagation];
@@ -2534,9 +2597,9 @@
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
     self.previousMousePoint = self.currentMousePoint;
     CGFloat zoomFactor = svgWebView.zoomFactor;
-    self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+    NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
 
-    self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+    self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
 
     [event preventDefault];
     [event stopPropagation];

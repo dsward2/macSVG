@@ -590,5 +590,4 @@
     // override to customize handles for plugin
 }
 
-
 @end

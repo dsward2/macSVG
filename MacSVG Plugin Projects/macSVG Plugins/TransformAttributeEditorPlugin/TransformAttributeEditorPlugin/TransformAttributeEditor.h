@@ -44,7 +44,7 @@
     NSPoint clickPoint;
     NSPoint currentMousePoint;
     NSPoint previousMousePoint;
-    DOMNode * clickTarget;
+    DOMElement * clickTarget;
 
     BOOL selectionHandleClicked;
     NSString * handle_orientation;  // static string, e.g. @"topLeft"

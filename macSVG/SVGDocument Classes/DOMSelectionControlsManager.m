@@ -269,6 +269,51 @@
 }
 
 //==================================================================================
+//	removeMacsvgTopGroupChildByClass:
+//==================================================================================
+
+- (void)removeMacsvgTopGroupChildByClass:(NSString *)classString
+{
+    DOMElement * macsvgTopGroupElement = [self macsvgTopGroupElement];
+    
+    DOMNodeList * childNodes = macsvgTopGroupElement.childNodes;
+
+    unsigned int childCount = childNodes.length;
+    
+    BOOL searchCompleted = NO;
+    
+    for (int i = 0; i < childCount; i++)
+    {
+        DOMNode * aChildNode = [childNodes item:i];
+        unsigned short childNodeType = aChildNode.nodeType;
+        
+		if (childNodeType == DOM_ELEMENT_NODE) 
+        {
+            DOMElement * aChildElement = (DOMElement *)aChildNode;
+            
+            NSString * childClassesString = [aChildElement getAttribute:@"class"];
+            
+            NSArray * childClassesArray = [childClassesString componentsSeparatedByString:@" "];
+            
+            for (NSString * childClassString in childClassesArray)
+            {
+                if ([classString isEqualToString:childClassString] == YES)
+                {
+                    [aChildElement.parentElement removeChild:aChildElement];
+                    searchCompleted = YES;
+                    break;
+                }
+            }
+            
+            if (searchCompleted == YES)
+            {
+                break;
+            }
+        }
+    }
+}
+
+//==================================================================================
 //	copyChildAnimationFromDOMElement:toDOMElement:
 //==================================================================================
 
@@ -1111,11 +1156,11 @@
 
         // inject new selectionHandlesGroup into DOM
         //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
+
+        DOMElement * handleParentElement = NULL;
         
         if (aDomElement != NULL)
         {
-            DOMElement * handleParentElement = NULL;
-
             NSString * elementName = aDomElement.nodeName;
             
             NSString * validSVGLocatableName = (self.validElementsForTransformDictionary)[elementName];
@@ -1348,8 +1393,12 @@
             //NSLog(@"makeDOMSelectionHandles aDomElement is NULL");
         }
         
-        [self addPluginSelectionHandlesWithDOMElement:aDomElement handlesGroup:newSelectionHandlesGroup];
-
+        //[self addPluginSelectionHandlesWithDOMElement:aDomElement handlesGroup:newSelectionHandlesGroup];
+        if (handleParentElement != NULL)
+        {
+            [self addPluginSelectionHandlesWithDOMElement:aDomElement handlesGroup:handleParentElement];
+        }
+        
         // inject new selectionHandlesGroup into DOM
         
         //[svgElement appendChild:newSelectionHandlesGroup];  // test 20160904 - moved to end
@@ -1373,7 +1422,7 @@
 }
 
 //==================================================================================
-//	addPluginSelectionHandlesWithDOMElement:handlesGroup:x:y:handleName:
+//	addPluginSelectionHandleWithDOMElement:handlesGroup:x:y:handleName:
 //==================================================================================
 
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement

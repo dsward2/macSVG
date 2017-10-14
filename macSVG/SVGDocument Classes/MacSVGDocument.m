@@ -20,6 +20,7 @@
 #import "SelectedElementsManager.h"
 #import "NetworkConnectionManager.h"
 #import "SVGWebView.h"
+#import "DOMMouseEventsController.h"
 
 
 @implementation MacSVGDocument
@@ -1270,8 +1271,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"circle"] == YES)
+    else if ([tagName isEqualToString:@"circle"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         attributesDictionary[@"cx"] = xString;
@@ -1282,8 +1282,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"ellipse"] == YES)
+    else if ([tagName isEqualToString:@"ellipse"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         attributesDictionary[@"cx"] = xString;
@@ -1295,8 +1294,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"line"] == YES)
+    else if ([tagName isEqualToString:@"line"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         attributesDictionary[@"x1"] = xString;
@@ -1307,8 +1305,23 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"stroke-width"] = strokeWidthString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"polyline"] == YES)
+    else if ([tagName isEqualToString:@"polyline"] == YES)
+    {
+        attributesDictionary[@"id"] = elementID;
+        
+        NSString * x1String = [self allocFloatString:aPoint.x];
+        NSString * y1String = [self allocFloatString:aPoint.y];
+
+        NSString * pointsString = [[NSString alloc] initWithFormat:
+                @"%@,%@ %@,%@", x1String, y1String, x1String, y1String];
+        attributesDictionary[@"points"] = pointsString;
+        
+        attributesDictionary[@"stroke"] = strokeColorString;
+        attributesDictionary[@"stroke-width"] = strokeWidthString;
+        attributesDictionary[@"fill"] = fillColorString;
+        attributesDictionary[@"transform"] = @"";
+    }
+    else if ([tagName isEqualToString:@"polygon"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         NSString * x1String = [self allocFloatString:aPoint.x];
@@ -1322,23 +1335,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"polygon"] == YES)
-    {
-        attributesDictionary[@"id"] = elementID;
-        NSString * x1String = [self allocFloatString:aPoint.x];
-        NSString * y1String = [self allocFloatString:aPoint.y];
-
-        NSString * pointsString = [[NSString alloc] initWithFormat:
-                @"%@,%@ %@,%@", x1String, y1String, x1String, y1String];
-        attributesDictionary[@"points"] = pointsString;
-        attributesDictionary[@"stroke"] = strokeColorString;
-        attributesDictionary[@"stroke-width"] = strokeWidthString;
-        attributesDictionary[@"fill"] = fillColorString;
-        attributesDictionary[@"transform"] = @"";
-    }
-    
-    if ([tagName isEqualToString:@"path"] == YES)
+    else if ([tagName isEqualToString:@"path"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         NSString * x1String = [self allocFloatString:aPoint.x];
@@ -1353,8 +1350,7 @@ style=\"zoom: 1;\">";
         attributesDictionary[@"fill"] = fillColorString;
         attributesDictionary[@"transform"] = @"";
     }
-    
-    if ([tagName isEqualToString:@"text"] == YES)
+    else if ([tagName isEqualToString:@"text"] == YES)
     {
         attributesDictionary[@"id"] = elementID;
         attributesDictionary[@"font-family"] = @"Helvetica";
@@ -1372,8 +1368,7 @@ style=\"zoom: 1;\">";
         NSString * newTextValue = [NSString stringWithFormat:@"Text Element %@", elementID];
         newElement.stringValue = newTextValue;
     }
-
-    if ([tagName isEqualToString:@"image"] == YES)
+    else if ([tagName isEqualToString:@"image"] == YES)
     {
         NSMutableDictionary * imageDictionary = (self.macSVGDocumentWindowController).imageDictionary;
         
@@ -1452,6 +1447,30 @@ style=\"zoom: 1;\">";
     if (parentDictionary != NULL)
     {
         NSXMLElement * parentElement = parentDictionary[@"parentElement"];
+
+        if (([tagName isEqualToString:@"polyline"] == YES) ||
+                ([tagName isEqualToString:@"polyline"] == YES))
+        {
+            // transform polyline coordinates
+            NSXMLNode * parentElementMacsvgidAttributeNode = [parentElement attributeForName:@"macsvgid"];
+            NSString * parentElementMacsvgid = parentElementMacsvgidAttributeNode.stringValue;
+            DOMElement * parentDOMElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:parentElementMacsvgid];
+            
+            NSPoint transformedPoint = [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController translatePoint:aPoint targetElement:parentDOMElement];
+            
+            NSString * x1String = [self allocFloatString:transformedPoint.x];
+            NSString * y1String = [self allocFloatString:transformedPoint.y];
+
+            NSString * pointsString = [[NSString alloc] initWithFormat:
+                    @"%@,%@ %@,%@", x1String, y1String, x1String, y1String];
+            
+            attributesDictionary[@"points"] = pointsString;
+            NSXMLNode * pointsAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+            pointsAttributeNode.name = @"points";
+            pointsAttributeNode.stringValue = pointsString;
+            [newElement addAttribute:pointsAttributeNode];
+        }
+
         NSNumber * insertIndexNumber = parentDictionary[@"insertIndex"];
         NSUInteger insertIndex = insertIndexNumber.unsignedIntValue;
         

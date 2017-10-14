@@ -12,12 +12,9 @@
 #import "MacSVGDocumentWindowController.h"
 #import "DOMMouseEventsController.h"
 #import "SVGXMLDOMSelectionManager.h"
-//#import "WebKitInterface.h"
-//#import "MacSVGAppDelegate.h"
 #import "SelectedElementsManager.h"
 #import "ToolSettingsPopoverViewController.h"
 #import "EditorUIFrameController.h"
-//#import "ElementEditorPluginController.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 #import "MacSVGDocument.h"
 #import "DOMSelectionControlsManager.h"
@@ -247,17 +244,18 @@
 }
 
 //==================================================================================
-//	addHandleForPoint:pointIndex:polylineHandlesGroup:
+//	addHandleForPoint:pointIndex:polylineHandlesGroup:polylineXMLElement:
 //==================================================================================
 
 -(void) addHandleForPoint:(NSDictionary *)polylinePointDictionary
         pointIndex:(NSUInteger)pointIndex polylineHandlesGroup:(DOMElement *)polylineHandlesGroup
+        polylineXMLElement:(NSXMLElement *)polylineXMLElement
 {
     DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
 
     NSString * xString = polylinePointDictionary[@"x"];
     NSString * yString = polylinePointDictionary[@"y"];
-    
+
     NSString * xPxString = [xString stringByAppendingString:@"px"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
@@ -308,47 +306,6 @@
 }
 
 //==================================================================================
-//	makePolylineHandles
-//==================================================================================
-
-/*
--(void) makePolylineHandles
-{
-    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
-
-    DOMSelectionControlsManager * domSelectionControlsManager =
-            svgXMLDOMSelectionManager.domSelectionControlsManager;
-    
-    DOMElement * newPolylineHandlesGroup = [domDocument createElementNS:svgNamespace
-            qualifiedName:@"g"];
-    [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polylineHandlesGroup"];
-    [newPolylineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_polylineHandlesGroup"];
-    
-    NSUInteger polylinePointsCount = (self.polylinePointsArray).count;
-            
-    for (NSUInteger pointIdx = 0; pointIdx < polylinePointsCount; pointIdx++)
-    {
-        NSDictionary * polylinePointDictionary = (self.polylinePointsArray)[pointIdx];
-
-        [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup];
-    }
-    
-    [domSelectionControlsManager setMacsvgTopGroupChild:newPolylineHandlesGroup];
-
-    [domSelectionControlsManager highlightPolylinePoint];
-
-    if (self.highlightSelectedPoint == YES)
-    {
-        [domSelectionControlsManager highlightPolylinePoint];
-    }
-    else
-    {
-        [domSelectionControlsManager removeDOMPolylinePointHighlight];
-    }
-}
-*/
-
-//==================================================================================
 //	makePolylineHandlesForXMLElement
 //==================================================================================
 
@@ -377,12 +334,10 @@
     {
         NSDictionary * polylinePointDictionary = (self.polylinePointsArray)[pointIdx];
 
-        [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup];
+        [self addHandleForPoint:polylinePointDictionary pointIndex:pointIdx polylineHandlesGroup:newPolylineHandlesGroup polylineXMLElement:polylineXMLElement];
     }
 
-
-
-    // create parent group elements to match transforms for selected element
+    // create parent group elements for handles to match transforms for selected element
     DOMElement * topGroupChild = newPolylineHandlesGroup;
     NSXMLElement * pathParentElement = (NSXMLElement *)polylineXMLElement.parent;
     NSInteger groupIndex = 0;
@@ -397,7 +352,8 @@
                 if (transformValueString.length > 0)
                 {
                     DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
-                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_polyline_transform_group"];
+                    NSString * groupIDString = [NSString stringWithFormat:@"_macsvg_polyline_transform_group-%ld", groupIndex + 1];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:groupIDString];
                     [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_polyline_transform_group"];
                     
                     [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
@@ -458,6 +414,8 @@
 
 - (void)updatePolylineInDOMForElement:(DOMElement *)polylineElement polylinePointsArray:(NSArray *)aPolylinePointsArray
 {
+    //NSLog(@"aPolylinePointsArray %@", aPolylinePointsArray);
+
     NSString * newPointsString = [self buildStringWithPolylinePointsArray:aPolylinePointsArray];
 
     [polylineElement setAttribute:@"points" value:newPointsString];
@@ -611,7 +569,7 @@
             removeMacsvgTopGroupChildByID:@"_macsvg_polylineHandlesGroup"];
 
     [svgXMLDOMSelectionManager.domSelectionControlsManager
-            removeMacsvgTopGroupChildByID:@"_macsvg_polyline_transform_group"];
+            removeMacsvgTopGroupChildByClass:@"_macsvg_polyline_transform_group"];
 }
 
 //==================================================================================
@@ -629,18 +587,17 @@
 }
 
 //==================================================================================
-//	startPolyline
+//	startPolylineWithParentDOMElement
 //==================================================================================
 
-- (void)startPolyline
+- (void)startPolylineWithParentDOMElement:(DOMElement *)parentDOMElement
 {
-    // we start paths with an absolute moveto
-    //NSLog(@"startPath");
-    
     [self resetPolylinePointsArray];
 
-    NSString * clickXString = [self allocFloatString:domMouseEventsController.clickPoint.x];
-    NSString * clickYString = [self allocFloatString:domMouseEventsController.clickPoint.y];
+    NSPoint clickPoint = [domMouseEventsController translatePoint:domMouseEventsController.clickPoint targetElement:parentDOMElement];
+
+    NSString * clickXString = [self allocFloatString:clickPoint.x];
+    NSString * clickYString = [self allocFloatString:clickPoint.y];
     
     NSMutableDictionary * pointDictionary = [[NSMutableDictionary alloc] init];
     

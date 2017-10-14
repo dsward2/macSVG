@@ -1231,7 +1231,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         if ([selectedFunction isEqualToString:@"rotate"] == YES)
         {
-            NSString * degreesString = rotateTransformDictionary[@"degrees"];
+            // for rotate transforms, add editing handle for center of rotation
+            //NSString * degreesString = rotateTransformDictionary[@"degrees"];
             NSString * xString = rotateTransformDictionary[@"x"];
             NSString * yString = rotateTransformDictionary[@"y"];
             
@@ -1247,7 +1248,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
             CGFloat x = xString.floatValue;
             CGFloat y = yString.floatValue;
-
+            
             NSString * handleName = @"_macsvg_center_of_rotation";
 
             [self.macSVGPluginCallbacks addPluginSelectionHandleWithDOMElement:aDomElement
@@ -1395,8 +1396,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
 
-    handleDegrees = getAngleABC(pointA, pointB, pointC);
-
+    CGFloat angleDegrees = getAngleABC(pointA, pointB, pointC);
+    
+    handleDegrees = angleDegrees - degreesString.floatValue;    // angle between handle and top handle
 }
 
 
@@ -1414,46 +1416,66 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     {
         NSMutableDictionary * rotateDictionary = (self.transformsArray)[selectedRow];
         
-        NSString * xString = [rotateDictionary objectForKey:@"x"];
-        NSString * yString = [rotateDictionary objectForKey:@"y"];
+        //DOMElement * pluginHandleElement = event.target;
         
-        NSPoint pointA = NSMakePoint(xString.floatValue, yString.floatValue - 1000);
-        pointA = [self translatePoint:pointA targetElement:self.pluginTargetDOMElement.parentElement];
-
-        NSPoint pointB = NSMakePoint(xString.floatValue, yString.floatValue);
-        pointB = [self translatePoint:pointB targetElement:self.pluginTargetDOMElement.parentElement];
+        NSString * handleOrientation = [clickTarget getAttribute:@"_macsvg_handle_orientation"];    // use target from mousedown event
         
-        NSPoint pointC = [self translatePoint:currentMousePoint targetElement:self.pluginTargetDOMElement.parentElement];
-        
-        //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
-
-        float newHandleDegrees = getAngleABC(pointA, pointB, pointC);
-        
-        float rotateDegrees = newHandleDegrees - handleDegrees;
-
-        if (mouseMoveCount == 1)
+        if ([handleOrientation isEqualToString:@"plugin"] == YES)
         {
-            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
-        }
-
-        // update the positions of the selected SVG elements
-        DOMElement * aSvgElement = self.pluginTargetDOMElement;
-
-        NSString * elementName = aSvgElement.nodeName;
-        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
-        {
-            NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
+            NSString * xString = [self allocFloatString:currentMousePoint.x];
+            NSString * yString = [self allocFloatString:currentMousePoint.y];
             
-            if ((transformAttributeString != NULL))
-            {
-                NSString * newDegreeString = [self allocFloatString:rotateDegrees];
-                
-                rotateDictionary[@"degrees"] = newDegreeString;
-                
-                value1TextField.stringValue = newDegreeString;
-            }
-            
+            rotateDictionary[@"x"] = xString;
+            rotateDictionary[@"y"] = yString;
+
+            value2TextField.stringValue = xString;
+            value3TextField.stringValue = yString;
+
             [self setTransformAttribute];
+        }
+        else
+        {
+            NSString * xString = [rotateDictionary objectForKey:@"x"];  // center of rotation
+            NSString * yString = [rotateDictionary objectForKey:@"y"];
+            
+            NSPoint pointA = NSMakePoint(xString.floatValue, yString.floatValue - 1000);
+            pointA = [self translatePoint:pointA targetElement:self.pluginTargetDOMElement.parentElement];
+
+            NSPoint pointB = NSMakePoint(xString.floatValue, yString.floatValue);
+            pointB = [self translatePoint:pointB targetElement:self.pluginTargetDOMElement.parentElement];
+            
+            NSPoint pointC = [self translatePoint:currentMousePoint targetElement:self.pluginTargetDOMElement.parentElement];
+            
+            //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
+
+            float newHandleDegrees = getAngleABC(pointA, pointB, pointC);
+            
+            float rotateDegrees = newHandleDegrees - handleDegrees;
+
+            if (mouseMoveCount == 1)
+            {
+                [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
+            }
+
+            // update the positions of the selected SVG elements
+            DOMElement * aSvgElement = self.pluginTargetDOMElement;
+
+            NSString * elementName = aSvgElement.nodeName;
+            if ((self.validElementsForTransformDictionary)[elementName] != NULL)
+            {
+                NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
+                
+                if ((transformAttributeString != NULL))
+                {
+                    NSString * newDegreeString = [self allocFloatString:rotateDegrees];
+                    
+                    rotateDictionary[@"degrees"] = newDegreeString;
+                    
+                    value1TextField.stringValue = newDegreeString;
+                }
+                
+                [self setTransformAttribute];
+            }
         }
     }
 }    
@@ -2118,6 +2140,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     mouseMode = MOUSE_DRAGGING;
     
     DOMElement * eventTargetElement = event.target;
+    clickTarget = eventTargetElement;
 
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
     
@@ -2128,7 +2151,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     //NSPoint transformedMousePoint = [webKitInterface transformPoint:aMousePoint fromElement:svgElement toElement:targetElement];
     NSPoint transformedMousePoint = [self translatePoint:mouseEventPoint targetElement:eventTargetElement.parentElement];
-    
+
     //NSLog(@"event mouse: %f,%f transformed %f,%f", mouseEventPoint.x, mouseEventPoint.y, transformedMousePoint.x, transformedMousePoint.y);
     
     currentMousePoint = transformedMousePoint;
@@ -2169,7 +2192,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         handle_orientation = NULL;
         NSString * newHandleOrientation = [eventTargetElement getAttribute:@"_macsvg_handle_orientation"];
         
-        // assign a static value to handle_orientation
         if ([newHandleOrientation isEqualToString:@"top"] == YES)
         {
             handle_orientation = @"top";
@@ -2300,8 +2322,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     currentMousePoint = transformedMousePoint;
     
     CGFloat zoomFactor = [self.macSVGPluginCallbacks scaleForDOMElementHandles:targetElement];
-
-
 
     [event preventDefault];
     [event stopPropagation];

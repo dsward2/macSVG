@@ -60,7 +60,7 @@
 
 @property(strong) DOMElement * activeHandleDOMElement;
 
-- (void) startPath;
+- (void) startPathWithParentDOMElement:(DOMElement *)parentDOMElement;
 - (void) extendPath;
 - (void) modifyPath;
 - (void) editPath;

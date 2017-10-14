@@ -37,7 +37,7 @@
 @property(assign) DOMElement * activeHandleDOMElement;
 @property(assign) BOOL highlightSelectedPoint;
 
-- (void)startPolyline;
+- (void)startPolylineWithParentDOMElement:(DOMElement *)parentDOMElement;
 - (void)editPolyline;
 
 - (void)updateActivePolylineInDOM;

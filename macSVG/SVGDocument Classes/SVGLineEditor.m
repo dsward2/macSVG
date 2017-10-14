@@ -402,7 +402,8 @@
                 if (transformValueString.length > 0)
                 {
                     DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
-                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_line_transform_group"];
+                    NSString * groupIDString = [NSString stringWithFormat:@"_macsvg_line_transform_group-%ld", groupIndex + 1];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:groupIDString];
                     [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_line_transform_group"];
                     
                     [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
@@ -520,8 +521,11 @@
     
     if (lineElement != NULL)
     {
-        NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
-        NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
+        DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
+        NSPoint translatedMousePoint = [domMouseEventsController translatePoint:domMouseEventsController.currentMousePoint targetElement:activeDOMElement];
+    
+        NSString * newXString = [self allocFloatString:translatedMousePoint.x];
+        NSString * newYString = [self allocFloatString:translatedMousePoint.y];
         
         if (self.linePointIndex == 0)
         {
@@ -550,7 +554,7 @@
             removeMacsvgTopGroupChildByID:@"_macsvg_lineHandlesGroup"];
 
     [svgXMLDOMSelectionManager.domSelectionControlsManager
-            removeMacsvgTopGroupChildByID:@"_macsvg_line_transform_group"];
+            removeMacsvgTopGroupChildByClass:@"_macsvg_line_transform_group"];
 }
 
 //==================================================================================
@@ -567,10 +571,10 @@
 }
 
 //==================================================================================
-//	startLine
+//	startLineWithParentDOMElement
 //==================================================================================
 
-- (void)startLine
+- (void)startLineWithParentDOMElement:(DOMElement *)parentDOMElement
 {
     [self resetLinePoints];
 

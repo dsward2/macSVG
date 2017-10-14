@@ -73,13 +73,18 @@
 {
     MacSVGPlugin * currentPlugin = NULL;
     
-    if ([_currentEditorKind isEqualToString:@"attribute"] == YES)
+    NSInteger editorPanelFrameViewSubviewsCount = self.editorPanelFrameView.subviews.count;
+    
+    if (editorPanelFrameViewSubviewsCount > 0)
     {
-        currentPlugin = self.attributeEditorPlugInController.currentPlugin;
-    }
-    else if ([_currentEditorKind isEqualToString:@"element"] == YES)
-    {
-        currentPlugin = self.elementEditorPlugInController.currentPlugin;
+        if ([_currentEditorKind isEqualToString:@"attribute"] == YES)
+        {
+            currentPlugin = self.attributeEditorPlugInController.currentPlugin;
+        }
+        else if ([_currentEditorKind isEqualToString:@"element"] == YES)
+        {
+            currentPlugin = self.elementEditorPlugInController.currentPlugin;
+        }
     }
 
     return currentPlugin;

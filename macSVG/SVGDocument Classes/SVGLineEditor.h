@@ -33,7 +33,7 @@
 @property(assign) NSInteger linePointIndex;
 @property(strong) DOMElement * activeHandleDOMElement;
 
-- (void)startLine;
+- (void)startLineWithParentDOMElement:(DOMElement *)parentDOMElement;
 - (void)editLine;
 
 - (void)updateActiveLineInDOM;

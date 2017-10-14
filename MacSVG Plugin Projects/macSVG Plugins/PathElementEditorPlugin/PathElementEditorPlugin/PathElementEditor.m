@@ -298,7 +298,9 @@
             NSString * pathIDAttributeString = pathIDAttributeNode.stringValue;
             
             NSString * pathLengthFunction = [NSString stringWithFormat:
-                    @"function f() {var path = document.getElementById('%@'); return path.getTotalLength();} f();",
+                    //@"function f() {var path = document.getElementById('%@'); return path.getTotalLength();} f();",
+                    //@"function f() {var pathLength = 0; var path = document.getElementById('%@'); if (typeof path !== 'undefined') { pathLength = path.getTotalLength(); } return pathLength;} f();",
+                    @"function f() {var pathLength = 0; var path = document.getElementById('%@'); if (typeof path !== null) { pathLength = path.getTotalLength(); } return pathLength;} f();",
                     pathIDAttributeString];
 
             NSString * totalLengthString = [self.svgWebView stringByEvaluatingJavaScriptFromString:pathLengthFunction];

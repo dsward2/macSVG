@@ -75,4 +75,6 @@ enum {
 -(void) handleCrosshairToolSelectionForLineXMLElement:(NSXMLElement *)polylineXMLElement
         handleDOMElement:(DOMElement *)handleDOMElement;
 
+-(NSPoint) translatePoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement;
+
 @end
