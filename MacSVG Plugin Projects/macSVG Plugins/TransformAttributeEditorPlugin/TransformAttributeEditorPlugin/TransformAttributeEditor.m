@@ -999,18 +999,14 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
             if (NSIsEmptyRect(offsetRect) == NO)
             {
-                NSLog(@"offsetRect found %f, %f, %f, %f",
-                        offsetRect.origin.x, offsetRect.origin.y,
-                        offsetRect.size.width, offsetRect.size.height);
+                //NSLog(@"offsetRect found %f, %f, %f, %f", offsetRect.origin.x, offsetRect.origin.y, offsetRect.size.width, offsetRect.size.height);
             }
             
             NSRect clientRect = NSMakeRect(self.pluginTargetDOMElement.clientLeft, self.pluginTargetDOMElement.clientTop,
                     self.pluginTargetDOMElement.clientWidth, self.pluginTargetDOMElement.clientHeight);
             if (NSIsEmptyRect(clientRect) == NO)
             {
-                NSLog(@"clientRect found %f, %f, %f, %f",
-                        clientRect.origin.x, clientRect.origin.y,
-                        clientRect.size.width, clientRect.size.height);
+                //NSLog(@"clientRect found %f, %f, %f, %f", clientRect.origin.x, clientRect.origin.y, clientRect.size.width, clientRect.size.height);
             }
 
 
@@ -1418,16 +1414,31 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         if ([handleOrientation isEqualToString:@"plugin"] == YES)
         {
-            NSString * xString = [self allocFloatString:transformedCurrentMousePagePoint.x];
-            NSString * yString = [self allocFloatString:transformedCurrentMousePagePoint.y];
-            
-            rotateDictionary[@"x"] = xString;
-            rotateDictionary[@"y"] = yString;
+            NSString * handleName = [clickTarget getAttribute:@"_macsvg_handle_name"];    // using target from mousedown event
+            if ([handleName isEqualToString:@"_macsvg_center_of_rotation"] == YES)
+            {
+                // mouse is dragging the center-of-rotation handle for the transform rotate editing mode
 
-            value2TextField.stringValue = xString;
-            value3TextField.stringValue = yString;
+                //NSString * xString = [self allocFloatString:transformedCurrentMousePagePoint.x];
+                //NSString * yString = [self allocFloatString:transformedCurrentMousePagePoint.y];
+     
+                NSPoint currentMousePagePoint = [domMouseEventsController currentMousePagePoint];
 
-            [self setTransformAttribute];
+                DOMElement * clickTargetParent = clickTarget.parentElement;
+                
+                NSPoint centerOfRotationPoint = [self transformPoint:currentMousePagePoint targetElement:clickTargetParent];
+               
+                NSString * xString = [self allocFloatString:centerOfRotationPoint.x];
+                NSString * yString = [self allocFloatString:centerOfRotationPoint.y];
+                
+                rotateDictionary[@"x"] = xString;
+                rotateDictionary[@"y"] = yString;
+
+                value2TextField.stringValue = xString;
+                value3TextField.stringValue = yString;
+
+                [self setTransformAttribute];
+            }
         }
         else
         {
