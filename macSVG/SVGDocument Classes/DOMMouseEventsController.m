@@ -28,6 +28,8 @@
 
 #import "DOMSelectionCacheRecord.h"
 
+@class DOMSVGSVGElement;
+
 @implementation DOMMouseEventsController
 
 //==================================================================================
@@ -50,10 +52,34 @@
     {
         // Initialization code here.
         self.mouseMode = MOUSE_DISENGAGED;
-        self.clickPoint = NSZeroPoint;
-        self.currentMousePoint = NSZeroPoint;
-        self.previousMousePoint = NSZeroPoint;
+ 
         self.clickTarget = NULL;
+        self.targetParentDOMElement = NULL;
+       
+        self.previousMouseClientPoint = NSZeroPoint;
+        self.previousMousePagePoint = NSZeroPoint;
+        self.previousMouseScreenPoint = NSZeroPoint;
+        
+        self.previousTransformedMouseClientPoint = NSZeroPoint;
+        self.previousTransformedMousePagePoint = NSZeroPoint;
+        self.previousTransformedMouseScreenPoint = NSZeroPoint;
+        
+        self.currentMouseClientPoint = NSZeroPoint;
+        self.currentMousePagePoint = NSZeroPoint;
+        self.currentMouseScreenPoint = NSZeroPoint;
+        
+        self.transformedCurrentMouseClientPoint = NSZeroPoint;
+        self.transformedCurrentMousePagePoint = NSZeroPoint;
+        self.transformedCurrentMouseScreenPoint = NSZeroPoint;
+        
+        self.clickMouseClientPoint = NSZeroPoint;
+        self.clickMousePagePoint = NSZeroPoint;
+        self.clickMouseScreenPoint = NSZeroPoint;
+        
+        self.transformedClickMouseClientPoint = NSZeroPoint;
+        self.transformedClickMousePagePoint = NSZeroPoint;
+        self.transformedClickMouseScreenPoint = NSZeroPoint;
+        
         mouseMoveCount = 0;
         selectionHandleClicked = NO;
         handle_orientation = NULL;
@@ -197,6 +223,150 @@
     return aString;
 }
 
+//==================================================================================
+//	logStackSymbols
+//==================================================================================
+
+- (void)logStackSymbols:(NSString *)messagePrefix
+{
+    NSArray * stackSymbols = [NSThread callStackSymbols];
+
+    NSMutableArray * filteredStackSymbols = [NSMutableArray array];
+    
+    NSInteger lineIndex = 0;
+    
+    for (NSString * aStackString in stackSymbols)
+    {
+        NSMutableString * outputString = [NSMutableString stringWithString:aStackString];
+        
+        // 0   macSVG                        0x00000001000354ee -[SVGWebKitController logStackSymbols:] + 78,
+        // 0....5...10...15...20...25...30...35...40...45...50...55...60
+        NSRange deleteRange = NSMakeRange(4, 55);
+        [outputString deleteCharactersInRange:deleteRange];
+        
+        [filteredStackSymbols addObject:outputString];
+        
+        lineIndex++;
+    }
+    
+    NSLog(@"%@\n%@", messagePrefix, filteredStackSymbols);
+}
+
+//==================================================================================
+//	setCurrentMousePointsWithDOMMouseEvent:
+//==================================================================================
+
+- (void) setCurrentMousePointsWithDOMMouseEvent:(DOMMouseEvent *)mouseEvent transformTargetDOMElement:(DOMElement *)transformTargetDOMElement
+{
+    self.currentMouseTarget = mouseEvent.target;
+
+    self.targetParentDOMElement = transformTargetDOMElement;
+    
+    //NSLog(@"targetParentDOMElement %@", self.targetParentDOMElement);
+
+    self.previousMouseClientPoint = self.currentMouseClientPoint;
+    self.previousMousePagePoint = self.currentMousePagePoint;
+    self.previousMouseScreenPoint = self.currentMouseScreenPoint;
+    
+    self.previousTransformedMouseClientPoint = self.transformedCurrentMouseClientPoint;
+    self.previousTransformedMousePagePoint = self.transformedCurrentMousePagePoint;
+    self.previousTransformedMouseScreenPoint = self.transformedCurrentMouseScreenPoint;
+    
+    CGFloat zoomFactor = svgWebView.zoomFactor;
+    
+    NSPoint scaledCurrentMouseClientPoint = NSZeroPoint;
+    NSPoint scaledCurrentMousePagePoint = NSZeroPoint;
+    NSPoint scaledCurrentMouseScreenPoint = NSZeroPoint;
+    
+    //NSLog(@"original clientX,Y %d,%d", mouseEvent.clientX, mouseEvent.clientY);
+    //NSLog(@"original pageX,Y %d,%d", mouseEvent.pageX, mouseEvent.pageY);
+    //NSLog(@"original screenX,Y %d,%d", mouseEvent.screenX, mouseEvent.screenX);
+    
+    if (zoomFactor == 1.0f)
+    {
+        scaledCurrentMouseClientPoint = NSMakePoint(mouseEvent.clientX, mouseEvent.clientY);
+        scaledCurrentMousePagePoint = NSMakePoint(mouseEvent.pageX, mouseEvent.pageY);
+        scaledCurrentMouseScreenPoint = NSMakePoint(mouseEvent.screenX, mouseEvent.screenY);
+    }
+    else
+    {
+        // adjust mouse points to match zoom factor for web view
+        CGFloat reciprocalZoomFactor = 1.0f / zoomFactor;
+        scaledCurrentMouseClientPoint = NSMakePoint(mouseEvent.clientX * reciprocalZoomFactor,
+            mouseEvent.clientY * reciprocalZoomFactor);
+        scaledCurrentMousePagePoint = NSMakePoint(mouseEvent.pageX * reciprocalZoomFactor,
+            mouseEvent.pageY * reciprocalZoomFactor);
+        scaledCurrentMouseScreenPoint = NSMakePoint(mouseEvent.screenX * reciprocalZoomFactor,
+            mouseEvent.screenY * reciprocalZoomFactor);
+    }
+    
+    self.currentMouseClientPoint = NSMakePoint(scaledCurrentMouseClientPoint.x, scaledCurrentMouseClientPoint.y);
+    self.currentMousePagePoint = NSMakePoint(scaledCurrentMousePagePoint.x, scaledCurrentMousePagePoint.y);
+    self.currentMouseScreenPoint = NSMakePoint(scaledCurrentMouseScreenPoint.x, scaledCurrentMouseScreenPoint.y);
+
+    //NSLog(@"currentMouseClientPoint %f,%f", self.currentMouseClientPoint.x, self.currentMouseClientPoint.y);
+    //NSLog(@"currentMousePagePoint %f,%f", self.currentMousePagePoint.x, self.currentMousePagePoint.y);
+    //NSLog(@"currentMouseScreenPoint %f,%f", self.currentMouseScreenPoint.x, self.currentMouseScreenPoint.y);
+    
+    if (transformTargetDOMElement == NULL)
+    {
+        self.transformedCurrentMouseClientPoint = scaledCurrentMouseClientPoint;
+        self.transformedCurrentMousePagePoint = scaledCurrentMousePagePoint;
+        self.transformedCurrentMouseScreenPoint = scaledCurrentMouseScreenPoint;
+    }
+    else
+    {
+        self.transformedCurrentMouseClientPoint = [self transformPoint:self.currentMouseClientPoint targetElement:transformTargetDOMElement];
+        self.transformedCurrentMousePagePoint = [self transformPoint:self.currentMousePagePoint targetElement:transformTargetDOMElement];
+        self.transformedCurrentMouseScreenPoint = [self transformPoint:self.currentMouseScreenPoint targetElement:transformTargetDOMElement];
+    }
+
+    //NSLog(@"transformedCurrentMouseClientPoint %f,%f", self.transformedCurrentMouseClientPoint.x, self.transformedCurrentMouseClientPoint.y);
+    //NSLog(@"transformedCurrentMousePagePoint %f,%f", self.transformedCurrentMousePagePoint.x, self.transformedCurrentMousePagePoint.y);
+    //NSLog(@"transformedCurrentMouseScreenPoint %f,%f", self.transformedCurrentMouseScreenPoint.x, self.transformedCurrentMouseScreenPoint.y);
+
+    [svgWebKitController updateLiveCoordinates];
+}
+
+//==================================================================================
+//	setPreviousMousePointsWithCurrentMousePoints:
+//==================================================================================
+
+- (void) setPreviousMousePointsWithCurrentMousePoints
+{
+    self.previousMouseClientPoint = self.currentMouseClientPoint;
+    self.previousMousePagePoint = self.currentMousePagePoint;
+    self.previousMouseScreenPoint = self.currentMouseScreenPoint;
+
+    self.previousTransformedMouseClientPoint = self.transformedCurrentMouseClientPoint;
+    self.previousTransformedMousePagePoint = self.transformedCurrentMousePagePoint;
+    self.previousTransformedMouseScreenPoint = self.transformedCurrentMouseScreenPoint;
+}
+
+//==================================================================================
+//	setClickMousePointsWithCurrentMousePoints:
+//==================================================================================
+
+- (void) setClickMousePointsWithCurrentMousePoints
+{
+    self.clickTarget = self.currentMouseTarget;
+
+    self.clickMouseClientPoint = self.currentMouseClientPoint;
+    self.clickMousePagePoint = self.currentMousePagePoint;
+    self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+    
+    self.transformedClickMouseClientPoint = self.transformedCurrentMouseClientPoint;
+    self.transformedClickMousePagePoint = self.transformedCurrentMousePagePoint;
+    self.transformedClickMouseScreenPoint = self.transformedCurrentMouseScreenPoint;
+
+    //NSLog(@"clickMouseClientPoint %f,%f", self.clickMouseClientPoint.x, self.clickMouseClientPoint.y);
+    //NSLog(@"clickMousePagePoint %f,%f", self.clickMousePagePoint.x, self.clickMousePagePoint.y);
+    //NSLog(@"clickMouseScreenPoint %f,%f", self.clickMouseScreenPoint.x, self.clickMouseScreenPoint.y);
+
+    //NSLog(@"transformedClickMouseClientPoint %f,%f", self.transformedClickMouseClientPoint.x, self.transformedClickMouseClientPoint.y);
+    //NSLog(@"transformedClickMousePagePoint %f,%f", self.transformedClickMousePagePoint.x, self.transformedClickMousePagePoint.y);
+    //NSLog(@"transformedClickMouseScreenPoint %f,%f", self.transformedClickMouseScreenPoint.x, self.transformedClickMouseScreenPoint.y);
+}
 
 //==================================================================================
 //	updatePathMode:
@@ -239,24 +409,32 @@
 
 
 //==================================================================================
-//	translatePoint
+//	transformPoint:targetElement:
 //==================================================================================
 
--(NSPoint) translatePoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement
+-(NSPoint) transformPoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement
 {
     NSPoint resultPoint = aMousePoint;
 
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
-
-    DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
-    if (svgElementsList.length > 0)
+    
+    DOMElement * svgElement = domDocument.documentElement;
+    
+    if ([svgElement.tagName isEqualToString:@"svg"] == NO)
     {
-        DOMNode * svgElementNode = [svgElementsList item:0];
-        DOMElement * svgElement = (DOMElement *)svgElementNode;
-
+        // for xhtml documents, search for first svg tag
+        DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
+        if (svgElementsList.length > 0)
+        {
+            DOMNode * svgElementNode = [svgElementsList item:0];
+            svgElement = (DOMElement *)svgElementNode;
+        }
+    }
+    
+    if (svgElement != NULL)
+    {
         MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
         WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
-
         resultPoint = [webKitInterface transformPoint:aMousePoint fromElement:svgElement toElement:targetElement];
     }
     
@@ -298,10 +476,8 @@
     
     NSUInteger pointsArrayCount = pointsArray.count;
     
-    NSPoint translatedCurrentMousePoint = [self translatePoint:self.currentMousePoint targetElement:polylineElement.parentElement];
-
-    NSString * newXString = [self allocFloatString:translatedCurrentMousePoint.x];
-    NSString * newYString = [self allocFloatString:translatedCurrentMousePoint.y];
+    NSString * newXString = [self allocFloatString:self.transformedCurrentMousePagePoint.x];
+    NSString * newYString = [self allocFloatString:self.transformedCurrentMousePagePoint.y];
     
     pointsArray[(pointsArrayCount - 2)] = newXString;
     pointsArray[(pointsArrayCount - 1)] = newYString;
@@ -547,7 +723,18 @@
                         
             [self.svgXMLDOMSelectionManager selectXMLElement:self.svgXMLDOMSelectionManager.activeXMLElement];
 
-            self.clickPoint = self.currentMousePoint;
+            /*
+            self.clickMouseClientPoint = self.currentMouseClientPoint;
+            self.clickMousePagePoint = self.currentMousePagePoint;
+            self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+            
+            self.transformedClickMouseClientPoint = self.transformedCurrentMouseClientPoint;
+            self.transformedClickMousePagePoint = self.transformedCurrentMousePagePoint;
+            self.transformedClickMouseScreenPoint = self.transformedCurrentMouseScreenPoint;
+            */
+
+            [self setClickMousePointsWithCurrentMousePoints];
+
             self.clickTarget = NULL;
             self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
 
@@ -944,14 +1131,16 @@
 
         MacSVGDocument * macSVGDocument = macSVGDocumentWindowController.document;
         
-        DOMNode * targetNode = event.target;    // either a document node, or an editing handle node
-        
+        DOMElement * targetElement = event.target;    // either a document node, or an editing handle node
+
+        DOMElement * parentElement = targetElement.parentElement;
+
         if ([macSVGDocument.fileNameExtension isEqualToString:@"svg"] == YES)
         {
-            if ([targetNode isKindOfClass:[DOMHTMLElement class]] == YES)
+            if ([targetElement isKindOfClass:[DOMHTMLElement class]] == YES)   // check for HTML element within SVG
             {
                 // user clicked on an HTML-class element, is it contained within a foreignObject element?
-                id parentElement = targetNode;    // either a document element, or an editing handle element
+                parentElement = targetElement;    // either a document element, or an editing handle element
                 BOOL continueSearch = YES;
                 while (continueSearch == YES)
                 {
@@ -965,7 +1154,7 @@
                         if ([parentElementName isEqualToString:@"foreignObject"] == YES)
                         {
                             continueSearch = NO;
-                            targetNode = parentElement;     // change selection to the parent SVG-class foreignObject element
+                            targetElement = parentElement;     // change target selection to the parent foreignObject element
                         }
                     }
                     
@@ -976,14 +1165,86 @@
                 }
             }
         }
-
-        DOMElement * targetElement = (DOMElement *)targetNode;  // the real target element
-        
-        CGFloat zoomFactor = svgWebView.zoomFactor;
-        self.currentMousePoint = NSMakePoint((float)mouseEvent.pageX * (1.0f / zoomFactor), (float)mouseEvent.pageY * (1.0f / zoomFactor));
         
         NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
 
+        if (self.svgXMLDOMSelectionManager.activeXMLElement == NULL)
+        {
+            NSString * newElementName = NULL;
+            switch (currentToolMode)
+            {
+                case toolModeNone:
+                case toolModeArrowCursor:
+                case toolModeCrosshairCursor:
+                {
+                    break;
+                }
+                case toolModeRect:
+                {
+                    newElementName = @"rect";
+                    break;
+                }
+                case toolModeCircle:
+                {
+                    newElementName = @"circle";
+                    break;
+                }
+                case toolModeEllipse:
+                {
+                    newElementName = @"ellipse";
+                    break;
+                }
+                case toolModeText:
+                {
+                    newElementName = @"text";
+                    break;
+                }
+                case toolModeImage:
+                {
+                    newElementName = @"image";
+                    break;
+                }
+                case toolModeLine:
+                {
+                    newElementName = @"line";
+                    break;
+                }
+                case toolModePolyline:
+                {
+                    newElementName = @"polyline";
+                    break;
+                }
+                case toolModePolygon:
+                {
+                    newElementName = @"polygon";
+                    break;
+                }
+               case toolModePath:
+                {
+                    newElementName = @"path";
+                    break;
+                }
+            }
+            
+            if (newElementName != NULL)
+            {
+                NSXMLElement * tempElement = [[NSXMLElement alloc] initWithName:newElementName];
+                NSDictionary * parentDictionary = [macSVGDocument validParentForNewElement:tempElement];
+                if (parentDictionary != NULL)
+                {
+                    NSXMLElement * parentXMLElement = parentDictionary[@"parentElement"];
+                    NSXMLNode * parentMacsvgidAttribute = [parentXMLElement attributeForName:@"macsvgid"];
+                    NSString * parentMacsvgid = parentMacsvgidAttribute.stringValue;
+                    parentElement = [svgWebKitController domElementForMacsvgid:parentMacsvgid];
+                }
+            }
+        }
+        
+        //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement.parentElement];
+        //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:parentElement];
+        
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
+        
         // 20160627 - added check for toolModeArrowCursor
         if (currentToolMode == toolModeArrowCursor)
         {
@@ -994,7 +1255,7 @@
             if ((modifiers & flags) == 0)
             {
                 // shift key or command key are not pressed
-                self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+                //self.currentMousePoint = [self transformPoint:self.currentMousePoint targetElement:targetElement];
             }
         }
         else
@@ -1006,13 +1267,13 @@
             if ((modifiers & flags) != 0)
             {
                 // shift key or command key are pressed
-                self.currentMousePoint = [self translatePoint:self.currentMousePoint targetElement:targetElement];
+                //self.currentMousePoint = [self transformPoint:self.currentMousePoint targetElement:targetElement];
             }
         }
 
-        self.clickPoint = self.currentMousePoint;
+        [self setClickMousePointsWithCurrentMousePoints];
         
-        self.previousMousePoint = self.currentMousePoint;
+        [self setPreviousMousePointsWithCurrentMousePoints];
         
         [event preventDefault];
         [event stopPropagation];
@@ -1105,7 +1366,7 @@
             [macSVGDocumentWindowController.xmlAttributesTableController unsetXmlElementForAttributesTable];
         }
 
-        switch (currentToolMode) 
+        switch (currentToolMode)
         {
             case toolModeNone:
                 break;
@@ -1329,25 +1590,7 @@
 
             [macSVGDocument pushUndoRedoDocumentChanges];
 
-            //NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.clickPoint];
-            
-            NSPoint translatedClickPoint = self.clickPoint;
-            if ([newElementTagName isEqualToString:@"line"] == YES)
-            {
-                NSXMLElement * tempLineElement = [[NSXMLElement alloc] initWithName:@"line"];
-                NSDictionary * parentDictionary = [macSVGDocument validParentForNewElement:tempLineElement];
-                if (parentDictionary != NULL)
-                {
-                    NSXMLElement * parentXMLElement = parentDictionary[@"parentElement"];
-                    NSXMLNode * parentMacsvgidAttribute = [parentXMLElement attributeForName:@"macsvgid"];
-                    NSString * parentMacsvgid = parentMacsvgidAttribute.stringValue;
-                    DOMElement * parentDOMElement = [svgWebKitController domElementForMacsvgid:parentMacsvgid];
-
-                    translatedClickPoint = [self translatePoint:self.clickPoint targetElement:parentDOMElement];
-                }
-            }
-            
-            NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:translatedClickPoint];
+            NSXMLElement * newXMLElement = [macSVGDocument createElement:newElementTagName atPoint:self.transformedClickMousePagePoint];
            
             if (newXMLElement != NULL)
             {
@@ -1418,16 +1661,16 @@
             NSString * widthString = [aDomElement getAttribute:@"width"];
             NSString * heightString = [aDomElement getAttribute:@"height"];
             
-            NSPoint xyPoint = NSMakePoint(xString.floatValue, yString.floatValue);
-            NSPoint sizePoint = NSMakePoint(widthString.floatValue, heightString.floatValue);
+            //NSPoint xyPoint = NSMakePoint(xString.floatValue, yString.floatValue);
+            //NSPoint sizePoint = NSMakePoint(widthString.floatValue, heightString.floatValue);
             
-            NSPoint translatedXyPoint = [self translatePoint:xyPoint targetElement:aDomElement];
-            NSPoint translatedSizePoint = [self translatePoint:sizePoint targetElement:aDomElement];
+            //NSPoint translatedXyPoint = [self transformPoint:xyPoint targetElement:aDomElement];
+            //NSPoint translatedSizePoint = [self transformPoint:sizePoint targetElement:aDomElement];
             
-            NSString * translatedXString = [self allocPxString:translatedXyPoint.x];
-            NSString * translatedYString = [self allocPxString:translatedXyPoint.y];
-            NSString * translatedWidthString = [self allocPxString:translatedSizePoint.x];
-            NSString * translatedHeightString = [self allocPxString:translatedSizePoint.y];
+            //NSString * translatedXString = [self allocPxString:translatedXyPoint.x];
+            //NSString * translatedYString = [self allocPxString:translatedXyPoint.y];
+            //NSString * translatedWidthString = [self allocPxString:translatedSizePoint.x];
+            //NSString * translatedHeightString = [self allocPxString:translatedSizePoint.y];
             
             if ((xString != NULL) && (yString != NULL) &&
                     (widthString != NULL) && (heightString != NULL) &&
@@ -1439,12 +1682,12 @@
                 float width = widthString.floatValue;
                 float height = heightString.floatValue;
 
-                float deltaX = self.currentMousePoint.x - x;
-                float deltaY = self.currentMousePoint.y - y;
+                float deltaX = self.transformedCurrentMousePagePoint.x - x;
+                float deltaY = self.transformedCurrentMousePagePoint.y - y;
                 
                 if ([handle_orientation isEqualToString:@"left"] == YES)
                 {
-                    float newX = self.currentMousePoint.x;
+                    float newX = self.transformedCurrentMousePagePoint.x;
                     
                     if (newX > (x + width))
                     {
@@ -1477,8 +1720,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
                 {
-                    float newX = self.currentMousePoint.x;
-                    float newY = self.currentMousePoint.y;
+                    float newX = self.transformedCurrentMousePagePoint.x;
+                    float newY = self.transformedCurrentMousePagePoint.y;
 
                     if (newX > (x + width))
                     {
@@ -1516,7 +1759,7 @@
                 else if ([handle_orientation isEqualToString:@"top"] == YES)
                 {
                     float newX = x;
-                    float newY = self.currentMousePoint.y;
+                    float newY = self.transformedCurrentMousePagePoint.y;
 
                     if (newY > (y + height))
                     {
@@ -1548,8 +1791,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topRight"] == YES)
                 {
-                    float newY = self.currentMousePoint.y;
-                    float newWidth = self.currentMousePoint.x - x;
+                    float newY = self.transformedCurrentMousePagePoint.y;
+                    float newWidth = self.transformedCurrentMousePagePoint.x - x;
                     float newHeight = height - deltaY;
 
                     if (newWidth < 0)
@@ -1571,7 +1814,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"right"] == YES)
                 {
-                    float newWidth = self.currentMousePoint.x - x;
+                    float newWidth = self.transformedCurrentMousePagePoint.x - x;
 
                     if (newWidth < 0)
                     {
@@ -1584,9 +1827,9 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
                 {
-                    float newX = self.currentMousePoint.x;
+                    float newX = self.transformedCurrentMousePagePoint.x;
                     float newWidth = width - deltaX;
-                    float newHeight = self.currentMousePoint.y - y;
+                    float newHeight = self.transformedCurrentMousePagePoint.y - y;
 
                     if (newWidth < 0)
                     {
@@ -1607,7 +1850,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottom"] == YES)
                 {
-                    float newHeight = self.currentMousePoint.y - y;
+                    float newHeight = self.transformedCurrentMousePagePoint.y - y;
 
                     if (newHeight < 0)
                     {
@@ -1620,8 +1863,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
                 {
-                    float newWidth = self.currentMousePoint.x - x;
-                    float newHeight = self.currentMousePoint.y - y;
+                    float newWidth = self.transformedCurrentMousePagePoint.x - x;
+                    float newHeight = self.transformedCurrentMousePagePoint.y - y;
                     
                     if (newWidth < 0)
                     {
@@ -1658,7 +1901,7 @@
 
                 if ([handle_orientation isEqualToString:@"top"] == YES) 
                 {
-                    CGFloat radius = cy - self.currentMousePoint.y;
+                    CGFloat radius = cy - self.transformedCurrentMousePagePoint.y;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1669,7 +1912,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"left"] == YES)
                 {
-                    CGFloat radius = cx - self.currentMousePoint.x;
+                    CGFloat radius = cx - self.transformedCurrentMousePagePoint.x;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1680,7 +1923,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottom"] == YES)
                 {
-                    CGFloat radius = self.currentMousePoint.y - cy;
+                    CGFloat radius = self.transformedCurrentMousePagePoint.y - cy;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1691,7 +1934,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"right"] == YES)
                 {
-                    CGFloat radius = self.currentMousePoint.x - cx;
+                    CGFloat radius = self.transformedCurrentMousePagePoint.x - cx;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1702,8 +1945,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.currentMousePoint.x;
-                    CGFloat yDelta = cy - self.currentMousePoint.y;
+                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
                     CGFloat radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
@@ -1722,8 +1965,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topRight"] == YES)
                 {
-                    CGFloat xDelta = self.currentMousePoint.x - cx;
-                    CGFloat yDelta = cy - self.currentMousePoint.y;
+                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
                     CGFloat radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
@@ -1742,8 +1985,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.currentMousePoint.x;
-                    CGFloat yDelta = self.currentMousePoint.y - cy;
+                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
                     CGFloat radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
@@ -1762,8 +2005,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
                 {
-                    CGFloat xDelta = self.currentMousePoint.x - cx;
-                    CGFloat yDelta = self.currentMousePoint.y - cy;
+                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
                     CGFloat radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
@@ -1802,32 +2045,32 @@
 
                 if ([handle_orientation isEqualToString:@"left"] == YES) 
                 {
-                    NSString * newRadiusString = [self allocPxString:(cx - self.currentMousePoint.x)];
+                    NSString * newRadiusString = [self allocPxString:(cx - self.transformedCurrentMousePagePoint.x)];
                     
                     [aDomElement setAttribute:@"rx" value:newRadiusString];
                 }
                 else if ([handle_orientation isEqualToString:@"top"] == YES)
                 {
-                    NSString * newRadiusString = [self allocPxString:(cy - self.currentMousePoint.y)];
+                    NSString * newRadiusString = [self allocPxString:(cy - self.transformedCurrentMousePagePoint.y)];
                     
                     [aDomElement setAttribute:@"ry" value:newRadiusString];
                 }
                 else if ([handle_orientation isEqualToString:@"right"] == YES)
                 {
-                    NSString * newRadiusString = [self allocPxString:(self.currentMousePoint.x - cx)];
+                    NSString * newRadiusString = [self allocPxString:(self.transformedCurrentMousePagePoint.x - cx)];
                     
                     [aDomElement setAttribute:@"rx" value:newRadiusString];
                 }
                 else if ([handle_orientation isEqualToString:@"bottom"] == YES)
                 {
-                    NSString * newRadiusString = [self allocPxString:(self.currentMousePoint.y - cy)];
+                    NSString * newRadiusString = [self allocPxString:(self.transformedCurrentMousePagePoint.y - cy)];
                     
                     [aDomElement setAttribute:@"ry" value:newRadiusString];
                 }
                 else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.currentMousePoint.x;
-                    CGFloat yDelta = cy - self.currentMousePoint.y;
+                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
                     CGFloat radiusX = xDelta;
                     CGFloat radiusY = yDelta;
@@ -1849,8 +2092,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topRight"] == YES)
                 {
-                    CGFloat xDelta = self.currentMousePoint.x - cx;
-                    CGFloat yDelta = cy - self.currentMousePoint.y;
+                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
                     CGFloat radiusX = xDelta;
                     CGFloat radiusY = yDelta;
@@ -1872,8 +2115,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.currentMousePoint.x;
-                    CGFloat yDelta = self.currentMousePoint.y - cy;
+                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
                     CGFloat radiusX = xDelta;
                     CGFloat radiusY = yDelta;
@@ -1895,8 +2138,8 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
                 {
-                    CGFloat xDelta = self.currentMousePoint.x - cx;
-                    CGFloat yDelta = self.currentMousePoint.y - cy;
+                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
                     CGFloat radiusX = xDelta;
                     CGFloat radiusY = yDelta;
@@ -1968,8 +2211,8 @@
 
     // update the rectangles around the selected elements
 
-    float deltaX = self.currentMousePoint.x - self.previousMousePoint.x;
-    float deltaY = self.currentMousePoint.y - self.previousMousePoint.y;
+    float deltaX = self.transformedCurrentMousePagePoint.x - self.previousTransformedMousePagePoint.x;
+    float deltaY = self.transformedCurrentMousePagePoint.y - self.previousTransformedMousePagePoint.y;
 
     // update the positions of the selected SVG elements
     NSUInteger selectedItemsCount = [selectedElementsManager selectedElementsCount];
@@ -1992,33 +2235,27 @@
             {
                 coordinateType = @"none";       // don't apply x,y attributes to groups
             }
-            
-            if ([tagName isEqualToString:@"circle"] == YES)
+            else if ([tagName isEqualToString:@"circle"] == YES)
             {
                 coordinateType = @"cxcy";
             }
-            
-            if ([tagName isEqualToString:@"ellipse"] == YES)
+            else if ([tagName isEqualToString:@"ellipse"] == YES)
             {
                 coordinateType = @"cxcy";
             }
-            
-            if ([tagName isEqualToString:@"line"] == YES)
+            else if ([tagName isEqualToString:@"line"] == YES)
             {
                 coordinateType = @"xyxy";
             }
-            
-            if ([tagName isEqualToString:@"polyline"] == YES)
+            else if ([tagName isEqualToString:@"polyline"] == YES)
             {
                 coordinateType = @"xyxyxy";     // not the best description, but it will do for now
             }
-            
-            if ([tagName isEqualToString:@"polygon"] == YES)
+            else if ([tagName isEqualToString:@"polygon"] == YES)
             {
                 coordinateType = @"xyxyxy";
             }
-            
-            if ([tagName isEqualToString:@"path"] == YES)
+            else if ([tagName isEqualToString:@"path"] == YES)
             {
                 coordinateType = @"d";
             }
@@ -2125,15 +2362,8 @@
 
     DOMElement * updateDOMElement = [self.svgXMLDOMSelectionManager activeDOMElement];
 
-
-
-
-
-    CGFloat zoomFactor = svgWebView.zoomFactor;
-    DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    self.currentMousePoint = NSMakePoint((float)mouseEvent.pageX * (1.0f / zoomFactor), (float)mouseEvent.pageY * (1.0f / zoomFactor));
-
-
+    //DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+    //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:updateDOMElement];
 
     if (updateDOMElement != NULL)
     {
@@ -2141,22 +2371,21 @@
         
         tagName = updateDOMElement.tagName;
 
-        float objectOriginX = self.clickPoint.x;
-        float objectOriginY = self.clickPoint.y;
-        float objectWidth = self.currentMousePoint.x - self.clickPoint.x;
-        float objectHeight = self.currentMousePoint.y - self.clickPoint.y;
+        float deltaX = self.transformedCurrentMousePagePoint.x - self.transformedClickMousePagePoint.x;
+        float deltaY = self.transformedCurrentMousePagePoint.y - self.transformedClickMousePagePoint.y;
+
+        NSRect objectRect = NSMakeRect(self.transformedClickMousePagePoint.x, self.transformedClickMousePagePoint.y,
+                fabs(deltaX), fabs(deltaY));
         
-        if (objectWidth < 0) 
+        if (deltaX < 0)
         {
-            objectOriginX = self.currentMousePoint.x;
-            objectWidth = fabs(self.clickPoint.x - self.currentMousePoint.x);
+            objectRect.origin.x = self.transformedCurrentMousePagePoint.x;
         }
-        
-        if (objectHeight < 0) 
+        if (deltaY < 0)
         {
-            objectOriginY = self.currentMousePoint.y;
-            objectHeight = fabs(self.clickPoint.y - self.currentMousePoint.y);
+            objectRect.origin.y = self.transformedCurrentMousePagePoint.y;
         }
+
         
         NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
 
@@ -2164,10 +2393,10 @@
         {
             case toolModeRect:
             {
-                NSString * xString = [self allocPxString:objectOriginX];
-                NSString * yString = [self allocPxString:objectOriginY];
-                NSString * widthString = [self allocPxString:objectWidth];
-                NSString * heightString = [self allocPxString:objectHeight];
+                NSString * xString = [self allocPxString:objectRect.origin.x];
+                NSString * yString = [self allocPxString:objectRect.origin.y];
+                NSString * widthString = [self allocPxString:objectRect.size.width];
+                NSString * heightString = [self allocPxString:objectRect.size.height];
                 
                 [updateDOMElement setAttribute:@"x" value:xString];
                 [updateDOMElement setAttribute:@"y" value:yString];
@@ -2177,61 +2406,54 @@
             }
             case toolModeCircle:
             {
-                float diffx = self.currentMousePoint.x - self.clickPoint.x;
-                float diffy = self.currentMousePoint.y - self.clickPoint.y;
-                
-                float distance = diffx;
-                if (diffy < diffx)
+                float distance = fabs(deltaX);
+                if (fabs(deltaY) < distance)
                 {
-                    distance = diffy;
+                    distance = fabs(deltaY);
                 }
                 
-                float halfDistance = distance / 2.0f;
-                
-                float cx = self.clickPoint.x + halfDistance;
-                float cy = self.clickPoint.y + halfDistance;
+                float cx = self.transformedClickMousePagePoint.x;
+                float cy = self.transformedClickMousePagePoint.y;
                 
                 NSString * cxString = [self allocPxString:cx];
                 NSString * cyString = [self allocPxString:cy];
-                NSString * rString = [self allocPxString:halfDistance];
+                NSString * rString = [self allocPxString:distance];
                 
                 [updateDOMElement setAttribute:@"cx" value:cxString];
                 [updateDOMElement setAttribute:@"cy" value:cyString];
                 [updateDOMElement setAttribute:@"r" value:rString];
                 
-                objectWidth = distance;
-                objectHeight = distance;
+                objectRect.origin.x = self.transformedClickMousePagePoint.x - distance;
+                objectRect.origin.y = self.transformedClickMousePagePoint.y - distance;
+                objectRect.size.width = distance * 2.0f;
+                objectRect.size.height = distance * 2.0f;
                 break;
             }
             case toolModeEllipse:
             {
-                float diffx = self.currentMousePoint.x - self.clickPoint.x;
-                float diffy = self.currentMousePoint.y - self.clickPoint.y;
-                
-                float halfDistanceX = diffx / 2.0f;
-                float halfDistanceY = diffy / 2.0f;
-                
-                float cx = self.clickPoint.x + halfDistanceX;
-                float cy = self.clickPoint.y + halfDistanceY;
+                float cx = self.transformedClickMousePagePoint.x;
+                float cy = self.transformedClickMousePagePoint.y;
                 
                 NSString * cxString = [self allocPxString:cx];
                 NSString * cyString = [self allocPxString:cy];
-                NSString * rxString = [self allocPxString:halfDistanceX];
-                NSString * ryString = [self allocPxString:halfDistanceY];
+                NSString * rxString = [self allocPxString:fabs(deltaX)];
+                NSString * ryString = [self allocPxString:fabs(deltaY)];
                 
                 [updateDOMElement setAttribute:@"cx" value:cxString];
                 [updateDOMElement setAttribute:@"cy" value:cyString];
                 [updateDOMElement setAttribute:@"rx" value:rxString];
                 [updateDOMElement setAttribute:@"ry" value:ryString];
                 
-                objectWidth = diffx;
-                objectHeight = diffy;
+                objectRect.origin.x = self.transformedClickMousePagePoint.x - fabs(deltaX);
+                objectRect.origin.y = self.transformedClickMousePagePoint.y - fabs(deltaY);
+                objectRect.size.width = fabs(deltaX) * 2.0f;
+                objectRect.size.height = fabs(deltaY) * 2.0f;
                 break;
             }
             case toolModeText:
              {
-                NSString * xString = [self allocPxString:self.currentMousePoint.x];
-                NSString * yString = [self allocPxString:self.currentMousePoint.y];
+                NSString * xString = [self allocPxString:self.transformedCurrentMousePagePoint.x];
+                NSString * yString = [self allocPxString:self.transformedCurrentMousePagePoint.y];
                 
                 [updateDOMElement setAttribute:@"x" value:xString];
                 [updateDOMElement setAttribute:@"y" value:yString];
@@ -2246,45 +2468,17 @@
             }
             case toolModeLine:
             {
-                /*
-                float diffx = self.currentMousePoint.x - self.clickPoint.x;
-                float diffy = self.currentMousePoint.y - self.clickPoint.y;
-                
-                NSString * x2String = [self allocPxString:self.currentMousePoint.x];
-                NSString * y2String = [self allocPxString:self.currentMousePoint.y];
+                NSString * x2String = [self allocPxString:self.transformedCurrentMousePagePoint.x];
+                NSString * y2String = [self allocPxString:self.transformedCurrentMousePagePoint.y];
                 
                 [updateDOMElement setAttribute:@"x2" value:x2String];
                 [updateDOMElement setAttribute:@"y2" value:y2String];
-                
-                objectWidth = diffx;
-                objectHeight = diffy;
-                */
-
-                NSPoint translatedCurrentMousePoint = [self translatePoint:self.currentMousePoint targetElement:updateDOMElement];
-                NSPoint translatedClickPoint = [self translatePoint:self.clickPoint targetElement:updateDOMElement];
-
-                float diffx = translatedCurrentMousePoint.x - translatedClickPoint.x;
-                float diffy = translatedCurrentMousePoint.y - translatedClickPoint.y;
-                
-                NSString * x2String = [self allocPxString:translatedCurrentMousePoint.x];
-                NSString * y2String = [self allocPxString:translatedCurrentMousePoint.y];
-                
-                [updateDOMElement setAttribute:@"x2" value:x2String];
-                [updateDOMElement setAttribute:@"y2" value:y2String];
-                
-                objectWidth = diffx;
-                objectHeight = diffy;
 
                 break;
             }
             case toolModePolyline:
             case toolModePolygon:
             {
-                float diffx = self.currentMousePoint.x - self.clickPoint.x;
-                float diffy = self.currentMousePoint.y - self.clickPoint.y;
-                
-                objectWidth = diffx;
-                objectHeight = diffy;
                 break;
             }
             case toolModePath:
@@ -2313,7 +2507,7 @@
 
             MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
             WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
-            NSRect selectionRect = NSMakeRect(objectOriginX, objectOriginY, objectWidth, objectHeight);
+            NSRect selectionRect = NSMakeRect(objectRect.origin.x, objectRect.origin.y, objectRect.size.width, objectRect.size.height);
             [webKitInterface setRect:selectionRect forElement:selectedRectElement];
         }
         
@@ -2402,11 +2596,8 @@
     DOMElement * targetElement = [self.svgXMLDOMSelectionManager activeDOMElement];
     
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    self.previousMousePoint = self.currentMousePoint;
-    CGFloat zoomFactor = svgWebView.zoomFactor;
-    NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
-
-    self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
+    
+    [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
 
     [event preventDefault];
     [event stopPropagation];
@@ -2536,11 +2727,8 @@
     if (targetElement != NULL)
     {
         DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-        self.previousMousePoint = self.currentMousePoint;
-        CGFloat zoomFactor = svgWebView.zoomFactor;
-        NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
-
-        self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
+        
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
 
         [event preventDefault];
         [event stopPropagation];
@@ -2595,11 +2783,8 @@
     DOMElement * targetElement = (DOMElement *)targetNode;
 
     DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-    self.previousMousePoint = self.currentMousePoint;
-    CGFloat zoomFactor = svgWebView.zoomFactor;
-    NSPoint newCurrentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
-
-    self.currentMousePoint = [self translatePoint:newCurrentMousePoint targetElement:targetElement];
+    
+    [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
 
     [event preventDefault];
     [event stopPropagation];
@@ -2663,8 +2848,15 @@
     self.mouseMode = MOUSE_DISENGAGED;
     [event preventDefault];
     [event stopPropagation];
-
-    self.clickPoint = self.currentMousePoint;
+    
+    /*
+    self.clickMouseClientPoint = self.currentMouseClientPoint;
+    self.clickMousePagePoint = self.currentMousePagePoint;
+    self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+    */
+    
+    [self setClickMousePointsWithCurrentMousePoints];
+    
     self.clickTarget = NULL;
     self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
 }
@@ -2687,9 +2879,14 @@
             }
 
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            
+            /*
             CGFloat zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
+            */
+            
+            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
 
             [event preventDefault];
             [event stopPropagation];
@@ -2709,9 +2906,16 @@
                 [self.svgXMLDOMSelectionManager selectXMLElementAndChildNodes:self.svgXMLDOMSelectionManager.activeXMLElement];
             }
             
+            /*
+            self.clickMouseClientPoint = self.currentMouseClientPoint;
+            self.clickMousePagePoint = self.currentMousePagePoint;
+            self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+            */
             
-            self.clickPoint = self.currentMousePoint;
+            [self setClickMousePointsWithCurrentMousePoints];
+            
             self.clickTarget = NULL;
+            self.targetParentDOMElement = NULL;
             self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
             break;
         }
@@ -2723,14 +2927,25 @@
             }
 
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            
+            /*
             CGFloat zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
+            */
+            
+            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:NULL];
 
             [event preventDefault];
             [event stopPropagation];
 
-            self.clickPoint = self.currentMousePoint;
+            /*
+            self.clickMouseClientPoint = self.currentMouseClientPoint;
+            self.clickMousePagePoint = self.currentMousePagePoint;
+            self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+            */
+            [self setClickMousePointsWithCurrentMousePoints];
+
             self.clickTarget = NULL;
             self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
             break;
@@ -2772,9 +2987,16 @@
             }
 
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            
+            /*
             CGFloat zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
+            */
+            
+            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:NULL];
+            
+            [self setPreviousMousePointsWithCurrentMousePoints];
 
             [event preventDefault];
             [event stopPropagation];
@@ -2794,7 +3016,14 @@
                 [self.svgXMLDOMSelectionManager selectXMLElementAndChildNodes:self.svgXMLDOMSelectionManager.activeXMLElement];
             }
             
-            self.clickPoint = self.currentMousePoint;
+            /*
+            self.clickMouseClientPoint = self.currentMouseClientPoint;
+            self.clickMousePagePoint = self.currentMousePagePoint;
+            self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+            */
+            
+            [self setClickMousePointsWithCurrentMousePoints];
+            
             self.clickTarget = NULL;
             self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
             
@@ -2828,6 +3057,52 @@
     handle_orientation = NULL;
 }
 
+
+// ================================================================
+
+- (void) handlePluginEvent:(DOMEvent *)event
+{
+    NSString * eventType = event.type;
+
+    if ([eventType isEqualToString:@"mousedown"] == YES)
+    {
+        self.mouseMode = MOUSE_DRAGGING;
+
+        DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+
+        //DOMNode * targetNode = mouseEvent.target;
+        //self.clickTarget = (DOMElement *)targetNode;
+
+        //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:event.target];
+
+        [self setClickMousePointsWithCurrentMousePoints];
+
+        [self setPreviousMousePointsWithCurrentMousePoints];
+    }
+    else if ([eventType isEqualToString:@"mousemove"] == YES)
+    {
+        if (self.mouseMode == MOUSE_DRAGGING)
+        {
+            DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
+            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
+        }
+    }
+    else if ([eventType isEqualToString:@"mouseup"] == YES)
+    {
+        if (self.mouseMode == MOUSE_DRAGGING)
+        {
+            DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+            //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
+            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
+            
+            self.mouseMode = MOUSE_DISENGAGED;
+        }
+    }
+
+    [macSVGDocumentWindowController.editorUIFrameController handlePluginEvent:event];
+}
 
 
 

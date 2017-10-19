@@ -77,6 +77,7 @@
 - (void) setDOMVisibility:(NSString *)visibility forMacsvgid:(NSString *)macsvgid;
 
 - (void)updateSelections;
+- (void) updateLiveCoordinates;
 
 @property (copy) NSMutableArray *pathSegmentsArray;
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;

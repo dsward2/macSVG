@@ -297,7 +297,7 @@
 - (void)beginCrosshairToolMode;
 
 - (void)beginPluginEditorToolMode;  // called from MacSVGDocument when a plugin needs mouse control
-- (void) handlePluginEvent:(DOMEvent *)event;
+//- (void) handlePluginEvent:(DOMEvent *)event;
 
 - (void)updateSelections;
 

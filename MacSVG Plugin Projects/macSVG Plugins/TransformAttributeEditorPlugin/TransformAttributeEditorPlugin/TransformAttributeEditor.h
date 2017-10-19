@@ -40,16 +40,20 @@
         
     NSUInteger currentTransformToolMode;
     
+    /*
     int mouseMode;
     NSPoint clickPoint;
     NSPoint currentMousePoint;
     NSPoint previousMousePoint;
     DOMElement * clickTarget;
+    */
 
     BOOL selectionHandleClicked;
     NSString * handle_orientation;  // static string, e.g. @"topLeft"
     int mouseMoveCount;
-    float handleDegrees;
+    
+    float beginHandleDegrees;
+    
     float currentScale;
     NSRect elementRectAtMouseDown;
     

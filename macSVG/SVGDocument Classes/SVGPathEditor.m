@@ -1494,32 +1494,31 @@
 
     NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-    pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+    pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
     pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
     NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
     CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-    pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+    pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
     pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
     NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-    pathEndpointRadiusFloat *= reciprocalZoomFactor;
+    pathEndpointRadiusFloat *= scaleForDOMElementHandles;
     pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
     NSString * pathCurvePointStrokeWidthString = toolSettingsPopoverViewController.pathCurvePointStrokeWidth;
     CGFloat pathCurvePointStrokeWidthFloat = pathCurvePointStrokeWidthString.floatValue;
-    pathCurvePointStrokeWidthFloat *= reciprocalZoomFactor;
+    pathCurvePointStrokeWidthFloat *= scaleForDOMElementHandles;
     pathCurvePointStrokeWidthString = [self allocPxString:pathCurvePointStrokeWidthFloat];
 
     NSString * pathCurvePointRadiusString = toolSettingsPopoverViewController.pathCurvePointRadius;
     CGFloat pathCurvePointRadiusFloat = pathCurvePointRadiusString.floatValue;
-    pathCurvePointRadiusFloat *= reciprocalZoomFactor;
+    pathCurvePointRadiusFloat *= scaleForDOMElementHandles;
     pathCurvePointRadiusString = [self allocPxString:pathCurvePointRadiusFloat];
 
     NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -1560,70 +1559,57 @@
         
         if (isMovetoForCubic == YES)
         {
-            // reflect a control point for the first segment
+            // reflect a control point for the first cubic curveto path segment
             
-            NSPoint clickPoint = domMouseEventsController.clickPoint;
-            NSPoint currentMousePoint = domMouseEventsController.currentMousePoint;
-
-            NSXMLNode * macsvgidAttributeNode = [pathXMLElement attributeForName:@"macsvgid"];
-            NSString * pathMacsvgidString = macsvgidAttributeNode.stringValue;
-            DOMElement * pathDOMElement = [svgWebKitController domElementForMacsvgid:pathMacsvgidString];
+            NSPoint transformedClickPoint = domMouseEventsController.transformedClickMousePagePoint;
+            NSPoint transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
             
-            clickPoint = [domMouseEventsController translatePoint:clickPoint targetElement:pathDOMElement];
-            currentMousePoint = [domMouseEventsController translatePoint:currentMousePoint targetElement:pathDOMElement];
+            NSString * transformedClickPointXString = [self allocPxString:transformedClickPoint.x];
+            NSString * transformedClickPointYString = [self allocPxString:transformedClickPoint.y];
 
-            NSString * x1PxString = [self allocPxString:clickPoint.x];
-            NSString * y1PxString = [self allocPxString:clickPoint.y];
-            NSString * x2PxString = [self allocPxString:currentMousePoint.x];
-            NSString * y2PxString = [self allocPxString:currentMousePoint.y];
+            NSString * x1PxString = [self allocPxString:transformedCurrentMousePoint.x];
+            NSString * y1PxString = [self allocPxString:transformedCurrentMousePoint.y];
+            
+            float deltaX = transformedClickPoint.x - transformedCurrentMousePoint.x;
+            float deltaY = transformedClickPoint.y - transformedCurrentMousePoint.y;
 
-            float deltaX = currentMousePoint.x - clickPoint.x;
-            float deltaY = currentMousePoint.y - clickPoint.y;
-
-            float reflectX2 = clickPoint.x - deltaX;
-            float reflectY2 = clickPoint.y - deltaY;
+            float reflectX2 = transformedClickPoint.x + deltaX;
+            float reflectY2 = transformedClickPoint.y + deltaY;
 
             NSString * reflectX2PxString = [self allocPxString:reflectX2];
             NSString * reflectY2PxString = [self allocPxString:reflectY2];
             
             // Line 1
             
-            DOMElement * handleLine1Element = [self makeHandleLineDOMElementWithX1:x1PxString y1:y1PxString
-                    x2:reflectX2PxString y2:reflectY2PxString strokeWidth:pathLineStrokeWidthString];
+            DOMElement * handleLine1Element = [self makeHandleLineDOMElementWithX1:transformedClickPointXString y1:transformedClickPointYString x2:x1PxString y2:y1PxString strokeWidth:pathLineStrokeWidthString];
 
             [pathHandlesGroup appendChild:handleLine1Element];
             
-            // Line 2
+            // Line 2, reflected from line 1
 
-            DOMElement * handleLine2Element = [self makeHandleLineDOMElementWithX1:x1PxString y1:y1PxString
-                    x2:x2PxString y2:y2PxString strokeWidth:pathLineStrokeWidthString];
+            DOMElement * handleLine2Element = [self makeHandleLineDOMElementWithX1:transformedClickPointXString y1:transformedClickPointYString x2:reflectX2PxString y2:reflectY2PxString strokeWidth:pathLineStrokeWidthString];
             
             [pathHandlesGroup appendChild:handleLine2Element];
 
             // Circle handle x1,y1
             
             DOMElement * handleX1Y1CircleElement =
-                    [self makeHandleCircleDOMElementWithCx:reflectX2PxString cy:reflectY2PxString
+                    [self makeHandleCircleDOMElementWithCx:transformedClickPointXString cy:transformedClickPointYString
                     strokeWidth:pathCurvePointStrokeWidthString radius:pathCurvePointRadiusString
                     masterID:selectedElementMacsvgid segmentIndex:segmentIndexString
                     handlePoint:@"x1y1"];
 
             [pathHandlesGroup appendChild:handleX1Y1CircleElement];
             
-            // Circle handle x2,y2
+            // Circle handle x2,y2, reflected from x1, y1
 
             DOMElement * handleX2Y2CircleElement =
-                    [self makeHandleCircleDOMElementWithCx:x2PxString cy:y2PxString
+                    [self makeHandleCircleDOMElementWithCx:reflectX2PxString cy:reflectY2PxString
                     strokeWidth:pathCurvePointStrokeWidthString radius:pathCurvePointRadiusString
                     masterID:selectedElementMacsvgid segmentIndex:segmentIndexString
                     handlePoint:@"x2y2"];
 
             [pathHandlesGroup appendChild:handleX2Y2CircleElement];
-            
-            //NSLog(@"Line 1 %@", handleLine1Element.outerHTML);
-            //NSLog(@"Line 2 %@", handleLine2Element.outerHTML);
-            //NSLog(@"x1y1 %@", handleX1Y1CircleElement.outerHTML);
-            //NSLog(@"x2y2 %@", handleX2Y2CircleElement.outerHTML);
         }
     }
 
@@ -1657,22 +1643,21 @@
     
     NSString * segmentIndexString = [NSString stringWithFormat:@"%ld", segmentIndex];
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-    pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+    pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
     pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
     NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
     CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-    pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+    pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
     pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
     NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-    pathEndpointRadiusFloat *= reciprocalZoomFactor;
+    pathEndpointRadiusFloat *= scaleForDOMElementHandles;
     pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
     DOMElement * handleXYCircleElement =
@@ -1704,17 +1689,16 @@
 
     NSString * yPxString = [self allocPxString:currentPoint.y];
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
 
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-    pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+    pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
     pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
     NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-    pathEndpointRadiusFloat *= reciprocalZoomFactor;
+    pathEndpointRadiusFloat *= scaleForDOMElementHandles;
     pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
     NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -1751,17 +1735,16 @@
     NSString * yString = pathSegmentDictionary[@"y"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-    pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+    pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
     pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
     NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-    pathEndpointRadiusFloat *= reciprocalZoomFactor;
+    pathEndpointRadiusFloat *= scaleForDOMElementHandles;
     pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
     NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -1793,38 +1776,31 @@
     
     if (pathSegmentDictionary != NULL)
     {
-        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-        
-        //CGPoint currentCTMScalePoint = CGPointMake(1, 1);
-        //[self getCTMScaleForDOMElement:pathHandlesGroup resultPoint:&currentCTMScalePoint];
-        //reciprocalZoomFactor *= (1.0f / currentCTMScalePoint.x);
-        
-        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
-        
+        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
 
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-        pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
         NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
         CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-        pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+        pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
         pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
         NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
         CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-        pathEndpointRadiusFloat *= reciprocalZoomFactor;
+        pathEndpointRadiusFloat *= scaleForDOMElementHandles;
         pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
         NSString * pathCurvePointStrokeWidthString = toolSettingsPopoverViewController.pathCurvePointStrokeWidth;
         CGFloat pathCurvePointStrokeWidthFloat = pathCurvePointStrokeWidthString.floatValue;
-        pathCurvePointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathCurvePointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathCurvePointStrokeWidthString = [self allocPxString:pathCurvePointStrokeWidthFloat];
 
         NSString * pathCurvePointRadiusString = toolSettingsPopoverViewController.pathCurvePointRadius;
         CGFloat pathCurvePointRadiusFloat = pathCurvePointRadiusString.floatValue;
-        pathCurvePointRadiusFloat *= reciprocalZoomFactor;
+        pathCurvePointRadiusFloat *= scaleForDOMElementHandles;
         pathCurvePointRadiusString = [self allocPxString:pathCurvePointRadiusFloat];
 
         NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -1848,9 +1824,13 @@
             float x2 = x2Number.floatValue;   // second curve control point
             float y2 = y2Number.floatValue;
             
-            NSPoint xyPoint = [domMouseEventsController translatePoint:NSMakePoint(x, y) targetElement:pathHandlesGroup];
-            NSPoint x1y1Point = [domMouseEventsController translatePoint:NSMakePoint(x1, y1) targetElement:pathHandlesGroup];
-            NSPoint x2y2Point = [domMouseEventsController translatePoint:NSMakePoint(x2, y2) targetElement:pathHandlesGroup];
+            //NSPoint xyPoint = [domMouseEventsController transformPoint:NSMakePoint(x, y) targetElement:pathHandlesGroup];
+            //NSPoint x1y1Point = [domMouseEventsController transformPoint:NSMakePoint(x1, y1) targetElement:pathHandlesGroup];
+            //NSPoint x2y2Point = [domMouseEventsController transformPoint:NSMakePoint(x2, y2) targetElement:pathHandlesGroup];
+            
+            NSPoint xyPoint = NSMakePoint(x, y);
+            NSPoint x1y1Point = NSMakePoint(x1, y1);
+            NSPoint x2y2Point = NSMakePoint(x2, y2);
             
             x = xyPoint.x;
             y = xyPoint.y;
@@ -2021,22 +2001,21 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-        pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
         NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
         CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-        pathEndpointRadiusFloat *= reciprocalZoomFactor;
+        pathEndpointRadiusFloat *= scaleForDOMElementHandles;
         pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
         NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
         CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-        pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+        pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
         pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
         NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -2110,22 +2089,21 @@
         NSString * currentYPxString = [self allocPxString:currentPoint.y];
 
 
-        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-        pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
         NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
         CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-        pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+        pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
         pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
         NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
         CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-        pathEndpointRadiusFloat *= reciprocalZoomFactor;
+        pathEndpointRadiusFloat *= scaleForDOMElementHandles;
         pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
         NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -2187,22 +2165,21 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-        pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
         NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
         CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-        pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+        pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
         pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
         NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
         CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-        pathEndpointRadiusFloat *= reciprocalZoomFactor;
+        pathEndpointRadiusFloat *= scaleForDOMElementHandles;
         pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
         NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -2249,22 +2226,21 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-        CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
-        pathEndpointStrokeWidthFloat *= reciprocalZoomFactor;
+        pathEndpointStrokeWidthFloat *= scaleForDOMElementHandles;
         pathEndpointStrokeWidthString = [self allocPxString:pathEndpointStrokeWidthFloat];
 
         NSString * pathLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
         CGFloat pathLineStrokeWidthFloat = pathLineStrokeWidthString.floatValue;
-        pathLineStrokeWidthFloat *= reciprocalZoomFactor;
+        pathLineStrokeWidthFloat *= scaleForDOMElementHandles;
         pathLineStrokeWidthString = [self allocPxString:pathLineStrokeWidthFloat];
 
         NSString * pathEndpointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
         CGFloat pathEndpointRadiusFloat = pathEndpointRadiusString.floatValue;
-        pathEndpointRadiusFloat *= reciprocalZoomFactor;
+        pathEndpointRadiusFloat *= scaleForDOMElementHandles;
         pathEndpointRadiusString = [self allocPxString:pathEndpointRadiusFloat];
 
         NSXMLNode * selectedElementMacsvgidNode = [self.selectedPathElement attributeForName:@"macsvgid"];
@@ -2296,125 +2272,6 @@
 }
 
 //==================================================================================
-//	makePathHandles
-//==================================================================================
-
-/*
--(void) makePathHandles
-{
-    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
-
-    DOMSelectionControlsManager * domSelectionControlsManager =
-            svgXMLDOMSelectionManager.domSelectionControlsManager;
-    
-    DOMElement * newPathHandlesGroup = [domDocument createElementNS:svgNamespace 
-            qualifiedName:@"g"];
-    [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_pathHandlesGroup"];
-    [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_pathHandlesGroup"];
-    
-    NSUInteger pathSegmentsCount = (self.pathSegmentsArray).count;
-    
-    unichar previousPathCommand = ' ';
-            
-    for (NSUInteger segmentIdx = 0; segmentIdx < pathSegmentsCount; segmentIdx++)
-    {
-        NSDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[segmentIdx];
-
-        NSString * pathCommand = pathSegmentDictionary[@"command"];
-        
-        unichar commandChar = [pathCommand characterAtIndex:0];
-
-        switch (commandChar) 
-        {
-            case 'M':     // moveto
-            case 'm':     // moveto
-                [self addHandleForMoveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'L':     // lineto
-            case 'l':     // lineto
-                [self addHandleForLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'H':     // horizontal lineto
-            case 'h':     // horizontal lineto
-                [self addHandleForHorizontalLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'V':     // vertical lineto
-            case 'v':     // vertical lineto
-                [self addHandleForVerticalLineto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'C':     // cubic Bezier curveto
-            case 'c':     // cubic Bezier curveto
-            {
-                BOOL reflectX1Y1 = NO;
-                BOOL reflectX2Y2 = NO;
-                
-                //if (segmentIdx == 1) reflectX1Y1 = YES;
-                
-                if (segmentIdx >= (pathSegmentsCount - 1))
-                {
-                    //reflectX1Y1 = YES;
-                    reflectX2Y2 = YES;
-                }
-                
-                if ((previousPathCommand == 'M') || (previousPathCommand == 'm'))
-                {
-                    reflectX1Y1 = YES;
-                    //reflectX2Y2 = YES;
-                }
-
-                [self addHandleForCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx 
-                        reflectX1Y1:reflectX1Y1
-                        reflectX2Y2:reflectX2Y2
-                        pathHandlesGroup:newPathHandlesGroup];
-                break;
-            }
-            case 'S':     // smooth cubic Bezier curveto
-            case 's':     // smooth cubic Bezier curveto
-                [self addHandleForSmoothCubicCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'Q':     // quadratic Bezier curve
-            case 'q':     // quadratic Bezier curve
-                [self addHandleForQuadraticCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'T':     // smooth quadratic Bezier curve
-            case 't':     // smooth quadratic Bezier curve
-                [self addHandleForSmoothQuadraticCurveto:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'A':     // elliptical arc
-            case 'a':     // elliptical arc
-                [self addHandleForEllipicalArc:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-
-            case 'Z':     // closepath
-            case 'z':     // closepath
-                [self addHandleForClosePath:pathSegmentDictionary segmentIndex:segmentIdx pathHandlesGroup:newPathHandlesGroup];
-                break;
-        }
-        
-        previousPathCommand = commandChar;
-    }
-    
-    [domSelectionControlsManager setMacsvgTopGroupChild:newPathHandlesGroup];
-
-    if (self.highlightSelectedSegment == YES)
-    {
-        [domSelectionControlsManager highlightPathSegment];
-    }
-    else
-    {
-        [domSelectionControlsManager removeDOMPathSegmentHighlight];
-    }
-}
-*/
-
-//==================================================================================
 //	makePathHandlesForXMLElement:
 //==================================================================================
 
@@ -2438,6 +2295,47 @@
         NSString * transformAttribureString = transformAttributeNode.stringValue;
         [newPathHandlesGroup setAttributeNS:NULL qualifiedName:@"transform" value:transformAttribureString];
     }
+
+
+
+
+
+    // create parent group elements to match transforms for selected element, working back from current element to document root
+    DOMElement * topGroupChild = newPathHandlesGroup;
+
+    NSXMLElement * pathParentElement = (NSXMLElement *)pathXMLElement.parent;
+    NSInteger groupIndex = 0;
+    while (pathParentElement != NULL)
+    {
+        if (pathParentElement.kind == NSXMLElementKind)
+        {
+            NSXMLNode * transformAttributeNode = [pathParentElement attributeForName:@"transform"];
+            if (transformAttributeNode != NULL)
+            {
+                NSString * transformValueString = transformAttributeNode.stringValue;
+                if (transformValueString.length > 0)
+                {
+                    DOMElement * transformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
+                    NSString * groupIDString = [NSString stringWithFormat:@"_macsvg_path_transform_group-%ld", groupIndex + 1];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:groupIDString];
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_path_transform_group"];
+                    
+                    [transformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:transformValueString];
+                    
+                    [transformGroupElement appendChild:topGroupChild];
+                    topGroupChild = transformGroupElement;
+                    
+                    groupIndex++;
+                }
+            }
+        }
+        pathParentElement = (NSXMLElement *)pathParentElement.parent;
+    }
+
+
+
+
+
     
     NSUInteger pathSegmentsCount = (self.pathSegmentsArray).count;
     
@@ -2528,8 +2426,10 @@
         previousPathCommand = commandChar;
     }
     
-    // create parent group elements to match transforms for selected element
+    /* moved to above
+    // create parent group elements to match transforms for selected element, working back from current element to document root
     DOMElement * topGroupChild = newPathHandlesGroup;
+
     NSXMLElement * pathParentElement = (NSXMLElement *)pathXMLElement.parent;
     NSInteger groupIndex = 0;
     while (pathParentElement != NULL)
@@ -2558,6 +2458,7 @@
         }
         pathParentElement = (NSXMLElement *)pathParentElement.parent;
     }
+    */
     
     [domSelectionControlsManager setMacsvgTopGroupChild:topGroupChild];
 
@@ -3024,10 +2925,8 @@
     
     [self resetPathSegmentsArray];
     
-    NSPoint mouseEventClickPoint = domMouseEventsController.clickPoint;
+    NSPoint mouseEventClickPoint = domMouseEventsController.transformedClickMousePagePoint;
     
-    mouseEventClickPoint = [domMouseEventsController translatePoint:mouseEventClickPoint targetElement:parentDOMElement];
-
     NSString * clickXString = [self allocFloatString:mouseEventClickPoint.x];
     NSString * clickYString = [self allocFloatString:mouseEventClickPoint.y];
     
@@ -3076,8 +2975,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     // Changed to Quadratic Beziers
     // based on https://github.com/levinunnink/Smooth-Line-View/blob/master/Smooth%20Line%20View/SmoothLineView.m
 
-    NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
-    NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
+    NSString * newXString = [self allocFloatString:domMouseEventsController.transformedCurrentMousePagePoint.x];
+    NSString * newYString = [self allocFloatString:domMouseEventsController.transformedCurrentMousePagePoint.y];
 
     float newX = newXString.floatValue;
     float newY = newYString.floatValue;
@@ -3368,10 +3267,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             NSString * pathCommandString = pathSegmentDictionary[@"command"];
             unichar pathCommand = [pathCommandString characterAtIndex:0];
 
-            DOMElement * activeDOMElement = [svgWebKitController.svgXMLDOMSelectionManager activeDOMElement]; // the path element
-            
-            NSPoint translatedCurrentMousePoint = [domMouseEventsController translatePoint:domMouseEventsController.currentMousePoint targetElement:activeDOMElement];
-            NSPoint translatedPreviousMousePoint = [domMouseEventsController translatePoint:domMouseEventsController.previousMousePoint targetElement:activeDOMElement];
+            NSPoint transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
+            NSPoint transformedPreviousMousePoint = domMouseEventsController.previousTransformedMousePagePoint;
 
             switch (pathCommand)
             {
@@ -3423,8 +3320,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - x;
-                    float deltaY = translatedCurrentMousePoint.y - y;
+                    float deltaX = transformedCurrentMousePoint.x - x;
+                    float deltaY = transformedCurrentMousePoint.y - y;
                     
                     float newX2 = x - deltaX;
                     float newY2 = y - deltaY;
@@ -3447,8 +3344,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float mouseRelX = translatedCurrentMousePoint.x - currentPathPoint.x;
-                    float mouseRelY = translatedCurrentMousePoint.y - currentPathPoint.y;
+                    float mouseRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float mouseRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     float deltaX = x - mouseRelX;
                     float deltaY = y - mouseRelY;
@@ -3472,8 +3369,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - x;
-                    float deltaY = translatedCurrentMousePoint.y - y;
+                    float deltaX = transformedCurrentMousePoint.x - x;
+                    float deltaY = transformedCurrentMousePoint.y - y;
                     
                     float newX2 = x - deltaX;
                     float newY2 = y - deltaY;
@@ -3496,8 +3393,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float mouseRelX = translatedCurrentMousePoint.x - currentPathPoint.x;
-                    float mouseRelY = translatedCurrentMousePoint.y - currentPathPoint.y;
+                    float mouseRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float mouseRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     float deltaX = x - mouseRelX;
                     float deltaY = y - mouseRelY;
@@ -3521,8 +3418,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x1 = x1String.floatValue;
                     float y1 = y1String.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - translatedPreviousMousePoint.x;
-                    float deltaY = translatedCurrentMousePoint.y - translatedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
                     
                     float newX1 = x1 - deltaX;
                     float newY1 = y1 - deltaY;
@@ -3543,8 +3440,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x1 = x1String.floatValue;
                     float y1 = y1String.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - translatedPreviousMousePoint.x;
-                    float deltaY = translatedCurrentMousePoint.y - translatedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
                     
                     float newX1 = x1 - deltaX;
                     float newY1 = y1 - deltaY;
@@ -3559,8 +3456,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'T':     // smooth quadratic curveto absolute
                 {
-                    NSString * newXString = [self allocFloatString:translatedCurrentMousePoint.x];
-                    NSString * newYString = [self allocFloatString:translatedCurrentMousePoint.y];
+                    NSString * newXString = [self allocFloatString:transformedCurrentMousePoint.x];
+                    NSString * newYString = [self allocFloatString:transformedCurrentMousePoint.y];
 
                     pathSegmentDictionary[@"x"] = newXString;
                     pathSegmentDictionary[@"y"] = newYString;
@@ -3575,8 +3472,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - translatedPreviousMousePoint.x;
-                    float deltaY = translatedCurrentMousePoint.y - translatedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
                     
                     float newX = x - deltaX;
                     float newY = y - deltaY;
@@ -3598,8 +3495,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - x;
-                    float deltaY = translatedCurrentMousePoint.y - y;
+                    float deltaX = transformedCurrentMousePoint.x - x;
+                    float deltaY = transformedCurrentMousePoint.y - y;
                     
                     deltaX = fabs(deltaX);
                     deltaY = fabs(deltaY);
@@ -3639,8 +3536,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = translatedCurrentMousePoint.x - x;
-                    float deltaY = translatedCurrentMousePoint.y - y;
+                    float deltaX = transformedCurrentMousePoint.x - x;
+                    float deltaY = transformedCurrentMousePoint.y - y;
                     
                     deltaX = fabs(deltaX);
                     deltaY = fabs(deltaY);
@@ -3707,7 +3604,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         
         if (lastSegmentPoint.x != NSNotFound)
         {
-            domMouseEventsController.currentMousePoint = lastSegmentPoint;
+            // TODO: if problems here, try calling setCurrentMousePointsWithDOMMouseEvent:transformTargetElement:
+            domMouseEventsController.currentMousePagePoint = lastSegmentPoint;
         }
 
         if (self.pathSegmentIndex > 0)
@@ -3844,11 +3742,10 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
             DOMElement * activeDOMElement = [svgWebKitController.svgXMLDOMSelectionManager activeDOMElement]; // the path element
 
-            NSPoint currentMousePoint = domMouseEventsController.currentMousePoint;
-            currentMousePoint = [domMouseEventsController translatePoint:currentMousePoint targetElement:activeDOMElement];
+            NSPoint transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
-            NSString * newXString = [self allocFloatString:currentMousePoint.x];
-            NSString * newYString = [self allocFloatString:currentMousePoint.y];
+            NSString * newXString = [self allocFloatString:transformedCurrentMousePoint.x];
+            NSString * newYString = [self allocFloatString:transformedCurrentMousePoint.y];
 
             newPathSegmentDictionary = [[NSMutableDictionary alloc] init];
             
@@ -3866,8 +3763,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
                     
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                     NSString * newRelYString = [self allocFloatString:newRelY];
@@ -3890,8 +3787,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                     NSString * newRelYString = [self allocFloatString:newRelY];
@@ -3914,7 +3811,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                 
@@ -3934,7 +3831,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelYString = [self allocFloatString:newRelY];
                 
@@ -4082,8 +3979,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         if (self.useRelativePathCoordinates == YES)
                         {
                             NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                            float newRelX = currentMousePoint.x - currentPathPoint.x;
-                            float newRelY = currentMousePoint.y - currentPathPoint.y;
+                            float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                            float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                             
                             NSString * newRelXString = [self allocFloatString:newRelX];
                             NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4106,8 +4003,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         if (self.useRelativePathCoordinates == YES)
                         {
                             NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                            float newRelX = currentMousePoint.x - currentPathPoint.x;
-                            float newRelY = currentMousePoint.y - currentPathPoint.y;
+                            float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                            float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                             
                             NSString * newRelXString = [self allocFloatString:newRelX];
                             NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4144,8 +4041,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                     NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4174,8 +4071,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                     NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4204,8 +4101,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 if (self.useRelativePathCoordinates == YES)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                    float newRelX = currentMousePoint.x - currentPathPoint.x;
-                    float newRelY = currentMousePoint.y - currentPathPoint.y;
+                    float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newRelXString = [self allocFloatString:newRelX];
                     NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4230,8 +4127,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     if (self.useRelativePathCoordinates == YES)
                     {
                         NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = currentMousePoint.y - currentPathPoint.y;
+                        float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                        float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                         
                         NSString * newRelXString = [self allocFloatString:newRelX];
                         NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4298,8 +4195,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     if (self.useRelativePathCoordinates == YES)
                     {
                         NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:self.pathSegmentIndex];
-                        float newRelX = currentMousePoint.x - currentPathPoint.x;
-                        float newRelY = currentMousePoint.y - currentPathPoint.y;
+                        float newRelX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                        float newRelY = transformedCurrentMousePoint.y - currentPathPoint.y;
                         
                         NSString * newRelXString = [self allocFloatString:newRelX];
                         NSString * newRelYString = [self allocFloatString:newRelY];
@@ -4367,12 +4264,13 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX = previousXString.floatValue;
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4426,12 +4324,13 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX = previousXString.floatValue;
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4454,11 +4353,12 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
     float previousX = previousXString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"x"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
         
         float newX = previousX + deltaX;
 
@@ -4479,11 +4379,12 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"y"] == YES)
     {
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newY = previousY + deltaY;
 
@@ -4511,14 +4412,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX2 = previousX2String.floatValue;
     float previousY2 = previousY2String.floatValue;
     
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
     NSUInteger pathSegmentCount = (self.pathSegmentsArray).count;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4566,8 +4468,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
     {
-        float newX1 = currentMousePoint.x;
-        float newY1 = currentMousePoint.y;
+        float newX1 = transformedCurrentMousePoint.x;
+        float newY1 = transformedCurrentMousePoint.y;
         
         if ([commandString isEqualToString:@"c"] == YES)
         {
@@ -4575,8 +4477,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             newY1 = 0;
         }
         
-        float newAbsoluteX1 = currentMousePoint.x;
-        float newAbsoluteY1 = currentMousePoint.y;
+        float newAbsoluteX1 = transformedCurrentMousePoint.x;
+        float newAbsoluteY1 = transformedCurrentMousePoint.y;
         
         if (editingMode == kPathEditingModePreviousSegment)
         {
@@ -4586,8 +4488,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 previousSegmentPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
             }
         
-            float prevDeltaX = previousSegmentPoint.x - currentMousePoint.x;
-            float prevDeltaY = previousSegmentPoint.y - currentMousePoint.y;
+            float prevDeltaX = previousSegmentPoint.x - transformedCurrentMousePoint.x;
+            float prevDeltaY = previousSegmentPoint.y - transformedCurrentMousePoint.y;
             
             newX1 = previousSegmentPoint.x + prevDeltaX;
             newY1 = previousSegmentPoint.y + prevDeltaY;
@@ -4638,8 +4540,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
     {
-        float newX2 = currentMousePoint.x;
-        float newY2 = currentMousePoint.y;
+        float newX2 = transformedCurrentMousePoint.x;
+        float newY2 = transformedCurrentMousePoint.y;
 
         if ([commandString isEqualToString:@"c"] == YES)
         {
@@ -4649,8 +4551,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
         if (editingMode == kPathEditingModeNextSegment)
         {
-            float prevDeltaX = currentMousePoint.x - previousX;
-            float prevDeltaY = currentMousePoint.y - previousY;
+            float prevDeltaX = transformedCurrentMousePoint.x - previousX;
+            float prevDeltaY = transformedCurrentMousePoint.y - previousY;
             newX2 = previousX - prevDeltaX;
             newY2 = previousY - prevDeltaY;
         }
@@ -4707,8 +4609,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     else if ([self.pathEditingKey isEqualToString:@"x0y0"] == YES)
     {
         // clicked on reflected handle of x1, y1
-        float newX1 = currentMousePoint.x;
-        float newY1 = currentMousePoint.y;
+        float newX1 = transformedCurrentMousePoint.x;
+        float newY1 = transformedCurrentMousePoint.y;
         
         if ([commandString isEqualToString:@"c"] == YES)
         {
@@ -4716,8 +4618,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             newY1 = 0;
         }
         
-        float newAbsoluteX1 = currentMousePoint.x;
-        float newAbsoluteY1 = currentMousePoint.y;
+        float newAbsoluteX1 = transformedCurrentMousePoint.x;
+        float newAbsoluteY1 = transformedCurrentMousePoint.y;
         
         NSPoint previousSegmentPoint = NSMakePoint(0, 0);
         if (self.pathSegmentIndex > 0)
@@ -4725,8 +4627,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             previousSegmentPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
         }
     
-        float prevDeltaX = previousSegmentPoint.x - currentMousePoint.x;
-        float prevDeltaY = previousSegmentPoint.y - currentMousePoint.y;
+        float prevDeltaX = previousSegmentPoint.x - transformedCurrentMousePoint.x;
+        float prevDeltaY = previousSegmentPoint.y - transformedCurrentMousePoint.y;
         
         newX1 = previousSegmentPoint.x + prevDeltaX;
         newY1 = previousSegmentPoint.y + prevDeltaY;
@@ -4744,8 +4646,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 {
         // clicked on reflected handle of x2, y2
 
-        float newX2 = currentMousePoint.x;
-        float newY2 = currentMousePoint.y;
+        float newX2 = transformedCurrentMousePoint.x;
+        float newY2 = transformedCurrentMousePoint.y;
 
         if ([commandString isEqualToString:@"c"] == YES)
         {
@@ -4753,8 +4655,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             newY2 = 0;
         }
 
-        float prevDeltaX = currentMousePoint.x - previousX;
-        float prevDeltaY = currentMousePoint.y - previousY;
+        float prevDeltaX = transformedCurrentMousePoint.x - previousX;
+        float prevDeltaY = transformedCurrentMousePoint.y - previousY;
         
         newX2 = previousX - prevDeltaX;
         newY2 = previousY - prevDeltaY;
@@ -4783,12 +4685,13 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX2 = previousX2String.floatValue;
     float previousY2 = previousY2String.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4808,8 +4711,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX2;
-        float deltaY = currentMousePoint.y - previousY2;
+        float deltaX = transformedCurrentMousePoint.x - previousX2;
+        float deltaY = transformedCurrentMousePoint.y - previousY2;
 
         float newX2 = previousX2 + deltaX;
         float newY2 = previousY2 + deltaY;
@@ -4838,14 +4741,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX1 = previousX1String.floatValue;
     float previousY1 = previousY1String.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
     //NSUInteger pathSegmentCount = [pathSegmentsArray count];
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4865,8 +4769,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX1;
-        float deltaY = currentMousePoint.y - previousY1;
+        float deltaX = transformedCurrentMousePoint.x - previousX1;
+        float deltaY = transformedCurrentMousePoint.y - previousY1;
 
         float newX1 = previousX1 + deltaX;
         float newY1 = previousY1 + deltaY;
@@ -4891,14 +4795,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX = previousXString.floatValue;
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
     //NSUInteger pathSegmentCount = [pathSegmentsArray count];
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -4923,14 +4828,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     float previousX = previousXString.floatValue;
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
     //NSUInteger pathSegmentCount = [pathSegmentsArray count];
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = currentMousePoint.x - previousX;
-        float deltaY = currentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaY = transformedCurrentMousePoint.y - previousY;
         
         float newX = previousX + deltaX;
         float newY = previousY + deltaY;
@@ -5275,12 +5181,14 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             NSString * pathCommandString = pathSegmentDictionary[@"command"];
             unichar pathCommand = [pathCommandString characterAtIndex:0];
 
+            NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
+
             switch (pathCommand) 
             {
                 case 'M':     // moveto absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5294,8 +5202,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5307,8 +5215,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'L':     // lineto absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5322,8 +5230,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5335,7 +5243,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'H':     // horizontal lineto absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
+                    float newX = transformedCurrentMousePoint.x;
                     
                     NSString * newXString = [self allocFloatString:newX];
 
@@ -5347,7 +5255,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
                     
                     NSString * newXString = [self allocFloatString:newX];
 
@@ -5357,7 +5265,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'V':     // vertical lineto absolute
                 {
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newYString = [self allocFloatString:newY];
 
@@ -5369,7 +5277,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newYString = [self allocFloatString:newY];
 
@@ -5379,8 +5287,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'C':     // curveto absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5397,8 +5305,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5413,8 +5321,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'S':     // smooth curveto absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5431,8 +5339,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5447,8 +5355,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'Q':     // quadratic Bezier curve absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5462,8 +5370,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5478,8 +5386,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'T':     // smooth quadratic Bezier curve absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5493,8 +5401,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5506,8 +5414,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 case 'A':     // elliptical arc absolute
                 {
-                    float newX = domMouseEventsController.currentMousePoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y;
+                    float newX = transformedCurrentMousePoint.x;
+                    float newY = transformedCurrentMousePoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];
@@ -5521,8 +5429,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 {
                     NSPoint currentPathPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
                     
-                    float newX = domMouseEventsController.currentMousePoint.x - currentPathPoint.x;
-                    float newY = domMouseEventsController.currentMousePoint.y - currentPathPoint.y;
+                    float newX = transformedCurrentMousePoint.x - currentPathPoint.x;
+                    float newY = transformedCurrentMousePoint.y - currentPathPoint.y;
                     
                     NSString * newXString = [self allocFloatString:newX];
                     NSString * newYString = [self allocFloatString:newY];

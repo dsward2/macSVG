@@ -1966,10 +1966,14 @@
 
 // ================================================================
 
+/*
 - (void) handlePluginEvent:(DOMEvent *)event
 {
+    [self.svgWebKitController.domMouseEventsController handlePluginEvent:event];
+
     [self.editorUIFrameController handlePluginEvent:event];
 }
+*/
 
 // ================================================================
 

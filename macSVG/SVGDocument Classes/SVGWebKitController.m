@@ -698,11 +698,11 @@
 
 -(void) updateLiveCoordinates
 {
-    CGFloat xFloat = self.domMouseEventsController.currentMousePoint.x;
-    CGFloat yFloat = self.domMouseEventsController.currentMousePoint.y;
+    CGFloat xFloat = self.domMouseEventsController.currentMousePagePoint.x;
+    CGFloat yFloat = self.domMouseEventsController.currentMousePagePoint.y;
     
-    int originXInt = self.domMouseEventsController.clickPoint.x;
-    int originYInt = self.domMouseEventsController.clickPoint.y;
+    int originXInt = self.domMouseEventsController.clickMousePagePoint.x;
+    int originYInt = self.domMouseEventsController.clickMousePagePoint.y;
     #pragma unused(originXInt)
     #pragma unused(originYInt)
 
@@ -765,20 +765,32 @@
     
     if (self.macSVGDocumentWindowController.currentToolMode == toolModePlugin)
     {
+        /*
         NSString * eventType = event.type;
         if (([eventType isEqualToString:@"mousedown"] == YES) ||
                 ([eventType isEqualToString:@"mousemove"] == YES) ||
                 ([eventType isEqualToString:@"mouseup"] == YES))
         {
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-            self.domMouseEventsController.previousMousePoint = self.domMouseEventsController.currentMousePoint;
-            CGFloat zoomFactor = self.svgWebView.zoomFactor;
-            self.domMouseEventsController.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
-
-            [self updateLiveCoordinates];
+            
+            DOMNode * targetNode = event.target;
+            DOMElement * targetElement = (DOMElement *)targetNode;
+            
+            NSLog(@"SVGWebKitController handleEvent - %@", targetElement.outerHTML);
+            
+            [self.domMouseEventsController setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
+            
+            //self.domMouseEventsController.previousMousePagePoint = self.domMouseEventsController.currentMousePagePoint;
+            
+            //CGFloat zoomFactor = self.svgWebView.zoomFactor;
+            //self.domMouseEventsController.currentMousePagePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
+            //[self updateLiveCoordinates];
         }
+        */
 
-        [self.macSVGDocumentWindowController handlePluginEvent:event];
+        //[self.macSVGDocumentWindowController handlePluginEvent:event];
+        
+        [self.domMouseEventsController handlePluginEvent:event];
     }
     else
     {

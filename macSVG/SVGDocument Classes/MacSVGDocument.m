@@ -1448,29 +1448,6 @@ style=\"zoom: 1;\">";
     {
         NSXMLElement * parentElement = parentDictionary[@"parentElement"];
 
-        if (([tagName isEqualToString:@"polyline"] == YES) ||
-                ([tagName isEqualToString:@"polyline"] == YES))
-        {
-            // transform polyline coordinates
-            NSXMLNode * parentElementMacsvgidAttributeNode = [parentElement attributeForName:@"macsvgid"];
-            NSString * parentElementMacsvgid = parentElementMacsvgidAttributeNode.stringValue;
-            DOMElement * parentDOMElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:parentElementMacsvgid];
-            
-            NSPoint transformedPoint = [self.macSVGDocumentWindowController.svgWebKitController.domMouseEventsController translatePoint:aPoint targetElement:parentDOMElement];
-            
-            NSString * x1String = [self allocFloatString:transformedPoint.x];
-            NSString * y1String = [self allocFloatString:transformedPoint.y];
-
-            NSString * pointsString = [[NSString alloc] initWithFormat:
-                    @"%@,%@ %@,%@", x1String, y1String, x1String, y1String];
-            
-            attributesDictionary[@"points"] = pointsString;
-            NSXMLNode * pointsAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
-            pointsAttributeNode.name = @"points";
-            pointsAttributeNode.stringValue = pointsString;
-            [newElement addAttribute:pointsAttributeNode];
-        }
-
         NSNumber * insertIndexNumber = parentDictionary[@"insertIndex"];
         NSUInteger insertIndex = insertIndexNumber.unsignedIntValue;
         

@@ -27,6 +27,7 @@ enum {
 @class DOMNode;
 @class DOMElement;
 @class DOMEvent;
+@class DOMMouseEvent;
 
 @interface DOMMouseEventsController : NSObject
 {
@@ -42,26 +43,63 @@ enum {
     NSString * handle_orientation;  // static string, e.g. @"topLeft"
 }
 
-@property (strong) DOMNode * clickTarget;
 @property (strong) IBOutlet SVGXMLDOMSelectionManager * svgXMLDOMSelectionManager;
 
-@property (assign) int mouseMode;
-@property (assign) NSPoint clickPoint;
-@property (assign) NSPoint currentMousePoint;
-@property (assign) NSPoint previousMousePoint;
+@property (assign) NSInteger mouseMode;
+
+@property (strong) DOMNode * currentMouseTarget;
+@property (strong) DOMNode * clickTarget;
+@property (strong) DOMElement * targetParentDOMElement;
+
+// previous mouse points
+
+@property (assign) NSPoint previousMouseClientPoint;
+@property (assign) NSPoint previousMousePagePoint;
+@property (assign) NSPoint previousMouseScreenPoint;
+
+@property (assign) NSPoint previousTransformedMouseClientPoint;
+@property (assign) NSPoint previousTransformedMousePagePoint;
+@property (assign) NSPoint previousTransformedMouseScreenPoint;
+
+// current mouse points, after scaling with web view zoom factor
+
+@property (assign) NSPoint currentMouseClientPoint;
+@property (assign) NSPoint currentMousePagePoint;
+@property (assign) NSPoint currentMouseScreenPoint;
+
+@property (assign) NSPoint transformedCurrentMouseClientPoint;
+@property (assign) NSPoint transformedCurrentMousePagePoint;
+@property (assign) NSPoint transformedCurrentMouseScreenPoint;
+
+// mouse click points
+
+@property (assign) NSPoint clickMouseClientPoint;
+@property (assign) NSPoint clickMousePagePoint;
+@property (assign) NSPoint clickMouseScreenPoint;
+
+@property (assign) NSPoint transformedClickMouseClientPoint;
+@property (assign) NSPoint transformedClickMousePagePoint;
+@property (assign) NSPoint transformedClickMouseScreenPoint;
+
+
 @property (strong) NSDictionary * validElementsForTransformDictionary;
 
 @property (weak) IBOutlet SVGPathEditor * svgPathEditor;
 @property (weak) IBOutlet SVGPolylineEditor * svgPolylineEditor;
 @property (weak) IBOutlet SVGLineEditor * svgLineEditor;
 
-- (void) setMouseMode:(int)newMode;
+- (void) setMouseMode:(NSInteger)newMode;
+
+- (void) setCurrentMousePointsWithDOMMouseEvent:(DOMMouseEvent *)mouseEvent transformTargetDOMElement:(DOMElement *)transformTargetDOMElement;
+- (void) setPreviousMousePointsWithCurrentMousePoints;
+
 - (void) updatePathMode:(NSString *)newPathMode;
 
 - (void) handleMouseDownEvent:(DOMEvent *)event;
 - (void) handleMouseMoveOrHoverEvent:(DOMEvent *)event;
 - (void) handleMouseUpEvent:(DOMEvent *)event;
 - (void) handleMouseDoubleClickEvent:(DOMEvent *)event;
+- (void) handlePluginEvent:(DOMEvent *)event;
 
 - (void) endPathDrawing;
 - (void) endPolylineDrawing;
@@ -75,6 +113,6 @@ enum {
 -(void) handleCrosshairToolSelectionForLineXMLElement:(NSXMLElement *)polylineXMLElement
         handleDOMElement:(DOMElement *)handleDOMElement;
 
--(NSPoint) translatePoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement;
+-(NSPoint) transformPoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement;
 
 @end

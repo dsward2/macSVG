@@ -434,7 +434,7 @@
             
             NSXMLElement * polylineXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
-            [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:aPolylinePointsArray];
+        [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:aPolylinePointsArray];
         }
     }
 }
@@ -455,7 +455,7 @@
         {
             NSString * activeDOMElementName = activeDOMElement.tagName;
             if (([activeDOMElementName isEqualToString:@"polyline"] == YES) ||
-                ([activeDOMElementName isEqualToString:@"polygon"] == YES))
+                    ([activeDOMElementName isEqualToString:@"polygon"] == YES))
             {
                 [self updatePolylineInDOMForElement:activeDOMElement
                         polylinePointsArray:self.polylinePointsArray];
@@ -516,8 +516,8 @@
                 
         self.polylinePointsArray = [self buildPolylinePointsArrayWithPointsString:pointsString];
 
-        NSString * newXString = [self allocFloatString:domMouseEventsController.currentMousePoint.x];
-        NSString * newYString = [self allocFloatString:domMouseEventsController.currentMousePoint.y];
+        NSString * newXString = [self allocFloatString:domMouseEventsController.transformedCurrentMousePagePoint.x];
+        NSString * newYString = [self allocFloatString:domMouseEventsController.transformedCurrentMousePagePoint.y];
         
         NSInteger polylinePointsArrayCount = (self.polylinePointsArray).count;
         
@@ -594,10 +594,8 @@
 {
     [self resetPolylinePointsArray];
 
-    NSPoint clickPoint = [domMouseEventsController translatePoint:domMouseEventsController.clickPoint targetElement:parentDOMElement];
-
-    NSString * clickXString = [self allocFloatString:clickPoint.x];
-    NSString * clickYString = [self allocFloatString:clickPoint.y];
+    NSString * clickXString = [self allocFloatString:domMouseEventsController.transformedClickMousePagePoint.x];
+    NSString * clickYString = [self allocFloatString:domMouseEventsController.transformedClickMousePagePoint.y];
     
     NSMutableDictionary * pointDictionary = [[NSMutableDictionary alloc] init];
     
@@ -685,10 +683,10 @@
     float previousX = previousXString.floatValue;
     float previousY = previousYString.floatValue;
 
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
+    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
-    float deltaX = currentMousePoint.x - previousX;
-    float deltaY = currentMousePoint.y - previousY;
+    float deltaX = transformedCurrentMousePoint.x - previousX;
+    float deltaY = transformedCurrentMousePoint.y - previousY;
     
     float newX = previousX + deltaX;
     float newY = previousY + deltaY;

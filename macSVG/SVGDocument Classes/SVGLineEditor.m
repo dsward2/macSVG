@@ -328,33 +328,6 @@
 }
 
 //==================================================================================
-//	makeLineHandles
-//==================================================================================
-/*
--(void) makeLineHandles
-{
-    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
-
-    DOMSelectionControlsManager * domSelectionControlsManager =
-            svgXMLDOMSelectionManager.domSelectionControlsManager;
-    
-    DOMElement * newLineHandlesGroup = [domDocument createElementNS:svgNamespace
-            qualifiedName:@"g"];
-    [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_lineHandlesGroup"];
-    [newLineHandlesGroup setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_lineHandlesGroup"];
-
-    DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
-    
-    [self addHandleForLineElement:activeDOMElement pointIndex:0 lineHandlesGroup:newLineHandlesGroup];
-    [self addHandleForLineElement:activeDOMElement pointIndex:1 lineHandlesGroup:newLineHandlesGroup];
-    
-    [domSelectionControlsManager setMacsvgTopGroupChild:newLineHandlesGroup];
-
-    [domSelectionControlsManager highlightLinePoint];
-}
-*/
-
-//==================================================================================
 //	makeLineHandlesForXMLElement:
 //==================================================================================
 
@@ -521,11 +494,8 @@
     
     if (lineElement != NULL)
     {
-        DOMElement * activeDOMElement = [svgXMLDOMSelectionManager activeDOMElement];
-        NSPoint translatedMousePoint = [domMouseEventsController translatePoint:domMouseEventsController.currentMousePoint targetElement:activeDOMElement];
-    
-        NSString * newXString = [self allocFloatString:translatedMousePoint.x];
-        NSString * newYString = [self allocFloatString:translatedMousePoint.y];
+        NSString * newXString = [self allocFloatString:domMouseEventsController.transformedClickMousePagePoint.x];
+        NSString * newYString = [self allocFloatString:domMouseEventsController.transformedClickMousePagePoint.y];
         
         if (self.linePointIndex == 0)
         {
@@ -628,10 +598,8 @@
 
 -(void) editLinePoint
 {
-    NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
-    
-    NSString * xString = [self allocPxString:currentMousePoint.x];
-    NSString * yString = [self allocPxString:currentMousePoint.y];
+    NSString * xString = [self allocPxString:domMouseEventsController.transformedCurrentMousePagePoint.x];
+    NSString * yString = [self allocPxString:domMouseEventsController.transformedCurrentMousePagePoint.y];
     
     if (self.linePointIndex == 0)
     {

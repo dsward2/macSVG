@@ -303,6 +303,7 @@
                     @"function f() {var pathLength = 0; var path = document.getElementById('%@'); if (typeof path !== null) { pathLength = path.getTotalLength(); } return pathLength;} f();",
                     pathIDAttributeString];
 
+            // TODO: prevent stringByEvaluatingJavaScriptFromString lockups
             NSString * totalLengthString = [self.svgWebView stringByEvaluatingJavaScriptFromString:pathLengthFunction];
             
             float totalStringFloat = totalLengthString.floatValue;
@@ -1201,39 +1202,39 @@
 
     if ([eventType isEqualToString:@"dblclick"] == YES) // use mouseUp instead
     {
-        //NSLog(@"handlePluginEvent dblclick");
+        //
     }
     else if ([eventType isEqualToString:@"mousedown"] == YES)
     {
-        //NSLog(@"handlePluginEvent mousedown");
+        //
     }
     else if ([eventType isEqualToString:@"mousemove"] == YES)
     {
-        //NSLog(@"handlePluginEvent mousemove");
+        //
     }
     else if ([eventType isEqualToString:@"mouseup"] == YES)
     {
-        //NSLog(@"handlePluginEvent mouseup");
+        //
     }
     else if ([eventType isEqualToString:@"focus"] == YES)
     {
-        //NSLog(@"handlePluginEvent focus");
+        //
     }
     else if ([eventType isEqualToString:@"blur"] == YES)
     {
-        //NSLog(@"handlePluginEvent blur");
+        //
     }
     else if ([eventType isEqualToString:@"keydown"] == YES)
     {
-        //NSLog(@"handlePluginEvent keydown");
+        //
     }
     else if ([eventType isEqualToString:@"keypress"] == YES)
     {
-        //NSLog(@"handlePluginEvent keypress");
+        //
     }
     else if ([eventType isEqualToString:@"keyup"] == YES)
     {
-        //NSLog(@"handlePluginEvent keyup");
+        //
     }
 }
 

@@ -877,12 +877,10 @@
                     NSString * selectionStrokeColor = toolSettingsPopoverViewController.selectionStrokeColor;
                     NSString * selectionStrokeWidth = toolSettingsPopoverViewController.selectionStrokeWidth;
                     
-                    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-                    //CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:controlParentElement];
-                    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:aSelectedSvgElement];
+                    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:aSelectedSvgElement];
 
                     CGFloat selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
-                    selectionStrokeWidthFloat = selectionStrokeWidthFloat * reciprocalZoomFactor;
+                    selectionStrokeWidthFloat = selectionStrokeWidthFloat * scaleForDOMElementHandles;
                     selectionStrokeWidth = [self allocPxString:selectionStrokeWidthFloat];
                     
                     float bboxX = boundingBox.origin.x - 2;
@@ -957,10 +955,9 @@
     NSString * selectionHandleColor = toolSettingsPopoverViewController.selectionHandleColor;
     NSString * selectionHandleSize = toolSettingsPopoverViewController.selectionHandleSize;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
 
-    CGFloat handleStrokeWidthFloat = 0.0625f * reciprocalZoomFactor;
+    CGFloat handleStrokeWidthFloat = 0.0625f * scaleForDOMElementHandles;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutableSelectionHandleSize = [NSMutableString stringWithString:selectionHandleSize];
@@ -968,7 +965,7 @@
             withString:@"" options:0 range:NSMakeRange(0, mutableSelectionHandleSize.length)];
     float selectionHandleSizeFloat = mutableSelectionHandleSize.floatValue;
     
-    selectionHandleSizeFloat *= reciprocalZoomFactor;
+    selectionHandleSizeFloat *= scaleForDOMElementHandles;
     
     if (selectionHandleSizeFloat > 0)
     {
@@ -1060,11 +1057,9 @@
     NSString * pluginHandleFillColor = toolSettingsPopoverViewController.pathEndpointFillColor;
     NSString * pluginHandleSize = toolSettingsPopoverViewController.pathEndpointRadius;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
 
-    //CGFloat handleStrokeWidthFloat = 0.0625f * reciprocalZoomFactor;
-    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * reciprocalZoomFactor;
+    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * scaleForDOMElementHandles;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutablePluginHandleSize = [NSMutableString stringWithString:pluginHandleSize];
@@ -1072,7 +1067,7 @@
             withString:@"" options:0 range:NSMakeRange(0, mutablePluginHandleSize.length)];
     float pluginHandleSizeFloat = mutablePluginHandleSize.floatValue;
     
-    pluginHandleSizeFloat *= reciprocalZoomFactor;
+    pluginHandleSizeFloat *= scaleForDOMElementHandles;
     
     NSString * xString = [self allocPxString:handlePoint.x];
     NSString * yString = [self allocPxString:handlePoint.y];
@@ -1082,6 +1077,7 @@
     NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pointRadius = pointRadiusString.floatValue;
     //pointRadius *= 2.0f;
+    pointRadius *= scaleForDOMElementHandles;
     pointRadiusString = [NSString stringWithFormat:@"%f", pointRadius];
 
     DOMElement * selectedItemRectElement = [domDocument createElementNS:svgNamespace
@@ -1174,6 +1170,17 @@
                 // replicate the DOM path of selected item
                 NSMutableArray * newParentsArray = [[NSMutableArray alloc] init];
                 
+                
+
+                // for partial transforms, when editing a transform attribute which contains multiple operations
+                DOMElement * intermediateTransformGroupElement = [domDocument createElementNS:svgNamespace qualifiedName:@"g"];
+                [intermediateTransformGroupElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_path_transform_intermediate"];
+                [intermediateTransformGroupElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_path_transform_intermediate"];
+                [intermediateTransformGroupElement setAttributeNS:NULL qualifiedName:@"transform" value:@""];
+                [newParentsArray insertObject:intermediateTransformGroupElement atIndex:0];
+                
+                
+                
                 BOOL continueCreatingParents = YES;
 
                 if (parentElement == NULL)
@@ -1193,6 +1200,7 @@
                     }
                 }
                 
+                // create parent group elements to match parent groups and transforms for selected element, working back from current element to document root
                 while (continueCreatingParents == YES)
                 {
                     NSString * parentTagName = parentElement.nodeName;
@@ -1430,7 +1438,7 @@
         x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName
 {
-    // callback from plug-in, e.g. for center-of-rotation in transform attribute editor
+    // for use in callback from plug-in, e.g. for center-of-rotation in transform attribute editor
 
     NSPoint handlePoint = NSMakePoint(x, y);
     
@@ -1548,20 +1556,19 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:polylineDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:polylineDOMElement];
 
-    CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
+    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
-    NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+    NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
     if (self.segmentStrokeWidth == 0)
     {
         NSString * selectionStrokeWidthString = toolSettingsPopoverViewController.selectionStrokeWidth;
-        reciprocalStrokeWidthFloat = selectionStrokeWidthString.floatValue;
-        reciprocalStrokeWidthFloat *= reciprocalZoomFactor;
+        scaledStrokeWidthFloat = selectionStrokeWidthString.floatValue;
+        scaledStrokeWidthFloat *= scaleForDOMElementHandles;
         
-        selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+        selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     }
 
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
@@ -1842,20 +1849,19 @@
 {
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:lineDOMElement];
 
-    CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
+    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
-    NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+    NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
     if (self.segmentStrokeWidth == 0)
     {
         NSString * selectionStrokeWidthString = toolSettingsPopoverViewController.selectionStrokeWidth;
-        reciprocalStrokeWidthFloat = selectionStrokeWidthString.floatValue;
-        reciprocalStrokeWidthFloat *= reciprocalZoomFactor;
+        scaledStrokeWidthFloat = selectionStrokeWidthString.floatValue;
+        scaledStrokeWidthFloat *= scaleForDOMElementHandles;
         
-        selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+        selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     }
 
     [self removeDOMLinePointHighlight];
@@ -2032,38 +2038,9 @@
             [pointHandleCircleElement setAttributeNS:NULL qualifiedName:@"r"
                     value:pointRadiusString];
             
-            //[polylinePointHandlesGroup appendChild:pointHandleCircleElement];
-
-
-
             [controlParentElement appendChild:pointHandleCircleElement];
 
             [self copyChildAnimationFromDOMElement:lineDOMElement toDOMElement:pointHandleCircleElement offsetPoint:NSZeroPoint];
-
-
-
-            
-            /*
-            DOMElement * polylineElement = [domDocument createElementNS:svgNamespace
-                    qualifiedName:@"polyline" ];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"fill" value:@"none"];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"stroke" value:selectionHandleColor];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"pointer-events" value:@"none"]; // disallow selection of section rects
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_highlight_path"];
-            
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:selectionStrokeWidth];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"points" value:polylinePointsString];
-            
-            
-            NSString * control_Macsvgid = [polylineDOMElement getAttribute:@"macsvgid"];
-            [pathSegmentElement setAttributeNS:NULL qualifiedName:@"control_Macsvgid" value:control_Macsvgid];
-
-            [controlParentElement appendChild:pathSegmentElement];
-
-            [self copyChildAnimationFromDOMElement:polylineDOMElement toDOMElement:pathSegmentElement];
-            */
-            
-            //NSLog(@"selectionRect added %@, %@, %@, %@", bboxXString, bboxYString, bboxWidthString, bboxHeightString);
         }
     }
 
@@ -2089,20 +2066,19 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:pathDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathDOMElement];
 
-    CGFloat reciprocalStrokeWidthFloat = self.segmentStrokeWidth * reciprocalZoomFactor;
+    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
-    NSString * selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+    NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
     if (self.segmentStrokeWidth == 0)
     {
         NSString * selectionStrokeWidthString = toolSettingsPopoverViewController.selectionStrokeWidth;
-        reciprocalStrokeWidthFloat = selectionStrokeWidthString.floatValue;
-        reciprocalStrokeWidthFloat *= reciprocalZoomFactor;
+        scaledStrokeWidthFloat = selectionStrokeWidthString.floatValue;
+        scaledStrokeWidthFloat *= scaleForDOMElementHandles;
         
-        selectionStrokeWidth = [self allocPxString:reciprocalStrokeWidthFloat];
+        selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     }
 
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
@@ -2177,9 +2153,9 @@
                 qualifiedName:@"marker" ];
         [markerElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_highlightPathSegmentMarker"];
         
-        CGFloat markerWidthFloat = 4.0f * reciprocalZoomFactor;
+        CGFloat markerWidthFloat = 4.0f * scaleForDOMElementHandles;
         NSString * markerWidthString = [self allocPxString:markerWidthFloat];
-        CGFloat markerHeightFloat = 3.0f * reciprocalZoomFactor;
+        CGFloat markerHeightFloat = 3.0f * scaleForDOMElementHandles;
         NSString * markerHeightString = [self allocPxString:markerHeightFloat];
 
         DOMElement * markerElement = [domDocument createElementNS:svgNamespace
