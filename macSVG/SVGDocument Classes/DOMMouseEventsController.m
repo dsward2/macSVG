@@ -1243,8 +1243,6 @@
         //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement.parentElement];
         //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:parentElement];
         
-        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
-        
         // 20160627 - added check for toolModeArrowCursor
         if (currentToolMode == toolModeArrowCursor)
         {
@@ -1271,9 +1269,13 @@
             }
         }
 
+/* moved below
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:targetElement];
+
         [self setClickMousePointsWithCurrentMousePoints];
         
         [self setPreviousMousePointsWithCurrentMousePoints];
+*/
         
         [event preventDefault];
         [event stopPropagation];
@@ -1580,6 +1582,24 @@
             
             self.svgXMLDOMSelectionManager.activeXMLElement = handleXMLElement;
         }
+
+
+        // set MouseEvent point properties for first click, including transformed coordinates
+
+        DOMElement * transformTargetDOMElement = targetElement;
+        if (newElementTagName != NULL)
+        {
+            transformTargetDOMElement = parentElement;  // if creating new element, use transform from parentElement of new element
+        }
+        
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:transformTargetDOMElement];
+
+        [self setClickMousePointsWithCurrentMousePoints];
+        
+        [self setPreviousMousePointsWithCurrentMousePoints];
+
+
+
 
         // create the new element according to the tool selection
         if (newElementTagName != NULL)
