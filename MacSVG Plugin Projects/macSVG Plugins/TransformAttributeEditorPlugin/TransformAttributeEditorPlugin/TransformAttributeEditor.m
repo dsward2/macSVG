@@ -969,6 +969,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [value3TextField setNextKeyView:NULL];
 
     [self setTransformAttribute];
+    
+    beginHandleScaleX = xString.floatValue;
+    beginHandleScaleY = yString.floatValue;
 }
 
 //==================================================================================
@@ -994,178 +997,140 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             float scaleX = scaleXString.floatValue;
             float scaleY = scaleYString.floatValue;
 
-            NSRect offsetRect = NSMakeRect(self.pluginTargetDOMElement.offsetLeft, self.pluginTargetDOMElement.offsetTop,
-                    self.pluginTargetDOMElement.offsetWidth, self.pluginTargetDOMElement.offsetHeight);
-
-            if (NSIsEmptyRect(offsetRect) == NO)
-            {
-                //NSLog(@"offsetRect found %f, %f, %f, %f", offsetRect.origin.x, offsetRect.origin.y, offsetRect.size.width, offsetRect.size.height);
-            }
-            
-            NSRect clientRect = NSMakeRect(self.pluginTargetDOMElement.clientLeft, self.pluginTargetDOMElement.clientTop,
-                    self.pluginTargetDOMElement.clientWidth, self.pluginTargetDOMElement.clientHeight);
-            if (NSIsEmptyRect(clientRect) == NO)
-            {
-                //NSLog(@"clientRect found %f, %f, %f, %f", clientRect.origin.x, clientRect.origin.y, clientRect.size.width, clientRect.size.height);
-            }
-
-
-
-            
-            NSRect scalingRect = NSZeroRect;
-            
             BOOL useXY = NO;
             BOOL useCxCyR = NO;
             BOOL useCxCyRxRy = NO;
             BOOL useBoundingBox = NO;
             
+            // elements that compute bounds from attribute
             if ([elementTagName isEqualToString:@"rect"] == YES) useXY = YES;
-            
+            if ([elementTagName isEqualToString:@"image"] == YES) useXY = YES;
             if ([elementTagName isEqualToString:@"circle"] == YES) useCxCyR = YES;
             if ([elementTagName isEqualToString:@"ellipse"] == YES) useCxCyRxRy = YES;
             
+            // elements that get bounds from JavaScript call to getBBox()
             if ([elementTagName isEqualToString:@"line"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"polyline"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"polygon"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"path"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"text"] == YES) useBoundingBox = YES;
-            
             if ([elementTagName isEqualToString:@"g"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"foreignObject"] == YES) useBoundingBox = YES;
             if ([elementTagName isEqualToString:@"use"] == YES) useBoundingBox = YES;
             
-            if (useXY == YES)
-            {
-                NSString * xAttributeString = [self.pluginTargetDOMElement getAttribute:@"x"];
-                NSString * yAttributeString = [self.pluginTargetDOMElement getAttribute:@"y"];
-                NSString * widthAttributeString = [self.pluginTargetDOMElement getAttribute:@"width"];
-                NSString * heightAttributeString = [self.pluginTargetDOMElement getAttribute:@"height"];
-                if ((xAttributeString.length > 0) && (yAttributeString.length > 0) &&
-                        (widthAttributeString.length > 0) && (heightAttributeString.length > 0))
-                {
-                    float xAttribute = xAttributeString.floatValue;
-                    float yAttribute = yAttributeString.floatValue;
-                    float widthAttribute = widthAttributeString.floatValue;
-                    float heightAttribute = heightAttributeString.floatValue;
-                    
-                    scalingRect = NSMakeRect(xAttribute, yAttribute, widthAttribute, heightAttribute);
-                }
-            }
-            
-            if (useCxCyR == YES)
-            {
-                NSString * cxAttributeString = [self.pluginTargetDOMElement getAttribute:@"cx"];
-                NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
-                NSString * rAttributeString = [self.pluginTargetDOMElement getAttribute:@"r"];
-                if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
-                        (rAttributeString.length > 0))
-                {
-                    float cxAttribute = cxAttributeString.floatValue;
-                    float cyAttribute = cyAttributeString.floatValue;
-                    float rAttribute = rAttributeString.floatValue;
-                    
-                    scalingRect = NSMakeRect(cxAttribute, cyAttribute, rAttribute * 2.0f, rAttribute * 2.0f);
-                }
-            }
-            
-            if (useCxCyRxRy == YES)
-            {
-                NSString * cxAttributeString = [self.pluginTargetDOMElement getAttribute:@"cx"];
-                NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
-                NSString * rxAttributeString = [self.pluginTargetDOMElement getAttribute:@"rx"];
-                NSString * ryAttributeString = [self.pluginTargetDOMElement getAttribute:@"ry"];
-                if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
-                        (rxAttributeString.length > 0) && (ryAttributeString.length > 0))
-                {
-                    float cxAttribute = cxAttributeString.floatValue;
-                    float cyAttribute = cyAttributeString.floatValue;
-                    float rxAttribute = rxAttributeString.floatValue;
-                    float ryAttribute = ryAttributeString.floatValue;
-                    
-                    scalingRect = NSMakeRect(cxAttribute, cyAttribute, rxAttribute * 2.0f, ryAttribute * 2.0f);
-                }
-            }
+            NSRect elementBBoxRect = NSZeroRect;
             
             if (useBoundingBox == YES)
             {
-                //NSRect boundingBoxRect = [webKitInterface bBoxForDOMElement:pluginTargetDOMElement globalContext:globalContext];
-                NSRect boundingBoxRect = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
-
-                scalingRect = boundingBoxRect;
-            }
-
-            DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
-
-            NSRect pageRect;
-            DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
-            DOMElement * svgRootElement = NULL;
-            if (svgElementsList.length > 0)
-            {
-                DOMNode * svgElementNode = [svgElementsList item:0];
-                svgRootElement = (DOMElement *)svgElementNode;
-            
-                pageRect = [self.webKitInterface pageRectForElement:self.pluginTargetDOMElement svgRootElement:svgRootElement];
+                elementBBoxRect = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement]; // untransformed bounds
             }
             else
             {
-                NSLog(@"svg root element not found");
+                if (useXY == YES)
+                {
+                    NSString * xAttributeString = [self.pluginTargetDOMElement getAttribute:@"x"];
+                    NSString * yAttributeString = [self.pluginTargetDOMElement getAttribute:@"y"];
+                    NSString * widthAttributeString = [self.pluginTargetDOMElement getAttribute:@"width"];
+                    NSString * heightAttributeString = [self.pluginTargetDOMElement getAttribute:@"height"];
+                    if ((xAttributeString.length > 0) && (yAttributeString.length > 0) &&
+                            (widthAttributeString.length > 0) && (heightAttributeString.length > 0))
+                    {
+                        float xAttribute = xAttributeString.floatValue;
+                        float yAttribute = yAttributeString.floatValue;
+                        float widthAttribute = widthAttributeString.floatValue;
+                        float heightAttribute = heightAttributeString.floatValue;
+                        
+                        elementBBoxRect = NSMakeRect(xAttribute, yAttribute, widthAttribute, heightAttribute);
+                    }
+                }
+                else if (useCxCyR == YES)
+                {
+                    NSString * cxAttributeString = [self.pluginTargetDOMElement getAttribute:@"cx"];
+                    NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
+                    NSString * rAttributeString = [self.pluginTargetDOMElement getAttribute:@"r"];
+                    if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
+                            (rAttributeString.length > 0))
+                    {
+                        float cxAttribute = cxAttributeString.floatValue;
+                        float cyAttribute = cyAttributeString.floatValue;
+                        float rAttribute = rAttributeString.floatValue;
+                        
+                        elementBBoxRect = NSMakeRect(cxAttribute - rAttribute, cyAttribute - rAttribute, rAttribute * 2.0f, rAttribute * 2.0f);
+                    }
+                }
+                else if (useCxCyRxRy == YES)
+                {
+                    NSString * cxAttributeString = [self.pluginTargetDOMElement getAttribute:@"cx"];
+                    NSString * cyAttributeString = [self.pluginTargetDOMElement getAttribute:@"cy"];
+                    NSString * rxAttributeString = [self.pluginTargetDOMElement getAttribute:@"rx"];
+                    NSString * ryAttributeString = [self.pluginTargetDOMElement getAttribute:@"ry"];
+                    if ((cxAttributeString.length > 0) && (cyAttributeString.length > 0) &&
+                            (rxAttributeString.length > 0) && (ryAttributeString.length > 0))
+                    {
+                        float cxAttribute = cxAttributeString.floatValue;
+                        float cyAttribute = cyAttributeString.floatValue;
+                        float rxAttribute = rxAttributeString.floatValue;
+                        float ryAttribute = ryAttributeString.floatValue;
+                        
+                        elementBBoxRect = NSMakeRect(cxAttribute - rxAttribute, cyAttribute - ryAttribute, rxAttribute * 2.0f, ryAttribute * 2.0f);
+                    }
+                }
             }
 
             MacSVGDocumentWindowController * macSVGDocumentWindowController =
                     [self.macSVGDocument macSVGDocumentWindowController];
             id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
             id domMouseEventsController = [svgWebKitController domMouseEventsController];
+            NSPoint currentMousePagePoint = [domMouseEventsController currentMousePagePoint];
             NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
-
+            
+            CGFloat elementBBoxMaxX = elementBBoxRect.origin.x + elementBBoxRect.size.width;
+            CGFloat elementBBoxMaxY = elementBBoxRect.origin.y + elementBBoxRect.size.height;
+            
+            NSPoint parentPoint = transformedCurrentMousePagePoint;
+            DOMElement * parentElement = self.pluginTargetDOMElement.parentElement;
+            if (parentElement != NULL)
+            {
+                parentPoint = [domMouseEventsController transformPoint:currentMousePagePoint targetElement:parentElement];
+            }
+            
             if ([handle_orientation isEqualToString:@"top"] == YES)
             {
-                scaleY = ((elementRectAtMouseDown.origin.y + elementRectAtMouseDown.size.height) - transformedCurrentMousePagePoint.y) /
-                        scalingRect.size.height;
+                scaleY = parentPoint.y / elementBBoxRect.origin.y;
             }
             else if ([handle_orientation isEqualToString:@"left"] == YES)
             {
-                scaleX = ((elementRectAtMouseDown.origin.x + elementRectAtMouseDown.size.width) - transformedCurrentMousePagePoint.x) /
-                        scalingRect.size.width;
+                scaleX = parentPoint.x / elementBBoxRect.origin.x;
             }
             else if ([handle_orientation isEqualToString:@"bottom"] == YES)
             {
-            
-                scaleY = (transformedCurrentMousePagePoint.y - elementRectAtMouseDown.origin.y) /
-                        scalingRect.size.height;
+                scaleY = parentPoint.y / elementBBoxMaxY;
             }
             else if ([handle_orientation isEqualToString:@"right"] == YES)
             {
-                scaleX = (transformedCurrentMousePagePoint.x - elementRectAtMouseDown.origin.x) /
-                        scalingRect.size.width;
+                scaleX = parentPoint.x / elementBBoxMaxX;
             }
             else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
             {
-                scaleX = ((elementRectAtMouseDown.origin.x + elementRectAtMouseDown.size.width) - transformedCurrentMousePagePoint.x) /
-                        scalingRect.size.width;
-                scaleY = ((elementRectAtMouseDown.origin.y + elementRectAtMouseDown.size.height) - transformedCurrentMousePagePoint.y) /
-                        scalingRect.size.height;
+                scaleX = parentPoint.x / elementBBoxRect.origin.x;
+                scaleY = parentPoint.y / elementBBoxRect.origin.y;
             }
             else if ([handle_orientation isEqualToString:@"topRight"] == YES)
             {
-                scaleX = (transformedCurrentMousePagePoint.x - elementRectAtMouseDown.origin.x) /
-                        scalingRect.size.width;
-                scaleY = ((elementRectAtMouseDown.origin.y + elementRectAtMouseDown.size.height) - transformedCurrentMousePagePoint.y) /
-                        scalingRect.size.height;
+                scaleX = parentPoint.x / elementBBoxMaxX;
+                scaleY = parentPoint.y / elementBBoxRect.origin.y;
             }
             else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
             {
-                scaleX = ((elementRectAtMouseDown.origin.x + elementRectAtMouseDown.size.width) - transformedCurrentMousePagePoint.x) /
-                        scalingRect.size.width;
-                scaleY = (transformedCurrentMousePagePoint.y - elementRectAtMouseDown.origin.y) /
-                        scalingRect.size.height;
+                scaleX = parentPoint.x / elementBBoxRect.origin.x;
+                scaleY = parentPoint.y / elementBBoxMaxY;
             }
             else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
             {
-                scaleX = (transformedCurrentMousePagePoint.x - elementRectAtMouseDown.origin.x) /
-                        scalingRect.size.width;
-                scaleY = (transformedCurrentMousePagePoint.y - elementRectAtMouseDown.origin.y) /
-                        scalingRect.size.height;
+                scaleX = parentPoint.x / elementBBoxMaxX;
+                scaleY = parentPoint.y / elementBBoxMaxY;
             }
+            
 
             // update the positions of the selected SVG elements
             if (mouseMoveCount == 1)
@@ -1665,7 +1630,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
             pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
             pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxY);
-            pointC.x *= currentScale;
+            pointC.x *= domElementCurrentScale;
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topRight"] == YES)
@@ -1863,7 +1828,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxXMid, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxXMid, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"left"] == YES)
@@ -1871,13 +1836,13 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottom"] == YES)
         {
             pointA = NSMakePoint(bboxXMid, transformedCurrentMousePagePoint.y);
-            pointA.y *= currentScale;
+            pointA.y *= domElementCurrentScale;
             pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxXMid, transformedClickMousePagePoint.y);
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
@@ -1885,7 +1850,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         else if ([handle_orientation isEqualToString:@"right"] == YES)
         {
             pointA = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointA.y *= currentScale;
+            pointA.y *= domElementCurrentScale;
             pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
@@ -1895,7 +1860,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topRight"] == YES)
@@ -1903,7 +1868,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
@@ -1911,7 +1876,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
@@ -1919,7 +1884,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             pointA = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
             pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
             pointC = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointC.y *= currentScale;
+            pointC.y *= domElementCurrentScale;
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
 
@@ -2073,14 +2038,14 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void)calculateViewingScale
 {
-    currentScale = 1.0f;
+    domElementCurrentScale = 1.0f;
     DOMDocument * domDocument = (self.svgWebView).mainFrame.DOMDocument;
     DOMNodeList * svgElementsList = [domDocument getElementsByTagNameNS:svgNamespace localName:@"svg"];
     if (svgElementsList.length > 0)
     {
         DOMNode * svgElementNode = [svgElementsList item:0];
         DOMElement * svgElement = (DOMElement *)svgElementNode;
-        currentScale = [self.webKitInterface currentScaleForSvgElement:svgElementNode];
+        domElementCurrentScale = [self.webKitInterface currentScaleForSvgElement:svgElementNode];
         
         NSString * viewBoxAttribute = [svgElement getAttribute:@"viewBox"];
         
@@ -2134,7 +2099,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                             
                             if (widthScale == heightScale)
                             {
-                                currentScale = widthScale;
+                                domElementCurrentScale = widthScale;
                             }
                         }
                     }

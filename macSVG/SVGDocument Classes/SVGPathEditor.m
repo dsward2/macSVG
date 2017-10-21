@@ -1494,7 +1494,7 @@
 
     NSString * selectedPathMode = macSVGDocumentWindowController.selectedPathMode;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1643,7 +1643,7 @@
     
     NSString * segmentIndexString = [NSString stringWithFormat:@"%ld", segmentIndex];
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1689,7 +1689,7 @@
 
     NSString * yPxString = [self allocPxString:currentPoint.y];
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
 
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1735,7 +1735,7 @@
     NSString * yString = pathSegmentDictionary[@"y"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
     
     NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -1776,7 +1776,7 @@
     
     if (pathSegmentDictionary != NULL)
     {
-        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
 
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2001,7 +2001,7 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2089,7 +2089,7 @@
         NSString * currentYPxString = [self allocPxString:currentPoint.y];
 
 
-        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2165,7 +2165,7 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;
@@ -2226,7 +2226,7 @@
             currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
         }
 
-        CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathHandlesGroup];
+        CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
         
         NSString * pathEndpointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
         CGFloat pathEndpointStrokeWidthFloat = pathEndpointStrokeWidthString.floatValue;

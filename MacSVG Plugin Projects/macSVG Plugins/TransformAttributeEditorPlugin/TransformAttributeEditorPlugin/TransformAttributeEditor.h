@@ -40,21 +40,17 @@
         
     NSUInteger currentTransformToolMode;
     
-    /*
-    int mouseMode;
-    NSPoint clickPoint;
-    NSPoint currentMousePoint;
-    NSPoint previousMousePoint;
-    DOMElement * clickTarget;
-    */
-
     BOOL selectionHandleClicked;
     NSString * handle_orientation;  // static string, e.g. @"topLeft"
     int mouseMoveCount;
     
     float beginHandleDegrees;
     
-    float currentScale;
+    float beginHandleScaleX;
+    float beginHandleScaleY;
+    
+    float domElementCurrentScale;    // acquired from callWebScriptMethod:@"currentScale"
+    
     NSRect elementRectAtMouseDown;
     
     BOOL settingToolButton;

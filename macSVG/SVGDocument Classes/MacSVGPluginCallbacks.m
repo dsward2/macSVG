@@ -91,12 +91,22 @@
 
 
 
-- (CGFloat)scaleForDOMElementHandles:(DOMElement *)aDOMElement
+- (NSPoint)scaleForDOMElementHandles:(DOMElement *)aDOMElement
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
 
-    CGFloat scaleFactor = [svgWebKitController scaleForDOMElementHandles:aDOMElement];
+    NSPoint scalePoint = [svgWebKitController scaleForDOMElementHandles:aDOMElement];
+    return scalePoint;
+}
+
+
+- (CGFloat)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+
+    CGFloat scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:aDOMElement];
     return scaleFactor;
 }
 

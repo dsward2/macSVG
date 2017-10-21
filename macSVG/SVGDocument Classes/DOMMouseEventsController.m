@@ -3104,21 +3104,22 @@
     {
         if (self.mouseMode == MOUSE_DRAGGING)
         {
-            DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-            //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
-            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
         }
+
+        DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+        //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
     }
     else if ([eventType isEqualToString:@"mouseup"] == YES)
     {
         if (self.mouseMode == MOUSE_DRAGGING)
         {
-            DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
-            //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
-            [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
-            
             self.mouseMode = MOUSE_DISENGAGED;
         }
+
+        DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
+        //[self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:self.targetParentDOMElement];
+        [self setCurrentMousePointsWithDOMMouseEvent:mouseEvent transformTargetDOMElement:(DOMElement *)self.clickTarget];
     }
 
     [macSVGDocumentWindowController.editorUIFrameController handlePluginEvent:event];

@@ -877,7 +877,7 @@
                     NSString * selectionStrokeColor = toolSettingsPopoverViewController.selectionStrokeColor;
                     NSString * selectionStrokeWidth = toolSettingsPopoverViewController.selectionStrokeWidth;
                     
-                    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:aSelectedSvgElement];
+                    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:aSelectedSvgElement];
 
                     CGFloat selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
                     selectionStrokeWidthFloat = selectionStrokeWidthFloat * scaleForDOMElementHandles;
@@ -955,24 +955,34 @@
     NSString * selectionHandleColor = toolSettingsPopoverViewController.selectionHandleColor;
     NSString * selectionHandleSize = toolSettingsPopoverViewController.selectionHandleSize;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+    NSPoint scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+    
+    CGFloat maxHandleScale = scaleForDOMElementHandles.x;
+    if (scaleForDOMElementHandles.y > maxHandleScale)
+    {
+        maxHandleScale = scaleForDOMElementHandles.y;
+    }
 
-    CGFloat handleStrokeWidthFloat = 0.0625f * scaleForDOMElementHandles;
+    CGFloat handleStrokeWidthFloat = 0.0625f * maxHandleScale;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutableSelectionHandleSize = [NSMutableString stringWithString:selectionHandleSize];
     [mutableSelectionHandleSize replaceOccurrencesOfString:@"px"
             withString:@"" options:0 range:NSMakeRange(0, mutableSelectionHandleSize.length)];
-    float selectionHandleSizeFloat = mutableSelectionHandleSize.floatValue;
     
-    selectionHandleSizeFloat *= scaleForDOMElementHandles;
+    float selectionHandleSizeX = mutableSelectionHandleSize.floatValue * scaleForDOMElementHandles.x;
+    float selectionHandleSizeY = mutableSelectionHandleSize.floatValue * scaleForDOMElementHandles.y;
     
-    if (selectionHandleSizeFloat > 0)
+    if (selectionHandleSizeX > 0)
     {
-        bboxX = handlePoint.x - (selectionHandleSizeFloat / 2.0f);
-        bboxY = handlePoint.y - (selectionHandleSizeFloat / 2.0f);
-        bboxWidth = selectionHandleSizeFloat;
-        bboxHeight = selectionHandleSizeFloat;
+        bboxX = handlePoint.x - (selectionHandleSizeX / 2.0f);
+        bboxWidth = selectionHandleSizeX;
+    }
+    
+    if (selectionHandleSizeY > 0)
+    {
+        bboxY = handlePoint.y - (selectionHandleSizeY / 2.0f);
+        bboxHeight = selectionHandleSizeY;
     }
     
     if ([orientation isEqualToString:@"top"] == YES)
@@ -1057,17 +1067,23 @@
     NSString * pluginHandleFillColor = toolSettingsPopoverViewController.pathEndpointFillColor;
     NSString * pluginHandleSize = toolSettingsPopoverViewController.pathEndpointRadius;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
+    NSPoint scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
 
-    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * scaleForDOMElementHandles;
+    CGFloat maxHandleScale = scaleForDOMElementHandles.x;
+    if (scaleForDOMElementHandles.y > maxHandleScale)
+    {
+        maxHandleScale = scaleForDOMElementHandles.y;
+    }
+
+    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * maxHandleScale;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutablePluginHandleSize = [NSMutableString stringWithString:pluginHandleSize];
     [mutablePluginHandleSize replaceOccurrencesOfString:@"px"
             withString:@"" options:0 range:NSMakeRange(0, mutablePluginHandleSize.length)];
-    float pluginHandleSizeFloat = mutablePluginHandleSize.floatValue;
-    
-    pluginHandleSizeFloat *= scaleForDOMElementHandles;
+
+    float pluginHandleSizeX = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.x;
+    float pluginHandleSizeY = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.y;
     
     NSString * xString = [self allocPxString:handlePoint.x];
     NSString * yString = [self allocPxString:handlePoint.y];
@@ -1077,7 +1093,7 @@
     NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat pointRadius = pointRadiusString.floatValue;
     //pointRadius *= 2.0f;
-    pointRadius *= scaleForDOMElementHandles;
+    pointRadius *= maxHandleScale;
     pointRadiusString = [NSString stringWithFormat:@"%f", pointRadius];
 
     DOMElement * selectedItemRectElement = [domDocument createElementNS:svgNamespace
@@ -1556,7 +1572,7 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:polylineDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:polylineDOMElement];
 
     CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
@@ -1849,7 +1865,7 @@
 {
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:lineDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:lineDOMElement];
 
     CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
@@ -2066,7 +2082,7 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:pathDOMElement];
+    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathDOMElement];
 
     CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     

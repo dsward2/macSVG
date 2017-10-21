@@ -46,7 +46,8 @@
 
 @property (assign) DOMTimeStamp lastMouseUpDOMTimeStamp;
 
-- (CGFloat) scaleForDOMElementHandles:(DOMElement *)domElement;
+- (NSPoint) scaleForDOMElementHandles:(DOMElement *)domElement;
+- (CGFloat) maxScaleForDOMElementHandles:(DOMElement *)domElement;
 
 - (IBAction)showWebKitInspectorAction:(id)sender;
 - (IBAction)detachWebKitInspectorAction:(id)sender;

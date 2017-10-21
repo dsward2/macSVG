@@ -173,82 +173,6 @@
 }
 
 //==================================================================================
-//	addHandleForLineElement:pointIndex:lineHandlesGroup:
-//==================================================================================
-
-/*
--(void) addHandleForLineElement:(DOMElement *)lineElement
-        pointIndex:(NSUInteger)pointIndex lineHandlesGroup:(DOMElement *)lineHandlesGroup
-{
-    DOMDocument * domDocument = (svgWebKitController.svgWebView).mainFrame.DOMDocument;
-
-    NSString * x1String = [lineElement getAttribute:@"x1"];
-    NSString * y1String = [lineElement getAttribute:@"y1"];
-    NSString * x2String = [lineElement getAttribute:@"x2"];
-    NSString * y2String = [lineElement getAttribute:@"y2"];
-    
-    //NSString * x1PxString = [x1String stringByAppendingString:@"px"];
-    //NSString * y1PxString = [y1String stringByAppendingString:@"px"];
-    //NSString * x2PxString = [x2String stringByAppendingString:@"px"];
-    //NSString * y2PxString = [y2String stringByAppendingString:@"px"];
-
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineHandlesGroup];
- 
-    NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
-    CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
-    linePointStrokeWidthFloat *= reciprocalZoomFactor;
-    linePointStrokeWidthString = [self allocPxString:linePointStrokeWidthFloat];
-
-    NSString * lineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
-    CGFloat lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
-    lineLineStrokeWidthFloat *= reciprocalZoomFactor;
-    lineLineStrokeWidthString = [self allocPxString:lineLineStrokeWidthFloat];
-
-    NSString * linePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat linePointRadiusFloat = linePointRadiusString.floatValue;
-    linePointRadiusFloat *= reciprocalZoomFactor;
-    linePointRadiusString = [self allocPxString:linePointRadiusFloat];
-    
-    NSString * cxString = x1String;
-    NSString * cyString = y1String;
-    
-    if (pointIndex == 1)
-    {
-        cxString = x2String;
-        cyString = y2String;
-    }
-
-    DOMElement * handleCircleElement = [domDocument createElementNS:svgNamespace
-            qualifiedName:@"circle" ];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"class" value:@"_macsvg_line_handle"];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"pointer-events" value:@"all"]; // allow selection
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"cx" value:cxString];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"cy" value:cyString];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"fill"
-            value:toolSettingsPopoverViewController.pathEndpointFillColor];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"stroke"
-            value:toolSettingsPopoverViewController.pathEndpointStrokeColor];
-    
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"stroke-width"
-            value:linePointStrokeWidthString];
-    
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"r"
-            value:linePointRadiusString];
-    
-    NSString * pointIndexString = [NSString stringWithFormat:@"%ld", pointIndex];
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_line_point_index" value:pointIndexString];
-
-    NSXMLNode * MacsvgidNode = [self.selectedLineElement attributeForName:@"macsvgid"];
-    NSString * selectedElementMacsvgid = MacsvgidNode.stringValue;
-
-    [handleCircleElement setAttributeNS:NULL qualifiedName:@"_macsvg_master_Macsvgid" value:selectedElementMacsvgid];
-
-    [lineHandlesGroup appendChild:handleCircleElement];
-}
-*/
-
-//==================================================================================
 //	addHandleForLineXMLElement:pointIndex:lineHandlesGroup:
 //==================================================================================
 
@@ -267,27 +191,21 @@
     NSString * x2String = x2AttributeNode.stringValue;
     NSString * y2String = y2AttributeNode.stringValue;
     
-    //NSString * x1PxString = [x1String stringByAppendingString:@"px"];
-    //NSString * y1PxString = [y1String stringByAppendingString:@"px"];
-    //NSString * x2PxString = [x2String stringByAppendingString:@"px"];
-    //NSString * y2PxString = [y2String stringByAppendingString:@"px"];
-
-    //CGFloat reciprocalZoomFactor = 1.0f / svgWebKitController.svgWebView.zoomFactor;
-    CGFloat reciprocalZoomFactor = [svgWebKitController scaleForDOMElementHandles:lineHandlesGroup];
+    CGFloat scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:lineHandlesGroup];
     
     NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
     CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
-    linePointStrokeWidthFloat *= reciprocalZoomFactor;
+    linePointStrokeWidthFloat *= scaleFactor;
     linePointStrokeWidthString = [self allocPxString:linePointStrokeWidthFloat];
 
     NSString * lineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
     CGFloat lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
-    lineLineStrokeWidthFloat *= reciprocalZoomFactor;
+    lineLineStrokeWidthFloat *= scaleFactor;
     lineLineStrokeWidthString = [self allocPxString:lineLineStrokeWidthFloat];
 
     NSString * linePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
     CGFloat linePointRadiusFloat = linePointRadiusString.floatValue;
-    linePointRadiusFloat *= reciprocalZoomFactor;
+    linePointRadiusFloat *= scaleFactor;
     linePointRadiusString = [self allocPxString:linePointRadiusFloat];
     
     NSString * cxString = x1String;

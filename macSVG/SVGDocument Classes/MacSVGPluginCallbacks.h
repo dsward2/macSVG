@@ -97,7 +97,8 @@
         cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry;
 - (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
         rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise;
-- (CGFloat)scaleForDOMElementHandles:(DOMElement *)aDOMElement;
+- (NSPoint)scaleForDOMElementHandles:(DOMElement *)aDOMElement;
+- (CGFloat)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement;
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup
         x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName

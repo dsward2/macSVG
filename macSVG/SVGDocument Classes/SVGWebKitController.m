@@ -791,6 +791,8 @@
         //[self.macSVGDocumentWindowController handlePluginEvent:event];
         
         [self.domMouseEventsController handlePluginEvent:event];
+        
+        [self updateLiveCoordinates];
     }
     else
     {
@@ -1372,10 +1374,8 @@
 //	scaleForDOMElementHandles:
 //==================================================================================
 
-- (CGFloat) scaleForDOMElementHandles:(DOMElement *)domElement
+- (NSPoint) scaleForDOMElementHandles:(DOMElement *)domElement
 {
-    CGFloat reciprocalZoomFactor = 1.0f / self.svgWebView.zoomFactor;
-
     // decompose the CTM to extract scale values
     CGPoint scalePoint = CGPointMake(1, 1);
 
@@ -1389,32 +1389,44 @@
             NSString * ctmMatrixBString = [ctmMatrix valueForKey:@"b"];
             NSString * ctmMatrixCString = [ctmMatrix valueForKey:@"c"];
             NSString * ctmMatrixDString = [ctmMatrix valueForKey:@"d"];
-            NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
-            NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
+            //NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
+            //NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
             
             CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
             CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
             CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
             CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
-            CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
-            CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
+            //CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
+            //CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
             
             scalePoint.x = sqrtf((ctmMatrixA * ctmMatrixA) + (ctmMatrixB * ctmMatrixB));
             scalePoint.y = sqrtf((ctmMatrixC * ctmMatrixC) + (ctmMatrixD * ctmMatrixD));
             
             //NSLog(@"scalePoint %f, %f", scalePoint.x, scalePoint.y);
+            
+            scalePoint.x = 1.0f / scalePoint.x;
+            scalePoint.y = 1.0f / scalePoint.y;
         }
     }
-    
+
+    return scalePoint;
+}
+
+//==================================================================================
+//	maxScaleForDOMElementHandles:
+//==================================================================================
+
+- (CGFloat) maxScaleForDOMElementHandles:(DOMElement *)domElement
+{
+    NSPoint scalePoint = [self scaleForDOMElementHandles:domElement];
+
     CGFloat largerScale = scalePoint.x;
     if (scalePoint.y > scalePoint.x)
     {
         largerScale = scalePoint.y;
     }
     
-    CGFloat result = reciprocalZoomFactor * (1.0f / largerScale);
-    
-    return result;
+    return largerScale;
 }
 
 //==================================================================================
