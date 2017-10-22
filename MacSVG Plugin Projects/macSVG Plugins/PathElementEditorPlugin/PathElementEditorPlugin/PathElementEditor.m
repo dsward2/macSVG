@@ -938,21 +938,28 @@
         {
             NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
 
-            NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
-                
-            if (pathSegmentDictionary != NULL)
+            if (rowIndex < pathSegmentsArray.count)
             {
-                [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+                NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
+                    
+                if (pathSegmentDictionary != NULL)
+                {
+                    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+                }
+
+                //domSelectionControlsManager.pathSegmentIndex = rowIndex;
+                svgPathEditor.pathSegmentIndex = rowIndex;
+                domSelectionControlsManager.segmentStrokeWidth =
+                        (highlightStrokeWidthTextField.stringValue).floatValue;
+                domSelectionControlsManager.segmentStrokeHexColor =
+                        [self hexColorFromColorWell:highlightColorWell];
+
+                [self highlightPathSegment];
             }
-
-            //domSelectionControlsManager.pathSegmentIndex = rowIndex;
-            svgPathEditor.pathSegmentIndex = rowIndex;
-            domSelectionControlsManager.segmentStrokeWidth =
-                    (highlightStrokeWidthTextField.stringValue).floatValue;
-            domSelectionControlsManager.segmentStrokeHexColor =
-                    [self hexColorFromColorWell:highlightColorWell];
-
-            [self highlightPathSegment];
+            else
+            {
+                [self removeHighlightPathSegment];
+            }
         }
         else
         {

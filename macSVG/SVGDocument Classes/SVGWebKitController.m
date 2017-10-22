@@ -1547,10 +1547,11 @@ function deltaTransformPoint(matrix, x, y) {
     int domAttributeCount = domAttributes.length;
     for (int i = 0; i < domAttributeCount; i++)
     {
-        DOMNode * aNode = [domAttributes item:i];
+        DOMNode * aAttributeNode = [domAttributes item:i];
         
-        NSString * domAttributeName = aNode.localName;
-        NSString * namespaceURI = aNode.namespaceURI;
+        NSString * domAttributeName = aAttributeNode.localName;
+        NSString * namespaceURI = aAttributeNode.namespaceURI;
+        NSString * prefix = aAttributeNode.prefix;
         
         BOOL matchFound = NO;
         
@@ -1571,25 +1572,54 @@ function deltaTransformPoint(matrix, x, y) {
                     if (namespaceURI == NULL)
                     {
                         matchFound = YES;
+                        break;
                     }
                 }
                 
                 if ([attributeURI isEqualToString:namespaceURI] == YES)
                 {
                     matchFound =  YES;
+                    break;
                 }
             }
         }
         
         if (matchFound == NO)
         {
-            [deletedAttributes addObject:domAttributeName];
+            NSMutableDictionary * deletedAttributeDictionary = [NSMutableDictionary dictionary];
+            
+            [deletedAttributeDictionary setObject:domAttributeName forKey:@"attributeName"];
+            
+            if (namespaceURI != NULL)
+            {
+                [deletedAttributeDictionary setObject:namespaceURI forKey:@"namespaceURI"];
+            }
+            
+            if (prefix != NULL)
+            {
+                [deletedAttributeDictionary setObject:prefix forKey:@"prefix"];
+            }
+            
+            [deletedAttributes addObject:deletedAttributeDictionary];
         }
     }
 
-    for (NSString * aDeletedElement in deletedAttributes)
+    for (NSDictionary * deletedAttributeDictionary in deletedAttributes)
     {
-        [domElement removeAttributeNS:NULL localName:aDeletedElement];
+        NSString * deletedAttributeName = [deletedAttributeDictionary objectForKey:@"attributeName"];
+        //NSString * deletedAttributeNamespaceURI =  [deletedAttributeDictionary objectForKey:@"attributeName"]; // can be NULL
+        NSString * deletedAttributePrefix =  [deletedAttributeDictionary objectForKey:@"prefix"]; // can be NULL
+        
+        if (deletedAttributePrefix != NULL)
+        {
+            //[domElement removeAttributeNS:deletedAttributeNamespaceURI localName:deletedAttributeName];
+            NSString * prefixedAttributeName = [NSString stringWithFormat:@"%@:%@", deletedAttributePrefix, deletedAttributeName];
+            [domElement removeAttribute:prefixedAttributeName];
+        }
+        else
+        {
+            [domElement removeAttributeNS:NULL localName:deletedAttributeName];
+        }
     }
 }
 
