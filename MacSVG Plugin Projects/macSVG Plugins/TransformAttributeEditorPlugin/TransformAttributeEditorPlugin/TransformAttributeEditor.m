@@ -1340,6 +1340,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     functionButton.hidden = NO;
     functionButton.title = @"Set Rotation at Center";
+    NSRect buttonFrame = functionButton.frame;
+    buttonFrame.origin.y = value4TextField.frame.origin.y - 8.0f;
+    functionButton.frame = buttonFrame;
 
     transformsTableView.nextKeyView = value1TextField;
     value1TextField.nextKeyView = value2TextField;
@@ -2287,6 +2290,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         break;
     }
 
+    [self.macSVGPluginCallbacks updateDOMSelectionRectsAndHandles];
+
     if (selectionHandleClicked == YES)
     {
         // user clicked on a selection handle
@@ -2983,6 +2988,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             
             [self beginSkewYTransform];
         }
+
+        [self.macSVGPluginCallbacks updateDOMSelectionRectsAndHandles];
 
         settingToolButton = NO;
     }
