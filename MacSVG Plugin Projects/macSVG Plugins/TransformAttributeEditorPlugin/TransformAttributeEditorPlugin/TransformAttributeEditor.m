@@ -445,6 +445,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         functionCount++;
     }
     
+    NSLog(@"%@", newTransformString);
+    //[self logStackSymbols:newTransformString];
+    
     [self.pluginTargetDOMElement setAttribute:@"transform" value:newTransformString];
     
     [self syncDOMElementToXMLDocument];
@@ -744,9 +747,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         //selectedRow = [transformsArray count] - 1;
         
-        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
-        
-        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+        //NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        //[transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
     
     [label1TextField setHidden:NO];
@@ -793,6 +795,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
+    
+    if (makeNewTranslateItem == YES)
+    {
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
 }
 
 //==================================================================================
@@ -802,68 +810,72 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 -(void) handleMouseMoveEventForTranslate:(DOMEvent *)event
 {
     //NSLog(@"handleMouseMoveEventForTranslate");
-
-    NSInteger selectedRow = transformsTableView.selectedRow;
     
-    if (selectedRow != -1)
+    DOMElement * eventTarget = event.target;
+    
+    NSString * eventTargetClassString = [eventTarget getAttribute:@"class"];
+    
+    if ([eventTargetClassString isEqualToString:@"_macsvg_selectionHandle"] == NO)
     {
-        NSMutableDictionary * translateDictionary = (self.transformsArray)[selectedRow];
+        NSInteger selectedRow = transformsTableView.selectedRow;
+        
+        if (selectedRow != -1)
+        {
+            NSMutableDictionary * translateDictionary = (self.transformsArray)[selectedRow];
+                
+            NSString * previousTranslateXString = translateDictionary[@"x"];
+            NSString * previousTranslateYString = translateDictionary[@"y"];
             
-        NSString * previousTranslateXString = translateDictionary[@"x"];
-        NSString * previousTranslateYString = translateDictionary[@"y"];
-        
-        float previousTranslateX = previousTranslateXString.floatValue;
-        float previousTranslateY = previousTranslateYString.floatValue;
+            float previousTranslateX = previousTranslateXString.floatValue;
+            float previousTranslateY = previousTranslateYString.floatValue;
 
-        MacSVGDocumentWindowController * macSVGDocumentWindowController =
-                [self.macSVGDocument macSVGDocumentWindowController];
-        id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
-        id domMouseEventsController = [svgWebKitController domMouseEventsController];
-        NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
-        NSPoint previousTransformedMousePagePoint = [domMouseEventsController previousTransformedMousePagePoint];
-        
-        float deltaX = transformedCurrentMousePagePoint.x - previousTransformedMousePagePoint.x;
-        float deltaY = transformedCurrentMousePagePoint.y - previousTransformedMousePagePoint.y;
-
-        NSPoint deltaPoint = NSMakePoint(deltaX, deltaY);
-
-        if (mouseMoveCount == 1)
-        {
-            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
-        }
-
-        // update the positions of the selected SVG elements
-        DOMElement * aSvgElement = self.pluginTargetDOMElement;
-
-        if (mouseMoveCount == 1)
-        {
-            [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
-        }
-        
-        NSString * elementName = aSvgElement.nodeName;
-        if ((self.validElementsForTransformDictionary)[elementName] != NULL)
-        {
-            NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
+            MacSVGDocumentWindowController * macSVGDocumentWindowController =
+                    [self.macSVGDocument macSVGDocumentWindowController];
+            id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
+            id domMouseEventsController = [svgWebKitController domMouseEventsController];
+            NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
+            NSPoint transformedClickMousePagePoint = [domMouseEventsController transformedClickMousePagePoint];
             
-            if ((transformAttributeString != NULL))
+            float deltaX = transformedCurrentMousePagePoint.x - transformedClickMousePagePoint.x;
+            float deltaY = transformedCurrentMousePagePoint.y - transformedClickMousePagePoint.y;
+
+            NSPoint deltaPoint = NSMakePoint(deltaX, deltaY);
+            
+            //NSLog(@"%@", NSStringFromPoint(deltaPoint));
+
+            // update the positions of the selected SVG elements
+            DOMElement * aSvgElement = self.pluginTargetDOMElement;
+
+            if (mouseMoveCount == 1)
             {
-                float newX = previousTranslateX + deltaPoint.x;
-                float newY = previousTranslateY + deltaPoint.y;
-            
-                NSString * newXString = [self allocFloatString:newX];
-                NSString * newYString = [self allocFloatString:newY];
-                
-                translateDictionary[@"x"] = newXString;
-                translateDictionary[@"y"] = newYString;
-                
-                value1TextField.stringValue = newXString;
-                value2TextField.stringValue = newYString;
+                [self.macSVGPluginCallbacks pushUndoRedoDocumentChanges];
             }
             
-            [self setTransformAttribute];
+            NSString * elementName = aSvgElement.nodeName;
+            if ((self.validElementsForTransformDictionary)[elementName] != NULL)
+            {
+                NSString * transformAttributeString = [aSvgElement getAttribute:@"transform"];
+                
+                if ((transformAttributeString != NULL))
+                {
+                    float newX = previousTranslateX + deltaPoint.x;
+                    float newY = previousTranslateY + deltaPoint.y;
+                
+                    NSString * newXString = [self allocFloatString:newX];
+                    NSString * newYString = [self allocFloatString:newY];
+                    
+                    translateDictionary[@"x"] = newXString;
+                    translateDictionary[@"y"] = newYString;
+                    
+                    value1TextField.stringValue = newXString;
+                    value2TextField.stringValue = newYString;
+                }
+                
+                [self setTransformAttribute];
+            }
         }
     }
-}    
+}
 
 //==================================================================================
 //	beginScaleTransform
@@ -919,9 +931,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         //selectedRow = [transformsArray count] - 1;
         
-        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        //NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
         
-        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+        //[transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
 
     if ([xString isEqualToString:@"inf"] == YES)
@@ -972,6 +984,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     beginHandleScaleX = xString.floatValue;
     beginHandleScaleY = yString.floatValue;
+
+    if (makeNewScaleItem == YES)
+    {
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
 }
 
 //==================================================================================
@@ -1288,9 +1306,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
         [transformsTableView reloadData];
         
-        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        //NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
         
-        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+        //[transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
     
     [label1TextField setHidden:NO];
@@ -1349,6 +1367,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     beginHandleDegrees = angleDegrees - degreesString.floatValue;    // starting angle relative to "top"
     
     //NSLog(@"beginHandleDegrees = %f", beginHandleDegrees);
+
+    if (makeNewRotateItem == YES)
+    {
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
 }
 
 
@@ -1506,9 +1530,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         
         //selectedRow = [transformsArray count] - 1;
         
-        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        //NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
         
-        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+        //[transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
     
     [label1TextField setHidden:NO];
@@ -1558,6 +1582,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
 
     beginHandleDegrees = currentDegrees;
+
+    if (makeNewSkewXItem == YES)
+    {
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
 }
 
 //==================================================================================
@@ -1576,12 +1606,16 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
         NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
 
+        float bboxX = boundingBox.origin.x;
         float bboxY = boundingBox.origin.y;
-        float bboxHeight = boundingBox.size.height;
-
         
+        float bboxWidth = boundingBox.size.width;
+        float bboxHeight = boundingBox.size.height;
+        
+        float bboxXMax = bboxX + bboxWidth;
         float bboxYMax = bboxY + bboxHeight;
         
+        float bboxXMid = (bboxX + bboxXMax) / 2.0f;
         float bboxYMid = (bboxY + bboxYMax) / 2.0f;
 
         float skewDegrees = 0;
@@ -1595,64 +1629,70 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
         id domMouseEventsController = [svgWebKitController domMouseEventsController];
         NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
-        NSPoint transformedClickMousePagePoint = [domMouseEventsController transformedClickMousePagePoint];
 
         if ([handle_orientation isEqualToString:@"top"] == YES)
         {
-            pointA = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
+            pointA = NSMakePoint(bboxXMid, bboxY);
+            pointB = NSMakePoint(bboxXMid, 0);
             pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxY);
+            
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"left"] == YES)
         {
-            pointA = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxYMid);
-            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxY);
+            pointA = NSMakePoint(bboxX, bboxYMid);
+            pointB = NSMakePoint(bboxX, 0);
+            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMid);
+            
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottom"] == YES)
         {
-            pointA = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointC = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
-            skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
+            pointA = NSMakePoint(bboxXMid, bboxYMax);
+            pointB = NSMakePoint(bboxXMid, 0);
+            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
+
+            skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"right"] == YES)
         {
-            pointA = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMid);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointC = NSMakePoint(transformedClickMousePagePoint.x, bboxYMid);
+            pointA = NSMakePoint(bboxXMax, bboxYMid);
+            pointB = NSMakePoint(bboxXMax, 0);
+            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMid);
+            
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
         {
-            pointA = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
+            pointA = NSMakePoint(bboxX, bboxY);
+            pointB = NSMakePoint(bboxX, 0);
             pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxY);
-            pointC.x *= domElementCurrentScale;
+
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topRight"] == YES)
         {
-            pointA = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
+            pointA = NSMakePoint(bboxXMax, bboxY);
+            pointB = NSMakePoint(bboxXMax, 0);
             pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxY);
+
             skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
         {
-            pointA = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointC = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
-            skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
+            pointA = NSMakePoint(bboxX, bboxYMax);
+            pointB = NSMakePoint(bboxX, 0);
+            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
+
+            skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
         {
-            pointA = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
-            pointB = NSMakePoint(transformedClickMousePagePoint.x, bboxY);
-            pointC = NSMakePoint(transformedClickMousePagePoint.x, bboxYMax);
-            skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
+            pointA = NSMakePoint(bboxXMax, bboxYMax);
+            pointB = NSMakePoint(bboxXMax, 0);
+            pointC = NSMakePoint(transformedCurrentMousePagePoint.x, bboxYMax);
+            
+            skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
 
         if (mouseMoveCount == 1)
@@ -1732,9 +1772,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
         [transformsTableView reloadData];
         
-        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        //NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
         
-        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+        //[transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
     }
     
     [label1TextField setHidden:NO];
@@ -1784,6 +1824,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
     
     beginHandleDegrees = currentDegrees;
+
+    if (makeNewSkewYItem == YES)
+    {
+        NSIndexSet * rowIndex = [[NSIndexSet alloc] initWithIndex:selectedRow];
+        [transformsTableView selectRowIndexes:rowIndex byExtendingSelection:NO];
+    }
 }
 
 
@@ -1799,16 +1845,21 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * skewYDictionary = (self.transformsArray)[selectedRow];
+        NSMutableDictionary * skewXDictionary = (self.transformsArray)[selectedRow];
 
         NSRect boundingBox = [self.webKitInterface bBoxForDOMElement:self.pluginTargetDOMElement];
 
         float bboxX = boundingBox.origin.x;
+        float bboxY = boundingBox.origin.y;
+        
         float bboxWidth = boundingBox.size.width;
+        float bboxHeight = boundingBox.size.height;
         
         float bboxXMax = bboxX + bboxWidth;
+        float bboxYMax = bboxY + bboxHeight;
         
         float bboxXMid = (bboxX + bboxXMax) / 2.0f;
+        float bboxYMid = (bboxY + bboxYMax) / 2.0f;
 
         float skewDegrees = 0;
         
@@ -1821,70 +1872,69 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
         id domMouseEventsController = [svgWebKitController domMouseEventsController];
         NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
-        NSPoint transformedClickMousePagePoint = [domMouseEventsController transformedClickMousePagePoint];
 
         if ([handle_orientation isEqualToString:@"top"] == YES)
         {
-            pointA = NSMakePoint(bboxXMid, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxXMid, bboxY);
+            pointB = NSMakePoint(0, bboxY);
             pointC = NSMakePoint(bboxXMid, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
-            skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
+            
+            skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"left"] == YES)
         {
-            pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxX, bboxYMid);
+            pointB = NSMakePoint(0, bboxYMid);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
+            
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottom"] == YES)
         {
-            pointA = NSMakePoint(bboxXMid, transformedCurrentMousePagePoint.y);
-            pointA.y *= domElementCurrentScale;
-            pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
-            pointC = NSMakePoint(bboxXMid, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxXMid, bboxYMax);
+            pointB = NSMakePoint(0, bboxYMax);
+            pointC = NSMakePoint(bboxXMid, transformedCurrentMousePagePoint.y);
+
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"right"] == YES)
         {
-            pointA = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointA.y *= domElementCurrentScale;
-            pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
-            pointC = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
-            skewDegrees = -getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
+            pointA = NSMakePoint(bboxXMax, bboxYMid);
+            pointB = NSMakePoint(0, bboxYMid);
+            pointC = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
+            
+            skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
         {
-            pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxX, bboxY);
+            pointB = NSMakePoint(0, bboxY);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
+
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"topRight"] == YES)
         {
-            pointA = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxXMax, bboxY);
+            pointB = NSMakePoint(0, bboxY);
             pointC = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
+
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
         {
-            pointA = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxX, bboxYMax);
+            pointB = NSMakePoint(0, bboxYMax);
             pointC = NSMakePoint(bboxX, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
+
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
         else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
         {
-            pointA = NSMakePoint(bboxXMax, transformedClickMousePagePoint.y);
-            pointB = NSMakePoint(bboxX, transformedClickMousePagePoint.y);
+            pointA = NSMakePoint(bboxXMax, bboxYMax);
+            pointB = NSMakePoint(0, bboxYMax);
             pointC = NSMakePoint(bboxXMax, transformedCurrentMousePagePoint.y);
-            pointC.y *= domElementCurrentScale;
+            
             skewDegrees = getAngleABC(pointA, pointB, pointC) + beginHandleDegrees;
         }
 
@@ -1905,7 +1955,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             {
                 NSString * newDegreesString = [self allocFloatString:skewDegrees];
                 
-                skewYDictionary[@"degrees"] = newDegreesString;
+                skewXDictionary[@"degrees"] = newDegreesString;
                 
                 value1TextField.stringValue = newDegreesString;
             }
@@ -1913,7 +1963,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             [self setTransformAttribute];
         }
     }
-}    
+}
 
 //==================================================================================
 //	beginMatrixTransform

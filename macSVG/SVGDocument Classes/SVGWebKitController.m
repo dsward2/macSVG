@@ -1429,6 +1429,68 @@
     return largerScale;
 }
 
+/*
+function deltaTransformPoint(matrix, x, y) {
+  return {
+    x: x * matrix.a + y * matrix.c + 0
+  , y: x * matrix.b + y * matrix.d + 0
+  }
+}
+*/
+
+//==================================================================================
+//	deltaTransformPointWithMatrix:x:y:
+//==================================================================================
+
+- (NSPoint)deltaTransformPointWithMatrix:(id)ctmMatrix x:(CGFloat)x y:(CGFloat)y
+{
+    NSPoint resultPoint = NSZeroPoint;
+    
+    NSString * ctmMatrixAString = [ctmMatrix valueForKey:@"a"];
+    NSString * ctmMatrixBString = [ctmMatrix valueForKey:@"b"];
+    NSString * ctmMatrixCString = [ctmMatrix valueForKey:@"c"];
+    NSString * ctmMatrixDString = [ctmMatrix valueForKey:@"d"];
+    //NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
+    //NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
+    
+    CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
+    CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
+    CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
+    CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
+    //CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
+    //CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
+
+    resultPoint.x = (x * ctmMatrixA) + (y * ctmMatrixC);
+    resultPoint.y = (x * ctmMatrixB) + (y * ctmMatrixD);
+    
+    return resultPoint;
+}
+
+//==================================================================================
+//	skewForDOMElement:
+//==================================================================================
+
+- (NSPoint) skewForDOMElement:(DOMElement *)domElement
+{
+    NSPoint skewPoint = NSZeroPoint;
+
+    if (domElement != NULL)
+    {
+        id ctmMatrix = [domElement callWebScriptMethod:@"getCTM" withArguments:NULL];  // call JavaScript function
+        
+        if (ctmMatrix != NULL)
+        {
+            CGPoint px = [self deltaTransformPointWithMatrix:ctmMatrix x:0 y:1];
+            CGPoint py = [self deltaTransformPointWithMatrix:ctmMatrix x:1 y:0];
+            
+            skewPoint.x = 180.0f / M_PI * atan2(px.y, px.x) - 90;
+            skewPoint.y = 180.0f / M_PI * atan2(py.y, py.x);
+        }
+    }
+
+    return skewPoint;
+}
+
 //==================================================================================
 //	findSVGElementInElement:
 //==================================================================================

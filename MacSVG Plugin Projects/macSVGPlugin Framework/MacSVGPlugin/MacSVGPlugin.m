@@ -590,4 +590,35 @@
     // override to customize handles for plugin
 }
 
+//==================================================================================
+//	logStackSymbols
+//==================================================================================
+
+- (void)logStackSymbols:(NSString *)messagePrefix
+{
+    NSArray * stackSymbols = [NSThread callStackSymbols];
+
+    NSMutableArray * filteredStackSymbols = [NSMutableArray array];
+    
+    NSInteger lineIndex = 0;
+    
+    for (NSString * aStackString in stackSymbols)
+    {
+        NSMutableString * outputString = [NSMutableString stringWithString:aStackString];
+        
+        // 0   macSVG                        0x00000001000354ee -[SVGWebKitController logStackSymbols:] + 78,
+        // 0....5...10...15...20...25...30...35...40...45...50...55...60
+        NSRange deleteRange = NSMakeRange(4, 55);
+        [outputString deleteCharactersInRange:deleteRange];
+        
+        [filteredStackSymbols addObject:outputString];
+        
+        lineIndex++;
+    }
+    
+    NSLog(@"%@\n%@", messagePrefix, filteredStackSymbols);
+}
+
+
+
 @end

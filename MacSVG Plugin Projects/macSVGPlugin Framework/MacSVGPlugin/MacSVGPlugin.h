@@ -137,4 +137,7 @@
 -(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup;
 
+// For debugging usage
+- (void)logStackSymbols:(NSString *)messagePrefix;
+
 @end
