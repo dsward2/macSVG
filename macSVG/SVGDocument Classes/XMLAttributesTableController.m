@@ -671,6 +671,9 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     NSIndexSet * selectedRows = (self.xmlAttributesTableView).selectedRowIndexes;
     //NSUInteger indexCount = [selectedRows count];
 
+    NSIndexSet * emptyIndexSet = [NSIndexSet indexSet];
+    [self.xmlAttributesTableView selectRowIndexes:emptyIndexSet byExtendingSelection:NO];
+
     if (selectedRows != nil) 
     {
         for (NSInteger row = selectedRows.firstIndex; row != NSNotFound; row = [selectedRows indexGreaterThanIndex:row]) 
@@ -699,9 +702,6 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable
             attributes:self.xmlAttributesArray];
 
-    NSIndexSet * emptyIndexSet = [NSIndexSet indexSet];
-    [self.xmlAttributesTableView selectRowIndexes:emptyIndexSet byExtendingSelection:NO];
-    
     [macSVGDocumentWindowController updateSelections];
 
     [macSVGDocumentWindowController reloadAllViews];
