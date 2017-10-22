@@ -445,7 +445,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         functionCount++;
     }
     
-    NSLog(@"%@", newTransformString);
+    //NSLog(@"%@", newTransformString);
     //[self logStackSymbols:newTransformString];
     
     [self.pluginTargetDOMElement setAttribute:@"transform" value:newTransformString];
