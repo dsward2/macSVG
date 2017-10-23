@@ -1641,9 +1641,9 @@
             
             macSVGDocumentWindowController.creatingNewElement = NO;
             
-            // this code allows multiple mouse click to place images without having to click the Image tool icon each time
             if ([newElementTagName isEqualToString:@"image"] == YES)
             {
+                // allow multiple mouse click to place images without having to click the Image tool icon each time
                 if (macSVGDocumentWindowController.currentToolMode != toolModeImage)
                 {
                     [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
@@ -1652,6 +1652,7 @@
                 {
                     (macSVGDocumentWindowController.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
                 }
+                
                 [macSVGDocumentWindowController reloadAllViews];
             }
         }

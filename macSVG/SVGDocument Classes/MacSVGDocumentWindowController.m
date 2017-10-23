@@ -772,20 +772,27 @@
 	}
     else
     {
-        TextDocumentWindowController * aTextDocumentWindowController =
-                textDocument.textDocumentWindowController;
-        
         MacSVGDocument * macSVGDocument = self.document;
         
         NSUInteger xmlOptions =   NSXMLNodePrettyPrint | NSXMLNodePreserveCDATA;
         
         NSString * xmlString = [macSVGDocument filteredSvgXmlDocumentStringWithOptions:xmlOptions];
-                
-        NSTextView * documentTextView = aTextDocumentWindowController.documentTextView;
-        
-        documentTextView.string = xmlString;
-        
-        [textDocument showWindows];
+
+        if (xmlString != NULL)
+        {
+            TextDocumentWindowController * aTextDocumentWindowController =
+                    textDocument.textDocumentWindowController;
+            
+            NSTextView * documentTextView = aTextDocumentWindowController.documentTextView;
+            
+            documentTextView.string = xmlString;
+            
+            [textDocument showWindows];
+        }
+        else
+        {
+            NSBeep();
+        }
     }
 }
 
@@ -1582,6 +1589,22 @@
             }
         }
     }
+
+    
+    if (self.currentToolMode == toolModeImage)
+    {
+        // <svg> element requires xmlns:xlink="http://www.w3.org/1999/xlink"
+        
+        NSXMLNode * namespaceAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLNamespaceKind];
+        namespaceAttributeNode.name = @"xlink";
+        namespaceAttributeNode.stringValue = @"http://www.w3.org/1999/xlink";
+
+        MacSVGDocument * macSVGDocument = self.document;
+        NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
+
+        [rootElement addNamespace:namespaceAttributeNode];
+    }
+    
     
     self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
     
