@@ -88,6 +88,7 @@
 		0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E71453A142C0CD4002F8E1F /* VerticalRulerView.m */; };
 		0E714560142C2FB3002F8E1F /* PanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E71455F142C2FB3002F8E1F /* PanelView.m */; };
 		0E7145A1142C302C002F8E1F /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7145A0142C302B002F8E1F /* GradientView.m */; };
+		0E753F511F9FD5660050AAB6 /* RELEASE-NOTES.md in Sources */ = {isa = PBXBuildFile; fileRef = 0E753F501F9FD5660050AAB6 /* RELEASE-NOTES.md */; };
 		0E770CC21D7E395F000401C9 /* MacSVGPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E770CDC1D7FCE52000401C9 /* SVGPolylineEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */; };
 		0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */; };
@@ -2272,6 +2273,7 @@
 		0E71455F142C2FB3002F8E1F /* PanelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PanelView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E71459F142C302B002F8E1F /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		0E7145A0142C302B002F8E1F /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		0E753F501F9FD5660050AAB6 /* RELEASE-NOTES.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "RELEASE-NOTES.md"; sourceTree = "<group>"; };
 		0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E770CDA1D7FCE52000401C9 /* SVGPolylineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPolylineEditor.h; sourceTree = "<group>"; };
 		0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGPolylineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -3874,6 +3876,7 @@
 			isa = PBXGroup;
 			children = (
 				0ECCAFDE1DB4A6A0001A6085 /* README.md */,
+				0E753F501F9FD5660050AAB6 /* RELEASE-NOTES.md */,
 				0ECCB0231DB51B57001A6085 /* README_images */,
 				0ECCB0211DB4B60A001A6085 /* LICENSE */,
 				0EB6638214286398003723F0 /* macSVG */,
@@ -4668,6 +4671,7 @@
 				0EDD0C1914A1A44B00430652 /* SynchroScrollView.m in Sources */,
 				0E9637A7178689440011861A /* HTTPDataResponse.m in Sources */,
 				0E82B1351D730A2E005D0634 /* DDTTYLogger.m in Sources */,
+				0E753F511F9FD5660050AAB6 /* RELEASE-NOTES.md in Sources */,
 				0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */,
 				0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */,
 				0E4EA2E41D40721F00C5145C /* SVGHelpManager.m in Sources */,
