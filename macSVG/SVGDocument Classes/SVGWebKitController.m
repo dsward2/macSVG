@@ -1699,23 +1699,23 @@ function deltaTransformPoint(matrix, x, y) {
 
 // ================================================================
 
-- (void)updateActivePathInDOM
+- (void)updateActivePathInDOM:(BOOL)updatePathLength
 {
-    [self.domMouseEventsController.svgPathEditor updateActivePathInDOM];
+    [self.domMouseEventsController.svgPathEditor updateActivePathInDOM:updatePathLength];
 }
 
 // ================================================================
 
-- (void)updateSelectedPathInDOM
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength
 {
-    [self.domMouseEventsController.svgPathEditor updateSelectedPathInDOM];
+    [self.domMouseEventsController.svgPathEditor updateSelectedPathInDOM:updatePathLength];
 }
 
 // ================================================================
 
-- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray
+- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray  updatePathLength:(BOOL)updatePathLength
 {
-    [self.domMouseEventsController.svgPathEditor updatePathInDOMForElement:pathElement pathSegmentsArray:aPathSegmentsArray];
+    [self.domMouseEventsController.svgPathEditor updatePathInDOMForElement:pathElement pathSegmentsArray:aPathSegmentsArray updatePathLength:updatePathLength];
 }
 
 // ================================================================

@@ -433,7 +433,7 @@
             
             NSXMLElement * polylineXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
-        [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:aPolylinePointsArray];
+            [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:aPolylinePointsArray updatePathLength:NO];
         }
     }
 }
@@ -550,7 +550,7 @@
             
             NSXMLElement * polylineXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
-            [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:self.polylinePointsArray];
+            [currentPlugin updateEditForXMLElement:polylineXMLElement domElement:polylineElement info:self.polylinePointsArray updatePathLength:NO];
         }
     }
     

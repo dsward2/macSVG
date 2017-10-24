@@ -138,7 +138,7 @@
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             convertToAbsoluteCoordinates:self.pathElementEditor.pluginTargetXMLElement];
 
-    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -152,7 +152,7 @@
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             convertCurvesToAbsoluteCubicBezier:self.pathElementEditor.pluginTargetXMLElement];
 
-    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -165,7 +165,7 @@
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             convertPathToAbsoluteCubicBezier:self.pathElementEditor.pluginTargetXMLElement];
 
-    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -184,7 +184,7 @@
     NSMutableArray * reversedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             reversePathWithPathSegmentsArray:pathSegmentsArray];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:reversedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:reversedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -209,7 +209,7 @@
         [pathSegmentsArray addObject:flippedSegmentDictionary];
     }
 
-    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -233,7 +233,7 @@
         [pathSegmentsArray addObject:flippedSegmentDictionary];
     }
 
-    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -252,7 +252,7 @@
     NSMutableArray * flippedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             flipPathHorizontallyWithPathSegmentsArray:pathSegmentsArray];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:flippedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:flippedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -271,7 +271,7 @@
     NSMutableArray * flippedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             flipPathVerticallyWithPathSegmentsArray:pathSegmentsArray];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:flippedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:flippedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -293,7 +293,7 @@
             scalePathCoordinatesWithPathSegmentsArray:pathSegmentsArray
             scaleX:scaleX scaleY:scaleY];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:scaledSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:scaledSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -316,7 +316,7 @@
             rotatePathCoordinatesWithPathSegmentsArray:pathSegmentsArray
             x:rotateX y:rotateY degrees:degrees];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -334,7 +334,7 @@
     NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             rotateSegmentsWithPathSegmentsArray:pathSegmentsArray offset:-1];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 
@@ -352,7 +352,7 @@
     NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             rotateSegmentsWithPathSegmentsArray:pathSegmentsArray offset:1];
     
-    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray];
+    [self.pathElementEditor updateWithPathSegmentsArray:rotatedSegmentsArray updatePathLength:NO];
     [self.pathElementEditor updateDocumentViews];
 }
 

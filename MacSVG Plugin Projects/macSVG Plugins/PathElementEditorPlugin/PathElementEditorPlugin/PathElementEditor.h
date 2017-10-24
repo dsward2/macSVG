@@ -90,7 +90,7 @@
 
 - (IBAction)pathFunctionPopUpButtonAction:(id)sender;
 
-- (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray;
+- (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray updatePathLength:(BOOL)updatePathLength;
 
 @property (readonly, copy) NSMutableArray *pathSegmentsArray;
 

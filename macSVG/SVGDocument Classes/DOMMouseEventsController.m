@@ -811,7 +811,7 @@
                 NSInteger result = [self.svgPathEditor setActiveDOMHandle:handleDOMElement];
                 #pragma unused(result)
                 
-                [self.svgPathEditor updateActivePathInDOM];
+                [self.svgPathEditor updateActivePathInDOM:YES];
                 
                 [self.svgXMLDOMSelectionManager selectXMLElement:xmlPathElement];
                 
@@ -828,7 +828,7 @@
             {
                 // build path segments for new selection
 
-                [self.svgPathEditor updateActivePathInDOM];
+                [self.svgPathEditor updateActivePathInDOM:YES];
 
                 [self.svgXMLDOMSelectionManager selectXMLElement:targetXMLElement];
                 
@@ -893,7 +893,7 @@
             NSInteger result = [self.svgPathEditor setActiveDOMHandle:handleDOMElement];
             #pragma unused(result)
 
-            [self.svgPathEditor updateActivePathInDOM];
+            [self.svgPathEditor updateActivePathInDOM:YES];
             
             [self.svgXMLDOMSelectionManager selectXMLElement:xmlPathElement];
             
@@ -916,7 +916,7 @@
             
             self.svgPathEditor.selectedPathElement = pathXMLElement;
 
-            [self.svgPathEditor updateActivePathInDOM];
+            [self.svgPathEditor updateActivePathInDOM:YES];
 
             [self.svgXMLDOMSelectionManager selectXMLElement:pathXMLElement];
             

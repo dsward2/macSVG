@@ -68,10 +68,10 @@
 
 -(void) updatePathMode:(NSString *)newPathMode;
 
-- (void)updateActivePathInDOM;
-- (void)updateSelectedPathInDOM;
+- (void)updateActivePathInDOM:(BOOL)updatePathLength;
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength;
 
-- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
+- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray updatePathLength:(BOOL)updatePathLength;
 
 - (void)buildPathSegmentsArray:(NSXMLElement *)pathElement;
 

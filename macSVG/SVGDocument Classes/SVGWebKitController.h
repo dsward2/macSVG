@@ -83,8 +83,8 @@
 @property (copy) NSMutableArray *pathSegmentsArray;
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)pathSegmentsArray;
-- (void)updateActivePathInDOM;
-- (void)updateSelectedPathInDOM;
+- (void)updateActivePathInDOM:(BOOL)updatePathLength;
+- (void)updateSelectedPathInDOM:(BOOL)updaPathLength;
 - (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 
 - (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex

@@ -102,7 +102,7 @@
         existingValue:(NSString *)existingValue;
 
 // Update the display, usually called by host application when a change occurred there
-- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData;
+- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData updatePathLength:(BOOL)updatePathLength;
 
 // For menu plug-ins, override this method to begin plugin session
 //@property (readonly) BOOL beginMenuPlugIn;

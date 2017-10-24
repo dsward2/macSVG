@@ -167,7 +167,7 @@
 //	updateEditForXMLElement:domElement:info:
 //==================================================================================
 
-- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData
+- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData updatePathLength:(BOOL)updatePathLength
 {
     // subclasses can override as needed
     
@@ -176,7 +176,10 @@
     
     [self.pathTableView reloadData];
 
-    [self updateTotalLengthForPathElement:xmlElement];
+    if (updatePathLength == YES)
+    {
+        [self updateTotalLengthForPathElement:xmlElement];
+    }
 }
 
 //==================================================================================
@@ -267,7 +270,7 @@
 //	updateWithPathSegmentsArray:
 //==================================================================================
 
-- (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray
+- (void)updateWithPathSegmentsArray:(NSMutableArray *)aPathSegmentsArray updatePathLength:(BOOL)updatePathLength
 {
     NSXMLElement * holdSelectedPathElement = (self.macSVGPluginCallbacks).svgPathEditorSelectedPathElement;
 
@@ -275,11 +278,14 @@
     
     (self.macSVGPluginCallbacks).pathSegmentsArray = aPathSegmentsArray;
 
-    [self.macSVGPluginCallbacks updateSelectedPathInDOM];
+    [self.macSVGPluginCallbacks updateSelectedPathInDOM:updatePathLength];
 
     [self.macSVGPluginCallbacks svgPathEditorSetSelectedPathElement:holdSelectedPathElement];
     
-    [self updateTotalLengthForPathElement:self.pluginTargetXMLElement];
+    if (updatePathLength == YES)
+    {
+        [self updateTotalLengthForPathElement:self.pluginTargetXMLElement];
+    }
 }
 
 //==================================================================================
@@ -369,7 +375,7 @@
 
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
-        [self updateWithPathSegmentsArray:pathSegmentsArray];
+        [self updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:YES];
 
         if (continuePath == NO)
         {
@@ -534,7 +540,7 @@
 
     [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
     
-    [self updateWithPathSegmentsArray:pathSegmentsArray];
+    [self updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:YES];
     
     [self.pathTableView reloadData];
     
@@ -1038,7 +1044,7 @@
         
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
         
-        [self updateWithPathSegmentsArray:self.pathSegmentsArray];
+        [self updateWithPathSegmentsArray:self.pathSegmentsArray updatePathLength:YES];
     }
 }
 
@@ -1812,7 +1818,7 @@
             
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
-        [self updateWithPathSegmentsArray:pathSegmentsArray];
+        [self updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:YES];
 
         [self.pathTableView reloadData];
 

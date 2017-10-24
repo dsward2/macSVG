@@ -263,12 +263,12 @@
 }
 
 //==================================================================================
-//	updateEditForXMLElement:domElement:info:
+//	updateEditForXMLElement:domElement:info:updatePathLength:
 //==================================================================================
 
-- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData
+- (void)updateEditForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement info:(id)infoData updatePathLength:(BOOL)updatePathLength
 {
-    // subclasses can override as needed
+    // subclasses can override as needed, updatePathLength applies only to path elements
 }
 
 //==================================================================================

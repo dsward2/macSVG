@@ -88,7 +88,8 @@ class ConvertPathsDialog: MacSVGPlugin {
         
         macSVGPluginCallbacks.pathSegmentsArray = convertedSegmentsArray
 
-        macSVGPluginCallbacks.updateSelectedPathInDOM()
+        macSVGPluginCallbacks.updateSelectedPath(inDOM:
+        false);
     }
 
 }

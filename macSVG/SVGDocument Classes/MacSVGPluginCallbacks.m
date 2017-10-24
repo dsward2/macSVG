@@ -195,18 +195,18 @@
     [svgXMLDOMSelectionManager setActiveXMLElement:aXMLElement];
 }
 
-- (void)updateActivePathInDOM
+- (void)updateActivePathInDOM:(BOOL)updatePathLength
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
-    [svgWebKitController updateActivePathInDOM];
+    [svgWebKitController updateActivePathInDOM:updatePathLength];
 }
 
-- (void)updateSelectedPathInDOM
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
-    [svgWebKitController updateSelectedPathInDOM];
+    [svgWebKitController updateSelectedPathInDOM:updatePathLength];
 }
 
 - (void)updateDOMSelectionRectsAndHandles

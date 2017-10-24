@@ -2796,10 +2796,10 @@
 }
 
 //==================================================================================
-//	updatePathInDOMForElement:pathSegmentsArray:
+//	updatePathInDOMForElement:pathSegmentsArray:updatePathLength:
 //==================================================================================
 
-- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray
+- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray updatePathLength:(BOOL)updatePathLength
 {
     NSString * newPathString = [self buildPathStringWithPathSegmentsArray:aPathSegmentsArray];
 
@@ -2819,16 +2819,16 @@
             
             NSXMLElement * pathXMLElement = [macSVGDocument xmlElementForMacsvgid:macsvgid];
             
-            [currentPlugin updateEditForXMLElement:pathXMLElement domElement:pathElement info:aPathSegmentsArray];
+            [currentPlugin updateEditForXMLElement:pathXMLElement domElement:pathElement info:aPathSegmentsArray updatePathLength:updatePathLength];
         }
     }
 }
 
 //==================================================================================
-//	updateActivePathInDOM
+//	updateActivePathInDOM:
 //==================================================================================
 
-- (void)updateActivePathInDOM
+- (void)updateActivePathInDOM:(BOOL)updatePathLength
 {
     NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
 
@@ -2841,7 +2841,7 @@
             if ([activeDOMElementName isEqualToString:@"path"] == YES)
             {
                 [self updatePathInDOMForElement:activeDOMElement
-                        pathSegmentsArray:self.pathSegmentsArray];
+                        pathSegmentsArray:self.pathSegmentsArray updatePathLength:updatePathLength];
             }
         }
         
@@ -2863,10 +2863,10 @@
 }
 
 //==================================================================================
-//	updateSelectedPathInDOM
+//	updateSelectedPathInDOM:
 //==================================================================================
 
-- (void)updateSelectedPathInDOM
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength
 {
     if (self.selectedPathElement != NULL)
     {
@@ -2876,7 +2876,7 @@
         DOMElement * selectedDOMPathElement = [svgWebKitController domElementForMacsvgid:macsvgid];
     
         [self updatePathInDOMForElement:selectedDOMPathElement
-                pathSegmentsArray:self.pathSegmentsArray];
+                pathSegmentsArray:self.pathSegmentsArray updatePathLength:updatePathLength];
     }
     
     [svgXMLDOMSelectionManager syncSelectedDOMElementsToXMLDocument];
@@ -2945,7 +2945,7 @@
     
     [self.pathSegmentsArray addObject:movetoSegmentDictionary];
     
-    [self updateActivePathInDOM];
+    [self updateActivePathInDOM:YES];
 }
 
 //==================================================================================
@@ -3088,7 +3088,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         
         [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
 
-        [self updateActivePathInDOM];
+        [self updateActivePathInDOM:YES];
     }
 }
 
@@ -3220,7 +3220,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
     [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
     
-    [self updatePathInDOMForElement:pathElement pathSegmentsArray:aPathsArray];
+    [self updatePathInDOMForElement:pathElement pathSegmentsArray:aPathsArray updatePathLength:YES];
 
     // update selection rect for path element
     //[svgXMLDOMSelectionManager offsetSelectionRectForDOMElement:pathElement
@@ -3584,7 +3584,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
     [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
 
-    [self updateActivePathInDOM];
+    [self updateActivePathInDOM:YES];
 }
 
 
@@ -4241,7 +4241,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             
             //NSLog(@"extendPath - pathSegmentsArray - %@", self.pathSegmentsArray);
 
-            [self updateActivePathInDOM];
+            [self updateActivePathInDOM:YES];
         }
         else
         {
@@ -5144,7 +5144,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             
             svgXMLDOMSelectionManager.activeXMLElement = self.selectedPathElement;
             
-            [self updateActivePathInDOM];
+            [self updateActivePathInDOM:YES];
         }
         else
         {
@@ -5454,7 +5454,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
     [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
 
-    [self updateActivePathInDOM];
+    [self updateActivePathInDOM:YES];
 }
 
 //==================================================================================
@@ -5472,7 +5472,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         {
             [self.pathSegmentsArray removeLastObject];
             self.pathSegmentIndex--;
-            [self updateActivePathInDOM];
+            [self updateActivePathInDOM:YES];
         }
     }
     
@@ -5493,7 +5493,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         {
             [self.pathSegmentsArray removeLastObject];
             self.pathSegmentIndex--;
-            [self updateActivePathInDOM];
+            [self updateActivePathInDOM:YES];
         }
     }
 }

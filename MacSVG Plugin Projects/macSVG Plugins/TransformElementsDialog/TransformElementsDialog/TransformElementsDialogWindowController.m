@@ -947,7 +947,7 @@
     
     (transformElementsDialog.macSVGPluginCallbacks).pathSegmentsArray = aPathSegmentsArray;
 
-    [transformElementsDialog.macSVGPluginCallbacks updateSelectedPathInDOM];
+    [transformElementsDialog.macSVGPluginCallbacks updateSelectedPathInDOM:NO];
 
     [transformElementsDialog.macSVGPluginCallbacks svgPathEditorSetSelectedPathElement:holdSelectedPathElement];
 }

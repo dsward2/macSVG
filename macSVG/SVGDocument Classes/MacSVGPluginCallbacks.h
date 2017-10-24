@@ -37,8 +37,8 @@
 - (void)beginPluginEditorToolMode;
 - (void)reloadAllViews;
 - (void)updateSelections;                       // redraw selection rectangles and handles
-- (void)updateActivePathInDOM;
-- (void)updateSelectedPathInDOM;
+- (void)updateActivePathInDOM:(BOOL)updatePathLength;
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength;
 - (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 - (void)assignElementIDIfUnassigned:(NSXMLNode *)aNode;
 - (NSString *)uniqueIDForElementTagName:(NSString *)elementTagName pendingIDs:(NSArray *)pendingIDs;

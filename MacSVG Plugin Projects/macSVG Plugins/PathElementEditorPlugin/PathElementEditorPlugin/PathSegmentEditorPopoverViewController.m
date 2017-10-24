@@ -584,7 +584,7 @@
         
         [self.pathElementEditor.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:self.pathElementEditor.pathSegmentsArray];
         
-        [self.pathElementEditor updateWithPathSegmentsArray:self.pathElementEditor.pathSegmentsArray];
+        [self.pathElementEditor updateWithPathSegmentsArray:self.pathElementEditor.pathSegmentsArray updatePathLength:YES];
     }
     else
     {
