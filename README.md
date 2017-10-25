@@ -10,9 +10,11 @@ macSVG can produce dynamic, high-quality graphics and animation for HTML5 web vi
 
 macSVG uses the standard macOS WebKit framework for interactive editing and rendering of SVG documents, in addition to several Cocoa plug-in bundles for editing SVG elements and attributes.
 
-An Apple ID-signed application is available for download at http://macsvg.org/download/
+**The latest version of macSVG.app – code-signed with a registered Apple ID from the developer – is available for download at the Github project release page:** 
 
-**See the macSVG website for more documentation and release notes - http://macsvg.org/**
+**[https://github.com/dsward2/macSVG/releases](https://github.com/dsward2/macSVG/releases)**
+
+**See the macSVG website for more documentation and release notes - [http://macsvg.org/](http://macsvg.org/)**
 
 # Examples:
 
