@@ -116,8 +116,11 @@
                 
                 if ((valueChar < '0') || (valueChar > '9'))
                 {
-                    allNumericValue = NO;
-                    break;
+                    if (valueChar != '.')
+                    {
+                        allNumericValue = NO;
+                        break;
+                    }
                 }
             }
             
