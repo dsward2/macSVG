@@ -7,10 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "RulerView.h"
 
+@interface HorizontalRulerView : RulerView {
 
-@interface HorizontalRulerView : NSView {
-@private
 }
 
 @end

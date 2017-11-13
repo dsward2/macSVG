@@ -11,7 +11,6 @@
 
 @implementation VerticalRulerView
 
-
 - (void)dealloc
 {
 }
@@ -29,6 +28,14 @@
 }
 
 
+
+- (BOOL)isHorizontal
+{
+    return NO;
+}
+
+
+/*
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
@@ -62,4 +69,7 @@
         [thePath stroke];
     }
 }
+*/
+
+
 @end

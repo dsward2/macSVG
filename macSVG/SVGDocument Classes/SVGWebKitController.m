@@ -1034,6 +1034,7 @@
     }
     
     // FIXME: TODO: this looks wrong for SVG, was probably intended for XHTML
+    // Update - if needed, add style="overflow: hidden;" to the <svg> element to disable scroll bars
     /*
     bool val = NO; // this value is to enable/disable scrollbars
     id scrollbarResult = [[self.svgWebView windowScriptObject] evaluateWebScript:

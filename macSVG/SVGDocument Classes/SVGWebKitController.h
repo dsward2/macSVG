@@ -84,8 +84,9 @@
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)pathSegmentsArray;
 - (void)updateActivePathInDOM:(BOOL)updatePathLength;
-- (void)updateSelectedPathInDOM:(BOOL)updaPathLength;
-- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
+- (void)updateSelectedPathInDOM:(BOOL)updatePathLength;
+//- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray;
+- (void)updatePathInDOMForElement:(DOMElement *)pathElement pathSegmentsArray:(NSArray *)aPathSegmentsArray  updatePathLength:(BOOL)updatePathLength;
 
 - (NSPoint)endPointForSegmentIndex:(NSInteger)segmentIndex
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;

@@ -27,6 +27,17 @@
 }
 
 
+
+
+
+
+- (BOOL)isHorizontal
+{
+    return YES;
+}
+
+
+/*
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
@@ -57,6 +68,6 @@
         [thePath stroke];
     }
 }
-
+*/
 
 @end

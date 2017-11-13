@@ -698,6 +698,7 @@
 		0ECCB0221DB4B60A001A6085 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0211DB4B60A001A6085 /* LICENSE */; };
 		0ED17E301D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */; };
 		0ED841221800FCCA003985CD /* PieChartGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0ED841201800FCAB003985CD /* PieChartGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		0ED9DEB61FB84C750000F024 /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED9DEB51FB84C750000F024 /* RulerView.m */; };
 		0EDC2EB91471D8C100747907 /* SVGPathEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDC2EB81471D8C100747907 /* SVGPathEditor.m */; };
 		0EDD0C1914A1A44B00430652 /* SynchroScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD0C1814A1A44A00430652 /* SynchroScrollView.m */; };
 		0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDD0C1C14A1E6F000430652 /* FlippedView.m */; };
@@ -2468,6 +2469,8 @@
 		0ED17E2E1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVGtoCoreGraphicsConverter.h; path = "SVG Functions/SVGtoCoreGraphicsConverter.h"; sourceTree = "<group>"; };
 		0ED17E2F1D461A92001F9D8E /* SVGtoCoreGraphicsConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SVGtoCoreGraphicsConverter.m; path = "SVG Functions/SVGtoCoreGraphicsConverter.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0ED841201800FCAB003985CD /* PieChartGenerator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = PieChartGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0ED9DEB41FB84C750000F024 /* RulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulerView.h; sourceTree = "<group>"; };
+		0ED9DEB51FB84C750000F024 /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulerView.m; sourceTree = "<group>"; };
 		0EDC2EB71471D8C100747907 /* SVGPathEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPathEditor.h; sourceTree = "<group>"; };
 		0EDC2EB81471D8C100747907 /* SVGPathEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGPathEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EDC2EBB1472F8C600747907 /* macSVG Tech Specs.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "macSVG Tech Specs.rtf"; sourceTree = "<group>"; };
@@ -3615,6 +3618,8 @@
 		0E80EBE7177A4EAD00849E48 /* Rulers */ = {
 			isa = PBXGroup;
 			children = (
+				0ED9DEB41FB84C750000F024 /* RulerView.h */,
+				0ED9DEB51FB84C750000F024 /* RulerView.m */,
 				0E714536142C037A002F8E1F /* HorizontalRulerView.h */,
 				0E714537142C037A002F8E1F /* HorizontalRulerView.m */,
 				0E714539142C0CD4002F8E1F /* VerticalRulerView.h */,
@@ -4618,6 +4623,7 @@
 				0E9637BB17871A2F0011861A /* SVGHTTPResponse.m in Sources */,
 				0EB663AF142865F4003723F0 /* NSOutlineView_Extensions.m in Sources */,
 				0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */,
+				0ED9DEB61FB84C750000F024 /* RulerView.m in Sources */,
 				0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */,
 				0EB663EA142866C4003723F0 /* MacSVGDocument.m in Sources */,
 				0E9637A3178688EA0011861A /* HTTPMessage.m in Sources */,
