@@ -9,9 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@class SVGWebView;
+
 @interface RulerView : NSView <WebUIDelegate, WebPolicyDelegate, WebEditingDelegate, WebFrameLoadDelegate, WebResourceLoadDelegate, WebDownloadDelegate>
 
 @property (weak) IBOutlet WebView * rulerWebView;
+@property (weak) IBOutlet SVGWebView * svgWebView;
 
 @property (strong) NSString * rulerUnit;
 
@@ -27,5 +30,6 @@
 
 @property (assign) CGFloat fontSize;
 
+- (void)createRulerWebView;
 
 @end

@@ -72,11 +72,11 @@
     NSArray * toolButtonsArray;
     
     NSXMLNode * selectedNode;
-        
-	float rulerScale;
-    IBOutlet HorizontalRulerView * horizontalRulerView;
-    IBOutlet VerticalRulerView * verticalRulerView;
 }
+
+//@property(assign) float rulerScale;
+@property(weak) IBOutlet HorizontalRulerView * horizontalRulerView;
+@property(weak) IBOutlet VerticalRulerView * verticalRulerView;
 
 @property(assign) NSUInteger currentToolMode;
 @property(assign) BOOL creatingNewElement;

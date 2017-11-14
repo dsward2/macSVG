@@ -802,8 +802,10 @@
 
 - (void)updateRulers
 {
-    [horizontalRulerView setNeedsDisplay:YES];
-    [verticalRulerView setNeedsDisplay:YES];
+    [self.svgWebKitController reloadRulerViews];
+
+    [self.horizontalRulerView setNeedsDisplay:YES];
+    [self.verticalRulerView setNeedsDisplay:YES];
 }
 
 //==================================================================================

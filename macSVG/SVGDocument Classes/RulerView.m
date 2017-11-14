@@ -7,6 +7,7 @@
 //
 
 #import "RulerView.h"
+#import "SVGWebView.h"
 
 @implementation RulerView
 
@@ -169,9 +170,16 @@ height=\"64px\" viewBox=\"0 0 64 64\" preserveAspectRatio=\"xMinYMin meet\" styl
         [self element:rulerMarkElement setAttribute:@"stroke" value:@"black"];
         [self element:rulerMarkElement setAttribute:@"stroke-width" value:@"1px"];
         
+        NSInteger iScaled = i;
+        if ((self.svgWebView.zoomFactor != 0.0f) && (self.svgWebView.zoomFactor != 1.0f))
+        {
+            iScaled = i * self.svgWebView.zoomFactor;
+        }
+        
         if ([self isHorizontal] == YES)
         {
-            NSString * xString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
+            //NSString * xString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
+            NSString * xString = [NSString stringWithFormat:@"%ld%@", iScaled, self.rulerUnit];
             
             NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
             NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
@@ -203,7 +211,8 @@ height=\"64px\" viewBox=\"0 0 64 64\" preserveAspectRatio=\"xMinYMin meet\" styl
         }
         else
         {
-            NSString * yString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
+            //NSString * yString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
+            NSString * yString = [NSString stringWithFormat:@"%ld%@", iScaled, self.rulerUnit];
 
             NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
             NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
@@ -225,7 +234,7 @@ height=\"64px\" viewBox=\"0 0 64 64\" preserveAspectRatio=\"xMinYMin meet\" styl
                 [self element:rulerTextElement setAttribute:@"font-size" value:fontSizeString];
                 [self element:rulerTextElement setAttribute:@"text-anchor" value:@"end"];
                 
-                NSString * rotateString = [NSString stringWithFormat:@"rotate(270 %@ %ld)", fontBaselineString, i];
+                NSString * rotateString = [NSString stringWithFormat:@"rotate(270 %@ %ld)", fontBaselineString, iScaled];
                 [self element:rulerTextElement setAttribute:@"transform" value:rotateString];
                 
                 NSXMLNode * textNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];

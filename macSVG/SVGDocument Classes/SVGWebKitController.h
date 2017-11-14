@@ -80,6 +80,8 @@
 - (void)updateSelections;
 - (void) updateLiveCoordinates;
 
+- (void)reloadRulerViews;
+
 @property (copy) NSMutableArray *pathSegmentsArray;
 - (NSMutableArray *)buildPathSegmentsArrayWithPathString:(NSString *)pathString;
 - (void)updatePathSegmentsAbsoluteValues:(NSMutableArray *)pathSegmentsArray;

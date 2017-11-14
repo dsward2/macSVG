@@ -19,6 +19,8 @@
 #import "MacSVGAppDelegate.h"
 #import "WebKitInterface.h"
 #import "DOMSelectionControlsManager.h"
+#import "HorizontalRulerView.h"
+#import "VerticalRulerView.h"
 #import "objc/message.h"
 
 @implementation SVGWebKitController
@@ -415,6 +417,18 @@
     [self.svgXMLDOMSelectionManager resyncDOMElementsInSelectedElementsArray];
     
     //[self.domSelectionControlsManager updateDOMSelectionRectsAndHandles];    // 20160716
+    
+    [self reloadRulerViews];
+}
+
+//==================================================================================
+//	reloadRulerViews
+//==================================================================================
+
+- (void)reloadRulerViews
+{
+    [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
+    [self.macSVGDocumentWindowController.verticalRulerView createRulerWebView];
 }
 
 //==================================================================================

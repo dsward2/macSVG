@@ -425,6 +425,7 @@
                                                                 </subviews>
                                                                 <connections>
                                                                     <outlet property="rulerWebView" destination="qWn-fg-cgP" id="mPt-iJ-Noh"/>
+                                                                    <outlet property="svgWebView" destination="100022" id="gn5-0v-mkc"/>
                                                                 </connections>
                                                             </customView>
                                                             <customView misplaced="YES" id="100403" customClass="VerticalRulerView">
@@ -448,6 +449,7 @@
                                                                 </subviews>
                                                                 <connections>
                                                                     <outlet property="rulerWebView" destination="Lsg-Wc-HSx" id="idw-h9-21a"/>
+                                                                    <outlet property="svgWebView" destination="100022" id="IJv-2V-mr0"/>
                                                                 </connections>
                                                             </customView>
                                                         </subviews>

@@ -16,11 +16,9 @@
 {
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
     IBOutlet SVGWebKitController * svgWebKitController;
-@private
-    
 }
 
-@property (assign)CGFloat zoomFactor;
+@property (assign) CGFloat zoomFactor;
 
 - (void)setSVGZoomStyleWithFloat:(CGFloat)zoomFactor;
 
