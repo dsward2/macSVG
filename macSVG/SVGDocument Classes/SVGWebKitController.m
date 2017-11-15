@@ -113,6 +113,17 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+
+    WebFrame * mainFrame = self.svgWebView.mainFrame;
+    NSScrollView * webScrollView = [[[mainFrame frameView] documentView] enclosingScrollView];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(webScrollViewDidScroll:)
+            name:NSScrollViewDidLiveScrollNotification
+            object:webScrollView];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(webScrollViewDidScroll:)
+            name:NSScrollViewDidEndLiveScrollNotification
+            object:webScrollView];
 }
 
 //==================================================================================
@@ -1177,6 +1188,47 @@
 
     self.mainFrameScrollToPoint = newScrollToPoint;
     self.scrollToPointAfterMainFrameLoad = YES;
+}
+
+//==================================================================================
+//	webScrollViewDidScroll
+//==================================================================================
+
+- (void)webScrollViewDidScroll:(NSNotification *)notification
+{
+    //[self reloadRulerViews];
+    
+    NSScrollView * scrollView = notification.object;
+    
+    BOOL horizontalScrollerKnobHit = NO;
+    if (scrollView.hasHorizontalScroller == YES)
+    {
+        NSScroller * horizontalScroller = scrollView.horizontalScroller;
+        NSScrollerPart hitPart = horizontalScroller.hitPart;
+        horizontalScrollerKnobHit = (hitPart == NSScrollerKnob);
+    }
+    
+    BOOL verticalScrollerKnobHit = NO;
+    if (scrollView.hasVerticalScroller == YES)
+    {
+        NSScroller * verticalScroller = scrollView.verticalScroller;
+        NSScrollerPart hitPart = verticalScroller.hitPart;
+        verticalScrollerKnobHit = (hitPart == NSScrollerKnob);
+    }
+    
+    if (horizontalScrollerKnobHit == YES)
+    {
+        [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
+    }
+    else if (verticalScrollerKnobHit == YES)
+    {
+        [self.macSVGDocumentWindowController.verticalRulerView createRulerWebView];
+    }
+    else
+    {
+        [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
+        [self.macSVGDocumentWindowController.verticalRulerView createRulerWebView];
+    }
 }
 
 //==================================================================================

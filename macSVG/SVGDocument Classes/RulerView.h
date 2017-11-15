@@ -23,6 +23,11 @@
 @property (assign) CGFloat majorMarkLength;
 @property (assign) CGFloat majorMarkWidth;
 
+@property (assign) NSInteger midMarkInterval;
+@property (assign) CGFloat midMarkOffset;
+@property (assign) CGFloat midMarkLength;
+@property (assign) CGFloat midMarkWidth;
+
 @property (assign) NSInteger minorMarkInterval;
 @property (assign) CGFloat minorMarkOffset;
 @property (assign) CGFloat minorMarkLength;

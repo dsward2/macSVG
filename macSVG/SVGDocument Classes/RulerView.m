@@ -9,6 +9,8 @@
 #import "RulerView.h"
 #import "SVGWebView.h"
 
+#define kRulerMarkerMaxSize 20
+
 @implementation RulerView
 
 
@@ -32,15 +34,20 @@
 
         self.rulerUnit = @"px";
 
-        self.majorMarkInterval = 100;   // should be a multiple of minorMarkInterval
-        self.majorMarkOffset = 0.0f;
-        self.majorMarkLength = 20.0f;
-        self.majorMarkWidth = 1.0f;
-
         self.minorMarkInterval = 10;
-        self.minorMarkOffset = 10.0f;
-        self.minorMarkLength = 10.0f;
+        self.minorMarkOffset = kRulerMarkerMaxSize * 0.5f;
+        self.minorMarkLength = kRulerMarkerMaxSize * 0.5f;
         self.minorMarkWidth = 0.5f;
+
+        self.midMarkInterval = self.minorMarkInterval * 5;
+        self.midMarkOffset = kRulerMarkerMaxSize * 0.25f;
+        self.midMarkLength = kRulerMarkerMaxSize * 0.75f;
+        self.midMarkWidth = 1.0f;
+
+        self.majorMarkInterval = self.minorMarkInterval * 10;
+        self.majorMarkOffset = 0.0f;
+        self.majorMarkLength = kRulerMarkerMaxSize;
+        self.majorMarkWidth = 1.0f;
 
         self.fontSize = 10.0f;
     }
@@ -61,33 +68,52 @@
 
 - (void)createRulerWebView
 {
-    self.rulerWebView.drawsBackground = NO;
-    WebPreferences * rulerWebPreferences = self.rulerWebView.preferences;
-    [rulerWebPreferences setJavaScriptEnabled:NO];
-    [rulerWebPreferences setPlugInsEnabled:NO];
-    
-    NSString * svgRulerString = [self svgRulerString];
-    
-    NSData * xmlData = [svgRulerString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSError * xmlError;
-    NSXMLDocument * tempXMLDocument = [[NSXMLDocument alloc] initWithData:xmlData options:NSXMLNodePreserveCDATA error:&xmlError];
-    
-    [self addRulerMarksInXMLDocument:tempXMLDocument];
-    
-    xmlData = tempXMLDocument.XMLData;
-    
-    NSURL * baseURL = NULL;
-    
-    NSString * mimeType = @"image/svg+xml";
+    if (self.rulerWebView.isLoading == NO)
+    {
+        self.rulerWebView.drawsBackground = NO;
+        WebPreferences * rulerWebPreferences = self.rulerWebView.preferences;
+        [rulerWebPreferences setJavaScriptEnabled:NO];
+        [rulerWebPreferences setPlugInsEnabled:NO];
 
-    [(self.rulerWebView).mainFrame loadData:xmlData
-            MIMEType:mimeType	
-            textEncodingName:@"UTF-8" 
-            baseURL:baseURL];
+        NSScrollView * webScrollView = [[[[self.svgWebView mainFrame] frameView] documentView] enclosingScrollView];
+        NSRect documentVisibleRect = webScrollView.documentVisibleRect;
+        CGFloat zoomFactor = self.svgWebView.zoomFactor;
+        if (zoomFactor == 0.0f)
+        {
+            zoomFactor = 1.0f;
+        }
+        CGFloat viewScale = 1.0f / zoomFactor;
+
+        NSRect scaledDocumentVisibleRect = NSMakeRect(documentVisibleRect.origin.x * viewScale, documentVisibleRect.origin.y * viewScale,
+                documentVisibleRect.size.width * viewScale, documentVisibleRect.size.height * viewScale);
+        
+        NSString * svgRulerString = [self svgRulerString];
+        
+        NSData * xmlData = [svgRulerString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSError * xmlError;
+        NSXMLDocument * tempXMLDocument = [[NSXMLDocument alloc] initWithData:xmlData options:NSXMLNodePreserveCDATA error:&xmlError];
+        
+        [self addRulerMarksInXMLDocument:tempXMLDocument visibleRect:scaledDocumentVisibleRect];
+        
+        xmlData = tempXMLDocument.XMLData;
+        
+        NSURL * baseURL = NULL;
+        
+        NSString * mimeType = @"image/svg+xml";
+
+        [(self.rulerWebView).mainFrame loadData:xmlData
+                MIMEType:mimeType	
+                textEncodingName:@"UTF-8" 
+                baseURL:baseURL];
+    }
 }
 
 
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame 
+{
+    //[self.rulerWebView setNeedsDisplay:YES];
+}
 
 
 - (BOOL)isHorizontal
@@ -127,126 +153,161 @@ height=\"64px\" viewBox=\"0 0 64 64\" preserveAspectRatio=\"xMinYMin meet\" styl
 
 
 
-- (void)addRulerMarksInXMLDocument:(NSXMLDocument *)xmlDocument
+- (void)addRulerMarksInXMLDocument:(NSXMLDocument *)xmlDocument visibleRect:(NSRect)visibleRect
 {
     NSXMLElement * svgElement = xmlDocument.rootElement;
     
     CGFloat widthFloat = self.bounds.size.width;
-    if ([self isHorizontal] == YES)
-    {
-        widthFloat = 2000.0f;
-    }
     NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
     [self element:svgElement setAttribute:@"width" value:widthString];
     
     CGFloat heightFloat = self.bounds.size.height;
-    if ([self isHorizontal] == NO)
-    {
-        heightFloat = 2000;
-    }
     NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
     [self element:svgElement setAttribute:@"height" value:heightString];
     
-    NSString * viewBoxString = [NSString stringWithFormat:@"0 0 %f %f", widthFloat, heightFloat];
+    NSString * viewBoxString = [NSString stringWithFormat:@"%f %f %f %f",
+            self.bounds.origin.x, self.bounds.origin.y,
+            self.bounds.size.width, self.bounds.size.height];
     [self element:svgElement setAttribute:@"viewBox" value:viewBoxString];
     
     NSXMLElement * rulerGroupElement = [[NSXMLElement alloc] initWithName:@"g"];
-    
-    for (NSInteger i = 0; i < 2000; i += self.minorMarkInterval)
+
+    NSInteger startMarker = visibleRect.origin.x;
+    NSInteger endMarker = visibleRect.origin.x + visibleRect.size.width + 1;
+    if ([self isHorizontal] == NO)
     {
+        startMarker = visibleRect.origin.y;
+        endMarker = visibleRect.origin.y + visibleRect.size.height + 1;
+    }
+    
+    //NSLog(@"visibleRect=%@", NSStringFromRect(visibleRect));
+    //NSLog(@"startMarker = %ld, endMarker = %ld", startMarker, endMarker);
+    
+    for (NSInteger i = startMarker; i < endMarker; i++)
+    {
+        // For horizontal scrollbar, i is the x coordinate.  For vertical scrollbar, i is the y coordinate
+        
+        BOOL drawMark = NO;
         CGFloat markOffset = self.minorMarkOffset;
-        CGFloat markLength = self.minorMarkLength;
-        CGFloat markWidth = self.minorMarkWidth;
+        CGFloat markLength = 0;
+        CGFloat markWidth = 0;
         
         if ((i % self.majorMarkInterval) == 0)
         {
+            drawMark = YES;
             markOffset = self.majorMarkOffset;
             markLength = self.majorMarkLength;
             markWidth = self.majorMarkWidth;
         }
-        
-        NSXMLElement * rulerMarkElement = [[NSXMLElement alloc] initWithName:@"line"];
-        
-        [self element:rulerMarkElement setAttribute:@"stroke" value:@"black"];
-        [self element:rulerMarkElement setAttribute:@"stroke-width" value:@"1px"];
-        
-        NSInteger iScaled = i;
-        if ((self.svgWebView.zoomFactor != 0.0f) && (self.svgWebView.zoomFactor != 1.0f))
+        else if ((i % self.midMarkInterval) == 0)
         {
-            iScaled = i * self.svgWebView.zoomFactor;
+            drawMark = YES;
+            markOffset = self.midMarkOffset;
+            markLength = self.midMarkLength;
+            markWidth = self.midMarkWidth;
         }
-        
-        if ([self isHorizontal] == YES)
+        else if ((i % self.minorMarkInterval) == 0)
         {
-            //NSString * xString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
-            NSString * xString = [NSString stringWithFormat:@"%ld%@", iScaled, self.rulerUnit];
+            drawMark = YES;
+            markOffset = self.minorMarkOffset;
+            markLength = self.minorMarkLength;
+            markWidth = self.minorMarkWidth;
+        }
+
+        if (drawMark == YES)
+        {
+            CGFloat iTransformed = i;
             
-            NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
-            NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
-        
-            [self element:rulerMarkElement setAttribute:@"x1" value:xString];
-            [self element:rulerMarkElement setAttribute:@"y1" value:beginString];
-            [self element:rulerMarkElement setAttribute:@"x2" value:xString];
-            [self element:rulerMarkElement setAttribute:@"y2" value:endString];
-            
-            if ((i % self.majorMarkInterval) == 0)
+            CGFloat scaleFactor = self.svgWebView.zoomFactor;
+            if (scaleFactor == 0.0f)
             {
-                NSString * fontSizeString = [NSString stringWithFormat:@"%f", self.fontSize];
-                NSString * fontBaselineString = [NSString stringWithFormat:@"%f", self.fontSize - 3];
-
-                NSXMLElement * rulerTextElement = [[NSXMLElement alloc] initWithName:@"text"];
-                
-                [self element:rulerTextElement setAttribute:@"x" value:xString];
-                [self element:rulerTextElement setAttribute:@"y" value:fontBaselineString];
-                [self element:rulerTextElement setAttribute:@"font-size" value:fontSizeString];
-                [self element:rulerTextElement setAttribute:@"alignment" value:@"left"];
-                
-                NSXMLNode * textNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-                textNode.stringValue = [NSString stringWithFormat:@" %ld", i];  // first character is non-breaking space
-                
-                [rulerTextElement addChild:textNode];
-                
-                [rulerGroupElement addChild:rulerTextElement];
+                scaleFactor = 1.0f;
             }
-        }
-        else
-        {
-            //NSString * yString = [NSString stringWithFormat:@"%ld%@", i, self.rulerUnit];
-            NSString * yString = [NSString stringWithFormat:@"%ld%@", iScaled, self.rulerUnit];
-
-            NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
-            NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
-        
-            [self element:rulerMarkElement setAttribute:@"x1" value:beginString];
-            [self element:rulerMarkElement setAttribute:@"y1" value:yString];
-            [self element:rulerMarkElement setAttribute:@"x2" value:endString];
-            [self element:rulerMarkElement setAttribute:@"y2" value:yString];
             
-            if ((i % self.majorMarkInterval) == 0)
+            if ([self isHorizontal] == YES)
             {
-                NSString * fontSizeString = [NSString stringWithFormat:@"%f", self.fontSize];
-                NSString * fontBaselineString = [NSString stringWithFormat:@"%f", self.fontSize - 3];
-
-                NSXMLElement * rulerTextElement = [[NSXMLElement alloc] initWithName:@"text"];
-                
-                [self element:rulerTextElement setAttribute:@"x" value:fontBaselineString];
-                [self element:rulerTextElement setAttribute:@"y" value:yString];
-                [self element:rulerTextElement setAttribute:@"font-size" value:fontSizeString];
-                [self element:rulerTextElement setAttribute:@"text-anchor" value:@"end"];
-                
-                NSString * rotateString = [NSString stringWithFormat:@"rotate(270 %@ %ld)", fontBaselineString, iScaled];
-                [self element:rulerTextElement setAttribute:@"transform" value:rotateString];
-                
-                NSXMLNode * textNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-                textNode.stringValue = [NSString stringWithFormat:@"%ld ", i];  // last character is non-breaking space
-                
-                [rulerTextElement addChild:textNode];
-                
-                [rulerGroupElement addChild:rulerTextElement];
+                iTransformed = (i - visibleRect.origin.x) * scaleFactor;
             }
+            else
+            {
+                iTransformed = (i - visibleRect.origin.y) * scaleFactor;
+            }
+            
+            NSXMLElement * rulerMarkElement = [[NSXMLElement alloc] initWithName:@"line"];
+            
+            [self element:rulerMarkElement setAttribute:@"stroke" value:@"black"];
+            [self element:rulerMarkElement setAttribute:@"stroke-width" value:@"1px"];
+            
+            if ([self isHorizontal] == YES)
+            {
+                NSString * xString = [NSString stringWithFormat:@"%f%@", iTransformed, self.rulerUnit];
+                
+                NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
+                NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
+            
+                [self element:rulerMarkElement setAttribute:@"x1" value:xString];
+                [self element:rulerMarkElement setAttribute:@"y1" value:beginString];
+                [self element:rulerMarkElement setAttribute:@"x2" value:xString];
+                [self element:rulerMarkElement setAttribute:@"y2" value:endString];
+                
+                if ((i % self.majorMarkInterval) == 0)
+                {
+                    NSString * fontSizeString = [NSString stringWithFormat:@"%f", self.fontSize];
+                    NSString * fontBaselineString = [NSString stringWithFormat:@"%f", self.fontSize - 3];
+
+                    NSXMLElement * rulerTextElement = [[NSXMLElement alloc] initWithName:@"text"];
+                    
+                    [self element:rulerTextElement setAttribute:@"x" value:xString];
+                    [self element:rulerTextElement setAttribute:@"y" value:fontBaselineString];
+                    [self element:rulerTextElement setAttribute:@"font-size" value:fontSizeString];
+                    [self element:rulerTextElement setAttribute:@"alignment" value:@"left"];
+                    
+                    NSXMLNode * textNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+                    textNode.stringValue = [NSString stringWithFormat:@" %ld", i];  // first character is non-breaking space
+                    
+                    [rulerTextElement addChild:textNode];
+                    
+                    [rulerGroupElement addChild:rulerTextElement];
+                }
+            }
+            else
+            {
+                NSString * yString = [NSString stringWithFormat:@"%f%@", iTransformed, self.rulerUnit];
+
+                NSString * beginString = [NSString stringWithFormat:@"%fpx", markOffset];
+                NSString * endString = [NSString stringWithFormat:@"%fpx", markOffset + markLength];
+            
+                [self element:rulerMarkElement setAttribute:@"x1" value:beginString];
+                [self element:rulerMarkElement setAttribute:@"y1" value:yString];
+                [self element:rulerMarkElement setAttribute:@"x2" value:endString];
+                [self element:rulerMarkElement setAttribute:@"y2" value:yString];
+                
+                if ((i % self.majorMarkInterval) == 0)
+                {
+                    NSString * fontSizeString = [NSString stringWithFormat:@"%f", self.fontSize];
+                    NSString * fontBaselineString = [NSString stringWithFormat:@"%f", self.fontSize - 3];
+
+                    NSXMLElement * rulerTextElement = [[NSXMLElement alloc] initWithName:@"text"];
+                    
+                    [self element:rulerTextElement setAttribute:@"x" value:fontBaselineString];
+                    [self element:rulerTextElement setAttribute:@"y" value:yString];
+                    [self element:rulerTextElement setAttribute:@"font-size" value:fontSizeString];
+                    [self element:rulerTextElement setAttribute:@"text-anchor" value:@"end"];
+                    
+                    NSString * rotateString = [NSString stringWithFormat:@"rotate(270 %@ %f)", fontBaselineString, iTransformed];
+                    [self element:rulerTextElement setAttribute:@"transform" value:rotateString];
+                    
+                    NSXMLNode * textNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+                    textNode.stringValue = [NSString stringWithFormat:@"%ld ", i];  // last character is non-breaking space
+                    
+                    [rulerTextElement addChild:textNode];
+                    
+                    [rulerGroupElement addChild:rulerTextElement];
+                }
+            }
+            
+            [rulerGroupElement addChild:rulerMarkElement];
         }
-        
-        [rulerGroupElement addChild:rulerMarkElement];
     }
 
     [svgElement addChild:rulerGroupElement];
