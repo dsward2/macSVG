@@ -96,8 +96,8 @@
 
 - (void)webViewSizeChanged:(NSNotification *)notification
 {
-    [macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
     [macSVGDocumentWindowController.verticalRulerView createRulerWebView];
+    [macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
 }
 
 

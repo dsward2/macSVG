@@ -438,8 +438,8 @@
 
 - (void)reloadRulerViews
 {
-    [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
     [self.macSVGDocumentWindowController.verticalRulerView createRulerWebView];
+    [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
 }
 
 //==================================================================================
@@ -1228,8 +1228,8 @@
     }
     else
     {
-        [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
         [self.macSVGDocumentWindowController.verticalRulerView createRulerWebView];
+        [self.macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
     }
 }
 
