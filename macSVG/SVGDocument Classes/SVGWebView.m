@@ -15,8 +15,17 @@
 #import "MacSVGAppDelegate.h"
 #import "SVGDTDData.h"
 #import "ToolSettingsPopoverViewController.h"
+#import "HorizontalRulerView.h"
+#import "VerticalRulerView.h"
 
 @implementation SVGWebView
+
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 - (instancetype)init
 {
@@ -52,10 +61,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-}
-
 
 - (void) awakeFromNib
 {
@@ -72,7 +77,27 @@
             NSStringPboardType, 
             NSFilenamesPboardType, 
             NSTIFFPboardType]];
-    
+
+    self.postsFrameChangedNotifications = YES;
+    self.postsBoundsChangedNotifications = YES;
+
+    WebFrame * mainFrame = self.mainFrame;
+    NSScrollView * webScrollView = [[[mainFrame frameView] documentView] enclosingScrollView];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(webViewSizeChanged:)
+            name:NSViewBoundsDidChangeNotification
+            object:webScrollView];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(webViewSizeChanged:)
+            name:NSViewFrameDidChangeNotification
+            object:webScrollView];
+}
+
+
+- (void)webViewSizeChanged:(NSNotification *)notification
+{
+    [macSVGDocumentWindowController.horizontalRulerView createRulerWebView];
+    [macSVGDocumentWindowController.verticalRulerView createRulerWebView];
 }
 
 

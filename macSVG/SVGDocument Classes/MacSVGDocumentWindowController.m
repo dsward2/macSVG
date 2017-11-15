@@ -1068,7 +1068,7 @@
     [self.xmlAttributesTableController unsetXmlElementForAttributesTable];
     
     [self reloadAllViews];
-    
+        
     MacSVGDocument * macSVGDocument = self.document;
     NSInteger elementCount = [macSVGDocument countAllXMLElements];
     if (elementCount <= 100)

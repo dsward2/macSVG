@@ -1105,6 +1105,8 @@
             self.mainFrameScrollToPoint = NSZeroPoint;
             self.scrollToPointAfterMainFrameLoad = NO;
         }
+
+        [self reloadRulerViews];
     }
 }
 
