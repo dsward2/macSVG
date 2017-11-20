@@ -62,6 +62,8 @@
 
 //- (void)highlightSelectionInClipRect:(NSRect)theClipRect;
 
+- (NSArray *)selectedItemsFlat;
+
 @end
 
 

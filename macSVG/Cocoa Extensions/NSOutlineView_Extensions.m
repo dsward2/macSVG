@@ -69,7 +69,7 @@
 
 
 
-- (NSArray *)selectedItems 
+- (NSArray *)selectedItemsFlat
 {
     // returns a flat array of selected items
     NSMutableArray *items = [NSMutableArray array];
@@ -91,10 +91,14 @@
         */
 
         [selectedRows enumerateIndexesUsingBlock:^(NSUInteger i, BOOL *stop) {
+        
             NSXMLNode * aItemNode = [self itemAtRow:i];
         
             if (aItemNode.kind == NSXMLElementKind)
             {
+                //NSXMLElement * parentElement = (NSXMLElement *)[aItemNode parent];
+                //NSInteger parentRow = [self rowForItem:parentElement];
+                
                 [items addObject:aItemNode];
             }
         }];
@@ -236,53 +240,54 @@
         // workaround for NSXMLOutlineView problem when click-selecting on a child item in an active selection path
         // in XMLOutlineController, outlineView:writeItems:toPasteboard: may reselect the items
 
-        BOOL doDeselectAll = YES;
-
-        XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
-        MacSVGDocumentWindowController * macSVGDocumentWindowController = xmlOutlineController.macSVGDocumentWindowController;
-        
-        xmlOutlineController.holdSelectedItems = NULL;
-
-        if (macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
-        {
-            NSPoint globalLocation = theEvent.locationInWindow;
-            NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
-            NSInteger clickedRow = [self rowAtPoint:localLocation];
-        
-            NSXMLNode * aRowItem = [self itemAtRow:clickedRow];
-            
-            if (aRowItem.kind == NSXMLElementKind)
-            {
-                NSXMLElement * aElement = (NSXMLElement *)aRowItem;
-                
-                NSString * elementName = aElement.name;
-                if ([elementName isEqualToString:@"path"])
-                {
-                    doDeselectAll = NO;
-                }
-            }
-        }
-
-        if (macSVGDocumentWindowController.currentToolMode == toolModeText)
-        {
-            doDeselectAll = NO;
-        }
-
-        if (macSVGDocumentWindowController.currentToolMode == toolModeImage)
-        {
-            doDeselectAll = NO;
-        }
-
         if (theEvent.clickCount == 2)
         {
             // A double-click was detected
+
+            BOOL doDeselectAll = YES;
+
+            XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
+            MacSVGDocumentWindowController * macSVGDocumentWindowController = xmlOutlineController.macSVGDocumentWindowController;
             
+            xmlOutlineController.holdSelectedItems = NULL;
+
+            if (macSVGDocumentWindowController.currentToolMode == toolModeCrosshairCursor)
+            {
+                NSPoint globalLocation = theEvent.locationInWindow;
+                NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
+                NSInteger clickedRow = [self rowAtPoint:localLocation];
+            
+                NSXMLNode * aRowItem = [self itemAtRow:clickedRow];
+                
+                if (aRowItem.kind == NSXMLElementKind)
+                {
+                    NSXMLElement * aElement = (NSXMLElement *)aRowItem;
+                    
+                    NSString * elementName = aElement.name;
+                    if ([elementName isEqualToString:@"path"])
+                    {
+                        doDeselectAll = NO;
+                    }
+                }
+            }
+
+            if (macSVGDocumentWindowController.currentToolMode == toolModeText)
+            {
+                doDeselectAll = NO;
+            }
+
+            if (macSVGDocumentWindowController.currentToolMode == toolModeImage)
+            {
+                doDeselectAll = NO;
+            }
+
+        
             if (doDeselectAll == YES)
             {
                 // Workaround an issue when selection changes from a group of items to a single item within the group
                 // see outlineView:writeItems:toPasteboard: for more info
             
-                xmlOutlineController.holdSelectedItems = [self selectedItems];  // these items should be reselected if dragging occurs
+                xmlOutlineController.holdSelectedItems = [self selectedItemsFlat];  // these items should be reselected if dragging occurs
             
                 XMLAttributesTableController * xmlAttributesTableController = xmlOutlineController.macSVGDocumentWindowController.xmlAttributesTableController;
                 [xmlAttributesTableController removeAllTableRows];      // to reduce animation

@@ -174,7 +174,7 @@
     
     //[xmlOutlineView expandItem:NULL expandChildren:YES];
     
-    NSArray * selectedItems = [self.xmlOutlineView selectedItems];
+    NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
     
     for (NSXMLNode * aXMLNode in selectedItems) 
     {
@@ -186,7 +186,7 @@
 
 - (NSArray *)selectedNodes 
 { 
-    return [self.xmlOutlineView selectedItems]; 
+    return [self.xmlOutlineView selectedItemsFlat];
 }
 
 //==================================================================================
@@ -316,7 +316,7 @@
 {
     NSMutableArray * resultArray = [NSMutableArray array];
     
-    NSArray * selectedItemsArray = [self.xmlOutlineView selectedItems];
+    NSArray * selectedItemsArray = [self.xmlOutlineView selectedItemsFlat];
     
     if (selectedItemsArray != NULL)
     {
@@ -1055,7 +1055,7 @@
 
 - (NSArray *)selectedItems
 {
-    NSArray * selectedItemsArray = [self.xmlOutlineView selectedItems];
+    NSArray * selectedItemsArray = [self.xmlOutlineView selectedItemsFlat];
     
     return selectedItemsArray;
 }
@@ -1328,7 +1328,7 @@
 
 - (IBAction)editXMLTextAction:(id)sender
 {
-    NSArray * selectedItems = [self.xmlOutlineView selectedItems];
+    NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
     
     NSInteger selectedItemsCount = selectedItems.count;
 
@@ -1648,7 +1648,7 @@
 
 - (void)nudgeSelectedItemsWithDeltaX:(CGFloat)deltaX deltaY:(CGFloat)deltaY
 {
-    //NSArray * selectedItems = [self.xmlOutlineView selectedItems];
+    //NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
 
     NSArray * selectedElementsDictionariesArray =
             [self.macSVGDocumentWindowController.svgXMLDOMSelectionManager.selectedElementsManager selectedElementsArray];
@@ -2314,7 +2314,7 @@
 {
     NSInteger selectedRow = self.xmlOutlineView.selectedRow;
 
-    NSArray * selectedItems = [self.xmlOutlineView selectedItems];
+    NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
     if (selectedItems.count > 0)
     {
         NSXMLNode * firstSelectedItem = selectedItems[0];
@@ -2518,7 +2518,46 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
-    self.draggedNodes = items;
+    //self.draggedNodes = items;
+    
+    NSMutableArray * newDraggedNodes = [NSMutableArray array];
+    for (NSXMLNode * aNode in items)
+    {
+        if (aNode.kind == NSXMLElementKind)
+        {
+            NSXMLNode * parentNode = aNode.parent;
+            
+            BOOL parentFound = NO;
+            BOOL continueSearch = YES;
+            
+            while (continueSearch == YES)
+            {
+                if (parentNode == NULL)
+                {
+                    continueSearch = NO;
+                }
+                else
+                {
+                    NSInteger parentIndex = [newDraggedNodes indexOfObject:parentNode];
+                    
+                    if (parentIndex != NSNotFound)
+                    {
+                        parentFound = YES;
+                        continueSearch = NO;
+                    }
+                }
+                
+                parentNode = parentNode.parent;
+            }
+            
+            if (parentFound == NO)
+            {
+                [newDraggedNodes addObject:aNode];
+            }
+        }
+    }
+    
+    self.draggedNodes = newDraggedNodes;
     
     /*
     if (self.holdSelectedItems != NULL)
@@ -2546,12 +2585,14 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     [pboard setData:[NSData data] forType:XML_OUTLINE_PBOARD_TYPE]; 
     
     NSMutableString * nodesString = [NSMutableString string];
+    
     //for (NSXMLNode * aNode in items)
     for (NSXMLNode * aNode in self.draggedNodes)
     {
         NSString * nodeXml = [aNode XMLStringWithOptions:NSXMLNodePreserveCDATA];
         [nodesString appendString:nodeXml];
     }
+    
     [pboard setString:nodesString forType:NSStringPboardType];
             
     // Put the promised type we handle on the pasteboard.
