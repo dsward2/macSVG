@@ -1991,7 +1991,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         }
     }
     
-    NSArray * sourceNodes = nil;
+    NSMutableArray * sourceNodes = NULL;
     
     // If the source was ourselves, we use our dragged nodes.
     
@@ -2015,7 +2015,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     if ((draggingSource == xmlOutlineView) && (availableType != NULL))
     {
         // Drag is originating from ourselves. Use existing item on the pasteboard
-        sourceNodes = xmlOutlineController.draggedNodes;
+        sourceNodes = [xmlOutlineController.draggedNodes mutableCopy];
     } 
     else 
     {
@@ -2371,20 +2371,28 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             
             NSXMLElement * rootElement = [tempDocument rootElement];
             
-            // retrieve the dragged nodes
-            NSXMLElement * newNode = (id)[rootElement childAtIndex:0];
-
-            [newNode detach];
+            NSMutableArray * newSourceNodes = [NSMutableArray array];
             
-            if (newNode != NULL)
+            NSArray * rootChildren = [rootElement.children copy];
+            
+            // retrieve the dragged nodes
+            for (NSXMLElement * newNode in rootChildren)
             {
-                [self assignNewMacsvgidsForNode:newNode];
+                [newNode detach];
                 
-                [self assignElementIDIfUnassigned:newNode];
-                        
-                // Finally, add it to the array of dragged items to insert
-                sourceNodes = @[newNode];
+                if (newNode != NULL)
+                {
+                    [self assignNewMacsvgidsForNode:newNode];
+                    
+                    [self assignElementIDIfUnassigned:newNode];
+                            
+                    // Finally, add it to the array of dragged items to insert
+                    //sourceNodes = @[newNode];
+                    [newSourceNodes addObject:newNode];
+                }
             }
+            
+            sourceNodes = newSourceNodes;
         }
     }
     
