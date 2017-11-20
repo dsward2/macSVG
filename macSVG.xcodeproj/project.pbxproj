@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0262AE1FBD103600245A94 /* SVGIconView.m */; };
 		0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8881D59ADC700265FA2 /* PathFunctions.m */; };
 		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
@@ -634,7 +635,6 @@
 		0E8DFD7D1D55C6ED00870B72 /* types-dom-svgstringlist-01-f.svg in Copy SVG Test Suite Files */ = {isa = PBXBuildFile; fileRef = 0E527C821D55C41F002AB772 /* types-dom-svgstringlist-01-f.svg */; };
 		0E8DFD7E1D55C6ED00870B72 /* types-dom-svgtransformable-01-f.svg in Copy SVG Test Suite Files */ = {isa = PBXBuildFile; fileRef = 0E527C831D55C41F002AB772 /* types-dom-svgtransformable-01-f.svg */; };
 		0E90410A1D51BB99004C1826 /* SVGIconTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9041091D51BB99004C1826 /* SVGIconTableHeaderCell.m */; };
-		0E90410D1D5309C4004C1826 /* SVGIconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90410C1D5309C4004C1826 /* SVGIconCell.m */; };
 		0E96379F178671380011861A /* SVGHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E963786178625850011861A /* SVGHTTPConnection.m */; };
 		0E9637A0178671440011861A /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96366517861D350011861A /* HTTPConnection.m */; };
 		0E9637A1178688CF0011861A /* HTTPDynamicFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E96367917861D350011861A /* HTTPDynamicFileResponse.m */; };
@@ -681,7 +681,6 @@
 		0EB6637D14286398003723F0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB6637C14286398003723F0 /* Cocoa.framework */; };
 		0EB6638A14286398003723F0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB6638914286398003723F0 /* main.m */; };
 		0EB663A8142865EB003723F0 /* MacSVGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663A7142865EB003723F0 /* MacSVGAppDelegate.m */; };
-		0EB663AE142865F4003723F0 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663AB142865F4003723F0 /* ImageAndTextCell.m */; };
 		0EB663AF142865F4003723F0 /* NSOutlineView_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */; };
 		0EB663DE1428666B003723F0 /* SvgElementsDictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663D01428666B003723F0 /* SvgElementsDictionary.xml */; };
 		0EB663DF1428666B003723F0 /* Untitled.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0EB663D21428666B003723F0 /* Untitled.svg */; };
@@ -1646,6 +1645,8 @@
 
 /* Begin PBXFileReference section */
 		0E00EBE31467E5BE0051B0C4 /* SVGWebKitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGWebKitController.h; sourceTree = "<group>"; };
+		0E0262AD1FBD103600245A94 /* SVGIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGIconView.h; sourceTree = "<group>"; };
+		0E0262AE1FBD103600245A94 /* SVGIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGIconView.m; sourceTree = "<group>"; };
 		0E06F8871D59ADC700265FA2 /* PathFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PathFunctions.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E06F8881D59ADC700265FA2 /* PathFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PathFunctions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E0799711D8A53C9001064D5 /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacSVGPluginCallbacks.h; sourceTree = "<group>"; };
@@ -2332,8 +2333,6 @@
 		0E8C6E971D5758AD0088CA7B /* text_on_an_animated_path.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = text_on_an_animated_path.svg; sourceTree = "<group>"; };
 		0E9041081D51BB99004C1826 /* SVGIconTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGIconTableHeaderCell.h; sourceTree = "<group>"; };
 		0E9041091D51BB99004C1826 /* SVGIconTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGIconTableHeaderCell.m; sourceTree = "<group>"; };
-		0E90410B1D5309C4004C1826 /* SVGIconCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGIconCell.h; sourceTree = "<group>"; };
-		0E90410C1D5309C4004C1826 /* SVGIconCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGIconCell.m; sourceTree = "<group>"; };
 		0E96365C17861D350011861A /* DDData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDData.h; sourceTree = "<group>"; };
 		0E96365D17861D350011861A /* DDData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDData.m; sourceTree = "<group>"; };
 		0E96365E17861D350011861A /* DDNumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDNumber.h; sourceTree = "<group>"; };
@@ -2438,10 +2437,8 @@
 		0EB6638914286398003723F0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EB663A6142865EB003723F0 /* MacSVGAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacSVGAppDelegate.h; sourceTree = "<group>"; };
 		0EB663A7142865EB003723F0 /* MacSVGAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacSVGAppDelegate.m; sourceTree = "<group>"; };
-		0EB663AA142865F4003723F0 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
-		0EB663AB142865F4003723F0 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
-		0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutlineView_Extensions.h; sourceTree = "<group>"; };
-		0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NSOutlineView_Extensions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSOutlineView_Extensions.h; path = "../Cocoa Extensions/NSOutlineView_Extensions.h"; sourceTree = "<group>"; };
+		0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = NSOutlineView_Extensions.m; path = "../Cocoa Extensions/NSOutlineView_Extensions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EB663D01428666B003723F0 /* SvgElementsDictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SvgElementsDictionary.xml; sourceTree = "<group>"; };
 		0EB663D21428666B003723F0 /* Untitled.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Untitled.svg; sourceTree = "<group>"; };
 		0EB663D31428666B003723F0 /* Untitled.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Untitled.xhtml; sourceTree = "<group>"; };
@@ -3557,6 +3554,8 @@
 				0EB663E9142866C4003723F0 /* XMLOutlineController.m */,
 				0EEE3B0F17BD4EDB0040846F /* XMLOutlineRowView.h */,
 				0EEE3B1017BD4EDB0040846F /* XMLOutlineRowView.m */,
+				0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */,
+				0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */,
 			);
 			name = "Outline View";
 			sourceTree = "<group>";
@@ -3643,8 +3642,8 @@
 				0EACF1DB1D4EE9F900CAB71E /* MacSVGIconButton.m */,
 				0E9041081D51BB99004C1826 /* SVGIconTableHeaderCell.h */,
 				0E9041091D51BB99004C1826 /* SVGIconTableHeaderCell.m */,
-				0E90410B1D5309C4004C1826 /* SVGIconCell.h */,
-				0E90410C1D5309C4004C1826 /* SVGIconCell.m */,
+				0E0262AD1FBD103600245A94 /* SVGIconView.h */,
+				0E0262AE1FBD103600245A94 /* SVGIconView.m */,
 			);
 			name = "Utility Views";
 			sourceTree = "<group>";
@@ -3816,11 +3815,11 @@
 		0EA2B4B41D9C96FC00100631 /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */,
 				0EA2B4B51D9C96FC00100631 /* AppIcons.iconset */,
 				0EA2B4B71D9C96FC00100631 /* Credits.rtf */,
 				0EA2B4B91D9C96FC00100631 /* DocumentationLinks.plist */,
 				0EA2B4BB1D9C96FC00100631 /* InfoPlist.strings */,
-				0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */,
 				0EA2B4BF1D9C96FC00100631 /* MainMenu.xib */,
 				0EA2B4C11D9C96FC00100631 /* Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg */,
 				0EA2B4C31D9C96FC00100631 /* TextDocument.xib */,
@@ -3987,10 +3986,6 @@
 		0EB663A9142865F4003723F0 /* Cocoa Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0EB663AA142865F4003723F0 /* ImageAndTextCell.h */,
-				0EB663AB142865F4003723F0 /* ImageAndTextCell.m */,
-				0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */,
-				0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */,
 			);
 			path = "Cocoa Extensions";
 			sourceTree = "<group>";
@@ -4619,7 +4614,6 @@
 				0EDDC38C178DEE26003B014D /* WebKitInterface.mm in Sources */,
 				0EB6638A14286398003723F0 /* main.m in Sources */,
 				0EB663A8142865EB003723F0 /* MacSVGAppDelegate.m in Sources */,
-				0EB663AE142865F4003723F0 /* ImageAndTextCell.m in Sources */,
 				0E9637BB17871A2F0011861A /* SVGHTTPResponse.m in Sources */,
 				0EB663AF142865F4003723F0 /* NSOutlineView_Extensions.m in Sources */,
 				0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */,
@@ -4678,6 +4672,7 @@
 				0E9637A7178689440011861A /* HTTPDataResponse.m in Sources */,
 				0E82B1351D730A2E005D0634 /* DDTTYLogger.m in Sources */,
 				0E753F511F9FD5660050AAB6 /* RELEASE-NOTES.md in Sources */,
+				0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */,
 				0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */,
 				0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */,
 				0E4EA2E41D40721F00C5145C /* SVGHelpManager.m in Sources */,
@@ -4692,7 +4687,6 @@
 				0E7F9A6D14B032F0005351BE /* AttributeEditorPlugInController.m in Sources */,
 				0E7F9A7014B034ED005351BE /* ValidAttributesController.m in Sources */,
 				0EEE3ABA17B9F1790040846F /* SCPDownload.m in Sources */,
-				0E90410D1D5309C4004C1826 /* SVGIconCell.m in Sources */,
 				0EEE3ABD17BA8B1E0040846F /* CheckeredBackgroundView.m in Sources */,
 				0E10CC0414B11F550072B18D /* TextEditorController.m in Sources */,
 				0E47A9D814B3986500AC9A28 /* EmbeddedFontEncoder.m in Sources */,

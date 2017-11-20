@@ -1,5 +1,5 @@
 //
-//  SVGIconCell.h
+//  SVGIconTableHeaderCell.h
 //  macSVG
 //
 //  Created by Douglas Ward on 8/3/16.

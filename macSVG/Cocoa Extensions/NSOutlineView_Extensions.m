@@ -341,7 +341,7 @@
     [clipRectPath fill];
 }
 
-
+/*
 - (void)highlightSelectionInClipRect:(NSRect)theClipRect
 {
     self.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
@@ -416,7 +416,7 @@
         [path fill];
     }
 }
-
+*/
 
 
 - (IBAction)selectNone:(id)sender

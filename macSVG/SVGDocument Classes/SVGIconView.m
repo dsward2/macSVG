@@ -1,82 +1,34 @@
 //
-//  SVGIconCell.m
+//  SVGIconView.m
 //  macSVG
 //
-//  Created by Douglas Ward on 8/4/16.
+//  Created by Douglas Ward on 11/15/17.
+//  Copyright © 2017 ArkPhone, LLC. All rights reserved.
 //
-//
 
-#import "SVGIconCell.h"
+#import "SVGIconView.h"
 
-@implementation SVGIconCell
+@implementation SVGIconView
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-    }
-    return self;
-}
-
-
-
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if (self) {
-    }
-    return self;
-}
-
-
-
-- (instancetype)initImageCell:(NSImage *)anImage
-{
-    self = [super initImageCell:anImage];
-    if (self) {
-    }
-    return self;
-}
-
-
-
-- (instancetype)initTextCell:(NSString *)aString
-{
-    self = [super initTextCell:aString];
-    if (self) {
-    }
-    return self;
-}
-
-
-- (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
-{
-	//[super drawInteriorWithFrame:cellFrame inView:controlView];
+- (void)drawRect:(NSRect)dirtyRect {
+    [super drawRect:dirtyRect];
     
-    NSInteger objectValue = [self.objectValue integerValue];
-    
-    switch (objectValue)
+    // Drawing code here.
+    if ([self.identifier isEqualToString:@"target"] == YES)
     {
-        case 0:
-        {
-            [self drawFolderIcon:cellFrame];
-            break;
-        }
-        case 1:
-        {
-            [self drawTargetIcon:cellFrame];
-            break;
-        }
-        case 2:
-        {
-            [self drawTextIcon:cellFrame];
-            break;
-        }
-        default:
-        {
-            [self drawFolderIcon:cellFrame];
-            break;
-        }
+        [self drawTargetIcon:self.bounds];
+    }
+    else if ([self.identifier isEqualToString:@"text"] == YES)
+    {
+        [self drawTextIcon:self.bounds];
+    }
+    else if ([self.identifier isEqualToString:@"folder"] == YES)
+    {
+        [self drawFolderIcon:self.bounds];
+    }
+    else
+    {
+        [self drawFolderIcon:self.bounds];
     }
 }
 
@@ -88,7 +40,7 @@
 - (void)drawFolderIcon:(NSRect)cellFrame {
 	// ============================================
 	// Common settings
-	BOOL flipImage = NO;
+	BOOL flipImage = YES;
 	BOOL centerImage = YES;
 	CGFloat translateX = 0.0f;
 	CGFloat translateY = 0.0f;
@@ -272,7 +224,7 @@
 	//[rectPath23 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
 	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
-	BOOL flipImage = NO;
+	BOOL flipImage = YES;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(10.000000, 0.000000, 568.000000, 680.000000);
 	CGFloat hViewScale = cellFrame.size.width / (webBBox.size.width);
@@ -360,7 +312,8 @@
 - (void)drawTargetIcon:(NSRect)cellFrame {
 	// ============================================
 	// Common settings
-	BOOL flipImage = NO;
+    
+	BOOL flipImage = YES;
 	BOOL centerImage = YES;
 	CGFloat translateX = 0.0f;
 	CGFloat translateY = 0.0f;

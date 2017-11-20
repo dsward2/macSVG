@@ -34,6 +34,11 @@
 @property(strong) IBOutlet NSTextField * editErrorTextField;
 @property(strong) IBOutlet NSTextView * xmlTextEditView;
 
+@property (weak) IBOutlet NSTableColumn * isVisibleColumn;
+@property (weak) IBOutlet NSTableColumn * isLockedColumn;
+@property (weak) IBOutlet NSTableColumn * itemKindColumn;
+@property (weak) IBOutlet NSTableColumn * elementNameColumn;
+
 @property (strong) NSArray * holdSelectedItems;
 
 @property(assign) BOOL draggingActive;

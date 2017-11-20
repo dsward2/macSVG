@@ -275,18 +275,18 @@
                                                                                     <outlet property="delegate" destination="-2" id="3tr-ap-7qI"/>
                                                                                 </connections>
                                                                             </searchField>
-                                                                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="100219">
+                                                                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="100219">
                                                                                 <rect key="frame" x="0.0" y="29" width="190" height="308"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                <clipView key="contentView" drawsBackground="NO" id="Y12-aM-QnN">
+                                                                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Y12-aM-QnN">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="190" height="308"/>
                                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                     <subviews>
-                                                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" headerView="100567" indentationPerLevel="16" outlineTableColumn="100226" id="100223" userLabel="XMLOutlineView" customClass="XMLOutlineView">
+                                                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" autosaveColumns="NO" rowHeight="16" headerView="100567" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="16" outlineTableColumn="100226" id="100223" userLabel="XMLOutlineView" customClass="XMLOutlineView">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="190" height="291"/>
                                                                                             <autoresizingMask key="autoresizingMask"/>
-                                                                                            <size key="intercellSpacing" width="2" height="3"/>
-                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <size key="intercellSpacing" width="2" height="0.0"/>
+                                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                             <tableColumns>
                                                                                                 <tableColumn identifier="IsVisibleColumn" width="18" minWidth="18" maxWidth="18" id="100225">
@@ -295,14 +295,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <buttonCell key="dataCell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" controlSize="small" inset="2" id="Ubs-yg-aiM">
-                                                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                                                        <font key="font" metaFont="smallSystem"/>
-                                                                                                        <connections>
-                                                                                                            <action selector="visibilityCheckboxAction:" target="100214" id="nQi-Bh-j6L"/>
-                                                                                                        </connections>
-                                                                                                    </buttonCell>
-                                                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                                    <customCell key="dataCell" alignment="left" id="Z58-wv-eGx" customClass="SVGIconTableHeaderCell"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="IsLockedColumn" width="18" minWidth="18" maxWidth="18" id="100224">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Lk">
@@ -310,11 +303,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="center" controlSize="small" imageScaling="proportionallyDown" inset="2" id="100231">
-                                                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                                                        <font key="font" metaFont="smallSystem"/>
-                                                                                                    </buttonCell>
-                                                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                                    <customCell key="dataCell" alignment="left" id="aJ7-6F-9gb" customClass="SVGIconTableHeaderCell"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="IconColumn" editable="NO" width="18" minWidth="18" maxWidth="18" id="100252">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="§">
@@ -322,8 +311,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <customCell key="dataCell" controlSize="small" alignment="left" id="drC-4S-srn" customClass="SVGIconCell"/>
-                                                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                                    <customCell key="dataCell" alignment="left" id="kbp-06-tdq"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="ElementNameColumn" editable="NO" width="128" minWidth="16" maxWidth="1000" id="100226">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Element">
@@ -331,8 +319,8 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <textFieldCell key="dataCell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" alignment="left" title="Text Cell" usesSingleLineMode="YES" id="100229" customClass="ImageAndTextCell">
-                                                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" alignment="left" title="Text Cell" usesSingleLineMode="YES" id="100229" customClass="ImageAndTextCell">
+                                                                                                        <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                                     </textFieldCell>
@@ -891,7 +879,7 @@
                 <outlet property="delegate" destination="-2" id="100050"/>
                 <outlet property="initialFirstResponder" destination="100223" id="xdn-Qu-jqZ"/>
             </connections>
-            <point key="canvasLocation" x="566" y="437"/>
+            <point key="canvasLocation" x="703" y="438"/>
         </window>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Trh-Of-KTR" userLabel="SVGXMLDOMSelectionManager" customClass="SVGXMLDOMSelectionManager">
@@ -906,6 +894,10 @@
             <connections>
                 <outlet property="domSelectionControlsManager" destination="qWY-VJ-0Fx" id="4XI-fe-Tvh"/>
                 <outlet property="editErrorTextField" destination="gZh-Gv-zcc" id="EOR-I6-hFa"/>
+                <outlet property="elementNameColumn" destination="100226" id="JFz-xz-OjC"/>
+                <outlet property="isLockedColumn" destination="100224" id="O3o-NJ-H2F"/>
+                <outlet property="isVisibleColumn" destination="100225" id="kED-Qa-IcA"/>
+                <outlet property="itemKindColumn" destination="100252" id="dUv-lR-GJW"/>
                 <outlet property="macSVGDocumentWindowController" destination="-2" id="564-pB-YEa"/>
                 <outlet property="selectedElementsInfoPopover" destination="z9z-gA-nbW" id="T4V-bd-lN1"/>
                 <outlet property="selectedElementsInfoPopoverViewController" destination="BYe-8X-G6e" id="aza-nD-uK7"/>

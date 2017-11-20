@@ -10,20 +10,41 @@
 
 @implementation XMLOutlineRowView
 
-- (instancetype)initWithFrame:(NSRect)frame
+- (NSBackgroundStyle)interiorBackgroundStyle
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+    return NSBackgroundStyleLight;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+
+- (NSTableViewSelectionHighlightStyle)selectionHighlightStyle
 {
-	[super drawRect:dirtyRect];
-	
-    // Drawing code here.
+    //return NSTableViewSelectionHighlightStyleSourceList;
+    //return NSTableViewSelectionHighlightStyleRegular;
+    return NSTableViewSelectionHighlightStyleNone;
 }
+
+-(void)setSelected:(BOOL)selected{
+
+    [super setSelected:selected];
+    [self setNeedsDisplay:YES];
+
+}
+
+- (void)drawBackgroundInRect:(NSRect)dirtyRect
+{
+    // if ([[aTableView selectedRowIndexes] containsIndex:rowIndex])
+
+    if (self.selected == YES)
+    {
+        [[NSColor lightGrayColor] set];
+        NSRectFill(dirtyRect);;
+    }
+    else
+    {
+        [[NSColor whiteColor] set];
+        NSRectFill(dirtyRect);
+    }
+}
+
 
 @end

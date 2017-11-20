@@ -1846,7 +1846,7 @@ function deltaTransformPoint(matrix, x, y) {
     {
         [domElement setAttribute:@"visibility" value:visibility];
     }
-    else if ([domElementName isEqualToString:@"circle"] == YES)
+    else if ([domElementName isEqualToString:@"ellipse"] == YES)
     {
         [domElement setAttribute:@"visibility" value:visibility];
     }
