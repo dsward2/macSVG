@@ -2520,6 +2520,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 {
     self.draggedNodes = items;
     
+    /*
     if (self.holdSelectedItems != NULL)
     {
         // workaround NSOutlineView issue where selecting an item within an active selection path delayed for a few seconds
@@ -2536,6 +2537,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         
         self.holdSelectedItems = NULL;
     }
+    */
 
     // Provide data for our custom type, and simple NSStrings.
     [pboard declareTypes:@[XML_OUTLINE_PBOARD_TYPE, NSStringPboardType, NSFilesPromisePboardType] owner:self];
@@ -3119,12 +3121,34 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 //	outlineView:draggingSession:willBeginAtPoint:forItems:
 //==================================================================================
 
+
+/* Dragging Source Support - Optional. Implement this method know when the dragging session is about to begin and to potentially modify the dragging session. 'draggedItems' is an array of items that we dragged, excluding items that were not dragged due to outlineView:pasteboardWriterForItem: returning nil. This array will directly match the pasteboard writer array used to begin the dragging session with [NSView beginDraggingSessionWithItems:event:source]. Hence, the order is deterministic, and can be used in -outlineView:acceptDrop:item:childIndex: when enumerating the NSDraggingInfo's pasteboard classes. 
+ */
+
 - (void)outlineView:(NSOutlineView *)outlineView
     draggingSession:(NSDraggingSession *)session
    willBeginAtPoint:(NSPoint)screenPoint
            forItems:(NSArray *)draggedItems
 {
     draggingOutlineItems = YES;
+
+    if (self.holdSelectedItems != NULL)
+    {
+        // workaround NSOutlineView issue where selecting an item within an active selection path delayed for a few seconds
+        //self.draggedNodes = self.holdSelectedItems;
+        //[outlineView setSelectedItems:self.draggedNodes];
+        
+        NSMutableArray * restoreDraggedNodes = [NSMutableArray array];
+        for (NSXMLElement * aDraggedElement in self.draggedNodes)
+        {
+            [self selectItemsForCurrentElement:aDraggedElement restoreDraggedNodes:restoreDraggedNodes];
+        }
+        self.draggedNodes = restoreDraggedNodes;
+        [outlineView setSelectedItems:self.holdSelectedItems];
+        
+        self.holdSelectedItems = NULL;
+    }
+
 }
 
 //==================================================================================

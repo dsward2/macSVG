@@ -233,6 +233,9 @@
     {
         // shift key or command key are not pressed
         
+        // workaround for NSXMLOutlineView problem when click-selecting on a child item in an active selection path
+        // in XMLOutlineController, outlineView:writeItems:toPasteboard: may reselect the items
+
         BOOL doDeselectAll = YES;
 
         XMLOutlineController * xmlOutlineController = (XMLOutlineController *)self.delegate;
@@ -270,17 +273,22 @@
             doDeselectAll = NO;
         }
 
-        if (doDeselectAll == YES)
+        if (theEvent.clickCount == 2)
         {
-            // workaround for NSXMLOutlineView problem when click-selecting on a child item in an active selection path
-            // in XMLOutlineController, outlineView:writeItems:toPasteboard: may reselect the items
+            // A double-click was detected
             
-            xmlOutlineController.holdSelectedItems = [self selectedItems];  // these items should be reselected if dragging occurs
-        
-            XMLAttributesTableController * xmlAttributesTableController = xmlOutlineController.macSVGDocumentWindowController.xmlAttributesTableController;
-            [xmlAttributesTableController removeAllTableRows];      // to reduce animation
+            if (doDeselectAll == YES)
+            {
+                // Workaround an issue when selection changes from a group of items to a single item within the group
+                // see outlineView:writeItems:toPasteboard: for more info
             
-            [self deselectAll:self];
+                xmlOutlineController.holdSelectedItems = [self selectedItems];  // these items should be reselected if dragging occurs
+            
+                XMLAttributesTableController * xmlAttributesTableController = xmlOutlineController.macSVGDocumentWindowController.xmlAttributesTableController;
+                [xmlAttributesTableController removeAllTableRows];      // to reduce animation
+                
+                [self deselectAll:self];
+            }
         }
 
         [super mouseDown:theEvent];
