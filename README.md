@@ -2,7 +2,7 @@
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
-**October 25, 2017 – [macSVG v1.1.0 is released](https://github.com/dsward2/macSVG/releases/tag/v1.1.0), with improved editing features for nested transformations, a new center-of-rotation control handle for editing rotate transforms, and a new plugin to generate a &lt;path&gt; element based on a user-specified font and text string.**
+**November 20, 2017 – [macSVG v1.1.1 is released](https://github.com/dsward2/macSVG/releases/), with improved SVG web view rulers, improved drag-and-drop function in the XML outline view, and various bug fixes.**
 
 <hr>
 
