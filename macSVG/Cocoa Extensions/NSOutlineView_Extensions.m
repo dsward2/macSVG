@@ -68,6 +68,11 @@
 @implementation NSOutlineView(MyExtensions)
 
 
+- (BOOL)validateProposedFirstResponder:(NSResponder *)responder forEvent:(NSEvent *)event
+{
+    return YES;
+}
+
 
 - (NSArray *)selectedItemsFlat
 {
@@ -107,6 +112,10 @@
     return items;
 }
 
+- (NSArray *)selectedItems
+{
+    return [self selectedItemsFlat];
+}
 
 
 

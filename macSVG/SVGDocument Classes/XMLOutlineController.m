@@ -569,6 +569,194 @@
 }
 
 
+
+
+//==================================================================================
+//	parseTransformAttribute
+//==================================================================================
+
+- (NSMutableArray *)parseTransformAttribute:(NSString *)transformAttribute
+{
+    NSMutableArray * resultArray = [NSMutableArray array];
+
+    NSArray * transformComponentsArray = [transformAttribute componentsSeparatedByString:@")"];
+    if (transformComponentsArray.count > 0)
+    {
+        for (NSString * aTransform in transformComponentsArray)
+        {
+            NSArray * aTransformComponentsArray = [aTransform componentsSeparatedByString:@"("];
+            if (aTransformComponentsArray.count == 2)
+            {
+                NSCharacterSet * whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
+                NSString * untrimmedCommandString = aTransformComponentsArray[0];
+                NSString * commandString = [untrimmedCommandString 
+                        stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+
+                BOOL validCommand = NO;
+                //NSUInteger expectedParameters = 0;
+                
+                if ([commandString isEqualToString:@"translate"] == YES)
+                {
+                    validCommand = YES;
+                }
+                else if ([commandString isEqualToString:@"scale"] == YES)
+                {
+                    validCommand = YES;
+                }
+                else if ([commandString isEqualToString:@"rotate"] == YES)
+                {
+                    validCommand = YES;
+                }
+                else if ([commandString isEqualToString:@"matrix"] == YES)
+                {
+                    validCommand = YES;
+                }
+                else if ([commandString isEqualToString:@"skewX"] == YES)
+                {
+                    validCommand = YES;
+                }
+                else if ([commandString isEqualToString:@"skewY"] == YES)
+                {
+                    validCommand = YES;
+                }
+                
+                if (validCommand == YES)
+                {
+                    NSString * untrimmedValuesString = aTransformComponentsArray[1];
+                    NSString * valuesStringWithCommas = [untrimmedValuesString 
+                            stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+                    NSMutableString * valuesString = [[NSMutableString alloc] 
+                            initWithString:valuesStringWithCommas];
+                    NSRange valuesStringRange = NSMakeRange(0, valuesString.length);
+                    NSUInteger replaceCount = 
+                            [valuesString replaceOccurrencesOfString:@"," withString:@" " 
+                            options:0 range:valuesStringRange];
+                    #pragma unused(replaceCount)
+                    
+                    NSArray * valuesArray = [valuesString componentsSeparatedByString:@" "];
+                    
+                    //NSLog(@"Found transform command %@ values:\n%@", commandString, valuesArray);
+                    
+                    NSMutableDictionary * transformDictionary = [[NSMutableDictionary alloc] init];
+                    
+                    NSString * functionString = [[NSString alloc] initWithString:commandString];
+                    transformDictionary[@"function"] = functionString;
+                    
+                    NSUInteger valuesCount = valuesArray.count;
+                    BOOL validValues = NO;
+                    
+                    if ([commandString isEqualToString:@"translate"] == YES)
+                    {
+                        if (valuesCount == 2)
+                        {
+                            validValues = YES;
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
+                            
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"y"] = yString;
+                        }
+                    }
+                    else if ([commandString isEqualToString:@"scale"] == YES)
+                    {
+                        if (valuesCount == 1)
+                        {
+                            validValues = YES;
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
+                        }
+                        else if (valuesCount == 2)
+                        {
+                            validValues = YES;
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"x"] = xString;
+                            
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"y"] = yString;
+                        }
+                    }
+                    else if ([commandString isEqualToString:@"rotate"] == YES)
+                    {
+                        if (valuesCount == 1)
+                        {
+                            validValues = YES;
+                            NSString * degreesString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = degreesString;
+                        }
+                        else if (valuesCount == 3)
+                        {
+                            validValues = YES;
+                            NSString * degreesString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = degreesString;
+
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"x"] = xString;
+                            
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[2]];
+                            transformDictionary[@"y"] = yString;
+                        }
+                    }
+                    else if ([commandString isEqualToString:@"matrix"] == YES)
+                    {
+                        if (valuesCount == 6)
+                        {
+                            validValues = YES;
+                            NSString * m1String = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"m1"] = m1String;
+
+                            NSString * m2String = [[NSString alloc] initWithString:valuesArray[1]];
+                            transformDictionary[@"m2"] = m2String;
+
+                            NSString * m3String = [[NSString alloc] initWithString:valuesArray[2]];
+                            transformDictionary[@"m3"] = m3String;
+
+                            NSString * m4String = [[NSString alloc] initWithString:valuesArray[3]];
+                            transformDictionary[@"m4"] = m4String;
+
+                            NSString * m5String = [[NSString alloc] initWithString:valuesArray[4]];
+                            transformDictionary[@"m5"] = m5String;
+
+                            NSString * m6String = [[NSString alloc] initWithString:valuesArray[5]];
+                            transformDictionary[@"m6"] = m6String;
+                        }
+                    }
+                    else if ([commandString isEqualToString:@"skewX"] == YES)
+                    {
+                        if (valuesCount == 1)
+                        {
+                            validValues = YES;
+                            NSString * xString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = xString;
+                        }
+                    }
+                    else if ([commandString isEqualToString:@"skewY"] == YES)
+                    {
+                        if (valuesCount == 1)
+                        {
+                            validValues = YES;
+                            NSString * yString = [[NSString alloc] initWithString:valuesArray[0]];
+                            transformDictionary[@"degrees"] = yString;
+                        }
+                    }
+                    
+                    if (validValues == YES)
+                    {
+                        [resultArray addObject:transformDictionary];
+                    }
+                }
+            }
+        }
+    }
+    
+    return resultArray;
+}
+
+
+
+
+
+
 //==================================================================================
 //	customizeAnimateTransform:forParentElement:
 //==================================================================================
@@ -594,25 +782,254 @@
         DOMElement * domParentElement = [self.macSVGDocumentWindowController.svgWebKitController
                 domElementForMacsvgid:parentMacsvgid];
         
-        NSRect boundingBox = [webKitInterface bBoxForDOMElement:domParentElement];
+        NSString * parentTransformString = [domParentElement getAttribute:@"transform"];
         
-        if (NSIsEmptyRect(boundingBox) == NO)
+        BOOL useDefaultTransform = YES;
+        
+        if (parentTransformString != NULL)
         {
-            CGFloat midX = NSMidX(boundingBox);
-            CGFloat midY = NSMidY(boundingBox);
+            NSMutableArray * parentTransformsArray = [self parseTransformAttribute:parentTransformString];
             
-            NSString * midXString = [self allocFloatString:midX];
-            NSString * midYString = [self allocFloatString:midY];
-            
-            NSString * rotateValuesString = [NSString stringWithFormat:@"0 %@ %@;360 %@ %@",
-                    midXString, midYString, midXString, midYString];
-            
-            NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
-            if (valuesNode != NULL)
+            if (parentTransformsArray.count > 0)
             {
-                valuesNode.stringValue = rotateValuesString;
+                NSInteger lastTransformIndex = parentTransformsArray.count - 1;
+            
+                NSDictionary * parentTransformDictionary = [parentTransformsArray objectAtIndex:lastTransformIndex];
+                NSString * transformFunctionString = [parentTransformDictionary objectForKey:@"function"];
+
+
+                if ([transformFunctionString isEqualToString:@"translate"] == YES)
+                {
+                    NSString * translateXString = [parentTransformDictionary objectForKey:@"x"];
+                    NSString * translateYString = [parentTransformDictionary objectForKey:@"y"];
+                    
+                    if ((translateXString.length > 0) && (translateYString.length > 0))
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"translate"];
+
+                        NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
+                        [durNode setStringValue:@"3s"];
+
+                        CGFloat translateX = translateXString.floatValue;
+                        CGFloat endTranslateX = translateX + 20.0f;
+                        
+                        CGFloat translateY = translateYString.floatValue;
+                        CGFloat endTranslateY = translateY + 20.0f;
+                        
+                        NSString * endTranslateXString = [self allocFloatString:endTranslateX];
+                        NSString * endTranslateYString = [self allocFloatString:endTranslateY];
+                        
+                        NSString * rotateValuesString = [NSString stringWithFormat:@"%@ %@; %@ %@; %@ %@;",
+                                translateXString, translateYString,
+                                endTranslateXString, endTranslateYString,
+                                translateXString, translateYString];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = rotateValuesString;
+                        }
+                        
+                        resultString = prototypeElement.XMLString;
+
+                        useDefaultTransform = NO;
+                    }
+                }
+
+                if ([transformFunctionString isEqualToString:@"scale"] == YES)
+                {
+                    NSString * scaleXString = [parentTransformDictionary objectForKey:@"x"];
+                    NSString * scaleYString = [parentTransformDictionary objectForKey:@"y"];
+                    
+                    if ((scaleXString.length > 0) && (scaleYString.length > 0))
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"scale"];
+
+                        NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
+                        [durNode setStringValue:@"3s"];
+
+                        CGFloat scaleX = scaleXString.floatValue;
+                        CGFloat endScaleX = scaleX * 1.2f;
+                        
+                        CGFloat scaleY = scaleYString.floatValue;
+                        CGFloat endScaleY = scaleY * 1.2f;
+                        
+                        NSString * endScaleXString = [self allocFloatString:endScaleX];
+                        NSString * endScaleYString = [self allocFloatString:endScaleY];
+                        
+                        NSString * scaleValuesString = [NSString stringWithFormat:@"%@ %@; %@ %@; %@ %@;",
+                                scaleXString, scaleYString,
+                                endScaleXString, endScaleYString,
+                                scaleXString, scaleYString];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = scaleValuesString;
+                        }
+                        
+                        resultString = prototypeElement.XMLString;
+
+                        useDefaultTransform = NO;
+                    }
+                }
                 
-                resultString = prototypeElement.XMLString;
+                else if ([transformFunctionString isEqualToString:@"rotate"] == YES)
+                {
+                    NSString * rotateDegreesString = [parentTransformDictionary objectForKey:@"degrees"];
+                    NSString * rotateXString = [parentTransformDictionary objectForKey:@"x"];
+                    NSString * rotateYString = [parentTransformDictionary objectForKey:@"y"];
+                    
+                    if ((rotateDegreesString.length > 0) && (rotateXString.length > 0) && (rotateYString.length > 0))
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"rotate"];
+
+                        CGFloat rotateDegrees = rotateDegreesString.floatValue;
+                        CGFloat endRotateDegrees = rotateDegrees + 360.0f;
+                        
+                        NSString * endRotateDegreesString = [self allocFloatString:endRotateDegrees];
+                        
+                        NSString * rotateValuesString = [NSString stringWithFormat:@"%@ %@ %@; %@ %@ %@;",
+                                rotateDegreesString, rotateXString, rotateYString,
+                                endRotateDegreesString,  rotateXString, rotateYString];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = rotateValuesString;
+                        }
+
+                        resultString = prototypeElement.XMLString;
+                        
+                        useDefaultTransform = NO;
+                    }
+                }
+
+                else if ([transformFunctionString isEqualToString:@"skewX"] == YES)
+                {
+                    NSString * skewXDegreesString = [parentTransformDictionary objectForKey:@"degrees"];
+                    
+                    if (skewXDegreesString.length > 0)
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"skewX"];
+
+                        NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
+                        [durNode setStringValue:@"3s"];
+
+                        CGFloat skewXDegrees = skewXDegreesString.floatValue;
+                        CGFloat endSkewXDegrees = skewXDegrees + 10.0f;
+                        
+                        NSString * endSkewXDegreesString = [self allocFloatString:endSkewXDegrees];
+                        
+                        NSString * skewXValuesString = [NSString stringWithFormat:@"%@; %@; %@;",
+                                skewXDegreesString, endSkewXDegreesString, skewXDegreesString];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = skewXValuesString;
+                        }
+
+                        resultString = prototypeElement.XMLString;
+                        
+                        useDefaultTransform = NO;
+                    }
+                }
+
+                else if ([transformFunctionString isEqualToString:@"skewY"] == YES)
+                {
+                    NSString * skewYDegreesString = [parentTransformDictionary objectForKey:@"degrees"];
+                    
+                    if (skewYDegreesString.length > 0)
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"skewY"];
+
+                        NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
+                        [durNode setStringValue:@"3s"];
+
+                        CGFloat skewYDegrees = skewYDegreesString.floatValue;
+                        CGFloat endSkewYDegrees = skewYDegrees + 10.0f;
+                        
+                        NSString * endSkewYDegreesString = [self allocFloatString:endSkewYDegrees];
+                        
+                        NSString * skewYValuesString = [NSString stringWithFormat:@"%@; %@; %@;",
+                                skewYDegreesString, endSkewYDegreesString, skewYDegreesString];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = skewYValuesString;
+                        }
+
+                        resultString = prototypeElement.XMLString;
+                        
+                        useDefaultTransform = NO;
+                    }
+                }
+
+                else if ([transformFunctionString isEqualToString:@"matrix"] == YES)
+                {
+                    NSString * matrixM1String = [parentTransformDictionary objectForKey:@"m1"];
+                    NSString * matrixM2String = [parentTransformDictionary objectForKey:@"m2"];
+                    NSString * matrixM3String = [parentTransformDictionary objectForKey:@"m3"];
+                    NSString * matrixM4String = [parentTransformDictionary objectForKey:@"m4"];
+                    NSString * matrixM5String = [parentTransformDictionary objectForKey:@"m5"];
+                    NSString * matrixM6String = [parentTransformDictionary objectForKey:@"m6"];
+                    
+                    if ((matrixM1String.length > 0) && (matrixM2String.length > 0) && (matrixM3String.length > 0) && (matrixM4String.length > 0) && (matrixM5String.length > 0) && (matrixM6String.length > 0))
+                    {
+                        NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
+                        [typeNode setStringValue:@"matrix"];
+
+                        NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
+                        [durNode setStringValue:@"3s"];
+
+                        // no changes applied to matrix, the same matrix is used twice as value
+                        NSString * matrixValuesString = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@; %@ %@ %@ %@ %@ %@; ",
+                                matrixM1String, matrixM2String, matrixM3String, matrixM4String, matrixM5String, matrixM6String,
+                                matrixM1String, matrixM2String, matrixM3String, matrixM4String, matrixM5String, matrixM6String];
+
+                        NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                        if (valuesNode != NULL)
+                        {
+                            valuesNode.stringValue = matrixValuesString;
+                        }
+
+                        resultString = prototypeElement.XMLString;
+                        
+                        useDefaultTransform = NO;
+                    }
+                }
+            }
+        }
+        
+        if (useDefaultTransform == YES)
+        {
+            NSRect boundingBox = [webKitInterface bBoxForDOMElement:domParentElement];
+            
+            if (NSIsEmptyRect(boundingBox) == NO)
+            {
+                CGFloat midX = NSMidX(boundingBox);
+                CGFloat midY = NSMidY(boundingBox);
+                
+                NSString * midXString = [self allocFloatString:midX];
+                NSString * midYString = [self allocFloatString:midY];
+                
+                NSString * rotateValuesString = [NSString stringWithFormat:@"0 %@ %@;360 %@ %@",
+                        midXString, midYString, midXString, midYString];
+                
+                NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
+                if (valuesNode != NULL)
+                {
+                    valuesNode.stringValue = rotateValuesString;
+                    
+                    resultString = prototypeElement.XMLString;
+                }
             }
         }
     }
@@ -621,7 +1038,7 @@
 }
 
 //==================================================================================
-//	customizeAnimateTransform:forParentElement:
+//	customizeAnimateMotion:forParentElement:
 //==================================================================================
 
 - (NSString *)customizeAnimateMotion:(NSString *)xmlElementPrototypeString forParentElement:(NSXMLElement *)parentElement
@@ -2399,6 +2816,8 @@
             [checkboxButton setTarget:self];
             [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
             
+            checkboxButton.refusesFirstResponder = YES;
+            
             resultView = checkboxButton;
         }
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
@@ -2406,6 +2825,8 @@
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
             [checkboxButton setButtonType:NSSwitchButton];
             [checkboxButton setControlSize:NSControlSizeSmall];
+
+            checkboxButton.refusesFirstResponder = YES;
             
             resultView = checkboxButton;
         }
@@ -2421,6 +2842,7 @@
             //NSTextField * textField = [[NSTextField alloc] initWithFrame:outlineView.frame];
             NSTextField * textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 300, 14)];
             textField.identifier = tableColumn.identifier;
+            textField.refusesFirstResponder = YES;
             [textField setControlSize:NSControlSizeSmall];
             textField.font = [NSFont systemFontOfSize:10];
             textField.bordered = NO;
