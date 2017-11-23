@@ -2844,7 +2844,7 @@
             textField.identifier = tableColumn.identifier;
             textField.refusesFirstResponder = YES;
             [textField setControlSize:NSControlSizeSmall];
-            textField.font = [NSFont systemFontOfSize:10];
+            textField.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
             textField.bordered = NO;
             textField.backgroundColor = [NSColor clearColor];
             textField.stringValue = @"Missing";
@@ -2853,6 +2853,26 @@
             textField.maximumNumberOfLines = 1;
             textField.drawsBackground = NO;
             
+            NSInteger nonTextChildNodes = 0;
+            
+            NSXMLElement * xmlElement = [item copy];
+            NSArray * xmlElementChildren = xmlElement.children;
+            for (NSXMLNode * childNode in xmlElementChildren)
+            {
+                if (childNode.kind != NSXMLTextKind)
+                {
+                    [childNode detach];
+                    nonTextChildNodes++;
+                }
+            }
+            if (nonTextChildNodes > 0)
+            {
+                NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+                ellipseTextNode.stringValue = @" … ";
+                [xmlElement addChild:ellipseTextNode];
+            }
+            textField.toolTip = [xmlElement XMLString];
+
             resultView = textField;
         }
     }
