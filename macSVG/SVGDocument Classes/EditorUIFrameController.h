@@ -26,7 +26,6 @@
 
 @interface EditorUIFrameController : NSObject
 {
-    IBOutlet NSTextView * xmlElementTextView;
 }
 @property(weak) IBOutlet XMLAttributesTableController * xmlAttributesTableController;
 

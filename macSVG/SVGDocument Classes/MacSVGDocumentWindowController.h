@@ -36,7 +36,6 @@
     IBOutlet NSTextView * detailTextView;
     IBOutlet NSFormCell * selectionOutput;
 	IBOutlet NSTextView * infoTextView;
-    IBOutlet NSTextView * xmlElementTextView;
     
     IBOutlet NSButton * svgElementsButton;
     IBOutlet NSButton * svgToolsButton;

@@ -1055,13 +1055,6 @@
 
     //[elementsTopBottomSplitView setPosition:252 ofDividerAtIndex:0];
     
-    [xmlElementTextView setRichText:NO];
-    [xmlElementTextView setEditable:NO];
-    [xmlElementTextView setContinuousSpellCheckingEnabled:NO];
-    [xmlElementTextView setGrammarCheckingEnabled:NO];
-
-    [xmlElementTextView setUsesFindPanel:YES];
-    
     //[self.editorUIFrameController setValidAttributesView];
     [self.editorUIFrameController setEmptyView];
     

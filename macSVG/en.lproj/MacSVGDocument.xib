@@ -103,7 +103,6 @@
                 <outlet property="webBrowserPreviewButton" destination="sl0-CF-jPd" id="FCS-9C-iae"/>
                 <outlet property="window" destination="5" id="100041"/>
                 <outlet property="xmlAttributesTableController" destination="100256" id="100260"/>
-                <outlet property="xmlElementTextView" destination="Few-gU-ggb" id="WWf-Z0-zpd"/>
                 <outlet property="xmlOutlineController" destination="100214" id="100238"/>
             </connections>
         </customObject>
@@ -456,17 +455,12 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="287" height="332"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <textField verticalHuggingPriority="750" id="100799">
-                                                                        <rect key="frame" x="17" y="313" width="253" height="14"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" truncatesLastVisibleLine="YES" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Selected Element: " id="100800">
-                                                                            <font key="font" metaFont="smallSystem"/>
-                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                        </textFieldCell>
-                                                                    </textField>
-                                                                    <popUpButton verticalHuggingPriority="750" id="100803">
-                                                                        <rect key="frame" x="17" y="216" width="253" height="26"/>
+                                                                    <customView autoresizesSubviews="NO" misplaced="YES" id="100809" userLabel="AttributeEditorFrameView">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="287" height="302"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    </customView>
+                                                                    <popUpButton verticalHuggingPriority="750" misplaced="YES" id="100803">
+                                                                        <rect key="frame" x="17" y="307" width="253" height="26"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <popUpButtonCell key="cell" type="push" title="Valid Attributes" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="100806" id="100804">
                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -487,37 +481,6 @@
                                                                             <action selector="setEditorFrameContent:" target="100822" id="100836"/>
                                                                         </connections>
                                                                     </popUpButton>
-                                                                    <customView autoresizesSubviews="NO" id="100809" userLabel="AttributeEditorFrameView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="287" height="211"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    </customView>
-                                                                    <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="y8v-Xp-bn6">
-                                                                        <rect key="frame" x="20" y="249" width="247" height="56"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                        <clipView key="contentView" id="Vxv-oK-TeF">
-                                                                            <rect key="frame" x="1" y="1" width="245" height="54"/>
-                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                            <subviews>
-                                                                                <textView importsGraphics="NO" usesFontPanel="YES" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Few-gU-ggb">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="245" height="54"/>
-                                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                    <size key="minSize" width="245" height="54"/>
-                                                                                    <size key="maxSize" width="463" height="10000000"/>
-                                                                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                </textView>
-                                                                            </subviews>
-                                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        </clipView>
-                                                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="VWg-Mk-B0v">
-                                                                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                                                                            <autoresizingMask key="autoresizingMask"/>
-                                                                        </scroller>
-                                                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="RL7-wj-NMU">
-                                                                            <rect key="frame" x="231" y="1" width="15" height="54"/>
-                                                                            <autoresizingMask key="autoresizingMask"/>
-                                                                        </scroller>
-                                                                    </scrollView>
                                                                 </subviews>
                                                             </customView>
                                                             <customView id="100143">
@@ -1165,7 +1128,6 @@
                 <outlet property="textEditorController" destination="100851" id="100881"/>
                 <outlet property="validAttributesController" destination="100825" id="100828"/>
                 <outlet property="xmlAttributesTableController" destination="100256" id="3Va-Bb-ujb"/>
-                <outlet property="xmlElementTextView" destination="Few-gU-ggb" id="uQt-u5-uV1"/>
             </connections>
         </customObject>
         <customObject id="100965" customClass="ElementEditorPlugInController">

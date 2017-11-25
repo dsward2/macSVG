@@ -237,48 +237,6 @@
 
 - (void)reloadData
 {
-    xmlElementTextView.string = @"";
-
-    NSArray * selectedElementsArray =
-            self.macSVGDocumentWindowController.svgXMLDOMSelectionManager.selectedElementsManager.selectedElementsArray;
-    
-    if (selectedElementsArray.count > 0)
-    {
-        NSMutableDictionary * selectedElementDictionary = selectedElementsArray[0];
-        
-        NSXMLElement * selectedXMLElement = selectedElementDictionary[@"xmlElement"];
-        
-        if (selectedXMLElement == NULL)
-        {
-            NSLog(@"selectedXMLElement = NULL");
-        }
-        
-        // macsvgid="D55D5E82-9E33-46BB-8C52-DF9206F6F662-19466-0000FEC9035385A8"
-        // 1...5...10...15...20...25...30...35...40...45...50...55...60...65...70.
-
-        // fast filter to remove macsvgid and child elements
-        NSXMLElement * copyXMLElement = [selectedXMLElement copy];
-        [copyXMLElement detach];
-        NSArray * xmlChildArray = copyXMLElement.children;
-        for (NSXMLNode * childNode in xmlChildArray)
-        {
-            if (childNode.kind == NSXMLElementKind)
-            {
-                NSInteger childIndex = childNode.index;
-                [copyXMLElement removeChildAtIndex:childIndex];
-            }
-        }
-        [copyXMLElement removeAttributeForName:@"macsvgid"];
-        NSString * filteredElementText = [copyXMLElement XMLStringWithOptions:NSXMLNodePreserveCDATA];
-
-        //xmlElementTextView.string = filteredElementText;
-
-        [xmlElementTextView.textStorage beginEditing];
-        xmlElementTextView.string = filteredElementText;
-        [xmlElementTextView.textStorage endEditing];
-    }
-
-    [xmlElementTextView scrollToBeginningOfDocument:NULL];
 }
 
 //==================================================================================
