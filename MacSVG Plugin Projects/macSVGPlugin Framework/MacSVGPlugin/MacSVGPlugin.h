@@ -137,6 +137,9 @@
 -(void) addPluginSelectionHandlesWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup;
 
+// Currently used only with ElementInfoEditor, but could be expanded to other plugins too
+- (void) updateElementInfoForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement;
+
 // For debugging usage
 - (void)logStackSymbols:(NSString *)messagePrefix;
 

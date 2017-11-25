@@ -333,6 +333,15 @@
 }
 
 //==================================================================================
+//	updateElementInfoForXMLElement:domElement:
+//==================================================================================
+
+- (void) updateElementInfoForXMLElement:(NSXMLElement *)xmlElement domElement:(DOMElement *)domElement
+{
+    // For ElementInfoEditor.  Other plugins can override as needed, main app may need changes.
+}
+
+//==================================================================================
 //	elementsWithAttribute:
 //==================================================================================
 

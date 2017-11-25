@@ -174,6 +174,19 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 \
 
 \b Plug-in Development Process:\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 	
+\b0   macSVG supports Cocoa plug-in architecture as described in this Apple document:\
+\
+	  https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingCode/Concepts/Plugins.html\
+\
+           A plug-in is a good way to add new features to macSVG, with few or no changes to the main app.  A macSVG plug-in framework is supplied in the project for by plug-ins.  Currently, two kinds of plug-ins are supported in macSVG.  The first kind is displayed as a panel for editing selected elements or attributes.  The second kind of plug-in is available under a Plug-ins menu in the menu bar, and typically opens a dialog window for user input.\
+\
+            
+\b Follow these steps to create a new plug-in module for macSVG:
+\b0 \
+
+\b \
 \pard\pardeftab720\partightenfactor0
 
 \b0 \cf0 	In XCode, select the "MacSVG Plugin Projects/MacSVG Plugins" folder in the Project navigator, then choose the "New Project" command under the File menu.\
@@ -185,7 +198,7 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 	Disable the option to "Create Git repository".  Instead, the Git repository for plugin projects already exists in the main macSVG project, so it will be used instead.\
 	Set the "Add to:" popup menu to the "MacSVG" project, and the "Group" popup menu to the "MacSVG Plugin Projects/MacSVG Plugins" folder.  Click the "Create" button to create the plugin project.\
 	Plugin projects should be ordered alphabetically by name in the Project navigator, so drag the new plugin project folder to the correct location inside the "MacSVG Plugins" folder.\
-	Select the new plugin project folder icon in the Project navigator, and add a new Cocoa Class file as a subclass of MacSVGPlugin, naming the class like "XyzElementEditor" or "XyzAttributeEditor".  Currently, all plugins are implemented in Objective-C language.\
+	Select the new plugin project folder icon in the Project navigator, and add a new Cocoa Class file as a subclass of MacSVGPlugin, naming the class like "XyzElementEditor" or "XyzAttributeEditor".  Plug-ins can be implemented in Objective-C or Swift languages, but Objective-C is currently used in most plug-ins.\
 	In XyzElementEditor.h or XyzAttributeEditor.h, verify or add import directive -
 \f1\fs22 \cf2 \CocoaLigature0 \
 \pard\tx560\pardeftab560\pardirnatural\partightenfactor0
@@ -195,7 +208,11 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 \cf0 	Create a new empty User Interface NIB file for the plugin view, named like "XyzElementEditor.xib".\
 	In Interface Builder, set the NIB File's Owner object to your plugin object, e.g. "XyzElementEditor" or "XyzAttributeEditor".\
 	In the NIB's File Inspector, disable the checkbox option setting for "Use Auto-Layout".\
-	For element or attribute editors -\
+\
+	
+\b For element or attribute editor plug-ins -
+\b0 \
+		\
 		In the NIB editor, create a new NSView custom view for the plug-in main view (or copy and paste a main view from an existing plugin xib).\
 		In the NIB's Size Inspector, set the dimensions for the plug-in's main view for width=270 and height=346, and enable all of the struts and springs for autosizing the view.  (The height can be increased if needed.  The plugin panel view in the main application contains an NSScroller to contain the plugin view.\
 		Select File's Owner and use the Connection Inspector to connect the "pluginView" outlet to the main view.\
@@ -206,10 +223,15 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 				For attribute editors- (\cf4 NSString\cf0  *)isEditorForElement:(NSXMLElement *)aElement elementName:(\cf4 NSString\cf0  *)elementName attribute:(\cf4 NSString\cf0  *)attributeName\
 \pard\pardeftab720\partightenfactor0
 
-\f0\fs24 \cf0 \CocoaLigature1 	Add the "MacSVGPlugin.framework" to the project navigator items.\
+\f0\fs24 \cf0 \CocoaLigature1 	Add the "Cocoa.framework" to the project navigator items.\
+	Add the "MacSVGPlugin.framework" to the project navigator items.\
 	Add the file named "macSVGPluginConfig.xcconfig" to the project navigator items.\
 	Set "macSVGPluginConfig" in the Project -> Info -> Configurations for Debug and Release targets..\
-	For menu plug-ins -\
+\
+	
+\b For menu plug-ins -
+\b0 \
+\
 		Implement  
 \f1\fs22 \CocoaLigature0 - (\cf5 NSString\cf0  *)pluginMenuTitle
 \f0\fs24 \CocoaLigature1 \
@@ -229,11 +251,23 @@ The XML SVG graphics format is part of the new HTML5 standard for web design, so
 \f0\fs24 \CocoaLigature1 .\
 	\
 	The plugin is now ready to start using your custom implementation.\
-	\
-It may be useful in the plugin's Build Settings "HEADER_SEARCH_PATH" to add "$(SRCROOT)/../../../macSVG" with recursive searching, if your plugin needs direct access into the main application.  Then the 
-\f1\fs22 \cf6 \CocoaLigature0 #import \cf7 "MacSVGDocumentWindowController.h"
-\f0\fs24 \cf0 \CocoaLigature1  directive can be used in your plugin's source code.\
 \
+	See MacSVGPlugin.h for several other methods that can be overridden to facilitate several editing activities.\
+\
+	See MacSVGPluginCallbacks.h for several methods that can be called in a plug-in to get or set data in the main app.\
+\
+	If MacSVGPluginCallbacks.h does not contain an existing method that is needed for the plug-in to use, it may be useful for the plug-in to try direct access into the main application.  In the plugin's Build Settings "HEADER_SEARCH_PATH" to add "$(SRCROOT)/../../../macSVG" with recursive searching.  Then the 
+\f1\fs22 \cf6 \CocoaLigature0 #import \cf7 "MacSVGDocumentWindowController.h"
+\f0\fs24 \cf0 \CocoaLigature1  directive can be used in your plugin's source code, and include other headers from the main application as needed.\
+\
+	Several element and attribute editor plugins implement this method to be called from the main application to handle mouse and keyboard events -\
+\
+\pard\tx560\pardeftab560\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf0 \CocoaLigature0 	-(\cf6 void\cf0 ) handlePluginEvent:(\cf5 DOMEvent\cf0  *)event\
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf0 \CocoaLigature1 \
 	Element editors should return a string in the 
 \f1\fs22 \CocoaLigature0 isEditorForElement:elementName:
 \f0\fs24 \CocoaLigature1  method, and return null in the 
@@ -250,6 +284,8 @@ It may be useful in the plugin's Build Settings "HEADER_SEARCH_PATH" to add "$(S
 \
 	To embed the plugin, do an initial build of the plugin, then add the built plugin bundle product to the main app's  file list in the main application's Plugins group, with "Add to targets" not checkmarked.  In the File Inspector, set that copy of the plugin to use the Location "Relative to Build Products".  \
 	Finally, add that copy of the plugin to the main application's Build Phases in the "Copy Plugins Files" phase ,where the Destination is set to "Plugins".\
+\
+	If macSVG is being built with sandboxing and entitlements, the plug-in will also need appropriate settings for code signing.\
 \
 	\
 =================================================================================================\

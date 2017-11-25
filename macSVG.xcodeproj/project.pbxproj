@@ -32,6 +32,7 @@
 		0E1C05701D57413D004E7B62 /* animate_rotation.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C056F1D574135004E7B62 /* animate_rotation.svg */; };
 		0E1C05721D574AB9004E7B62 /* path_segments.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C05711D574AB5004E7B62 /* path_segments.svg */; };
 		0E1C05741D574E62004E7B62 /* path_animation_and_shape_morphing.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E1C05731D574E5A004E7B62 /* path_animation_and_shape_morphing.svg */; };
+		0E1E84E91FC7F97500384AF5 /* ElementInfoEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E1E84E31FC7F68700384AF5 /* ElementInfoEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E1F13BE1436BE610068BC62 /* SVGWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1F13BD1436BE610068BC62 /* SVGWebView.m */; };
 		0E1F75191D83BD79008AFEAB /* SVG Logo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E10816914C7691C00908087 /* SVG Logo.svg */; };
 		0E1F751C1D83C028008AFEAB /* Pause16.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E3426731780F786009D7DCF /* Pause16.png */; };
@@ -89,7 +90,6 @@
 		0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E71453A142C0CD4002F8E1F /* VerticalRulerView.m */; };
 		0E714560142C2FB3002F8E1F /* PanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E71455F142C2FB3002F8E1F /* PanelView.m */; };
 		0E7145A1142C302C002F8E1F /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7145A0142C302B002F8E1F /* GradientView.m */; };
-		0E753F511F9FD5660050AAB6 /* RELEASE-NOTES.md in Sources */ = {isa = PBXBuildFile; fileRef = 0E753F501F9FD5660050AAB6 /* RELEASE-NOTES.md */; };
 		0E770CC21D7E395F000401C9 /* MacSVGPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E770CDC1D7FCE52000401C9 /* SVGPolylineEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */; };
 		0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */; };
@@ -689,7 +689,7 @@
 		0EB663EB142866C4003723F0 /* MacSVGDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E5142866C4003723F0 /* MacSVGDocumentWindowController.m */; };
 		0EB663EC142866C4003723F0 /* SVGWebKitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E7142866C4003723F0 /* SVGWebKitController.m */; };
 		0EB663ED142866C4003723F0 /* XMLOutlineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E9142866C4003723F0 /* XMLOutlineController.m */; };
-		0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */; };
+		0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E281D7039FD00931DC4 /* libssh2.a */; };
 		0EC22E2B1D703C4100931DC4 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E2A1D703C4100931DC4 /* libcrypto.a */; };
 		0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -745,6 +745,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0E12A5EE1E7E828D005BA053;
 			remoteInfo = ConvertPathsDialog;
+		};
+		0E1E84D31FC7E34900384AF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E1E84CC1FC7E34800384AF5 /* ElementInfoEditor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E1E84C31FC7E34800384AF5;
+			remoteInfo = ElementInfoEditor;
+		};
+		0E1E84E51FC7F6ED00384AF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E1E84CC1FC7E34800384AF5 /* ElementInfoEditor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E1E84C21FC7E34800384AF5;
+			remoteInfo = ElementInfoEditor;
+		};
+		0E1E84E71FC7F6F700384AF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EB8CABE1F78D11E004B6D05;
+			remoteInfo = PathTextGenerator;
 		};
 		0E3F0ECB1E442C58001FDDD7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1042,6 +1063,7 @@
 				0E47E11917ECCABE00C029DD /* ColorAttributeEditor.plugin in Copy Plugins Files */,
 				0E12A6131E7EB1BA005BA053 /* ConvertPathsDialog.plugin in Copy Plugins Files */,
 				0E47E11A17ECCABE00C029DD /* CoordinatesAttributeEditor.plugin in Copy Plugins Files */,
+				0E1E84E91FC7F97500384AF5 /* ElementInfoEditor.plugin in Copy Plugins Files */,
 				0E47E11B17ECCABE00C029DD /* ImageElementEditor.plugin in Copy Plugins Files */,
 				0E47E11D17ECCABE00C029DD /* PathElementEditor.plugin in Copy Plugins Files */,
 				0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */,
@@ -1683,6 +1705,8 @@
 		0E1C056F1D574135004E7B62 /* animate_rotation.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = animate_rotation.svg; sourceTree = "<group>"; };
 		0E1C05711D574AB5004E7B62 /* path_segments.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_segments.svg; sourceTree = "<group>"; };
 		0E1C05731D574E5A004E7B62 /* path_animation_and_shape_morphing.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_animation_and_shape_morphing.svg; sourceTree = "<group>"; };
+		0E1E84CC1FC7E34800384AF5 /* ElementInfoEditor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ElementInfoEditor.xcodeproj; path = ElementInfoEditor/ElementInfoEditor.xcodeproj; sourceTree = "<group>"; };
+		0E1E84E31FC7F68700384AF5 /* ElementInfoEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ElementInfoEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E1F13BC1436BE610068BC62 /* SVGWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGWebView.h; sourceTree = "<group>"; };
 		0E1F13BD1436BE610068BC62 /* SVGWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGWebView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E1F752F1D83FDCC008AFEAB /* PlayHead.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = PlayHead.tiff; path = Images/PlayHead.tiff; sourceTree = "<group>"; };
@@ -2640,6 +2664,7 @@
 				0EEFBB2517EA2C03006887CA /* ColorAttributeEditor.plugin */,
 				0E12A6111E7EB1A1005BA053 /* ConvertPathsDialog.plugin */,
 				0EEFBB2617EA2C03006887CA /* CoordinatesAttributeEditor.plugin */,
+				0E1E84E31FC7F68700384AF5 /* ElementInfoEditor.plugin */,
 				0EEFBB2717EA2C03006887CA /* ImageElementEditor.plugin */,
 				0EEFBB2917EA2C03006887CA /* PathElementEditor.plugin */,
 				0EEFBB2A17EA2C03006887CA /* PathElementShapeAnimationEditor.plugin */,
@@ -2706,6 +2731,14 @@
 				0EEC4F9315097C1C007D7F27 /* MacSVGPluginCallbacks.m */,
 			);
 			name = "Editor Panels";
+			sourceTree = "<group>";
+		};
+		0E1E84CD1FC7E34800384AF5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E1E84D41FC7E34900384AF5 /* ElementInfoEditor.plugin */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0E3F0EC11E442C58001FDDD7 /* Products */ = {
@@ -3850,6 +3883,7 @@
 				0EA59C621E442BF30031EE60 /* ColorAttributeEditor.xcodeproj */,
 				0E12A5F81E7E828D005BA053 /* ConvertPathsDialog.xcodeproj */,
 				0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */,
+				0E1E84CC1FC7E34800384AF5 /* ElementInfoEditor.xcodeproj */,
 				0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */,
 				0EA59C661E442BF30031EE60 /* PathElementEditor.xcodeproj */,
 				0EA59C671E442BF30031EE60 /* PathElementShapeAnimationEditor.xcodeproj */,
@@ -4213,9 +4247,11 @@
 				0E3F0F2E1E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E12A6151E7EB1CA005BA053 /* PBXTargetDependency */,
 				0E3F0F301E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E1E84E61FC7F6ED00384AF5 /* PBXTargetDependency */,
 				0E3F0F321E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F361E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F381E442C9E001FDDD7 /* PBXTargetDependency */,
+				0E1E84E81FC7F6F700384AF5 /* PBXTargetDependency */,
 				0E3F0F3A1E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F3C1E442C9E001FDDD7 /* PBXTargetDependency */,
 				0E3F0F3E1E442C9E001FDDD7 /* PBXTargetDependency */,
@@ -4295,6 +4331,10 @@
 					ProjectRef = 0EA59C631E442BF30031EE60 /* CoordinatesAttributeEditor.xcodeproj */;
 				},
 				{
+					ProductGroup = 0E1E84CD1FC7E34800384AF5 /* Products */;
+					ProjectRef = 0E1E84CC1FC7E34800384AF5 /* ElementInfoEditor.xcodeproj */;
+				},
+				{
 					ProductGroup = 0E3F0EC11E442C58001FDDD7 /* Products */;
 					ProjectRef = 0EA59C641E442BF30031EE60 /* ImageElementEditor.xcodeproj */;
 				},
@@ -4360,6 +4400,13 @@
 			fileType = wrapper.cfbundle;
 			path = ConvertPathsDialog.plugin;
 			remoteRef = 0E12A5FC1E7E828E005BA053 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0E1E84D41FC7E34900384AF5 /* ElementInfoEditor.plugin */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ElementInfoEditor.plugin;
+			remoteRef = 0E1E84D31FC7E34900384AF5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0E3F0ECC1E442C58001FDDD7 /* ImageElementEditor.plugin */ = {
@@ -4671,7 +4718,6 @@
 				0EDD0C1914A1A44B00430652 /* SynchroScrollView.m in Sources */,
 				0E9637A7178689440011861A /* HTTPDataResponse.m in Sources */,
 				0E82B1351D730A2E005D0634 /* DDTTYLogger.m in Sources */,
-				0E753F511F9FD5660050AAB6 /* RELEASE-NOTES.md in Sources */,
 				0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */,
 				0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */,
 				0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */,
@@ -4712,6 +4758,16 @@
 			isa = PBXTargetDependency;
 			name = ConvertPathsDialog;
 			targetProxy = 0E12A6141E7EB1CA005BA053 /* PBXContainerItemProxy */;
+		};
+		0E1E84E61FC7F6ED00384AF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ElementInfoEditor;
+			targetProxy = 0E1E84E51FC7F6ED00384AF5 /* PBXContainerItemProxy */;
+		};
+		0E1E84E81FC7F6F700384AF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PathTextGenerator;
+			targetProxy = 0E1E84E71FC7F6F700384AF5 /* PBXContainerItemProxy */;
 		};
 		0E3F0F241E442C9E001FDDD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4907,6 +4963,7 @@
 /* Begin XCBuildConfiguration section */
 		0EB6639714286399003723F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -4953,6 +5010,7 @@
 		};
 		0EB6639814286399003723F0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -4994,6 +5052,7 @@
 		};
 		0EB6639A14286399003723F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5003,13 +5062,17 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = MMFBWVS455;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "macSVG/macSVG-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/MacSVG Plugin Projects\"/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
@@ -5028,6 +5091,7 @@
 		};
 		0EB6639B14286399003723F0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -5043,7 +5107,10 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "macSVG/macSVG-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/MacSVG Plugin Projects\"/**",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";

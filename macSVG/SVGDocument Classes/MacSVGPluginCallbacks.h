@@ -104,5 +104,12 @@
         x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName;
 
+- (NSXMLElement *)xmlElementForMacsvgid:(NSString *)macsvgid;
+- (DOMElement *)domElementForMacsvgid:(NSString *)macsvgid;
+
+- (NSPoint) currentMouseClientPoint;
+- (NSPoint) currentMousePagePoint;
+- (NSPoint) currentMouseScreenPoint;
+
 @end
 

@@ -646,4 +646,48 @@
 }
 
 
+- (NSXMLElement *)xmlElementForMacsvgid:(NSString *)macsvgid
+{
+    id result = [self.macSVGDocument xmlElementForMacsvgid:macsvgid];
+    return result;
+}
+
+- (DOMElement *)domElementForMacsvgid:(NSString *)macsvgid
+{
+    id result = [self.macSVGDocument domElementForMacsvgid:macsvgid];
+    return result;
+}
+
+
+- (NSPoint) currentMouseClientPoint
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id domMouseEventsController = [svgWebKitController domMouseEventsController];
+    NSPoint currentMouseClientPoint = [domMouseEventsController currentMouseClientPoint];
+    return currentMouseClientPoint;
+}
+
+
+- (NSPoint) currentMousePagePoint
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id domMouseEventsController = [svgWebKitController domMouseEventsController];
+    NSPoint currentMousePagePoint = [domMouseEventsController currentMousePagePoint];
+    return currentMousePagePoint;
+}
+
+
+- (NSPoint) currentMouseScreenPoint
+{
+    id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
+    id domMouseEventsController = [svgWebKitController domMouseEventsController];
+    NSPoint currentMouseScreenPoint = [domMouseEventsController currentMouseScreenPoint];
+    return currentMouseScreenPoint;
+}
+
+
+
 @end

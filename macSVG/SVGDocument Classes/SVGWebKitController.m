@@ -893,6 +893,8 @@
             //NSLog(@"handleEvent keyup");
         }
 
+        [self.domMouseEventsController handlePluginEvent:event];
+
         [self updateLiveCoordinates];
         
         //[self logEvent:event];

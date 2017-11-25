@@ -28,8 +28,8 @@
 #import "SVGWebKitController.h"
 #import "SVGIconTableHeaderCell.h"
 #import "SVGIconView.h"
-//#import "ImageAndTextCell.h"
-//#import "SVGIconCell.h"
+#import "MacSVGPlugin/MacSVGPlugin.h"
+//#import "ElementInfoEditor/ElementInfoEditor.h"
 
 #import "NSOutlineView_Extensions.h"
 
@@ -751,11 +751,6 @@
     
     return resultArray;
 }
-
-
-
-
-
 
 //==================================================================================
 //	customizeAnimateTransform:forParentElement:
@@ -3778,7 +3773,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
-    // a mutex lock to block handleOutlineViewSelectionDidChange
+    // a mutex lock to block overlapping calls to handleOutlineViewSelectionDidChange
     @synchronized (self) {
         [self handleOutlineViewSelectionDidChange];
     }
@@ -3909,6 +3904,30 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     }
 
     [self updateRowIcons];
+
+
+
+    id currentPlugin = self.macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.currentPlugin;
+    
+    NSString * pluginName = [currentPlugin pluginName];
+    
+    if ([pluginName isEqualToString:@"Element Info Editor"] == YES)
+    {
+        if (selectedNodesCount > 0)
+        {
+            NSXMLElement * xmlElement = selectedNodes[0];
+            
+            NSXMLNode * xmlMacsvgidNode = [xmlElement attributeForName:@"macsvgid"];
+            NSString * macsvgid = xmlMacsvgidNode.stringValue;
+            
+            DOMElement * domElement = [self.macSVGDocumentWindowController.svgWebKitController domElementForMacsvgid:macsvgid];
+            
+            if (domElement != NULL)
+            {
+                [currentPlugin updateElementInfoForXMLElement:xmlElement domElement:domElement];
+            }
+        }
+    }
 }
 
 

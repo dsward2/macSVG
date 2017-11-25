@@ -263,7 +263,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
@@ -282,7 +282,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Prefix.pch";
 				INFOPLIST_FILE = "CoordinatesAttributeEditor/CoordinatesAttributeEditor-Info.plist";
