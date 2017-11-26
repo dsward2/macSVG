@@ -32,7 +32,8 @@
 #import "TextElementEditor.h"
 #import <MacSVGPlugin/MacSVGPlugin.h>
 #import "NSFileManager+DirectoryLocations.h"
-#import "SZJsonParser.h"
+//#import "SZJsonParser.h"
+#import <MacSVGPlugin/SZJsonParser.h>
 
 static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

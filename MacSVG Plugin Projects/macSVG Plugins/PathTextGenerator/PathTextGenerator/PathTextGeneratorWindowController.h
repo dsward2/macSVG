@@ -53,7 +53,7 @@
 
 - (IBAction)browserFontsFilterPopUpButtonAction:(id)sender;
 
-- (IBAction)chooseDisplayedFontButtonAction:(id)sender;
+//- (IBAction)chooseDisplayedFontButtonAction:(id)sender;
 
 - (IBAction)chooseTruetypeFontFileButtonAction:(id)sender;
 

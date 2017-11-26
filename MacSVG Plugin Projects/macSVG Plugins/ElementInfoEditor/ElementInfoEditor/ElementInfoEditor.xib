@@ -13,8 +13,8 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
-        <textView editable="NO" importsGraphics="NO" findStyle="panel" incrementalSearchingEnabled="YES" continuousSpellChecking="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="sUS-Rr-aEw">
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <textView editable="NO" importsGraphics="NO" findStyle="panel" id="sUS-Rr-aEw">
             <rect key="frame" x="0.0" y="0.0" width="268" height="344"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -24,7 +24,7 @@
             <connections>
                 <outlet property="delegate" destination="-3" id="yYu-kP-QbK"/>
             </connections>
-            <point key="canvasLocation" x="80" y="190"/>
+            <point key="canvasLocation" x="53" y="-14"/>
         </textView>
     </objects>
 </document>

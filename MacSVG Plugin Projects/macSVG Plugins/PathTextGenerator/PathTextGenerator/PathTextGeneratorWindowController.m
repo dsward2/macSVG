@@ -10,7 +10,7 @@
 #import "PathTextGenerator.h"
 #import <MacSVGPlugin/MacSVGPlugin.h>
 #import "NSFileManager+DirectoryLocations.h"
-#import "SZJsonParser.h"
+#import <MacSVGPlugin/SZJsonParser.h>
 
 @interface PathTextGeneratorWindowController ()
 

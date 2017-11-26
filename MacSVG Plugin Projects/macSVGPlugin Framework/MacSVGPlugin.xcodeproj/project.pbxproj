@@ -12,7 +12,7 @@
 		0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D366178F397B000B910E /* MacSVGPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E05D36C178F397B000B910E /* MacSVGPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05D367178F397B000B910E /* MacSVGPlugin.m */; };
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E083F441F8918B900AD1285 /* SZJsonParser.h */; };
+		0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E083F441F8918B900AD1285 /* SZJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E083F451F8918B900AD1285 /* SZJsonParser.m */; };
 		0E3F77FF1E7F925600599EC0 /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */; };
 		0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */; };
@@ -121,9 +121,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */,
 				0E05D36B178F397B000B910E /* MacSVGPlugin.h in Headers */,
 				0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */,
+				0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */,
 				0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -278,6 +278,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = PathTextGenerator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PathTextGenerator;
@@ -294,6 +295,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MMFBWVS455;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = PathTextGenerator/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.PathTextGenerator;
