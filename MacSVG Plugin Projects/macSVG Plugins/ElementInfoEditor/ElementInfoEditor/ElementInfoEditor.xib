@@ -8,46 +8,23 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ElementInfoEditor">
             <connections>
-                <outlet property="elementInfoTextScrollView" destination="6WE-BH-b0Y" id="6B4-nL-M8g"/>
-                <outlet property="elementInfoTextView" destination="WX3-zF-jlB" id="l9m-aK-d4n"/>
-                <outlet property="pluginView" destination="uyP-H5-S4w" id="gA8-84-h9R"/>
+                <outlet property="elementInfoTextView" destination="sUS-Rr-aEw" id="F6K-vK-Zcd"/>
+                <outlet property="pluginView" destination="sUS-Rr-aEw" id="zh9-0c-bOm"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView misplaced="YES" id="uyP-H5-S4w" customClass="FlippedView">
-            <rect key="frame" x="0.0" y="0.0" width="270" height="346"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" id="6WE-BH-b0Y">
-                    <rect key="frame" x="0.0" y="0.0" width="270" height="346"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <clipView key="contentView" copiesOnScroll="NO" id="i00-Hh-tIg">
-                        <rect key="frame" x="1" y="1" width="268" height="344"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView editable="NO" importsGraphics="NO" findStyle="panel" incrementalSearchingEnabled="YES" continuousSpellChecking="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="WX3-zF-jlB">
-                                <rect key="frame" x="0.0" y="0.0" width="268" height="344"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="268" height="344"/>
-                                <size key="maxSize" width="463" height="10000000"/>
-                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="Kzi-Z9-Sok">
-                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="6uJ-0N-MUi">
-                        <rect key="frame" x="-100" y="-100" width="15" height="344"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
-            </subviews>
-            <point key="canvasLocation" x="61" y="123"/>
-        </customView>
+        <customObject id="-3" userLabel="Application"/>
+        <textView editable="NO" importsGraphics="NO" findStyle="panel" incrementalSearchingEnabled="YES" continuousSpellChecking="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="sUS-Rr-aEw">
+            <rect key="frame" x="0.0" y="0.0" width="268" height="344"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <size key="minSize" width="268" height="344"/>
+            <size key="maxSize" width="463" height="10000000"/>
+            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+            <connections>
+                <outlet property="delegate" destination="-3" id="yYu-kP-QbK"/>
+            </connections>
+            <point key="canvasLocation" x="80" y="190"/>
+        </textView>
     </objects>
 </document>

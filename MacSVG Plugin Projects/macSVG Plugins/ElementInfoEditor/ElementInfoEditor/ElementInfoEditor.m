@@ -273,8 +273,12 @@
         [self.elementInfoTextView setEditable:NO];
         [self.elementInfoTextView setContinuousSpellCheckingEnabled:NO];
         [self.elementInfoTextView setGrammarCheckingEnabled:NO];
+        [self.elementInfoTextView setUsesFindPanel:NO];
 
-        //[self.elementInfoTextView setUsesFindPanel:NO];
+        
+        //self.elementInfoTextScrollView.hasVerticalScroller = NO;
+        //self.elementInfoTextScrollView.hasHorizontalScroller = NO;
+
 
         NSDisableScreenUpdates();
 
@@ -282,9 +286,11 @@
 
         [self.elementInfoTextView.layoutManager ensureLayoutForTextContainer:self.elementInfoTextView.textContainer];
 
-        [self.elementInfoTextScrollView display];
-        [self.elementInfoTextScrollView reflectScrolledClipView:self.elementInfoTextScrollView.contentView];
-        [self.elementInfoTextScrollView display];
+
+        //[self.elementInfoTextScrollView display];
+        //[self.elementInfoTextScrollView reflectScrolledClipView:self.elementInfoTextScrollView.contentView];
+        //[self.elementInfoTextScrollView display];
+
         
         NSRect textContainerRect = [self.elementInfoTextView.layoutManager usedRectForTextContainer:self.elementInfoTextView.textContainer];
 
@@ -300,6 +306,7 @@
         }
         */
 
+        self.pluginView.frame = textContainerRect;
         
         self.elementInfoTextView.frame = textContainerRect;
 

@@ -1815,7 +1815,8 @@
     }
     else if (splitView == attributesTopBottomSplitView)
     {
-        result = 320;
+        //result = 320;
+        result = 200;
     }
     else if (splitView == timelineLeftRightSplitView)
     {

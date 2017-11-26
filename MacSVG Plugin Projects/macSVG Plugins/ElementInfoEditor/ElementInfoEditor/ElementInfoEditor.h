@@ -13,7 +13,7 @@
 }
 
 @property (strong) IBOutlet NSTextView * elementInfoTextView;
-@property (strong) IBOutlet NSScrollView * elementInfoTextScrollView;
+//@property (strong) IBOutlet NSScrollView * elementInfoTextScrollView;
 
 @property (strong) NSFont * sectionFont;
 @property (strong) NSDictionary * sectionTextAttributes;
