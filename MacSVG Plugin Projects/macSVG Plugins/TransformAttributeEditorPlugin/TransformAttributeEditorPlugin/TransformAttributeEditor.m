@@ -16,6 +16,7 @@
 #import "TransformAttributeEditor.h"
 #import <WebKit/WebKit.h>
 #import "MacSVGDocumentWindowController.h"
+#import "MacSVGDocument.h"
 #import "DOMMouseEventsController.h"
 #import "SVGWebKitController.h"
 
@@ -1393,14 +1394,18 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     {
         NSMutableDictionary * rotateDictionary = (self.transformsArray)[selectedRow];
         
-        //DOMElement * pluginHandleElement = event.target;
-
         MacSVGDocumentWindowController * macSVGDocumentWindowController =
                 [self.macSVGDocument macSVGDocumentWindowController];
+        MacSVGDocument * macSVGDocument = [macSVGDocumentWindowController document];
         id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
         id domMouseEventsController = [svgWebKitController domMouseEventsController];
         NSPoint transformedCurrentMousePagePoint = [domMouseEventsController transformedCurrentMousePagePoint];
         DOMElement * clickTarget = (DOMElement *)[domMouseEventsController clickTarget];
+
+        NSString * realMacsvgid = [clickTarget getAttribute:@"_macsvg_master_Macsvgid"];
+        DOMElement * realClickDOMTarget = [svgWebKitController domElementForMacsvgid:realMacsvgid];
+        NSXMLElement * realClickXMLTarget = [macSVGDocument xmlElementForMacsvgid:realMacsvgid];
+
         
         NSString * handleOrientation = [clickTarget getAttribute:@"_macsvg_handle_orientation"];    // use target from mousedown event
         
@@ -1411,9 +1416,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             {
                 // mouse is dragging the center-of-rotation handle for the transform rotate editing mode
 
-                //NSString * xString = [self allocFloatString:transformedCurrentMousePagePoint.x];
-                //NSString * yString = [self allocFloatString:transformedCurrentMousePagePoint.y];
-     
                 NSPoint currentMousePagePoint = [domMouseEventsController currentMousePagePoint];
 
                 DOMElement * clickTargetParent = clickTarget.parentElement;
@@ -1422,6 +1424,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                
                 NSString * xString = [self allocFloatString:centerOfRotationPoint.x];
                 NSString * yString = [self allocFloatString:centerOfRotationPoint.y];
+
+                NSString * oldCenterOfRotationXString = rotateDictionary[@"x"];
+                NSString * oldCenterOfRotationYString = rotateDictionary[@"y"];
+                
+                CGFloat oldCenterOfRotationX = oldCenterOfRotationXString.floatValue;
+                CGFloat oldCenterOfRotationY = oldCenterOfRotationYString.floatValue;
                 
                 rotateDictionary[@"x"] = xString;
                 rotateDictionary[@"y"] = yString;
@@ -1430,6 +1438,114 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 value3TextField.stringValue = yString;
 
                 [self setTransformAttribute];
+                
+                // If the selected element (rect, circle, etc.) contains a animateTransform child with type=rotate and matching center-of-rotation,
+                // update the animateTransform values to use the new center-of-rotation.
+
+                NSArray * clickTargetXMLChildElements = realClickXMLTarget.children;
+                for (NSXMLNode * aChildNode in clickTargetXMLChildElements)
+                {
+                    if (aChildNode.kind == NSXMLElementKind)
+                    {
+                        NSXMLElement * aChildElement = (NSXMLElement *)aChildNode;
+                        NSString * elementName = aChildElement.name;
+                        if ([elementName isEqualToString:@"animateTransform"] == YES)
+                        {
+                            NSXMLElement * animateTransformElement = aChildElement;
+                            NSXMLNode * typeAttributeNode = [animateTransformElement attributeForName:@"type"];
+                            if (typeAttributeNode != NULL)
+                            {
+                                NSString * typeAttributeString = typeAttributeNode.stringValue;
+                                if ([typeAttributeString isEqualToString:@"rotate"] == YES)
+                                {
+                                    NSXMLNode * valuesAttributeNode = [animateTransformElement attributeForName:@"values"];
+                                    if (valuesAttributeNode != NULL)
+                                    {
+                                        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
+
+                                        NSMutableArray * valueRowsArray = [[valuesAttributeString componentsSeparatedByString:@";"] mutableCopy];
+                                        
+                                        NSMutableString * newValuesString = [NSMutableString string];
+                                        
+                                        for (NSString * aValuesRowString in valueRowsArray)
+                                        {
+                                            NSString * aValuesString = aValuesRowString;
+                                        
+                                            NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+                                            NSString * trimmedValuesString = [aValuesString stringByTrimmingCharactersInSet:whitespaceSet];
+
+                                            NSInteger aValuesStringLength = trimmedValuesString.length;
+                                        
+                                            if (aValuesStringLength > 0)
+                                            {
+                                                NSMutableString * filteredValuesString = [NSMutableString string];
+                                                
+                                                unichar prevChar = ' ';
+                                                
+                                                for (NSInteger i = 0; i < aValuesStringLength; i++)
+                                                {
+                                                    unichar aChar = [trimmedValuesString characterAtIndex:i];
+                                                    NSString * aCharString = [NSString stringWithFormat:@"%C", aChar];
+                                                    
+                                                    if (aChar == ' ')
+                                                    {
+                                                        if (prevChar != ' ')
+                                                        {
+                                                            [filteredValuesString appendString:aCharString];
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        [filteredValuesString appendString:aCharString];
+                                                    }
+                                                    
+                                                    prevChar = aChar;
+                                                }
+                                            
+                                                NSArray * valueItemsArray = [filteredValuesString componentsSeparatedByString:@" "];
+                                                
+                                                if (valueItemsArray.count == 3)
+                                                {
+                                                    NSString * degreesString = [valueItemsArray objectAtIndex:0];
+                                                    NSString * centerOfRotationXString = [valueItemsArray objectAtIndex:1];
+                                                    NSString * centerOfRotationYString = [valueItemsArray objectAtIndex:2];
+                                                    
+                                                    CGFloat centerOfRotationX = centerOfRotationXString.floatValue;
+                                                    CGFloat centerOfRotationY = centerOfRotationYString.floatValue;
+                                                    
+                                                    if (centerOfRotationX == oldCenterOfRotationX)
+                                                    {
+                                                        if (centerOfRotationY == oldCenterOfRotationY)
+                                                        {
+                                                            aValuesString = [NSString stringWithFormat:@"%@ %@ %@", degreesString, xString, yString];
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                if (newValuesString.length > 0)
+                                                {
+                                                    [newValuesString appendString:@" "];
+                                                }
+                                                
+                                                [newValuesString appendString:aValuesString];
+                                                [newValuesString appendString:@";"];
+                                            }
+                                        }
+                                        
+                                        [realClickDOMTarget setAttribute:@"values" value:newValuesString];
+                                        
+                                        NSXMLNode * xmlValuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
+                                        xmlValuesAttributeNode.name = @"values";
+                                        xmlValuesAttributeNode.stringValue = newValuesString;
+                                        [animateTransformElement addAttribute:xmlValuesAttributeNode];
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         else
