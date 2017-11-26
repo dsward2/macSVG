@@ -2,7 +2,7 @@
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
-**November 20, 2017 – [macSVG v1.1.1 is released](https://github.com/dsward2/macSVG/releases/), with improved SVG web view rulers, improved drag-and-drop function in the XML outline view, and various bug fixes.**
+**November 26, 2017 – [macSVG v1.1.2 is released](https://github.com/dsward2/macSVG/releases/), with improvements to live SVG coordinates data, dragging support for animateTransform center-of-rotation, and various bug fixes.**
 
 <hr>
 

@@ -1,5 +1,13 @@
 # macSVG Release Notes
 
+## macSVG v1.1.2 - November 26, 2017
+
+MacSVG v1.1.2 introduces a new plug-in called Element Info.  This plug-in displays information about the currently selected element, and is especially helpful when drawing a new element or editing an existing one.  The ElementInfoEditor shows these attribute values, depending on the element: x, y, width, height, cx, cy, r, rx and ry.  The plug-in also show the current bounding box in the web view for the selected element, and the current DOM mouse page coordinates.
+
+When the center-of-rotation handle is dragged to new coordinates, if the selected element contains an "animateTransform" element, the app will attempt to sync the new center-of-rotation coordinates to the animateTransform element.  This works best if the SVG animation is stopped or paused.
+
+Added ToolTips to the XMLOutlineView view.  When the mouse hovers over the Element column in the outline view, the XML representation of the element will be displayed.
+
 ## macSVG v1.1.1 - November 20, 2017
 
 MacSVG v1.1.1 features improvements to the SVG web view rulers, the XML outline view, and drag-and-drop functions.
