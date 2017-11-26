@@ -20,10 +20,15 @@
     return self;
 }
 
+/*
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
+    NSColor * backgroundColor = [NSColor whiteColor];
+    [backgroundColor set];
+    NSRectFill(dirtyRect);
 }
+*/
 
 //==================================================================================
 //	isFlipped

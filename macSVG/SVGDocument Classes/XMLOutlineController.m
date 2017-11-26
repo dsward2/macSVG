@@ -3911,7 +3911,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     
     NSString * pluginName = [currentPlugin pluginName];
     
-    if ([pluginName isEqualToString:@"Element Info Editor"] == YES)
+    if ([pluginName isEqualToString:@"Element Info"] == YES)
     {
         if (selectedNodesCount > 0)
         {
@@ -3925,6 +3925,18 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (domElement != NULL)
             {
                 [currentPlugin updateElementInfoForXMLElement:xmlElement domElement:domElement];
+
+                NSScrollView * scrollView = self.macSVGDocumentWindowController.editorUIFrameController.elementEditorPlugInController.pluginHostScrollView;
+
+                /*
+                NSDisableScreenUpdates();
+                [scrollView display];
+                [scrollView reflectScrolledClipView:currentPlugin.pluginView.contentView];
+                [scrollView display];
+                NSEnableScreenUpdates();
+                */
+                
+                scrollView.documentView.frame = [[currentPlugin pluginView] frame];
             }
         }
     }

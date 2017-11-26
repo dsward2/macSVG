@@ -12,12 +12,21 @@
 @implementation ElementInfoEditor
 
 //==================================================================================
+//	dealloc
+//==================================================================================
+
+- (void)deallow
+{
+    self.elementInfoTextView = NULL;
+}
+
+//==================================================================================
 //	pluginName
 //==================================================================================
 
 - (NSString *)pluginName
 {
-    return @"Element Info Editor";
+    return @"Element Info";
 }
 
 //==================================================================================
@@ -28,12 +37,13 @@
 {
     self = [super init];
     if (self) {
+        self.sectionFont = [NSFont boldSystemFontOfSize:13];
+        self.sectionTextAttributes = @{NSFontAttributeName: self.sectionFont};
+        
         self.textFont = [NSFont systemFontOfSize:10];
-
         self.textAttributes = @{NSFontAttributeName: self.textFont};
         
         self.boldFont = [NSFont boldSystemFontOfSize:10];
-        
         self.boldTextAttributes = @{NSFontAttributeName: self.boldFont};
     }
     return self;
@@ -72,7 +82,28 @@
 
 - (NSInteger)editorPriority:(NSXMLElement *)targetElement context:(NSString *)context
 {
-    return 30;
+    NSInteger result = 10;
+    
+    NSString * targetElementName = targetElement.name;
+    
+    if ([targetElementName isEqualToString:@"rect"] == YES)
+    {
+        result = 40;
+    }
+    else if ([targetElementName isEqualToString:@"circle"] == YES)
+    {
+        result = 40;
+    }
+    else if ([targetElementName isEqualToString:@"ellipse"] == YES)
+    {
+        result = 40;
+    }
+    else if ([targetElementName isEqualToString:@"g"] == YES)
+    {
+        result = 40;
+    }
+    
+    return result;
 }
 
 //==================================================================================
@@ -105,12 +136,23 @@
     if (xmlElement != NULL)
     {
         NSString * elementName = xmlElement.name;
+        NSString * elementID = @"";
+        
+        NSXMLNode * elementIDNode = [xmlElement attributeForName:@"id"];
+        if (elementIDNode != NULL)
+        {
+            elementID = elementIDNode.stringValue;
+        }
 
         NSMutableAttributedString * descriptionString = [[NSMutableAttributedString alloc] init];
 
         NSAttributedString * elementLabelAttributedString = [[NSAttributedString alloc]
-                initWithString:@"Element: " attributes:self.boldTextAttributes];
+                initWithString:@"Element\n" attributes:self.sectionTextAttributes];
         [descriptionString appendAttributedString:elementLabelAttributedString];
+
+        NSAttributedString * elementNameLabelAttributedString = [[NSAttributedString alloc]
+                initWithString:@"name: " attributes:self.boldTextAttributes];
+        [descriptionString appendAttributedString:elementNameLabelAttributedString];
 
         NSAttributedString * openBracketAttributedString = [[NSAttributedString alloc]
                 initWithString:@"<" attributes:self.textAttributes];
@@ -121,8 +163,30 @@
         [descriptionString appendAttributedString:titleAttributedString];
 
         NSAttributedString * closeBracketAttributedString = [[NSAttributedString alloc]
-                initWithString:@">\n\n" attributes:self.textAttributes];
+                initWithString:@">\n" attributes:self.textAttributes];
         [descriptionString appendAttributedString:closeBracketAttributedString];
+
+        NSAttributedString * elementIDLabelAttributedString = [[NSAttributedString alloc]
+                initWithString:@"id: " attributes:self.boldTextAttributes];
+        [descriptionString appendAttributedString:elementIDLabelAttributedString];
+
+        NSAttributedString * elementIDAttributedString = [[NSAttributedString alloc]
+                initWithString:elementID attributes:self.textAttributes];
+        [descriptionString appendAttributedString:elementIDAttributedString];
+
+
+        NSAttributedString * xpathLabelAttributedString = [[NSAttributedString alloc]
+                initWithString:@"\nXPath: " attributes:self.boldTextAttributes];
+        [descriptionString appendAttributedString:xpathLabelAttributedString];
+
+        NSString * xPathString = [xmlElement XPath];
+        NSAttributedString * xPathAttributedString = [[NSAttributedString alloc]
+                initWithString:xPathString attributes:self.textAttributes];
+        [descriptionString appendAttributedString:xPathAttributedString];
+
+        NSAttributedString * newLineString = [[NSAttributedString alloc]
+                initWithString:@"\n\n" attributes:self.textAttributes];
+        [descriptionString appendAttributedString:newLineString];
         
         if ([elementName isEqualToString:@"rect"])
         {
@@ -172,10 +236,9 @@
         //[self appendClientXY:descriptionString];
         [self appendPageXY:descriptionString];
         //[self appendScreenXY:descriptionString];
-        
 
         NSAttributedString * testSuiteDescriptionTitleAttributedString = [[NSAttributedString alloc]
-                initWithString:@"XML: " attributes:self.boldTextAttributes];
+                initWithString:@"XML\n" attributes:self.sectionTextAttributes];
         [descriptionString appendAttributedString:testSuiteDescriptionTitleAttributedString];
 
         NSInteger nonTextChildNodes = 0;
@@ -204,7 +267,44 @@
                 initWithString:xmlString attributes:self.textAttributes];
         [descriptionString appendAttributedString:xmlAttributedString];
         
-        [self.elementInfoTextField setAttributedStringValue:descriptionString];
+        [descriptionString appendAttributedString:newLineString];
+
+        [self.elementInfoTextView setRichText:YES];
+        [self.elementInfoTextView setEditable:NO];
+        [self.elementInfoTextView setContinuousSpellCheckingEnabled:NO];
+        [self.elementInfoTextView setGrammarCheckingEnabled:NO];
+
+        //[self.elementInfoTextView setUsesFindPanel:NO];
+
+        NSDisableScreenUpdates();
+
+        [[self.elementInfoTextView textStorage] setAttributedString:descriptionString];
+
+        [self.elementInfoTextView.layoutManager ensureLayoutForTextContainer:self.elementInfoTextView.textContainer];
+
+        [self.elementInfoTextScrollView display];
+        [self.elementInfoTextScrollView reflectScrolledClipView:self.elementInfoTextScrollView.contentView];
+        [self.elementInfoTextScrollView display];
+        
+        NSRect textContainerRect = [self.elementInfoTextView.layoutManager usedRectForTextContainer:self.elementInfoTextView.textContainer];
+
+        /*
+        if (textContainerRect.size.height > self.pluginView.frame.size.height)
+        {
+            self.pluginView.frame = textContainerRect;
+        }
+        else
+        {
+            NSView * pluginSuperview = self.pluginView.superview;
+            self.pluginView.frame = pluginSuperview.frame;
+        }
+        */
+
+        
+        self.elementInfoTextView.frame = textContainerRect;
+
+        [self.elementInfoTextView.enclosingScrollView scrollPoint:NSZeroPoint];
+        NSEnableScreenUpdates();
     }
 }
 
@@ -242,8 +342,12 @@
         heightString = heightAttributeNode.stringValue;
     }
 
+    NSAttributedString * svgSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"SVG\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:svgSectionAttributedString];
+    
     NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"SVG x: " attributes:self.boldTextAttributes];
+            initWithString:@"x: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:xElementLabelAttributedString];
     
     NSAttributedString * xAttributedString = [[NSAttributedString alloc]
@@ -251,7 +355,7 @@
     [descriptionString appendAttributedString:xAttributedString];
 
     NSAttributedString * yElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" y: " attributes:self.boldTextAttributes];
+            initWithString:@"\ny: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:yElementLabelAttributedString];
 
     NSAttributedString * yAttributedString = [[NSAttributedString alloc]
@@ -267,7 +371,7 @@
     [descriptionString appendAttributedString:widthAttributedString];
 
     NSAttributedString * heightElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" height: " attributes:self.boldTextAttributes];
+            initWithString:@"\nheight: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:heightElementLabelAttributedString];
 
     NSAttributedString * heightAttributedString = [[NSAttributedString alloc]
@@ -289,8 +393,12 @@
     NSString * widthString = [self allocFloatString:elementBBox.size.width];
     NSString * heightString = [self allocFloatString:elementBBox.size.height];
 
+    NSAttributedString * domSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"DOM BBox\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:domSectionAttributedString];
+    
     NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"BBox x: " attributes:self.boldTextAttributes];
+            initWithString:@"x: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:xElementLabelAttributedString];
     
     NSAttributedString * xAttributedString = [[NSAttributedString alloc]
@@ -298,7 +406,7 @@
     [descriptionString appendAttributedString:xAttributedString];
 
     NSAttributedString * yElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" y: " attributes:self.boldTextAttributes];
+            initWithString:@"\ny: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:yElementLabelAttributedString];
 
     NSAttributedString * yAttributedString = [[NSAttributedString alloc]
@@ -314,12 +422,33 @@
     [descriptionString appendAttributedString:widthAttributedString];
 
     NSAttributedString * heightElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" height: " attributes:self.boldTextAttributes];
+            initWithString:@"\nheight: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:heightElementLabelAttributedString];
 
     NSAttributedString * heightAttributedString = [[NSAttributedString alloc]
             initWithString:heightString attributes:self.textAttributes];
     [descriptionString appendAttributedString:heightAttributedString];
+
+
+    NSString * midXString = [self allocFloatString:(elementBBox.origin.x + (elementBBox.size.width / 2.0f))];
+    NSString * midYString = [self allocFloatString:(elementBBox.origin.y + (elementBBox.size.height / 2.0f))];
+
+    NSAttributedString * midXElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"\nmidX: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:midXElementLabelAttributedString];
+    
+    NSAttributedString * midXAttributedString = [[NSAttributedString alloc]
+            initWithString:midXString attributes:self.textAttributes];
+    [descriptionString appendAttributedString:midXAttributedString];
+
+    NSAttributedString * midYElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"\nmidY: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:midYElementLabelAttributedString];
+
+    NSAttributedString * midYAttributedString = [[NSAttributedString alloc]
+            initWithString:midYString attributes:self.textAttributes];
+    [descriptionString appendAttributedString:midYAttributedString];
+
 
     NSString * maxXString = [self allocFloatString:(elementBBox.origin.x + elementBBox.size.width)];
     NSString * maxYString = [self allocFloatString:(elementBBox.origin.y + elementBBox.size.height)];
@@ -333,16 +462,12 @@
     [descriptionString appendAttributedString:maxXAttributedString];
 
     NSAttributedString * maxYElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" maxY: " attributes:self.boldTextAttributes];
+            initWithString:@"\nmaxY: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:maxYElementLabelAttributedString];
 
     NSAttributedString * maxYAttributedString = [[NSAttributedString alloc]
             initWithString:maxYString attributes:self.textAttributes];
     [descriptionString appendAttributedString:maxYAttributedString];
-
-
-
-
 
     NSAttributedString * newLineString = [[NSAttributedString alloc]
             initWithString:@"\n\n" attributes:self.textAttributes];
@@ -374,8 +499,12 @@
         rString = rAttributeNode.stringValue;
     }
 
+    NSAttributedString * svgSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"SVG\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:svgSectionAttributedString];
+    
     NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"SVG x: " attributes:self.boldTextAttributes];
+            initWithString:@"cx: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:xElementLabelAttributedString];
     
     NSAttributedString * cxAttributedString = [[NSAttributedString alloc]
@@ -383,7 +512,7 @@
     [descriptionString appendAttributedString:cxAttributedString];
 
     NSAttributedString * cyElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" cy: " attributes:self.boldTextAttributes];
+            initWithString:@"\ncy: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:cyElementLabelAttributedString];
 
     NSAttributedString * cyAttributedString = [[NSAttributedString alloc]
@@ -436,16 +565,20 @@
         ryString = ryAttributeNode.stringValue;
     }
 
-    NSAttributedString * cxElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"SVG cx: " attributes:self.boldTextAttributes];
-    [descriptionString appendAttributedString:cxElementLabelAttributedString];
+    NSAttributedString * svgSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"SVG\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:svgSectionAttributedString];
     
+    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"cx: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:xElementLabelAttributedString];
+
     NSAttributedString * cxAttributedString = [[NSAttributedString alloc]
             initWithString:cxString attributes:self.textAttributes];
     [descriptionString appendAttributedString:cxAttributedString];
 
     NSAttributedString * cyElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" cy: " attributes:self.boldTextAttributes];
+            initWithString:@"\ncy: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:cyElementLabelAttributedString];
 
     NSAttributedString * cyAttributedString = [[NSAttributedString alloc]
@@ -457,11 +590,11 @@
     [descriptionString appendAttributedString:rxElementLabelAttributedString];
     
     NSAttributedString * rxAttributedString = [[NSAttributedString alloc]
-            initWithString:ryString attributes:self.textAttributes];
+            initWithString:rxString attributes:self.textAttributes];
     [descriptionString appendAttributedString:rxAttributedString];
 
     NSAttributedString * ryElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" ry: " attributes:self.boldTextAttributes];
+            initWithString:@"\nry: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:ryElementLabelAttributedString];
 
     NSAttributedString * ryAttributedString = [[NSAttributedString alloc]
@@ -480,19 +613,23 @@
 
 - (void)appendClientXY:(NSMutableAttributedString *)descriptionString
 {
-    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"Mouse clientX: " attributes:self.boldTextAttributes];
-    [descriptionString appendAttributedString:xElementLabelAttributedString];
-    
     NSPoint currentMouseClientPoint = [self.macSVGPluginCallbacks currentMouseClientPoint];
 
+    NSAttributedString * mouseSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"Mouse\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:mouseSectionAttributedString];
+    
+    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"clientX: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:xElementLabelAttributedString];
+    
     NSString * xString = [NSString stringWithFormat:@"%d", (int)currentMouseClientPoint.x];
     NSAttributedString * xAttributedString = [[NSAttributedString alloc]
             initWithString:xString attributes:self.textAttributes];
     [descriptionString appendAttributedString:xAttributedString];
 
     NSAttributedString * yElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" clientY: " attributes:self.boldTextAttributes];
+            initWithString:@"\nclientY: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:yElementLabelAttributedString];
 
     NSString * yString = [NSString stringWithFormat:@"%d\n\n", (int)currentMouseClientPoint.y];
@@ -504,19 +641,23 @@
 
 - (void)appendPageXY:(NSMutableAttributedString *)descriptionString
 {
-    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"Mouse pageX: " attributes:self.boldTextAttributes];
-    [descriptionString appendAttributedString:xElementLabelAttributedString];
-    
     NSPoint currentMousePagePoint = [self.macSVGPluginCallbacks currentMousePagePoint];
 
+    NSAttributedString * mouseSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"Mouse\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:mouseSectionAttributedString];
+    
+    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"pageX: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:xElementLabelAttributedString];
+    
     NSString * xString = [NSString stringWithFormat:@"%d", (int)currentMousePagePoint.x];
     NSAttributedString * xAttributedString = [[NSAttributedString alloc]
             initWithString:xString attributes:self.textAttributes];
     [descriptionString appendAttributedString:xAttributedString];
 
     NSAttributedString * yElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" pageY: " attributes:self.boldTextAttributes];
+            initWithString:@"\npageY: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:yElementLabelAttributedString];
 
     NSString * yString = [NSString stringWithFormat:@"%d\n\n", (int)currentMousePagePoint.y];
@@ -528,11 +669,15 @@
 
 - (void)appendScreenXY:(NSMutableAttributedString *)descriptionString
 {
-    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@"Mouse screenX: " attributes:self.boldTextAttributes];
-    [descriptionString appendAttributedString:xElementLabelAttributedString];
-    
     NSPoint currentMouseScreenPoint = [self.macSVGPluginCallbacks currentMouseScreenPoint];
+
+    NSAttributedString * mouseSectionAttributedString = [[NSAttributedString alloc]
+            initWithString:@"Mouse\n" attributes:self.sectionTextAttributes];
+    [descriptionString appendAttributedString:mouseSectionAttributedString];
+    
+    NSAttributedString * xElementLabelAttributedString = [[NSAttributedString alloc]
+            initWithString:@"screenX: " attributes:self.boldTextAttributes];
+    [descriptionString appendAttributedString:xElementLabelAttributedString];
 
     NSString * xString = [NSString stringWithFormat:@"%d", (int)currentMouseScreenPoint.x];
     NSAttributedString * xAttributedString = [[NSAttributedString alloc]
@@ -540,7 +685,7 @@
     [descriptionString appendAttributedString:xAttributedString];
 
     NSAttributedString * yElementLabelAttributedString = [[NSAttributedString alloc]
-            initWithString:@" screenY: " attributes:self.boldTextAttributes];
+            initWithString:@"\nscreenY: " attributes:self.boldTextAttributes];
     [descriptionString appendAttributedString:yElementLabelAttributedString];
 
     NSString * yString = [NSString stringWithFormat:@"%d\n\n", (int)currentMouseScreenPoint.y];

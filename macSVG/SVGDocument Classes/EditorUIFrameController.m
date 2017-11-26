@@ -109,6 +109,8 @@
     [self.textEditorController setEnabled:NO];
     [self.validAttributesController setEnabled:NO];
 
+    NSDisableScreenUpdates();
+
     NSScrollView * scrollView = self.elementEditorPlugInController.pluginHostScrollView;
     NSView * documentView = scrollView.documentView;
     NSView * contentView = scrollView.contentView;  // the NSClipView inside NSScrollView
@@ -130,6 +132,9 @@
     //newScrollOrigin = NSMakePoint(0.0f, documentViewFrame.size.height);
  
     //[[scrollView documentView] scrollPoint:newScrollOrigin];
+
+    [scrollView scrollPoint:NSZeroPoint];
+    NSEnableScreenUpdates();
 
     [self.attributeEditorController reloadData];
     [self.textEditorController reloadData];

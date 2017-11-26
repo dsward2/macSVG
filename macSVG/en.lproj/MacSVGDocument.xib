@@ -460,11 +460,11 @@
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     </customView>
                                                                     <popUpButton verticalHuggingPriority="750" misplaced="YES" id="100803">
-                                                                        <rect key="frame" x="17" y="307" width="253" height="26"/>
+                                                                        <rect key="frame" x="18" y="307" width="252" height="26"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                        <popUpButtonCell key="cell" type="push" title="Valid Attributes" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="100806" id="100804">
+                                                                        <popUpButtonCell key="cell" type="push" title="Valid Attributes" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="100806" id="100804">
                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                            <font key="font" metaFont="system"/>
                                                                             <menu key="menu" title="OtherViews" id="100805">
                                                                                 <items>
                                                                                     <menuItem title="Element Helper" id="100953"/>
@@ -1534,7 +1534,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Akd-5q-XyI">
                         <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="100959">
                                 <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>
@@ -1564,7 +1564,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xf2-wX-kBj" customClass="FlippedClipView">
                         <rect key="frame" x="0.0" y="0.0" width="287" height="325"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="100925">
                                 <rect key="frame" x="0.0" y="0.0" width="287" height="325"/>
@@ -1593,7 +1593,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="fvq-bM-71s">
                         <rect key="frame" x="1" y="1" width="270" height="349"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" usesFontPanel="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="100856">
                                 <rect key="frame" x="0.0" y="0.0" width="270" height="349"/>
@@ -1724,7 +1724,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="W5c-GM-C25">
                         <rect key="frame" x="1" y="1" width="270" height="349"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" id="100878">
                                 <rect key="frame" x="0.0" y="0.0" width="270" height="349"/>

@@ -9,9 +9,14 @@
 #import <MacSVGPlugin/MacSVGPlugin.h>
 
 @interface ElementInfoEditor : MacSVGPlugin
+{
+}
 
-@property (weak) IBOutlet NSTextField * elementInfoTextField;
+@property (strong) IBOutlet NSTextView * elementInfoTextView;
+@property (strong) IBOutlet NSScrollView * elementInfoTextScrollView;
 
+@property (strong) NSFont * sectionFont;
+@property (strong) NSDictionary * sectionTextAttributes;
 @property (strong) NSFont * textFont;
 @property (strong) NSDictionary * textAttributes;
 @property (strong) NSFont * boldFont;
