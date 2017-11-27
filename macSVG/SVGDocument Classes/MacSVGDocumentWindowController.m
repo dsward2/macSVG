@@ -1204,7 +1204,11 @@
 
 - (void) reloadAttributesTableData;
 {
+    //NSIndexSet * xmlAttributesSelectedRowIndexes = self.xmlAttributesTableController.xmlAttributesTableView.selectedRowIndexes;
+
     [self.xmlAttributesTableController buildAttributesTableForElement];
+    
+    //[self.xmlAttributesTableController.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
 }
 
 // ================================================================
@@ -2005,6 +2009,9 @@
 
 - (IBAction)enableAnimationCheckboxAction:(id)sender;
 {
+    NSIndexSet * xmlOutlineSelectedRowIndexes = self.xmlOutlineController.xmlOutlineView.selectedRowIndexes;
+    NSIndexSet * xmlAttributesSelectedRowIndexes =  self.xmlAttributesTableController.xmlAttributesTableView.selectedRowIndexes;
+
     [self reloadAllViews];
     
     if (self.enableAnimationCheckbox.state == YES)
@@ -2017,6 +2024,9 @@
         NSImage * buttonImage = [NSImage imageNamed:@"NSGoRightTemplate"];
         (self.pausePlayAnimationButton).image = buttonImage;
     }
+    
+    [self.xmlOutlineController.xmlOutlineView selectRowIndexes:xmlOutlineSelectedRowIndexes byExtendingSelection:NO];
+    [self.xmlAttributesTableController.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
 }
 
 // ================================================================
