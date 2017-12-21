@@ -18,6 +18,7 @@
 #import "EditorUIFrameController.h"
 #import "ValidAttributesController.h"
 #import "XMLAttributesTableView.h"
+#import "XMLAttributesTableRowView.h"
 
 @interface XMLAttributesTableController()
 @property (strong) NSXMLElement * currentXmlElementForAttributesTable;
@@ -224,6 +225,38 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     //[self.xmlAttributesTableView endUpdates];
 }
 
+
+
+
+
+
+//==================================================================================
+//	tableView:rowViewForRow:
+//==================================================================================
+
+- (NSTableRowView *)tableView:(NSTableView *)tableView
+                rowViewForRow:(NSInteger)row
+{
+    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
+    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
+    
+    XMLAttributesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    
+    if (rowView == NULL)
+    {
+        rowView = [[XMLAttributesTableRowView alloc] initWithFrame:NSZeroRect];
+        rowView.identifier = kRowIdentifier;
+    }
+
+    return rowView;
+}
+
+
+
+
+
+
+
 //==================================================================================
 //	reloadData
 //==================================================================================
@@ -231,6 +264,10 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 - (void)reloadData 
 {
     [self abortEditing];
+    
+    //[self.xmlAttributesTableView setNeedsDisplay:YES];
+    
+    NSIndexSet * selectedRowIndexes = [self.xmlAttributesTableView selectedRowIndexes];
 
     //[self.xmlAttributesTableView reloadData];     // not good with view-based table, changes selected row
     
@@ -261,17 +298,28 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
                 NSTextField * attributeValueTextField = [tableRowView viewAtColumn:1];
                 attributeValueTextField.stringValue = attributeValue;
+                
+                tableRowView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleRegular;
+                
+                BOOL rowIsSelected = [selectedRowIndexes containsIndex:i];
+                tableRowView.selected = rowIsSelected;
             }
             else
             {
                 NSLog(@"XMLAttributesTableController reloadData - error on row %ld, xmlAttributesArray.count %ld", i, self.xmlAttributesArray.count);
             }
         }
+        else
+        {
+            // tableRowView was not allocated.
+        }
     }
 
     EditorUIFrameController * editorUIFrameController =
             macSVGDocumentWindowController.editorUIFrameController;
     [editorUIFrameController reloadData];
+    
+    //[self.xmlAttributesTableView selectRowIndexes:selectedRowIndexes byExtendingSelection:NO];
 }
 
 //==================================================================================
@@ -406,12 +454,10 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     return (NSView *)resultView;
 }
 
-
 //==================================================================================
 //	tableView:objectValueForTableColumn:rowIndex
 //==================================================================================
 
-/*
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     id objectValue = NULL;
@@ -431,13 +477,11 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     
     return objectValue;
 }
-*/
 
 //==================================================================================
 //	setObjectValue:forTableColumn:row
 //==================================================================================
 
-/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
@@ -463,7 +507,12 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable attributes:self.xmlAttributesArray];
 }
-*/
+
+
+
+
+
+
 
 //==================================================================================
 //	tableViewSelectionDidChange:
@@ -490,7 +539,6 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         if (self.currentXmlElementForAttributesTable != NULL)
         {
             elementName = (self.currentXmlElementForAttributesTable).name;
-        
         
             if (rowIndex != -1)
             {

@@ -1204,11 +1204,15 @@
 
 - (void) reloadAttributesTableData;
 {
-    //NSIndexSet * xmlAttributesSelectedRowIndexes = self.xmlAttributesTableController.xmlAttributesTableView.selectedRowIndexes;
+    ////NSIndexSet * xmlAttributesSelectedRowIndexes = self.xmlAttributesTableController.xmlAttributesTableView.selectedRowIndexes;
+    
+    //NSString * selectedAttributeName = [self.xmlAttributesTableController selectedAttributeName];
 
     [self.xmlAttributesTableController buildAttributesTableForElement];
     
-    //[self.xmlAttributesTableController.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
+    ////[self.xmlAttributesTableController.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
+    
+    //[self.xmlAttributesTableController selectAttributeWithName:selectedAttributeName];
 }
 
 // ================================================================

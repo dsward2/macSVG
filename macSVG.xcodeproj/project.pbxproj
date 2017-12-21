@@ -58,6 +58,7 @@
 		0E1F75321D83FDFD008AFEAB /* PlayHeadSelected-Graphite.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 0E1F75311D83FDFD008AFEAB /* PlayHeadSelected-Graphite.tiff */; };
 		0E27FF7A1D7783D600277F03 /* drop_shadow_filter.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E27FF621D7783C400277F03 /* drop_shadow_filter.svg */; };
 		0E27FF7E1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E27FF7C1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m */; };
+		0E32F8921FEB200200492813 /* XMLAttributesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E32F8911FEB200200492813 /* XMLAttributesTableRowView.m */; };
 		0E346CD31794E0720041560C /* ToolSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E346CD21794CD850041560C /* ToolSettingsPopoverViewController.m */; };
 		0E3568161D9BC5B000AEEEE2 /* macSVG-Icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E3568151D9BC5B000AEEEE2 /* macSVG-Icon.svg */; };
 		0E363BD6181328EE004715A7 /* SFTPUploadWithBlocking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E363BD5181328EE004715A7 /* SFTPUploadWithBlocking.m */; };
@@ -1715,6 +1716,8 @@
 		0E27FF7B1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedElementsInfoPopoverViewController.h; sourceTree = "<group>"; };
 		0E27FF7C1D77A46C00277F03 /* SelectedElementsInfoPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedElementsInfoPopoverViewController.m; sourceTree = "<group>"; };
 		0E299D151E695EFB00DCC063 /* animate_path_of_elliptical_arc_segments.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = animate_path_of_elliptical_arc_segments.svg; sourceTree = "<group>"; };
+		0E32F8901FEB200200492813 /* XMLAttributesTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAttributesTableRowView.h; sourceTree = "<group>"; };
+		0E32F8911FEB200200492813 /* XMLAttributesTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAttributesTableRowView.m; sourceTree = "<group>"; };
 		0E3426731780F786009D7DCF /* Pause16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pause16.png; path = ../Images/Pause16.png; sourceTree = "<group>"; };
 		0E346CD11794CD850041560C /* ToolSettingsPopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolSettingsPopoverViewController.h; sourceTree = "<group>"; };
 		0E346CD21794CD850041560C /* ToolSettingsPopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolSettingsPopoverViewController.m; sourceTree = "<group>"; };
@@ -3608,6 +3611,8 @@
 				0EB483EC142906BD005ADB73 /* XMLAttributesTableController.m */,
 				0E9C05F91449582B0011EE06 /* XMLAttributesTableView.h */,
 				0E9C05FA1449582B0011EE06 /* XMLAttributesTableView.m */,
+				0E32F8901FEB200200492813 /* XMLAttributesTableRowView.h */,
+				0E32F8911FEB200200492813 /* XMLAttributesTableRowView.m */,
 				0E7F9A6514B030A8005351BE /* EditorUIFrameController.h */,
 				0E7F9A6614B030A8005351BE /* EditorUIFrameController.m */,
 				0E1C3B68177D61B800672A08 /* Editor Panels */,
@@ -4693,6 +4698,7 @@
 				0E9637A2178688DE0011861A /* HTTPAuthenticationRequest.m in Sources */,
 				0E7145A1142C302C002F8E1F /* GradientView.m in Sources */,
 				0E82B1321D730A1B005D0634 /* DDASLLogger.m in Sources */,
+				0E32F8921FEB200200492813 /* XMLAttributesTableRowView.m in Sources */,
 				0E9637A91786894E0011861A /* HTTPFileResponse.m in Sources */,
 				0E1F13BE1436BE610068BC62 /* SVGWebView.m in Sources */,
 				0E9C05FB1449582B0011EE06 /* XMLAttributesTableView.m in Sources */,
