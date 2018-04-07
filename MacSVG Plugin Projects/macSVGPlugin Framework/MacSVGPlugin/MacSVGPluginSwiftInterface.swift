@@ -8,11 +8,11 @@
 
 import Cocoa
 
-@objc public class MacSVGPluginSwiftInterface: NSObject {
+public class MacSVGPluginSwiftInterface: NSObject {
 
     @IBOutlet weak var macSVGPlugin: MacSVGPlugin!
     
-    @objc public var testProperty = "MacSVGPluginSwiftInterface testProperty"
+    public var testProperty = "MacSVGPluginSwiftInterface testProperty"
     
     override init() {
         super.init()

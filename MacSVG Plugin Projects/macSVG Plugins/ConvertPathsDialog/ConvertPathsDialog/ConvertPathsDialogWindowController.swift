@@ -38,14 +38,14 @@ class ConvertPathsDialogWindowController: NSWindowController {
 
     @IBAction func cancelButtonAction(sender: AnyObject)
     {
-        NSApplication.shared().stopModal(withCode:NSModalResponseCancel)
+        NSApplication.shared.stopModal(withCode:NSApplication.ModalResponse.cancel)
         
         self.window?.close()
     }
 
     @IBAction func applyButtonAction(sender: AnyObject)
     {
-        NSApplication.shared().stopModal(withCode:NSModalResponseCancel)
+        NSApplication.shared.stopModal(withCode:NSApplication.ModalResponse.cancel)
         
         self.window?.close()
 

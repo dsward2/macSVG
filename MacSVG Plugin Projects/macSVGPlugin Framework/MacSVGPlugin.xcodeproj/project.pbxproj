@@ -160,7 +160,7 @@
 				TargetAttributes = {
 					0E05D335178F35C4000B910E = {
 						DevelopmentTeam = MMFBWVS455;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -341,7 +341,8 @@
 				PRODUCT_NAME = MacSVGPlugin;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -365,7 +366,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.MacSVGPlugin;
 				PRODUCT_NAME = MacSVGPlugin;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

@@ -39,16 +39,18 @@ class ConvertPathsDialog: MacSVGPlugin {
         {
             //let pluginNameString = self.className
             let pluginNameString = String(describing: type(of: self))
-            var topLevelObjects = NSArray()
+            var topLevelObjects: NSArray?
             
             let bundlePath = Bundle.main.path(forResource:pluginNameString, ofType:"plugin")
             
             let pluginBundle = Bundle(path:bundlePath!)
             
-            pluginBundle!.loadNibNamed(pluginNameString, owner: self, topLevelObjects: &topLevelObjects)
+            let nibName = NSNib.Name(rawValue: pluginNameString)
+            
+            pluginBundle!.loadNibNamed(nibName, owner: self, topLevelObjects: &topLevelObjects)
         }
         
-        NSApplication.shared().runModal(for:(convertPathsDialogWindowController?.window!)!)
+        NSApplication.shared.runModal(for:(convertPathsDialogWindowController?.window!)!)
 
         return true;
     }
