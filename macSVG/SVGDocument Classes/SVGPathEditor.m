@@ -105,7 +105,7 @@
         self.pathSegmentIndex = -1;
         self.pathEditingKey = @"";
         
-        editingMode = kPathEditingModeNotActive;
+        self.editingMode = kPathEditingModeNotActive;
 
         self.useRelativePathCoordinates = NO;
         self.closePathAutomatically = NO;
@@ -2909,7 +2909,7 @@
     [self.pathSegmentsArray removeAllObjects];
     self.pathSegmentIndex = -1;
     self.pathEditingKey = @"";
-    editingMode = kPathEditingModeNotActive;
+    self.editingMode = kPathEditingModeNotActive;
 
     [self removePathHandles];
 }
@@ -4233,6 +4233,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
         if (extendPathSuccess == YES)
         {
+            self.editingMode = kPathEditingModeNextSegment;
+
             [self.pathSegmentsArray addObject:newPathSegmentDictionary];
             
             self.pathSegmentIndex = (self.pathSegmentsArray).count - 1;
@@ -4480,7 +4482,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         float newAbsoluteX1 = transformedCurrentMousePoint.x;
         float newAbsoluteY1 = transformedCurrentMousePoint.y;
         
-        if (editingMode == kPathEditingModePreviousSegment)
+        if (self.editingMode == kPathEditingModePreviousSegment)
         {
             NSPoint previousSegmentPoint = NSMakePoint(0, 0);
             if (self.pathSegmentIndex > 0)
@@ -4549,7 +4551,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             newY2 = 0;
         }
 
-        if (editingMode == kPathEditingModeNextSegment)
+        if (self.editingMode == kPathEditingModeNextSegment)
         {
             float prevDeltaX = transformedCurrentMousePoint.x - previousX;
             float prevDeltaY = transformedCurrentMousePoint.y - previousY;
@@ -4588,8 +4590,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     nextPathSegmentDictionary[@"x1"] = newX1String;
                     nextPathSegmentDictionary[@"y1"] = newY1String;
                 }
-
-                if (nextPathCommand == 'c')
+                else if (nextPathCommand == 'c')
                 {
                     float handleDeltaX = previousX - newX2;
                     float handleDeltaY = previousY - newY2;
@@ -5508,7 +5509,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     NSInteger result = kPathEditingModeNotActive;
     
     self.pathEditingKey = @"";
-    editingMode = kPathEditingModeNotActive;
+    self.editingMode = kPathEditingModeNotActive;
     
     if (self.selectedPathElement != NULL)
     {
@@ -5554,7 +5555,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     NSString * handleSegmentString = [self.activeHandleDOMElement getAttribute:@"_macsvg_path_handle_segment"];
                     NSInteger newPathSegmentIndex = handleSegmentString.integerValue;
                     
-                    editingMode = kPathEditingModeCurrentSegment;
+                    self.editingMode = kPathEditingModeCurrentSegment;
                     newEditingMode = kPathEditingModeCurrentSegment;
                     
                     self.pathEditingKey = newPathEditingKey;

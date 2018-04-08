@@ -263,7 +263,16 @@
     NSString * pathRadiusYString = (self.arcSettingsPopoverViewController.pathRadiusYTextField).stringValue;
     (self.macSVGPluginCallbacks).pathRadiusYString = pathRadiusYString;
 
-    [self.macSVGPluginCallbacks restartLastPathSegment];
+    // If currently drawing a new segment, restart the segment drawing to apply latest settings
+    MacSVGDocumentWindowController * macSVGDocumentWindowController =
+            [self.macSVGDocument macSVGDocumentWindowController];
+    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
+    id domMouseEventsController = [svgWebKitController domMouseEventsController];
+    SVGPathEditor * svgPathEditor = [domMouseEventsController svgPathEditor];
+    if (svgPathEditor.editingMode == kPathEditingModeNextSegment)
+    {
+        [self.macSVGPluginCallbacks restartLastPathSegment];
+    }
 }
 
 //==================================================================================
@@ -446,12 +455,15 @@
         NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
         [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
         [pathSegmentsArray addObject:newPathSegmentDictionary];
-        
+
         [self.macSVGPluginCallbacks setActiveXMLElement:pathElement];
 
         id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
         id domMouseEventsController = [svgWebKitController domMouseEventsController];
         [domMouseEventsController setMouseMode:MOUSE_HOVERING];
+
+        SVGPathEditor * svgPathEditor = [domMouseEventsController svgPathEditor];
+        svgPathEditor.editingMode = kPathEditingModeNextSegment;
 
         [self updateSVGPathEditorAction:self];
     }

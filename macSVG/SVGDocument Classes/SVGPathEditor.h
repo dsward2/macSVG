@@ -22,14 +22,14 @@
 
 @interface SVGPathEditor : NSObject
 {
-    int editingMode;
-    
     IBOutlet SVGWebKitController * svgWebKitController;
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;  
     IBOutlet SVGXMLDOMSelectionManager * svgXMLDOMSelectionManager;
     IBOutlet DOMMouseEventsController * domMouseEventsController;
     IBOutlet ToolSettingsPopoverViewController * toolSettingsPopoverViewController;
 }
+
+@property(assign) NSInteger editingMode;
 
 @property(assign) BOOL useRelativePathCoordinates;
 @property(assign) BOOL closePathAutomatically;
