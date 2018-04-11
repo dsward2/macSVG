@@ -265,13 +265,17 @@
 
     // If currently drawing a new segment, restart the segment drawing to apply latest settings
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
-            [self.macSVGDocument macSVGDocumentWindowController];
-    id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
-    id domMouseEventsController = [svgWebKitController domMouseEventsController];
-    SVGPathEditor * svgPathEditor = [domMouseEventsController svgPathEditor];
-    if (svgPathEditor.editingMode == kPathEditingModeNextSegment)
+                [self.macSVGDocument macSVGDocumentWindowController];
+    NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
+    if (currentToolMode == toolModePath)
     {
-        [self.macSVGPluginCallbacks restartLastPathSegment];
+        id svgWebKitController = macSVGDocumentWindowController.svgWebKitController;
+        id domMouseEventsController = [svgWebKitController domMouseEventsController];
+        SVGPathEditor * svgPathEditor = [domMouseEventsController svgPathEditor];
+        if (svgPathEditor.editingMode == kPathEditingModeNextSegment)
+        {
+            [self.macSVGPluginCallbacks restartLastPathSegment];
+        }
     }
 }
 

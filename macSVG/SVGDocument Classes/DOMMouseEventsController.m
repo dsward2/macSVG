@@ -2860,26 +2860,31 @@
 
 -(void) handleMouseDoubleClickEvent:(DOMEvent *)event
 {
-    [self.svgPolylineEditor deleteLastLineInPolyline];
-    [self.svgPathEditor deleteLastSegmentInPath];
+    NSUInteger currentToolMode = macSVGDocumentWindowController.currentToolMode;
 
-    [self endPathDrawing];
-    [self endPolylineDrawing];
-    
-    self.mouseMode = MOUSE_DISENGAGED;
-    [event preventDefault];
-    [event stopPropagation];
-    
-    /*
-    self.clickMouseClientPoint = self.currentMouseClientPoint;
-    self.clickMousePagePoint = self.currentMousePagePoint;
-    self.clickMouseScreenPoint = self.currentMouseScreenPoint;
-    */
-    
-    [self setClickMousePointsWithCurrentMousePoints];
-    
-    self.clickTarget = NULL;
-    self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
+    if ((currentToolMode == toolModePolyline) || (currentToolMode == toolModePolygon) || (currentToolMode == toolModePath))
+    {
+        [self.svgPolylineEditor deleteLastLineInPolyline];
+        [self.svgPathEditor deleteLastSegmentInPath];
+
+        [self endPathDrawing];
+        [self endPolylineDrawing];
+        
+        self.mouseMode = MOUSE_DISENGAGED;
+        [event preventDefault];
+        [event stopPropagation];
+        
+        /*
+        self.clickMouseClientPoint = self.currentMouseClientPoint;
+        self.clickMousePagePoint = self.currentMousePagePoint;
+        self.clickMouseScreenPoint = self.currentMouseScreenPoint;
+        */
+        
+        [self setClickMousePointsWithCurrentMousePoints];
+        
+        self.clickTarget = NULL;
+        self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
+    }
 }
 
 //==================================================================================
