@@ -554,7 +554,7 @@
                                                                                             </textFieldCell>
                                                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                             <prototypeCellViews>
-                                                                                                <textField identifier="AttributeColumn" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="SSv-PB-YSa">
+                                                                                                <textField identifier="AttributeColumnTextField" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="SSv-PB-YSa">
                                                                                                     <rect key="frame" x="1" y="1" width="137" height="22"/>
                                                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" usesSingleLineMode="YES" id="GMW-Nc-T7q">
@@ -564,7 +564,6 @@
                                                                                                     </textFieldCell>
                                                                                                     <connections>
                                                                                                         <outlet property="delegate" destination="100256" id="Pm2-8R-5Pe"/>
-                                                                                                        <outlet property="nextKeyView" destination="dbg-RP-Qsm" id="sNK-OG-3Pa"/>
                                                                                                     </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
@@ -582,7 +581,7 @@
                                                                                             </textFieldCell>
                                                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                             <prototypeCellViews>
-                                                                                                <textField identifier="ValueColumn" verticalHuggingPriority="750" tag="1" allowsCharacterPickerTouchBarItem="YES" id="dbg-RP-Qsm">
+                                                                                                <textField identifier="ValueColumnTextField" verticalHuggingPriority="750" tag="1" allowsCharacterPickerTouchBarItem="YES" id="dbg-RP-Qsm">
                                                                                                     <rect key="frame" x="141" y="1" width="144" height="22"/>
                                                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" usesSingleLineMode="YES" id="RVO-jP-ltQ">
@@ -592,7 +591,6 @@
                                                                                                     </textFieldCell>
                                                                                                     <connections>
                                                                                                         <outlet property="delegate" destination="100256" id="E55-Tr-yw9"/>
-                                                                                                        <outlet property="nextKeyView" destination="SSv-PB-YSa" id="hzP-bJ-eow"/>
                                                                                                     </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
@@ -1432,7 +1430,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="bww-mN-rVc">
                         <rect key="frame" x="1" y="1" width="186" height="162"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="100558" userLabel="SVGElementsTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="186" height="162"/>

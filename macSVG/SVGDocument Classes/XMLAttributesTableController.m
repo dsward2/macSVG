@@ -412,8 +412,10 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSString * textFieldIdentifier = [tableColumnIdentifier stringByAppendingString:@"TextField"];
 
-    NSTextField * resultView = (NSTextField *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTextField * resultView = (NSTextField *)[tableView makeViewWithIdentifier:textFieldIdentifier owner:self];
 
     //NSLog(@"tableView: viewForTableColumn:%@ row:%ld %@", tableColumnIdentifier, row, resultView);
 
@@ -430,22 +432,25 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     NSString * resultString = @"";
 
-    if (row < (self.xmlAttributesArray).count)
+    if (resultView != NULL)
     {
+        if (row < (self.xmlAttributesArray).count)
+        {
 
-        NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[row];
-        
-        if ([tableColumnIdentifier isEqualToString:@"AttributeColumn"] == YES)
-        {
-            //resultView.delegate = self;
-            resultView.editable = YES;
-            resultString = attributeRecordDictionary[@"name"];
-        }
-        else if ([tableColumnIdentifier isEqualToString:@"ValueColumn"] == YES)
-        {
-            //resultView.delegate = self;
-            resultView.editable = YES;
-            resultString = attributeRecordDictionary[@"value"];
+            NSDictionary * attributeRecordDictionary = (self.xmlAttributesArray)[row];
+            
+            if ([textFieldIdentifier isEqualToString:@"AttributeColumnTextField"] == YES)
+            {
+                //resultView.delegate = self;
+                resultView.editable = YES;
+                resultString = attributeRecordDictionary[@"name"];
+            }
+            else if ([textFieldIdentifier isEqualToString:@"ValueColumnTextField"] == YES)
+            {
+                //resultView.delegate = self;
+                resultView.editable = YES;
+                resultString = attributeRecordDictionary[@"value"];
+            }
         }
     }
 
