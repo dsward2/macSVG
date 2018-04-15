@@ -1120,7 +1120,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSString * textContent = [textElementEditor textElementContent];
     
     NSString * htmlString = [NSString
-            stringWithFormat:@"<html><head><link href='http://fonts.googleapis.com/css?family=%@' rel='stylesheet' type='text/css'><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
+            stringWithFormat:@"<html><head><link href='https://fonts.googleapis.com/css?family=%@' rel='stylesheet' type='text/css'><style>p.preview{font-family:'%@'; font-size:24px;}</style></head><body><p class='preview'>%@</p></body></html>",
             fontURLName, fontName, textContent];
     
     [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];

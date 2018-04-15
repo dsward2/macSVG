@@ -31,7 +31,7 @@ A new item is added to the Plug-Ins menu called "Path Text Generator".  The user
 
 <hr>
 
-macSVG - [http://macsvg.org](http://macsvg.org)
+macSVG - [https://macsvg.org](https://macsvg.org)
 
 macSVG project - [https://github.com/dsward2/macsvg](https://github.com/dsward2/macsvg)
 

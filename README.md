@@ -18,7 +18,7 @@ macSVG uses the standard macOS WebKit framework for interactive editing and rend
 
 **[https://github.com/dsward2/macSVG/releases](https://github.com/dsward2/macSVG/releases)**
 
-**See the macSVG website for more documentation and release notes - [http://macsvg.org/](http://macsvg.org/)**
+**See the macSVG website for more documentation and release notes - [https://macsvg.org/](https://macsvg.org/)**
 
 # Examples:
 
@@ -35,7 +35,7 @@ macSVG uses the standard macOS WebKit framework for interactive editing and rend
 
 Apple’s free Xcode system is required to build the macOS application from the source code. Most of the application source code is written in Objective-C language, but a Swift language target has been added recently for a plug-in editor bundle.  To build macSVG.app, open "macSVG.xcworkspace" in Xcode, set the build target to "macSVG Debug", build and run.
 
-**See the macSVG.org Developer page for more info: http://macsvg.org/developer/**
+**See the macSVG.org Developer page for more info: https://macsvg.org/developer/**
 
 
 # Future project goals:
