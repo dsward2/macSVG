@@ -437,14 +437,30 @@
 
 - (void)addEditorPanelItemWithTitle:(NSString *)titleString kind:(NSString *)kindString
 {
-    NSMutableDictionary * editorPanelItemDictionary =
-            [NSMutableDictionary dictionaryWithObjectsAndKeys:
-            titleString, @"title",
-            kindString, @"kind",
-            nil];
-    [self.editorPanelsArray addObject:editorPanelItemDictionary];
+    // Check for an existing entry for this panel
+    BOOL existingPanelFound = NO;
+    for (NSDictionary * existingEditorPanelItemDictionary in self.editorPanelsArray)
+    {
+        NSString * existingTitleString = [existingEditorPanelItemDictionary objectForKey:@"title"];
+        
+        if ([existingTitleString isEqualToString:titleString] == YES)
+        {
+            existingPanelFound = YES;
+            break;
+        }
+    }
+
+    if (existingPanelFound == NO)
+    {
+        NSMutableDictionary * editorPanelItemDictionary =
+                [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                titleString, @"title",
+                kindString, @"kind",
+                nil];
+        [self.editorPanelsArray addObject:editorPanelItemDictionary];
+    }
     
-    [self buildEditorPanelsMenu];
+    //[self buildEditorPanelsMenu];
 }
 
 //==================================================================================
@@ -658,7 +674,7 @@
         }
         else if ([self.editorContext isEqualToString:@"attribute"] == YES)
         {
-            // add first add element editors
+            // first add element editors
             NSString * bestElementEditorName = bestEditorName;
             NSString * bestElementEditorKind = bestEditorKind;
             NSInteger bestElementEditorPriority = bestEditorPriority;
@@ -693,7 +709,7 @@
                 if (attributeEditorLabel != NULL)
                 {
                     // found a match
-                    //newCurrentEditor = @"Attribute Editor Plug-in";
+                    
                     newCurrentEditor = attributeEditorLabel;
                     newCurrentEditorKind = @"attribute";
                     [self addEditorPanelItemWithTitle:newCurrentEditor kind:newCurrentEditorKind];
@@ -742,6 +758,8 @@
                 [self addEditorPanelItemWithTitle:bestEditorName kind:bestEditorKind];
             }
         }
+
+        [self buildEditorPanelsMenu];
 
         if (bestEditorName.length > 0)
         {

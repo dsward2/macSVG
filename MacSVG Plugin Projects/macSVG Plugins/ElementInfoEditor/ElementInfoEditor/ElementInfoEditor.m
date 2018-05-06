@@ -127,6 +127,19 @@
 }
 
 //==================================================================================
+//    updateElementInfoForXMLElement:domElement:
+//==================================================================================
+
+// For element editors and text nodes, override this method to begin plugin session
+- (BOOL)beginEditForXMLElement:(NSXMLElement *)newPluginTargetXMLElement
+        domElement:(DOMElement *)newPluginTargetDOMElement;
+{
+    [self updateElementInfoForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement];
+    
+    return YES;
+}
+
+//==================================================================================
 //	updateElementInfoForXMLElement:domElement:
 //==================================================================================
 

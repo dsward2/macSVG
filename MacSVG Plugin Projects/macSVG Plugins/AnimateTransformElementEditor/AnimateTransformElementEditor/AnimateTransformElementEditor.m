@@ -81,7 +81,27 @@
 
     if ([elementName isEqualToString:@"animateTransform"] == YES)
     {
+        if ([attributeName isEqualToString:@"type"] == YES)
+        {
+            result = self.pluginName;
+        }
+        if ([attributeName isEqualToString:@"repeatCount"] == YES)
+        {
+            result = self.pluginName;
+        }
+        if ([attributeName isEqualToString:@"calcMode"] == YES)
+        {
+            result = self.pluginName;
+        }
+        if ([attributeName isEqualToString:@"dur"] == YES)
+        {
+            //result = self.pluginName;
+        }
         if ([attributeName isEqualToString:@"values"] == YES)
+        {
+            result = self.pluginName;
+        }
+        else if ([attributeName isEqualToString:@"begin"] == YES)
         {
             result = self.pluginName;
         }
@@ -90,6 +110,18 @@
             result = self.pluginName;
         }
         else if ([attributeName isEqualToString:@"to"] == YES)
+        {
+            result = self.pluginName;
+        }
+        else if ([attributeName isEqualToString:@"keyTimes"] == YES)
+        {
+            result = self.pluginName;
+        }
+        else if ([attributeName isEqualToString:@"keySplines"] == YES)
+        {
+            result = self.pluginName;
+        }
+        else if ([attributeName isEqualToString:@"keyPoints"] == YES)
         {
             result = self.pluginName;
         }
@@ -104,7 +136,8 @@
 
 - (NSInteger)editorPriority:(NSXMLElement *)targetElement context:(NSString *)context
 {
-    return 30;
+    //return 30;
+    return 20;
 }
 
 //==================================================================================
@@ -287,6 +320,23 @@
 }
 
 //==================================================================================
+//    setAttribute:element:stepper
+//==================================================================================
+
+- (void)setAttribute:(NSString *)attributeName element:(NSXMLElement *)aElement stepper:(NSStepper *)aStepper
+{
+    NSString * attributeValue = @"";
+    
+    NSXMLNode * aAttributeNode = [aElement attributeForName:attributeName];
+    if (aAttributeNode != NULL)
+    {
+        attributeValue = aAttributeNode.stringValue;
+    }
+    
+    aStepper.stringValue = attributeValue;
+}
+
+//==================================================================================
 //	loadAnimateTransformSettings
 //==================================================================================
 
@@ -299,8 +349,10 @@
     [self setAttribute:@"calcMode" element:animateTransformElement popUpButton:calcModePopUpButton];
     
     [self setAttribute:@"begin" element:animateTransformElement textField:beginTextField];
-    [self setAttribute:@"dur" element:animateTransformElement textField:durTextField];
     
+    [self setAttribute:@"dur" element:animateTransformElement textField:durTextField];
+    [self setAttribute:@"dur" element:animateTransformElement stepper:durStepper];
+
     [self setAttribute:@"repeatCount" element:animateTransformElement comboBox:repeatCountComboBox];
 
     [self setAttribute:@"begin" element:animateTransformElement textField:beginTextField];
@@ -1069,5 +1121,51 @@
         [valuesTableView reloadData];
     }
 }
+
+//==================================================================================
+//    attributeDurStepperAction:
+//==================================================================================
+
+- (IBAction)attributeDurStepperAction:(id)sender
+{
+    NSString * durValueString = durTextField.stringValue;
+    
+    NSString * timeUnit = @"";
+    
+    NSRange hTimeUnitRange;
+    NSRange minTimeUnitRange;
+    NSRange sTimeUnitRange;
+
+    hTimeUnitRange = [durValueString rangeOfString:@"h"];
+    minTimeUnitRange = [durValueString rangeOfString:@"min"];
+    sTimeUnitRange = [durValueString rangeOfString:@"s"];
+    
+    if (hTimeUnitRange.location != NSNotFound)
+    {
+        timeUnit = @"h";
+        durValueString = [durValueString stringByReplacingCharactersInRange:hTimeUnitRange withString:@""];
+    }
+    else if (minTimeUnitRange.location != NSNotFound)
+    {
+        timeUnit = @"min";
+        durValueString = [durValueString stringByReplacingCharactersInRange:minTimeUnitRange withString:@""];
+    }
+    else if (sTimeUnitRange.location != NSNotFound)
+    {
+        timeUnit = @"s";
+        durValueString = [durValueString stringByReplacingCharactersInRange:sTimeUnitRange withString:@""];
+    }
+    
+    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+    NSNumber * aNumber = [numberFormatter numberFromString:durValueString];
+    
+    if (aNumber != NULL)
+    {
+        NSString * newDurValue = [NSString stringWithFormat:@"%@%@", durStepper.stringValue, timeUnit];
+    
+        durTextField.stringValue = newDurValue;
+    }
+}
+
 
 @end

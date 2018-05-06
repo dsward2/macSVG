@@ -15,6 +15,7 @@
     IBOutlet NSPopUpButton * calcModePopUpButton;
     IBOutlet NSTextField * beginTextField;
     IBOutlet NSTextField * durTextField;
+    IBOutlet NSStepper * durStepper;
     IBOutlet NSComboBox * repeatCountComboBox;
     IBOutlet NSTabView * animateTransformTabView;
     IBOutlet NSTextField * fromTextField;
@@ -43,5 +44,7 @@
 
 - (IBAction)addValuesRow:(id)sender;
 - (IBAction)deleteValuesRow:(id)sender;
+
+- (IBAction)attributeDurStepperAction:(id)sender;
 
 @end
