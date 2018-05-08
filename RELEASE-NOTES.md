@@ -1,5 +1,13 @@
 # macSVG Release Notes
 
+## macSVG v1.1.2 - May 8, 2018
+
+MacSVG v1.1.3 features several bug fixes, mostly for the <path>, <image> and <animateTransform> elements, and the user interface for those elements.
+
+In the Image Element Editor, the image box labeled "Drag image or SVG into box" now works as described.
+
+In previous releases, the Image and Text tools remained the active tool after clicking in the SVG web view.  That is changed in this release, those tools will switch to the Arrow tool after clicking in the web view, consistent with the behavior of other drawing tools like the Rect and Circle tools.
+
 ## macSVG v1.1.2 - November 26, 2017
 
 MacSVG v1.1.2 introduces a new plug-in called Element Info.  This plug-in displays information about the currently selected element, and is especially helpful when drawing a new element or editing an existing one.  The ElementInfoEditor shows these attribute values, depending on the element: x, y, width, height, cx, cy, r, rx and ry.  The plug-in also show the current bounding box in the web view for the selected element, and the current DOM mouse page coordinates.
