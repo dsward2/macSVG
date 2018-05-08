@@ -1643,17 +1643,14 @@
             
             if ([newElementTagName isEqualToString:@"image"] == YES)
             {
-                // allow multiple mouse click to place images without having to click the Image tool icon each time
-                if (macSVGDocumentWindowController.currentToolMode != toolModeImage)
-                {
-                    [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
-                }
-                else
-                {
-                    (macSVGDocumentWindowController.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
-                }
-                
                 [macSVGDocumentWindowController reloadAllViews];
+
+                self.mouseMode = MOUSE_DISENGAGED;
+
+                //self.clickTarget = NULL;
+                //self.svgXMLDOMSelectionManager.activeXMLElement = NULL;
+
+                [macSVGDocumentWindowController setToolMode:toolModeArrowCursor];
             }
         }
     }
@@ -3055,6 +3052,7 @@
             
             BOOL resetToolMode = YES;
             
+            /*
             if (macSVGDocumentWindowController.currentToolMode == toolModeText)
             {
                 resetToolMode = NO;
@@ -3064,6 +3062,7 @@
             {
                 resetToolMode = NO;
             }
+            */
 
             if (resetToolMode == YES)
             {
@@ -3092,7 +3091,7 @@
 
     if ([eventType isEqualToString:@"mousedown"] == YES)
     {
-        self.mouseMode = MOUSE_DRAGGING;
+        //self.mouseMode = MOUSE_DRAGGING;
 
         DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
 

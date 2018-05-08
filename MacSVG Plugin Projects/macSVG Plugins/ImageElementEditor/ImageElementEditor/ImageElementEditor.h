@@ -14,10 +14,8 @@
 {
     IBOutlet WebView * imageWebView;
     IBOutlet NSButton * chooseFileButton;
-    IBOutlet NSTextField * imageURLTextField;
     IBOutlet NSButton * getImageFromURLButton;
     IBOutlet NSButton * getClipboardButton;
-    IBOutlet NSMatrix * imageReferenceOptionMatrix;
     
     IBOutlet NSTextField * linkImageSizeTextField;
     IBOutlet NSTextField * embedPNGSizeTextField;
@@ -29,6 +27,8 @@
 }
 
 @property(strong) NSMutableDictionary * imageDictionary;
+@property(strong) IBOutlet NSMatrix * imageReferenceOptionMatrix;
+@property(strong) IBOutlet NSTextField * imageURLTextField;
 
 - (IBAction)getImageFromURLButtonAction:(id)sender;
 - (IBAction)chooseFileButtonAction:(id)sender;

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11542"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="14109"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -147,16 +148,16 @@
                                 <rect key="frame" x="1" y="1" width="251" height="102"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <webView misplaced="YES" maintainsBackForwardList="NO" id="bVG-Uj-gjR">
+                                    <webView identifier="ImageElementEditorWebView" misplaced="YES" maintainsBackForwardList="NO" id="bVG-Uj-gjR" customClass="ImageElementEditorWebView">
                                         <rect key="frame" x="1" y="1" width="249" height="100"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
-                                            <nil key="identifier"/>
-                                        </webPreferences>
+                                        <webPreferences key="preferences" identifier="ImageElementEditorWebView" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO"/>
                                         <connections>
                                             <outlet property="UIDelegate" destination="-2" id="DtQ-og-wNd"/>
                                             <outlet property="downloadDelegate" destination="-2" id="Ty3-0r-hny"/>
                                             <outlet property="frameLoadDelegate" destination="-2" id="vAW-i8-ylG"/>
+                                            <outlet property="imageElementEditor" destination="-2" id="Y96-Bh-yoW"/>
+                                            <outlet property="imageURLTextField" destination="ZZ7-83-aFi" id="Qdu-0r-TVZ"/>
                                             <outlet property="policyDelegate" destination="-2" id="0NU-FH-6Nq"/>
                                             <outlet property="resourceLoadDelegate" destination="-2" id="dCD-Fm-xoG"/>
                                         </connections>

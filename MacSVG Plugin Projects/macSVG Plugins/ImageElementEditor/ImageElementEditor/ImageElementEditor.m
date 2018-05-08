@@ -189,25 +189,25 @@
             
             if (httpRange.location == 0)
             {
-                [imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
+                [self.imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
             }
             else if (httpsRange.location == 0)
             {
-                [imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
+                [self.imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
             }
             else if (fileRange.location == 0)
             {
-                [imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
+                [self.imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
             }
             else if (pngDataRange.location == 0)
             {
-                [imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
+                [self.imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
                 embeddedDataFound = YES;
 
             }
             else if (jpegDataRange.location == 0)
             {
-                [imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // set JPEG image embed option
+                [self.imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // set JPEG image embed option
                 embeddedDataFound = YES;
             }
 
@@ -221,17 +221,17 @@
 
                 if (hrefHttpRange.location == 0)
                 {
-                    imageURLTextField.stringValue = xlinkHrefAttributeString;
+                    self.imageURLTextField.stringValue = xlinkHrefAttributeString;
                     hrefLinkFound = YES;
                 }
                 else if (hrefHttpsRange.location == 0)
                 {
-                    imageURLTextField.stringValue = xlinkHrefAttributeString;
+                    self.imageURLTextField.stringValue = xlinkHrefAttributeString;
                     hrefLinkFound = YES;
                 }
                 else if (hrefFileRange.location == 0)
                 {
-                    imageURLTextField.stringValue = xlinkHrefAttributeString;
+                    self.imageURLTextField.stringValue = xlinkHrefAttributeString;
                     hrefLinkFound = YES;
                 }
             }
@@ -249,15 +249,15 @@
 
                     if (roleHttpRange.location == 0)
                     {
-                        imageURLTextField.stringValue = xlinkRoleAttributeString;
+                        self.imageURLTextField.stringValue = xlinkRoleAttributeString;
                     }
                     else if (roleHttpsRange.location == 0)
                     {
-                        imageURLTextField.stringValue = xlinkRoleAttributeString;
+                        self.imageURLTextField.stringValue = xlinkRoleAttributeString;
                     }
                     else if (roleFileRange.location == 0)
                     {
-                        imageURLTextField.stringValue = xlinkRoleAttributeString;
+                        self.imageURLTextField.stringValue = xlinkRoleAttributeString;
                     }
                 }
             }
@@ -406,7 +406,7 @@
     WebResource * webResource = dataSource.mainResource;
     NSString * mimeType = webResource.MIMEType;       // e.g. image/jpeg
     
-    NSCell * imageReferenceOptionButton = imageReferenceOptionMatrix.selectedCell;
+    NSCell * imageReferenceOptionButton = self.imageReferenceOptionMatrix.selectedCell;
     NSString * imageReferenceOptionString = imageReferenceOptionButton.title;
     
     CGFloat jpegCompressionDouble = jpegCompressionSlider.doubleValue;
@@ -442,7 +442,7 @@
     
     self.imageDictionary = imageDictionary;
     
-    imageURLTextField.stringValue = requestURL.absoluteString;
+    self.imageURLTextField.stringValue = requestURL.absoluteString;
 }
 
 //==================================================================================
@@ -594,7 +594,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (IBAction)getImageFromURLButtonAction:(id)sender
 {
-    NSString * imageUrlString = imageURLTextField.stringValue;
+    NSString * imageUrlString = self.imageURLTextField.stringValue;
     
     if (imageUrlString.length > 0)
     {
@@ -630,11 +630,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     
                     if (useURLReference == YES)
                     {
-                        [imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
+                        [self.imageReferenceOptionMatrix selectCellAtRow:0 column:0];    // set Link to image option
                     }
                     else
                     {
-                        [imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
+                        [self.imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
                     }
                 }
                 else
@@ -726,7 +726,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
             NSString * imageURLString = imageURL.absoluteString;
             
-            imageURLTextField.stringValue = imageURLString;
+            self.imageURLTextField.stringValue = imageURLString;
 
             NSURLRequest * imageURLRequest = [NSURLRequest requestWithURL:imageURL];
             if (imageURLRequest != NULL)
@@ -735,11 +735,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 
                 if ([pathExtension isEqualToString:@"png"] == YES)
                 {
-                    [imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
+                    [self.imageReferenceOptionMatrix selectCellAtRow:1 column:0];    // set PNG image embed option
                 }
                 else
                 {
-                    [imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // set JPEG image embed option
+                    [self.imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // set JPEG image embed option
                 }
             }
             else
@@ -771,7 +771,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSDictionary * propertiesDictionary = @{};
         NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
 
-        [imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set JPEG image embed option
+        [self.imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set JPEG image embed option
         
         [imageWebView.mainFrame loadData:pngImageData MIMEType:@"image/png" textEncodingName:nil baseURL:nil];
 
@@ -813,7 +813,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     CGFloat jpegCompressionDouble = jpegCompressionSlider.doubleValue;
     NSNumber * jpegCompressionNumber = [NSNumber numberWithDouble:jpegCompressionDouble];
 
-    NSCell * imageReferenceOptionButton = imageReferenceOptionMatrix.selectedCell;
+    NSCell * imageReferenceOptionButton = self.imageReferenceOptionMatrix.selectedCell;
     NSString * imageReferenceOptionString = imageReferenceOptionButton.title;
 
     NSImage * previewImage = (self.macSVGPluginCallbacks).imageDictionary[@"previewImage"];
@@ -878,7 +878,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         requestURL = xlinkRoleAttributeString;
     }
     
-    NSString * imageURLTextFieldString = imageURLTextField.stringValue;
+    NSString * imageURLTextFieldString = self.imageURLTextField.stringValue;
     if ([imageReferenceOptionString isEqualToString:@"Link to Image"] == YES)
     {
         if ([imageURLTextFieldString length] > 0)
