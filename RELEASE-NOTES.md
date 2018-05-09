@@ -1,6 +1,10 @@
 # macSVG Release Notes
 
-## macSVG v1.1.2 - May 8, 2018
+## macSVG v1.1.4 - May 8, 2018
+
+MacSVG v1.1.4 fixes a bug in the Element Info plugin.  The bug prevented the Element Info panel from displaying live updates as elements were moved, resized, etc.
+
+## macSVG v1.1.3 - May 8, 2018
 
 MacSVG v1.1.3 features several bug fixes, mostly for the <path>, <image> and <animateTransform> elements, and the user interface for those elements.
 
@@ -43,7 +47,7 @@ macSVG - [https://macsvg.org](https://macsvg.org)
 
 macSVG project - [https://github.com/dsward2/macsvg](https://github.com/dsward2/macsvg)
 
-Copyright (c) 2016-2017 by ArkPhone, LLC.
+Copyright (c) 2016-2018 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.
 

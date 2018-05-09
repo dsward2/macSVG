@@ -2455,6 +2455,7 @@
 		0EADC6B81D7C3DC200A61333 /* viewbox_pan_and_zoom_animation.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = viewbox_pan_and_zoom_animation.svg; sourceTree = "<group>"; };
 		0EB02B93145B699D00D31216 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		0EB02B96145B69A800D31216 /* freehand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = freehand.png; sourceTree = "<group>"; };
+		0EB480C920A2897D00C10B3F /* README.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = README.html; path = "../../../Downloads/macSVG-v1.1.3/README.html"; sourceTree = "<group>"; };
 		0EB483EB142906BD005ADB73 /* XMLAttributesTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLAttributesTableController.h; sourceTree = "<group>"; };
 		0EB483EC142906BD005ADB73 /* XMLAttributesTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLAttributesTableController.m; sourceTree = "<group>"; };
 		0EB6637814286398003723F0 /* macSVG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macSVG.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3919,6 +3920,7 @@
 			isa = PBXGroup;
 			children = (
 				0ECCAFDE1DB4A6A0001A6085 /* README.md */,
+				0EB480C920A2897D00C10B3F /* README.html */,
 				0E753F501F9FD5660050AAB6 /* RELEASE-NOTES.md */,
 				0ECCB0231DB51B57001A6085 /* README_images */,
 				0ECCB0211DB4B60A001A6085 /* LICENSE */,

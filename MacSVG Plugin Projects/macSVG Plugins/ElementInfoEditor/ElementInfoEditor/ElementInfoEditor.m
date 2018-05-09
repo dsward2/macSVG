@@ -127,16 +127,36 @@
 }
 
 //==================================================================================
-//    updateElementInfoForXMLElement:domElement:
+//    beginEditForXMLElement:domElement:attributeName:existingValue:
 //==================================================================================
 
-// For element editors and text nodes, override this method to begin plugin session
+- (BOOL)beginEditForXMLElement:(NSXMLElement *)newPluginTargetXMLElement
+        domElement:(DOMElement *)newPluginTargetDOMElement
+        attributeName:(NSString *)newAttributeName
+        existingValue:(NSString *)existingValue
+{
+    // for attribute editor plug-ins
+    BOOL result = [super beginEditForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement attributeName:newAttributeName existingValue:existingValue];
+
+    [self updateElementInfoForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement];
+
+    return result;
+}
+
+
+//==================================================================================
+//    beginEditForXMLElement:domElement:
+//==================================================================================
+
 - (BOOL)beginEditForXMLElement:(NSXMLElement *)newPluginTargetXMLElement
         domElement:(DOMElement *)newPluginTargetDOMElement;
 {
+    // for element editor plug-ins
+    BOOL result = [super beginEditForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement];
+
     [self updateElementInfoForXMLElement:newPluginTargetXMLElement domElement:newPluginTargetDOMElement];
     
-    return YES;
+    return result;
 }
 
 //==================================================================================

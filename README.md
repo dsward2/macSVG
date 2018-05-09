@@ -2,7 +2,7 @@
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
-**May 8, 2018 – [macSVG v1.1.3 is released](https://github.com/dsward2/macSVG/releases/), with minor user interface improvements, and various bug fixes.**  See the [Release Notes](https://github.com/dsward2/macSVG/blob/master/RELEASE-NOTES.md) for details.
+**May 8, 2018 – [macSVG v1.1.4 is released](https://github.com/dsward2/macSVG/releases/), with minor user interface improvements, and various bug fixes.**  See the [Release Notes](https://github.com/dsward2/macSVG/blob/master/RELEASE-NOTES.md) for details.
 
 <hr>
 
@@ -44,6 +44,6 @@ Migration to Swift language, and Swift Package Manager for importing third-party
 
 #
 
-Copyright (c) 2016-2017 by ArkPhone, LLC.
+Copyright (c) 2016-2018 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.
