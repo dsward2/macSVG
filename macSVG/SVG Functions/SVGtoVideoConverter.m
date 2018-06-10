@@ -99,6 +99,9 @@
     
     self.hiddenWebView.drawsBackground = NO;
 
+    WebPreferences * hiddenWebViewPreferences = self.hiddenWebView.preferences;
+    [hiddenWebViewPreferences setJavaScriptEnabled:YES];
+
     (self.hiddenWindow).contentView = self.hiddenWebView;
     
     NSData * xmlData = [svgXmlString dataUsingEncoding:NSUTF8StringEncoding];

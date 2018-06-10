@@ -193,8 +193,11 @@
     self.hiddenWindow.releasedWhenClosed = NO;
 
     self.hiddenWebView = [[WebView alloc] initWithFrame:webViewFrame];
-    
+
     self.hiddenWebView.drawsBackground = NO;
+
+    WebPreferences * hiddenWebViewPreferences = self.hiddenWebView.preferences;
+    [hiddenWebViewPreferences setJavaScriptEnabled:YES];
 
     (self.hiddenWindow).contentView = self.hiddenWebView;
     

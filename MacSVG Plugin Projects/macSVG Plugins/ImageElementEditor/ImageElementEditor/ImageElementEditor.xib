@@ -151,7 +151,7 @@
                                     <webView identifier="ImageElementEditorWebView" misplaced="YES" maintainsBackForwardList="NO" id="bVG-Uj-gjR" customClass="ImageElementEditorWebView">
                                         <rect key="frame" x="1" y="1" width="249" height="100"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <webPreferences key="preferences" identifier="ImageElementEditorWebView" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                        <webPreferences key="preferences" identifier="ImageElementEditorWebView" defaultFontSize="12" defaultFixedFontSize="12"/>
                                         <connections>
                                             <outlet property="UIDelegate" destination="-2" id="DtQ-og-wNd"/>
                                             <outlet property="downloadDelegate" destination="-2" id="Ty3-0r-hny"/>

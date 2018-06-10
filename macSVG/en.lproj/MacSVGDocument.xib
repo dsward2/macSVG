@@ -380,7 +380,7 @@
                                                             <webView identifier="SVGWebView" focusRingType="none" misplaced="YES" maintainsBackForwardList="NO" id="100022" userLabel="SVGWebView" customClass="SVGWebView">
                                                                 <rect key="frame" x="20" y="0.0" width="734" height="561"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                <webPreferences key="preferences" identifier="svgWebView" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO"/>
+                                                                <webPreferences key="preferences" identifier="svgWebView" defaultFontSize="12" defaultFixedFontSize="12"/>
                                                                 <connections>
                                                                     <outlet property="UIDelegate" destination="100193" id="100202"/>
                                                                     <outlet property="downloadDelegate" destination="100193" id="100197"/>
@@ -398,7 +398,7 @@
                                                                     <webView misplaced="YES" id="qWn-fg-cgP">
                                                                         <rect key="frame" x="0.0" y="0.0" width="734" height="20"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
+                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12">
                                                                             <nil key="identifier"/>
                                                                         </webPreferences>
                                                                         <connections>
@@ -422,7 +422,7 @@
                                                                     <webView misplaced="YES" id="Lsg-Wc-HSx">
                                                                         <rect key="frame" x="0.0" y="0.0" width="20" height="561"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO">
+                                                                        <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12">
                                                                             <nil key="identifier"/>
                                                                         </webPreferences>
                                                                         <connections>
@@ -1430,7 +1430,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="bww-mN-rVc">
                         <rect key="frame" x="1" y="1" width="186" height="162"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="100558" userLabel="SVGElementsTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="186" height="162"/>
@@ -1532,7 +1532,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Akd-5q-XyI">
                         <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="100959">
                                 <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>
