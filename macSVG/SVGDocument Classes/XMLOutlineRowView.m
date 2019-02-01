@@ -12,7 +12,8 @@
 
 - (NSBackgroundStyle)interiorBackgroundStyle
 {
-    return NSBackgroundStyleLight;
+    //return NSBackgroundStyleLight;
+    return NSBackgroundStyleNormal;
 }
 
 

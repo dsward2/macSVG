@@ -201,7 +201,7 @@
             }
         }
     }
-    
+        
     return resultPoint;
 }
 

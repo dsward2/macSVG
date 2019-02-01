@@ -380,7 +380,7 @@
                                                             <webView identifier="SVGWebView" focusRingType="none" misplaced="YES" maintainsBackForwardList="NO" id="100022" userLabel="SVGWebView" customClass="SVGWebView">
                                                                 <rect key="frame" x="20" y="0.0" width="734" height="561"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                <webPreferences key="preferences" identifier="svgWebView" defaultFontSize="12" defaultFixedFontSize="12"/>
+                                                                <webPreferences key="preferences" identifier="svgWebView" defaultFontSize="12" defaultFixedFontSize="12" plugInsEnabled="NO" javaEnabled="NO" javaScriptCanOpenWindowsAutomatically="NO"/>
                                                                 <connections>
                                                                     <outlet property="UIDelegate" destination="100193" id="100202"/>
                                                                     <outlet property="downloadDelegate" destination="100193" id="100197"/>

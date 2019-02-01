@@ -1,5 +1,9 @@
 # macSVG Release Notes
 
+## macSVG v1.1.5 - February 1, 2019
+
+MacSVG v1.1.5 provides a temporary fix for the application to work in macOS Mojave Dark Mode.  For now, the app will "opt-out" of Dark Mode, and render views as a Light Mode application.  Specifically, the NSRequiresAquaSystemAppearance is set to true in Info.plist to force Light Mode rendering.  The next release will adjust the views to provide a proper Dark Mode user interface.
+
 ## macSVG v1.1.4 - May 8, 2018
 
 MacSVG v1.1.4 fixes a bug in the Element Info plugin.  The bug prevented the Element Info panel from displaying live updates as elements were moved, resized, etc.

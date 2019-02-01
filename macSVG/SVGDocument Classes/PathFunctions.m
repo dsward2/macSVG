@@ -4257,6 +4257,41 @@
 }
 
 //==================================================================================
+//    joinPathSegmentsArray:secondPathSegmentsArray:
+//==================================================================================
+
+- (NSMutableArray *)joinPathSegmentsArray:(NSMutableArray *)pathSegmentsArray secondPathSegmentsArray:(NSMutableArray *)secondPathSegmentsArray
+{
+    NSMutableArray * resultArray = [NSMutableArray array];
+    
+    [resultArray addObjectsFromArray:pathSegmentsArray];
+    
+    [resultArray addObjectsFromArray:secondPathSegmentsArray];
+
+    return resultArray;
+}
+
+//==================================================================================
+//    splitPathSegmentsArray:splitIndex:
+//==================================================================================
+
+- (NSMutableArray *)splitPathSegmentsArray:(NSMutableArray *)pathSegmentsArray splitIndex:(NSInteger *)splitIndex
+{
+    /*
+    NSMutableArray * resultArray = [NSMutableArray array];
+    
+    NSMutableArray * firstArray = [NSMutableArray array];
+    NSMutableArray * secondArray = [NSMutableArray array];
+    */
+    
+    NSBeep();
+    
+    NSMutableArray * resultArray = pathSegmentsArray;        // FIXME: return original array for now
+
+    return resultArray;
+}
+
+//==================================================================================
 //	closePathWithPathSegmentsArray:
 //==================================================================================
 

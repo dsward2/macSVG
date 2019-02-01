@@ -2,7 +2,7 @@
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
 
-**May 8, 2018 – [macSVG v1.1.4 is released](https://github.com/dsward2/macSVG/releases/), with minor user interface improvements, and various bug fixes.**  See the [Release Notes](https://github.com/dsward2/macSVG/blob/master/RELEASE-NOTES.md) for details.
+**February 1, 2019 – [macSVG v1.1.5 is released](https://github.com/dsward2/macSVG/releases/), with a temporary fix for the application to work in macOS Mojave Dark Mode.  For now, the app will "opt-out" of Dark Mode, and render views as a Light Mode application.  The next release will adjust the views to provide a proper Dark Mode user interface.**
 
 <hr>
 
