@@ -25,7 +25,7 @@
 @class SVGtoCoreGraphicsConverter;
 @class PathFunctions;
 
-@interface MacSVGDocumentWindowController : NSWindowController <NSSplitViewDelegate, NSMenuDelegate>
+@interface MacSVGDocumentWindowController : NSWindowController <NSSplitViewDelegate, NSMenuDelegate, NSSharingServiceDelegate, NSSharingServicePickerDelegate>
 {
     IBOutlet NSView * infoView;
     IBOutlet NSTextField * selectedElementID;
@@ -67,6 +67,8 @@
     IBOutlet NSSearchField * svgSearchField;
     
     IBOutlet SVGtoCoreGraphicsConverter * svgToCoreGraphicsConverter;
+    
+    IBOutlet NSButton * shareWebPreviewURLButton;
         
     NSArray * toolButtonsArray;
     
@@ -330,6 +332,8 @@
 - (IBAction) exportingImagesDoneAction:(id)sender;
 
 - (NSMutableArray *) contextMenuItemsForPlugin;
+
+- (IBAction)shareWebPreviewURL:(id)sender;
 
 @end
 

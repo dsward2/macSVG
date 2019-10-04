@@ -48,21 +48,25 @@
 
 - (MacSVGDocument *)findFrontmostMacSVGDocument
 {
-    MacSVGDocument * result = NULL;
-    NSArray *orderedDocuments = NSApp.orderedDocuments;
-    NSUInteger documentCount = orderedDocuments.count;
-    int i;
-    for (i = 0; i < documentCount; i++)
-    {
-        if (result == NULL)
-        {
-            NSDocument *aDocument = (NSDocument *)orderedDocuments[i];
-            if ([aDocument isMemberOfClass:[MacSVGDocument class]] == YES)
+    __block MacSVGDocument * result = NULL;
+
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSArray *orderedDocuments = NSApp.orderedDocuments;
+            NSUInteger documentCount = orderedDocuments.count;
+            int i;
+            for (i = 0; i < documentCount; i++)
             {
-                result = (MacSVGDocument *)aDocument;
+                if (result == NULL)
+                {
+                    NSDocument *aDocument = (NSDocument *)orderedDocuments[i];
+                    if ([aDocument isMemberOfClass:[MacSVGDocument class]] == YES)
+                    {
+                        result = (MacSVGDocument *)aDocument;
+                    }
+                }
             }
-        }
-    }
+    });
+
     return result;
 }
 
