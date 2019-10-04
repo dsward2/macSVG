@@ -9,6 +9,9 @@
 #import "ImageElementEditor.h"
 //#import <MacSVGPlugin/MacSVGPluginCallbacks.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation ImageElementEditor
 
 //==================================================================================
@@ -569,7 +572,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     if ([outputFormat isEqualToString:@"png"] == YES)
     {
         NSDictionary * propertiesDictionary = @{};
-        NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
+        NSData * pngImageData = [bits representationUsingType:NSBitmapImageFileTypePNG properties:propertiesDictionary];
         
         NSString * base64String = [self allocEncodeBase64Data:pngImageData];
         
@@ -579,7 +582,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     {
         NSDictionary * jpegPropertiesDictionary = @{NSImageCompressionFactor: jpegCompressionNumber};
     
-        NSData * jpegImageData = [bits representationUsingType:NSJPEGFileType properties:jpegPropertiesDictionary];
+        NSData * jpegImageData = [bits representationUsingType:NSBitmapImageFileTypeJPEG properties:jpegPropertiesDictionary];
         
         NSString * base64String = [self allocEncodeBase64Data:jpegImageData];
 
@@ -716,9 +719,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     // The completion handler is called when the user selects an
     // item or cancels the panel.
     
+    WebView * localImageWebView = imageWebView;
+    
     [panel beginWithCompletionHandler:^(NSInteger result)
     {
-        if (result == NSFileHandlingPanelOKButton)
+        if (result == NSModalResponseOK)
         {
             NSURL *  imageURL = panel.URLs[0];
             
@@ -731,7 +736,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             NSURLRequest * imageURLRequest = [NSURLRequest requestWithURL:imageURL];
             if (imageURLRequest != NULL)
             {
-                [imageWebView.mainFrame loadRequest:imageURLRequest];
+                [localImageWebView.mainFrame loadRequest:imageURLRequest];
                 
                 if ([pathExtension isEqualToString:@"png"] == YES)
                 {
@@ -769,7 +774,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSBitmapImageRep * bits = imageReps[0];
         
         NSDictionary * propertiesDictionary = @{};
-        NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
+        NSData * pngImageData = [bits representationUsingType:NSBitmapImageFileTypePNG properties:propertiesDictionary];
 
         [self.imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set JPEG image embed option
         
@@ -1116,3 +1121,6 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 }
 
 @end
+
+
+#pragma clang diagnostic pop

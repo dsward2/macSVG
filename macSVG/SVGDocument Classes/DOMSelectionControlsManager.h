@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 // Supports selection rects for multiple elements, but note: only one element should have handles
 
 @class DOMElement;
@@ -63,3 +67,6 @@
         pluginName:(NSString *)pluginName;
 
 @end
+
+
+#pragma clang diagnostic pop

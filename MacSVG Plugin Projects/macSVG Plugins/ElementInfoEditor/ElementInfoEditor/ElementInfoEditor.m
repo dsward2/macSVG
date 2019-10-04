@@ -106,6 +106,10 @@
     return result;
 }
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	handlePluginEvent
 //==================================================================================
@@ -158,6 +162,8 @@
     
     return result;
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	updateElementInfoForXMLElement:domElement:
@@ -424,6 +430,9 @@
 }
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)appendBBox:(DOMElement *)targetElement string:(NSMutableAttributedString *)descriptionString
 {
     NSRect elementBBox = [self.webKitInterface bBoxForDOMElement:targetElement];
@@ -513,6 +522,9 @@
             initWithString:@"\n\n" attributes:self.textAttributes];
     [descriptionString appendAttributedString:newLineString];
 }
+
+#pragma clang diagnostic pop
+
 
 
 - (void)appendCxCyR:(NSXMLElement *)targetElement string:(NSMutableAttributedString *)descriptionString

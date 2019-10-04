@@ -1652,7 +1652,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     if ([outputFormat isEqualToString:@"png"] == YES)
     {
         NSDictionary * propertiesDictionary = @{};
-        NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
+        NSData * pngImageData = [bits representationUsingType:NSBitmapImageFileTypePNG properties:propertiesDictionary];
         
         NSString * base64String = [self allocEncodeBase64Data:pngImageData];
         
@@ -1664,7 +1664,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
         NSDictionary * jpegPropertiesDictionary = @{NSImageCompressionFactor: jpegCompressionNumber};
     
-        NSData * jpegImageData = [bits representationUsingType:NSJPEGFileType properties:jpegPropertiesDictionary];
+        NSData * jpegImageData = [bits representationUsingType:NSBitmapImageFileTypeJPEG properties:jpegPropertiesDictionary];
         
         NSString * base64String = [self allocEncodeBase64Data:jpegImageData];
         
@@ -2021,7 +2021,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     {
         // Create a new item for the dropped data, in an NSXMLNode
         
-        NSString * pasteboardString = [draggingPasteboard stringForType:NSStringPboardType];
+        NSString * pasteboardString = [draggingPasteboard stringForType:NSPasteboardTypeString];
         NSString * xmlString = NULL;
         NSString * pasteboardType = NULL;
 
@@ -2034,7 +2034,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 {
                     // probably XML
                     xmlString = pasteboardString;
-                    pasteboardType = NSStringPboardType;
+                    pasteboardType = NSPasteboardTypeString;
                 }
             }
             
@@ -2052,12 +2052,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                         if (downloadString != NULL)
                         {
                             xmlString = downloadString;
-                            pasteboardType = NSStringPboardType;
+                            pasteboardType = NSPasteboardTypeString;
                         }
                     }
                     else
                     {
-                        NSData * tiffData = [draggingPasteboard dataForType:NSTIFFPboardType];
+                        NSData * tiffData = [draggingPasteboard dataForType:NSPasteboardTypeTIFF];
 
                         if (tiffData != NULL)
                         {
@@ -2078,7 +2078,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                             if (imageElement != NULL)
                             {
                                 xmlString = imageElement.XMLString;
-                                pasteboardType = NSStringPboardType;
+                                pasteboardType = NSPasteboardTypeString;
                             }
                         }
                     }
@@ -2090,7 +2090,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil) 
         {
             // Try a URL -- it is an array of URLs, so we just grab one.
-            NSString * urlString = [[draggingPasteboard propertyListForType:NSURLPboardType] lastObject];
+            NSString * urlString = [[draggingPasteboard propertyListForType:NSPasteboardTypeURL] lastObject];
             
             if (urlString.length > 4) 
             {
@@ -2112,7 +2112,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                             if (svgStartRange.location != NSNotFound)
                             {
                                 xmlString = [svgString substringFromIndex:svgStartRange.location];
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                     }
@@ -2151,14 +2151,14 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil) 
         {
             // Try for a TIFF image, and convert to PNG
-            pasteboardType = NSTIFFPboardType;
-            NSData * tiffImageData = [draggingPasteboard dataForType:NSTIFFPboardType];
+            pasteboardType = NSPasteboardTypeTIFF;
+            NSData * tiffImageData = [draggingPasteboard dataForType:NSPasteboardTypeTIFF];
             
             if (tiffImageData != NULL)
             {
-                pasteboardType = NSTIFFPboardType;
+                pasteboardType = NSPasteboardTypeTIFF;
 
-                id tiffPropertyList = [draggingPasteboard propertyListForType:NSTIFFPboardType];
+                id tiffPropertyList = [draggingPasteboard propertyListForType:NSPasteboardTypeTIFF];
                 
                 if (tiffPropertyList != NULL)
                 {
@@ -2202,7 +2202,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     
                     xmlString = imageElement.XMLString;
                     
-                    pasteboardType = NSTIFFPboardType;
+                    pasteboardType = NSPasteboardTypeTIFF;
                 }
             }
         }

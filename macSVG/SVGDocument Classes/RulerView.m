@@ -71,7 +71,14 @@
     if (self.rulerWebView.isLoading == NO)
     {
         self.rulerWebView.drawsBackground = NO;
+
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
         WebPreferences * rulerWebPreferences = self.rulerWebView.preferences;
+
+        #pragma clang diagnostic pop
+
         [rulerWebPreferences setJavaScriptEnabled:NO];
         [rulerWebPreferences setPlugInsEnabled:NO];
 
@@ -109,11 +116,15 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame 
 {
     //[self.rulerWebView setNeedsDisplay:YES];
 }
+
+#pragma clang diagnostic pop
 
 
 - (BOOL)isHorizontal

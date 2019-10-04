@@ -12,6 +12,10 @@
 #import "TspanPopoverViewController.h"
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @implementation TextElementEditor
 
 //==================================================================================
@@ -925,8 +929,7 @@
     [self updateTextElementAction:self];
 }
 
-
-
-
-
 @end
+
+
+#pragma clang diagnostic pop

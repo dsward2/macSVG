@@ -20,6 +20,9 @@
 
 #define svgNamespace @"http://www.w3.org/2000/svg"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface SVGWebKitController : NSObject
 {
 }
@@ -102,3 +105,5 @@
 - (void)setScrollToPoint:(NSPoint)scrollToPoint;
 
 @end
+
+#pragma clang diagnostic pop

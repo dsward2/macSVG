@@ -43,7 +43,15 @@
 
 @property (weak) IBOutlet NSWindow * browseSVGExamplesWindow;
 @property (weak) IBOutlet NSTableView * svgExampleTableView;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @property (weak) IBOutlet WebView * svgExampleWebView;
+
+#pragma clang diagnostic pop
+
+
 @property (strong) IBOutlet NSTextView * svgExampleTextView;
 @property (strong) IBOutlet NSSearchField * svgExampleSearchField;
 @property (strong) IBOutlet NSPopUpButton * svgExamplePopUpButton;

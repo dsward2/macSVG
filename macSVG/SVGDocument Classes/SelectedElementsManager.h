@@ -13,6 +13,9 @@
 @class DOMSVGSVGElement;
 @class MacSVGDocumentWindowController;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface SelectedElementsManager : NSObject
 {
 }
@@ -40,3 +43,6 @@
 - (void)replaceDOMElement:(DOMElement *)oldElement newElement:(DOMElement *)newElement;
 
 @end
+
+
+

@@ -28,6 +28,8 @@
 
 - (void) textDidEndEditing: (NSNotification *) notification
 {
+    // NSTableView textDidEndEditing - Deprecated - Use a view-based table view with an NSTextField object instead.
+
     // make return and tab only end editing, and not cause other cells to edit
     NSDictionary *userInfo = notification.userInfo;
 

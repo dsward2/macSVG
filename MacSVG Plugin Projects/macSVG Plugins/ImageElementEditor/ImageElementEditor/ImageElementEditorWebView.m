@@ -46,9 +46,9 @@
     
     [self setAcceptsTouchEvents:NO];
 
-    [self registerForDraggedTypes:@[NSURLPboardType,
+    [self registerForDraggedTypes:@[NSPasteboardTypeURL,
             NSFilenamesPboardType,
-            NSTIFFPboardType]];
+                                    NSPasteboardTypeTIFF]];
 }
 
 //==================================================================================
@@ -109,7 +109,7 @@
 
     pboard = [sender draggingPasteboard];
 
-    if ( [[pboard types] containsObject:NSTIFFPboardType] )
+    if ( [[pboard types] containsObject:NSPasteboardTypeTIFF] )
     {
         return YES;
     }
@@ -117,7 +117,7 @@
     {
         return YES;
     }
-    else if ( [[pboard types] containsObject:NSURLPboardType] )
+    else if ( [[pboard types] containsObject:NSPasteboardTypeURL] )
     {
         return YES;
     }
@@ -154,14 +154,14 @@
 
             [self loadImageFromFileURL:fileURL];
         }
-        else if ( [[pboard types] containsObject:NSURLPboardType] )
+        else if ( [[pboard types] containsObject:NSPasteboardTypeURL] )
         {
             NSURL* fileURL;
             fileURL=[NSURL URLFromPasteboard: [sender draggingPasteboard]];
             
             [self loadImageFromURL:fileURL];
         }
-        else if ( [[pboard types] containsObject:NSTIFFPboardType] )
+        else if ( [[pboard types] containsObject:NSPasteboardTypeTIFF] )
         {
             [self getImageFromPasteboard];
         }
@@ -248,7 +248,7 @@
         NSBitmapImageRep * bits = imageReps[0];
         
         NSDictionary * propertiesDictionary = @{};
-        NSData * pngImageData = [bits representationUsingType:NSPNGFileType properties:propertiesDictionary];
+        NSData * pngImageData = [bits representationUsingType:NSBitmapImageFileTypePNG properties:propertiesDictionary];
 
         [self.imageElementEditor.imageReferenceOptionMatrix selectCellAtRow:2 column:0];    // for clipboard, set PNG image embed option
         

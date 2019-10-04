@@ -41,6 +41,9 @@
 }
 */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation PathElementEditor
 
 //==================================================================================
@@ -1139,7 +1142,11 @@
 - (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
     // Copy the row numbers to the pasteboard.
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    
+    // archivedDataWithRootObject:requiringSecureCoding:error:
+    NSError * archiveDataError = NULL;
+    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archiveDataError];
 
     [pboard declareTypes:@[PathTableViewDataType] owner:self];
 
@@ -1164,7 +1171,11 @@
 
     NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
 
-    NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+    //NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+
+    // unarchivedObjectOfClass:fromData:error:
+    NSError * archiveDataError = NULL;
+    NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:rowData error:&archiveDataError];
 
     NSInteger from = rowIndexes.firstIndex;
 
@@ -1379,8 +1390,9 @@
     NSString *redHexValue, *greenHexValue, *blueHexValue;
 
     // Convert the NSColor to the RGB color space before we can access its components
-    NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-
+    //NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    NSColor * convertedColor = [aColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
+    
     if(convertedColor)
     {
         // Get the red, green, and blue components of the color
@@ -2153,3 +2165,5 @@
 
 
 @end
+
+#pragma clang diagnostic pop

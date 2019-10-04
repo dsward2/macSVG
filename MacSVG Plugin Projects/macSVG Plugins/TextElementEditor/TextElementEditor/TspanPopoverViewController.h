@@ -11,6 +11,10 @@
 
 @class TextElementEditor;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface TspanPopoverViewController : NSViewController
 {
     IBOutlet TextElementEditor * textElementEditor;
@@ -59,3 +63,6 @@
 - (IBAction)resetRotateButtonAction:(id)sender;
 
 @end
+
+
+#pragma clang diagnostic pop

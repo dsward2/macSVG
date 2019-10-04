@@ -14,6 +14,9 @@
 @class DOMNode;
 @class WebView;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface WebKitInterface : NSObject
 {
 }
@@ -42,3 +45,5 @@
 - (float)currentScaleForSvgElement:(DOMNode *)svgElement;
 
 @end
+
+#pragma clang diagnostic pop

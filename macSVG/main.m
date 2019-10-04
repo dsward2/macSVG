@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     
     NSEventModifierFlags modifierFlags = [NSEvent modifierFlags];   // will halt if Option key is pressed
     
-    if (((modifierFlags & NSAlternateKeyMask) | forceWaitForDebuggerAtStartup) != 0)
+    if (((modifierFlags & NSEventModifierFlagOption) | forceWaitForDebuggerAtStartup) != 0)
     {
         // When needed. next line can halt the app -
         // In Xcode select the app in Xcode menu 'Debug->Attach to Process' menu,

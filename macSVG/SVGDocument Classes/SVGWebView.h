@@ -12,6 +12,9 @@
 @class MacSVGDocumentWindowController;
 @class SVGWebKitController;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface SVGWebView : WebView
 {
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
@@ -24,3 +27,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

@@ -40,7 +40,15 @@
     IBOutlet NSTextField * networkFileBrowserLabelTextField;
     IBOutlet NSPopUpButton * networkFileBrowserDirectoryPopUpButton;
     IBOutlet NSTableView * networkFileBrowserTableView;
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
     IBOutlet WebView * networkFileBrowserPreviewWebView;
+
+    #pragma clang diagnostic pop
+
+
     IBOutlet NSButton * networkFileBrowserCancelButton;
     IBOutlet NSButton * networkFileBrowserOpenButton;
     IBOutlet NSButton * networkFileBrowserPreviewFileButton;

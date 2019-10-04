@@ -15,6 +15,10 @@
 @class SelectedElementsManager;
 @class DOMSelectionControlsManager;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 // Selection management notes -
 // XMLOutlineView is the primary selection manager, containing the master copy of SVG XML data
 // SelectedElementsManager manages selectedElementsArray for multiple XML/DOM elements
@@ -46,3 +50,5 @@
 - (void) resyncDOMElementsInSelectedElementsArray;
 
 @end
+
+#pragma clang diagnostic pop

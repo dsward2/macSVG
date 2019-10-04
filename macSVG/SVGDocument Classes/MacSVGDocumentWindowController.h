@@ -311,7 +311,13 @@
 - (IBAction)showAttributeDocumentation:(id)sender;
 
 - (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toXMLElement:(NSXMLElement *)targetElement;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (NSString *)addCSSStyleName:(NSString *)styleName styleValue:(NSString *)styleValue toDOMElement:(DOMElement *)targetElement;
+
+#pragma clang diagnostic pop
 
 - (IBAction) exportImagesButtonAction:(id)sender;
 - (IBAction) cancelExportImagesButtonAction:(id)sender;

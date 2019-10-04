@@ -235,6 +235,9 @@
 //	beginEditForXMLElement:domElement:
 //==================================================================================
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (BOOL)beginEditForXMLElement:(NSXMLElement *)newPluginTargetXMLElement
         domElement:(DOMElement *)newPluginTargetDOMElement
 {
@@ -245,6 +248,8 @@
             
     return result;
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	loadSettingsForElement

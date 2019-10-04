@@ -26,7 +26,14 @@
 @property (assign) BOOL videoWriterFailed;
 
 @property (strong) NSWindow * hiddenWindow;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @property (strong) WebView * hiddenWebView;
+
+#pragma clang diagnostic pop
+
 
 @property (strong) AVAssetWriter * videoWriter;
 @property (strong) NSDictionary * videoSettings;

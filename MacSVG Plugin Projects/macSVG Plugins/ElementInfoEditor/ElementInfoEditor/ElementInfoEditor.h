@@ -8,6 +8,9 @@
 
 #import <MacSVGPlugin/MacSVGPlugin.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface ElementInfoEditor : MacSVGPlugin
 {
 }
@@ -25,3 +28,6 @@
 - (void) handlePluginEvent:(DOMEvent *)event;
 
 @end
+
+
+#pragma clang diagnostic pop

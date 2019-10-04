@@ -237,7 +237,7 @@
     
     for (NSString * aKey in allKeys)
     {
-        NSInteger attributeIndex = [validAttributesArray indexOfObjectIdenticalTo:aKey];
+        //NSInteger attributeIndex = [validAttributesArray indexOfObjectIdenticalTo:aKey];
         
         BOOL commonKeyFound = NO;
         

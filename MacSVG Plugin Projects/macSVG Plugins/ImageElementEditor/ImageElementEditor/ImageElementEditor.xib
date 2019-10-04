@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="14109"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="14868"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,15 +24,15 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView misplaced="YES" id="ykH-CG-6lc" customClass="FlippedView">
+        <customView id="ykH-CG-6lc" customClass="FlippedView">
             <rect key="frame" x="0.0" y="0.0" width="287" height="305"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView id="z0U-xS-Zzg">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0U-xS-Zzg">
                     <rect key="frame" x="0.0" y="-7" width="287" height="312"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Evd-Mf-Riu">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Evd-Mf-Riu">
                             <rect key="frame" x="199" y="90" width="62" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="0 K" id="mYA-WS-38X">
@@ -42,7 +41,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="YFg-kN-Ef6">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YFg-kN-Ef6">
                             <rect key="frame" x="143" y="70" width="56" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="JPEG Size:" id="trL-2U-GtN">
@@ -51,7 +50,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <slider verticalHuggingPriority="750" misplaced="YES" id="stw-JT-qeO">
+                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="stw-JT-qeO">
                             <rect key="frame" x="128" y="44" width="137" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="Vps-Uv-uH9"/>
@@ -59,11 +58,11 @@
                                 <action selector="updateImageSettings:" target="-2" id="TNh-RA-ovO"/>
                             </connections>
                         </slider>
-                        <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="VO8-qM-7Dr">
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="VO8-qM-7Dr">
                             <rect key="frame" x="20" y="131" width="244" height="5"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         </box>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Cqh-CS-mDZ">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cqh-CS-mDZ">
                             <rect key="frame" x="144" y="90" width="55" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="PNG Size:" id="PJF-4h-M5p">
@@ -72,7 +71,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <button verticalHuggingPriority="750" misplaced="YES" id="Sdf-Cp-lYU">
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sdf-Cp-lYU">
                             <rect key="frame" x="227" y="136" width="45" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="push" title="Get" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="B6m-ht-fz0">
@@ -83,7 +82,7 @@
                                 <action selector="getImageFromURLButtonAction:" target="-2" id="lKn-zp-p4R"/>
                             </connections>
                         </button>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="TWk-Cn-A0X">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TWk-Cn-A0X">
                             <rect key="frame" x="21" y="45" width="102" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="JPEG Compression" id="lEn-Sr-Hjm">
@@ -92,7 +91,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="OyQ-l0-PWy">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OyQ-l0-PWy">
                             <rect key="frame" x="199" y="70" width="62" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="0 K" id="uBx-ML-qyX">
@@ -101,7 +100,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <button verticalHuggingPriority="750" id="EDd-Cl-x1y">
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDd-Cl-x1y">
                             <rect key="frame" x="62" y="161" width="88" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="push" title="Choose File" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rP0-8q-icy">
@@ -112,7 +111,7 @@
                                 <action selector="chooseFileButtonAction:" target="-2" id="wZb-DH-OYk"/>
                             </connections>
                         </button>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="fhV-Zp-Nfo">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fhV-Zp-Nfo">
                             <rect key="frame" x="145" y="110" width="55" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Link Size:" id="V1N-lN-O8J">
@@ -121,7 +120,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="BeA-rq-dZS">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BeA-rq-dZS">
                             <rect key="frame" x="200" y="110" width="62" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="0 K" id="jDM-s4-79M">
@@ -130,7 +129,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <button verticalHuggingPriority="750" id="8gl-TS-Zlh">
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8gl-TS-Zlh">
                             <rect key="frame" x="148" y="161" width="105" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="push" title="Get Clipboard" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5dI-K9-Gih">
@@ -141,15 +140,15 @@
                                 <action selector="getClipboardButtonAction:" target="-2" id="Mtm-5e-C74"/>
                             </connections>
                         </button>
-                        <box autoresizesSubviews="NO" borderType="line" title="Drag image or SVG file into box" id="t49-ej-4W4">
+                        <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Drag image or SVG file into box" translatesAutoresizingMaskIntoConstraints="NO" id="t49-ej-4W4">
                             <rect key="frame" x="17" y="190" width="253" height="118"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <view key="contentView" id="kie-IT-NKg">
-                                <rect key="frame" x="1" y="1" width="251" height="102"/>
+                                <rect key="frame" x="3" y="3" width="247" height="100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <webView identifier="ImageElementEditorWebView" misplaced="YES" maintainsBackForwardList="NO" id="bVG-Uj-gjR" customClass="ImageElementEditorWebView">
-                                        <rect key="frame" x="1" y="1" width="249" height="100"/>
+                                    <webView identifier="ImageElementEditorWebView" fixedFrame="YES" maintainsBackForwardList="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVG-Uj-gjR" customClass="ImageElementEditorWebView">
+                                        <rect key="frame" x="1" y="-1" width="245" height="100"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <webPreferences key="preferences" identifier="ImageElementEditorWebView" defaultFontSize="12" defaultFixedFontSize="12"/>
                                         <connections>
@@ -157,7 +156,6 @@
                                             <outlet property="downloadDelegate" destination="-2" id="Ty3-0r-hny"/>
                                             <outlet property="frameLoadDelegate" destination="-2" id="vAW-i8-ylG"/>
                                             <outlet property="imageElementEditor" destination="-2" id="Y96-Bh-yoW"/>
-                                            <outlet property="imageURLTextField" destination="ZZ7-83-aFi" id="Qdu-0r-TVZ"/>
                                             <outlet property="policyDelegate" destination="-2" id="0NU-FH-6Nq"/>
                                             <outlet property="resourceLoadDelegate" destination="-2" id="dCD-Fm-xoG"/>
                                         </connections>
@@ -165,7 +163,7 @@
                                 </subviews>
                             </view>
                         </box>
-                        <matrix verticalHuggingPriority="750" misplaced="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="AJX-Hp-BQa">
+                        <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJX-Hp-BQa">
                             <rect key="frame" x="20" y="67" width="119" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -195,19 +193,19 @@
                                 <action selector="updateImageSettings:" target="-2" id="jU5-FH-Cro"/>
                             </connections>
                         </matrix>
-                        <textField verticalHuggingPriority="750" misplaced="YES" id="ZZ7-83-aFi">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZZ7-83-aFi">
                             <rect key="frame" x="54" y="142" width="170" height="19"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="q2D-Sl-eka">
                                 <font key="font" metaFont="smallSystem"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
                                 <action selector="updateImageSettings:" target="-2" id="MWC-JN-3gj"/>
                             </connections>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="RPc-ss-hOG">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RPc-ss-hOG">
                             <rect key="frame" x="18" y="169" width="40" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Image:" id="WUx-TP-lGZ">
@@ -216,7 +214,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="qRk-18-LaZ">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qRk-18-LaZ">
                             <rect key="frame" x="18" y="144" width="30" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="URL:" id="5Ra-EG-RmO">
@@ -225,7 +223,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <button verticalHuggingPriority="750" misplaced="YES" id="ASq-3n-Ksu">
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ASq-3n-Ksu">
                             <rect key="frame" x="15" y="13" width="257" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="push" title="Set xlink:href and xlink:role" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wnv-eE-Uza">

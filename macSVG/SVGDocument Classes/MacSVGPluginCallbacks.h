@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @class DOMElement;
 
 @interface MacSVGPluginCallbacks : NSObject
@@ -113,3 +116,4 @@
 
 @end
 
+#pragma clang diagnostic pop

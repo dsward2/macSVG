@@ -140,6 +140,9 @@
     return 20;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	beginEditForXMLElement:domElement:attributeName:existingValue:
 //==================================================================================
@@ -174,6 +177,9 @@
     
     return result;
 }
+
+#pragma clang diagnostic pop
+
 
 //==================================================================================
 //	numericStringWithFloat

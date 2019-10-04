@@ -17,10 +17,14 @@
 // umbrella header references for usage with Swift, should be marked public in build phases
 #import "MacSVGPluginCallbacks.h"
 #import "WebKitInterface.h"
+#import "MacSVGPlugin/SZJsonParser.h"
 
 @class WebView;
 @class DOMElement;
 @class MacSVGPluginSwiftInterface;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @interface MacSVGPlugin : NSObject
 {
@@ -144,3 +148,5 @@
 - (void)logStackSymbols:(NSString *)messagePrefix;
 
 @end
+
+#pragma clang diagnostic pop

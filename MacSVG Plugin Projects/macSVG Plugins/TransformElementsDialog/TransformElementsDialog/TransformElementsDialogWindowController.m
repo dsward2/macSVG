@@ -12,6 +12,8 @@
 #import "SVGWebKitController.h"
 #import "SVGWebView.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @interface TransformElementsDialogWindowController ()
 
@@ -1316,3 +1318,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

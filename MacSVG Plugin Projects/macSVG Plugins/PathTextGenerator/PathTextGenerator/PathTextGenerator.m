@@ -272,7 +272,7 @@
         pathDataAttribute.stringValue = outStr;
         [pathElement addAttribute:pathDataAttribute];
 
-        NSString * idString = [NSString stringWithFormat:@"textToPath-%ld", 0];
+        NSString * idString = [NSString stringWithFormat:@"textToPath-%d", 0];
 
         NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
         idAttribute.name = @"id";
@@ -373,7 +373,7 @@
     pathDataAttribute.stringValue = pathData;
     [pathElement addAttribute:pathDataAttribute];
 
-    NSString * idString = [NSString stringWithFormat:@"textToPath-%ld", 0];
+    NSString * idString = [NSString stringWithFormat:@"textToPath-%d", 0];
 
     NSXMLNode * idAttribute = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
     idAttribute.name = @"id";

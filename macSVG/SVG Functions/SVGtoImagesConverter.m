@@ -188,8 +188,9 @@
 
     self.hiddenWindow = [[NSWindow alloc]
             initWithContentRect: NSMakeRect( -2000,-2000, self.imageWidth, self.imageHeight)
-            styleMask: NSTitledWindowMask | NSClosableWindowMask backing:NSBackingStoreNonretained defer:NO];
-    
+            //styleMask: NSTitledWindowMask | NSClosableWindowMask backing:NSBackingStoreNonretained defer:NO];
+            styleMask: NSWindowStyleMaskTitled | NSWindowStyleMaskClosable backing:NSBackingStoreBuffered defer:NO];
+
     self.hiddenWindow.releasedWhenClosed = NO;
 
     self.hiddenWebView = [[WebView alloc] initWithFrame:webViewFrame];
@@ -311,19 +312,19 @@
     {
         NSDictionary * pngProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
-        imageData = [cgImageRep representationUsingType:NSPNGFileType properties:pngProperties];
+        imageData = [cgImageRep representationUsingType:NSBitmapImageFileTypePNG properties:pngProperties];
     }
     else if ([self.outputFormatString isEqualToString:@"JPEG"] == YES)
     {
         NSDictionary * jpegProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
-        imageData = [cgImageRep representationUsingType:NSJPEGFileType properties:jpegProperties];
+        imageData = [cgImageRep representationUsingType:NSBitmapImageFileTypeJPEG properties:jpegProperties];
     }
     else if ([self.outputFormatString isEqualToString:@"TIFF"] == YES)
     {
         NSDictionary * tiffProperties = @{NSImageFallbackBackgroundColor: [NSColor clearColor]};
 
-        imageData = [cgImageRep representationUsingType:NSTIFFFileType properties:tiffProperties];
+        imageData = [cgImageRep representationUsingType:NSBitmapImageFileTypeTIFF properties:tiffProperties];
     }
     
     NSString * outputPath = self.path;
@@ -441,7 +442,7 @@
     
     // draw to create bitmapImageRep
     [webImage lockFocus];
-    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
+    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositingOperationCopy
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 
@@ -451,7 +452,7 @@
 
     // redraw after color space setting
     [webImage lockFocus];
-    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
+    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositingOperationCopy
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 

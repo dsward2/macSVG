@@ -162,7 +162,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    //CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	NSRect webBBox = NSMakeRect(0.000000, 0.000000, 182.000000, 311.000000);
 	CGFloat hViewScale = self.frame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = self.frame.size.height / (webBBox.size.height);
@@ -233,7 +234,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(10.000000, 10.000000, 435.000000, 438.000000);
@@ -304,7 +306,8 @@
 	//[rectColor29 set];
 	//[rectPath28 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(22.000000, 23.000000, 416.000000, 416.000000);
@@ -374,7 +377,8 @@
 	//[rectColor55 set];
 	//[rectPath54 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(11.000000, 18.000000, 436.000000, 286.000000);
@@ -445,7 +449,8 @@
 	//[rectColor82 set];
 	//[rectPath81 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(3.000000, 3.000000, 258.000000, 259.000000);
@@ -522,7 +527,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-28.000000, -29.000000, 643.000000, 543.000000);
@@ -847,7 +853,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-28.000000, -29.000000, 642.000000, 566.000000);
@@ -1173,7 +1180,8 @@
 	//[rectColor146 set];
 	//[rectPath145 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-13.000000, -14.000000, 583.000000, 356.000000);
@@ -1351,7 +1359,8 @@
 	//[rectColor222 set];
 	//[rectPath221 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(14.000000, -1.052286, 392.000000, 613.052307);
@@ -1472,7 +1481,8 @@
 	//[rectColor24 set];
 	//[rectPath23 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(10.000000, 0.000000, 568.000000, 680.000000);
@@ -1566,7 +1576,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-38.000000, -44.000000, 559.000000, 462.000000);
@@ -1872,7 +1883,8 @@
 	//[rectColor24 set];
 	//[rectPath23 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	NSRect webBBox = NSMakeRect(-33.000000, -33.000000, 524.000000, 451.000000);
 	CGFloat hViewScale = self.frame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = self.frame.size.height / (webBBox.size.height);
@@ -2266,7 +2278,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.875000, -0.840990, 167.500000, 170.090990);
@@ -2595,7 +2608,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.437500, -0.375000, 20.000000, 19.125000);
@@ -2726,7 +2740,8 @@
 	//[rectColor60 set];
 	//[rectPath59 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.375000, -0.312500, 20.000000, 20.000000);
@@ -2856,7 +2871,8 @@
 	//[rectColor118 set];
 	//[rectPath117 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.437500, -0.375000, 18.822594, 20.385094);
@@ -2987,7 +3003,8 @@
 	//[rectColor176 set];
 	//[rectPath175 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.438000, -0.375000, 19.976562, 20.000000);
@@ -3117,7 +3134,8 @@
 	//[rectColor234 set];
 	//[rectPath233 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = NO;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(-0.438000, -0.375000, 24.187500, 24.694389);

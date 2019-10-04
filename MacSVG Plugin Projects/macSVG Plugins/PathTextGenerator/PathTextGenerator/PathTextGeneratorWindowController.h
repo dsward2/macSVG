@@ -20,7 +20,13 @@
     IBOutlet NSButton * italicFontCheckboxButton;
     IBOutlet NSTextField * originXTextField;
     IBOutlet NSTextField * originYTextField;
+    
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
     IBOutlet WebView * fontPreviewWebView;
+
+    #pragma clang diagnostic pop
 
     IBOutlet NSTabView * tabView;
     

@@ -29,6 +29,10 @@
 #import "EditorUIFrameController.h"
 #import "ElementEditorPlugInController.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @implementation DOMSelectionControlsManager
 
 //==================================================================================
@@ -1082,8 +1086,8 @@
     [mutablePluginHandleSize replaceOccurrencesOfString:@"px"
             withString:@"" options:0 range:NSMakeRange(0, mutablePluginHandleSize.length)];
 
-    float pluginHandleSizeX = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.x;
-    float pluginHandleSizeY = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.y;
+    //float pluginHandleSizeX = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.x;
+    //float pluginHandleSizeY = mutablePluginHandleSize.floatValue * scaleForDOMElementHandles.y;
     
     NSString * xString = [self allocPxString:handlePoint.x];
     NSString * yString = [self allocPxString:handlePoint.y];
@@ -3116,6 +3120,7 @@
 }
 
 
-
-
 @end
+
+
+#pragma clang diagnostic pop

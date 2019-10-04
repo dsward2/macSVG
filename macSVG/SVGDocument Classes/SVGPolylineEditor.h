@@ -17,6 +17,10 @@
 @class SVGXMLDOMSelectionManager;
 @class ToolSettingsPopoverViewController;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 #define kPolylineEditingModeNotActive 0
 #define kPolylineEditingModeNextActive 1
 
@@ -67,3 +71,5 @@
 -(void) deleteLastLineInPolyline;
 
 @end
+
+#pragma clang diagnostic pop

@@ -7,6 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @class DOMSelectionControlsManager;
 
 // mouseMode values
@@ -116,3 +120,6 @@ enum {
 -(NSPoint) transformPoint:(NSPoint)aMousePoint targetElement:(DOMElement *)targetElement;
 
 @end
+
+
+#pragma clang diagnostic pop

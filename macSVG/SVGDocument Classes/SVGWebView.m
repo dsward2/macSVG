@@ -18,6 +18,9 @@
 #import "HorizontalRulerView.h"
 #import "VerticalRulerView.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation SVGWebView
 
 
@@ -73,10 +76,10 @@
     [self setAcceptsTouchEvents:NO];
 
     [self registerForDraggedTypes:@[XML_OUTLINE_PBOARD_TYPE, 
-            NSURLPboardType, 
-            NSStringPboardType, 
+                                    NSPasteboardTypeURL, 
+                                    NSPasteboardTypeString, 
             NSFilenamesPboardType, 
-            NSTIFFPboardType]];
+                                    NSPasteboardTypeTIFF]];
 
     self.postsFrameChangedNotifications = YES;
     self.postsBoundsChangedNotifications = YES;
@@ -329,3 +332,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

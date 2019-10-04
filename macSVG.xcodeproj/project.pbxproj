@@ -14,6 +14,7 @@
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
 		0E0AEDB51D8AE6A9004D82C3 /* pattern_example2.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */; };
 		0E0E0B151D9718A40027DCAB /* SVGtoImagesConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0E0B141D9718A40027DCAB /* SVGtoImagesConverter.m */; };
+		0E0F5E042346AD5500BCA3B1 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */; };
 		0E10814C14C727A600908087 /* TextDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814B14C727A600908087 /* TextDocumentWindowController.m */; };
 		0E10815014C7320D00908087 /* TextDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10814E14C7320D00908087 /* TextDocument.m */; };
 		0E10816F14C7691C00908087 /* SVG Logo2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E10816A14C7691C00908087 /* SVG Logo2.svg */; };
@@ -1679,6 +1680,7 @@
 		0E0AEDB41D8AE6A3004D82C3 /* pattern_example2.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example2.svg; sourceTree = "<group>"; };
 		0E0E0B131D9718A40027DCAB /* SVGtoImagesConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVGtoImagesConverter.h; path = "SVG Functions/SVGtoImagesConverter.h"; sourceTree = "<group>"; };
 		0E0E0B141D9718A40027DCAB /* SVGtoImagesConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVGtoImagesConverter.m; path = "SVG Functions/SVGtoImagesConverter.m"; sourceTree = "<group>"; };
+		0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		0E10814A14C727A600908087 /* TextDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDocumentWindowController.h; sourceTree = "<group>"; };
 		0E10814B14C727A600908087 /* TextDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextDocumentWindowController.m; sourceTree = "<group>"; };
 		0E10814D14C7320D00908087 /* TextDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDocument.h; sourceTree = "<group>"; };
@@ -2358,6 +2360,10 @@
 		0E82B0D11D730811005D0634 /* DDMultiFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDMultiFormatter.m; sourceTree = "<group>"; };
 		0E82B0D21D730811005D0634 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0E82B1361D732564005D0634 /* animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg"; sourceTree = "<group>"; };
+		0E87CB052332066100848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/MacSVGDocument.xib; sourceTree = "<group>"; };
+		0E87CB062332066100848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		0E87CB072332066200848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/TextDocument.xib; sourceTree = "<group>"; };
+		0E87CB082332066200848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/ToolPaletteWindow.xib; sourceTree = "<group>"; };
 		0E8C6E971D5758AD0088CA7B /* text_on_an_animated_path.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = text_on_an_animated_path.svg; sourceTree = "<group>"; };
 		0E9041081D51BB99004C1826 /* SVGIconTableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGIconTableHeaderCell.h; sourceTree = "<group>"; };
 		0E9041091D51BB99004C1826 /* SVGIconTableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGIconTableHeaderCell.m; sourceTree = "<group>"; };
@@ -2416,11 +2422,7 @@
 		0EA2B4B81D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = Credits.rtf; sourceTree = "<group>"; };
 		0EA2B4BA1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = DocumentationLinks.plist; sourceTree = "<group>"; };
 		0EA2B4BC1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		0EA2B4BE1D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MacSVGDocument.xib; sourceTree = "<group>"; };
-		0EA2B4C01D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MainMenu.xib; sourceTree = "<group>"; };
 		0EA2B4C21D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = en; path = "Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg"; sourceTree = "<group>"; };
-		0EA2B4C41D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = TextDocument.xib; sourceTree = "<group>"; };
-		0EA2B4C61D9C96FC00100631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ToolPaletteWindow.xib; sourceTree = "<group>"; };
 		0EA47BEB1D886B9C005B2FF3 /* SVGLineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGLineEditor.h; sourceTree = "<group>"; };
 		0EA47BEC1D886B9C005B2FF3 /* SVGLineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGLineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EA59C531E42D7F10031EE60 /* macSVG.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macSVG.entitlements; sourceTree = "<group>"; };
@@ -2609,6 +2611,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E3B72FC1D8296DE00B10ECE /* CoreMedia.framework in Frameworks */,
+				0E0F5E042346AD5500BCA3B1 /* VideoToolbox.framework in Frameworks */,
 				0E3B72FA1D82966A00B10ECE /* CoreVideo.framework in Frameworks */,
 				0E3B72F81D82964B00B10ECE /* AVFoundation.framework in Frameworks */,
 				0E5B3CEF1D02AB96008FDD23 /* JavaScriptCore.framework in Frameworks */,
@@ -3942,6 +3945,7 @@
 		0EB6637B14286398003723F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */,
 				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
 				0E3B72FB1D8296DE00B10ECE /* CoreMedia.framework */,
 				0E3B72F91D82966A00B10ECE /* CoreVideo.framework */,
@@ -4279,7 +4283,7 @@
 		0EB6636F14286398003723F0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "ArkPhone, LLC";
 				TargetAttributes = {
 					0EB6637714286398003723F0 = {
@@ -4295,11 +4299,11 @@
 			};
 			buildConfigurationList = 0EB6637214286398003723F0 /* Build configuration list for PBXProject "macSVG" */;
 			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				English,
+				Base,
 			);
 			mainGroup = 0EB6636D14286398003723F0;
 			productRefGroup = 0EB6637914286398003723F0 /* Products */;
@@ -4921,7 +4925,7 @@
 		0EA2B4BD1D9C96FC00100631 /* MacSVGDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				0EA2B4BE1D9C96FC00100631 /* en */,
+				0E87CB052332066100848A06 /* Base */,
 			);
 			name = MacSVGDocument.xib;
 			sourceTree = "<group>";
@@ -4929,7 +4933,7 @@
 		0EA2B4BF1D9C96FC00100631 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				0EA2B4C01D9C96FC00100631 /* en */,
+				0E87CB062332066100848A06 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -4945,7 +4949,7 @@
 		0EA2B4C31D9C96FC00100631 /* TextDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				0EA2B4C41D9C96FC00100631 /* en */,
+				0E87CB072332066200848A06 /* Base */,
 			);
 			name = TextDocument.xib;
 			sourceTree = "<group>";
@@ -4953,7 +4957,7 @@
 		0EA2B4C51D9C96FC00100631 /* ToolPaletteWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				0EA2B4C61D9C96FC00100631 /* en */,
+				0E87CB082332066200848A06 /* Base */,
 			);
 			name = ToolPaletteWindow.xib;
 			sourceTree = "<group>";
@@ -5014,7 +5018,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lssh2";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5065,7 +5069,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = "-lssh2";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -5088,6 +5092,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = MMFBWVS455;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5101,7 +5106,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;
@@ -5127,6 +5132,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = MMFBWVS455;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5139,7 +5145,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;

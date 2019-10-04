@@ -116,6 +116,9 @@
     return 30;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	beginEditForXMLElement:domElement:attributeName:existingValue:
 //==================================================================================
@@ -156,6 +159,8 @@
     
     return result;
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	loadStylePropertiesData
@@ -544,6 +549,9 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	updateEditForXMLElement:domElement:info:updatePathLength:
 //==================================================================================
@@ -559,6 +567,8 @@
     
     [stylePropertiesTableView reloadData];
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	cancelButtonAction

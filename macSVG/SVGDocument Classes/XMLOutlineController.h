@@ -17,6 +17,10 @@
 
 #define XML_OUTLINE_PBOARD_TYPE      @"XMLOutlineViewPboardType"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface XMLOutlineController : NSObject <NSOutlineViewDelegate, NSOutlineViewDataSource, NSMenuDelegate>
 {
     IBOutlet DOMSelectionControlsManager * domSelectionControlsManager;
@@ -90,3 +94,6 @@
 - (void)nudgeSelectedItemsRight;
 
 @end
+
+
+#pragma clang diagnostic pop

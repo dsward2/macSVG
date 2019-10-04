@@ -293,8 +293,8 @@ Printing description of googleWebfontDictionary:
 
             //[textElementEditor setFontName:fontName];
 
-            NSString * fontName = @"Helvetica";
-            NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
+            //NSString * fontName = @"Helvetica";
+            //NSArray * googleWebfontsListArray = (self.googleWebFontsCatalogDictionary)[@"items"];
             
             NSString * fileURLString = webfontPathTextField.stringValue;
             
@@ -661,7 +661,7 @@ Printing description of googleWebfontDictionary:
 //==================================================================================
 
 - (void)controlTextDidChange:(NSNotification *)notification {
-    NSTextField *textField = [notification object];
+    //NSTextField *textField = [notification object];
     //NSLog(@"controlTextDidChange: stringValue == %@", [textField stringValue]);
     [self updateWebViewFontPreview:self];
 }
@@ -672,7 +672,7 @@ Printing description of googleWebfontDictionary:
 
 - (IBAction)updateWebViewFontPreview:(id)sender
 {
-    NSView * aTabViewItem = [tabView selectedTabViewItem];
+    NSTabViewItem * aTabViewItem = [tabView selectedTabViewItem];
     NSInteger tabViewIndex = [tabView indexOfTabViewItem:aTabViewItem];
 
     NSString * fontName = @"Helvetica";
@@ -1177,7 +1177,7 @@ Printing description of googleWebfontDictionary:
     
     [panel beginWithCompletionHandler:^(NSInteger result)
     {
-        if (result == NSFileHandlingPanelOKButton)
+        if (result == NSModalResponseOK)
         {
             NSURL *  fontURL = panel.URLs[0];
             

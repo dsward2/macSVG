@@ -12,6 +12,9 @@
 @class DOMEvent;
 @class DOMNode;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface TransformAttributeEditor : MacSVGPlugin <NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet NSButton * translateToolButton;
@@ -70,5 +73,6 @@
 
 @end
 
+#pragma clang diagnostic pop
 
 float getAngleABC( NSPoint a, NSPoint b, NSPoint c );

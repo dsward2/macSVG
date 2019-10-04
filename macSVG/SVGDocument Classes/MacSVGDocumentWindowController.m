@@ -1520,11 +1520,11 @@
         {
             NSUInteger objectIndex = [toolButtonsArray indexOfObject:aButton];
             self.currentToolMode = objectIndex;
-            aButton.state = NSOnState;            
+            aButton.state = NSControlStateValueOn;            
         }
         else
         {
-            aButton.state = NSOffState;            
+            aButton.state = NSControlStateValueOff;            
         }
     }
     (self.svgWebKitController.domMouseEventsController).mouseMode = MOUSE_DISENGAGED;
@@ -2193,7 +2193,8 @@
     NSString *redHexValue, *greenHexValue, *blueHexValue;
 
     // Convert the NSColor to the RGB color space before we can access its components
-    NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    //NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    NSColor * convertedColor = [aColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
 
     if(convertedColor)
     {

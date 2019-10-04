@@ -1025,6 +1025,9 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 //  webView:didFinishLoadForFrame:
 //==================================================================================
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
     if (sender == textPathPreviewWebView)
@@ -1032,6 +1035,9 @@ height=\"269px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
         [self getTotalPathLength];
     }
 }
+
+#pragma clang diagnostic pop
+
 
 //==================================================================================
 //	cancelButtonAction

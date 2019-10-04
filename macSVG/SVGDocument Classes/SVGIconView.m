@@ -52,7 +52,8 @@
 	//[rectColor106 set];
 	//[rectPath105 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	NSRect webBBox = NSMakeRect(-0.093000, -0.062500, 15.562000, 14.262500);
 	CGFloat hViewScale = cellFrame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = cellFrame.size.height / (webBBox.size.height);
@@ -223,7 +224,8 @@
 	//[rectColor24 set];
 	//[rectPath23 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	BOOL flipImage = YES;
 	BOOL centerImage = YES;
 	NSRect webBBox = NSMakeRect(10.000000, 0.000000, 568.000000, 680.000000);
@@ -325,7 +327,8 @@
 	//[rectColor2 set];
 	//[rectPath1 stroke];
 	NSGraphicsContext * nsctx = [NSGraphicsContext currentContext];
-	CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+	//CGContextRef context = (CGContextRef)nsctx.graphicsPort;
+    CGContextRef context = (CGContextRef)nsctx.CGContext;
 	NSRect webBBox = NSMakeRect(0.000000, 0.000000, 200.000000, 200.000000);
 	CGFloat hViewScale = cellFrame.size.width / (webBBox.size.width);
 	CGFloat vViewScale = cellFrame.size.height / (webBBox.size.height);

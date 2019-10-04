@@ -716,9 +716,12 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     // The completion handler is called when the user selects an
     // item or cancels the panel.
     
+    __weak NSTextField * weakWebfontPathTextField = webfontPathTextField;
+    __weak NSTextField * weakWebfontStatusMessageTextField = webfontStatusMessageTextField;
+
     [panel beginWithCompletionHandler:^(NSInteger result)
     {
-        if (result == NSFileHandlingPanelOKButton)
+        if (result == NSModalResponseOK)
         {
             NSURL *  fontURL = panel.URLs[0];
             
@@ -729,7 +732,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 // Open  the document.
                 NSString * urlString = fontURL.absoluteString;
                 
-                webfontPathTextField.stringValue = urlString;
+                weakWebfontPathTextField.stringValue = urlString;
                 
                 NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
                 
@@ -740,7 +743,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 // Open  the document.
                 NSString * urlString = fontURL.absoluteString;
                 
-                webfontPathTextField.stringValue = urlString;
+                weakWebfontPathTextField.stringValue = urlString;
                 
                 NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
                 
@@ -748,7 +751,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             }
             else
             {
-                webfontStatusMessageTextField.stringValue = @"Import error - Truetype font not found";
+                weakWebfontStatusMessageTextField.stringValue = @"Import error - Truetype font not found";
             }
             
             [self reopenPopover];

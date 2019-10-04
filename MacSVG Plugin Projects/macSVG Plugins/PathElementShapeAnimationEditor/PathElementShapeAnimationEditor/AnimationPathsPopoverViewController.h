@@ -12,6 +12,9 @@
 
 @class PathElementShapeAnimationEditor;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface AnimationPathsPopoverViewController : NSViewController
 {
     IBOutlet PathElementShapeAnimationEditor * pathElementShapeAnimationEditor;
@@ -54,3 +57,5 @@
 - (IBAction)cancelButtonAction:(id)sender;
 
 @end
+
+#pragma clang diagnostic pop

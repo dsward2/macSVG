@@ -10,6 +10,9 @@
 #import <WebKit/WebKit.h>
 #import "objc/message.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 #define ENABLE_SVG 1
 
 @implementation WebKitInterface
@@ -685,3 +688,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

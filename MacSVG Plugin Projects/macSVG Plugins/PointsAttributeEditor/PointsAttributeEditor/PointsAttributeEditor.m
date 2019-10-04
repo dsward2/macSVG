@@ -116,6 +116,9 @@
     return 30;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	beginEditForXMLElement:domElement:attributeName:existingValue:
 //==================================================================================
@@ -156,6 +159,8 @@
     
     return result;
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	loadPointsData
@@ -553,6 +558,9 @@
     return hexColor;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	updateEditForXMLElement:domElement:info:updatePathLength:
 //==================================================================================
@@ -571,6 +579,8 @@
     [pointsTableView reloadData];
 }
 
+#pragma clang diagnostic pop
+
 //==================================================================================
 //	hexadecimalValueOfAnNSColor
 //==================================================================================
@@ -582,7 +592,8 @@
     NSString *redHexValue, *greenHexValue, *blueHexValue;
 
     // Convert the NSColor to the RGB color space before we can access its components
-    NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    //NSColor * convertedColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    NSColor * convertedColor = [aColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
 
     if(convertedColor)
     {

@@ -23,6 +23,9 @@
 #import "VerticalRulerView.h"
 #import "objc/message.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation SVGWebKitController
 
 //==================================================================================
@@ -2786,3 +2789,5 @@ function deltaTransformPoint(matrix, x, y) {
 
 
 @end
+
+#pragma clang diagnostic pop

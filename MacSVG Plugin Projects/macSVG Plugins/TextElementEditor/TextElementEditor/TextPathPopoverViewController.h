@@ -11,6 +11,10 @@
 
 @class TextElementEditor;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface TextPathPopoverViewController : NSViewController
 {
     IBOutlet TextElementEditor * textElementEditor;
@@ -61,3 +65,7 @@
 - (IBAction)updateTextPathData:(id)sender;
 
 @end
+
+
+#pragma clang diagnostic pop
+

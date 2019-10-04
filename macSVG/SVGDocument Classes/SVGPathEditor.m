@@ -61,6 +61,10 @@
     )
 */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @implementation SVGPathEditor
 
 //==================================================================================
@@ -3713,7 +3717,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
             NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-            DOMElement * activeDOMElement = [svgWebKitController.svgXMLDOMSelectionManager activeDOMElement]; // the path element
+            //DOMElement * activeDOMElement = [svgWebKitController.svgXMLDOMSelectionManager activeDOMElement]; // the path element
 
             NSPoint transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
 
@@ -5543,3 +5547,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 
 @end
+
+
+#pragma clang diagnostic pop

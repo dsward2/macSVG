@@ -13,6 +13,8 @@
 
 #import <objc/message.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @implementation MacSVGPlugin
 
@@ -631,3 +633,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

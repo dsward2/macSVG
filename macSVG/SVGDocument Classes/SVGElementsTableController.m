@@ -265,7 +265,7 @@
     NSUInteger rowIndex = rowIndexes.firstIndex;
 
     // Provide data for our custom type, and simple NSStrings.
-    [pboard declareTypes:@[NSStringPboardType] owner:self];
+    [pboard declareTypes:@[NSPasteboardTypeString] owner:self];
     
     NSString * elementTag = (self.svgElementsArray)[rowIndex];
     
@@ -275,7 +275,7 @@
     
     NSMutableString * elementXML = [NSMutableString stringWithFormat:@"<%@ />", prototypeElement];
     
-    [pboard setString:elementXML forType:NSStringPboardType];
+    [pboard setString:elementXML forType:NSPasteboardTypeString];
     
     return YES;
 }

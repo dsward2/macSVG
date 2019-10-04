@@ -68,6 +68,10 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     return rs;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @implementation TransformAttributeEditor
 
 //==================================================================================
@@ -581,7 +585,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 - (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
     // Copy the row numbers to the pasteboard.
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    
+    // archivedDataWithRootObject:requiringSecureCoding:error:
+    NSError * archivedDataError = NULL;
+    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archivedDataError];
 
     [pboard declareTypes:@[TransformTableViewDataType] owner:self];
 
@@ -603,7 +611,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     NSPasteboard * pboard = [info draggingPasteboard];
     NSData * rowData = [pboard dataForType:TransformTableViewDataType];
 
-    NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+    //NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+    
+    // unarchivedObjectOfClass:fromData:error:
+    NSError * archiveDataError = NULL;
+    NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:rowData error:&archiveDataError];
 
     NSInteger from = rowIndexes.firstIndex;
 
@@ -2815,11 +2827,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
             domElement:newPluginTargetDOMElement attributeName:newAttributeName
             existingValue:existingValue];
     
-    translateToolButton.state = NSOffState;
-    scaleToolButton.state = NSOffState;
-    rotateToolButton.state = NSOffState;
-    skewXToolButton.state = NSOffState;
-    skewYToolButton.state = NSOffState;
+    translateToolButton.state = NSControlStateValueOff;
+    scaleToolButton.state = NSControlStateValueOff;
+    rotateToolButton.state = NSControlStateValueOff;
+    skewXToolButton.state = NSControlStateValueOff;
+    skewYToolButton.state = NSControlStateValueOff;
 
     [self.transformsArray removeAllObjects];
 
@@ -3024,11 +3036,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 
                 // matrixToolButton doesn't exist yet
                 currentTransformToolMode = transformToolModeMatrix;
-                translateToolButton.state = NSOffState;
-                scaleToolButton.state = NSOffState;
-                rotateToolButton.state = NSOffState;
-                skewXToolButton.state = NSOffState;
-                skewYToolButton.state = NSOffState;
+                translateToolButton.state = NSControlStateValueOff;
+                scaleToolButton.state = NSControlStateValueOff;
+                rotateToolButton.state = NSControlStateValueOff;
+                skewXToolButton.state = NSControlStateValueOff;
+                skewYToolButton.state = NSControlStateValueOff;
                 
                 [self beginMatrixTransform];
             }
@@ -3052,55 +3064,55 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         if (sender == translateToolButton)
         {
             currentTransformToolMode = transformToolModeTranslate;
-            translateToolButton.state = NSOnState;
-            scaleToolButton.state = NSOffState;
-            rotateToolButton.state = NSOffState;
-            skewXToolButton.state = NSOffState;
-            skewYToolButton.state = NSOffState;
+            translateToolButton.state = NSControlStateValueOn;
+            scaleToolButton.state = NSControlStateValueOff;
+            rotateToolButton.state = NSControlStateValueOff;
+            skewXToolButton.state = NSControlStateValueOff;
+            skewYToolButton.state = NSControlStateValueOff;
             
             [self beginTranslateTransform];
         }
         else if (sender == scaleToolButton)
         {
             currentTransformToolMode = transformToolModeScale;
-            translateToolButton.state = NSOffState;
-            scaleToolButton.state = NSOnState;
-            rotateToolButton.state = NSOffState;
-            skewXToolButton.state = NSOffState;
-            skewYToolButton.state = NSOffState;
+            translateToolButton.state = NSControlStateValueOff;
+            scaleToolButton.state = NSControlStateValueOn;
+            rotateToolButton.state = NSControlStateValueOff;
+            skewXToolButton.state = NSControlStateValueOff;
+            skewYToolButton.state = NSControlStateValueOff;
             
             [self beginScaleTransform];
         }
         else if (sender == rotateToolButton)
         {
             currentTransformToolMode = transformToolModeRotate;
-            translateToolButton.state = NSOffState;
-            scaleToolButton.state = NSOffState;
-            rotateToolButton.state = NSOnState;
-            skewXToolButton.state = NSOffState;
-            skewYToolButton.state = NSOffState;
+            translateToolButton.state = NSControlStateValueOff;
+            scaleToolButton.state = NSControlStateValueOff;
+            rotateToolButton.state = NSControlStateValueOn;
+            skewXToolButton.state = NSControlStateValueOff;
+            skewYToolButton.state = NSControlStateValueOff;
 
             [self beginRotateTransform];
         }
         else if (sender == skewXToolButton)
         {
             currentTransformToolMode = transformToolModeSkewX;
-            translateToolButton.state = NSOffState;
-            scaleToolButton.state = NSOffState;
-            rotateToolButton.state = NSOffState;
-            skewXToolButton.state = NSOnState;
-            skewYToolButton.state = NSOffState;
+            translateToolButton.state = NSControlStateValueOff;
+            scaleToolButton.state = NSControlStateValueOff;
+            rotateToolButton.state = NSControlStateValueOff;
+            skewXToolButton.state = NSControlStateValueOn;
+            skewYToolButton.state = NSControlStateValueOff;
             
             [self beginSkewXTransform];
         }
         else if (sender == skewYToolButton)
         {
             currentTransformToolMode = transformToolModeSkewY;
-            translateToolButton.state = NSOffState;
-            scaleToolButton.state = NSOffState;
-            rotateToolButton.state = NSOffState;
-            skewXToolButton.state = NSOffState;
-            skewYToolButton.state = NSOnState;
+            translateToolButton.state = NSControlStateValueOff;
+            scaleToolButton.state = NSControlStateValueOff;
+            rotateToolButton.state = NSControlStateValueOff;
+            skewXToolButton.state = NSControlStateValueOff;
+            skewYToolButton.state = NSControlStateValueOn;
             
             [self beginSkewYTransform];
         }
@@ -3192,3 +3204,5 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 
 @end
+
+#pragma clang diagnostic pop

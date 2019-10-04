@@ -11,6 +11,7 @@
 
 #import "SVGtoVideoConverter.h"
 //#import "CoreGraphics/CoreGraphics.h"
+#import <VideoToolbox/VTCompressionProperties.h>
 
 @implementation SVGtoVideoConverter
 
@@ -88,7 +89,7 @@
     self.hiddenWindow = [[NSWindow alloc]
             initWithContentRect: NSMakeRect( -2000,-2000, self.movieWidth, self.movieHeight)    // init offscreen
             //initWithContentRect: NSMakeRect( 100,100, self.movieWidth, self.movieHeight)  // init onscreen for testing
-            styleMask: NSTitledWindowMask | NSClosableWindowMask
+            styleMask: NSWindowStyleMaskTitled | NSWindowStyleMaskClosable
             //backing:NSBackingStoreNonretained
             backing:NSBackingStoreBuffered
             defer:NO];
@@ -167,12 +168,18 @@
     compressionSettings[AVVideoColorPrimariesKey] = AVVideoColorPrimaries_ITU_R_709_2;
     compressionSettings[AVVideoTransferFunctionKey] = AVVideoTransferFunction_ITU_R_709_2;
     compressionSettings[AVVideoYCbCrMatrixKey] = AVVideoYCbCrMatrix_ITU_R_709_2;
-    
-    self.videoSettings = @{AVVideoCodecKey: AVVideoCodecH264,
+                
+    //NSDictionary * encoder_spec = [NSDictionary dictionaryWithObjectsAndKeys:@(NO), kVTVideoEncoderSpecification_EnableHardwareAcceleratedVideoEncoder, nil];
+    NSDictionary * encoder_spec = @{ (__bridge NSString *)kVTVideoEncoderSpecification_EnableHardwareAcceleratedVideoEncoder: @(NO)};
+
+    self.videoSettings = @{AVVideoCodecKey: AVVideoCodecTypeH264,
             AVVideoWidthKey: [NSNumber numberWithInteger:self.movieWidth],
             AVVideoHeightKey: [NSNumber numberWithInteger:self.movieHeight],
-            AVVideoColorPropertiesKey: compressionSettings};
+            AVVideoColorPropertiesKey: compressionSettings,
+            AVVideoEncoderSpecificationKey: encoder_spec
+    };
     
+    // on Mac Pro with Xeon processors, AVAssetWriterInput returns this warning message - AVDCreateGPUAccelerator: Error loading GPU renderer
     self.writerInput = [AVAssetWriterInput
             assetWriterInputWithMediaType:AVMediaTypeVideo
             outputSettings:self.videoSettings];
@@ -257,7 +264,9 @@
     CGColorSpaceRef sRGBColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
     if (sRGBColorSpace != NULL)
     {
-        CFDataRef sRGBProfileData = CGColorSpaceCopyICCProfile(sRGBColorSpace);
+        //CFDataRef sRGBProfileData = CGColorSpaceCopyICCProfile(sRGBColorSpace);   // deprecated - Please use `CGColorSpaceCopyICCData'
+        CFDataRef sRGBProfileData = CGColorSpaceCopyICCData(sRGBColorSpace);
+        
         if (sRGBProfileData != NULL)
         {
             NSDictionary *pbAttachements =
@@ -509,9 +518,13 @@
     NSRect webViewBounds = self.hiddenWebView.bounds;
 
     // grab the full view
-	[self.hiddenWebView lockFocus];
-    NSBitmapImageRep * bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:webViewBounds];
-	[self.hiddenWebView unlockFocus];
+	//[self.hiddenWebView lockFocus];
+    //NSBitmapImageRep * bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:webViewBounds];
+	//[self.hiddenWebView unlockFocus];
+
+    //'initWithFocusedViewRect:' is deprecated: first deprecated in macOS 10.14 - Use -[NSView cacheDisplayInRect:toBitmapImageRep:] to snapshot a view.
+    NSBitmapImageRep * bitmapRep = [self.hiddenWebView bitmapImageRepForCachingDisplayInRect:webViewBounds];
+    [self.hiddenWebView cacheDisplayInRect:webViewBounds toBitmapImageRep:bitmapRep];
 
     bitmapRep.colorSpaceName = NSDeviceRGBColorSpace;
     
@@ -523,7 +536,7 @@
     
     // draw to create bitmapImageRep
     [webImage lockFocus];
-    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
+    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositingOperationCopy
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 
@@ -533,7 +546,7 @@
 
     // redraw after color space setting
     [webImage lockFocus];
-    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositeCopy
+    [bitmapRep drawInRect:imageBounds fromRect:srcImageBounds operation:NSCompositingOperationCopy
             fraction:1.0f respectFlipped:YES hints:NULL];
     [webImage unlockFocus];
 

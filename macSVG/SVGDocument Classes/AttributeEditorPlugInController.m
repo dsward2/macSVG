@@ -89,6 +89,9 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // ================================================================
 
 - (void) handlePluginEvent:(DOMEvent *)event
@@ -263,6 +266,8 @@
         }
     }
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	contextMenuItemsForPlugin

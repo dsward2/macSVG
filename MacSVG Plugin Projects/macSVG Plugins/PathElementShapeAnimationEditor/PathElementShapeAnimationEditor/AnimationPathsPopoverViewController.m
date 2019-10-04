@@ -853,8 +853,11 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
         toPasteboard:(NSPasteboard*)pboard
 {
     // Copy the row numbers to the pasteboard.
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
-    
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];   // deprecated
+
+    NSError * archiveDataError = NULL;
+    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archiveDataError];
+
     NSString * sourceDataType = @"";
     if (tableView == eligiblePathsTableView)
     {

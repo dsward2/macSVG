@@ -81,7 +81,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (void)buildAttributesTableForElement
 {
-    NSInteger originalRowsCount = self.xmlAttributesArray.count;
+    //NSInteger originalRowsCount = self.xmlAttributesArray.count;
 
     //NSXMLNode * nodeObject = xmlElementForAttributes;
     //NSXMLNodeKind nodeKind = [nodeObject kind];

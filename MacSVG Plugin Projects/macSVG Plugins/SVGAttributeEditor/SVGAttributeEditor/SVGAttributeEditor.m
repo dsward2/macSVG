@@ -319,6 +319,9 @@
     attributeStepper.floatValue = stepperFloatValue;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	beginEditForXMLElement:domElement:attributeName:existingValue:
 //==================================================================================
@@ -503,6 +506,9 @@
     return result;
 }
 
+#pragma clang diagnostic pop
+
+
 //==================================================================================
 //	indexOfComboBoxItem:
 //==================================================================================
@@ -560,6 +566,9 @@
         [self setValueButtonAction:self];
     }
 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 //==================================================================================
 //	buildIRIReferencesArrayForXMLElement:domElement:attributeName:existingValue:
@@ -721,6 +730,8 @@
         }
     }
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	numberOfItemsInComboBox

@@ -28,7 +28,13 @@
 
 -(void)setEnabled:(BOOL)enabled;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void) handlePluginEvent:(DOMEvent *)event;
+
+#pragma clang diagnostic pop
+
 - (void)loadAttributeEditorPlugIn:(NSString *)selectedAttributeEditorPlugIn;
 - (NSMutableArray *) contextMenuItemsForPlugin;
 

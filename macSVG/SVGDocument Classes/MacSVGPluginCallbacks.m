@@ -15,6 +15,9 @@
 #import "DOMMouseEventsController.h"
 #import "SVGXMLDOMSelectionManager.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 
 @implementation MacSVGPluginCallbacks
 
@@ -691,3 +694,6 @@
 
 
 @end
+
+
+#pragma clang diagnostic pop

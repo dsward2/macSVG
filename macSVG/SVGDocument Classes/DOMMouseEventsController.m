@@ -28,6 +28,11 @@
 
 #import "DOMSelectionCacheRecord.h"
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @class DOMSVGSVGElement;
 
 @implementation DOMMouseEventsController
@@ -3131,6 +3136,7 @@
 }
 
 
-
-
 @end
+
+
+#pragma clang diagnostic pop

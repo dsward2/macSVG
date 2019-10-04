@@ -18,6 +18,10 @@
 @class SVGXMLDOMSelectionManager;
 @class ToolSettingsPopoverViewController;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface SVGLineEditor : NSObject
 {
     int editingMode;
@@ -56,3 +60,6 @@
         handleDOMElement:(DOMElement *)handleDOMElement;
 
 @end
+
+
+#pragma clang diagnostic pop

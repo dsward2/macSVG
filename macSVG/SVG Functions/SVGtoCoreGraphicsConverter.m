@@ -157,6 +157,9 @@
     return resultString;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //========================================================================================
 // computeBounds:
 //========================================================================================
@@ -335,6 +338,8 @@
     
     return resultString;
 }
+
+#pragma clang diagnostic pop
 
 //========================================================================================
 // insertSeparatorLine:

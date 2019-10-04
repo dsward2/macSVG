@@ -143,10 +143,10 @@
 - (void)registerDragTypes
 {
     NSArray * draggedTypesArray = @[XML_OUTLINE_PBOARD_TYPE, 
-            NSStringPboardType, 
-            NSURLPboardType, 
+                                    NSPasteboardTypeString,
+                                    NSPasteboardTypeURL,
             NSFilenamesPboardType, 
-            NSTIFFPboardType];
+                                    NSPasteboardTypeTIFF];
     
     [self.xmlOutlineView registerForDraggedTypes:draggedTypesArray];
     
@@ -2806,7 +2806,7 @@
         if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_VISIBLE] == YES)
         {
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            [checkboxButton setButtonType:NSSwitchButton];
+            [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
             [checkboxButton setTarget:self];
             [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
@@ -2818,7 +2818,7 @@
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
         {
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            [checkboxButton setButtonType:NSSwitchButton];
+            [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
 
             checkboxButton.refusesFirstResponder = YES;
@@ -3016,7 +3016,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     */
 
     // Provide data for our custom type, and simple NSStrings.
-    [pboard declareTypes:@[XML_OUTLINE_PBOARD_TYPE, NSStringPboardType, NSFilesPromisePboardType] owner:self];
+    [pboard declareTypes:@[XML_OUTLINE_PBOARD_TYPE, NSPasteboardTypeString, (__bridge_transfer NSString *)kPasteboardTypeFileURLPromise] owner:self];
 
     // the actual data doesn't matter since XML_OUTLINE_PBOARD_TYPE drags aren't recognized by anyone but us!.
     [pboard setData:[NSData data] forType:XML_OUTLINE_PBOARD_TYPE]; 
@@ -3030,10 +3030,10 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         [nodesString appendString:nodeXml];
     }
     
-    [pboard setString:nodesString forType:NSStringPboardType];
+    [pboard setString:nodesString forType:NSPasteboardTypeString];
             
     // Put the promised type we handle on the pasteboard.
-    [pboard setPropertyList:@[@"txt"] forType:NSFilesPromisePboardType];
+    [pboard setPropertyList:@[@"txt"] forType:(__bridge_transfer NSString *)kPasteboardTypeFileURLPromise];
 
     return YES;
 }
@@ -3201,9 +3201,9 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             // Check for several types of pasteboard data, convert to XML string, then create nodes for insertion
         
             // Try for an pasteboard string, possibly an XML string
-            pboardArray  = @[NSStringPboardType];
+            pboardArray  = @[NSPasteboardTypeString];
             availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
-            NSString * pasteboardString = [draggingPasteboard stringForType:NSStringPboardType];
+            NSString * pasteboardString = [draggingPasteboard stringForType:NSPasteboardTypeString];
 
             if (availableType != NULL)
             {
@@ -3215,7 +3215,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                         if ([pasteboardString isEqualToString:@"<nil>"] == NO)
                         {
                             xmlString = pasteboardString;   // probably XML?
-                            pasteboardType = NSStringPboardType;
+                            pasteboardType = NSPasteboardTypeString;
                         }
                     }
                 }
@@ -3227,7 +3227,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                 NSRange httpSchemeRange = [pasteboardString rangeOfString:@"http"];
                 if (httpSchemeRange.location == 0)
                 {
-                    id urlPropertyList = [draggingPasteboard propertyListForType:NSURLPboardType];
+                    id urlPropertyList = [draggingPasteboard propertyListForType:NSPasteboardTypeURL];
                     
                     if ([urlPropertyList isKindOfClass:[NSArray class]] == YES)
                     {
@@ -3265,7 +3265,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                 if (suffixRange.location == filenameLength - 4)
                                 {
                                     xmlString = @"<svg />";
-                                    pasteboardType = NSURLPboardType;
+                                    pasteboardType = NSPasteboardTypeURL;
                                 }
                                 
                                 if (xmlString == NULL)
@@ -3274,7 +3274,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                     if (suffixRange.location == filenameLength - 4)
                                     {
                                         xmlString = @"<image />";
-                                        pasteboardType = NSURLPboardType;
+                                        pasteboardType = NSPasteboardTypeURL;
                                     }
                                 }
                                 
@@ -3284,7 +3284,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                     if (suffixRange.location == filenameLength - 5)
                                     {
                                         xmlString = @"<image />";
-                                        pasteboardType = NSURLPboardType;
+                                        pasteboardType = NSPasteboardTypeURL;
                                     }
                                 }
                                 
@@ -3294,7 +3294,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                     if (suffixRange.location == filenameLength - 4)
                                     {
                                         xmlString = @"<image />";
-                                        pasteboardType = NSURLPboardType;
+                                        pasteboardType = NSPasteboardTypeURL;
                                     }
                                 }
                                 
@@ -3304,7 +3304,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                     if (suffixRange.location == filenameLength - 4)
                                     {
                                         xmlString = @"<font-face />";
-                                        pasteboardType = NSURLPboardType;
+                                        pasteboardType = NSPasteboardTypeURL;
                                     }
                                 }
                                 
@@ -3314,7 +3314,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                                     if (suffixRange.location == filenameLength - 4)
                                     {
                                         xmlString = @"<font-face />";
-                                        pasteboardType = NSURLPboardType;
+                                        pasteboardType = NSPasteboardTypeURL;
                                     }
                                 }
                             }
@@ -3326,12 +3326,12 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (xmlString == nil) 
             {
                 // Try for an array of URL references to images or TrueType fonts
-                NSArray * pboardArray  = @[NSURLPboardType];
+                NSArray * pboardArray  = @[NSPasteboardTypeURL];
                 NSString * availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
                 if (availableType != NULL)
                 {
-                    NSString * filepath = [[draggingPasteboard propertyListForType:NSURLPboardType] lastObject];
+                    NSString * filepath = [[draggingPasteboard propertyListForType:NSPasteboardTypeURL] lastObject];
                     NSString * filename = filepath.lastPathComponent;
                         
                     if (filename != nil) 
@@ -3342,7 +3342,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                         if (suffixRange.location == filenameLength - 4)
                         {
                             xmlString = @"<svg />";
-                            pasteboardType = NSURLPboardType;
+                            pasteboardType = NSPasteboardTypeURL;
                         }
                         
                         if (xmlString == NULL)
@@ -3351,7 +3351,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3361,7 +3361,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 5)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3371,7 +3371,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3381,7 +3381,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<font-face />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3391,7 +3391,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<font-face />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                     }
@@ -3417,7 +3417,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                         if (suffixRange.location == filenameLength - 4)
                         {
                             xmlString = @"<svg />";
-                            pasteboardType = NSURLPboardType;
+                            pasteboardType = NSPasteboardTypeURL;
                         }
                         
                         if (xmlString == NULL)
@@ -3426,7 +3426,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3436,7 +3436,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 5)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3446,7 +3446,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<image />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3456,7 +3456,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<font-face />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                         
@@ -3466,7 +3466,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
                             if (suffixRange.location == filenameLength - 4)
                             {
                                 xmlString = @"<font-face />";
-                                pasteboardType = NSURLPboardType;
+                                pasteboardType = NSPasteboardTypeURL;
                             }
                         }
                     }
@@ -3476,12 +3476,12 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             if (xmlString == nil) 
             {
                 // Try for a TIFF image on the pasteboard, typically dragged from another app like a web browser window
-                pboardArray  = @[NSTIFFPboardType];
+                pboardArray  = @[NSPasteboardTypeTIFF];
                 availableType = [draggingPasteboard availableTypeFromArray:pboardArray];
 
                 if (availableType != NULL)
                 {
-                    pasteboardType = NSTIFFPboardType;
+                    pasteboardType = NSPasteboardTypeTIFF;
                     xmlString = @"<image />";
                 }              
             }
@@ -3671,11 +3671,11 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     
     if (draggingSource == self.macSVGDocumentWindowController.svgElementsTableController.elementsTableView)
     {
-        NSString * pasteboardString = [draggingPasteboard stringForType:NSStringPboardType];
+        NSString * pasteboardString = [draggingPasteboard stringForType:NSPasteboardTypeString];
         
         NSString * elementString = [self customizeElementPrototype:pasteboardString forParentElement:item];
         
-        [draggingPasteboard setString:elementString forType:NSStringPboardType];
+        [draggingPasteboard setString:elementString forType:NSPasteboardTypeString];
     }
     
     //NSArray * pboardArray  = [NSArray arrayWithObject:XML_OUTLINE_PBOARD_TYPE];

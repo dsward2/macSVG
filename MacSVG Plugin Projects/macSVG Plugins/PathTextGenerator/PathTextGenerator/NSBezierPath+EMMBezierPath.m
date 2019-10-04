@@ -44,7 +44,7 @@
     }
     NSZoneFree([self zone], advancementsSizeArray);
     
-    CGFloat boundsWidth = [self bounds].size.width;
+    //CGFloat boundsWidth = [self bounds].size.width;
 
     NSZoneFree([self zone], glyphs);
     [ts release];

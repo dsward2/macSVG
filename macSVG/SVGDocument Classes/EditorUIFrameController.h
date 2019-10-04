@@ -57,7 +57,13 @@
 - (void)setEmptyView;
 
 - (void)reloadData;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)handlePluginEvent:(DOMEvent *)event;
+
+#pragma clang diagnostic pop
 
 - (void)addEditorPanelItemWithTitle:(NSString *)titleString kind:(NSString *)kindString;
 

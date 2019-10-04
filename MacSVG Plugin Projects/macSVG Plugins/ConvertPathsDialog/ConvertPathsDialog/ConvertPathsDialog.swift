@@ -45,7 +45,7 @@ class ConvertPathsDialog: MacSVGPlugin {
             
             let pluginBundle = Bundle(path:bundlePath!)
             
-            let nibName = NSNib.Name(rawValue: pluginNameString)
+            let nibName = pluginNameString
             
             pluginBundle!.loadNibNamed(nibName, owner: self, topLevelObjects: &topLevelObjects)
         }

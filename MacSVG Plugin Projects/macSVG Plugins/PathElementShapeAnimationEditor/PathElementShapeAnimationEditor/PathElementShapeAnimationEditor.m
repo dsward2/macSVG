@@ -134,6 +134,10 @@
     return result;
 }
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	beginEditForXMLElement:domElement:
 //==================================================================================
@@ -150,6 +154,8 @@
     
     return result;
 }
+
+#pragma clang diagnostic pop
 
 //==================================================================================
 //	loadSettingsForElement

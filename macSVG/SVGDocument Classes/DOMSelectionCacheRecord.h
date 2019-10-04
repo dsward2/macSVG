@@ -10,6 +10,10 @@
 
 @class DOMElement;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface DOMSelectionCacheRecord : NSObject
 {
 }
@@ -17,3 +21,6 @@
 @property(strong) DOMElement * controlParentElement;
 
 @end
+
+
+#pragma clang diagnostic pop

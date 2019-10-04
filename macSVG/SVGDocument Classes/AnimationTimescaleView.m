@@ -232,6 +232,9 @@
     [self drawTimelineScale:dirtyRect];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 //==================================================================================
 //	mouseDown:
 //==================================================================================
@@ -241,9 +244,9 @@
     [super mouseDown:theEvent];
 
     NSEventModifierFlags modifiers = theEvent.modifierFlags;
-    CGEventFlags flags = (NSShiftKeyMask | NSCommandKeyMask);
+    CGEventFlags flags = (NSEventModifierFlagShift | NSEventModifierFlagCommand);
 
-    if ((modifiers & NSAlternateKeyMask) != 0)
+    if ((modifiers & NSEventModifierFlagOption) != 0)
     {
         // option key is pressed - useful for drag-and-drop multiple items
     }
@@ -289,6 +292,9 @@
         }
     }
 }
+
+#pragma clang diagnostic pop
+
 
 //==================================================================================
 //	mouseDragged:

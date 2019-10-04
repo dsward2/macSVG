@@ -20,6 +20,10 @@
 #define kPathEditingModePreviousSegment 2
 #define kPathEditingModeNextSegment 2
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+
 @interface SVGPathEditor : NSObject
 {
     IBOutlet SVGWebKitController * svgWebKitController;
@@ -103,3 +107,5 @@
         pathSegmentsArray:(NSArray *)aPathSegmentsArray;
 
 @end
+
+#pragma clang diagnostic pop

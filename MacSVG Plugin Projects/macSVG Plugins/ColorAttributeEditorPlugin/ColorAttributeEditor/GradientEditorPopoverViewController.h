@@ -40,9 +40,14 @@
     IBOutlet NSComboBox * colorStopColorComboBox;
     IBOutlet NSColorWell * colorStopColorWell;
     IBOutlet NSTextField * colorStopOpacityTextField;
-    
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
     IBOutlet WebView * gradientPreviewWebView;
-    
+
+    #pragma clang diagnostic pop
+
     IBOutlet NSButton * newColorStopButton;
     IBOutlet NSButton * deleteColorStopButton;
     IBOutlet NSButton * applyGradientButton;

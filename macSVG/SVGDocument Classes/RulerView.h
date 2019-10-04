@@ -11,9 +11,13 @@
 
 @class SVGWebView;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface RulerView : NSView <WebUIDelegate, WebPolicyDelegate, WebEditingDelegate, WebFrameLoadDelegate, WebResourceLoadDelegate, WebDownloadDelegate>
 
 @property (weak) IBOutlet WebView * rulerWebView;
+
 @property (weak) IBOutlet SVGWebView * svgWebView;
 
 @property (strong) NSString * rulerUnit;
@@ -38,3 +42,5 @@
 - (void)createRulerWebView;
 
 @end
+
+#pragma clang diagnostic pop
