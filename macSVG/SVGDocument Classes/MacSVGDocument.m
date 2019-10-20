@@ -2123,8 +2123,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil) 
         {
             // Try the filename -- it is an array of filenames, so we just grab one.
-            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-            NSString * filename = filepath.lastPathComponent;
+            //NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
+            NSURL * fileURL = [NSURL URLFromPasteboard:draggingPasteboard];
+            NSString * filename = fileURL.lastPathComponent;
 
             if (filename != nil) 
             {
@@ -2133,7 +2134,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 if (suffixRange.location == filenameLength - 4)
                 {
                     NSError * svgError = NULL;
-                    NSString * svgString = [[NSString alloc] initWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&svgError];
+                    NSString * svgString = [[NSString alloc] initWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&svgError];
                     if (svgString != NULL)
                     {
                         NSRange svgStartRange = [svgString rangeOfString:@"<svg"];
@@ -2141,7 +2142,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                         if (svgStartRange.location != NSNotFound) 
                         {
                             xmlString = [svgString substringFromIndex:svgStartRange.location];
-                            pasteboardType = NSFilenamesPboardType;
+                            //pasteboardType = NSFilenamesPboardType;
+                            pasteboardType = NSPasteboardTypeFileURL;
                         }
                     }
                 }
@@ -2210,8 +2212,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil)
         {
             // Try a PNG image
-            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-            NSString * filename = filepath.lastPathComponent;
+            //NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
+            NSURL * fileURL = [NSURL URLFromPasteboard:draggingPasteboard];
+            NSString * filename = fileURL.lastPathComponent;
 
             if (filename != nil) 
             {
@@ -2227,12 +2230,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 
                 if (isPNGFile == YES)
                 {
-                    NSData * pngData = [[NSData alloc] initWithContentsOfFile:filepath];
+                    NSData * pngData = [[NSData alloc] initWithContentsOfURL:fileURL];
 
                     if (pngData != NULL)
                     {
-                        NSURL * filePathURL = [NSURL fileURLWithPath:filepath];
-                        NSString * imageFilePathURLString = [filePathURL absoluteString];
+                        NSString * imageFilePathURLString = [fileURL absoluteString];
                     
                         NSXMLElement * imageElement = [self makePNGImageElementWithEmbeddedData:pngData imageURLString:imageFilePathURLString];
                         
@@ -2249,7 +2251,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                         [imageElement addAttribute:yAttributeNode];
 
                         xmlString = [imageElement XMLString];
-                        pasteboardType = NSFilenamesPboardType;
+                        //pasteboardType = NSFilenamesPboardType;
+                        pasteboardType = NSPasteboardTypeFileURL;
                     }
                 }
             }
@@ -2258,8 +2261,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil) 
         {
             // Try a JPEG image
-            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-            NSString * filename = filepath.lastPathComponent;
+            //NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
+            NSURL * fileURL = [NSURL URLFromPasteboard:draggingPasteboard];
+            NSString * filename = fileURL.lastPathComponent;
 
             if (filename != nil) 
             {
@@ -2281,11 +2285,11 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                 
                 if (isJpegFile == YES)
                 {
-                    NSData * jpegData = [[NSData alloc] initWithContentsOfFile:filepath];
+                    NSData * jpegData = [[NSData alloc] initWithContentsOfURL:fileURL];
 
                     if (jpegData != NULL)
                     {
-                        NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:filepath];
+                        NSXMLElement * imageElement = [self makeJPEGImageElementWithEmbeddedData:jpegData imageURLString:fileURL.absoluteString];
 
                         NSString * xString = [NSString stringWithFormat:@"%f", draggingLocationInWebView.x];
                         NSXMLNode * xAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
@@ -2300,7 +2304,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                         [imageElement addAttribute:yAttributeNode];
 
                         xmlString = [imageElement XMLString];
-                        pasteboardType = NSFilenamesPboardType;
+                        //pasteboardType = NSFilenamesPboardType;
+                        pasteboardType = NSPasteboardTypeFileURL;
                     }
                 }
             }
@@ -2309,8 +2314,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil)
         {
             // Try a TrueType font
-            NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
-            NSString * filename = filepath.lastPathComponent;
+            //NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
+            NSURL * fileURL = [NSURL URLFromPasteboard:draggingPasteboard];
+            NSString * filename = fileURL.lastPathComponent;
 
             if (filename != nil) 
             {
@@ -2336,7 +2342,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                                         
                     EmbeddedFontEncoder * embeddedFontEncoder = self.macSVGDocumentWindowController.embeddedFontEncoder;
  
-                    NSURL * fontURL = [NSURL fileURLWithPath:filepath];
+                    NSURL * fontURL = fileURL;
                    
                     NSString * fontString = [embeddedFontEncoder 
                             encodeFontWithURL:fontURL 
@@ -2345,7 +2351,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                     xmlString = [NSString stringWithFormat:@"<style type='text/css'>%@</style>]",
                             fontString];
                             
-                    pasteboardType = NSFilenamesPboardType;
+                    //pasteboardType = NSFilenamesPboardType;
+                    pasteboardType = NSPasteboardTypeFileURL;
                 }
             }            
         }

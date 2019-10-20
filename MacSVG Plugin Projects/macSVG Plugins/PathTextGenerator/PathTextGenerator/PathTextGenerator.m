@@ -74,8 +74,9 @@
 {
     NSXMLElement * resultElement = NULL;
 
-    NSLayoutManager *aLayoutManager = [[NSLayoutManager alloc] init];
-    NSFont * screenFont = [aLayoutManager substituteFontForFont:font];
+    //NSLayoutManager *aLayoutManager = [[NSLayoutManager alloc] init];
+    //NSFont * screenFont = [aLayoutManager substituteFontForFont:font];
+    NSFont * screenFont = font;
     
     NSBezierPath *bezierPath = [NSBezierPath bezierPath];
     [bezierPath moveToPoint:(NSPoint){originX, -originY}];
@@ -207,8 +208,9 @@
     groupIdAttribute.stringValue = @"textToPathGroup";
     [textPathGroupElement addAttribute:groupIdAttribute];
 
-    NSLayoutManager *aLayoutManager = [[NSLayoutManager alloc] init];
-    NSFont * screenFont = [aLayoutManager substituteFontForFont:font];
+    //NSLayoutManager *aLayoutManager = [[NSLayoutManager alloc] init];
+    //NSFont * screenFont = [aLayoutManager substituteFontForFont:font];
+    NSFont * screenFont = font;
 
     NSPoint currentPoint = (NSPoint){originX, -originY};
     

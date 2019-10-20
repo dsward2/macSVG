@@ -420,6 +420,7 @@
 
     NSBitmapImageRep * bitmapRep = NULL;
 
+    /*
     if (self.includeAlpha == YES)
     {
         bitmapRep = [self.hiddenWebView bitmapImageRepForCachingDisplayInRect:webViewBounds];
@@ -431,6 +432,9 @@
         bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:webViewBounds];
         [self.hiddenWebView unlockFocus];
     }
+    */
+    bitmapRep = [self.hiddenWebView bitmapImageRepForCachingDisplayInRect:webViewBounds];
+    [self.hiddenWebView cacheDisplayInRect:webViewBounds toBitmapImageRep:bitmapRep];
 
     bitmapRep.colorSpaceName = NSDeviceRGBColorSpace;
     

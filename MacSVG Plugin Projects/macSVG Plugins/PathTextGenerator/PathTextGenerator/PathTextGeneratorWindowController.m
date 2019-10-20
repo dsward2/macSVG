@@ -422,6 +422,7 @@ Printing description of googleWebfontDictionary:
         
         NSURL * requestURL = [NSURL URLWithString:urlString];
 
+        /*
         // Create the request.
         NSURLRequest * theRequest=[NSURLRequest requestWithURL:requestURL
                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -441,6 +442,16 @@ Printing description of googleWebfontDictionary:
             // Inform the user that the connection failed.
             NSLog(@"fetchGoogleWebFontsCatalog - NSURLConnection failed");
         }
+        */
+        
+        NSURLSessionDataTask * downloadTask = [[NSURLSession sharedSession] dataTaskWithURL:requestURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          // Handle response here
+            NSData * receivedData = [NSData dataWithContentsOfURL:requestURL];
+            self.googleWebFontsCatalogReceivedData = [receivedData mutableCopy];
+        }];
+            
+        [downloadTask resume];
+
     }
 }
 

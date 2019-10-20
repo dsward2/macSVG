@@ -27,16 +27,19 @@
     NSRange range = [lm glyphRangeForCharacterRange: (NSRange){0, [string length]}
                                actualCharacterRange: NULL];
     
-    NSGlyph *glyphs = (NSGlyph *) NSZoneMalloc([self zone], sizeof(NSGlyph) *
-                                               (range.length * 2));
-    [lm getGlyphs: glyphs range: range];
-    
-    [self appendBezierPathWithGlyphs: glyphs
-                               count: range.length
-                              inFont: font];
+    //NSGlyph *glyphs = (NSGlyph *) NSZoneMalloc([self zone], sizeof(NSGlyph) * (range.length * 2));
+    //[lm getGlyphs: glyphs range: range];
+    CGGlyph *glyphs = malloc(sizeof(CGGlyph) * range.length * 2);
+    [lm getGlyphsInRange:range glyphs:glyphs properties:NULL characterIndexes:NULL bidiLevels:NULL];
+     
+    //[self appendBezierPathWithGlyphs: glyphs count: range.length inFont: font];
+    [self appendBezierPathWithCGGlyphs:glyphs count:range.length inFont:font];
     
     NSSize * advancementsSizeArray = (NSSize *) NSZoneMalloc([self zone], sizeof(NSSize) * range.length);
-    [font getAdvancements:advancementsSizeArray forGlyphs:glyphs count:range.length];
+    
+    //[font getAdvancements:advancementsSizeArray forGlyphs:glyphs count:range.length];
+    [font getAdvancements:advancementsSizeArray forCGGlyphs:glyphs count:range.length];
+    
     CGFloat xAdvancement = 0;
     for (NSInteger i = 0; i < range.length; i++)
     {

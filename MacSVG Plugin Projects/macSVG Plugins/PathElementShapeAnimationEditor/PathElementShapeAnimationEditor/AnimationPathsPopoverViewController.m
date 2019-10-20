@@ -181,7 +181,7 @@
     NSInteger rowIndex = animationPathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        if (rowIndex < self.animationPathStringsArray)
+        if (rowIndex < self.animationPathStringsArray.count)
         {
             NSString * previewPathStringData = (self.animationPathStringsArray)[rowIndex];
 

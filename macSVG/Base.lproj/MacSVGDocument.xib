@@ -2958,7 +2958,7 @@ Gw
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bwC-Xg-Cmv">
                         <rect key="frame" x="293" y="84" width="158" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Include Alpha Channel" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0sQ-Wm-w50">
+                        <buttonCell key="cell" type="check" title="Include Alpha Channel" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="0sQ-Wm-w50">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

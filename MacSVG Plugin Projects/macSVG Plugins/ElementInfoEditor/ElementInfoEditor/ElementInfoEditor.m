@@ -319,7 +319,7 @@
         //self.elementInfoTextScrollView.hasHorizontalScroller = NO;
 
 
-        NSDisableScreenUpdates();
+        //NSDisableScreenUpdates();
 
         [[self.elementInfoTextView textStorage] setAttributedString:descriptionString];
 
@@ -350,7 +350,8 @@
         self.elementInfoTextView.frame = textContainerRect;
 
         [self.elementInfoTextView.enclosingScrollView scrollPoint:NSZeroPoint];
-        NSEnableScreenUpdates();
+        
+        //NSEnableScreenUpdates();
     }
 }
 

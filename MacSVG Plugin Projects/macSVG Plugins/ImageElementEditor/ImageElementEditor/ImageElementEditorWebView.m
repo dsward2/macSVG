@@ -44,11 +44,13 @@
 
     self.drawsBackground = NO;
     
-    [self setAcceptsTouchEvents:NO];
+    //[self setAcceptsTouchEvents:NO];
+    NSTouchType touchType = 0;
+    NSTouchTypeMask touchTypeMask = NSTouchTypeMaskFromType(touchType);
+    self.allowedTouchTypes = touchTypeMask;
 
-    [self registerForDraggedTypes:@[NSPasteboardTypeURL,
-            NSFilenamesPboardType,
-                                    NSPasteboardTypeTIFF]];
+    //[self registerForDraggedTypes:@[NSPasteboardTypeURL, NSFilenamesPboardType, NSPasteboardTypeTIFF]];
+    [self registerForDraggedTypes:@[NSPasteboardTypeURL, NSPasteboardTypeFileURL, NSPasteboardTypeTIFF]];
 }
 
 //==================================================================================
@@ -113,7 +115,8 @@
     {
         return YES;
     }
-    else if ( [[pboard types] containsObject:NSFilenamesPboardType] )
+    //else if ( [[pboard types] containsObject:NSFilenamesPboardType] )
+    else if ( [[pboard types] containsObject:NSPasteboardTypeFileURL] )
     {
         return YES;
     }
@@ -147,7 +150,8 @@
     {
         NSPasteboard *pboard = [sender draggingPasteboard];
 
-        if ( [[pboard types] containsObject:NSFilenamesPboardType] )
+        //if ( [[pboard types] containsObject:NSFilenamesPboardType] )
+        if ( [[pboard types] containsObject:NSPasteboardTypeFileURL] )
         {
             NSURL* fileURL;
             fileURL=[NSURL URLFromPasteboard: [sender draggingPasteboard]];

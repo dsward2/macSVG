@@ -611,7 +611,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 	if (notificationObject == self.xmlAttributesTableView)
 	{
         NSInteger rowIndex = (self.xmlAttributesTableView).selectedRow;
-        NSInteger tableColumnIndex = [self.xmlAttributesTableView selectedColumn];
+        //NSInteger tableColumnIndex = [self.xmlAttributesTableView selectedColumn];
 
 		//[self buildAttributesTableForElement];
 		[self reloadData];
@@ -924,8 +924,8 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     //NSLog(@"XMLAttributesTableController controlTextDidEndEditing");
     
-    id sender = aNotification.object;
-    NSTextField * textField = sender;
+    //id sender = aNotification.object;
+    //NSTextField * textField = sender;
 
     NSInteger rowIndex = self.xmlAttributesTableView.selectedRow;
 
@@ -954,9 +954,9 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 {
     //NSLog(@"XMLAttributesTableController controlTextDidBeginEditing");
 
-    id sender = aNotification.object;
+    //id sender = aNotification.object;
     
-    NSTextField * textField = sender;
+    //NSTextField * textField = sender;
     //textField.backgroundColor = [NSColor whiteColor];
 }
 

@@ -1485,6 +1485,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
         
         NSURL * requestURL = [NSURL URLWithString:urlString];
 
+        /*
         // Create the request.
         NSURLRequest * theRequest=[NSURLRequest requestWithURL:requestURL
                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -1504,6 +1505,16 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             // Inform the user that the connection failed.
             NSLog(@"fetchGoogleWebFontsCatalog - NSURLConnection failed");
         }
+        */
+
+        NSURLSessionDataTask * downloadTask = [[NSURLSession sharedSession] dataTaskWithURL:requestURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          // Handle response here
+            NSData * receivedData = [NSData dataWithContentsOfURL:requestURL];
+            self.googleWebFontsCatalogReceivedData = [receivedData mutableCopy];
+        }];
+            
+        [downloadTask resume];
+
     }
 }
 

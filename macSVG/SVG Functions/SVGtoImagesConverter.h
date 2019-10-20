@@ -30,7 +30,7 @@
 
 @property (strong) NSString * outputFormatString;
 @property (strong) NSString * outputOptionsString;
-@property (assign) BOOL includeAlpha;
+@property (assign) BOOL includeAlpha;   // apparently no longer effective due to API deprecations, assume includeAlpha = YES
 
 @property (strong) NSWindow * hiddenWindow;
 @property (strong) WebView * hiddenWebView;

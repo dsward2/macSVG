@@ -121,7 +121,7 @@
     id aTableView = aNotification.object;
     if (aTableView == self.webColorsTableView)
     {
-        NSInteger selectedRow = self.webColorsTableView.selectedRow;
+        //NSInteger selectedRow = self.webColorsTableView.selectedRow;
         //NSLog(@"WebColorsTableViewController - tableViewSelectionDidChange %ld", selectedRow);
     }
 }

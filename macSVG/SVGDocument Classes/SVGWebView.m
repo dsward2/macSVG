@@ -78,7 +78,8 @@
     [self registerForDraggedTypes:@[XML_OUTLINE_PBOARD_TYPE, 
                                     NSPasteboardTypeURL, 
                                     NSPasteboardTypeString, 
-            NSFilenamesPboardType, 
+                                    //NSFilenamesPboardType,
+                                    NSPasteboardTypeFileURL,
                                     NSPasteboardTypeTIFF]];
 
     self.postsFrameChangedNotifications = YES;
