@@ -51,7 +51,7 @@ macSVG - [https://macsvg.org](https://macsvg.org)
 
 macSVG project - [https://github.com/dsward2/macsvg](https://github.com/dsward2/macsvg)
 
-Copyright (c) 2016-2018 by ArkPhone, LLC.
+Copyright (c) 2016-2019 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.
 

@@ -1,8 +1,8 @@
 # macSVG
 
-<img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg" width="660" height="105">
+<img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg?sanitize=true"" width="660" height="105">
 
-**February 1, 2019 – [macSVG v1.1.5 is released](https://github.com/dsward2/macSVG/releases/), with a temporary fix for the application to work in macOS Mojave Dark Mode.  For now, the app will "opt-out" of Dark Mode, and render views as a Light Mode application.  The next release will adjust the views to provide a proper Dark Mode user interface.**
+**October, 2019 – [macSVG v1.1.5 is the current release.](https://github.com/dsward2/macSVG/releases/).  The next release is under development.  It will not fully support Dark Mode, but it does contain several updates for macOS 10.15 Catalina, and some bug fixes. A Share button will be added as a convenient way to preview the current SVG file on an iPhone via AirDrop and macSVG's built-in HTTP server.**
 
 <hr>
 
@@ -44,6 +44,6 @@ Migration to Swift language, and Swift Package Manager for importing third-party
 
 #
 
-Copyright (c) 2016-2018 by ArkPhone, LLC.
+Copyright (c) 2016-2019 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.
