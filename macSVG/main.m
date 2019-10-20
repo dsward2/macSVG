@@ -45,9 +45,43 @@ int main(int argc, char *argv[])
         
         // This option should be disabled in release versions
         
-        raise(SIGSTOP); // debugger can be attached here, set breakpoint on this line for earliest attachment
+        raise(SIGSTOP); // debugger can attach to this process here, set breakpoint on this line for earliest attachment
         
-        // Click the Debugger's Resume button to continue execution
+        // Then click the Debugger's Resume button to continue execution
+        
+        // More LLDB Debugger breakpoint tips: https://stackoverflow.com/questions/9275195/how-to-automatically-set-breakpoints-on-all-methods-in-xcode
+
+        /*
+        There is many possibilities but there is no way to set breakpoints only to your functions. You can try:
+
+        breakpoint set -r '\[ClassName .*\]$'
+
+        to add breakpoints to all methods in class
+
+        breakpoint set -f file.m -p ' *- *\('
+
+        to add breakpoints to all methods in file
+
+        You can also use it with many files:
+
+        breakpoint set -f file1.m -f file2.m -p ' *- *\('
+
+        Shortcut:
+
+        br se -f file1.m -f file2.m -p ' *- *\('
+
+        You can add breakpoints to all methods in all classes with some prefix (and it could me only your classes)
+
+        br se -r . -s Prefix
+
+        This line (wzbozon answer):
+
+        breakpoint set -n viewDidLoad
+
+        will set breakpoints on all methods viewDidLoad in all classes.
+
+        I tried but I couldn't set breakpoints only on our own methods.
+        */
     }
 #endif
 

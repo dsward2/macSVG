@@ -59,44 +59,73 @@
 }
 
 //==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+
+    tableCellView.textField.target = self;
+    tableCellView.textField.action = @selector(tableCellChanged:);
+
+    return (NSView *)tableCellView;
+}
+
+//==================================================================================
 //	tableView:objectValueForTableColumn:rowIndex
 //==================================================================================
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    id objectValue = NULL;
-    NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
+    id objectValue = @"";
     
-    if (keyValuesDictionary != NULL)
+    if (rowIndex < self.keyValuesArray.count)
     {
-        if ([aTableColumn.identifier isEqualToString:@"rowNumber"] == YES)
+        NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
+        
+        if (keyValuesDictionary != NULL)
         {
-            objectValue = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
-        } 
-        if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
-        {
-            objectValue = keyValuesDictionary[@"keyTimes"];
-        } 
-        else if ([aTableColumn.identifier isEqualToString:@"keySplines"] == YES)
-        {
-            objectValue = keyValuesDictionary[@"keySplines"];
-            
-            if (rowIndex >= ((self.keyValuesArray).count - 1))
+            if ([aTableColumn.identifier isEqualToString:@"rowNumber"] == YES)
             {
-                NSColor * redColor = [NSColor redColor];
-
-                NSDictionary *redAttribute =
-                        @{NSForegroundColorAttributeName: redColor};
-                
-                NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
-
-                objectValue = redString;
+                objectValue = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
             }
-        } 
-        else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
-        {
-            objectValue = keyValuesDictionary[@"keyPoints"];
-        } 
+            if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
+            {
+                objectValue = keyValuesDictionary[@"keyTimes"];
+            }
+            else if ([aTableColumn.identifier isEqualToString:@"keySplines"] == YES)
+            {
+                objectValue = keyValuesDictionary[@"keySplines"];
+                
+                if (rowIndex >= ((self.keyValuesArray).count - 1))
+                {
+                    NSColor * redColor = [NSColor redColor];
+
+                    NSDictionary *redAttribute =
+                            @{NSForegroundColorAttributeName: redColor};
+                    
+                    NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
+
+                    objectValue = redString;
+                }
+            }
+            else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
+            {
+                objectValue = keyValuesDictionary[@"keyPoints"];
+            }
+        }
     }
     
     return objectValue;
@@ -106,6 +135,7 @@
 //	tableView:setObjectValue:forTableColumn:row:
 //==================================================================================
 
+/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     NSString * columnIdentifier = aTableColumn.identifier;
@@ -127,6 +157,42 @@
         }
     }
 
+    [keyValuesTableView reloadData];
+    
+    [keySplinesView setNeedsDisplay:YES];
+}
+*/
+
+//==================================================================================
+//    tableCellChanged:row:
+//==================================================================================
+
+- (IBAction)tableCellChanged:(id)sender
+{
+    NSTextField * cellTextField = sender;
+    
+    NSArray * tableColumns = [keyValuesTableView tableColumns];
+    NSInteger tableColumnIndex = cellTextField.tag;
+    NSTableColumn * aTableColumn = [tableColumns objectAtIndex:tableColumnIndex];
+    
+    NSInteger rowIndex = [keyValuesTableView selectedRow];
+
+    NSString * columnIdentifier = aTableColumn.identifier;
+    NSMutableDictionary * characterDictionary = (self.keyValuesArray)[rowIndex];
+
+    if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
+    {
+        characterDictionary[@"keyTimes"] = cellTextField.stringValue;
+    }
+    else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
+    {
+        characterDictionary[@"keySplines"] = cellTextField.stringValue;
+    }
+    else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
+    {
+        characterDictionary[@"keyPoints"] = cellTextField.stringValue;
+    }
+    
     [keyValuesTableView reloadData];
     
     [keySplinesView setNeedsDisplay:YES];

@@ -78,6 +78,8 @@
 
 - (void)awakeFromNib
 {
+    //NSLog(@"AnimationPathsPopoverViewController - awakeFromNib");
+
     [super awakeFromNib];
 
     self.animationPathStringsArray = [NSMutableArray array];
@@ -94,6 +96,17 @@
             @[PathElementDataType, PathDataStringDataType]];
 }
 
+//==================================================================================
+//    viewDidAppear
+//==================================================================================
+
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+
+    [eligiblePathsTableView reloadData];
+    [animationPathsTableView reloadData];
+}
 
 //==================================================================================
 //	makeEligiblePathSVG
@@ -108,32 +121,39 @@
     NSInteger rowIndex = eligiblePathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
+        if (rowIndex < self.eligiblePathElementsArray.count)
+        {
+            NSXMLElement * selectedPathElement = (self.eligiblePathElementsArray)[rowIndex];
 
-        NSString * previewPathString = selectedPathElement.XMLString;
-        
-        NSError * error = NULL;
-        NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
-        
-        NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
-        if (visibilityNode != NULL)
-        {
-            visibilityNode.stringValue = @"visible";
-        }
-        
-        NSArray * childNodes = previewPathElement.children;
-        NSInteger childNodeCount = childNodes.count;
-        for (NSInteger i = childNodeCount - 1; i >= 0; i--)
-        {
-            NSXMLNode * aChildNode = childNodes[i];
-            NSXMLNodeKind nodeKind = aChildNode.kind;
-            if (nodeKind == NSXMLElementKind)
+            NSString * previewPathString = selectedPathElement.XMLString;
+            
+            NSError * error = NULL;
+            NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
+            
+            NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
+            if (visibilityNode != NULL)
             {
-                [previewPathElement removeChildAtIndex:i];
+                visibilityNode.stringValue = @"visible";
             }
-        }
+            
+            NSArray * childNodes = previewPathElement.children;
+            NSInteger childNodeCount = childNodes.count;
+            for (NSInteger i = childNodeCount - 1; i >= 0; i--)
+            {
+                NSXMLNode * aChildNode = childNodes[i];
+                NSXMLNodeKind nodeKind = aChildNode.kind;
+                if (nodeKind == NSXMLElementKind)
+                {
+                    [previewPathElement removeChildAtIndex:i];
+                }
+            }
 
-        pathString = previewPathElement.XMLString;
+            pathString = previewPathElement.XMLString;
+        }
+        else
+        {
+        
+        }
     }
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>", pathString];
@@ -161,32 +181,35 @@
     NSInteger rowIndex = animationPathsTableView.selectedRow;
     if (rowIndex != -1)
     {
-        NSString * previewPathStringData = (self.animationPathStringsArray)[rowIndex];
+        if (rowIndex < self.animationPathStringsArray)
+        {
+            NSString * previewPathStringData = (self.animationPathStringsArray)[rowIndex];
 
-        NSString * previewPathString = [NSString stringWithFormat:@"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"%@\" fill=\"none\" transform=\"\" visibility=\"visible\" />", previewPathStringData];
-        
-        NSError * error = NULL;
-        NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
-        
-        NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
-        if (visibilityNode != NULL)
-        {
-            visibilityNode.stringValue = @"visible";
-        }
-        
-        NSArray * childNodes = previewPathElement.children;
-        NSInteger childNodeCount = childNodes.count;
-        for (NSInteger i = childNodeCount - 1; i >= 0; i--)
-        {
-            NSXMLNode * aChildNode = childNodes[i];
-            NSXMLNodeKind nodeKind = aChildNode.kind;
-            if (nodeKind == NSXMLElementKind)
+            NSString * previewPathString = [NSString stringWithFormat:@"<path stroke=\"#000000\" id=\"path1\" stroke-width=\"3px\" d=\"%@\" fill=\"none\" transform=\"\" visibility=\"visible\" />", previewPathStringData];
+            
+            NSError * error = NULL;
+            NSXMLElement * previewPathElement = [[NSXMLElement alloc] initWithXMLString:previewPathString error:&error];
+            
+            NSXMLNode * visibilityNode = [previewPathElement attributeForName:@"visibility"];
+            if (visibilityNode != NULL)
             {
-                [previewPathElement removeChildAtIndex:i];
+                visibilityNode.stringValue = @"visible";
             }
-        }
+            
+            NSArray * childNodes = previewPathElement.children;
+            NSInteger childNodeCount = childNodes.count;
+            for (NSInteger i = childNodeCount - 1; i >= 0; i--)
+            {
+                NSXMLNode * aChildNode = childNodes[i];
+                NSXMLNodeKind nodeKind = aChildNode.kind;
+                if (nodeKind == NSXMLElementKind)
+                {
+                    [previewPathElement removeChildAtIndex:i];
+                }
+            }
 
-        pathString = previewPathElement.XMLString;
+            pathString = previewPathElement.XMLString;
+        }
     }
     
     NSString * xmlString = [NSString stringWithFormat:@"<g id=\"previewContainer\">%@</g>", pathString];
@@ -336,6 +359,8 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 
 - (void)loadSettingsForMasterPathElement:(NSXMLElement *)masterPathElement animateElement:(NSXMLElement *)animateElement
 {
+    NSLog(@"PathElementShapeAnimationEditor - loadSettingsForMasterPathElement");
+
     self.originalPathElement = masterPathElement;
     self.originalAnimateElement = animateElement;
     
@@ -364,9 +389,11 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 
     self.eligiblePathElementsArray = [self findEligiblePathElements];
     
+    //NSLog(@"eligiblePathElementsArray = %@", self.eligiblePathElementsArray);
+    
     [self loadAnimatePathsTable];
     
-    [eligiblePathsTableView reloadData];
+    //[eligiblePathsTableView reloadData];
     [animationPathsTableView reloadData];
     
     NSIndexSet * firstRowIndexSet = [NSIndexSet indexSetWithIndex:0];
@@ -437,6 +464,29 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 }
 
 //==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];   // pass NULL owner to avoid problem of reinstantiating the AnimationPathsPopoverViewController class
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    return (NSView *)tableCellView;
+}
+
+//==================================================================================
 //	tableView:objectValueForTableColumn:row:
 //==================================================================================
 
@@ -455,10 +505,9 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
         }
         else if ([tableColumnTitle isEqualToString:@"PathID"] == YES)
         {
-            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
-
-            if (pathElement != NULL)
+            if (rowIndex < self.eligiblePathElementsArray.count)
             {
+                NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
                 NSXMLNode * idAttributeNode = [pathElement attributeForName:@"id"];
                 NSString * idAttributeString = idAttributeNode.stringValue;
                 result = idAttributeString;
@@ -466,15 +515,26 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
         }
         else if ([tableColumnTitle isEqualToString:@"PathLocation"] == YES)
         {
-            NSXMLElement * pathElement = (self.eligiblePathElementsArray)[rowIndex];
-
-            NSString * pathXPath = pathElement.XPath;
-            result = pathXPath;
+            if (rowIndex < self.eligiblePathElementsArray.count)
+            {
+                NSXMLElement * pathElement = NULL;
+                pathElement = (self.eligiblePathElementsArray)[rowIndex];
+                NSString * pathXPath = pathElement.XPath;
+                result = pathXPath;
+            }
         }
     }
     else if (aTableView == animationPathsTableView)
     {
-        result = [self animationPathsTableViewObjectValueForTableColumn:aTableColumn row:rowIndex];
+        if (rowIndex < self.animationPathStringsArray.count)
+        {
+            result = [self animationPathsTableViewObjectValueForTableColumn:aTableColumn row:rowIndex];
+        }
+    }
+    
+    if ([result isEqualToString:@"Missing Result"] == YES)
+    {
+        // error
     }
     
     return result;
@@ -499,6 +559,141 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
         NSString * animatePathXmlString = (self.animatePathXMLDocument).XMLString;
         [animatePathWebView.mainFrame loadHTMLString:animatePathXmlString baseURL:NULL];
     }
+}
+
+//==================================================================================
+//    tableView:writeRowsWithIndexes:toPasteboard:
+//==================================================================================
+
+- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes
+        toPasteboard:(NSPasteboard*)pboard
+{
+    // Copy the row numbers to the pasteboard.
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];   // deprecated
+
+    NSError * archiveDataError = NULL;
+    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archiveDataError];
+    
+    NSString * sourceDataType = @"";
+    if (tableView == eligiblePathsTableView)
+    {
+        sourceDataType = PathElementDataType;
+    }
+    else if (tableView == animationPathsTableView)
+    {
+        sourceDataType = PathDataStringDataType;
+    }
+
+    [pboard declareTypes:@[sourceDataType] owner:self];
+
+    [pboard setData:data forType:sourceDataType];
+    
+    return YES;
+}
+
+//==================================================================================
+//    tableView:validateDrop:proposedRow:
+//==================================================================================
+
+- (NSDragOperation)tableView:(NSTableView*)tableView validateDrop:(id <NSDraggingInfo>)info
+        proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op
+{
+    // Add code here to validate the drop
+    
+    NSDragOperation result = NSDragOperationNone;
+    
+    if (tableView == eligiblePathsTableView)
+    {
+        result = NSDragOperationNone;
+    }
+    else if (tableView == animationPathsTableView)
+    {
+        result = NSDragOperationEvery;
+    }
+    
+    return result;
+}
+
+//==================================================================================
+//    tableView:acceptDrop:row:
+//==================================================================================
+
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info
+        row:(int)to dropOperation:(NSTableViewDropOperation)operation
+{
+    BOOL result = NO;
+
+    if (aTableView == animationPathsTableView)
+    {
+        NSPasteboard * pboard = [info draggingPasteboard];
+
+        NSArray * pboardArray  = @[PathDataStringDataType, PathElementDataType];
+        NSString * availableType = [pboard availableTypeFromArray:pboardArray];
+        
+        if ([availableType isEqualToString:PathElementDataType])
+        {
+            // drag from path elements list to path strings list
+            NSData * sourceRowData = [pboard dataForType:PathElementDataType];
+
+            //NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
+            NSError * archiveError = NULL;
+            NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver  unarchivedObjectOfClass:NSIndexSet.class fromData:sourceRowData error:&archiveError];
+
+            NSUInteger from = sourceRowIndex.firstIndex;
+            
+            NSXMLElement * sourcePathElement = (self.eligiblePathElementsArray)[from];
+            NSXMLNode * pathDataAttribute = [sourcePathElement attributeForName:@"d"];
+            if (pathDataAttribute != NULL)
+            {
+                NSString * pathDataString = pathDataAttribute.stringValue;
+                [self.animationPathStringsArray insertObject:pathDataString atIndex:to];
+                result = YES;
+            }
+        }
+        else if ([availableType isEqualToString:PathDataStringDataType])
+        {
+            // rearrange items in path strings list
+            NSData * sourceRowData = [pboard dataForType:PathDataStringDataType];
+            
+            //NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
+            NSError * archiveError = NULL;
+            NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver  unarchivedObjectOfClass:NSIndexSet.class fromData:sourceRowData error:&archiveError];
+
+            NSUInteger from = sourceRowIndex.firstIndex;
+
+            NSString * traveller = (self.animationPathStringsArray)[from];
+
+            NSInteger length = (self.animationPathStringsArray).count;
+
+            int i;
+            for (i = 0; i <= length; i++)
+            {
+                if (i == to)
+                {
+                    if (from > to)
+                    {
+                        [self.animationPathStringsArray insertObject:traveller atIndex:to];
+                        [self.animationPathStringsArray removeObjectAtIndex:(from + 1)];
+                        result = YES;
+                    }
+                    else
+                    {
+                        [self.animationPathStringsArray insertObject:traveller atIndex:to];
+                        [self.animationPathStringsArray removeObjectAtIndex:from];
+                        result = YES;
+                    }
+                }
+            }
+        }
+    }
+    
+    [self makeAnimationPreviewSVG];
+    NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
+    [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
+
+    [animationPathsTableView reloadData];
+
+    return result;
 }
 
 //==================================================================================
@@ -843,133 +1038,6 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
     }
     
     return resultArray;
-}
-
-//==================================================================================
-//	tableView:writeRowsWithIndexes:toPasteboard:
-//==================================================================================
-
-- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes
-        toPasteboard:(NSPasteboard*)pboard
-{
-    // Copy the row numbers to the pasteboard.
-    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];   // deprecated
-
-    NSError * archiveDataError = NULL;
-    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archiveDataError];
-
-    NSString * sourceDataType = @"";
-    if (tableView == eligiblePathsTableView)
-    {
-        sourceDataType = PathElementDataType;
-    }
-    else if (tableView == animationPathsTableView)
-    {
-        sourceDataType = PathDataStringDataType;
-    }
-
-    [pboard declareTypes:@[sourceDataType] owner:self];
-
-    [pboard setData:data forType:sourceDataType];
-    
-    return YES;
-}
-
-//==================================================================================
-//	tableView:validateDrop:proposedRow:
-//==================================================================================
-
-- (NSDragOperation)tableView:(NSTableView*)tableView validateDrop:(id <NSDraggingInfo>)info
-        proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op
-{
-    // Add code here to validate the drop
-    
-    NSDragOperation result = NSDragOperationNone;
-    
-    if (tableView == eligiblePathsTableView)
-    {
-        result = NSDragOperationNone;
-    }
-    else if (tableView == animationPathsTableView)
-    {
-        result = NSDragOperationEvery;
-    }
-    
-    return result;
-}
-
-//==================================================================================
-//	tableView:acceptDrop:row:
-//==================================================================================
-
-- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info
-        row:(int)to dropOperation:(NSTableViewDropOperation)operation
-{
-    BOOL result = NO;
-
-    if (aTableView == animationPathsTableView)
-    {
-        NSPasteboard * pboard = [info draggingPasteboard];
-
-        NSArray * pboardArray  = @[PathDataStringDataType, PathElementDataType];
-        NSString * availableType = [pboard availableTypeFromArray:pboardArray];
-        
-        if ([availableType isEqualToString:PathElementDataType])
-        {
-            // drag from path elements list to path strings list
-            NSData * sourceRowData = [pboard dataForType:PathElementDataType];
-            NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
-            NSUInteger from = sourceRowIndex.firstIndex;
-            
-            NSXMLElement * sourcePathElement = (self.eligiblePathElementsArray)[from];
-            NSXMLNode * pathDataAttribute = [sourcePathElement attributeForName:@"d"];
-            if (pathDataAttribute != NULL)
-            {
-                NSString * pathDataString = pathDataAttribute.stringValue;
-                [self.animationPathStringsArray insertObject:pathDataString atIndex:to];
-                result = YES;
-            }
-        }
-        else if ([availableType isEqualToString:PathDataStringDataType])
-        {
-            // rearrange items in path strings list
-            NSData * sourceRowData = [pboard dataForType:PathDataStringDataType];
-            NSIndexSet * sourceRowIndex = [NSKeyedUnarchiver unarchiveObjectWithData:sourceRowData];
-            NSUInteger from = sourceRowIndex.firstIndex;
-
-            NSString * traveller = (self.animationPathStringsArray)[from];
-
-            NSInteger length = (self.animationPathStringsArray).count;
-
-            int i;
-            for (i = 0; i <= length; i++)
-            {
-                if (i == to)
-                {
-                    if (from > to)
-                    {
-                        [self.animationPathStringsArray insertObject:traveller atIndex:to];
-                        [self.animationPathStringsArray removeObjectAtIndex:(from + 1)];
-                        result = YES;
-                    }
-                    else
-                    {
-                        [self.animationPathStringsArray insertObject:traveller atIndex:to];
-                        [self.animationPathStringsArray removeObjectAtIndex:from];
-                        result = YES;
-                    }
-                }
-            }
-        }
-    }
-    
-    [animationPathsTableView reloadData];
-
-    [self makeAnimationPreviewSVG];
-    NSString * animationPreviewXmlString = (self.animationPreviewXMLDocument).XMLString;
-    [animationPreviewWebView.mainFrame loadHTMLString:animationPreviewXmlString baseURL:NULL];
-    
-    return result;
 }
 
 @end

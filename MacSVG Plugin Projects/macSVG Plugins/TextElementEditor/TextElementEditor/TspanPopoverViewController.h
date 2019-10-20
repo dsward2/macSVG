@@ -15,7 +15,7 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 
-@interface TspanPopoverViewController : NSViewController
+@interface TspanPopoverViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet TextElementEditor * textElementEditor;
     IBOutlet NSPopover * tspanPopover;
@@ -53,6 +53,8 @@
 @property(strong) NSXMLDocument * tspanPreviewXMLDocument;
 
 - (void)loadSettingsForTspan:(NSXMLElement *)tspanElement textElement:(NSXMLElement *)textElement;
+
+- (IBAction)tableCellChanged:(id)sender;
 
 - (IBAction)addShadowButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;

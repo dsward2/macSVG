@@ -1,6 +1,6 @@
 //
-//  ColorEditorPlugin.h
-//  ColorEditorPlugin
+//  ColorAttributeEditor.h
+//  ColorAttributeEditor
 //
 //  Created by Douglas Ward on 1/5/12.
 //  Copyright © 2016 ArkPhone LLC. All rights reserved.
@@ -10,20 +10,20 @@
 #import "MacSVGPlugin/MacSVGPlugin.h"
 
 @class GradientEditorPopoverViewController;
+@class WebColorsTableViewController;
 
-@interface ColorAttributeEditor : MacSVGPlugin  <NSTableViewDelegate, NSTableViewDataSource>
+@interface ColorAttributeEditor : MacSVGPlugin
 {
-    IBOutlet NSTableView * webColorsTableView;
-    IBOutlet NSColorWell * colorWell;
-    IBOutlet NSTextField * colorTextField;
-    IBOutlet NSPopover * gradientEditorPopover;
-    IBOutlet GradientEditorPopoverViewController * gradientEditorPopoverViewController;
-    IBOutlet NSButton * setGradientButton;
-    IBOutlet NSButton * setNoneButton;
 }
-@property(strong) NSMutableArray * webColorsArray;
+@property(strong) IBOutlet WebColorsTableViewController * webColorsTableViewController;
+@property(weak) IBOutlet NSColorWell * colorWell;
+@property(weak) IBOutlet NSTextField * colorTextField;
+@property(weak) IBOutlet NSPopover * gradientEditorPopover;
+@property(weak) IBOutlet GradientEditorPopoverViewController * gradientEditorPopoverViewController;
+@property(weak) IBOutlet NSButton * setGradientButton;
+@property(weak) IBOutlet NSButton * setNoneButton;
 
-- (void)buildWebColorsArray;
+
 - (IBAction)setColorButtonAction:(id)sender;
 - (IBAction)setNoneButtonAction:(id)sender;
 - (IBAction)setWebColorButtonAction:(id)sender;

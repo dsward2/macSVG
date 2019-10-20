@@ -365,6 +365,32 @@
 }
 
 //==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    tableCellView.textField.target = self;
+    tableCellView.textField.action = @selector(tableCellChanged:);
+        
+    return (NSView *)tableCellView;
+}
+
+//==================================================================================
 //	tableView:objectValueForTableColumn:row:
 //==================================================================================
 
@@ -408,6 +434,7 @@
 //	tableView:setObjectValue:forTableColumn:row:
 //==================================================================================
 
+/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     NSString * columnIdentifier = aTableColumn.identifier;
@@ -436,6 +463,46 @@
     NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
     [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
 }
+*/
+
+//==================================================================================
+//    tableCellChanged:row:
+//==================================================================================
+
+- (IBAction)tableCellChanged:(id)sender
+{
+    NSTextField * cellTextField = sender;
+    
+    NSArray * tableColumns = [tspanTableView tableColumns];
+    NSInteger tableColumnIndex = cellTextField.tag;
+    NSTableColumn * aTableColumn = [tableColumns objectAtIndex:tableColumnIndex];
+    
+    NSInteger rowIndex = [tspanTableView selectedRow];
+
+    NSString * columnIdentifier = aTableColumn.identifier;
+    NSMutableDictionary * characterDictionary = (self.tspanSettingsArray)[rowIndex];
+
+    if ([columnIdentifier isEqualToString:@"charDX"] == YES)
+    {
+        characterDictionary[@"dx"] = cellTextField.stringValue;
+        [self normalizeAttributesArray:@"dx"];
+    }
+    else if ([columnIdentifier isEqualToString:@"charDY"] == YES)
+    {
+        characterDictionary[@"dy"] = cellTextField.stringValue;
+        [self normalizeAttributesArray:@"dy"];
+    }
+    else if ([columnIdentifier isEqualToString:@"charRotate"] == YES)
+    {
+        characterDictionary[@"rotate"] = cellTextField.stringValue;
+        [self normalizeAttributesArray:@"rotate"];
+    }
+
+    [self makeTspanPreviewSVG];
+    NSString * tspanPreviewXmlString = (self.tspanPreviewXMLDocument).XMLString;
+    [tspanPreviewWebView.mainFrame loadHTMLString:tspanPreviewXmlString baseURL:NULL];
+}
+
 
 //==================================================================================
 //	tableViewSelectionDidChange:

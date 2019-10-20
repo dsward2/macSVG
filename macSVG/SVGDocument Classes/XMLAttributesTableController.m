@@ -263,7 +263,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (void)reloadData 
 {
-    [self abortEditing];
+    //[self abortEditing];
     
     //[self.xmlAttributesTableView setNeedsDisplay:YES];
     
@@ -455,7 +455,11 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
     }
 
     resultView.stringValue = resultString;
-    
+
+    resultView.delegate = self;
+    resultView.target = self;
+    resultView.action = @selector(tableCellChanged:);
+
     return (NSView *)resultView;
 }
 
@@ -487,6 +491,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 //	setObjectValue:forTableColumn:row
 //==================================================================================
 
+/*
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
     NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
@@ -512,12 +517,87 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable attributes:self.xmlAttributesArray];
 }
+*/
 
+//==================================================================================
+//    tableCellChanged:
+//==================================================================================
 
+- (IBAction)tableCellChanged:(id)sender
+{
+    NSLog(@"XMLAttributesTableController tableCellChanged");
 
+    NSTextField * cellTextField = sender;
 
+    NSInteger rowIndex = [self.xmlAttributesTableView selectedRow];
 
+    if (rowIndex >= 0)
+    {
+        NSArray * tableColumns = [self.xmlAttributesTableView tableColumns];
+        NSInteger tableColumnIndex = cellTextField.tag;
+        NSTableColumn * aTableColumn = [tableColumns objectAtIndex:tableColumnIndex];
+        
+        NSString * columnIdentifier = aTableColumn.identifier;
 
+        NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
+        
+        NSString * newName = oldAttributeRecordDictionary[@"name"];
+        NSString * newValue = oldAttributeRecordDictionary[@"value"];
+
+        if ([columnIdentifier isEqualToString:@"AttributeColumn"] == YES)
+        {
+            newName = cellTextField.stringValue;
+        }
+        else if ([columnIdentifier isEqualToString:@"ValueColumn"] == YES)
+        {
+            newValue = cellTextField.stringValue;
+        }
+        
+        NSMutableDictionary * newAttributeRecordDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                newName, @"name",
+                newValue, @"value",
+                nil];
+
+        (self.xmlAttributesArray)[rowIndex] = newAttributeRecordDictionary;
+
+        [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable attributes:self.xmlAttributesArray];
+
+        [macSVGDocumentWindowController updateSelections];
+
+        [macSVGDocumentWindowController reloadAllViews];
+
+        //NSIndexSet * xmlAttributesSelectedRowIndexes = [NSIndexSet indexSetWithIndex:rowIndex];
+        //[self.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
+        
+        //[self.xmlAttributesTableView editColumn:tableColumnIndex row:rowIndex withEvent:NULL select:NO];
+
+        if ((self.textMovement == NSTabTextMovement) || (self.textMovement == NSBacktabTextMovement) || (self.textMovement == NSReturnTextMovement))
+        {
+            NSInteger editColumnIndex = 0;
+            if (cellTextField.tag == 0)
+            {
+                editColumnIndex = 1;
+            }
+                        
+            NSTextField * nextTextField = [self.xmlAttributesTableView viewAtColumn:editColumnIndex row:rowIndex makeIfNecessary:YES];
+            
+            cellTextField.nextKeyView = nextTextField;
+            
+            self.textMovement = 0;
+            
+            NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+            [self.xmlAttributesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
+
+            if ((self.textMovement == NSTabTextMovement) || (self.textMovement == NSBacktabTextMovement))
+            {
+                [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
+            }
+
+            //NSLog(@"editColumn:%ld row:%ld", editColumnIndex, rowIndex);
+        }
+
+    }
+}
 
 //==================================================================================
 //	tableViewSelectionDidChange:
@@ -531,6 +611,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 	if (notificationObject == self.xmlAttributesTableView)
 	{
         NSInteger rowIndex = (self.xmlAttributesTableView).selectedRow;
+        NSInteger tableColumnIndex = [self.xmlAttributesTableView selectedColumn];
 
 		//[self buildAttributesTableForElement];
 		[self reloadData];
@@ -561,6 +642,11 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
                     elementName:elementName
                     attributeName:attributeName context:@"attribute"];
         }
+
+        //NSIndexSet * xmlAttributesSelectedRowIndexes = [NSIndexSet indexSetWithIndex:rowIndex];
+        //[self.xmlAttributesTableView selectRowIndexes:xmlAttributesSelectedRowIndexes byExtendingSelection:NO];
+
+        //[self.xmlAttributesTableView editColumn:tableColumnIndex row:rowIndex withEvent:NULL select:NO];
 	}
 }
 
@@ -804,13 +890,43 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 }
 
 //==================================================================================
+//    controlTextDidEndEditing:
+//==================================================================================
+
+/*
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    NSLog(@"XMLAttributesTableController controlTextDidChange");
+
+    id sender = aNotification.object;
+
+    NSInteger rowIndex = self.xmlAttributesTableView.selectedRow;
+
+    if (rowIndex >= 0)
+    {
+        NSDictionary * didChangeDictionary = aNotification.userInfo;
+        
+        NSNumber * textMovementNumber = [didChangeDictionary objectForKey:@"NSTextMovement"];
+        NSInteger textMovement = textMovementNumber.integerValue;
+        
+        NSTextField * textField = sender;
+
+        self.textMovement = textMovement;
+    }
+}
+*/
+
+//==================================================================================
 //	controlTextDidEndEditing:
 //==================================================================================
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
-    id sender = aNotification.object;
+    //NSLog(@"XMLAttributesTableController controlTextDidEndEditing");
     
+    id sender = aNotification.object;
+    NSTextField * textField = sender;
+
     NSInteger rowIndex = self.xmlAttributesTableView.selectedRow;
 
     if (rowIndex >= 0)
@@ -820,58 +936,8 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
         NSNumber * textMovementNumber = [endEditingDictionary objectForKey:@"NSTextMovement"];
         NSInteger textMovement = textMovementNumber.integerValue;
         
-        NSTextField * textField = sender;
-        
-        //[self itemTextFieldUpdated:sender];
-        NSDictionary * oldAttributeRecordDictionary = (self.xmlAttributesArray)[rowIndex];
-        
-        NSString * newName = oldAttributeRecordDictionary[@"name"];
-        NSString * newValue = oldAttributeRecordDictionary[@"value"];
-        
-        if (textField.tag == 0)
-        {
-            newName = textField.stringValue;
-        } 
-        else if (textField.tag == 1)
-        {
-            newValue = textField.stringValue;
-        } 
-        
-        NSMutableDictionary * newAttributeRecordDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                newName, @"name",
-                newValue, @"value",
-                nil];
 
-        (self.xmlAttributesArray)[rowIndex] = newAttributeRecordDictionary;
-
-        [macSVGDocumentWindowController userChangedElement:self.currentXmlElementForAttributesTable
-                attributes:self.xmlAttributesArray];
-
-        [macSVGDocumentWindowController updateSelections];
-
-        [macSVGDocumentWindowController reloadAllViews];
-
-        [[self.xmlAttributesTableView window] makeFirstResponder:self.xmlAttributesTableView];
-
-        NSIndexSet * restoreSelectionIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
-        [self.xmlAttributesTableView selectRowIndexes:restoreSelectionIndexSet byExtendingSelection:NO];
-        
-        if ((textMovement == NSTabTextMovement) || (textMovement == NSBacktabTextMovement))
-        {
-            NSInteger editColumnIndex = 0;
-            if (textField.tag == 0)
-            {
-                editColumnIndex = 1;
-            }
-            
-            NSTextField * nextTextField = [self.xmlAttributesTableView viewAtColumn:editColumnIndex row:rowIndex makeIfNecessary:YES];
-            
-            textField.nextKeyView = nextTextField;
-
-            [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
-            
-            //NSLog(@"editColumn:%ld row:%ld", editColumnIndex, rowIndex);
-        }
+        self.textMovement = textMovement;
     }
     else
     {
@@ -886,10 +952,12 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (void)controlTextDidBeginEditing:(NSNotification *)aNotification
 {
+    //NSLog(@"XMLAttributesTableController controlTextDidBeginEditing");
+
     id sender = aNotification.object;
     
     NSTextField * textField = sender;
-    textField.backgroundColor = [NSColor whiteColor];
+    //textField.backgroundColor = [NSColor whiteColor];
 }
 
 //==================================================================================
@@ -898,6 +966,8 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor
 {
+    //NSLog(@"XMLAttributesTableController textShouldBeginEditing");
+
     return YES;
 }
 
@@ -907,9 +977,10 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
 - (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
 {
+    //NSLog(@"XMLAttributesTableController textShouldEndEditing");
+
     return YES;
 }
-
 
 
 @end

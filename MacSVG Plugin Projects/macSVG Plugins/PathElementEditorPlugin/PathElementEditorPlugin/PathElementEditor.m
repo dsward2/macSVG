@@ -645,6 +645,28 @@
 }
 
 //==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    return (NSView *)tableCellView;
+}
+
+//==================================================================================
 //	tableView:objectValueForTableColumn:rowIndex
 //==================================================================================
 
@@ -1207,6 +1229,9 @@
     [self updateTotalLengthForPathElement:(self.macSVGPluginCallbacks).svgPathEditorSelectedPathElement];
     
     [self setPathDataAttribute];
+
+    [self updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
+    [self updateDocumentViews];
     
     return YES;
 }

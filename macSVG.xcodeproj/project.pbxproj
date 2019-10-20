@@ -5107,6 +5107,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.1.6;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;
@@ -5146,6 +5147,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.1.6;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.arkphone.macsvg;

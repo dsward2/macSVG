@@ -14,14 +14,18 @@
 @interface XMLAttributesTableController : NSObject <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSControlTextEditingDelegate>
 {
     IBOutlet MacSVGDocumentWindowController * macSVGDocumentWindowController;
+
 }
 
 @property (weak) IBOutlet XMLAttributesTableView * xmlAttributesTableView;
+@property (assign) NSInteger textMovement;
 
 @property (strong) NSMutableArray * xmlAttributesArray;
 
 - (void)reloadView;
 - (void)reloadData;
+
+- (IBAction)tableCellChanged:(id)sender;
 
 - (IBAction)addAttributeAction:(id)sender;
 - (IBAction)deleteAttributeAction:(id)sender;

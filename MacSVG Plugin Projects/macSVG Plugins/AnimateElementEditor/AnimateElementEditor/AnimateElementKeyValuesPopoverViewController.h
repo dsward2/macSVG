@@ -24,6 +24,8 @@
 
 @property(strong) NSMutableArray * keyValuesArray;
 
+- (IBAction)tableCellChanged:(id)sender;
+
 - (IBAction)doneButtonAction:(id)sender;
 - (IBAction)addRowButtonAction:(id)sender;
 - (IBAction)deleteRowButtonAction:(id)sender;

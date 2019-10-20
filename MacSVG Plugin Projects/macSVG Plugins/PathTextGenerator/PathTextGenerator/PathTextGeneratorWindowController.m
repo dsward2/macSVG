@@ -1002,6 +1002,27 @@ Printing description of googleWebfontDictionary:
     return result;
 }
 
+//==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    return (NSView *)tableCellView;
+}
 
 //==================================================================================
 //	tableView:objectValueForTableColumn:row:
@@ -1175,6 +1196,9 @@ Printing description of googleWebfontDictionary:
     // The completion handler is called when the user selects an
     // item or cancels the panel.
     
+    __block NSTextField * weakWebfontPathTextField = webfontPathTextField;
+    __block NSTextField * weakWebfontStatusMessageTextField = webfontStatusMessageTextField;
+
     [panel beginWithCompletionHandler:^(NSInteger result)
     {
         if (result == NSModalResponseOK)
@@ -1188,7 +1212,7 @@ Printing description of googleWebfontDictionary:
                 // Open  the document.
                 NSString * urlString = fontURL.absoluteString;
                 
-                webfontPathTextField.stringValue = urlString;
+                weakWebfontPathTextField.stringValue = urlString;
                 
                 NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
                 
@@ -1199,7 +1223,7 @@ Printing description of googleWebfontDictionary:
                 // Open  the document.
                 NSString * urlString = fontURL.absoluteString;
                 
-                webfontPathTextField.stringValue = urlString;
+                weakWebfontPathTextField.stringValue = urlString;
                 
                 NSString * fontName = [self fontNameFromTruetypeFontURL:fontURL];
                 
@@ -1207,7 +1231,7 @@ Printing description of googleWebfontDictionary:
             }
             else
             {
-                webfontStatusMessageTextField.stringValue = @"Import error - Truetype font not found";
+                weakWebfontStatusMessageTextField.stringValue = @"Import error - Truetype font not found";
             }
         }
     }];

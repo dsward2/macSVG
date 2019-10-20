@@ -221,6 +221,8 @@
 
 - (IBAction)manageAnimationPathButtonAction:(id)sender
 {
+    //NSLog(@"PathElementShapeAnimationEditor - manageAnimationPathButtonAction");
+
     NSInteger selectedRow = self.animateElementsTableView.selectedRow;
     
     if (selectedRow != -1)
@@ -251,7 +253,6 @@
         
             if (targetElement != NULL)
             {
-                //[animationPathsPopoverViewController loadSettingsForMasterPathElement:self.pluginTargetXMLElement animateElement:animateElement];
                 [animationPathsPopoverViewController loadSettingsForMasterPathElement:targetElement animateElement:animateElement];
                 
                 // configure the preferred position of the popover
@@ -260,9 +261,20 @@
             }
             else
             {
+                NSLog(@"PathElementShapeAnimationEditor - targetElement is NULL");
                 NSBeep();
             }
         }
+        else
+        {
+            NSLog(@"PathElementShapeAnimationEditor - animateElement is NULL");
+            NSBeep();
+        }
+    }
+    else
+    {
+        NSLog(@"PathElementShapeAnimationEditor - row not selected");
+        NSBeep();
     }
 }
 
@@ -494,6 +506,28 @@
     }
     
     return result;
+}
+
+//==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    return (NSView *)tableCellView;
 }
 
 //==================================================================================

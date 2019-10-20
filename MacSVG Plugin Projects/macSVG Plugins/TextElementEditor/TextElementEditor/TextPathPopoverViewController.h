@@ -15,7 +15,7 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 
-@interface TextPathPopoverViewController : NSViewController
+@interface TextPathPopoverViewController : NSViewController <NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet TextElementEditor * textElementEditor;
     IBOutlet NSPopover * textPathPopover;

@@ -2579,7 +2579,6 @@
 
     if (item == NULL)
     {
-        // The return value from this method is used to configure the state of the item's views via setObjectValue:
         if ((tableColumn == nil) || [tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME]) 
         {
             objectValue = @"Missing";

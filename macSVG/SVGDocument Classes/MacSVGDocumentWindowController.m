@@ -3629,7 +3629,7 @@
             hostWindow:self.window];
 }
 
-
+// AirDrop methods
 
 - (IBAction)shareWebPreviewURL:(id)sender
 {
@@ -3640,7 +3640,7 @@
     NSSharingServicePicker *sharingServicePicker = [[NSSharingServicePicker alloc] initWithItems:[NSArray arrayWithObjects:url, nil]];
     sharingServicePicker.delegate = self;
 
-    [sharingServicePicker showRelativeToRect:[shareWebPreviewURLButton bounds]
+    [sharingServicePicker showRelativeToRect:[shareWebPreviewURLButton frame]
                                       ofView:shareWebPreviewURLButton
                                preferredEdge:NSMinYEdge];
 }

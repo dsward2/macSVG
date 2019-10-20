@@ -193,6 +193,28 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
 }
 
 //==================================================================================
+//    tableView:viewForTableColumn:row:
+//==================================================================================
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+
+    NSString * resultString = @"";
+
+    if (tableCellView != NULL)
+    {
+        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
+    }
+    
+    tableCellView.textField.stringValue = resultString;
+    
+    return (NSView *)tableCellView;
+}
+
+//==================================================================================
 //	tableView:objectValueForTableColumn:rowIndex:
 //==================================================================================
 
@@ -200,7 +222,7 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
 {
     id objectValue = NULL;
     
-    if (self.attributeKeysArray != NULL)
+    if (rowIndex < self.attributeKeysArray.count)
     {
         NSString * keyString = (self.attributeKeysArray)[rowIndex];
         

@@ -11,9 +11,12 @@
 		0E08F69414B6EC6A008E6ADD /* svg_colors.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0E08F69314B6EC6A008E6ADD /* svg_colors.xml */; };
 		0E08F6E414B75E87008E6ADD /* ColorAttributeEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E08F6E214B75E87008E6ADD /* ColorAttributeEditor.h */; };
 		0E08F6E514B75E87008E6ADD /* ColorAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08F6E314B75E87008E6ADD /* ColorAttributeEditor.m */; };
+		0E0F5E6123483D3600BCA3B1 /* ColorSwatchTableCellView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0F5E5F23483D3600BCA3B1 /* ColorSwatchTableCellView.h */; };
+		0E0F5E6323483DE000BCA3B1 /* ColorSwatchTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F5E6023483D3600BCA3B1 /* ColorSwatchTableCellView.m */; };
+		0E0F5E662349115200BCA3B1 /* WebColorsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0F5E642349115200BCA3B1 /* WebColorsTableViewController.h */; };
+		0E0F5E672349115200BCA3B1 /* WebColorsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0F5E652349115200BCA3B1 /* WebColorsTableViewController.m */; };
 		0E18CA2214B5B8AE00AB9F78 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E18CA2014B5B8AE00AB9F78 /* InfoPlist.strings */; };
 		0E2EEF9A14B793DF00A88ED9 /* ColorSwatchCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E2EEF9814B793DF00A88ED9 /* ColorSwatchCell.h */; };
-		0E2EEF9B14B793DF00A88ED9 /* ColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EEF9914B793DF00A88ED9 /* ColorSwatchCell.m */; };
 		0E3F0F4A1E44604D001FDDD7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E18CA1714B5B8AE00AB9F78 /* Cocoa.framework */; };
 		0E5CC08217E283D0006ABDDA /* GradientEditorPopoverViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E5CC08017E283D0006ABDDA /* GradientEditorPopoverViewController.h */; };
 		0E5CC08317E283D0006ABDDA /* GradientEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5CC08117E283D0006ABDDA /* GradientEditorPopoverViewController.m */; };
@@ -25,6 +28,10 @@
 		0E08F69314B6EC6A008E6ADD /* svg_colors.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = svg_colors.xml; sourceTree = "<group>"; };
 		0E08F6E214B75E87008E6ADD /* ColorAttributeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorAttributeEditor.h; sourceTree = "<group>"; };
 		0E08F6E314B75E87008E6ADD /* ColorAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorAttributeEditor.m; sourceTree = "<group>"; };
+		0E0F5E5F23483D3600BCA3B1 /* ColorSwatchTableCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorSwatchTableCellView.h; sourceTree = "<group>"; };
+		0E0F5E6023483D3600BCA3B1 /* ColorSwatchTableCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorSwatchTableCellView.m; sourceTree = "<group>"; };
+		0E0F5E642349115200BCA3B1 /* WebColorsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebColorsTableViewController.h; sourceTree = "<group>"; };
+		0E0F5E652349115200BCA3B1 /* WebColorsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebColorsTableViewController.m; sourceTree = "<group>"; };
 		0E18CA1414B5B8AE00AB9F78 /* ColorAttributeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColorAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E18CA1714B5B8AE00AB9F78 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0E18CA1F14B5B8AE00AB9F78 /* ColorAttributeEditor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ColorAttributeEditor-Info.plist"; sourceTree = "<group>"; };
@@ -82,8 +89,12 @@
 			children = (
 				0E08F6E214B75E87008E6ADD /* ColorAttributeEditor.h */,
 				0E08F6E314B75E87008E6ADD /* ColorAttributeEditor.m */,
+				0E0F5E642349115200BCA3B1 /* WebColorsTableViewController.h */,
+				0E0F5E652349115200BCA3B1 /* WebColorsTableViewController.m */,
 				0E2EEF9814B793DF00A88ED9 /* ColorSwatchCell.h */,
 				0E2EEF9914B793DF00A88ED9 /* ColorSwatchCell.m */,
+				0E0F5E5F23483D3600BCA3B1 /* ColorSwatchTableCellView.h */,
+				0E0F5E6023483D3600BCA3B1 /* ColorSwatchTableCellView.m */,
 				0E5CC08017E283D0006ABDDA /* GradientEditorPopoverViewController.h */,
 				0E5CC08117E283D0006ABDDA /* GradientEditorPopoverViewController.m */,
 				0E18CA1E14B5B8AE00AB9F78 /* Supporting Files */,
@@ -114,6 +125,8 @@
 				0E5CC08217E283D0006ABDDA /* GradientEditorPopoverViewController.h in Headers */,
 				0E08F6E414B75E87008E6ADD /* ColorAttributeEditor.h in Headers */,
 				0E2EEF9A14B793DF00A88ED9 /* ColorSwatchCell.h in Headers */,
+				0E0F5E6123483D3600BCA3B1 /* ColorSwatchTableCellView.h in Headers */,
+				0E0F5E662349115200BCA3B1 /* WebColorsTableViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,9 +202,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E0F5E672349115200BCA3B1 /* WebColorsTableViewController.m in Sources */,
+				0E0F5E6323483DE000BCA3B1 /* ColorSwatchTableCellView.m in Sources */,
 				0E08F6E514B75E87008E6ADD /* ColorAttributeEditor.m in Sources */,
 				0E5CC08317E283D0006ABDDA /* GradientEditorPopoverViewController.m in Sources */,
-				0E2EEF9B14B793DF00A88ED9 /* ColorSwatchCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

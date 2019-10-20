@@ -8,6 +8,7 @@
 
 #import "GradientEditorPopoverViewController.h"
 #import "ColorAttributeEditor.h"
+#import "WebColorsTableViewController.h"
 
 @interface GradientEditorPopoverViewController ()
 
@@ -420,7 +421,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         else
         {
             // try web color lookup
-            NSArray * webColorsArray = colorAttributeEditor.webColorsArray;
+            NSArray * webColorsArray = colorAttributeEditor.webColorsTableViewController.webColorsArray;
             
             for (NSDictionary * webColorDictionary in webColorsArray)
             {
@@ -2148,10 +2149,10 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context)
         }
     }
 
-    NSInteger webColorsArrayCount = (colorAttributeEditor.webColorsArray).count;
+    NSInteger webColorsArrayCount = (colorAttributeEditor.webColorsTableViewController.webColorsArray).count;
     for (NSInteger i = 0; i < webColorsArrayCount; i++)
     {
-        NSDictionary * colorDictionary = (colorAttributeEditor.webColorsArray)[i];
+        NSDictionary * colorDictionary = (colorAttributeEditor.webColorsTableViewController.webColorsArray)[i];
         NSString * colorName = colorDictionary[@"name"];
         
         if ([colorName isEqualToString:colorTextString] == YES)
@@ -2383,7 +2384,7 @@ height=\"118px\" viewBox=\"0 0 118 118\" preserveAspectRatio=\"xMidYMid meet\">"
     
     if (aComboBox == colorStopColorComboBox)
     {
-        NSArray * webColorsArray = colorAttributeEditor.webColorsArray;
+        NSArray * webColorsArray = colorAttributeEditor.webColorsTableViewController.webColorsArray;
         NSInteger webColorsArrayCount = webColorsArray.count;
         result = webColorsArrayCount;
     }
@@ -2401,7 +2402,7 @@ height=\"118px\" viewBox=\"0 0 118 118\" preserveAspectRatio=\"xMidYMid meet\">"
     
     if (aComboBox == colorStopColorComboBox)
     {
-        NSArray * webColorsArray = colorAttributeEditor.webColorsArray;
+        NSArray * webColorsArray = colorAttributeEditor.webColorsTableViewController.webColorsArray;
         NSDictionary * webColorDictionary = webColorsArray[index];
         NSString * colorName = webColorDictionary[@"name"];
         result = colorName;
