@@ -127,6 +127,8 @@
             selector:@selector(webScrollViewDidScroll:)
             name:NSScrollViewDidEndLiveScrollNotification
             object:webScrollView];
+    
+    [self enableJavaScript];    // JavaScript is required for several functions like getBBox(), etc.
 }
 
 //==================================================================================

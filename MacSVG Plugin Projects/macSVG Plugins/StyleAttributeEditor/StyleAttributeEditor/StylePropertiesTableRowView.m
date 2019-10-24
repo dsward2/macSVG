@@ -18,6 +18,7 @@
 }
 */
 
+/*
 - (NSBackgroundStyle)interiorBackgroundStyle
 {
     return NSBackgroundStyleLight;
@@ -27,5 +28,6 @@
 {
     return NSTableViewSelectionHighlightStyleSourceList;
 }
+*/
 
 @end

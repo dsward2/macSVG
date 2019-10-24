@@ -693,7 +693,6 @@
 		0EB663ED142866C4003723F0 /* XMLOutlineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E9142866C4003723F0 /* XMLOutlineController.m */; };
 		0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E281D7039FD00931DC4 /* libssh2.a */; };
-		0EC22E2B1D703C4100931DC4 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E2A1D703C4100931DC4 /* libcrypto.a */; };
 		0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EC671841D696EBB0086943C /* multi-line_text_with_foreignobject_and_html.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */; };
 		0ECCB0221DB4B60A001A6085 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0211DB4B60A001A6085 /* LICENSE */; };
@@ -2619,7 +2618,6 @@
 				0EEE3A9E17B9EA110040846F /* libz.dylib in Frameworks */,
 				0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */,
 				0EEE3A9C17B9E9FF0040846F /* libcrypto.dylib in Frameworks */,
-				0EC22E2B1D703C4100931DC4 /* libcrypto.a in Frameworks */,
 				0EDDC382178DDAE1003B014D /* libstdc++.dylib in Frameworks */,
 				0E9637AF17868B3A0011861A /* Security.framework in Frameworks */,
 				0EB6637D14286398003723F0 /* Cocoa.framework in Frameworks */,
@@ -5024,7 +5022,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SYMROOT = "";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -5074,7 +5072,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SYMROOT = "";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -5082,7 +5080,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;
@@ -5123,7 +5120,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0EA59C5C1E442BF30031EE60 /* macSVGPluginConfig.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = macSVG/macSVG.entitlements;

@@ -190,6 +190,7 @@
 {
     self.stylePropertiesArray = [NSMutableArray array];
 
+    /*
     stylePropertiesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
 
     while(stylePropertiesTableView.tableColumns.count > 0)
@@ -223,6 +224,7 @@
     yTableColumn.minWidth = 60.0f;
     yTableColumn.maxWidth = 100.0f;
     [stylePropertiesTableView addTableColumn:yTableColumn];
+    */
 
     NSXMLElement * animateMotionElement = self.pluginTargetXMLElement;
 
@@ -281,7 +283,7 @@
     
     [stylePropertiesTableView reloadData];
     
-    stylePropertiesTableView.rowHeight = 14.0f;
+    //stylePropertiesTableView.rowHeight = 14.0f;
 }
 
 //==================================================================================
@@ -331,7 +333,8 @@
     else if (sender == propertyValueComboBox)
     {
     }
-    else if ([senderSuperview isKindOfClass:[StylePropertiesTableRowView class]] == YES)
+    //else if ([senderSuperview isKindOfClass:[StylePropertiesTableRowView class]] == YES)
+    else if ([sender isKindOfClass:[NSTextField class]] == YES)
     {
         // sender was a text cell inside the table view
         if (rowIndex < (self.stylePropertiesArray).count)
@@ -443,8 +446,9 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
+    /*
     if (resultView == nil)
     {
         resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
@@ -453,6 +457,7 @@
         resultView.bordered = NO;
         resultView.backgroundColor = [NSColor clearColor];
     }
+    */
 
     NSString * resultString = @"";
 
@@ -463,12 +468,12 @@
         if ([tableColumnIdentifier isEqualToString:@"#"] == YES)
         {
             resultString = [NSString stringWithFormat:@"%ld", (row + 1)];
-            resultView.editable = NO;
+            resultView.textField.editable = NO;
         }
         else
         {
-            resultView.editable = YES;
-            resultView.delegate = (id)self;
+            resultView.textField.editable = YES;
+            resultView.textField.delegate = (id)self;
         
             NSMutableDictionary * aStylePropertyDictionary = (self.stylePropertiesArray)[row];
 
@@ -488,7 +493,7 @@
         resultString = @"";
     }
 
-    resultView.stringValue = resultString;
+    resultView.textField.stringValue = resultString;
     
     return resultView;
 }

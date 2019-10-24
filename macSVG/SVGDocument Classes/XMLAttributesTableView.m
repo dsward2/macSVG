@@ -25,7 +25,7 @@
     return self;
 }
 
-
+/*
 - (void) textDidEndEditing: (NSNotification *) notification
 {
     // NSTableView textDidEndEditing - Deprecated - Use a view-based table view with an NSTextField object instead.
@@ -54,5 +54,6 @@
     [self.window makeFirstResponder:self];
 
 } // textDidEndEditing
+*/
 
 @end

@@ -459,9 +459,12 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [self.macSVGPluginCallbacks updateSelections]; // update selection rectangles and handles
     
-    NSInteger selectedRow = transformsTableView.selectedRow;
-    [transformsTableView setNeedsDisplayInRect:[transformsTableView 
-            frameOfCellAtColumn:0 row:selectedRow]];
+    //NSInteger selectedRow = transformsTableView.selectedRow;
+    //[transformsTableView setNeedsDisplayInRect:[transformsTableView frameOfCellAtColumn:0 row:selectedRow]];
+    
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:transformsTableView.selectedRow];
+    NSIndexSet * columnIndexSet = [NSIndexSet indexSetWithIndex:0];
+    [transformsTableView reloadDataForRowIndexes:rowIndexSet columnIndexes:columnIndexSet];
 }
 
 //==================================================================================

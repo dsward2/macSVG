@@ -8,7 +8,7 @@
 
 #import <MacSVGPlugin/MacSVGPlugin.h>
 
-@interface StyleAttributeEditor : MacSVGPlugin
+@interface StyleAttributeEditor : MacSVGPlugin <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 {
     IBOutlet NSTableView * stylePropertiesTableView;
 

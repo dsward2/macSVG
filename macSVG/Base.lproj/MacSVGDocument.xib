@@ -563,6 +563,9 @@
                                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                                     </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <outlet property="nextKeyView" destination="dbg-RP-Qsm" id="Hew-D1-8Rn"/>
+                                                                                                    </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
                                                                                         </tableColumn>
@@ -587,6 +590,9 @@
                                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                                     </textFieldCell>
+                                                                                                    <connections>
+                                                                                                        <outlet property="nextKeyView" destination="SSv-PB-YSa" id="ecy-r3-MtM"/>
+                                                                                                    </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
                                                                                         </tableColumn>
@@ -2995,7 +3001,7 @@ Gw
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="632" y="705.5"/>
+            <point key="canvasLocation" x="841" y="1008"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="yg8-6J-rVu" userLabel="ExportingImagesSheet">
             <windowStyleMask key="styleMask" titled="YES"/>
