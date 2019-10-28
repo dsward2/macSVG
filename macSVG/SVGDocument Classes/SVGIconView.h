@@ -10,4 +10,6 @@
 
 @interface SVGIconView : NSView
 
+@property (strong) NSString * userData;
+
 @end

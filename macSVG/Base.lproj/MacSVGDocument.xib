@@ -295,7 +295,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <customCell key="dataCell" alignment="left" id="Z58-wv-eGx" customClass="SVGIconTableHeaderCell"/>
+                                                                                                    <customCell key="dataCell" alignment="left" identifier="IsVisibleColumnCell" id="Z58-wv-eGx" customClass="SVGIconTableHeaderCell"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="IsLockedColumn" width="18" minWidth="18" maxWidth="18" id="100224">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Lk">
@@ -303,7 +303,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <customCell key="dataCell" alignment="left" id="aJ7-6F-9gb" customClass="SVGIconTableHeaderCell"/>
+                                                                                                    <customCell key="dataCell" alignment="left" identifier="IsLockedColumnCell" id="aJ7-6F-9gb" customClass="SVGIconTableHeaderCell"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="IconColumn" editable="NO" width="18" minWidth="18" maxWidth="18" id="100252">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="§">
@@ -311,7 +311,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <customCell key="dataCell" alignment="left" id="kbp-06-tdq"/>
+                                                                                                    <customCell key="dataCell" alignment="left" identifier="IconColumnCell" id="kbp-06-tdq"/>
                                                                                                 </tableColumn>
                                                                                                 <tableColumn identifier="ElementNameColumn" editable="NO" width="128" minWidth="16" maxWidth="1000" id="100226">
                                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Element">
@@ -319,7 +319,7 @@
                                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                                                     </tableHeaderCell>
-                                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" alignment="left" title="Text Cell" usesSingleLineMode="YES" id="100229">
+                                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" alignment="left" identifier="ElementNameColumnCell" title="Text Cell" usesSingleLineMode="YES" id="100229">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

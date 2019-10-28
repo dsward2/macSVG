@@ -3585,7 +3585,7 @@
 			name = "Selection Manager";
 			sourceTree = "<group>";
 		};
-		0E80EBE3177A4DA700849E48 /* Outline View */ = {
+		0E80EBE3177A4DA700849E48 /* XML Outline View */ = {
 			isa = PBXGroup;
 			children = (
 				0EB663E8142866C4003723F0 /* XMLOutlineController.h */,
@@ -3595,7 +3595,7 @@
 				0EB663AC142865F4003723F0 /* NSOutlineView_Extensions.h */,
 				0EB663AD142865F4003723F0 /* NSOutlineView_Extensions.m */,
 			);
-			name = "Outline View";
+			name = "XML Outline View";
 			sourceTree = "<group>";
 		};
 		0E80EBE4177A4E0000849E48 /* SVG Editors */ = {
@@ -4069,7 +4069,7 @@
 				0E80EBDB177A4CA000849E48 /* macSVGDocument */,
 				0E80EBE2177A4D8900849E48 /* Selection Manager */,
 				0E80EBE1177A4D3200849E48 /* SVG Web View */,
-				0E80EBE3177A4DA700849E48 /* Outline View */,
+				0E80EBE3177A4DA700849E48 /* XML Outline View */,
 				0E80EBE4177A4E0000849E48 /* SVG Editors */,
 				0E80EBE5177A4E3500849E48 /* Tools */,
 				0E80EBE6177A4E4900849E48 /* Animation Timeline */,

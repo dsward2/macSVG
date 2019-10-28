@@ -14,15 +14,15 @@
     [super drawRect:dirtyRect];
     
     // Drawing code here.
-    if ([self.identifier isEqualToString:@"target"] == YES)
+    if ([self.userData isEqualToString:@"target"] == YES)
     {
         [self drawTargetIcon:self.bounds];
     }
-    else if ([self.identifier isEqualToString:@"text"] == YES)
+    else if ([self.userData isEqualToString:@"text"] == YES)
     {
         [self drawTextIcon:self.bounds];
     }
-    else if ([self.identifier isEqualToString:@"folder"] == YES)
+    else if ([self.userData isEqualToString:@"folder"] == YES)
     {
         [self drawFolderIcon:self.bounds];
     }

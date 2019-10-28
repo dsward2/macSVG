@@ -2596,7 +2596,10 @@
         }
         else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
         {
-            objectValue = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            SVGIconView * svgIconView = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            svgIconView.userData = @"folder";
+
+            objectValue = svgIconView;
         }
     }
     else
@@ -2706,6 +2709,36 @@
         else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
         {
             SVGIconView * svgIconView = (SVGIconView *)[self outlineView:self.xmlOutlineView viewForTableColumn:tableColumn item:item];
+            
+            NSString * userData = @"folder";
+            
+            NSInteger rowForItem = [outlineView rowForItem:item];
+            NSIndexSet * selectedRowsIndexSet = [outlineView selectedRowIndexes];
+            BOOL rowIsSelected = [selectedRowsIndexSet containsIndex:rowForItem];
+            
+            if (nodeKind == NSXMLTextKind)
+            {
+                userData = @"text";
+            }
+            else if (nodeKind == NSXMLCommentKind)
+            {
+                userData = @"text";
+            }
+            else if (rowIsSelected == YES)
+            {
+                userData = @"target";
+            }
+            else
+            {
+                userData = @"folder";
+            }
+            
+            if ([svgIconView.userData isEqualToString:userData] == NO)
+            {
+                svgIconView.userData = userData;
+                
+                [svgIconView setNeedsDisplay:YES];
+            }
 
             objectValue = svgIconView;
         }
@@ -2743,28 +2776,28 @@
         NSXMLNode * nodeData = item;
         NSXMLNodeKind nodeKind = nodeData.kind;
         
-        NSString * newIdentifier = @"folder";
+        NSString * userData = @"folder";
         
         if (nodeKind == NSXMLTextKind)
         {
-            newIdentifier = @"text";
+            userData = @"text";
         }
         else if (nodeKind == NSXMLCommentKind)
         {
-            newIdentifier = @"text";
+            userData = @"text";
         }
         else if (row == selectedRow)
         {
-            newIdentifier = @"target";
+            userData = @"target";
         }
         else
         {
-            newIdentifier = @"folder";
+            userData = @"folder";
         }
         
-        if ([svgIconView.identifier isEqualToString:newIdentifier] == NO)
+        if ([svgIconView.userData isEqualToString:userData] == NO)
         {
-            svgIconView.identifier = newIdentifier;
+            svgIconView.userData = userData;
             
             [svgIconView setNeedsDisplay:YES];
         }
@@ -2800,8 +2833,11 @@
 - (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
     //NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:self];
-    NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
     NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSString * tableCellIdentifier = [tableColumnIdentifier stringByAppendingString:@"Cell"];
+
+    NSView * resultView = [outlineView makeViewWithIdentifier:tableCellIdentifier owner:NULL];
 
     if (resultView == nil)
     {
@@ -2810,7 +2846,7 @@
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
             [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
-            checkboxButton.identifier = tableColumnIdentifier;
+            checkboxButton.identifier = tableCellIdentifier;
             [checkboxButton setTarget:self];
             [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
             
@@ -2823,7 +2859,7 @@
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
             [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
-            checkboxButton.identifier = tableColumnIdentifier;
+            checkboxButton.identifier = tableCellIdentifier;
             checkboxButton.refusesFirstResponder = YES;
             
             resultView = checkboxButton;
@@ -2831,25 +2867,26 @@
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_ICON] == YES)
         {
             SVGIconView * svgIconView = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            svgIconView.identifier = tableCellIdentifier;
 
             NSXMLNode * nodeData = item;
             NSXMLNodeKind nodeKind = nodeData.kind;
             
-            NSString * newIdentifier = @"folder";
+            NSString * userData = @"folder";
             
             if (nodeKind == NSXMLTextKind)
             {
-                newIdentifier = @"text";
+                userData = @"text";
             }
             else if (nodeKind == NSXMLCommentKind)
             {
-                newIdentifier = @"text";
+                userData = @"text";
             }
             else
             {
-                newIdentifier = @"folder";
+                userData = @"folder";
             }
-            svgIconView.identifier = newIdentifier;
+            svgIconView.userData = userData;
 
             resultView = svgIconView;
         }
@@ -2857,7 +2894,7 @@
         {
             //NSTextField * textField = [[NSTextField alloc] initWithFrame:outlineView.frame];
             NSTextField * textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 300, 14)];
-            textField.identifier = tableColumnIdentifier;
+            textField.identifier = tableCellIdentifier;
             textField.refusesFirstResponder = YES;
             [textField setControlSize:NSControlSizeSmall];
             textField.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
@@ -2892,9 +2929,66 @@
             resultView = textField;
         }
     }
+    else
+    {
+        if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
+        {
+            NSTextField * textField = (NSTextField *)resultView;
+
+            NSInteger nonTextChildNodes = 0;
+            
+            NSXMLElement * xmlElement = [item copy];
+            NSArray * xmlElementChildren = xmlElement.children;
+            for (NSXMLNode * childNode in xmlElementChildren)
+            {
+                if (childNode.kind != NSXMLTextKind)
+                {
+                    [childNode detach];
+                    nonTextChildNodes++;
+                }
+            }
+            if (nonTextChildNodes > 0)
+            {
+                NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+                ellipseTextNode.stringValue = @" … ";
+                [xmlElement addChild:ellipseTextNode];
+            }
+            textField.toolTip = [xmlElement XMLString];
+        }
+    }
         
     return resultView;
 }
+
+//==================================================================================
+//    outlineView:toolTipForCell:rect:tableColumn:item:mouseLocation:
+//==================================================================================
+
+- (NSString *)outlineView:(NSOutlineView *)outlineView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)tableColumn item:(id)item mouseLocation:(NSPoint)mouseLocation
+{
+    NSInteger nonTextChildNodes = 0;
+    
+    NSXMLElement * xmlElement = [item copy];
+    NSArray * xmlElementChildren = xmlElement.children;
+    for (NSXMLNode * childNode in xmlElementChildren)
+    {
+        if (childNode.kind != NSXMLTextKind)
+        {
+            [childNode detach];
+            nonTextChildNodes++;
+        }
+    }
+    if (nonTextChildNodes > 0)
+    {
+        NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+        ellipseTextNode.stringValue = @" … ";
+        [xmlElement addChild:ellipseTextNode];
+    }
+    NSString * toolTipString = [xmlElement XMLString];
+
+    return toolTipString;
+}
+
 
 //==================================================================================
 //	outlineView:didClickTableColumn:
