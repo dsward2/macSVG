@@ -9,6 +9,8 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AnimateMotionElementEditor">
             <connections>
                 <outlet property="addValuesRowButton" destination="sFc-ID-jIp" id="Yia-mr-qQp"/>
+                <outlet property="animateMotionKeyValuesPopover" destination="WnM-bg-6gr" id="PgQ-CX-cbQ"/>
+                <outlet property="animateMotionKeyValuesPopoverViewController" destination="Xxv-wS-MmX" id="q7q-6P-mav"/>
                 <outlet property="animateMotionTabView" destination="jR4-Sz-YZv" id="s0q-D3-U6o"/>
                 <outlet property="applyChangesButton" destination="hPn-00-DGD" id="rcE-j1-eOA"/>
                 <outlet property="beginTextField" destination="XbQ-Q0-iw9" id="Pmd-Ef-qaz"/>
@@ -17,8 +19,6 @@
                 <outlet property="deleteValuesRowButton" destination="D5Q-Zp-LAw" id="k0h-73-tlz"/>
                 <outlet property="durTextField" destination="XC1-wU-Wg8" id="ivY-N3-tyQ"/>
                 <outlet property="fromTextField" destination="tTC-TH-WJs" id="tQK-tH-7Ws"/>
-                <outlet property="keyValuesPopover" destination="WnM-bg-6gr" id="QVd-74-T8k"/>
-                <outlet property="keyValuesPopoverViewController" destination="Xxv-wS-MmX" id="I8N-lf-UAe"/>
                 <outlet property="mpathPopUpButton" destination="Usn-Zg-yui" id="loQ-xS-PES"/>
                 <outlet property="mpathRotateComboBox" destination="YZj-3u-F6w" id="1bW-0y-GYb"/>
                 <outlet property="pathRotateComboBox" destination="2qD-NN-Var" id="aCG-br-UYV"/>
@@ -486,14 +486,14 @@ Gw
             </subviews>
             <point key="canvasLocation" x="215" y="146"/>
         </customView>
-        <viewController id="Xxv-wS-MmX" userLabel="Popover View Controller" customClass="KeyValuesPopoverViewController">
+        <viewController id="Xxv-wS-MmX" userLabel="Popover View Controller" customClass="AnimateMotionKeyValuesPopoverViewController">
             <connections>
                 <outlet property="addRowButton" destination="ppW-nl-u7w" id="gOm-tL-mvs"/>
-                <outlet property="animateMotionElementEditor" destination="-2" id="PVr-Ha-7gH"/>
                 <outlet property="deleteRowButton" destination="A0H-X9-M6b" id="y7r-9K-cu7"/>
                 <outlet property="keySplinesView" destination="i6U-ys-P8V" id="gVH-ml-T4T"/>
                 <outlet property="keyValuesPopover" destination="WnM-bg-6gr" id="rCb-pS-1ya"/>
                 <outlet property="keyValuesTableView" destination="UKs-00-rmL" id="xg2-Tw-1kJ"/>
+                <outlet property="macSVGPlugin" destination="-2" id="5Qn-93-8zW"/>
                 <outlet property="presetsPopUpButton" destination="fMd-7z-VOn" id="SF5-sj-aWc"/>
                 <outlet property="view" destination="kZf-Pb-gxd" id="9hA-fE-fov"/>
             </connections>
@@ -739,7 +739,7 @@ Gw
                     </connections>
                 </popUpButton>
             </subviews>
-            <point key="canvasLocation" x="406" y="489.5"/>
+            <point key="canvasLocation" x="257" y="429"/>
         </customView>
     </objects>
 </document>

@@ -7,7 +7,7 @@
 //
 
 #import "AnimateMotionElementEditor.h"
-#import "KeyValuesPopoverViewController.h"
+#import "AnimateMotionKeyValuesPopoverViewController.h"
 #import "AnimateMotionTableRowView.h"
 
 @implementation AnimateMotionElementEditor
@@ -597,8 +597,9 @@
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
     static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
     
-    AnimateMotionTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //AnimateMotionTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    AnimateMotionTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         // Size doesn't matter, the table will set it
@@ -622,7 +623,8 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
 
     if (resultView == nil)
     {
@@ -998,7 +1000,7 @@
     NSMutableString * keySplinesAttributeString = [NSMutableString string];
     NSMutableString * keyPointsAttributeString = [NSMutableString string];
     
-    NSArray * keyValuesArray = keyValuesPopoverViewController.keyValuesArray;
+    NSArray * keyValuesArray = animateMotionKeyValuesPopoverViewController.keyValuesArray;
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
@@ -1043,10 +1045,10 @@
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    [keyValuesPopoverViewController loadKeyValuesData];
+    [animateMotionKeyValuesPopoverViewController loadKeyValuesData];
     
     // configure the preferred position of the popover
-    [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
+    [animateMotionKeyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 //==================================================================================

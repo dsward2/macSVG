@@ -18,6 +18,9 @@
 #import "MacSVGPluginCallbacks.h"
 #import "WebKitInterface.h"
 #import "MacSVGPlugin/SZJsonParser.h"
+#import "MacSVGPlugin/KeySplinesView.h"
+#import "MacSVGPlugin/KeyValuesPopoverViewController.h"
+#import "MacSVGPlugin/KeyValuesTableRowView.h"
 
 @class WebView;
 @class DOMElement;

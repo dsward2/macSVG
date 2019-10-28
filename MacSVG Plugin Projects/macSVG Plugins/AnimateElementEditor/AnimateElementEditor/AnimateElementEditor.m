@@ -13,6 +13,7 @@
 #import "MacSVGDocumentWindowController.h"
 #import "SVGHelpManager.h"
 
+
 @implementation AnimateElementEditor
 
 //==================================================================================
@@ -551,10 +552,11 @@
                 rowViewForRow:(NSInteger)row
 {
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateTableRowView";
+    static NSString* const kRowIdentifier = @"KeyValuesRowView";
     
-    AnimateElementTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //AnimateElementTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    AnimateElementTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         // Size doesn't matter, the table will set it
@@ -578,7 +580,8 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
 
     if (resultView == nil)
     {
@@ -1032,12 +1035,15 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
         
         if (keyTimesString.length > 0)
         {
-            [keyTimesAttributeString appendFormat:@"%@;", keyTimesString];
+            if (keyTimesAttributeString.length > 0)
+            {
+                [keyTimesAttributeString appendString:@";"];
+            }
+            [keyTimesAttributeString appendString:keyTimesString];
         }
         
         if (keySplinesString.length > 0)
         {
-            // apparent Chrome bug (formerly in WebKit) - don't end last spline with semicolon
             if (keySplinesAttributeString.length > 0)
             {
                 [keySplinesAttributeString appendString:@";"];
@@ -1047,7 +1053,11 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
         
         if (keyPointsString.length > 0)
         {
-            [keyPointsAttributeString appendFormat:@"%@;", keyPointsString];
+            if (keyPointsAttributeString.length > 0)
+            {
+                [keyPointsAttributeString appendString:@";"];
+            }
+            [keyPointsAttributeString appendString:keyPointsString];
         }
     }
     

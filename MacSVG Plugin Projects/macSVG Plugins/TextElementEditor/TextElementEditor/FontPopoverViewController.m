@@ -1506,11 +1506,35 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
             NSLog(@"fetchGoogleWebFontsCatalog - NSURLConnection failed");
         }
         */
+        
+        __weak NSTableView * weakGoogleWebfontsTableView = googleWebfontsTableView;
 
         NSURLSessionDataTask * downloadTask = [[NSURLSession sharedSession] dataTaskWithURL:requestURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
           // Handle response here
             NSData * receivedData = [NSData dataWithContentsOfURL:requestURL];
             self.googleWebFontsCatalogReceivedData = [receivedData mutableCopy];
+
+
+
+            NSString * jsonDataString = [[NSString alloc]
+                    initWithData:self.googleWebFontsCatalogReceivedData encoding:NSUTF8StringEncoding];
+            
+            SZJsonParser *parser = [[SZJsonParser alloc] initWithSource:jsonDataString];
+            
+            id obj = [parser parse];
+            
+            if (obj != NULL)
+            {
+                self.googleWebFontsCatalogDictionary = obj;
+            }
+            
+            self.googleWebFontsCatalogReceivedData = NULL;
+            
+            //[weakGoogleWebfontsTableView reloadData];
+            [weakGoogleWebfontsTableView performSelectorOnMainThread:@selector(reloadData) withObject:NULL waitUntilDone:YES];
+            
+            [self storeGoogleWebFontsCatalog];
+
         }];
             
         [downloadTask resume];
@@ -1777,6 +1801,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
     [fontPreviewWebView.mainFrame loadHTMLString:htmlString baseURL:NULL];
 }
 
+/*
 //==================================================================================
 //	connection:didReceiveResponse:
 //==================================================================================
@@ -1842,7 +1867,7 @@ font-weight     normal, bold, 100, 200, 300, 400, 500, 600, 700, 800, 900
     
     [self storeGoogleWebFontsCatalog];
 }
-
+*/
 
 
 @end

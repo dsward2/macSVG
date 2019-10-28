@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0EADC6A61D7C1EAF00A61333 /* AnimateElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */; };
-		0EADC6A91D7C1F3900A61333 /* AnimateElementKeySplinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6A81D7C1F3900A61333 /* AnimateElementKeySplinesView.m */; };
 		0EADC6AC1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */; };
 		0EADC6AF1D7C1FAD00A61333 /* AnimateElementTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6AE1D7C1FAD00A61333 /* AnimateElementTableRowView.m */; };
 		0EADC6B11D7C1FF100A61333 /* AnimateElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EADC6B01D7C1FF100A61333 /* AnimateElementEditor.xib */; };
@@ -20,8 +19,6 @@
 		0EADC69D1D7C1E2600A61333 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EADC6A41D7C1EAF00A61333 /* AnimateElementEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementEditor.h; sourceTree = "<group>"; };
 		0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementEditor.m; sourceTree = "<group>"; };
-		0EADC6A71D7C1F3900A61333 /* AnimateElementKeySplinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementKeySplinesView.h; sourceTree = "<group>"; };
-		0EADC6A81D7C1F3900A61333 /* AnimateElementKeySplinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementKeySplinesView.m; sourceTree = "<group>"; };
 		0EADC6AA1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementKeyValuesPopoverViewController.h; sourceTree = "<group>"; };
 		0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementKeyValuesPopoverViewController.m; sourceTree = "<group>"; };
 		0EADC6AD1D7C1FAD00A61333 /* AnimateElementTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementTableRowView.h; sourceTree = "<group>"; };
@@ -65,8 +62,6 @@
 			children = (
 				0EADC6A41D7C1EAF00A61333 /* AnimateElementEditor.h */,
 				0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */,
-				0EADC6A71D7C1F3900A61333 /* AnimateElementKeySplinesView.h */,
-				0EADC6A81D7C1F3900A61333 /* AnimateElementKeySplinesView.m */,
 				0EADC6AA1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.h */,
 				0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */,
 				0EADC6AD1D7C1FAD00A61333 /* AnimateElementTableRowView.h */,
@@ -166,7 +161,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EADC6A61D7C1EAF00A61333 /* AnimateElementEditor.m in Sources */,
-				0EADC6A91D7C1F3900A61333 /* AnimateElementKeySplinesView.m in Sources */,
 				0EADC6AC1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m in Sources */,
 				0EADC6AF1D7C1FAD00A61333 /* AnimateElementTableRowView.m in Sources */,
 			);

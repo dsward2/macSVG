@@ -841,7 +841,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
                     colorIndex = 1;
                     
                     float nextBeginSecondsFloat = beginSecondsFloat + durationSeconds;
-                    for (int j = 0; j < repeatCountValue; j++)
+                    for (int j = 1; j < repeatCountValue; j++)
                     {
                         [animationTimelineElement addTimespanAtBegin:nextBeginSecondsFloat dur:durationSeconds colorIndex:colorIndex
                                 pixelPerSecond:self.pixelsPerSecond frameRect:frameRect rowIndex:elementIndex];

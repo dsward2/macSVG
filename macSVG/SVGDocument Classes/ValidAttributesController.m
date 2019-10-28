@@ -200,7 +200,8 @@ NSComparisonResult attributesSort(id attribute1, id attribute2, void *context)
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
     
-    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
     NSString * resultString = @"";
 

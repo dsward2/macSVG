@@ -1108,7 +1108,7 @@
 - (void)awakeFromNib 
 {
     [super awakeFromNib];
-
+    
     // Register to get our custom type, strings, and filenames. Try dragging each into the view!
     [self.xmlOutlineController registerDragTypes];
     

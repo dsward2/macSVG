@@ -190,6 +190,7 @@
 {
     self.pointsArray = [NSMutableArray array];
 
+    /*
     pointsTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
 
     while(pointsTableView.tableColumns.count > 0)
@@ -223,6 +224,7 @@
     yTableColumn.minWidth = 60.0f;
     yTableColumn.maxWidth = 100.0f;
     [pointsTableView addTableColumn:yTableColumn];
+    */
 
     NSXMLElement * animateMotionElement = self.pluginTargetXMLElement;
 
@@ -361,8 +363,9 @@
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
     static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
     
-    PointsTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //PointsTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    PointsTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         // Size doesn't matter, the table will set it
@@ -386,8 +389,13 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    
+    NSString * tableCellIndentifier = [NSString stringWithFormat:@"%@Cell", tableColumn.identifier];
+    
+    NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableCellIndentifier owner:NULL];
 
+    /*
     if (resultView == nil)
     {
         resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
@@ -396,6 +404,7 @@
         resultView.bordered = NO;
         resultView.backgroundColor = [NSColor clearColor];
     }
+    */
 
     NSString * resultString = @"";
 
@@ -406,12 +415,12 @@
         if ([tableColumnIdentifier isEqualToString:@"#"] == YES)
         {
             resultString = [NSString stringWithFormat:@"%ld", (row + 1)];
-            resultView.editable = NO;
+            resultView.textField.editable = NO;
         }
         else
         {
-            resultView.editable = YES;
-            resultView.delegate = self;
+            resultView.textField.editable = YES;
+            resultView.textField.delegate = self;
         
             NSMutableDictionary * pointDictionary = (self.pointsArray)[row];
 
@@ -426,7 +435,7 @@
         }
     }
 
-    resultView.stringValue = resultString;
+    resultView.textField.stringValue = resultString;
     
     return resultView;
 }

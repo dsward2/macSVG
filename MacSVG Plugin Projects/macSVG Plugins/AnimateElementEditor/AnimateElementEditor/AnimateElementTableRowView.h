@@ -6,8 +6,8 @@
 //  Copyright © 2016 ArkPhone LLC. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <MacSVGPlugin/MacSVGPlugin.h>
 
-@interface AnimateElementTableRowView : NSTableRowView
+@interface AnimateElementTableRowView : KeyValuesTableRowView
 
 @end

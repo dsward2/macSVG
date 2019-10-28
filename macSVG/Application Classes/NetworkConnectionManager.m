@@ -119,7 +119,8 @@
         
         if ([tableColumnIdentifier isEqualToString:@"fileName"] == YES)
         {
-            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSImage * iconImage = NULL;
 
@@ -139,9 +140,9 @@
         }
         else if ([tableColumnIdentifier isEqualToString:@"listingType"] == YES)
         {
-            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
-            
             NSString * listingType = @"Unknown";
             
             if ([fileNameExtension isEqualToString:@"svg"] == YES)
@@ -172,7 +173,8 @@
         }
         else if ([tableColumnIdentifier isEqualToString:@"properties"] == YES)
         {
-            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * dateTimeString = itemDictionary[@"dateTime"];
             
@@ -182,7 +184,8 @@
         }
         else
         {
-            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [networkFileBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
             resultView = cellView;
         }
     }
@@ -2868,7 +2871,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         
         if ([tableColumnIdentifier isEqualToString:@"fileName"] == YES)
         {
-            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSImage * iconImage = NULL;
 
@@ -2890,7 +2894,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         }
         else if ([tableColumnIdentifier isEqualToString:@"listingType"] == YES)
         {
-            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             
             NSString * listingType = @"Unknown";
@@ -2928,7 +2933,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         }
         else if ([tableColumnIdentifier isEqualToString:@"properties"] == YES)
         {
-            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * dateTimeString = itemDictionary[@"dateTime"];
 
@@ -2947,7 +2953,8 @@ NSComparisonResult directoryListingSort(id listing1, id listing2, void *context)
         }
         else
         {
-            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [saveNetworkDirectoryBrowserTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
             resultView = cellView;
         }
     }

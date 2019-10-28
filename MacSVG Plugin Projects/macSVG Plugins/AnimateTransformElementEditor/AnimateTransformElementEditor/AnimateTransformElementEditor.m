@@ -713,8 +713,9 @@
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
     static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
     
-    AnimateTransformTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //AnimateTransformTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    AnimateTransformTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         rowView = [[AnimateTransformTableRowView alloc] initWithFrame:NSZeroRect];
@@ -730,7 +731,8 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
 
     if (resultView == nil)
     {
@@ -1031,7 +1033,7 @@
     NSMutableString * keySplinesAttributeString = [NSMutableString string];
     NSMutableString * keyPointsAttributeString = [NSMutableString string];
     
-    NSArray * keyValuesArray = keyValuesPopoverViewController.keyValuesArray;
+    NSArray * keyValuesArray = animateTransformKeyValuesPopoverViewController.keyValuesArray;
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
@@ -1074,7 +1076,7 @@
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    [keyValuesPopoverViewController loadKeyValuesData];
+    [animateTransformKeyValuesPopoverViewController loadKeyValuesData];
     
     // configure the preferred position of the popover
     [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];

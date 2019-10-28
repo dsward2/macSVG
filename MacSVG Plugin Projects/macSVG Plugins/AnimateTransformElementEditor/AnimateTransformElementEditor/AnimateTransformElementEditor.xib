@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AnimateTransformElementEditor">
             <connections>
                 <outlet property="addValuesRowButton" destination="IQo-Fy-a3F" id="TTt-fH-nOd"/>
+                <outlet property="animateTransformKeyValuesPopoverViewController" destination="3uF-R6-B5d" id="efZ-7r-HeP"/>
                 <outlet property="animateTransformTabView" destination="dSw-Je-UtV" id="VWZ-dT-P8P"/>
                 <outlet property="applyChangesButton" destination="J4W-wz-sSH" id="nM6-wm-df4"/>
                 <outlet property="beginTextField" destination="oay-7Q-DRi" id="izx-cU-fk1"/>
@@ -19,7 +20,6 @@
                 <outlet property="durTextField" destination="BKD-00-G6l" id="8LE-JE-ZT0"/>
                 <outlet property="fromTextField" destination="4k5-60-9dU" id="V0M-R4-GMm"/>
                 <outlet property="keyValuesPopover" destination="Sm5-Jo-5Cb" id="7I5-54-XBA"/>
-                <outlet property="keyValuesPopoverViewController" destination="3uF-R6-B5d" id="Nwa-45-bZo"/>
                 <outlet property="pluginView" destination="HRd-M5-MS5" id="a5G-Bb-wdu"/>
                 <outlet property="repeatCountComboBox" destination="I0L-YC-t2E" id="Uwr-i9-e02"/>
                 <outlet property="toTextField" destination="uKf-C4-VMm" id="J74-df-8PJ"/>
@@ -234,7 +234,7 @@
                         <action selector="doneButtonAction:" target="3uF-R6-B5d" id="aOc-9f-s2L"/>
                     </connections>
                 </button>
-                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwY-sb-HxE" customClass="AnimateTransformKeySplinesView">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwY-sb-HxE" customClass="KeySplinesView">
                     <rect key="frame" x="438" y="55" width="120" height="120"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <connections>
@@ -270,11 +270,11 @@
         <viewController id="3uF-R6-B5d" userLabel="Popover View Controller" customClass="AnimateTransformKeyValuesPopoverViewController">
             <connections>
                 <outlet property="addRowButton" destination="rD2-oZ-yul" id="MHB-8O-fTI"/>
-                <outlet property="animateTransformElementEditor" destination="-2" id="Ac6-tr-pZ8"/>
                 <outlet property="deleteRowButton" destination="7xQ-uG-fL7" id="ALQ-oY-c8f"/>
                 <outlet property="keySplinesView" destination="rwY-sb-HxE" id="mt3-bS-9cs"/>
                 <outlet property="keyValuesPopover" destination="Sm5-Jo-5Cb" id="yV8-Gi-VpC"/>
                 <outlet property="keyValuesTableView" destination="4MU-fb-FaJ" id="gbt-8m-KkH"/>
+                <outlet property="macSVGPlugin" destination="-2" id="sjC-IT-qdz"/>
                 <outlet property="presetsPopUpButton" destination="0s9-SB-dl2" id="j4w-Yy-VEG"/>
                 <outlet property="view" destination="FVZ-NF-LMP" id="dcY-Hb-Ger"/>
             </connections>
@@ -505,7 +505,7 @@
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
                                                                         <tableCellView id="bsp-Kc-1Zc">
-                                                                            <rect key="frame" x="38.5" y="1" width="66" height="17"/>
+                                                                            <rect key="frame" x="39" y="1" width="66" height="17"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="1" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1ay-e1-YQl">
@@ -538,7 +538,7 @@
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
                                                                         <tableCellView id="XpQ-b3-gGJ">
-                                                                            <rect key="frame" x="107.5" y="1" width="64" height="17"/>
+                                                                            <rect key="frame" x="108" y="1" width="64" height="17"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="2" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="njC-Ye-n6H">
@@ -571,7 +571,7 @@
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
                                                                         <tableCellView id="bQl-Tk-Cpy">
-                                                                            <rect key="frame" x="174.5" y="1" width="61" height="17"/>
+                                                                            <rect key="frame" x="175" y="1" width="61" height="17"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="3" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DR9-hM-5f8">

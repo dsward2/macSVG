@@ -652,14 +652,12 @@
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
     
-    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSString * tableCellIdentifier = [NSString stringWithFormat:@"%@Cell", tableColumnIdentifier];
+    
+    //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableCellIdentifier owner:NULL];
 
-    NSString * resultString = @"";
-
-    if (tableCellView != NULL)
-    {
-        resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
-    }
+    NSString * resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
     
     tableCellView.textField.stringValue = resultString;
     
@@ -672,7 +670,7 @@
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
-    NSString *  objectValue = NULL;
+    NSString *  objectValue = @"";
     
     NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
     

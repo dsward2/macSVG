@@ -479,7 +479,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         
         if ([tableColumnIdentifier isEqualToString:@"stopIndex"] == YES)
         {
-            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * rowIndexString = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
             
@@ -489,7 +490,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         }
         else if ([tableColumnIdentifier isEqualToString:@"stopID"] == YES)
         {
-            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSXMLNode * colorStopIDNode = [colorStopElement attributeForName:@"id"];
             NSString * colorStopIDString = colorStopIDNode.stringValue;
@@ -511,7 +513,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         }
         else
         {
-            resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
         }
     }
     
@@ -534,7 +537,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         
         if ([tableColumnIdentifier isEqualToString:@"gradientID"] == YES)
         {
-            NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * gradientIDString = @"";
             NSXMLNode * gradientIDNode = [gradientElement attributeForName:@"id"];
@@ -549,7 +553,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         }
         else if ([tableColumnIdentifier isEqualToString:@"gradientType"] == YES)
         {
-            NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            NSTableCellView * cellView = [gradientElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * gradientTagNameString = gradientElement.name;
             
@@ -559,7 +564,8 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         }
         else
         {
-            resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            //resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+            resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
         }
     }
     

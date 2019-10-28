@@ -1,15 +1,15 @@
 //
 //  KeySplinesView.m
-//  AnimateMotionElementEditor
+//  MacSVGPlugin
 //
 //  Created by Douglas Ward on 10/12/13.
 //  Copyright (c) 2013 ArkPhone LLC. All rights reserved.
 //
 
-#import "AnimateTransformKeySplinesView.h"
-#import "AnimateTransformKeyValuesPopoverViewController.h"
+#import "KeySplinesView.h"
+#import "KeyValuesPopoverViewController.h"
 
-@implementation AnimateTransformKeySplinesView
+@implementation KeySplinesView
 
 // ============================================================================
 

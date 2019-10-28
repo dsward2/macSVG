@@ -1,6 +1,6 @@
 //
 //  KeyValuesPopoverViewController.h
-//  AnimateMotionElementEditor
+//  MacSVGPlugin
 //
 //  Created by Douglas Ward on 10/12/13.
 //  Copyright (c) 2013 ArkPhone LLC. All rights reserved.
@@ -8,13 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class AnimateMotionElementEditor;
+@class MacSVGPlugin;
 @class KeySplinesView;
 
 @interface KeyValuesPopoverViewController : NSViewController
 {
     IBOutlet NSPopover * keyValuesPopover;
-    IBOutlet AnimateMotionElementEditor * animateMotionElementEditor;
+    IBOutlet MacSVGPlugin * macSVGPlugin;
     IBOutlet NSTableView * keyValuesTableView;
     IBOutlet NSButton * addRowButton;
     IBOutlet NSButton * deleteRowButton;

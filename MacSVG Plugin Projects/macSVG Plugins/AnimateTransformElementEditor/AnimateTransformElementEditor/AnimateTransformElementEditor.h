@@ -29,7 +29,7 @@
     IBOutlet NSButton * applyChangesButton;
 
     IBOutlet NSPopover * keyValuesPopover;
-    IBOutlet AnimateTransformKeyValuesPopoverViewController * keyValuesPopoverViewController;
+    IBOutlet AnimateTransformKeyValuesPopoverViewController * animateTransformKeyValuesPopoverViewController;
 }
 
 @property (strong) NSMutableArray * valuesArray;

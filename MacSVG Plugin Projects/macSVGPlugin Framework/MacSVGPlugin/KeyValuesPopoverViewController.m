@@ -1,13 +1,13 @@
 //
 //  KeyValuesPopoverViewController.m
-//  AnimateMotionElementEditor
+//  MacSVGPlugin
 //
 //  Created by Douglas Ward on 10/12/13.
 //  Copyright (c) 2013 ArkPhone LLC. All rights reserved.
 //
 
 #import "KeyValuesPopoverViewController.h"
-#import "AnimateMotionElementEditor.h"
+#import "MacSVGPlugin.h"
 #import "KeySplinesView.h"
 
 @interface KeyValuesPopoverViewController ()
@@ -66,7 +66,8 @@
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
     
-    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
     NSString * resultString = @"";
 
@@ -79,6 +80,11 @@
 
     tableCellView.textField.target = self;
     tableCellView.textField.action = @selector(tableCellChanged:);
+    
+    if ([tableColumnIdentifier isEqualToString:@"rowNumber"] == NO)
+    {
+        tableCellView.textField.editable = YES;
+    }
 
     return (NSView *)tableCellView;
 }
@@ -101,7 +107,7 @@
             {
                 objectValue = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
             }
-            if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
             {
                 objectValue = keyValuesDictionary[@"keyTimes"];
             }
@@ -109,16 +115,19 @@
             {
                 objectValue = keyValuesDictionary[@"keySplines"];
                 
-                if (rowIndex >= ((self.keyValuesArray).count - 1))
+                if ([macSVGPlugin.pluginName isEqualToString:@"AnimateTransform Element Editor"] == YES)
                 {
-                    NSColor * redColor = [NSColor redColor];
+                    if (rowIndex >= ((self.keyValuesArray).count - 1))
+                    {
+                        NSColor * redColor = [NSColor redColor];
 
-                    NSDictionary *redAttribute =
-                            @{NSForegroundColorAttributeName: redColor};
-                    
-                    NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
+                        NSDictionary *redAttribute =
+                                @{NSForegroundColorAttributeName: redColor};
+                        
+                        NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
 
-                    objectValue = redString;
+                        objectValue = redString;
+                    }
                 }
             }
             else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
@@ -126,6 +135,10 @@
                 objectValue = keyValuesDictionary[@"keyPoints"];
             }
         }
+    }
+    else
+    {
+        NSLog(@"KeyValuesPopoverViewController - objectValueForTableColumn - row value is out of bounds for array");
     }
     
     return objectValue;
@@ -164,7 +177,7 @@
 */
 
 //==================================================================================
-//    tableCellChanged:row:
+//    tableCellChanged:
 //==================================================================================
 
 - (IBAction)tableCellChanged:(id)sender
@@ -250,52 +263,58 @@
 - (IBAction)presetsPopUpButtonAction:(id)sender
 {
     NSString * keyTimesString = @"0;1";
-    NSString * keySplinesString = @"0 0 1 1;";
+    NSString * keySplinesString = @"0 0 1 1";
     NSString * keyPointsString = @"";
     
     NSInteger presetIndex = presetsPopUpButton.indexOfSelectedItem;
     
     switch (presetIndex)
     {
+        case 0:
+            keyTimesString = @"";
+            keySplinesString = @"";
+            keyPointsString = @"";
+            break;
+
         case 1:
             keyTimesString = @"0;1";
-            keySplinesString = @"0 0 1 1;";
+            keySplinesString = @"0 0 1 1";
             keyPointsString = @"";
             break;
 
         case 2:
             keyTimesString = @"0;1";
-            keySplinesString = @"0.5 0 0.5 1;";
+            keySplinesString = @"0.5 0 0.5 1";
             keyPointsString = @"";
             break;
 
         case 3:
             keyTimesString = @"0;1";
-            keySplinesString = @"0 0.75 0.25 1;";
+            keySplinesString = @"0 0.75 0.25 1";
             keyPointsString = @"";
             break;
 
         case 4:
             keyTimesString = @"0;1";
-            keySplinesString = @"0 0.25 1 0.75;";
+            keySplinesString = @"0 0.25 1 0.75";
             keyPointsString = @"";
             break;
 
         case 5:
             keyTimesString = @"0;1";
-            keySplinesString = @"0 0 0 1;";
+            keySplinesString = @"0 0 0 1";
             keyPointsString = @"";
             break;
 
         case 6:
             keyTimesString = @"0;1";
-            keySplinesString = @"0 0 1 0;";
+            keySplinesString = @"0 0 1 0";
             keyPointsString = @"";
             break;
 
         case 7:
             keyTimesString = @"0;1";
-            keySplinesString = @"1 0 0.25 0.25;";
+            keySplinesString = @"1 0 0.25 0.25";
             keyPointsString = @"";
             break;
 
@@ -315,24 +334,29 @@
 
 - (void)loadKeyValuesData
 {
-    NSXMLElement * animateMotionElement = animateMotionElementEditor.pluginTargetXMLElement;
+    NSXMLElement * targetElement = macSVGPlugin.pluginTargetXMLElement;
+    
+    if (targetElement == NULL)
+    {
+        NSLog(@"KeyValuesPopoverViewController - loadKeyValuesData - targetElement is NULL");
+    }
 
     NSString * keyTimesString = @"";
-    NSXMLNode * keyTimesNode = [animateMotionElement attributeForName:@"keyTimes"];
+    NSXMLNode * keyTimesNode = [targetElement attributeForName:@"keyTimes"];
     if (keyTimesNode != NULL)
     {
         keyTimesString = keyTimesNode.stringValue;
     }
 
     NSString * keySplinesString = @"";
-    NSXMLNode * keySplinesNode = [animateMotionElement attributeForName:@"keySplines"];
+    NSXMLNode * keySplinesNode = [targetElement attributeForName:@"keySplines"];
     if (keySplinesNode != NULL)
     {
         keySplinesString = keySplinesNode.stringValue;
     }
 
     NSString * keyPointsString = @"";
-    NSXMLNode * keyPointsNode = [animateMotionElement attributeForName:@"keyPoints"];
+    NSXMLNode * keyPointsNode = [targetElement attributeForName:@"keyPoints"];
     if (keyPointsNode != NULL)
     {
         keyPointsString = keyPointsNode.stringValue;
@@ -420,6 +444,14 @@
 //==================================================================================
 
 - (IBAction)deleteRowButtonAction:(id)sender
+{
+}
+
+//==================================================================================
+//    popoverDidShow:
+//==================================================================================
+
+-(void)popoverDidShow:(NSNotification *)notification
 {
 }
 

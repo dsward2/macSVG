@@ -2781,8 +2781,9 @@
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
     static NSString* const kRowIdentifier = @"XMLOutlineRowView";
     
-    XMLOutlineRowView * rowView = [outlineView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //XMLOutlineRowView * rowView = [outlineView makeViewWithIdentifier:kRowIdentifier owner:self];
+    XMLOutlineRowView * rowView = [outlineView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         rowView = [[XMLOutlineRowView alloc] initWithFrame:NSZeroRect]; // the table will set size
@@ -2798,7 +2799,8 @@
 
 - (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-    id resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
     NSString * tableColumnIdentifier = tableColumn.identifier;
 
     if (resultView == nil)
@@ -2808,11 +2810,12 @@
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
             [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
+            checkboxButton.identifier = tableColumnIdentifier;
             [checkboxButton setTarget:self];
             [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
             
             checkboxButton.refusesFirstResponder = YES;
-            
+                        
             resultView = checkboxButton;
         }
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
@@ -2820,7 +2823,7 @@
             NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
             [checkboxButton setButtonType:NSButtonTypeSwitch];
             [checkboxButton setControlSize:NSControlSizeSmall];
-
+            checkboxButton.identifier = tableColumnIdentifier;
             checkboxButton.refusesFirstResponder = YES;
             
             resultView = checkboxButton;
@@ -2828,15 +2831,33 @@
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_ICON] == YES)
         {
             SVGIconView * svgIconView = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            svgIconView.identifier = @"folder";
+
+            NSXMLNode * nodeData = item;
+            NSXMLNodeKind nodeKind = nodeData.kind;
             
+            NSString * newIdentifier = @"folder";
+            
+            if (nodeKind == NSXMLTextKind)
+            {
+                newIdentifier = @"text";
+            }
+            else if (nodeKind == NSXMLCommentKind)
+            {
+                newIdentifier = @"text";
+            }
+            else
+            {
+                newIdentifier = @"folder";
+            }
+            svgIconView.identifier = newIdentifier;
+
             resultView = svgIconView;
         }
         else if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
         {
             //NSTextField * textField = [[NSTextField alloc] initWithFrame:outlineView.frame];
             NSTextField * textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 300, 14)];
-            textField.identifier = tableColumn.identifier;
+            textField.identifier = tableColumnIdentifier;
             textField.refusesFirstResponder = YES;
             [textField setControlSize:NSControlSizeSmall];
             textField.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
@@ -2871,7 +2892,7 @@
             resultView = textField;
         }
     }
-    
+        
     return resultView;
 }
 

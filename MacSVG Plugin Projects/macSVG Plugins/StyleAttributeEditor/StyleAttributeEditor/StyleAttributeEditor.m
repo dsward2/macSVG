@@ -421,8 +421,9 @@
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
     static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
     
-    StylePropertiesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    
+    //StylePropertiesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
+    StylePropertiesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
     if (rowView == NULL)
     {
         // Size doesn't matter, the table will set it
@@ -446,7 +447,8 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    //NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
 
     /*
     if (resultView == nil)
