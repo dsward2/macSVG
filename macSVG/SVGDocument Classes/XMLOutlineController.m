@@ -2961,36 +2961,6 @@
 }
 
 //==================================================================================
-//    outlineView:toolTipForCell:rect:tableColumn:item:mouseLocation:
-//==================================================================================
-
-- (NSString *)outlineView:(NSOutlineView *)outlineView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)tableColumn item:(id)item mouseLocation:(NSPoint)mouseLocation
-{
-    NSInteger nonTextChildNodes = 0;
-    
-    NSXMLElement * xmlElement = [item copy];
-    NSArray * xmlElementChildren = xmlElement.children;
-    for (NSXMLNode * childNode in xmlElementChildren)
-    {
-        if (childNode.kind != NSXMLTextKind)
-        {
-            [childNode detach];
-            nonTextChildNodes++;
-        }
-    }
-    if (nonTextChildNodes > 0)
-    {
-        NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-        ellipseTextNode.stringValue = @" … ";
-        [xmlElement addChild:ellipseTextNode];
-    }
-    NSString * toolTipString = [xmlElement XMLString];
-
-    return toolTipString;
-}
-
-
-//==================================================================================
 //	outlineView:didClickTableColumn:
 //==================================================================================
 
@@ -2999,6 +2969,7 @@
 
 }
 
+/*
 //==================================================================================
 //	GenerateUniqueFileNameAtPath()
 //==================================================================================
@@ -3022,8 +2993,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 //	outlineView:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:
 //==================================================================================
 
-/*
-- (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items 
+- (NSArray *)outlineView:(NSOutlineView *)outlineView namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination forDraggedItems:(NSArray *)items
 {
     NSLog(@"XMLOutlineController - namesOfPromisedFilesDroppedAtDestination");
     NSMutableArray *result = [NSMutableArray array];

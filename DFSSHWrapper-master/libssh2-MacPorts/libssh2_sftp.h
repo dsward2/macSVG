@@ -226,26 +226,11 @@ LIBSSH2_API LIBSSH2_SFTP_HANDLE *libssh2_sftp_open_ex(LIBSSH2_SFTP *sftp,
                                                       unsigned int filename_len,
                                                       unsigned long flags,
                                                       long mode, int open_type);
-    
-
-// dsward replaced this macro
-//#define libssh2_sftp_open(sftp, filename, flags, mode) \
-//    libssh2_sftp_open_ex((sftp), (filename), strlen(filename), (flags), \
-//                         (mode), LIBSSH2_SFTP_OPENFILE)
-    
-// dsward added type coercion to unsigned int for filename parameter
 #define libssh2_sftp_open(sftp, filename, flags, mode) \
-    libssh2_sftp_open_ex((sftp), (filename), (unsigned int)strlen(filename), (flags), \
+    libssh2_sftp_open_ex((sftp), (filename), strlen(filename), (flags), \
                          (mode), LIBSSH2_SFTP_OPENFILE)
-    
-// dsward replaced this macro
-//#define libssh2_sftp_opendir(sftp, path) \
-//    libssh2_sftp_open_ex((sftp), (path), strlen(path), 0, 0, \
-//                         LIBSSH2_SFTP_OPENDIR)
-
-// dsward added type coercion to unsigned int for page parameter
 #define libssh2_sftp_opendir(sftp, path) \
-    libssh2_sftp_open_ex((sftp), (path), (unsigned int)strlen(path), 0, 0, \
+    libssh2_sftp_open_ex((sftp), (path), strlen(path), 0, 0, \
                          LIBSSH2_SFTP_OPENDIR)
 
 LIBSSH2_API ssize_t libssh2_sftp_read(LIBSSH2_SFTP_HANDLE *handle,
@@ -315,15 +300,8 @@ LIBSSH2_API int libssh2_sftp_statvfs(LIBSSH2_SFTP *sftp,
 LIBSSH2_API int libssh2_sftp_mkdir_ex(LIBSSH2_SFTP *sftp,
                                       const char *path,
                                       unsigned int path_len, long mode);
-
-// dsward replaced this macro
-//#define libssh2_sftp_mkdir(sftp, path, mode) \
-//    libssh2_sftp_mkdir_ex((sftp), (path), strlen(path), (mode))
-
-// dsward added type coercion to unsigned int for path parameter
 #define libssh2_sftp_mkdir(sftp, path, mode) \
-    libssh2_sftp_mkdir_ex((sftp), (path), (unsigned int)strlen(path), (mode))
-
+    libssh2_sftp_mkdir_ex((sftp), (path), strlen(path), (mode))
 
 LIBSSH2_API int libssh2_sftp_rmdir_ex(LIBSSH2_SFTP *sftp,
                                       const char *path,

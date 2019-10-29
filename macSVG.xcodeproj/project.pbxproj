@@ -86,6 +86,8 @@
 		0E4EA2E91D40ADAB00C5145C /* svg_presentation_attributes_help.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0E4EA2E71D40AD7500C5145C /* svg_presentation_attributes_help.txt */; };
 		0E5AE6081D5C1A9A000C1643 /* TransformElementsDialog.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E5AE6071D5C1A7A000C1643 /* TransformElementsDialog.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E5B3CEF1D02AB96008FDD23 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */; };
+		0E5F971C2367E79300B8EF96 /* libssh2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5F97142367E79300B8EF96 /* libssh2.1.dylib */; };
+		0E5F971D2367E80A00B8EF96 /* libssh2.1.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5F97142367E79300B8EF96 /* libssh2.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E65AC501DF7F6DC000DBDF9 /* macsvg-logo-animation.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */; };
 		0E69F16214ABC5C10065E2F0 /* WebServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E69F15F14ABC5C10065E2F0 /* WebServerController.m */; };
 		0E714538142C037A002F8E1F /* HorizontalRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E714537142C037A002F8E1F /* HorizontalRulerView.m */; };
@@ -692,7 +694,6 @@
 		0EB663EC142866C4003723F0 /* SVGWebKitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E7142866C4003723F0 /* SVGWebKitController.m */; };
 		0EB663ED142866C4003723F0 /* XMLOutlineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EB663E9142866C4003723F0 /* XMLOutlineController.m */; };
 		0EB8CAE71F78E6CB004B6D05 /* PathTextGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC22E281D7039FD00931DC4 /* libssh2.a */; };
 		0EC2EEA61D683C8A00736FE4 /* SVGAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0EC671841D696EBB0086943C /* multi-line_text_with_foreignobject_and_html.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */; };
 		0ECCB0221DB4B60A001A6085 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0ECCB0211DB4B60A001A6085 /* LICENSE */; };
@@ -718,7 +719,6 @@
 		0EEE3A7F17B9E3AA0040846F /* DFSSHConnectionType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3A7B17B9E3AA0040846F /* DFSSHConnectionType.m */; };
 		0EEE3A8017B9E3AA0040846F /* DFSSHConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3A7C17B9E3AA0040846F /* DFSSHConnector.m */; };
 		0EEE3A8217B9E3AA0040846F /* DFSSHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3A7E17B9E3AA0040846F /* DFSSHServer.m */; };
-		0EEE3A9C17B9E9FF0040846F /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EEE3A9B17B9E9FF0040846F /* libcrypto.dylib */; };
 		0EEE3A9E17B9EA110040846F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EEE3A9D17B9EA110040846F /* libz.dylib */; };
 		0EEE3ABA17B9F1790040846F /* SCPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3AB917B9F1790040846F /* SCPDownload.m */; };
 		0EEE3ABD17BA8B1E0040846F /* CheckeredBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3ABC17BA8B1E0040846F /* CheckeredBackgroundView.m */; };
@@ -1660,6 +1660,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0E770CC21D7E395F000401C9 /* MacSVGPlugin.framework in Copy Frameworks */,
+				0E5F971D2367E80A00B8EF96 /* libssh2.1.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2286,6 +2287,12 @@
 		0E527C831D55C41F002AB772 /* types-dom-svgtransformable-01-f.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = "types-dom-svgtransformable-01-f.svg"; sourceTree = "<group>"; };
 		0E5AE6071D5C1A7A000C1643 /* TransformElementsDialog.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = TransformElementsDialog.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5B3CEE1D02AB96008FDD23 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		0E5F97142367E79300B8EF96 /* libssh2.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssh2.1.dylib; sourceTree = "<group>"; };
+		0E5F97152367E79300B8EF96 /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2.h; sourceTree = "<group>"; };
+		0E5F97162367E79300B8EF96 /* libssh2_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_config.h; sourceTree = "<group>"; };
+		0E5F97172367E79300B8EF96 /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_publickey.h; sourceTree = "<group>"; };
+		0E5F97182367E79300B8EF96 /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_sftp.h; sourceTree = "<group>"; };
+		0E5F971E2367E8F300B8EF96 /* libcrypto.42.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.42.dylib; path = ../../../../../../../usr/lib/libcrypto.42.dylib; sourceTree = "<group>"; };
 		0E5FAA551DDD5234006EB7E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E5FAA611DDD83C4006EB7E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = index.html; sourceTree = "<group>"; };
 		0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "macsvg-logo-animation.svg"; sourceTree = "<group>"; };
@@ -2481,10 +2488,7 @@
 		0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PathTextGenerator.xcodeproj; path = PathTextGenerator/PathTextGenerator.xcodeproj; sourceTree = "<group>"; };
 		0EB8CAE51F78E5E2004B6D05 /* PathTextGenerator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = PathTextGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBD6DE614D2268B00564EC2 /* plugin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plugin.png; sourceTree = "<group>"; };
-		0EC22E251D7021A200931DC4 /* make_libssh.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = make_libssh.sh; path = "DFSSHWrapper-master/make_libssh.sh"; sourceTree = SOURCE_ROOT; };
 		0EC22E261D7021A200931DC4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "DFSSHWrapper-master/README.md"; sourceTree = SOURCE_ROOT; };
-		0EC22E281D7039FD00931DC4 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssh2.a; sourceTree = "<group>"; };
-		0EC22E2A1D703C4100931DC4 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		0EC2EEA51D683C5D00736FE4 /* SVGAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = SVGAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC671831D696EA90086943C /* multi-line_text_with_foreignobject_and_html.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "multi-line_text_with_foreignobject_and_html.svg"; sourceTree = "<group>"; };
 		0EC902C01D831B7F003FDF32 /* MacSVG-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MacSVG-Info.plist"; sourceTree = "<group>"; };
@@ -2535,23 +2539,6 @@
 		0EEE3A7C17B9E3AA0040846F /* DFSSHConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFSSHConnector.m; sourceTree = "<group>"; };
 		0EEE3A7D17B9E3AA0040846F /* DFSSHOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFSSHOperator.m; sourceTree = "<group>"; };
 		0EEE3A7E17B9E3AA0040846F /* DFSSHServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFSSHServer.m; sourceTree = "<group>"; };
-		0EEE3A8517B9E3BF0040846F /* channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
-		0EEE3A8617B9E3BF0040846F /* comp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comp.h; sourceTree = "<group>"; };
-		0EEE3A8717B9E3BF0040846F /* crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto.h; sourceTree = "<group>"; };
-		0EEE3A8817B9E3BF0040846F /* libgcrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libgcrypt.h; sourceTree = "<group>"; };
-		0EEE3A8917B9E3BF0040846F /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2.h; sourceTree = "<group>"; };
-		0EEE3A8A17B9E3BF0040846F /* libssh2_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_config.h; sourceTree = "<group>"; };
-		0EEE3A8B17B9E3BF0040846F /* libssh2_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_priv.h; sourceTree = "<group>"; };
-		0EEE3A8C17B9E3BF0040846F /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_publickey.h; sourceTree = "<group>"; };
-		0EEE3A8D17B9E3BF0040846F /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_sftp.h; sourceTree = "<group>"; };
-		0EEE3A8E17B9E3BF0040846F /* mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac.h; sourceTree = "<group>"; };
-		0EEE3A8F17B9E3BF0040846F /* misc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
-		0EEE3A9017B9E3BF0040846F /* openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssl.h; sourceTree = "<group>"; };
-		0EEE3A9117B9E3BF0040846F /* packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet.h; sourceTree = "<group>"; };
-		0EEE3A9217B9E3BF0040846F /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = session.h; sourceTree = "<group>"; };
-		0EEE3A9317B9E3BF0040846F /* sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sftp.h; sourceTree = "<group>"; };
-		0EEE3A9417B9E3BF0040846F /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
-		0EEE3A9517B9E3BF0040846F /* userauth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userauth.h; sourceTree = "<group>"; };
 		0EEE3A9917B9E9E90040846F /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = "DFSSHWrapper-master/libssh2_xcode/lib"; sourceTree = "<group>"; };
 		0EEE3A9B17B9E9FF0040846F /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
 		0EEE3A9D17B9EA110040846F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
@@ -2612,12 +2599,11 @@
 				0E3B72FC1D8296DE00B10ECE /* CoreMedia.framework in Frameworks */,
 				0E0F5E042346AD5500BCA3B1 /* VideoToolbox.framework in Frameworks */,
 				0E3B72FA1D82966A00B10ECE /* CoreVideo.framework in Frameworks */,
+				0E5F971C2367E79300B8EF96 /* libssh2.1.dylib in Frameworks */,
 				0E3B72F81D82964B00B10ECE /* AVFoundation.framework in Frameworks */,
 				0E5B3CEF1D02AB96008FDD23 /* JavaScriptCore.framework in Frameworks */,
 				0E9A70D01D0181340018CA53 /* WebKit.framework in Frameworks */,
 				0EEE3A9E17B9EA110040846F /* libz.dylib in Frameworks */,
-				0EC22E291D703A1300931DC4 /* libssh2.a in Frameworks */,
-				0EEE3A9C17B9E9FF0040846F /* libcrypto.dylib in Frameworks */,
 				0EDDC382178DDAE1003B014D /* libstdc++.dylib in Frameworks */,
 				0E9637AF17868B3A0011861A /* Security.framework in Frameworks */,
 				0EB6637D14286398003723F0 /* Cocoa.framework in Frameworks */,
@@ -3454,6 +3440,19 @@
 			path = svg;
 			sourceTree = "<group>";
 		};
+		0E5F97132367E79300B8EF96 /* libssh2-MacPorts */ = {
+			isa = PBXGroup;
+			children = (
+				0E5F97142367E79300B8EF96 /* libssh2.1.dylib */,
+				0E5F97152367E79300B8EF96 /* libssh2.h */,
+				0E5F97162367E79300B8EF96 /* libssh2_config.h */,
+				0E5F97172367E79300B8EF96 /* libssh2_publickey.h */,
+				0E5F97182367E79300B8EF96 /* libssh2_sftp.h */,
+			);
+			name = "libssh2-MacPorts";
+			path = "DFSSHWrapper-master/libssh2-MacPorts";
+			sourceTree = SOURCE_ROOT;
+		};
 		0E5FAA4D1DDD5180006EB7E6 /* macSVG.help */ = {
 			isa = PBXGroup;
 			children = (
@@ -3943,6 +3942,7 @@
 		0EB6637B14286398003723F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E5F971E2367E8F300B8EF96 /* libcrypto.42.dylib */,
 				0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */,
 				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
 				0E3B72FB1D8296DE00B10ECE /* CoreMedia.framework */,
@@ -4088,15 +4088,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0EC22E271D7039FD00931DC4 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				0EC22E2A1D703C4100931DC4 /* libcrypto.a */,
-				0EC22E281D7039FD00931DC4 /* libssh2.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		0ECCB0231DB51B57001A6085 /* README_images */ = {
 			isa = PBXGroup;
 			children = (
@@ -4123,7 +4114,6 @@
 			isa = PBXGroup;
 			children = (
 				0EEE3A7417B9E3AA0040846F /* DFSSHWrapper */,
-				0EEE3A8317B9E3BF0040846F /* libssh2_xcode */,
 				0EEE3AA017B9F0980040846F /* sshlib2 examples */,
 			);
 			name = DFSSHWrapper;
@@ -4132,7 +4122,7 @@
 		0EEE3A7417B9E3AA0040846F /* DFSSHWrapper */ = {
 			isa = PBXGroup;
 			children = (
-				0EC22E251D7021A200931DC4 /* make_libssh.sh */,
+				0E5F97132367E79300B8EF96 /* libssh2-MacPorts */,
 				0EC22E261D7021A200931DC4 /* README.md */,
 				0EEE3A7517B9E3AA0040846F /* headers */,
 				0EEE3A7A17B9E3AA0040846F /* source */,
@@ -4161,40 +4151,6 @@
 				0EEE3A7E17B9E3AA0040846F /* DFSSHServer.m */,
 			);
 			path = source;
-			sourceTree = "<group>";
-		};
-		0EEE3A8317B9E3BF0040846F /* libssh2_xcode */ = {
-			isa = PBXGroup;
-			children = (
-				0EEE3A8417B9E3BF0040846F /* include */,
-				0EC22E271D7039FD00931DC4 /* lib */,
-			);
-			name = libssh2_xcode;
-			path = "../DFSSHWrapper-master/libssh2_xcode";
-			sourceTree = "<group>";
-		};
-		0EEE3A8417B9E3BF0040846F /* include */ = {
-			isa = PBXGroup;
-			children = (
-				0EEE3A8517B9E3BF0040846F /* channel.h */,
-				0EEE3A8617B9E3BF0040846F /* comp.h */,
-				0EEE3A8717B9E3BF0040846F /* crypto.h */,
-				0EEE3A8817B9E3BF0040846F /* libgcrypt.h */,
-				0EEE3A8917B9E3BF0040846F /* libssh2.h */,
-				0EEE3A8A17B9E3BF0040846F /* libssh2_config.h */,
-				0EEE3A8B17B9E3BF0040846F /* libssh2_priv.h */,
-				0EEE3A8C17B9E3BF0040846F /* libssh2_publickey.h */,
-				0EEE3A8D17B9E3BF0040846F /* libssh2_sftp.h */,
-				0EEE3A8E17B9E3BF0040846F /* mac.h */,
-				0EEE3A8F17B9E3BF0040846F /* misc.h */,
-				0EEE3A9017B9E3BF0040846F /* openssl.h */,
-				0EEE3A9117B9E3BF0040846F /* packet.h */,
-				0EEE3A9217B9E3BF0040846F /* session.h */,
-				0EEE3A9317B9E3BF0040846F /* sftp.h */,
-				0EEE3A9417B9E3BF0040846F /* transport.h */,
-				0EEE3A9517B9E3BF0040846F /* userauth.h */,
-			);
-			path = include;
 			sourceTree = "<group>";
 		};
 		0EEE3AA017B9F0980040846F /* sshlib2 examples */ = {
@@ -5102,7 +5058,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/DFSSHWrapper-master/libssh2-MacPorts",
+					"$(inherited)",
+					/usr/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.6;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
@@ -5141,7 +5101,11 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/DFSSHWrapper-master/libssh2_xcode/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/DFSSHWrapper-master/libssh2-MacPorts",
+					"$(inherited)",
+					/usr/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.6;
 				OTHER_CODE_SIGN_FLAGS = "-o library";
