@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -96,6 +96,10 @@
 		0E7145A1142C302C002F8E1F /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7145A0142C302B002F8E1F /* GradientView.m */; };
 		0E770CC21D7E395F000401C9 /* MacSVGPlugin.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E770CDC1D7FCE52000401C9 /* SVGPolylineEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */; };
+		0E772CB22368F61A00E9062D /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */; };
+		0E772CB32368F61A00E9062D /* CocoaAsyncSocket.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0E772CE723690C1D00E9062D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CE523690BE800E9062D /* CocoaLumberjack.framework */; };
+		0E772CE823690C1D00E9062D /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CE523690BE800E9062D /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */; };
 		0E7E4BBA17FD142700B1FD07 /* MacSVGDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7E4BB917FD142700B1FD07 /* MacSVGDocumentController.m */; };
 		0E7F9A6714B030A8005351BE /* EditorUIFrameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F9A6614B030A8005351BE /* EditorUIFrameController.m */; };
@@ -104,12 +108,6 @@
 		0E7F9A7014B034ED005351BE /* ValidAttributesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F9A6F14B034ED005351BE /* ValidAttributesController.m */; };
 		0E81A9561D32283600EA824A /* FlippedClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E81A9551D32283600EA824A /* FlippedClipView.m */; };
 		0E81A9761D34F52900EA824A /* BezierCircleGenerator.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E81A9741D34F4D300EA824A /* BezierCircleGenerator.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		0E82B12E1D7309FC005D0634 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0B41D730811005D0634 /* GCDAsyncSocket.m */; };
-		0E82B12F1D730A03005D0634 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0B61D730811005D0634 /* GCDAsyncUdpSocket.m */; };
-		0E82B1321D730A1B005D0634 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0C31D730811005D0634 /* DDASLLogger.m */; };
-		0E82B1331D730A20005D0634 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0C51D730811005D0634 /* DDFileLogger.m */; };
-		0E82B1341D730A26005D0634 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0C81D730811005D0634 /* DDLog.m */; };
-		0E82B1351D730A2E005D0634 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82B0CA1D730811005D0634 /* DDTTYLogger.m */; };
 		0E82B1381D73266A005D0634 /* animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E82B1361D732564005D0634 /* animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg */; };
 		0E8C6E981D5758B90088CA7B /* text_on_an_animated_path.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E8C6E971D5758AD0088CA7B /* text_on_an_animated_path.svg */; };
 		0E8DFB711D55C6EB00870B72 /* animate-dom-01-f.svg in Copy SVG Test Suite Files */ = {isa = PBXBuildFile; fileRef = 0E527A761D55C41C002AB772 /* animate-dom-01-f.svg */; };
@@ -1020,27 +1018,6 @@
 			remoteGlobalIDString = 0E5AE5F11D5BD57F000C1643;
 			remoteInfo = TransformElementsDialog;
 		};
-		0E82B0F71D730812005D0634 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6CD990101B77868C0011A685;
-			remoteInfo = "iOS CocoaAsyncSocket";
-		};
-		0E82B0F91D730812005D0634 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FC41F131B9D965000578BEB;
-			remoteInfo = "Mac CocoaAsyncSocket";
-		};
-		0E82B0FB1D730812005D0634 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D8B70C41BCFA15700D8E273;
-			remoteInfo = "tvOS CocoaAsyncSocket";
-		};
 		0EB8CACF1F78D11F004B6D05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0EB8CAC81F78D11E004B6D05 /* PathTextGenerator.xcodeproj */;
@@ -1659,7 +1636,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0E772CB32368F61A00E9062D /* CocoaAsyncSocket.framework in Copy Frameworks */,
 				0E770CC21D7E395F000401C9 /* MacSVGPlugin.framework in Copy Frameworks */,
+				0E772CE823690C1D00E9062D /* CocoaLumberjack.framework in Copy Frameworks */,
 				0E5F971D2367E80A00B8EF96 /* libssh2.1.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -2315,6 +2294,8 @@
 		0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E770CDA1D7FCE52000401C9 /* SVGPolylineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPolylineEditor.h; sourceTree = "<group>"; };
 		0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGPolylineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		0E772CE523690BE800E9062D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../../Library/Developer/Xcode/DerivedData/Lumberjack-dhttzcjngmuzebfowebgwiqznllm/Build/Products/Debug/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		0E7967C814A425080070B099 /* TimelineLabelsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLabelsTableViewDelegate.h; sourceTree = "<group>"; };
 		0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineLabelsTableViewDelegate.m; sourceTree = "<group>"; };
 		0E7E4BB817FD142700B1FD07 /* MacSVGDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGDocumentController.h; path = "../SVGDocument Classes/MacSVGDocumentController.h"; sourceTree = "<group>"; };
@@ -2330,41 +2311,6 @@
 		0E81A9541D32283600EA824A /* FlippedClipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FlippedClipView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E81A9551D32283600EA824A /* FlippedClipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FlippedClipView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E81A9741D34F4D300EA824A /* BezierCircleGenerator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = BezierCircleGenerator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E82AF771D730810005D0634 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		0E82AF781D730810005D0634 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
-		0E82AF791D730810005D0634 /* CocoaAsyncSocket.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = CocoaAsyncSocket.podspec; sourceTree = "<group>"; };
-		0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = CocoaAsyncSocket.xcodeproj; sourceTree = "<group>"; };
-		0E82B0AE1D730811005D0634 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
-		0E82B0B01D730811005D0634 /* CocoaAsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CocoaAsyncSocket.h; sourceTree = "<group>"; };
-		0E82B0B21D730811005D0634 /* Documentation.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
-		0E82B0B31D730811005D0634 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
-		0E82B0B41D730811005D0634 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
-		0E82B0B51D730811005D0634 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
-		0E82B0B61D730811005D0634 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
-		0E82B0B71D730811005D0634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0E82B0B91D730811005D0634 /* AsyncSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
-		0E82B0BA1D730811005D0634 /* AsyncSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
-		0E82B0BB1D730811005D0634 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
-		0E82B0BC1D730811005D0634 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
-		0E82B0BD1D730811005D0634 /* Documentation.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
-		0E82B0C01D730811005D0634 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
-		0E82B0C11D730811005D0634 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
-		0E82B0C21D730811005D0634 /* DDASLLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
-		0E82B0C31D730811005D0634 /* DDASLLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
-		0E82B0C41D730811005D0634 /* DDFileLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
-		0E82B0C51D730811005D0634 /* DDFileLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
-		0E82B0C61D730811005D0634 /* DDLog+LOGV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
-		0E82B0C71D730811005D0634 /* DDLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
-		0E82B0C81D730811005D0634 /* DDLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
-		0E82B0C91D730811005D0634 /* DDTTYLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
-		0E82B0CA1D730811005D0634 /* DDTTYLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
-		0E82B0CC1D730811005D0634 /* DDContextFilterLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDContextFilterLogFormatter.h; sourceTree = "<group>"; };
-		0E82B0CD1D730811005D0634 /* DDContextFilterLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDContextFilterLogFormatter.m; sourceTree = "<group>"; };
-		0E82B0CE1D730811005D0634 /* DDDispatchQueueLogFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDDispatchQueueLogFormatter.h; sourceTree = "<group>"; };
-		0E82B0CF1D730811005D0634 /* DDDispatchQueueLogFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDDispatchQueueLogFormatter.m; sourceTree = "<group>"; };
-		0E82B0D01D730811005D0634 /* DDMultiFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDMultiFormatter.h; sourceTree = "<group>"; };
-		0E82B0D11D730811005D0634 /* DDMultiFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDMultiFormatter.m; sourceTree = "<group>"; };
-		0E82B0D21D730811005D0634 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		0E82B1361D732564005D0634 /* animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "animateMotion_on_path_element_with_auto-rotate_and_keySplines.svg"; sourceTree = "<group>"; };
 		0E87CB052332066100848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/MacSVGDocument.xib; sourceTree = "<group>"; };
 		0E87CB062332066100848A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -2597,11 +2543,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E3B72FC1D8296DE00B10ECE /* CoreMedia.framework in Frameworks */,
+				0E772CE723690C1D00E9062D /* CocoaLumberjack.framework in Frameworks */,
 				0E0F5E042346AD5500BCA3B1 /* VideoToolbox.framework in Frameworks */,
 				0E3B72FA1D82966A00B10ECE /* CoreVideo.framework in Frameworks */,
 				0E5F971C2367E79300B8EF96 /* libssh2.1.dylib in Frameworks */,
 				0E3B72F81D82964B00B10ECE /* AVFoundation.framework in Frameworks */,
 				0E5B3CEF1D02AB96008FDD23 /* JavaScriptCore.framework in Frameworks */,
+				0E772CB22368F61A00E9062D /* CocoaAsyncSocket.framework in Frameworks */,
 				0E9A70D01D0181340018CA53 /* WebKit.framework in Frameworks */,
 				0EEE3A9E17B9EA110040846F /* libz.dylib in Frameworks */,
 				0EDDC382178DDAE1003B014D /* libstdc++.dylib in Frameworks */,
@@ -3687,106 +3635,6 @@
 			name = "Utility Views";
 			sourceTree = "<group>";
 		};
-		0E82AF761D730810005D0634 /* CocoaAsyncSocket-master */ = {
-			isa = PBXGroup;
-			children = (
-				0E82AF771D730810005D0634 /* .gitignore */,
-				0E82AF781D730810005D0634 /* .travis.yml */,
-				0E82AF791D730810005D0634 /* CocoaAsyncSocket.podspec */,
-				0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */,
-				0E82B0AE1D730811005D0634 /* README.markdown */,
-				0E82B0AF1D730811005D0634 /* Source */,
-			);
-			path = "CocoaAsyncSocket-master";
-			sourceTree = SOURCE_ROOT;
-		};
-		0E82AF7B1D730810005D0634 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0F81D730812005D0634 /* CocoaAsyncSocket.framework */,
-				0E82B0FA1D730812005D0634 /* CocoaAsyncSocket.framework */,
-				0E82B0FC1D730812005D0634 /* CocoaAsyncSocket.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0E82B0AF1D730811005D0634 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0B01D730811005D0634 /* CocoaAsyncSocket.h */,
-				0E82B0B11D730811005D0634 /* GCD */,
-				0E82B0B71D730811005D0634 /* Info.plist */,
-				0E82B0B81D730811005D0634 /* RunLoop */,
-				0E82B0BE1D730811005D0634 /* Vendor */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		0E82B0B11D730811005D0634 /* GCD */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0B21D730811005D0634 /* Documentation.html */,
-				0E82B0B31D730811005D0634 /* GCDAsyncSocket.h */,
-				0E82B0B41D730811005D0634 /* GCDAsyncSocket.m */,
-				0E82B0B51D730811005D0634 /* GCDAsyncUdpSocket.h */,
-				0E82B0B61D730811005D0634 /* GCDAsyncUdpSocket.m */,
-			);
-			path = GCD;
-			sourceTree = "<group>";
-		};
-		0E82B0B81D730811005D0634 /* RunLoop */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0B91D730811005D0634 /* AsyncSocket.h */,
-				0E82B0BA1D730811005D0634 /* AsyncSocket.m */,
-				0E82B0BB1D730811005D0634 /* AsyncUdpSocket.h */,
-				0E82B0BC1D730811005D0634 /* AsyncUdpSocket.m */,
-				0E82B0BD1D730811005D0634 /* Documentation.html */,
-			);
-			path = RunLoop;
-			sourceTree = "<group>";
-		};
-		0E82B0BE1D730811005D0634 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0BF1D730811005D0634 /* CocoaLumberjack */,
-			);
-			path = Vendor;
-			sourceTree = "<group>";
-		};
-		0E82B0BF1D730811005D0634 /* CocoaLumberjack */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0C01D730811005D0634 /* DDAbstractDatabaseLogger.h */,
-				0E82B0C11D730811005D0634 /* DDAbstractDatabaseLogger.m */,
-				0E82B0C21D730811005D0634 /* DDASLLogger.h */,
-				0E82B0C31D730811005D0634 /* DDASLLogger.m */,
-				0E82B0C41D730811005D0634 /* DDFileLogger.h */,
-				0E82B0C51D730811005D0634 /* DDFileLogger.m */,
-				0E82B0C61D730811005D0634 /* DDLog+LOGV.h */,
-				0E82B0C71D730811005D0634 /* DDLog.h */,
-				0E82B0C81D730811005D0634 /* DDLog.m */,
-				0E82B0C91D730811005D0634 /* DDTTYLogger.h */,
-				0E82B0CA1D730811005D0634 /* DDTTYLogger.m */,
-				0E82B0CB1D730811005D0634 /* Extensions */,
-			);
-			path = CocoaLumberjack;
-			sourceTree = "<group>";
-		};
-		0E82B0CB1D730811005D0634 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				0E82B0CC1D730811005D0634 /* DDContextFilterLogFormatter.h */,
-				0E82B0CD1D730811005D0634 /* DDContextFilterLogFormatter.m */,
-				0E82B0CE1D730811005D0634 /* DDDispatchQueueLogFormatter.h */,
-				0E82B0CF1D730811005D0634 /* DDDispatchQueueLogFormatter.m */,
-				0E82B0D01D730811005D0634 /* DDMultiFormatter.h */,
-				0E82B0D11D730811005D0634 /* DDMultiFormatter.m */,
-				0E82B0D21D730811005D0634 /* README.txt */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		0E96365717861D350011861A /* CocoaHTTPServer-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -3942,6 +3790,8 @@
 		0EB6637B14286398003723F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E772CE523690BE800E9062D /* CocoaLumberjack.framework */,
+				0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */,
 				0E5F971E2367E8F300B8EF96 /* libcrypto.42.dylib */,
 				0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */,
 				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
@@ -3972,7 +3822,6 @@
 				0E69F15914ABC5C10065E2F0 /* WebServer Classes */,
 				0EB663A9142865F4003723F0 /* Cocoa Extensions */,
 				0EEE3A7317B9E38B0040846F /* DFSSHWrapper */,
-				0E82AF761D730810005D0634 /* CocoaAsyncSocket-master */,
 				0E96365717861D350011861A /* CocoaHTTPServer-master */,
 				0EB6638314286398003723F0 /* Supporting Files */,
 			);
@@ -4227,6 +4076,8 @@
 				0E3F0F481E442C9E001FDDD7 /* PBXTargetDependency */,
 			);
 			name = macSVG;
+			packageProductDependencies = (
+			);
 			productName = "SVG Composer";
 			productReference = 0EB6637814286398003723F0 /* macSVG.app */;
 			productType = "com.apple.product-type.application";
@@ -4260,6 +4111,9 @@
 				Base,
 			);
 			mainGroup = 0EB6636D14286398003723F0;
+			packageReferences = (
+				0E772CB42368FAC800E9062D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+			);
 			productRefGroup = 0EB6637914286398003723F0 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -4278,10 +4132,6 @@
 				{
 					ProductGroup = 0E3F0ED31E442C59001FDDD7 /* Products */;
 					ProjectRef = 0EA59C611E442BF30031EE60 /* BezierCircleGenerator.xcodeproj */;
-				},
-				{
-					ProductGroup = 0E82AF7B1D730810005D0634 /* Products */;
-					ProjectRef = 0E82AF7A1D730810005D0634 /* CocoaAsyncSocket.xcodeproj */;
 				},
 				{
 					ProductGroup = 0E3F0F0F1E442C59001FDDD7 /* Products */;
@@ -4500,27 +4350,6 @@
 			remoteRef = 0E3F0F211E442C5A001FDDD7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0E82B0F81D730812005D0634 /* CocoaAsyncSocket.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CocoaAsyncSocket.framework;
-			remoteRef = 0E82B0F71D730812005D0634 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E82B0FA1D730812005D0634 /* CocoaAsyncSocket.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CocoaAsyncSocket.framework;
-			remoteRef = 0E82B0F91D730812005D0634 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0E82B0FC1D730812005D0634 /* CocoaAsyncSocket.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CocoaAsyncSocket.framework;
-			remoteRef = 0E82B0FB1D730812005D0634 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		0EB8CAD01F78D11F004B6D05 /* PathTextGenerator.plugin */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -4652,12 +4481,10 @@
 				0E714538142C037A002F8E1F /* HorizontalRulerView.m in Sources */,
 				0EE22BC317FB60BF00B58D6D /* SFTPUpload.m in Sources */,
 				0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */,
-				0E82B1331D730A20005D0634 /* DDFileLogger.m in Sources */,
 				0E714560142C2FB3002F8E1F /* PanelView.m in Sources */,
 				0E81A9561D32283600EA824A /* FlippedClipView.m in Sources */,
 				0E9637A2178688DE0011861A /* HTTPAuthenticationRequest.m in Sources */,
 				0E7145A1142C302C002F8E1F /* GradientView.m in Sources */,
-				0E82B1321D730A1B005D0634 /* DDASLLogger.m in Sources */,
 				0E32F8921FEB200200492813 /* XMLAttributesTableRowView.m in Sources */,
 				0E9637A91786894E0011861A /* HTTPFileResponse.m in Sources */,
 				0E1F13BE1436BE610068BC62 /* SVGWebView.m in Sources */,
@@ -4675,20 +4502,16 @@
 				0E4DAF2117DDEFAE00E5BAEB /* DOMSelectionControlsManager.m in Sources */,
 				0E9637A0178671440011861A /* HTTPConnection.m in Sources */,
 				0EDDC38B178DEE26003B014D /* SVGDTDData.m in Sources */,
-				0E82B12E1D7309FC005D0634 /* GCDAsyncSocket.m in Sources */,
-				0E82B12F1D730A03005D0634 /* GCDAsyncUdpSocket.m in Sources */,
 				0E9B317B149E9DCE008E38C7 /* AnimationTimelineElement.m in Sources */,
 				0E4072F517F34D9C0050C32F /* NetworkConnectionManager.m in Sources */,
 				0E363BD6181328EE004715A7 /* SFTPUploadWithBlocking.m in Sources */,
 				0E9B317F149EA4E6008E38C7 /* AnimationTimespan.m in Sources */,
 				0EDD0C1914A1A44B00430652 /* SynchroScrollView.m in Sources */,
 				0E9637A7178689440011861A /* HTTPDataResponse.m in Sources */,
-				0E82B1351D730A2E005D0634 /* DDTTYLogger.m in Sources */,
 				0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */,
 				0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */,
 				0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */,
 				0E4EA2E41D40721F00C5145C /* SVGHelpManager.m in Sources */,
-				0E82B1341D730A26005D0634 /* DDLog.m in Sources */,
 				0E69F16214ABC5C10065E2F0 /* WebServerController.m in Sources */,
 				0E9637A4178688EE0011861A /* HTTPServer.m in Sources */,
 				0E7E4BBA17FD142700B1FD07 /* MacSVGDocumentController.m in Sources */,
@@ -5046,7 +4869,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = MMFBWVS455;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Lumberjack-dhttzcjngmuzebfowebgwiqznllm/Build/Products/Debug/",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5057,7 +4884,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/DFSSHWrapper-master/libssh2-MacPorts",
 					"$(inherited)",
@@ -5090,7 +4920,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = MMFBWVS455;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/Lumberjack-dhttzcjngmuzebfowebgwiqznllm/Build/Products/Debug/",
+				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "macSVG/macSVG-Prefix.pch";
@@ -5100,7 +4934,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MacSVG/MacSVG-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @executable_path/../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/DFSSHWrapper-master/libssh2-MacPorts",
 					"$(inherited)",
@@ -5141,6 +4978,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0E772CB42368FAC800E9062D /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 0EB6636F14286398003723F0 /* Project object */;
 }

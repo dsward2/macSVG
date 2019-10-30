@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "GCDAsyncSocket.h"
+#import <CocoaAsyncSocket/GCDAsyncSocket.h>
 
 @class HTTPMessage;
 //@class GCDAsyncSocket;

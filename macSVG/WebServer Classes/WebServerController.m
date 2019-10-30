@@ -15,8 +15,8 @@
 
 // CocoaHTTPServer
 #import "HTTPServer.h"
-#import "DDLog.h"
-#import "DDTTYLogger.h"
+#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/DDTTYLogger.h>
 #import "HTTPDynamicFileResponse.h"
 #import "HTTPLogging.h"
 #import "SVGHTTPConnection.h"

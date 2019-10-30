@@ -31,7 +31,7 @@
 }
 
 
-
+/*
 - (instancetype)initImageCell:(NSImage *)anImage
 {
     self = [super initImageCell:anImage];
@@ -40,7 +40,7 @@
     }
     return self;
 }
-
+*/
 
 
 - (instancetype)initTextCell:(NSString *)aString
