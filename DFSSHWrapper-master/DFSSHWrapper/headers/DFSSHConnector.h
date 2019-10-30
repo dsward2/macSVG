@@ -29,6 +29,6 @@ void kb_int(const char *name, int name_len, const char *instr, int instr_len,
             int num_prompts, const LIBSSH2_USERAUTH_KBDINT_PROMPT *prompts, LIBSSH2_USERAUTH_KBDINT_RESPONSE *res, 
             void **abstract);
 //char *passwordFunc(const char *s);
-char *passwordFunc();
+char *passwordFunc(void);
 
 @end

@@ -2271,7 +2271,6 @@
 		0E5F97162367E79300B8EF96 /* libssh2_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_config.h; sourceTree = "<group>"; };
 		0E5F97172367E79300B8EF96 /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_publickey.h; sourceTree = "<group>"; };
 		0E5F97182367E79300B8EF96 /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_sftp.h; sourceTree = "<group>"; };
-		0E5F971E2367E8F300B8EF96 /* libcrypto.42.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.42.dylib; path = ../../../../../../../usr/lib/libcrypto.42.dylib; sourceTree = "<group>"; };
 		0E5FAA551DDD5234006EB7E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E5FAA611DDD83C4006EB7E6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = index.html; sourceTree = "<group>"; };
 		0E65AC4F1DF7F6DC000DBDF9 /* macsvg-logo-animation.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "macsvg-logo-animation.svg"; sourceTree = "<group>"; };
@@ -2295,7 +2294,7 @@
 		0E770CDA1D7FCE52000401C9 /* SVGPolylineEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGPolylineEditor.h; sourceTree = "<group>"; };
 		0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SVGPolylineEditor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
-		0E772CE523690BE800E9062D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../../Library/Developer/Xcode/DerivedData/Lumberjack-dhttzcjngmuzebfowebgwiqznllm/Build/Products/Debug/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		0E772CE523690BE800E9062D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../../../Lumberjack-dhttzcjngmuzebfowebgwiqznllm/Build/Products/Debug/CocoaLumberjack.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E7967C814A425080070B099 /* TimelineLabelsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLabelsTableViewDelegate.h; sourceTree = "<group>"; };
 		0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineLabelsTableViewDelegate.m; sourceTree = "<group>"; };
 		0E7E4BB817FD142700B1FD07 /* MacSVGDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGDocumentController.h; path = "../SVGDocument Classes/MacSVGDocumentController.h"; sourceTree = "<group>"; };
@@ -3792,7 +3791,6 @@
 			children = (
 				0E772CE523690BE800E9062D /* CocoaLumberjack.framework */,
 				0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */,
-				0E5F971E2367E8F300B8EF96 /* libcrypto.42.dylib */,
 				0E0F5E002346AD5500BCA3B1 /* VideoToolbox.framework */,
 				0E770CC11D7E395F000401C9 /* MacSVGPlugin.framework */,
 				0E3B72FB1D8296DE00B10ECE /* CoreMedia.framework */,

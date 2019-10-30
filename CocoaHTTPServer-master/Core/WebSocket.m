@@ -216,7 +216,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 - (void)setDelegate:(id)newDelegate
 {
 	dispatch_async(websocketQueue, ^{
-		delegate = newDelegate;
+		self->delegate = newDelegate;
 	});
 }
 
@@ -235,10 +235,10 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	
 	dispatch_async(websocketQueue, ^{ @autoreleasepool {
 		
-		if (isStarted) return;
-		isStarted = YES;
+        if (self->isStarted) return;
+        self->isStarted = YES;
 		
-		if (isVersion76)
+        if (self->isVersion76)
 		{
 			[self readRequestBody];
 		}
@@ -261,7 +261,7 @@ static inline NSUInteger WS_PAYLOAD_LENGTH(UInt8 frame)
 	
 	dispatch_async(websocketQueue, ^{ @autoreleasepool {
 		
-		[asyncSocket disconnect];
+        [self->asyncSocket disconnect];
 	}});
 }
 

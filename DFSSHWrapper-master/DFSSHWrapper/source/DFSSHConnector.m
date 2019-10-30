@@ -267,7 +267,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session) {
     return 0;
 }
 
-char *passwordFunc() {
+char *passwordFunc(void) {
     static char *pw = NULL;
     if (strlen(kb_pass)) {
         //DON'T Change *s, casting to stop warning.

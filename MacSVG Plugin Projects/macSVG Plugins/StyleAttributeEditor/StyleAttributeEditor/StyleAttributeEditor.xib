@@ -35,14 +35,14 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZGL-VY-zdK">
+                        <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZGL-VY-zdK">
                             <rect key="frame" x="23" y="120" width="224" height="134"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="wBH-Li-bz9">
                                 <rect key="frame" x="1" y="0.0" width="222" height="133"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="14" rowSizeStyle="automatic" headerView="Ah8-cG-fUy" viewBased="YES" id="nYF-eL-uuE">
+                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" headerView="Ah8-cG-fUy" viewBased="YES" id="nYF-eL-uuE">
                                         <rect key="frame" x="0.0" y="0.0" width="222" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -110,7 +110,6 @@
                                                                 </textFieldCell>
                                                                 <connections>
                                                                     <outlet property="delegate" destination="-2" id="hp3-aF-sdG"/>
-                                                                    <outlet property="nextKeyView" destination="vEk-NG-fg4" id="acw-Pe-R3z"/>
                                                                 </connections>
                                                             </textField>
                                                         </subviews>
@@ -134,11 +133,11 @@
                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 <prototypeCellViews>
                                                     <tableCellView id="J5R-MW-I8W">
-                                                        <rect key="frame" x="121" y="1" width="98" height="17"/>
+                                                        <rect key="frame" x="121" y="1" width="99" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vEk-NG-fg4">
-                                                                <rect key="frame" x="0.0" y="0.0" width="96" height="17"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="97" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="XZr-rE-VID">
                                                                     <font key="font" metaFont="smallSystem"/>
@@ -147,7 +146,6 @@
                                                                 </textFieldCell>
                                                                 <connections>
                                                                     <outlet property="delegate" destination="-2" id="hoC-Bs-FGM"/>
-                                                                    <outlet property="nextKeyView" destination="ldM-vi-fhq" id="zF2-Fi-bjN"/>
                                                                 </connections>
                                                             </textField>
                                                         </subviews>

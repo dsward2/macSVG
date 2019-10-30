@@ -174,7 +174,7 @@ defaults write com.apple.LaunchServices LSHandlers -array '{ LSHandlerContentTyp
 
 // ================================================================
 
-- (NSArray *)fileExtensionsFromType:(NSString *)documentTypeName
+- (NSArray *)fileExtensionsFromType:(NSString *)documentTypeName saveOperation:(NSSaveOperationType)saveOperation
 {
     NSArray * resultArray = NULL;
 
