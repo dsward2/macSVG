@@ -401,17 +401,23 @@
         
         NSArray * childNodesArray = aXMLElement.children;
         {
+            NSInteger nextRowIdx = rowIdx + 1;
             for (NSXMLNode * aChildNode in childNodesArray)
             {
-                if (aChildNode.kind == NSXMLTextKind)
+                if ((aChildNode.kind == NSXMLTextKind) || (aChildNode.kind == NSXMLCommentKind))
                 {
+                    /*
                     NSInteger textRowIdx = [self.xmlOutlineView rowForItem:aChildNode];
-                    
+
                     if (textRowIdx != -1)
                     {
                         [rowIndexSet addIndex:textRowIdx];
                     }
+                    */
+                    
+                    [rowIndexSet addIndex:nextRowIdx];
                 }
+                nextRowIdx++;
             }
         }
     }
