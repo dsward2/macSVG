@@ -563,9 +563,6 @@
                                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                                     </textFieldCell>
-                                                                                                    <connections>
-                                                                                                        <outlet property="nextKeyView" destination="dbg-RP-Qsm" id="Hew-D1-8Rn"/>
-                                                                                                    </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
                                                                                         </tableColumn>
@@ -590,9 +587,6 @@
                                                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                                                     </textFieldCell>
-                                                                                                    <connections>
-                                                                                                        <outlet property="nextKeyView" destination="SSv-PB-YSa" id="ecy-r3-MtM"/>
-                                                                                                    </connections>
                                                                                                 </textField>
                                                                                             </prototypeCellViews>
                                                                                         </tableColumn>
@@ -1584,7 +1578,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="Akd-5q-XyI">
                         <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="100959">
                                 <rect key="frame" x="0.0" y="0.0" width="188" height="226"/>

@@ -198,7 +198,11 @@
         selectionIndexes:(NSMutableIndexSet *)selectionIndexes
 {
     // recursively select child elements
+
 	NSArray * childNodesArray = parentNode.children;
+ 
+    NSInteger firstRow = [selectionIndexes lastIndex];
+    NSInteger nextRow = firstRow  + 1;
     
     for (NSXMLNode * childNode in childNodesArray)
     {
@@ -222,14 +226,26 @@
         if (selectChildNode == YES)
         {
             NSInteger childRow = [self.xmlOutlineView rowForItem:childNode];
-
             if (childRow != -1)
             {
-                [selectionIndexes addIndex:childRow];
-                
-                [self addSelectionIndexesForChildNodes:childNode selectionIndexes:selectionIndexes]; // recursive
+                if (childNode.kind ==  NSXMLElementKind)
+                {
+                    [selectionIndexes addIndex:childRow];
+                    [self addSelectionIndexesForChildNodes:childNode selectionIndexes:selectionIndexes]; // recursive
+                }
+                else
+                {
+                    // rowForItem can return wrong row for text nodes with identical values, so use computed row index
+                    [selectionIndexes addIndex:nextRow];
+                }
             }
         }
+        else
+        {
+            NSLog(@"XMLOutlineController - addSelectionIndexesForChildNodes - type %ld not found for child row", childNode.kind);
+        }
+        
+        nextRow++;
     }
 }
 
@@ -262,7 +278,7 @@
         if ((modifiers & flags) == 0)
         {
             // option key not pressed
-            if (aXMLNode.kind ==  NSXMLTextKind)
+            if ((aXMLNode.kind ==  NSXMLTextKind) || (aXMLNode.kind ==  NSXMLCommentKind))
             {
                 NSXMLNode * parentElement = aXMLNode.parent;
 
@@ -1392,6 +1408,12 @@
         {
             if ([reloadedNodesArray containsObject:aParentNode] == NO)
             {
+                if (aParentNode.kind == NSXMLElementKind)
+                {
+                    NSXMLElement * aParentElement = (NSXMLElement *)aParentNode;
+                    [aParentElement normalizeAdjacentTextNodesPreservingCDATA:YES];
+                }
+                
                 [self.xmlOutlineView reloadItem:aParentNode reloadChildren:YES];
             }
         }
@@ -4235,6 +4257,83 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     return result;
 }
 */
+
+
+- (void)logXML
+{
+    MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
+    NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
+    
+    [self logXMLNode:rootElement level:0];
+}
+
+
+- (void)logXMLNode:(NSXMLNode *)xmlNode level:(NSInteger)level
+{
+    NSInteger nodeKind = xmlNode.kind;
+    NSString * nodeKindString = @"Unknown";
+    
+    switch (nodeKind)
+    {
+        case NSXMLInvalidKind:
+            nodeKindString = @"NSXMLInvalidKind";
+            break;
+        case NSXMLDocumentKind:
+            nodeKindString = @"NSXMLDocumentKind";
+            break;
+        case NSXMLElementKind:
+            nodeKindString = @"NSXMLElementKind";
+            break;
+        case NSXMLAttributeKind:
+            nodeKindString = @"NSXMLAttributeKind";
+            break;
+        case NSXMLNamespaceKind:
+            nodeKindString = @"NSXMLNamespaceKind";
+            break;
+        case NSXMLProcessingInstructionKind:
+            nodeKindString = @"NSXMLProcessingInstructionKind";
+            break;
+        case NSXMLCommentKind:
+            nodeKindString = @"NSXMLCommentKind";
+            break;
+        case NSXMLTextKind:
+            nodeKindString = @"NSXMLTextKind";
+            break;
+        case NSXMLDTDKind:
+            nodeKindString = @"NSXMLDTDKind";
+            break;
+        case NSXMLEntityDeclarationKind:
+            nodeKindString = @"NSXMLEntityDeclarationKind";
+            break;
+        case NSXMLAttributeDeclarationKind:
+            nodeKindString = @"NSXMLAttributeDeclarationKind";
+            break;
+        case NSXMLElementDeclarationKind:
+            nodeKindString = @"NSXMLElementDeclarationKind";
+            break;
+        case NSXMLNotationDeclarationKind:
+            nodeKindString = @"NSXMLNotationDeclarationKind";
+            break;
+    }
+    
+    NSMutableString * spacesString = [NSMutableString string];
+    for (NSInteger i = 0; i < level; i++)
+    {
+        [spacesString appendString:@"  "];
+    }
+    
+    NSLog(@"%p %@ %@ %@", xmlNode, spacesString, nodeKindString, xmlNode);
+    
+    if (nodeKind == NSXMLElementKind)
+    {
+        NSXMLElement * xmlElement = (NSXMLElement *)xmlNode;
+        NSArray * childNodes = xmlElement.children;
+        for (NSXMLNode * aChildNode in childNodes)
+        {
+            [self logXMLNode:aChildNode level:(level + 1)];       // recursive call
+        }
+    }
+}
 
 
 @end

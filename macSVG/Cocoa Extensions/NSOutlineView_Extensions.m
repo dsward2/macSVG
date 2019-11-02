@@ -304,6 +304,10 @@
                 [self deselectAll:self];
             }
         }
+        else
+        {
+            [self deselectAll:self];
+        }
 
         [super mouseDown:theEvent];
     }
@@ -349,8 +353,16 @@
     
     for (NSInteger childIndex = 0; childIndex < numberOfChildrenOfItem; childIndex++)
     {
-        id aChildItem = [self child:childIndex ofItem:aRowItem];
-        [self recursiveDeselectItem:aChildItem];
+        NSXMLNode * aChildItem = [self child:childIndex ofItem:aRowItem];
+        
+        if (aChildItem.kind == NSXMLElementKind)
+        {
+            [self recursiveDeselectItem:aChildItem];
+        }
+        else
+        {
+            [self deselectRow:rowIndexForItem + childIndex + 1];
+        }
     }
 }
 

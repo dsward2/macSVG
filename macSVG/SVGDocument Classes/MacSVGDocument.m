@@ -587,7 +587,9 @@ style=\"zoom: 1;\">";
 
     // add some attributes
     NSXMLElement * rootElement = [xmlDoc rootElement];
-    
+
+    [rootElement normalizeAdjacentTextNodesPreservingCDATA:YES];
+
     MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     [macSVGAppDelegate applyNewSVGDocumentSettings:xmlDoc];
     
@@ -2615,7 +2617,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
     NSString * uniqueID = @"id_error";
 
-    NSString * tagName = sourceElement.name;
+    NSString * tagName = [sourceElement.name copy];
     
     NSArray * attributes = sourceElement.attributes;
     for (NSXMLNode * attributeNode in attributes)
@@ -2706,7 +2708,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         else if (childKind == NSXMLElementKind) 
         {
             NSXMLElement * childElement = (id)childNode;
-            NSString * childTagName = childElement.name;
+            NSString * childTagName = [childElement.name copy];
             NSXMLElement * newElement = [[NSXMLElement alloc] initWithName:childTagName];
             
             NSString * childUniqueID = [self uniqueIDForElementTagName:childTagName pendingIDs:pendingIDsArray];
@@ -2729,12 +2731,21 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             
             [self deepCopyElement:childElement destinationElement:newElement pendingIDsArray:pendingIDs];  // recursive copy
         }
-        else if (childKind == NSXMLTextKind) 
+        else if (childKind == NSXMLTextKind)
         {
-            NSString * nodeString = childNode.stringValue;
+            NSString * nodeString = [childNode.stringValue copy];
             NSXMLNode * newTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
             newTextNode.stringValue = nodeString;
             [destinationElement addChild:newTextNode];
+            
+            [destinationElement normalizeAdjacentTextNodesPreservingCDATA:YES];
+        }
+        else if (childKind == NSXMLCommentKind)
+        {
+            NSString * nodeString = [childNode.stringValue copy];
+            NSXMLNode * newCommentNode = [[NSXMLNode alloc] initWithKind:NSXMLCommentKind];
+            newCommentNode.stringValue = nodeString;
+            [destinationElement addChild:newCommentNode];
             
             [destinationElement normalizeAdjacentTextNodesPreservingCDATA:YES];
         }
@@ -2778,7 +2789,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             childIndex = indexOfSourceElement + 1;
         }
         
-        NSString * tagName = sourceXMLElement.name;
+        NSString * tagName = [sourceXMLElement.name copy];
         
         NSXMLElement * newNode = [[NSXMLElement alloc] initWithName:tagName];
         
