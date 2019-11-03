@@ -201,9 +201,6 @@
 
 	NSArray * childNodesArray = parentNode.children;
  
-    NSInteger firstRow = [selectionIndexes lastIndex];
-    NSInteger nextRow = firstRow  + 1;
-    
     for (NSXMLNode * childNode in childNodesArray)
     {
         BOOL selectChildNode = NO;
@@ -228,15 +225,10 @@
             NSInteger childRow = [self.xmlOutlineView rowForItem:childNode];
             if (childRow != -1)
             {
+                [selectionIndexes addIndex:childRow];
                 if (childNode.kind ==  NSXMLElementKind)
                 {
-                    [selectionIndexes addIndex:childRow];
                     [self addSelectionIndexesForChildNodes:childNode selectionIndexes:selectionIndexes]; // recursive
-                }
-                else
-                {
-                    // rowForItem can return wrong row for text nodes with identical values, so use computed row index
-                    [selectionIndexes addIndex:nextRow];
                 }
             }
         }
@@ -244,8 +236,6 @@
         {
             NSLog(@"XMLOutlineController - addSelectionIndexesForChildNodes - type %ld not found for child row", childNode.kind);
         }
-        
-        nextRow++;
     }
 }
 
@@ -272,7 +262,10 @@
 
         if (aXMLNode.kind ==  NSXMLElementKind) 
         {
-            [self addSelectionIndexesForChildNodes:aXMLNode selectionIndexes:modifiedSelectionIndexes];
+            if ([outlineView isItemExpanded:aXMLNode] == YES)
+            {
+                [self addSelectionIndexesForChildNodes:aXMLNode selectionIndexes:modifiedSelectionIndexes];
+            }
         }
  
         if ((modifiers & flags) == 0)
@@ -280,6 +273,7 @@
             // option key not pressed
             if ((aXMLNode.kind ==  NSXMLTextKind) || (aXMLNode.kind ==  NSXMLCommentKind))
             {
+                // user clicked on row for XML text or comment entity, extend the selection to the parent element
                 NSXMLNode * parentElement = aXMLNode.parent;
 
                 NSInteger parentRow = [self.xmlOutlineView rowForItem:parentElement];
@@ -401,23 +395,17 @@
         
         NSArray * childNodesArray = aXMLElement.children;
         {
-            NSInteger nextRowIdx = rowIdx + 1;
             for (NSXMLNode * aChildNode in childNodesArray)
             {
                 if ((aChildNode.kind == NSXMLTextKind) || (aChildNode.kind == NSXMLCommentKind))
                 {
-                    /*
                     NSInteger textRowIdx = [self.xmlOutlineView rowForItem:aChildNode];
 
                     if (textRowIdx != -1)
                     {
                         [rowIndexSet addIndex:textRowIdx];
                     }
-                    */
-                    
-                    [rowIndexSet addIndex:nextRowIdx];
                 }
-                nextRowIdx++;
             }
         }
     }
@@ -1421,6 +1409,14 @@
                 }
                 
                 [self.xmlOutlineView reloadItem:aParentNode reloadChildren:YES];
+                
+                if (aParentNode.kind == NSXMLElementKind)
+                {
+                    // fix the expand/collapse action for the parent of the deleted element by toggling next parent
+                    NSXMLElement * nextParentElement = (NSXMLElement *)aParentNode.parent;
+                    [self.xmlOutlineView collapseItem:nextParentElement];
+                    [self.xmlOutlineView expandItem:nextParentElement];
+                }
             }
         }
     }
@@ -3854,6 +3850,36 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 - (void)outlineViewItemDidExpand:(NSNotification *)notification
 {
     //NSLog(@"outlineViewItemDidExpand");
+    
+    id item = notification.object;      // XMLOutlineView
+    id userInfo = notification.userInfo;    // NSDictionary
+    
+    if ([item isKindOfClass:[NSOutlineView class]] == YES)
+    {
+        if ([userInfo isKindOfClass:[NSDictionary class]] == YES)
+        {
+            NSOutlineView * outlineView = item;
+            NSDictionary * notificationDictionary = userInfo;
+            
+            NSXMLElement * expandedElement = [notificationDictionary objectForKey:@"NSObject"];
+            
+            if (expandedElement != NULL)
+            {
+                NSInteger expandedElementRow = [outlineView rowForItem:expandedElement];
+                
+                NSIndexSet * selectedIndexSet = [outlineView selectedRowIndexes];
+                if ([selectedIndexSet containsIndex:expandedElementRow] == YES)
+                {
+                    // the expanded item is selected, reselect to add the child items to the selection
+                    NSMutableIndexSet * expandedIndexSet = [[NSMutableIndexSet alloc] initWithIndexSet:selectedIndexSet];
+                    
+                    [self addSelectionIndexesForChildNodes:expandedElement selectionIndexes:expandedIndexSet];
+                    
+                    [outlineView selectRowIndexes:expandedIndexSet byExtendingSelection:NO];
+                }
+            }
+        }
+    }
 }
 
 //==================================================================================

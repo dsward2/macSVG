@@ -470,6 +470,46 @@
 }
 
 
+- (NSInteger)rowForItem:(id)item
+{
+    NSInteger result = [super rowForItem:item];
+    
+    if ([item isKindOfClass:NSXMLNode.class] == YES)
+    {
+        NSXMLNode * itemNode = (NSXMLNode *)item;
+        
+        if (itemNode.kind == NSXMLTextKind)
+        {
+            // workaround for Cocoa bug where multiple NSXMLTextKind entities with duplicate text can return wrong result
+            NSXMLElement * parentElement = (NSXMLElement *)itemNode.parent;
+            
+            if (parentElement != NULL)
+            {
+                NSInteger parentRow = [super rowForItem:parentElement];
+                
+                if (parentRow >= 0)
+                {
+                    NSArray * childArray = [parentElement children];
+                    
+                    NSInteger nextRow = parentRow + 1;
+                    
+                    for (NSXMLNode * childNode in childArray)
+                    {
+                        if (childNode == item)
+                        {
+                            result = nextRow;
+                            break;
+                        }
+                        nextRow++;
+                    }
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
 
 - (void)keyDown:(NSEvent *)event
 {
