@@ -3019,7 +3019,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-    NSLog(@"TransformAttributeEditor - tableViewSelectionDidChange");
+    //NSLog(@"TransformAttributeEditor - tableViewSelectionDidChange");
 
 	id aTableView = aNotification.object;
 	if (aTableView == transformsTableView)

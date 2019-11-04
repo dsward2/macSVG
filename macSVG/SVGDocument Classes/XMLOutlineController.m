@@ -1406,10 +1406,13 @@
                 {
                     NSXMLElement * aParentElement = (NSXMLElement *)aParentNode;
                     [aParentElement normalizeAdjacentTextNodesPreservingCDATA:YES];
+                    [self.xmlOutlineView expandItem:aParentNode];
                 }
                 
                 [self.xmlOutlineView reloadItem:aParentNode reloadChildren:YES];
-                
+
+                //[self.xmlOutlineView reloadData];
+
                 if (aParentNode.kind == NSXMLElementKind)
                 {
                     // fix the expand/collapse action for the parent of the deleted element by toggling next parent
@@ -1422,7 +1425,7 @@
     }
     
     [self.xmlOutlineView deselectAll:self];
-    
+        
     [self.macSVGDocumentWindowController reloadWebView];    // reload everything except outlineView
 }
 
@@ -3441,7 +3444,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
                 if (availableType != NULL)
                 {
-                    NSString * filepath = [[draggingPasteboard propertyListForType:NSPasteboardTypeURL] lastObject];
+                    NSString * filepath = [draggingPasteboard propertyListForType:NSPasteboardTypeURL];
                     NSString * filename = filepath.lastPathComponent;
                         
                     if (filename != nil) 
@@ -3517,7 +3520,6 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
                 if (availableType != NULL)
                 {
-                    //NSString * filepath = [[draggingPasteboard propertyListForType:NSFilenamesPboardType] lastObject];
                     NSURL * fileURL = [NSURL URLFromPasteboard:draggingPasteboard];
                     NSString * filename = fileURL.lastPathComponent;
                         

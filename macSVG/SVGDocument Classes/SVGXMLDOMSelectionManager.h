@@ -20,7 +20,7 @@
 
 
 // Selection management notes -
-// XMLOutlineView is the primary selection manager, containing the master copy of SVG XML data
+// XMLOutlineView is the primary selection manager, containing the "source of truth" master copy of SVG XML data.
 // SelectedElementsManager manages selectedElementsArray for multiple XML/DOM elements
 // SVGXMLDOMSelectionManager manages activeElement for creation and live editing, usually during mouse-down
 // DOMSelectionControlsManager manages keyElement with handles, and selection rects
