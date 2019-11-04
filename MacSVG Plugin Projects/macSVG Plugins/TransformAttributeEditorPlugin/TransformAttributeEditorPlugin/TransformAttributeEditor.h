@@ -37,6 +37,13 @@
     IBOutlet NSTextField * value5TextField;
     IBOutlet NSTextField * value6TextField;
     
+    IBOutlet NSStepper * value1Stepper;
+    IBOutlet NSStepper * value2Stepper;
+    IBOutlet NSStepper * value3Stepper;
+    IBOutlet NSStepper * value4Stepper;
+    IBOutlet NSStepper * value5Stepper;
+    IBOutlet NSStepper * value6Stepper;
+
     IBOutlet NSButton * functionButton;
     
     IBOutlet NSTableView * transformsTableView;
@@ -66,6 +73,7 @@
 - (void) handlePluginEvent:(DOMEvent *)event;
 
 - (IBAction)transformToolTextFieldAction:(id)sender;
+- (IBAction)transformToolStepperAction:(id)sender;
 - (IBAction)transformToolButtonAction:(id)sender;
 - (IBAction)transformToolDeleteButtonAction:(id)sender;
 

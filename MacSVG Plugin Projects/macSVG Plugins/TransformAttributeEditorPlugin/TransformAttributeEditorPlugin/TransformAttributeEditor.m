@@ -375,6 +375,9 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
 -(void) setTransformAttribute
 {
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:transformsTableView.selectedRow];
+    NSIndexSet * columnIndexSet = [NSIndexSet indexSetWithIndex:0];
+
     NSMutableString * newTransformString = [[NSMutableString alloc] init];
     
     NSUInteger functionCount = 0;
@@ -462,8 +465,6 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     //NSInteger selectedRow = transformsTableView.selectedRow;
     //[transformsTableView setNeedsDisplayInRect:[transformsTableView frameOfCellAtColumn:0 row:selectedRow]];
     
-    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:transformsTableView.selectedRow];
-    NSIndexSet * columnIndexSet = [NSIndexSet indexSetWithIndex:0];
     [transformsTableView reloadDataForRowIndexes:rowIndexSet columnIndexes:columnIndexSet];
 }
 
@@ -602,6 +603,36 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     rotateToolButton.image = NULL;
     skewXToolButton.image = NULL;
     skewYToolButton.image = NULL;
+    
+    value1Stepper.minValue = -10000;
+    value1Stepper.maxValue = 10000;
+    value1Stepper.floatValue = 0;
+    value1Stepper.increment = 1;
+
+    value2Stepper.minValue = -10000;
+    value2Stepper.maxValue = 10000;
+    value2Stepper.floatValue = 0;
+    value2Stepper.increment = 1;
+
+    value3Stepper.minValue = -10000;
+    value3Stepper.maxValue = 10000;
+    value3Stepper.floatValue = 0;
+    value3Stepper.increment = 1;
+
+    value4Stepper.minValue = -10000;
+    value4Stepper.maxValue = 10000;
+    value4Stepper.floatValue = 0;
+    value4Stepper.increment = 1;
+
+    value5Stepper.minValue = -10000;
+    value5Stepper.maxValue = 10000;
+    value5Stepper.floatValue = 0;
+    value5Stepper.increment = 1;
+
+    value6Stepper.minValue = -10000;
+    value6Stepper.maxValue = 10000;
+    value6Stepper.floatValue = 0;
+    value6Stepper.increment = 1;
 }
 
 //==================================================================================
@@ -732,6 +763,61 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     }
 }
 
+- (void)setNextKeyViews
+{
+    value1TextField.nextKeyView = NULL;
+    value2TextField.nextKeyView = NULL;
+    value3TextField.nextKeyView = NULL;
+    value4TextField.nextKeyView = NULL;
+    value5TextField.nextKeyView = NULL;
+    value6TextField.nextKeyView = NULL;
+
+    if (value6TextField.hidden == NO)
+    {
+        value1TextField.nextKeyView = value2TextField;
+        value2TextField.nextKeyView = value3TextField;
+        value3TextField.nextKeyView = value4TextField;
+        value4TextField.nextKeyView = value5TextField;
+        value5TextField.nextKeyView = value6TextField;
+        value6TextField.nextKeyView = value1TextField;
+    }
+    else if (value5TextField.hidden == NO)
+    {
+        value1TextField.nextKeyView = value2TextField;
+        value2TextField.nextKeyView = value3TextField;
+        value3TextField.nextKeyView = value4TextField;
+        value4TextField.nextKeyView = value5TextField;
+        value5TextField.nextKeyView = value1TextField;
+    }
+    else if (value4TextField.hidden == NO)
+    {
+        value1TextField.nextKeyView = value2TextField;
+        value2TextField.nextKeyView = value3TextField;
+        value3TextField.nextKeyView = value4TextField;
+        value4TextField.nextKeyView = value1TextField;
+    }
+    else if (value3TextField.hidden == NO)
+    {
+        value1TextField.nextKeyView = value2TextField;
+        value2TextField.nextKeyView = value3TextField;
+        value3TextField.nextKeyView = value1TextField;
+    }
+    else if (value2TextField.hidden == NO)
+    {
+        value1TextField.nextKeyView = value2TextField;
+        value2TextField.nextKeyView = value1TextField;
+    }
+    
+    if (value1TextField.hidden == NO)
+    {
+        transformsTableView.nextKeyView = value1TextField;
+    }
+    else
+    {
+        transformsTableView.nextKeyView = NULL;
+    }
+}
+
 //==================================================================================
 //	beginTranslateTransform
 //==================================================================================
@@ -795,43 +881,52 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = xString;
+    [value1Stepper setHidden:NO];
+    value1Stepper.doubleValue = xString.doubleValue;
     
     [label2TextField setHidden:NO];
     label2TextField.stringValue = @"y:";
 
     [value2TextField setHidden:NO];
     value2TextField.stringValue = yString;
-    
+    [value2Stepper setHidden:NO];
+    value2Stepper.doubleValue = yString.doubleValue;
+
     [label3TextField setHidden:YES];
     label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+    [value3Stepper setHidden:YES];
+    value3Stepper.doubleValue = 0;
 
     [label4TextField setHidden:YES];
     label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.doubleValue = 0;
 
     [label5TextField setHidden:YES];
     label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.doubleValue = 0;
 
     [label6TextField setHidden:YES];
     label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.doubleValue = 0;
+
+    [self setNextKeyViews];
     
     functionButton.hidden = YES;
-    
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = value2TextField;
-    value2TextField.nextKeyView = transformsTableView;
-    [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
     
@@ -990,34 +1085,52 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = xString;
-    
+    [value1Stepper setHidden:NO];
+    value1Stepper.doubleValue = xString.doubleValue;
+
     [label2TextField setHidden:NO];
     label2TextField.stringValue = @"y";
 
     [value2TextField setHidden:NO];
     value2TextField.stringValue = yString;
-    
+    [value2Stepper setHidden:NO];
+    value2Stepper.doubleValue = yString.doubleValue;
+
     [label3TextField setHidden:YES];
     label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+    [value3Stepper setHidden:YES];
+    value3Stepper.doubleValue = 0;
+
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.doubleValue = 0;
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.doubleValue = 0;
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.doubleValue = 0;
+
+    [self setNextKeyViews];
 
     functionButton.hidden = YES;
-
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = value2TextField;
-    value2TextField.nextKeyView = transformsTableView;
-    [value3TextField setNextKeyView:NULL];
 
     [self setTransformAttribute];
     
@@ -1355,38 +1468,56 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = degreesString;
-    
+    [value1Stepper setHidden:NO];
+    value1Stepper.doubleValue = degreesString.doubleValue;
+
     [label2TextField setHidden:NO];
     label2TextField.stringValue = @"x";
 
     [value2TextField setHidden:NO];
     value2TextField.stringValue = xString;
-    
+    [value2Stepper setHidden:NO];
+    value2Stepper.doubleValue = xString.doubleValue;
+
     [label3TextField setHidden:NO];
     label3TextField.stringValue = @"y";
 
     [value3TextField setHidden:NO];
     value3TextField.stringValue = yString;
+    [value3Stepper setHidden:NO];
+    value3Stepper.doubleValue = yString.doubleValue;
+
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.doubleValue = 0;
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.doubleValue = 0;
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.doubleValue = 0;
+
+    [self setNextKeyViews];
 
     functionButton.hidden = NO;
     functionButton.title = @"Set Rotation at Center";
     NSRect buttonFrame = functionButton.frame;
     buttonFrame.origin.y = value4TextField.frame.origin.y - 8.0f;
     functionButton.frame = buttonFrame;
-
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = value2TextField;
-    value2TextField.nextKeyView = value3TextField;
-    value3TextField.nextKeyView = transformsTableView;
 
     [self setTransformAttribute];
 
@@ -1697,35 +1828,53 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = degreesString;
-    
+    [value1Stepper setHidden:NO];
+    value1Stepper.doubleValue = degreesString.doubleValue;
+
     [label2TextField setHidden:YES];
     label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
     value2TextField.stringValue = @"";
-    
+    [value2Stepper setHidden:YES];
+    value2Stepper.doubleValue = 0;
+
     [label3TextField setHidden:YES];
     label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+    [value3Stepper setHidden:YES];
+    value3Stepper.doubleValue = 0;
+
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.doubleValue = 0;
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.doubleValue = 0;
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.doubleValue = 0;
+
+    [self setNextKeyViews];
 
     functionButton.hidden = YES;
 
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = transformsTableView;
-    [value2TextField setNextKeyView:NULL];
-    [value3TextField setNextKeyView:NULL];
-    
     [self setTransformAttribute];
 
     float currentDegrees = 0.0f;
@@ -1939,35 +2088,53 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:NO];
     value1TextField.stringValue = degreesString;
-    
+    [value1Stepper setHidden:NO];
+    value1Stepper.doubleValue = degreesString.doubleValue;
+
     [label2TextField setHidden:YES];
     label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
     value2TextField.stringValue = @"";
-    
+    [value2Stepper setHidden:YES];
+    value2Stepper.doubleValue = 0;
+
     [label3TextField setHidden:YES];
     label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+    [value3Stepper setHidden:YES];
+    value3Stepper.doubleValue = 0;
+
+    [label4TextField setHidden:YES];
+    label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.doubleValue = 0;
+
+    [label5TextField setHidden:YES];
+    label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.doubleValue = 0;
+
+    [label6TextField setHidden:YES];
+    label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.doubleValue = 0;
+
+    [self setNextKeyViews];
 
     functionButton.hidden = YES;
 
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = transformsTableView;
-    [value2TextField setNextKeyView:NULL];
-    [value3TextField setNextKeyView:NULL];
-    
     [self setTransformAttribute];
 
     float currentDegrees = 0.0f;
@@ -2228,13 +2395,10 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value6TextField setHidden:NO];
     value6TextField.stringValue = m6String;
+    
+    [self setNextKeyViews];
 
     functionButton.hidden = YES;
-    
-    transformsTableView.nextKeyView = value1TextField;
-    value1TextField.nextKeyView = value2TextField;
-    value2TextField.nextKeyView = transformsTableView;
-    [value3TextField setNextKeyView:NULL];
     
     [self setTransformAttribute];
 }
@@ -2866,40 +3030,52 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
     [value1TextField setHidden:YES];
     value1TextField.stringValue = @"";
+    [value1Stepper setHidden:YES];
+    value1Stepper.floatValue = 0;
     
     [label2TextField setHidden:YES];
     label2TextField.stringValue = @"";
 
     [value2TextField setHidden:YES];
     value2TextField.stringValue = @"";
-    
+    [value2Stepper setHidden:YES];
+    value2Stepper.floatValue = 0;
+
     [label3TextField setHidden:YES];
     label3TextField.stringValue = @"";
 
     [value3TextField setHidden:YES];
     value3TextField.stringValue = @"";
+    [value3Stepper setHidden:YES];
+    value3Stepper.floatValue = 0;
 
     [label4TextField setHidden:YES];
     label4TextField.stringValue = @"";
 
     [value4TextField setHidden:YES];
     value4TextField.stringValue = @"";
+    [value4Stepper setHidden:YES];
+    value4Stepper.floatValue = 0;
 
     [label5TextField setHidden:YES];
     label5TextField.stringValue = @"";
 
     [value5TextField setHidden:YES];
     value5TextField.stringValue = @"";
+    [value5Stepper setHidden:YES];
+    value5Stepper.floatValue = 0;
 
     [label6TextField setHidden:YES];
     label6TextField.stringValue = @"";
 
     [value6TextField setHidden:YES];
     value6TextField.stringValue = @"";
+    [value6Stepper setHidden:YES];
+    value6Stepper.floatValue = 0;
 
     functionButton.hidden = YES;
 
-    [transformsTableView deselectAll:self];
+    //[transformsTableView deselectAll:self];
 
     [self buildTransformsArrayForElement];
 
@@ -2992,7 +3168,11 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         transformDictionary[@"m6"] = m6String;
     }
 
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:transformsTableView.selectedRow];
+
     [transformsTableView reloadData];
+    
+    [transformsTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
     
     [self setTransformAttribute];
 }
@@ -3011,6 +3191,64 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
 
         [self copyTextFieldValuesToTransformDictionary:transformDictionary];
     }    
+}
+
+//==================================================================================
+//    transformToolStepperAction
+//==================================================================================
+- (IBAction)transformToolStepperAction:(id)sender;
+{
+    [self transformToolTextFieldAction:self];
+
+    /*
+    NSInteger selectedRow = transformsTableView.selectedRow;
+
+    if (selectedRow != -1)
+    {
+        NSTextField * selectedTextField = NULL;
+        
+        if (sender == value1Stepper)
+        {
+            selectedTextField = value1TextField;
+        }
+        else if (sender == value2Stepper)
+        {
+            selectedTextField = value2TextField;
+        }
+        else if (sender == value3Stepper)
+        {
+            selectedTextField = value3TextField;
+        }
+        else if (sender == value4Stepper)
+        {
+            selectedTextField = value4TextField;
+        }
+        else if (sender == value5Stepper)
+        {
+            selectedTextField = value5TextField;
+        }
+        else if (sender == value6Stepper)
+        {
+            selectedTextField = value6TextField;
+        }
+        
+        if (selectedTextField != NULL)
+        {
+            NSString * oldValue = selectedTextField.stringValue;
+            
+            float oldValueFloat = oldValue.floatValue;
+            float newValueFloat =
+
+            NSStepper * aStepper = sender;
+            if (aStepper)
+
+        
+            NSMutableDictionary * transformDictionary = (self.transformsArray)[selectedRow];
+
+            [self copyTextFieldValuesToTransformDictionary:transformDictionary];
+        }
+    }
+    */
 }
 
 //==================================================================================

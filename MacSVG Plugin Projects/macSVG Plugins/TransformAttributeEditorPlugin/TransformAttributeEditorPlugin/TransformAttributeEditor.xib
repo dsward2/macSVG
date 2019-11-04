@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,11 +22,17 @@
                 <outlet property="skewYToolButton" destination="76" id="89"/>
                 <outlet property="transformsTableView" destination="46" id="62"/>
                 <outlet property="translateToolButton" destination="3" id="63"/>
+                <outlet property="value1Stepper" destination="nWM-N2-Ibm" id="0Vx-Bw-Tsh"/>
                 <outlet property="value1TextField" destination="27" id="83"/>
+                <outlet property="value2Stepper" destination="NqD-QI-G2P" id="qgZ-yR-Vsr"/>
                 <outlet property="value2TextField" destination="29" id="84"/>
+                <outlet property="value3Stepper" destination="QPk-eO-QUM" id="kI7-tm-4F1"/>
                 <outlet property="value3TextField" destination="34" id="85"/>
+                <outlet property="value4Stepper" destination="rzN-p7-NVU" id="S0v-fx-jzt"/>
                 <outlet property="value4TextField" destination="efh-Jo-hbq" id="GiU-zi-I8y"/>
+                <outlet property="value5Stepper" destination="BNC-J4-ArA" id="Hmh-0t-pyR"/>
                 <outlet property="value5TextField" destination="tJH-ny-8i7" id="OhR-BU-8jN"/>
+                <outlet property="value6Stepper" destination="Whm-0V-MCk" id="YOf-BB-UQi"/>
                 <outlet property="value6TextField" destination="dB7-63-qgR" id="O5A-8t-Xak"/>
             </connections>
         </customObject>
@@ -66,7 +72,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="27">
-                                        <rect key="frame" x="80" y="143" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="143" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="28">
                                             <font key="font" metaFont="smallSystem"/>
@@ -75,6 +81,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="sWH-fB-8Qf"/>
+                                            <binding destination="-2" name="value" keyPath="self.value1Stepper.floatValue" id="Gf9-wD-SPt"/>
                                         </connections>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="33">
@@ -87,7 +94,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="34">
-                                        <rect key="frame" x="80" y="97" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="97" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="35">
                                             <font key="font" metaFont="smallSystem"/>
@@ -96,6 +103,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="PEW-fL-U53"/>
+                                            <binding destination="-2" name="value" keyPath="self.value3Stepper.floatValue" id="zXo-az-hqY"/>
                                         </connections>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqF-Y4-25L">
@@ -108,7 +116,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="efh-Jo-hbq">
-                                        <rect key="frame" x="79" y="74" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="74" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="eQT-Ri-58P">
                                             <font key="font" metaFont="smallSystem"/>
@@ -117,6 +125,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="8Tg-hL-jbZ"/>
+                                            <binding destination="-2" name="value" keyPath="self.value4Stepper.floatValue" id="Z6f-7M-TEB"/>
                                         </connections>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dov-dz-gJp">
@@ -129,7 +138,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJH-ny-8i7">
-                                        <rect key="frame" x="79" y="51" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="51" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="dYG-8S-ZOe">
                                             <font key="font" metaFont="smallSystem"/>
@@ -138,6 +147,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="rwK-qf-ieM"/>
+                                            <binding destination="-2" name="value" keyPath="self.value5Stepper.floatValue" id="Ee7-UX-H4V"/>
                                         </connections>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q4j-w1-LeN">
@@ -150,7 +160,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dB7-63-qgR">
-                                        <rect key="frame" x="80" y="28" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="28" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="DbQ-nu-Di7">
                                             <font key="font" metaFont="smallSystem"/>
@@ -159,6 +169,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="pEw-gG-KJq"/>
+                                            <binding destination="-2" name="value" keyPath="self.value6Stepper.floatValue" id="LYY-Rf-9n5"/>
                                         </connections>
                                     </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dII-mH-3HF">
@@ -173,7 +184,7 @@
                                         </connections>
                                     </button>
                                     <textField hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29">
-                                        <rect key="frame" x="79" y="120" width="125" height="19"/>
+                                        <rect key="frame" x="80" y="120" width="106" height="19"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="30">
                                             <font key="font" metaFont="smallSystem"/>
@@ -182,8 +193,63 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="transformToolTextFieldAction:" target="-2" id="ve9-Iz-kkf"/>
+                                            <binding destination="-2" name="value" keyPath="self.value2Stepper.floatValue" id="uwl-gU-Ffu"/>
                                         </connections>
                                     </textField>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nWM-N2-Ibm">
+                                        <rect key="frame" x="192" y="141" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="4XV-yI-zcT"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="bWW-a5-8a8"/>
+                                            <binding destination="-2" name="value" keyPath="self.value1TextField.floatValue" id="oOs-6C-1EQ"/>
+                                        </connections>
+                                    </stepper>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NqD-QI-G2P">
+                                        <rect key="frame" x="192" y="119" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="RD6-Bn-QTb"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="fht-db-pB8"/>
+                                            <binding destination="-2" name="value" keyPath="self.value2TextField.floatValue" id="Bnm-i5-Ho5"/>
+                                        </connections>
+                                    </stepper>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QPk-eO-QUM">
+                                        <rect key="frame" x="192" y="97" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="2xY-x2-DKn"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="Del-E8-yBz"/>
+                                            <binding destination="-2" name="value" keyPath="self.value3TextField.floatValue" id="vey-5u-Op4"/>
+                                        </connections>
+                                    </stepper>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rzN-p7-NVU">
+                                        <rect key="frame" x="192" y="73" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="W9H-5Z-IZo"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="MFv-6D-hrQ"/>
+                                            <binding destination="-2" name="value" keyPath="self.value4TextField.floatValue" id="81G-af-2qn"/>
+                                        </connections>
+                                    </stepper>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BNC-J4-ArA">
+                                        <rect key="frame" x="192" y="49" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="T35-GI-WyP"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="enH-xe-3Kz"/>
+                                            <binding destination="-2" name="value" keyPath="self.value5TextField.floatValue" id="HDN-X7-kcT"/>
+                                        </connections>
+                                    </stepper>
+                                    <stepper hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Whm-0V-MCk">
+                                        <rect key="frame" x="192" y="26" width="15" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="P5P-cV-Sgh"/>
+                                        <connections>
+                                            <action selector="transformToolStepperAction:" target="-2" id="Qca-Pp-CbF"/>
+                                            <binding destination="-2" name="value" keyPath="self.value6TextField.floatValue" id="a2h-wf-Rol"/>
+                                        </connections>
+                                    </stepper>
                                 </subviews>
                             </view>
                         </box>
@@ -322,6 +388,7 @@
             </subviews>
             <point key="canvasLocation" x="43" y="269.5"/>
         </customView>
+        <userDefaultsController representsSharedInstance="YES" id="KJH-1c-ddE"/>
     </objects>
     <resources>
         <image name="rotate" width="32" height="32"/>
