@@ -4849,14 +4849,14 @@ CGFloat radiansToDegrees(CGFloat radians)
 
 /**
  * Conversion from center to endpoint parameterization
- * - following: http://www.w3.org/TR/SVG/implnote.html#ArcConversionCenterToEndpoint
+ * - following: http://www.w3.org/TR/SVG11/implnote.html#ArcConversionCenterToEndpoint
  * @param	a Arc
  * @return	Object containing parameters {start<Point>, end<Point>, rx<Number>, ry<Number>, rotation<Number>, isLarge<Boolean>, isClockwise<Boolean>}
  */
 - (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
         cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry
 {
-    // http://www.w3.org/TR/SVG/implnote.html#ArcConversionCenterToEndpoint
+    // http://www.w3.org/TR/SVG11/implnote.html#ArcConversionCenterToEndpoint
     CGFloat radRotation = degreesToRadians(rotation);
     CGFloat radStart = degreesToRadians(angleStart);
     CGFloat radExtent = degreesToRadians(angleExtent);
@@ -4900,7 +4900,7 @@ CGFloat radiansToDegrees(CGFloat radians)
 
 /**
     * Create a new SVG Elliptical Arc object
-    * - Conversion from endpoint to center parameterization following: http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+    * - Conversion from endpoint to center parameterization following: http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
     * @param	start	Start Point
     * @param	end	End Point
     * @param	rx	X radii of the ellipse
@@ -4913,7 +4913,7 @@ CGFloat radiansToDegrees(CGFloat radians)
         rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise
 {
     // adapted from https://github.com/millermedeiros/SVGParser/blob/master/com/millermedeiros/geom/SVGArc.as
-    // http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+    // http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
 
     //midpoint
     CGFloat midX = (start.x - end.x) / 2;
@@ -5003,7 +5003,7 @@ CGFloat radiansToDegrees(CGFloat radians)
 
 // This works by converting the SVG arc to "simple" beziers.
 // Partly adapted from Niko's code in kdelibs/kdecore/svgicons.
-// See also SVG implementation notes: http://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter
+// See also SVG implementation notes: http://www.w3.org/TR/SVG11/implnote.html#ArcConversionEndpointToCenter
 bool SVGPathParser::decomposeArcToCubic(float angle, float rx, float ry, FloatPoint& point1, FloatPoint& point2, bool largeArcFlag, bool sweepFlag)
 {
     FloatSize midPointDistance = point1 - point2;
@@ -5019,7 +5019,7 @@ bool SVGPathParser::decomposeArcToCubic(float angle, float rx, float ry, FloatPo
     float squareY = transformedMidPoint.y() * transformedMidPoint.y();
 
     // Check if the radii are big enough to draw the arc, scale radii if not.
-    // http://www.w3.org/TR/SVG/implnote.html#ArcCorrectionOutOfRangeRadii
+    // http://www.w3.org/TR/SVG11/implnote.html#ArcCorrectionOutOfRangeRadii
     float radiiScale = squareX / squareRx + squareY / squareRy;
     if (radiiScale > 1) {
         rx *= sqrtf(radiiScale);

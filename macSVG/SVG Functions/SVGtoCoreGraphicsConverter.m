@@ -1528,7 +1528,7 @@ const CGFloat kDegreesToRadiansConstant = (CGFloat)(M_PI/180.0);
         endPointY:(CGFloat)endPointY
         resultString:(NSMutableString *)resultString
 {
-    //implementation notes http://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter
+    //implementation notes http://www.w3.org/TR/SVG11/implnote.html#ArcConversionEndpointToCenter
     // adapted from https://github.com/GenerallyHelpfulSoftware/SVGgh/blob/master/SVGgh/SVG/SVGUtilities.m
 
 	// first do first aid to the parameters to keep them in line

@@ -213,7 +213,7 @@
 {
     NSString * urlFragment = (self.elementsHelpDictionary)[elementName];
     
-    NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG/%@", urlFragment];
+    NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG11/%@", urlFragment];
 
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
 }
@@ -238,7 +238,7 @@
                 {
                     NSString * attributeURL = attributeHelpDictionary[@"attributeURL"];
 
-                    NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG/%@", attributeURL];
+                    NSString * urlString = [NSString stringWithFormat:@"http://www.w3.org/TR/SVG11/%@", attributeURL];
 
                     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]];
                     
