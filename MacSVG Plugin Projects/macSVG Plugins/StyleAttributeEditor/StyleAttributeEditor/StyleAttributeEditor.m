@@ -7,11 +7,9 @@
 //
 
 #import "StyleAttributeEditor.h"
-#import "StylePropertiesTableRowView.h"
 #import <MacSVGPlugin/MacSVGPluginCallbacks.h>
 #import "MacSVGDocumentWindowController.h"
 #import "SVGWebKitController.h"
-#import "StylePropertiesTableRowView.h"
 
 #define StyleTableViewDataType @"NSMutableDictionary"
 
@@ -301,7 +299,6 @@
     else if (sender == propertyValueComboBox)
     {
     }
-    //else if ([senderSuperview isKindOfClass:[StylePropertiesTableRowView class]] == YES)
     else if ([sender isKindOfClass:[NSTextField class]] == YES)
     {
         // sender was a text cell inside the table view
@@ -467,36 +464,6 @@
 
 
 
-
-//==================================================================================
-//	tableView:rowViewForRow:
-//==================================================================================
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView
-                rowViewForRow:(NSInteger)row
-{
-    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
-    
-    //StylePropertiesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    StylePropertiesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
-
-    if (rowView == NULL)
-    {
-        // Size doesn't matter, the table will set it
-        rowView = [[StylePropertiesTableRowView alloc] initWithFrame:NSZeroRect];
-
-        // This seemingly magical line enables your view to be found
-        // next time "makeViewWithIdentifier" is called.
-        rowView.identifier = kRowIdentifier; 
-    }
-
-    // Can customize properties here. Note that customizing
-    // 'backgroundColor' isn't going to work at this point since the table
-    // will reset it later. Use 'didAddRow' to customize if desired.
-
-    return rowView;
-}
 
 //==================================================================================
 //	tableView:viewForTableColumn:row:

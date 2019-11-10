@@ -10,7 +10,6 @@
 		0E2EB2191E1AFF7E00F36593 /* StyleAttributeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */; };
 		0E2EB21C1E1AFFF500F36593 /* StyleAttributeEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */; };
 		0E2EB21E1E1B009E00F36593 /* CSSProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E2EB21D1E1B009E00F36593 /* CSSProperties.json */; };
-		0E2EB2211E1B089500F36593 /* StylePropertiesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */; };
 		0E3F0F4F1E446115001FDDD7 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3F0F4E1E446115001FDDD7 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
 
@@ -21,8 +20,6 @@
 		0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyleAttributeEditor.m; sourceTree = "<group>"; };
 		0E2EB21B1E1AFFF500F36593 /* StyleAttributeEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StyleAttributeEditor.xib; sourceTree = "<group>"; };
 		0E2EB21D1E1B009E00F36593 /* CSSProperties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CSSProperties.json; sourceTree = "<group>"; };
-		0E2EB21F1E1B089500F36593 /* StylePropertiesTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StylePropertiesTableRowView.h; sourceTree = "<group>"; };
-		0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StylePropertiesTableRowView.m; sourceTree = "<group>"; };
 		0E2EB2221E1B099E00F36593 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0E2EB2241E1B0A4000F36593 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/macSVG-czegvdherapyucbqorgcxoryqmlr/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = "<group>"; };
 		0E3F0F4E1E446115001FDDD7 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MacSVGPlugin.framework; path = "../../../../../../../../Documents/Library/Developer/Xcode/DerivedData/macSVG-cbglzytiyakrxdgzceaijuhsscsk/Build/Products/Debug/MacSVGPlugin.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,8 +59,6 @@
 			children = (
 				0E2EB2171E1AFF7E00F36593 /* StyleAttributeEditor.h */,
 				0E2EB2181E1AFF7E00F36593 /* StyleAttributeEditor.m */,
-				0E2EB21F1E1B089500F36593 /* StylePropertiesTableRowView.h */,
-				0E2EB2201E1B089500F36593 /* StylePropertiesTableRowView.m */,
 				0E2EB21A1E1AFFA900F36593 /* Supporting Files */,
 			);
 			path = StyleAttributeEditor;
@@ -161,7 +156,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E2EB2191E1AFF7E00F36593 /* StyleAttributeEditor.m in Sources */,
-				0E2EB2211E1B089500F36593 /* StylePropertiesTableRowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
