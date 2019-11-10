@@ -46,7 +46,7 @@
 - (void)reloadData 
 {
     [timelineLabelsTableView reloadData];
-    timelineLabelsTableView.needsDisplay = - 2;
+    timelineLabelsTableView.needsDisplay = YES;
 }
 
 //==================================================================================

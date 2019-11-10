@@ -13,6 +13,8 @@
 #import "SVGWebKitController.h"
 #import "StylePropertiesTableRowView.h"
 
+#define StyleTableViewDataType @"NSMutableDictionary"
+
 @implementation StyleAttributeEditor
 
 
@@ -31,6 +33,8 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+
+    [stylePropertiesTableView registerForDraggedTypes:@[StyleTableViewDataType]];
 }
 
 //==================================================================================
@@ -189,42 +193,6 @@
 - (void)configureStylePropertiesTableView
 {
     self.stylePropertiesArray = [NSMutableArray array];
-
-    /*
-    stylePropertiesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
-
-    while(stylePropertiesTableView.tableColumns.count > 0)
-    {
-        [stylePropertiesTableView removeTableColumn:stylePropertiesTableView.tableColumns.lastObject];
-    }
-    
-    stylePropertiesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
-    
-    NSTableColumn * indexTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"#"];
-    indexTableColumn.title = @"#";
-    indexTableColumn.width = 30.0f;
-    indexTableColumn.minWidth = 30.0f;
-    indexTableColumn.maxWidth = 100.0f;
-    [stylePropertiesTableView addTableColumn:indexTableColumn];
-    
-    CGFloat tableWidth = stylePropertiesTableView.bounds.size.width - 30.0f;
-
-    CGFloat columnWidth = tableWidth / 2.0f;
-
-    NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"property"];
-    xTableColumn.title = @"property";
-    xTableColumn.width = columnWidth;
-    xTableColumn.minWidth = 60.0f;
-    xTableColumn.maxWidth = 100.0f;
-    [stylePropertiesTableView addTableColumn:xTableColumn];
-
-    NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"value"];
-    yTableColumn.title = @"value";
-    yTableColumn.width = columnWidth;
-    yTableColumn.minWidth = 60.0f;
-    yTableColumn.maxWidth = 100.0f;
-    [stylePropertiesTableView addTableColumn:yTableColumn];
-    */
 
     NSXMLElement * animateMotionElement = self.pluginTargetXMLElement;
 
@@ -411,6 +379,95 @@
     return YES;
 }
 
+
+
+//==================================================================================
+//    tableView:writeRowsWithIndexes:toPasteboard
+//==================================================================================
+
+- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard
+{
+    // Copy the row numbers to the pasteboard.
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    
+    // archivedDataWithRootObject:requiringSecureCoding:error:
+    NSError * archivedDataError = NULL;
+    NSData * data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:&archivedDataError];
+
+    [pboard declareTypes:@[StyleTableViewDataType] owner:self];
+
+    [pboard setData:data forType:StyleTableViewDataType];
+    
+    return YES;
+}
+
+//==================================================================================
+//    tableView:acceptDrop:row:dropOperation
+//==================================================================================
+
+- (BOOL)tableView:(NSTableView*)tableView
+        acceptDrop:(id <NSDraggingInfo>)info
+        row:(NSInteger)row
+        dropOperation:(NSTableViewDropOperation)operation
+{
+    //this is the code that handles dnd ordering - my table doesn't need to accept drops from outside! Hooray!
+    NSPasteboard * pboard = [info draggingPasteboard];
+    NSData * rowData = [pboard dataForType:StyleTableViewDataType];
+
+    //NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+    
+    // unarchivedObjectOfClass:fromData:error:
+    NSError * archiveDataError = NULL;
+    NSIndexSet * rowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:rowData error:&archiveDataError];
+
+    NSInteger from = rowIndexes.firstIndex;
+
+    NSMutableDictionary * traveller = (self.stylePropertiesArray)[from];
+    
+    NSInteger length = (self.stylePropertiesArray).count;
+    //NSMutableArray * replacement = [NSMutableArray new];
+
+    NSInteger i;
+    for (i = 0; i <= length; i++)
+    {
+        if (i == row)
+        {
+            if (from > row)
+            {
+                [self.stylePropertiesArray insertObject:traveller atIndex:row];
+                [self.stylePropertiesArray removeObjectAtIndex:(from + 1)];
+            }
+            else
+            {
+                [self.stylePropertiesArray insertObject:traveller atIndex:row];
+                [self.stylePropertiesArray removeObjectAtIndex:from];
+            }
+        }
+    }
+    
+    [stylePropertiesTableView reloadData];
+        
+    return YES;
+}
+
+
+//==================================================================================
+//    tableView:validateDrop:proposedRow:proposedDropOperation:
+//==================================================================================
+
+- (NSDragOperation)tableView:(NSTableView*)tableView
+        validateDrop:(id <NSDraggingInfo>)info
+        proposedRow:(NSInteger)row
+        proposedDropOperation:(NSTableViewDropOperation)operation
+{
+    return NSDragOperationEvery;
+}
+
+
+
+
+
+
 //==================================================================================
 //	tableView:rowViewForRow:
 //==================================================================================
@@ -583,6 +640,7 @@
 
 - (IBAction)cancelButtonAction:(id)sender
 {
+    [self configureStylePropertiesTableView];
 }
 
 //==================================================================================
@@ -600,42 +658,45 @@
     
     if (selectedRow >= 0)
     {
-        newStylePropertyDictionary = (self.stylePropertiesArray)[selectedRow];
-        
-        NSString * newPropertyName = propertyNameComboBox.stringValue;
-        NSString * newPropertyValue = propertyValueComboBox.stringValue;
-        
-        [newStylePropertyDictionary setObject:newPropertyName forKey:@"property"];
-        [newStylePropertyDictionary setObject:newPropertyValue forKey:@"value"];
-
-        NSMutableString * styleString = [NSMutableString string];
-        NSInteger indexOfObject = 0;
-        for (NSMutableDictionary * stylePropertyDictionary in self.stylePropertiesArray)
+        if (selectedRow < self.stylePropertiesArray.count)
         {
-            NSString * aStylePropertyString = stylePropertyDictionary[@"property"];
-            NSString * aStyleValueString = stylePropertyDictionary[@"value"];
-
-            [styleString appendString:aStylePropertyString];
+            newStylePropertyDictionary = (self.stylePropertiesArray)[selectedRow];
             
-            if ([aStyleValueString length] > 0)
-            {
-                [styleString appendString:@":"];
-                [styleString appendString:aStyleValueString];
-            }
+            NSString * newPropertyName = propertyNameComboBox.stringValue;
+            NSString * newPropertyValue = propertyValueComboBox.stringValue;
             
-            [styleString appendString:@"; "];
-            
-            indexOfObject++;
+            [newStylePropertyDictionary setObject:newPropertyName forKey:@"property"];
+            [newStylePropertyDictionary setObject:newPropertyValue forKey:@"value"];
         }
-
-        [self setAttributeName:@"style" value:styleString element:self.pluginTargetXMLElement];
-        
-        [stylePropertiesTableView reloadData];
-        
-        [stylePropertiesTableView selectRowIndexes:selectedRowIndexSet byExtendingSelection:NO];
-        
-        [self updateDocumentViews];
     }
+    
+    NSMutableString * styleString = [NSMutableString string];
+    NSInteger indexOfObject = 0;
+    for (NSMutableDictionary * stylePropertyDictionary in self.stylePropertiesArray)
+    {
+        NSString * aStylePropertyString = stylePropertyDictionary[@"property"];
+        NSString * aStyleValueString = stylePropertyDictionary[@"value"];
+
+        [styleString appendString:aStylePropertyString];
+        
+        if ([aStyleValueString length] > 0)
+        {
+            [styleString appendString:@":"];
+            [styleString appendString:aStyleValueString];
+        }
+        
+        [styleString appendString:@"; "];
+        
+        indexOfObject++;
+    }
+
+    [self setAttributeName:@"style" value:styleString element:self.pluginTargetXMLElement];
+    
+    [stylePropertiesTableView reloadData];
+    
+    [stylePropertiesTableView selectRowIndexes:selectedRowIndexSet byExtendingSelection:NO];
+    
+    [self updateDocumentViews];
 }
 
 //==================================================================================
@@ -676,15 +737,30 @@
     NSMutableDictionary * newStylePropertyDictionary = NULL;
     
     NSInteger insertIndex = selectedRow + 1;
+
+    NSString * newPropertyName = propertyNameComboBox.stringValue;
+    NSString * newPropertyValue = propertyValueComboBox.stringValue;
     
+    if (newPropertyName.length == 0)
+    {
+        newPropertyName = @"new-css-style";
+    }
+
+    if (newPropertyValue.length == 0)
+    {
+        newPropertyValue = @"new-value";
+    }
+
     newStylePropertyDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-            @"new-css-style", @"property",
-            @"new-value", @"value",
+            newPropertyName, @"property",
+            newPropertyValue, @"value",
             NULL];
     
     [self.stylePropertiesArray insertObject:newStylePropertyDictionary atIndex:insertIndex];
     
     [stylePropertiesTableView reloadData];
+    
+    //[self applyChangesButtonAction:sender];
     
     NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:insertIndex];
     [stylePropertiesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
@@ -703,6 +779,8 @@
         [self.stylePropertiesArray removeObjectAtIndex:selectedRow];
         
         [stylePropertiesTableView reloadData];
+
+        //[self applyChangesButtonAction:sender];
     }
 }
 

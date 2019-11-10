@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -160,7 +160,6 @@
                                             <action selector="itemTextFieldUpdated:" target="-2" id="2e2-aD-28z"/>
                                             <outlet property="dataSource" destination="-2" id="EER-EJ-X9X"/>
                                             <outlet property="delegate" destination="-2" id="vuq-D8-xZj"/>
-                                            <outlet property="nextKeyView" destination="PnW-u4-X2H" id="xGK-em-nSH"/>
                                         </connections>
                                     </tableView>
                                 </subviews>
@@ -271,7 +270,7 @@ Gw
                                 <action selector="itemTextFieldUpdated:" target="-2" id="0MG-Z7-BV6"/>
                                 <outlet property="dataSource" destination="-2" id="mUF-C9-DRu"/>
                                 <outlet property="delegate" destination="-2" id="dOr-NJ-8im"/>
-                                <outlet property="nextKeyView" destination="nYF-eL-uuE" id="3sW-NC-cBP"/>
+                                <outlet property="nextKeyView" destination="PnW-u4-X2H" id="bkN-KE-U67"/>
                             </connections>
                         </comboBox>
                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lNS-zf-ca0">
