@@ -238,7 +238,7 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
                 rowViewForRow:(NSInteger)row
 {
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
+    static NSString* const kRowIdentifier = @"XMLAttributesTableRowView";
     
     //XMLAttributesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
     XMLAttributesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];

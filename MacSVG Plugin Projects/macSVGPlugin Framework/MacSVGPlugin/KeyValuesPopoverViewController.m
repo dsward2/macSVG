@@ -6,6 +6,32 @@
 //  Copyright (c) 2013 ArkPhone LLC. All rights reserved.
 //
 
+/*
+
+Notes from the SVG spec -
+
+ keyTimes = "<list>"
+    A semicolon-separated list of time values used to control the pacing of the animation. Each time in the list corresponds to a value in the ‘values’ attribute list, and defines when the value is used in the animation function. Each time value in the ‘keyTimes’ list is specified as a floating point value between 0 and 1 (inclusive), representing a proportional offset into the simple duration of the animation element.
+    For animations specified with a ‘values’ list, the ‘keyTimes’ attribute if specified must have exactly as many values as there are in the ‘values’ attribute. For from/to/by animations, the ‘keyTimes’ attribute if specified must have two values.
+
+    Each successive time value must be greater than or equal to the preceding time value.
+
+    The ‘keyTimes’ list semantics depends upon the interpolation mode:
+
+    For linear and spline animation, the first time value in the list must be 0, and the last time value in the list must be 1. The key time associated with each value defines when the value is set; values are interpolated between the key times.
+    For discrete animation, the first time value in the list must be 0. The time associated with each value defines when the value is set; the animation function uses that value until the next time defined in ‘keyTimes’.
+
+ keySplines = "<list>"
+     A set of Bézier control points associated with the ‘keyTimes’ list, defining a cubic Bézier function that controls interval pacing. The attribute value is a semicolon-separated list of control point descriptions. Each control point description is a set of four values: x1 y1 x2 y2, describing the Bézier control points for one time segment. Note: SMIL allows these values to be separated either by commas with optional whitespace, or by whitespace alone. The ‘keyTimes’ values that define the associated segment are the Bézier "anchor points", and the ‘keySplines’ values are the control points. Thus, there must be one fewer sets of control points than there are ‘keyTimes’.
+
+     The values must all be in the range 0 to 1.
+
+ keyPoints = "<list-of-numbers>" (for animateMotion element only)
+     ‘keyPoints’ takes a semicolon-separated list of floating point values between 0 and 1 and indicates how far along the motion path the object shall move at the moment in time specified by corresponding ‘keyTimes’ value. Distance calculations use the user agent's distance along the path algorithm. Each progress value in the list corresponds to a value in the ‘keyTimes’ attribute list.
+
+     If a list of ‘keyPoints’ is specified, there must be exactly as many values in the ‘keyPoints’ list as in the ‘keyTimes’ list.
+*/
+
 #import "KeyValuesPopoverViewController.h"
 #import "MacSVGPlugin.h"
 #import "KeySplinesView.h"
@@ -65,7 +91,7 @@
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
-    
+        
     //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
     NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
@@ -74,16 +100,63 @@
     if (tableCellView != NULL)
     {
         resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
-    }
     
-    tableCellView.textField.stringValue = resultString;
-
-    tableCellView.textField.target = self;
-    tableCellView.textField.action = @selector(tableCellChanged:);
-    
-    if ([tableColumnIdentifier isEqualToString:@"rowNumber"] == NO)
-    {
-        tableCellView.textField.editable = YES;
+        if ([tableColumn.identifier isEqualToString:@"keySplines"] == YES)
+        {
+            NSComboBox * comboBox = (NSComboBox *)tableCellView;
+            
+            comboBox.stringValue = resultString;
+            comboBox.target = self;
+            comboBox.action = @selector(tableCellChanged:);
+            
+            if (row < self.keyValuesArray.count -1)
+            {
+                comboBox.editable = YES;
+                comboBox.enabled = YES;
+            }
+            else
+            {
+                comboBox.editable = NO;
+                comboBox.enabled = NO;
+            }
+        }
+        else
+        {
+            tableCellView.textField.stringValue = resultString;
+            tableCellView.textField.target = self;
+            tableCellView.textField.action = @selector(tableCellChanged:);
+            
+            if ([tableColumnIdentifier isEqualToString:@"keyTimes"] == YES)
+            {
+                if (row == 0)
+                {
+                    tableCellView.textField.editable = NO;
+                    tableCellView.textField.enabled = YES;
+                    tableCellView.textField.stringValue = @"0";
+                }
+                else if (row == self.keyValuesArray.count - 1)
+                {
+                    tableCellView.textField.editable = NO;
+                    tableCellView.textField.enabled = YES;
+                    tableCellView.textField.stringValue = @"1";
+                }
+                else
+                {
+                    tableCellView.textField.editable = YES;
+                    tableCellView.textField.enabled = YES;
+                }
+            }
+            else if ([tableColumnIdentifier isEqualToString:@"keyPoints"] == YES)
+            {
+                tableCellView.textField.editable = YES;
+                tableCellView.textField.enabled = YES;
+            }
+            else
+            {
+                tableCellView.textField.editable = NO;
+                tableCellView.textField.enabled = YES;
+            }
+        }
     }
 
     return (NSView *)tableCellView;
@@ -114,21 +187,6 @@
             else if ([aTableColumn.identifier isEqualToString:@"keySplines"] == YES)
             {
                 objectValue = keyValuesDictionary[@"keySplines"];
-                
-                if ([macSVGPlugin.pluginName isEqualToString:@"AnimateTransform Element Editor"] == YES)
-                {
-                    if (rowIndex >= ((self.keyValuesArray).count - 1))
-                    {
-                        NSColor * redColor = [NSColor redColor];
-
-                        NSDictionary *redAttribute =
-                                @{NSForegroundColorAttributeName: redColor};
-                        
-                        NSAttributedString * redString = [[NSAttributedString alloc] initWithString:objectValue attributes:redAttribute];
-
-                        objectValue = redString;
-                    }
-                }
             }
             else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
             {
@@ -145,65 +203,83 @@
 }
 
 //==================================================================================
-//	tableView:setObjectValue:forTableColumn:row:
-//==================================================================================
-
-/*
-- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
-{
-    NSString * columnIdentifier = aTableColumn.identifier;
-    NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
-    
-    if (aTableView == keyValuesTableView)
-    {
-        if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
-        {
-            keyValuesDictionary[@"keyTimes"] = anObject;
-        }
-        else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
-        {
-            keyValuesDictionary[@"keySplines"] = anObject;
-        }
-        else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
-        {
-            keyValuesDictionary[@"keyPoints"] = anObject;
-        }
-    }
-
-    [keyValuesTableView reloadData];
-    
-    [keySplinesView setNeedsDisplay:YES];
-}
-*/
-
-//==================================================================================
 //    tableCellChanged:
 //==================================================================================
 
 - (IBAction)tableCellChanged:(id)sender
 {
-    NSTextField * cellTextField = sender;
-    
+    NSControl * aControl = sender;
+
     NSArray * tableColumns = [keyValuesTableView tableColumns];
-    NSInteger tableColumnIndex = cellTextField.tag;
+    NSInteger tableColumnIndex = aControl.tag;
     NSTableColumn * aTableColumn = [tableColumns objectAtIndex:tableColumnIndex];
-    
+
+    NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
     NSInteger rowIndex = [keyValuesTableView selectedRow];
-
-    NSString * columnIdentifier = aTableColumn.identifier;
-    NSMutableDictionary * characterDictionary = (self.keyValuesArray)[rowIndex];
-
-    if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
+    
+    if (rowIndex == -1)
     {
-        characterDictionary[@"keyTimes"] = cellTextField.stringValue;
+        rowIndex = [keyValuesTableView rowForView:sender];
     }
-    else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
+
+    if (rowIndex >= 0)
     {
-        characterDictionary[@"keySplines"] = cellTextField.stringValue;
-    }
-    else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
-    {
-        characterDictionary[@"keyPoints"] = cellTextField.stringValue;
+        NSString * columnIdentifier = aTableColumn.identifier;
+        NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
+
+        if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
+        {
+            NSTextField * cellTextField = sender;
+            NSString * trimmedString = [cellTextField.stringValue stringByTrimmingCharactersInSet:whitespaceSet];
+            keyValuesDictionary[@"keyTimes"] = trimmedString;
+        }
+        else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
+        {
+            NSComboBox * comboBox = sender;
+            NSString * rawKeySplinesString = comboBox.stringValue;
+            NSMutableString * keySplineString = [NSMutableString string];
+            for (NSInteger i = 0; i < rawKeySplinesString.length; i++)
+            {
+                unichar aChar = [rawKeySplinesString characterAtIndex:i];
+                BOOL isValidChar = NO;
+                if (aChar >= '0')
+                {
+                    if (aChar <= '9')
+                    {
+                        isValidChar = YES;
+                    }
+                }
+                if (aChar == '.')
+                {
+                    isValidChar = YES;
+                }
+                if (aChar == ' ')
+                {
+                    isValidChar = YES;
+                }
+                if (aChar == ',')
+                {
+                    isValidChar = YES;
+                }
+                
+                if (isValidChar == YES)
+                {
+                    [keySplineString appendFormat:@"%C", aChar];
+                }
+            }
+            NSString * trimmedString = [keySplineString stringByTrimmingCharactersInSet:whitespaceSet];
+            keyValuesDictionary[@"keySplines"] = trimmedString;
+            
+            NSIndexSet * selectedRowIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+            [keyValuesTableView selectRowIndexes:selectedRowIndexSet byExtendingSelection:NO];
+        }
+        else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
+        {
+            NSTextField * cellTextField = sender;
+            NSString * trimmedString = [cellTextField.stringValue stringByTrimmingCharactersInSet:whitespaceSet];
+            keyValuesDictionary[@"keyPoints"] = trimmedString;
+        }
     }
     
     [keyValuesTableView reloadData];
@@ -226,7 +302,16 @@
 }
 
 //==================================================================================
-//	doneButtonAction
+//    cancelButtonAction
+//==================================================================================
+
+- (IBAction)cancelButtonAction:(id)sender
+{
+    [keyValuesPopover performClose:self];
+}
+
+//==================================================================================
+//    doneButtonAction
 //==================================================================================
 
 - (IBAction)doneButtonAction:(id)sender
@@ -257,82 +342,117 @@
 }
 
 //==================================================================================
-//	presetsPopUpButtonAction:
+//    removeTrailingSemicolon:
 //==================================================================================
 
-- (IBAction)presetsPopUpButtonAction:(id)sender
+- (NSString *)removeTrailingSemicolons:(NSString *)listString
 {
-    NSString * keyTimesString = @"0;1";
-    NSString * keySplinesString = @"0 0 1 1";
-    NSString * keyPointsString = @"";
-    
-    NSInteger presetIndex = presetsPopUpButton.indexOfSelectedItem;
-    
-    switch (presetIndex)
+    NSMutableString * mutableListString = [listString mutableCopy];
+    BOOL doSearch = mutableListString.length > 0;
+    while (doSearch == YES)
     {
-        case 0:
-            keyTimesString = @"";
-            keySplinesString = @"";
-            keyPointsString = @"";
-            break;
+        unichar lastCharacter = [mutableListString characterAtIndex:(mutableListString.length - 1)];
+        if (lastCharacter == ';')
+        {
+            [mutableListString deleteCharactersInRange:NSMakeRange((mutableListString.length - 1), 1)];
+            doSearch = mutableListString.length > 0;
+        }
+        else
+        {
+            doSearch = NO;
+        }
+    }
+    return [NSString stringWithString:mutableListString];
+}
 
-        case 1:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0 0 1 1";
-            keyPointsString = @"";
-            break;
+//==================================================================================
+//    removeTrailingZeros:
+//==================================================================================
 
-        case 2:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0.5 0 0.5 1";
-            keyPointsString = @"";
-            break;
-
-        case 3:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0 0.75 0.25 1";
-            keyPointsString = @"";
-            break;
-
-        case 4:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0 0.25 1 0.75";
-            keyPointsString = @"";
-            break;
-
-        case 5:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0 0 0 1";
-            keyPointsString = @"";
-            break;
-
-        case 6:
-            keyTimesString = @"0;1";
-            keySplinesString = @"0 0 1 0";
-            keyPointsString = @"";
-            break;
-
-        case 7:
-            keyTimesString = @"0;1";
-            keySplinesString = @"1 0 0.25 0.25";
-            keyPointsString = @"";
-            break;
-
-        default:
-            break;
+- (NSString *)removeTrailingZeros:(NSString *)listString
+{
+    NSMutableString * mutableListString = [listString mutableCopy];
+    
+    if (mutableListString.floatValue == 0.0f)
+    {
+        mutableListString = [NSMutableString stringWithString:@"0"];
+    }
+    else
+    {
+        BOOL doSearch = mutableListString.length > 0;
+        while (doSearch == YES)
+        {
+            unichar lastCharacter = [mutableListString characterAtIndex:(mutableListString.length - 1)];
+            if (lastCharacter == '0')
+            {
+                [mutableListString deleteCharactersInRange:NSMakeRange((mutableListString.length - 1), 1)];
+                doSearch = mutableListString.length > 0;
+            }
+            else if (lastCharacter == '.')
+            {
+                [mutableListString deleteCharactersInRange:NSMakeRange((mutableListString.length - 1), 1)];
+                doSearch = mutableListString.length > 0;
+            }
+            else
+            {
+                doSearch = NO;
+            }
+        }
     }
     
-    if (presetIndex > 0)
+    return [NSString stringWithString:mutableListString];
+}
+
+
+//==================================================================================
+//    validRowsCount:
+//==================================================================================
+
+- (NSInteger)validRowsCount:(NSArray *)valuesArray
+{
+    NSInteger validRowsCount = 0;
+
+    NSXMLElement * targetElement = macSVGPlugin.pluginTargetXMLElement;
+
+    NSXMLNode * valuesNode = [targetElement attributeForName:@"values"];
+    if (valuesNode != NULL)
     {
-        [self loadValuesForKeyTimes:keyTimesString keySplines:keySplinesString keyPoints:keyPointsString];
+        if (valuesArray.count <= 1)
+        {
+            NSString * valuesString = valuesNode.stringValue;
+            valuesString = [self removeTrailingSemicolons:valuesString];
+            NSArray * valuesStringArray = [valuesString componentsSeparatedByString:@";"];
+            if (valuesStringArray.count >= 2)
+            {
+                validRowsCount = valuesStringArray.count;
+            }
+        }
+        else
+        {
+            validRowsCount = valuesArray.count;
+        }
     }
+    else
+    {
+        NSXMLNode * fromNode = [targetElement attributeForName:@"from"];
+        if (fromNode != NULL)
+        {
+            NSXMLNode * toNode = [targetElement attributeForName:@"to"];
+            if (toNode != NULL)
+            {
+                validRowsCount = 2;
+            }
+        }
+    }
+    
+    return validRowsCount;
 }
 
 //==================================================================================
 //	loadKeyValuesData
 //==================================================================================
 
-- (void)loadKeyValuesData
+- (void)loadKeyValuesDataForValidRowsCount:(NSInteger)validRowsCount
 {
     NSXMLElement * targetElement = macSVGPlugin.pluginTargetXMLElement;
     
@@ -341,12 +461,16 @@
         NSLog(@"KeyValuesPopoverViewController - loadKeyValuesData - targetElement is NULL");
     }
 
+    NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
     NSString * keyTimesString = @"";
     NSXMLNode * keyTimesNode = [targetElement attributeForName:@"keyTimes"];
     if (keyTimesNode != NULL)
     {
         keyTimesString = keyTimesNode.stringValue;
     }
+    keyTimesString = [keyTimesString stringByTrimmingCharactersInSet:whitespaceSet];
+    keyTimesString = [self removeTrailingSemicolons:keyTimesString];
 
     NSString * keySplinesString = @"";
     NSXMLNode * keySplinesNode = [targetElement attributeForName:@"keySplines"];
@@ -354,6 +478,8 @@
     {
         keySplinesString = keySplinesNode.stringValue;
     }
+    keySplinesString = [keySplinesString stringByTrimmingCharactersInSet:whitespaceSet];
+    keySplinesString = [self removeTrailingSemicolons:keySplinesString];
 
     NSString * keyPointsString = @"";
     NSXMLNode * keyPointsNode = [targetElement attributeForName:@"keyPoints"];
@@ -361,13 +487,10 @@
     {
         keyPointsString = keyPointsNode.stringValue;
     }
-
-    NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    keyTimesString = [keyTimesString stringByTrimmingCharactersInSet:whitespaceSet];
-    keySplinesString = [keySplinesString stringByTrimmingCharactersInSet:whitespaceSet];
     keyPointsString = [keyPointsString stringByTrimmingCharactersInSet:whitespaceSet];
-    
-    [self loadValuesForKeyTimes:keyTimesString keySplines:keySplinesString keyPoints:keyPointsString];
+    keyPointsString = [self removeTrailingSemicolons:keyPointsString];
+
+    [self loadValuesForKeyTimes:keyTimesString keySplines:keySplinesString keyPoints:keyPointsString validRowsCount:validRowsCount];
 }
 
 //==================================================================================
@@ -375,76 +498,110 @@
 //==================================================================================
 
 - (void)loadValuesForKeyTimes:(NSString *)keyTimesString keySplines:(NSString *)keySplinesString
-        keyPoints:(NSString *)keyPointsString
+        keyPoints:(NSString *)keyPointsString validRowsCount:(NSInteger)validRowsCount
 {
-    NSArray * keyTimesArray = [keyTimesString componentsSeparatedByString:@";"];
-    NSArray * keySplinesArray = [keySplinesString componentsSeparatedByString:@";"];
-    NSArray * keyPointsArray = [keyPointsString componentsSeparatedByString:@";"];
-    
-    NSInteger keyTimesArrayCount = [self countValidElements:keyTimesArray];
-    NSInteger keySplinesArrayCount = [self countValidElements:keySplinesArray];
-    NSInteger keyPointsArrayCount = [self countValidElements:keyPointsArray];
-    
-    NSInteger rowsCount = keyTimesArrayCount;
-    if (keySplinesArrayCount > rowsCount)
+    if (validRowsCount >= 2)
     {
-        rowsCount = keySplinesArrayCount;
-    }
-    if (keyPointsArrayCount > rowsCount)
-    {
-        rowsCount = keyPointsArrayCount;
-    }
-    
-    [self.keyValuesArray removeAllObjects];
-    
-    for (NSInteger i = 0; i < rowsCount; i++)
-    {
-        NSString * keyTimesString = @"";
-        if (i < keyTimesArrayCount)
+        NSArray * keyTimesArray = [keyTimesString componentsSeparatedByString:@";"];
+        NSArray * keySplinesArray = [keySplinesString componentsSeparatedByString:@";"];
+        NSArray * keyPointsArray = [keyPointsString componentsSeparatedByString:@";"];
+        
+        NSInteger keyTimesArrayCount = [self countValidElements:keyTimesArray];
+        NSInteger keySplinesArrayCount = [self countValidElements:keySplinesArray];
+        NSInteger keyPointsArrayCount = [self countValidElements:keyPointsArray];
+        
+        if (keyTimesArrayCount != validRowsCount)
         {
-            keyTimesString = keyTimesArray[i];
+            float timeInterval = 1.0f / ((float)validRowsCount - 1.0f);
+            float nextTime = 0.0f;
+            
+            NSMutableArray * newKeyTimesArray = [NSMutableArray array];
+            
+            for (NSInteger i = 0; i < validRowsCount; i++)
+            {
+                NSString * nextTimeString = [NSString stringWithFormat:@"%f", nextTime];
+                nextTimeString = [self removeTrailingZeros:nextTimeString];
+                [newKeyTimesArray addObject:nextTimeString];
+                
+                nextTime += timeInterval;
+                
+                if (i >= validRowsCount - 1)
+                {
+                    nextTime = 1.0f;
+                }
+            }
+            
+            keyTimesArray = [NSArray arrayWithArray:newKeyTimesArray];
+            keyTimesArrayCount = [self countValidElements:keyTimesArray];
         }
 
-        NSString * keySplinesString = @"";
-        if (i < keySplinesArrayCount)
+        if (keySplinesArrayCount != (validRowsCount - 1))
         {
-            keySplinesString = keySplinesArray[i];
+            NSMutableArray * newKeySplinesArray = [NSMutableArray array];
+            
+            for (NSInteger i = 0; i < validRowsCount - 1; i++)  // keySplines count must be keyTimes count - 1
+            {
+                NSString * nextKeySplinesString = @"";
+                [newKeySplinesArray addObject:nextKeySplinesString];
+            }
+            
+            keySplinesArray = [NSArray arrayWithArray:newKeySplinesArray];
+            keySplinesArrayCount = [self countValidElements:keySplinesArray];
         }
 
-        NSString * keyPointsString = @"";
-        if (i < keyPointsArrayCount)
+        if (keyPointsArrayCount != validRowsCount)
         {
-            keyPointsString = keyPointsArray[i];
+            NSMutableArray * newKeyPointsArray = [NSMutableArray array];
+            
+            for (NSInteger i = 0; i < validRowsCount; i++)
+            {
+                NSString * nextKeyPointsString = @"";
+                [newKeyPointsArray addObject:nextKeyPointsString];
+            }
+            
+            keyPointsArray = [NSArray arrayWithArray:newKeyPointsArray];
+            keyPointsArrayCount = [self countValidElements:keyPointsArray];
         }
+
+        [self.keyValuesArray removeAllObjects];
         
-        NSMutableDictionary * keyValuesDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                keyTimesString, @"keyTimes",
-                keySplinesString, @"keySplines",
-                keyPointsString, @"keyPoints",
-                nil];
-        
-        [self.keyValuesArray addObject:keyValuesDictionary];
+        for (NSInteger i = 0; i < validRowsCount; i++)
+        {
+            NSString * keyTimesString = @"";
+            if (i < keyTimesArrayCount)
+            {
+                keyTimesString = keyTimesArray[i];
+            }
+
+            NSString * keySplinesString = @"";
+            if (i < keySplinesArrayCount)
+            {
+                keySplinesString = keySplinesArray[i];
+            }
+
+            NSString * keyPointsString = @"";
+            if (i < keyPointsArrayCount)
+            {
+                keyPointsString = keyPointsArray[i];
+            }
+            
+            NSMutableDictionary * keyValuesDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                    keyTimesString, @"keyTimes",
+                    keySplinesString, @"keySplines",
+                    keyPointsString, @"keyPoints",
+                    nil];
+            
+            [self.keyValuesArray addObject:keyValuesDictionary];
+        }
+    }
+    else
+    {
+        [self.keyValuesArray removeAllObjects];
     }
     
     [keyValuesTableView reloadData];
     
     [keySplinesView setNeedsDisplay:YES];
-}
-
-//==================================================================================
-//	addRowButtonAction:
-//==================================================================================
-
-- (IBAction)addRowButtonAction:(id)sender
-{
-}
-
-//==================================================================================
-//	deleteRowButtonAction:
-//==================================================================================
-
-- (IBAction)deleteRowButtonAction:(id)sender
-{
 }
 
 //==================================================================================

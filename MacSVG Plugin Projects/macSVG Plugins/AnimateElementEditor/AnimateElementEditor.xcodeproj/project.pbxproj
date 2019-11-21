@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0EADC6A61D7C1EAF00A61333 /* AnimateElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */; };
 		0EADC6AC1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */; };
-		0EADC6AF1D7C1FAD00A61333 /* AnimateElementTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EADC6AE1D7C1FAD00A61333 /* AnimateElementTableRowView.m */; };
 		0EADC6B11D7C1FF100A61333 /* AnimateElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EADC6B01D7C1FF100A61333 /* AnimateElementEditor.xib */; };
 		0EADC6B41D7C271E00A61333 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EADC6B31D7C271E00A61333 /* MacSVGPlugin.framework */; };
 /* End PBXBuildFile section */
@@ -21,8 +20,6 @@
 		0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementEditor.m; sourceTree = "<group>"; };
 		0EADC6AA1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementKeyValuesPopoverViewController.h; sourceTree = "<group>"; };
 		0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementKeyValuesPopoverViewController.m; sourceTree = "<group>"; };
-		0EADC6AD1D7C1FAD00A61333 /* AnimateElementTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateElementTableRowView.h; sourceTree = "<group>"; };
-		0EADC6AE1D7C1FAD00A61333 /* AnimateElementTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateElementTableRowView.m; sourceTree = "<group>"; };
 		0EADC6B01D7C1FF100A61333 /* AnimateElementEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimateElementEditor.xib; sourceTree = "<group>"; };
 		0EADC6B31D7C271E00A61333 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ECCAFFC1DB4A907001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
@@ -64,8 +61,6 @@
 				0EADC6A51D7C1EAF00A61333 /* AnimateElementEditor.m */,
 				0EADC6AA1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.h */,
 				0EADC6AB1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m */,
-				0EADC6AD1D7C1FAD00A61333 /* AnimateElementTableRowView.h */,
-				0EADC6AE1D7C1FAD00A61333 /* AnimateElementTableRowView.m */,
 				0EADC6A31D7C1E6800A61333 /* Supporting Files */,
 			);
 			path = AnimateElementEditor;
@@ -162,7 +157,6 @@
 			files = (
 				0EADC6A61D7C1EAF00A61333 /* AnimateElementEditor.m in Sources */,
 				0EADC6AC1D7C1F6D00A61333 /* AnimateElementKeyValuesPopoverViewController.m in Sources */,
-				0EADC6AF1D7C1FAD00A61333 /* AnimateElementTableRowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

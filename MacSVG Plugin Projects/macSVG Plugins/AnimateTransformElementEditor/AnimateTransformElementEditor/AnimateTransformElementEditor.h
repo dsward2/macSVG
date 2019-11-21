@@ -38,12 +38,9 @@
 
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)applyChangesButtonAction:(id)sender;
-- (IBAction)keyValuesButtonAction:(id)sender;
+- (IBAction)editKeyValuesButtonAction:(id)sender;
 
 - (IBAction)itemTextFieldUpdated:(id)sender;
-
-- (IBAction)addValuesRow:(id)sender;
-- (IBAction)deleteValuesRow:(id)sender;
 
 - (IBAction)attributeDurStepperAction:(id)sender;
 

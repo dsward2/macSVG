@@ -8,7 +8,6 @@
 
 #import "AnimateMotionElementEditor.h"
 #import "AnimateMotionKeyValuesPopoverViewController.h"
-#import "AnimateMotionTableRowView.h"
 
 @implementation AnimateMotionElementEditor
 
@@ -588,36 +587,6 @@
 }
 
 //==================================================================================
-//	tableView:rowViewForRow:
-//==================================================================================
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView
-                rowViewForRow:(NSInteger)row
-{
-    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
-    
-    //AnimateMotionTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    AnimateMotionTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
-
-    if (rowView == NULL)
-    {
-        // Size doesn't matter, the table will set it
-        rowView = [[AnimateMotionTableRowView alloc] initWithFrame:NSZeroRect];
-
-        // This seemingly magical line enables your view to be found
-        // next time "makeViewWithIdentifier" is called.
-        rowView.identifier = kRowIdentifier; 
-    }
-
-    // Can customize properties here. Note that customizing
-    // 'backgroundColor' isn't going to work at this point since the table
-    // will reset it later. Use 'didAddRow' to customize if desired.
-
-    return rowView;
-}
-
-//==================================================================================
 //	tableView:viewForTableColumn:row:
 //==================================================================================
 
@@ -894,6 +863,7 @@
     NSString * toString = toTextField.stringValue;
     
     NSMutableString * valuesString = [NSMutableString string];
+    NSArray * lastItem = self.valuesArray.lastObject;
     for (NSArray * rowArray in self.valuesArray)
     {
         NSInteger rowArrayCount = rowArray.count;
@@ -904,7 +874,10 @@
             
             if (indexOfObject >= (rowArrayCount - 1))
             {
-                [valuesString appendString:@";"];
+                if (rowArray != lastItem)
+                {
+                    [valuesString appendString:@";"];
+                }
             }
             else
             {
@@ -1010,7 +983,11 @@
         
         if (keyTimesString.length > 0)
         {
-            [keyTimesAttributeString appendFormat:@"%@;", keyTimesString];
+            if (keyTimesAttributeString.length > 0)
+            {
+                [keyTimesAttributeString appendString:@";"];
+            }
+            [keyTimesAttributeString appendString:keyTimesString];
         }
         
         if (keySplinesString.length > 0)
@@ -1025,7 +1002,11 @@
         
         if (keyPointsString.length > 0)
         {
-            [keyPointsAttributeString appendFormat:@"%@;", keyPointsString];
+            if (keyPointsAttributeString.length > 0)
+            {
+                [keyPointsAttributeString appendString:@";"];
+            }
+            [keyPointsAttributeString appendString:keyPointsString];
         }
     }
     
@@ -1038,15 +1019,16 @@
 
 
 // -------------------------------------------------------------------------------
-//  keyValuesButtonAction:
+//  editKeyValuesButtonAction:
 // -------------------------------------------------------------------------------
 
-- (IBAction)keyValuesButtonAction:(id)sender
+- (IBAction)editKeyValuesButtonAction:(id)sender
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    [animateMotionKeyValuesPopoverViewController loadKeyValuesData];
-    
+    NSInteger validRowsCount = [animateMotionKeyValuesPopoverViewController validRowsCount:self.valuesArray];
+    [animateMotionKeyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
+
     // configure the preferred position of the popover
     [animateMotionKeyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }

@@ -18,7 +18,7 @@
   </svgElement>
   <svgElement id="animate">
     <docref>animate.html#AnimateElement</docref>
-    <prototype>animate attributeName="x" attributeType="XML" begin="0s" dur="1s" values="100;200;100" repeatCount="indefinite" additive="replace" accumulate="none" fill="remove"</prototype>
+    <prototype>animate attributeName="x" attributeType="XML" begin="0s" dur="1s" calcMode="linear" values="100;200;100" repeatCount="indefinite" additive="replace" accumulate="none" fill="remove"</prototype>
   </svgElement>
   <svgElement id="animateColor">
     <docref>animate.html#AnimateColorElement</docref>
@@ -26,11 +26,11 @@
   </svgElement>
   <svgElement id="animateMotion">
     <docref>animate.html#AnimateMotionElement</docref>
-    <prototype>animateMotion begin="0s" dur="3s" values="50 50;300 300" repeatCount="indefinite" calcMode="" keyTimes="0;1" keySplines="0.5 0 0.5 1"  additive="replace" accumulate="none" fill="remove"</prototype>
+    <prototype>animateMotion begin="0s" dur="3s" values="50 50;300 300" repeatCount="indefinite" calcMode="linear" additive="replace" accumulate="none" fill="remove"</prototype>
   </svgElement>
   <svgElement id="animateTransform">
     <docref>animate.html#AnimateTransformElement</docref>
-    <prototype>animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 320 372;360 320 372" begin="0s" dur="6s" repeatCount="indefinite" additive="replace" accumulate="none" fill="remove"</prototype>
+    <prototype>animateTransform attributeName="transform" attributeType="XML" type="rotate" values="0 320 372;360 320 372" begin="0s" dur="6s" repeatCount="indefinite" calcMode="linear" additive="replace" accumulate="none" fill="remove"</prototype>
   </svgElement>
   <svgElement id="circle">
     <docref>shapes.html#CircleElement</docref>

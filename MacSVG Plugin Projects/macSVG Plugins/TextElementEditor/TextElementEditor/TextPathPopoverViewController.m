@@ -1496,7 +1496,7 @@ NSComparisonResult pathSort(id element1, id element2, void *context)
 
     NSXMLNode * valuesAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
     valuesAttributeNode.name = @"values";
-    valuesAttributeNode.stringValue = @"100; 200; 100;";
+    valuesAttributeNode.stringValue = @"100; 200; 100";
     [newAnimateElement addAttribute:valuesAttributeNode];
 
     NSXMLNode * attributeNameAttributeNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];

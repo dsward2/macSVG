@@ -8,7 +8,6 @@
 
 #import "AnimateTransformElementEditor.h"
 #import "AnimateTransformKeyValuesPopoverViewController.h"
-#import "AnimateTransformTableRowView.h"
 
 @implementation AnimateTransformElementEditor
 
@@ -704,28 +703,6 @@
 }
 
 //==================================================================================
-//	tableView:rowViewForRow:
-//==================================================================================
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView
-                rowViewForRow:(NSInteger)row
-{
-    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
-    
-    //AnimateTransformTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    AnimateTransformTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
-
-    if (rowView == NULL)
-    {
-        rowView = [[AnimateTransformTableRowView alloc] initWithFrame:NSZeroRect];
-        rowView.identifier = kRowIdentifier;
-    }
-
-    return rowView;
-}
-
-//==================================================================================
 //	tableView:viewForTableColumn:row:
 //==================================================================================
 
@@ -975,6 +952,7 @@
     }
     
     NSMutableString * valuesString = [NSMutableString string];
+    NSArray * lastItem = self.valuesArray.lastObject;
     for (NSArray * rowArray in self.valuesArray)
     {
         NSInteger actualRowArrayCount = rowArray.count;
@@ -991,7 +969,10 @@
                 
                 if (indexOfObject >= (rowArrayCount - 1))
                 {
-                    [valuesString appendString:@";"];
+                    if (rowArray != lastItem)
+                    {
+                        [valuesString appendString:@";"];
+                    }
                 }
                 else
                 {
@@ -1039,11 +1020,14 @@
     {
         NSString * keyTimesString = keyValuesDictionary[@"keyTimes"];
         NSString * keySplinesString = keyValuesDictionary[@"keySplines"];
-        NSString * keyPointsString = keyValuesDictionary[@"keyPoints"];
         
         if (keyTimesString.length > 0)
         {
-            [keyTimesAttributeString appendFormat:@"%@;", keyTimesString];
+            if (keyTimesAttributeString.length > 0)
+            {
+                [keyTimesAttributeString appendString:@";"];
+            }
+            [keyTimesAttributeString appendString:keyTimesString];
         }
         
         if (keySplinesString.length > 0)
@@ -1055,11 +1039,6 @@
             }
             [keySplinesAttributeString appendString:keySplinesString];
         }
-        
-        if (keyPointsString.length > 0)
-        {
-            [keyPointsAttributeString appendFormat:@"%@;", keyPointsString];
-        }
     }
     
     [self setAttributeName:@"keyTimes" value:keyTimesAttributeString element:self.pluginTargetXMLElement];
@@ -1070,14 +1049,15 @@
 }
 
 // -------------------------------------------------------------------------------
-//  keyValuesButtonAction:
+//  editKeyValuesButtonAction:
 // -------------------------------------------------------------------------------
-- (IBAction)keyValuesButtonAction:(id)sender
+- (IBAction)editKeyValuesButtonAction:(id)sender
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    [animateTransformKeyValuesPopoverViewController loadKeyValuesData];
-    
+    NSInteger validRowsCount = [animateTransformKeyValuesPopoverViewController validRowsCount:self.valuesArray];
+    [animateTransformKeyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
+
     // configure the preferred position of the popover
     [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }

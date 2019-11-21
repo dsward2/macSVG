@@ -40,9 +40,6 @@
 
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)applyChangesButtonAction:(id)sender;
-- (IBAction)keyValuesButtonAction:(id)sender;
-
-- (IBAction)addValuesRow:(id)sender;
-- (IBAction)deleteValuesRow:(id)sender;
+- (IBAction)editKeyValuesButtonAction:(id)sender;
 
 @end

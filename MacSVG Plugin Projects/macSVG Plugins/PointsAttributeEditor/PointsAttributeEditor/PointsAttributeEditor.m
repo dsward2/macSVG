@@ -361,7 +361,7 @@
                 rowViewForRow:(NSInteger)row
 {
     // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"AnimateMotionTableRowView";
+    static NSString* const kRowIdentifier = @"PointsTableRowView";
     
     //PointsTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
     PointsTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];

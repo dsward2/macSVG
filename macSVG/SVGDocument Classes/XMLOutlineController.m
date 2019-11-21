@@ -162,7 +162,11 @@
 
 - (void)reloadData 
 {
+    NSIndexSet * selectedRowIndexes = [self.xmlOutlineView selectedRowIndexes];
+
     [self.xmlOutlineView reloadData];
+    
+    [self.xmlOutlineView selectRowIndexes:selectedRowIndexes byExtendingSelection:NO];
 }
 
 //==================================================================================
@@ -1083,7 +1087,7 @@
                 y = NSMidY(boundingBox);
             }
             
-            NSString * motionValuesString = @"0 0;20 20;";
+            NSString * motionValuesString = @"0 0;20 20";
            
             NSXMLNode * valuesNode = [prototypeElement attributeForName:@"values"];
             if (valuesNode != NULL)

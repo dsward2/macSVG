@@ -30,18 +30,16 @@
     IBOutlet NSButton * applyChangesButton;
 
     IBOutlet NSPopover * keyValuesPopover;
-    IBOutlet AnimateElementKeyValuesPopoverViewController * keyValuesPopoverViewController;
+    IBOutlet AnimateElementKeyValuesPopoverViewController * animateKeyValuesPopoverViewController;
 }
 
 @property (strong) NSMutableArray * valuesArray;
 
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)applyChangesButtonAction:(id)sender;
-- (IBAction)keyValuesButtonAction:(id)sender;
+
+- (IBAction)editKeyValuesButtonAction:(id)sender;
 
 - (IBAction)itemTextFieldUpdated:(id)sender;
-
-- (IBAction)addValuesRow:(id)sender;
-- (IBAction)deleteValuesRow:(id)sender;
 
 @end

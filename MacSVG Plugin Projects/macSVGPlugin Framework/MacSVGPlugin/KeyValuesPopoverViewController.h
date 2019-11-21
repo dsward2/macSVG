@@ -11,7 +11,7 @@
 @class MacSVGPlugin;
 @class KeySplinesView;
 
-@interface KeyValuesPopoverViewController : NSViewController
+@interface KeyValuesPopoverViewController : NSViewController <NSComboBoxDelegate, NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet NSPopover * keyValuesPopover;
     IBOutlet MacSVGPlugin * macSVGPlugin;
@@ -27,10 +27,10 @@
 - (IBAction)tableCellChanged:(id)sender;
 
 - (IBAction)doneButtonAction:(id)sender;
-- (IBAction)addRowButtonAction:(id)sender;
-- (IBAction)deleteRowButtonAction:(id)sender;
-- (IBAction)presetsPopUpButtonAction:(id)sender;
+- (IBAction)cancelButtonAction:(id)sender;
 
-- (void)loadKeyValuesData;
+- (NSInteger)validRowsCount:(NSArray *)valuesArray;
+
+- (void)loadKeyValuesDataForValidRowsCount:(NSInteger)validRowsCount;
 
 @end

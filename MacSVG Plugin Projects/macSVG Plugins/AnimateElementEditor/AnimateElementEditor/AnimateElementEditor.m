@@ -8,7 +8,6 @@
 
 #import "AnimateElementEditor.h"
 #import "AnimateElementKeyValuesPopoverViewController.h"
-#import "AnimateElementTableRowView.h"
 #import "MacSVGDocument.h"
 #import "MacSVGDocumentWindowController.h"
 #import "SVGHelpManager.h"
@@ -545,36 +544,6 @@
 }
 
 //==================================================================================
-//	tableView:rowViewForRow:
-//==================================================================================
-
-- (NSTableRowView *)tableView:(NSTableView *)tableView
-                rowViewForRow:(NSInteger)row
-{
-    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
-    static NSString* const kRowIdentifier = @"KeyValuesRowView";
-    
-    //AnimateElementTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:self];
-    AnimateElementTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
-
-    if (rowView == NULL)
-    {
-        // Size doesn't matter, the table will set it
-        rowView = [[AnimateElementTableRowView alloc] initWithFrame:NSZeroRect];
-
-        // This seemingly magical line enables your view to be found
-        // next time "makeViewWithIdentifier" is called.
-        rowView.identifier = kRowIdentifier; 
-    }
-
-    // Can customize properties here. Note that customizing
-    // 'backgroundColor' isn't going to work at this point since the table
-    // will reset it later. Use 'didAddRow' to customize if desired.
-
-    return rowView;
-}
-
-//==================================================================================
 //	tableView:viewForTableColumn:row:
 //==================================================================================
 
@@ -949,6 +918,7 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
     //valuesString = [valuesString stringByReplacingOccurrencesOfString:@";\n" withString:@";"];
     
     NSMutableString * valuesString = [NSMutableString string];
+    NSArray * lastItem = self.valuesArray.lastObject;
     for (NSArray * rowArray in self.valuesArray)
     {
         NSInteger rowArrayCount = rowArray.count;
@@ -959,7 +929,10 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
             
             if (indexOfObject >= (rowArrayCount - 1))
             {
-                [valuesString appendString:@";"];
+                if (rowArray != lastItem)
+                {
+                    [valuesString appendString:@";"];
+                }
             }
             else
             {
@@ -1025,13 +998,12 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
     NSMutableString * keySplinesAttributeString = [NSMutableString string];
     NSMutableString * keyPointsAttributeString = [NSMutableString string];
     
-    NSArray * keyValuesArray = keyValuesPopoverViewController.keyValuesArray;
+    NSArray * keyValuesArray = animateKeyValuesPopoverViewController.keyValuesArray;
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
         NSString * keyTimesString = keyValuesDictionary[@"keyTimes"];
         NSString * keySplinesString = keyValuesDictionary[@"keySplines"];
-        NSString * keyPointsString = keyValuesDictionary[@"keyPoints"];
         
         if (keyTimesString.length > 0)
         {
@@ -1044,23 +1016,15 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
         
         if (keySplinesString.length > 0)
         {
+            // apparent Chrome bug (formerly in WebKit) - don't end last spline with semicolon
             if (keySplinesAttributeString.length > 0)
             {
                 [keySplinesAttributeString appendString:@";"];
             }
             [keySplinesAttributeString appendString:keySplinesString];
         }
-        
-        if (keyPointsString.length > 0)
-        {
-            if (keyPointsAttributeString.length > 0)
-            {
-                [keyPointsAttributeString appendString:@";"];
-            }
-            [keyPointsAttributeString appendString:keyPointsString];
-        }
     }
-    
+
     [self setAttributeName:@"keyTimes" value:keyTimesAttributeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"keySplines" value:keySplinesAttributeString element:self.pluginTargetXMLElement];
     [self setAttributeName:@"keyPoints" value:keyPointsAttributeString element:self.pluginTargetXMLElement];
@@ -1069,13 +1033,14 @@ NSComparisonResult attributeNameSort(id name1, id name2, void *context)
 }
 
 // -------------------------------------------------------------------------------
-//  keyValuesButtonAction:
+//  editKeyValuesButtonAction:
 // -------------------------------------------------------------------------------
-- (IBAction)keyValuesButtonAction:(id)sender
+- (IBAction)editKeyValuesButtonAction:(id)sender
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    [keyValuesPopoverViewController loadKeyValuesData];
+    NSInteger validRowsCount = [animateKeyValuesPopoverViewController validRowsCount:self.valuesArray];
+    [animateKeyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
     
     // configure the preferred position of the popover
     [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
