@@ -21,6 +21,8 @@
 		0E90DBFF23629FEE003D91B0 /* KeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */; };
 		0E90DC0023629FEE003D91B0 /* KeySplinesView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E90DBFC23629FEE003D91B0 /* KeySplinesView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E90DC0123629FEE003D91B0 /* KeySplinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */; };
+		0EBE0C5B2396ABFA00A82E92 /* KeyValuesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBE0C582396ABFA00A82E92 /* KeyValuesTableRowView.m */; };
+		0EBE0C5C2396ABFA00A82E92 /* KeyValuesTableRowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EBE0C5A2396ABFA00A82E92 /* KeyValuesTableRowView.h */; };
 		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,8 @@
 		0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValuesPopoverViewController.m; sourceTree = "<group>"; };
 		0E90DBFC23629FEE003D91B0 /* KeySplinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeySplinesView.h; sourceTree = "<group>"; };
 		0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeySplinesView.m; sourceTree = "<group>"; };
+		0EBE0C582396ABFA00A82E92 /* KeyValuesTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValuesTableRowView.m; sourceTree = "<group>"; };
+		0EBE0C5A2396ABFA00A82E92 /* KeyValuesTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValuesTableRowView.h; sourceTree = "<group>"; };
 		0EDA099A178F52A400E97D95 /* WebKitInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebKitInterface.h; path = "../../../macSVG/Application Classes/WebKitInterface.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +140,8 @@
 				0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */,
 				0E90DBFA23629FEE003D91B0 /* KeyValuesPopoverViewController.h */,
 				0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */,
+				0EBE0C5A2396ABFA00A82E92 /* KeyValuesTableRowView.h */,
+				0EBE0C582396ABFA00A82E92 /* KeyValuesTableRowView.m */,
 				0E05D340178F35C4000B910E /* Supporting Files */,
 			);
 			path = MacSVGPlugin;
@@ -182,6 +188,7 @@
 				0E90DC0023629FEE003D91B0 /* KeySplinesView.h in Headers */,
 				0E90DBFE23629FEE003D91B0 /* KeyValuesPopoverViewController.h in Headers */,
 				0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */,
+				0EBE0C5C2396ABFA00A82E92 /* KeyValuesTableRowView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EBE0C5B2396ABFA00A82E92 /* KeyValuesTableRowView.m in Sources */,
 				0E90DBFF23629FEE003D91B0 /* KeyValuesPopoverViewController.m in Sources */,
 				0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */,
 				0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */,

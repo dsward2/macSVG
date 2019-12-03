@@ -35,6 +35,7 @@ Notes from the SVG spec -
 #import "KeyValuesPopoverViewController.h"
 #import "MacSVGPlugin.h"
 #import "KeySplinesView.h"
+#import "KeyValuesTableRowView.h"
 
 @interface KeyValuesPopoverViewController ()
 
@@ -147,6 +148,34 @@ Notes from the SVG spec -
     }
 }
 
+//==================================================================================
+//    tableView:rowViewForRow:
+//==================================================================================
+
+- (NSTableRowView *)tableView:(NSTableView *)tableView
+                rowViewForRow:(NSInteger)row
+{
+    // from http://stackoverflow.com/questions/10910779/coloring-rows-in-view-based-nstableview
+    static NSString* const kRowIdentifier = @"KeyValuesTableRowView";
+    
+    KeyValuesTableRowView * rowView = [tableView makeViewWithIdentifier:kRowIdentifier owner:NULL];
+
+    if (rowView == NULL)
+    {
+        // Size doesn't matter, the table will set it
+        rowView = [[KeyValuesTableRowView alloc] initWithFrame:NSZeroRect];
+
+        // This seemingly magical line enables your view to be found
+        // next time "makeViewWithIdentifier" is called.
+        rowView.identifier = kRowIdentifier;
+    }
+
+    // Can customize properties here. Note that customizing
+    // 'backgroundColor' isn't going to work at this point since the table
+    // will reset it later. Use 'didAddRow' to customize if desired.
+
+    return rowView;
+}
 //==================================================================================
 //	numberOfRowsInTableView
 //==================================================================================

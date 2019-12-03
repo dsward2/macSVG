@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib
 {
-    self.identifier = @"KeyValuesRowView";
+    self.identifier = @"KeyValuesTableRowView";
 }
 
 - (NSBackgroundStyle)interiorBackgroundStyle
@@ -30,7 +30,7 @@
 
 - (NSTableViewSelectionHighlightStyle)selectionHighlightStyle
 {
-    return NSTableViewSelectionHighlightStyleSourceList;
+    return NSTableViewSelectionHighlightStyleNone;
 }
 
 @end
