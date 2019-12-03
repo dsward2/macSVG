@@ -10,7 +10,6 @@
 		0EF29D8B1D791B4200267844 /* AnimateTransformElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */; };
 		0EF29D8F1D791B9700267844 /* MacSVGPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */; };
 		0EF29D911D7927FC00267844 /* AnimateTransformElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */; };
-		0EF29D971D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,8 +20,6 @@
 		0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformElementEditor.m; sourceTree = "<group>"; };
 		0EF29D8E1D791B9700267844 /* MacSVGPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF29D901D7927FC00267844 /* AnimateTransformElementEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimateTransformElementEditor.xib; sourceTree = "<group>"; };
-		0EF29D941D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateTransformKeyValuesPopoverViewController.h; sourceTree = "<group>"; };
-		0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateTransformKeyValuesPopoverViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +56,6 @@
 			children = (
 				0EF29D891D791B4200267844 /* AnimateTransformElementEditor.h */,
 				0EF29D8A1D791B4200267844 /* AnimateTransformElementEditor.m */,
-				0EF29D941D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.h */,
-				0EF29D951D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m */,
 				0EF29D8C1D791B5300267844 /* Supporting Files */,
 			);
 			path = AnimateTransformElementEditor;
@@ -156,7 +151,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EF29D8B1D791B4200267844 /* AnimateTransformElementEditor.m in Sources */,
-				0EF29D971D794D2600267844 /* AnimateTransformKeyValuesPopoverViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

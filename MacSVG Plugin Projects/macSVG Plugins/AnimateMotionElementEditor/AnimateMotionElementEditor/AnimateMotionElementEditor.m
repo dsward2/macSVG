@@ -7,7 +7,7 @@
 //
 
 #import "AnimateMotionElementEditor.h"
-#import "AnimateMotionKeyValuesPopoverViewController.h"
+#import <MacSVGPlugin/KeyValuesPopoverViewController.h>
 
 @implementation AnimateMotionElementEditor
 
@@ -26,6 +26,13 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    if (isAwake == NO)
+    {
+        isAwake = YES;
+        
+        self.keyValuesPopoverViewController.macSVGPlugin = self;
+    }
 }
 
 //==================================================================================
@@ -135,7 +142,7 @@
     BOOL result = [super beginEditForXMLElement:newPluginTargetXMLElement
             domElement:newPluginTargetElement];
 
-    self.valuesArray = [NSMutableArray array];
+    self.animationValuesArray = [NSMutableArray array];
     
     [valuesTableView reloadData];
 
@@ -327,8 +334,9 @@
     NSXMLNode * valuesAttributeNode = [animateMotionElement attributeForName:@"values"];
     if (valuesAttributeNode != NULL)
     {
-        [self configureValuesTableView];
-        
+        [self configureAnimationKeyValuesWithUseKeyPoints:YES];
+        [valuesTableView reloadData];
+
         [animateMotionTabView selectTabViewItemAtIndex:1];
     }
 
@@ -408,47 +416,15 @@
 //	configureValuesTableView
 //==================================================================================
 
+/*
 - (void)configureValuesTableView
 {
     self.valuesArray = [NSMutableArray array];
 
-    valuesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
-
-    while(valuesTableView.tableColumns.count > 0)
-    {
-        [valuesTableView removeTableColumn:valuesTableView.tableColumns.lastObject];
-    }
-    
-    valuesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
-    
-    NSTableColumn * indexTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"#"];
-    indexTableColumn.title = @"#";
-    indexTableColumn.width = 30.0f;
-    indexTableColumn.minWidth = 30.0f;
-    indexTableColumn.maxWidth = 100.0f;
-    [valuesTableView addTableColumn:indexTableColumn];
-    
-    CGFloat tableWidth = valuesTableView.bounds.size.width - 30.0f;
-
-    CGFloat columnWidth = tableWidth / 2.0f;
-
-    NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
-    xTableColumn.title = @"x";
-    xTableColumn.width = columnWidth;
-    xTableColumn.minWidth = 60.0f;
-    xTableColumn.maxWidth = 100.0f;
-    [valuesTableView addTableColumn:xTableColumn];
-
-    NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
-    yTableColumn.title = @"y";
-    yTableColumn.width = columnWidth;
-    yTableColumn.minWidth = 60.0f;
-    yTableColumn.maxWidth = 100.0f;
-    [valuesTableView addTableColumn:yTableColumn];
-
     NSXMLElement * animateMotionElement = self.pluginTargetXMLElement;
 
     NSXMLNode * valuesAttributeNode = [animateMotionElement attributeForName:@"values"];
+
     if (valuesAttributeNode != NULL)
     {
         NSString * valuesAttributeString = valuesAttributeNode.stringValue;
@@ -497,8 +473,11 @@
     
     [valuesTableView reloadData];
     
-    valuesTableView.rowHeight = 14.0f;
+    //valuesTableView.rowHeight = 14.0f;
+    
+    [self.keyValuesPopoverViewController useKeyPoints:YES];
 }
+*/
 
 //==================================================================================
 //	numberOfRowsInTableView:
@@ -506,7 +485,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return (self.valuesArray).count;
+    return (self.animationValuesArray).count;
 }
 
 //==================================================================================
@@ -525,9 +504,9 @@
         
         stringValue = [stringValue copy];
         
-        if (rowIndex <= ((self.valuesArray).count - 1))
+        if (rowIndex <= ((self.animationValuesArray).count - 1))
         {
-            NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
+            NSMutableArray * rowArray = (self.animationValuesArray)[rowIndex];
             
             rowArray[(columnIndex - 1)] = stringValue;
             
@@ -592,33 +571,30 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
+    NSString * tableColumnIdentifier = tableColumn.identifier;
 
-    if (resultView == nil)
-    {
-        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
-        resultView.identifier = tableColumn.identifier;
-        resultView.font = [NSFont systemFontOfSize:10];
-        resultView.bordered = NO;
-        resultView.backgroundColor = [NSColor clearColor];
-    }
+    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    
+    NSString * cellViewIndentifier = [tableColumnIdentifier stringByAppendingString:@"CellView"];
+    
+    NSTextField * resultView = [tableView makeViewWithIdentifier:cellViewIndentifier owner:self];
+
+    NSArray * subviews = resultView.subviews;
+    NSTextField * textField = subviews.firstObject;
 
     NSString * resultString = @"";
-
-    NSString * tableColumnIdentifier = tableColumn.identifier;
     
     if ([tableColumnIdentifier isEqualToString:@"#"] == YES)
     {
         resultString = [NSString stringWithFormat:@"%ld", (row + 1)];
-        resultView.editable = NO;
+        textField.editable = NO;
     }
     else
     {
-        resultView.editable = YES;
-        resultView.delegate = self;
+        textField.editable = YES;
+        textField.delegate = self;
         
-        NSArray * rowArray = (self.valuesArray)[row];
+        NSArray * rowArray = (self.animationValuesArray)[row];
         NSInteger rowArrayCount = rowArray.count;
 
         if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
@@ -637,7 +613,7 @@
         }
     }
 
-    resultView.stringValue = resultString;
+    textField.stringValue = resultString;
     
     return resultView;
 }
@@ -863,28 +839,23 @@
     NSString * toString = toTextField.stringValue;
     
     NSMutableString * valuesString = [NSMutableString string];
-    NSArray * lastItem = self.valuesArray.lastObject;
-    for (NSArray * rowArray in self.valuesArray)
+    for (NSArray * rowArray in self.animationValuesArray)
     {
-        NSInteger rowArrayCount = rowArray.count;
-        NSInteger indexOfObject = 0;
+        if (valuesString.length > 0)
+        {
+            [valuesString appendString:@";"];
+        }
+    
+        NSInteger itemIndex = 0;
         for (NSString * columnString in rowArray)
         {
-            [valuesString appendString:columnString];
-            
-            if (indexOfObject >= (rowArrayCount - 1))
-            {
-                if (rowArray != lastItem)
-                {
-                    [valuesString appendString:@";"];
-                }
-            }
-            else
+            if (itemIndex > 0)
             {
                 [valuesString appendString:@" "];
             }
-            
-            indexOfObject++;
+
+            [valuesString appendString:columnString];
+            itemIndex++;
         }
     }
 
@@ -973,7 +944,7 @@
     NSMutableString * keySplinesAttributeString = [NSMutableString string];
     NSMutableString * keyPointsAttributeString = [NSMutableString string];
     
-    NSArray * keyValuesArray = animateMotionKeyValuesPopoverViewController.keyValuesArray;
+    NSArray * keyValuesArray = self.keyValuesPopoverViewController.keyValuesArray;
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
@@ -1026,11 +997,11 @@
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    NSInteger validRowsCount = [animateMotionKeyValuesPopoverViewController validRowsCount:self.valuesArray];
-    [animateMotionKeyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
+    NSInteger validRowsCount = [self.keyValuesPopoverViewController validRowsCount:self.animationValuesArray];
+    [self.keyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
 
     // configure the preferred position of the popover
-    [animateMotionKeyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
+    [self.keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 //==================================================================================
@@ -1040,12 +1011,20 @@
 - (IBAction)addValuesRow:(id)sender
 {
     NSInteger selectedRow = valuesTableView.selectedRow;
-    
+
+    if (selectedRow == -1)
+    {
+        if (self.animationValuesArray.count > 0)
+        {
+            selectedRow = self.animationValuesArray.count - 1;
+        }
+    }
+
     NSMutableArray * selectedRowArray = NULL;
     
     if (selectedRow >= 0)
     {
-        selectedRowArray = (self.valuesArray)[selectedRow];
+        selectedRowArray = (self.animationValuesArray)[selectedRow];
     }
     else
     {
@@ -1061,7 +1040,7 @@
         [newRowArray addObject:newColumnString];
     }
     
-    [self.valuesArray insertObject:newRowArray atIndex:(selectedRow + 1)];
+    [self.animationValuesArray insertObject:newRowArray atIndex:(selectedRow + 1)];
     
     [valuesTableView reloadData];
     
@@ -1079,10 +1058,18 @@
 
     if (selectedRow >= 0)
     {
-        [self.valuesArray removeObjectAtIndex:selectedRow];
+        [self.animationValuesArray removeObjectAtIndex:selectedRow];
         
         [valuesTableView reloadData];
     }
+    
+    if (selectedRow > self.animationValuesArray.count - 1)
+    {
+        selectedRow = self.animationValuesArray.count - 1;
+    }
+
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:selectedRow];
+    [valuesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
 }
 
 @end

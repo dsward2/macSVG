@@ -8,7 +8,7 @@
 
 #import <MacSVGPlugin/MacSVGPlugin.h>
 
-@class AnimateMotionKeyValuesPopoverViewController;
+//@class AnimateMotionKeyValuesPopoverViewController;
 
 @interface AnimateMotionElementEditor : MacSVGPlugin <NSControlTextEditingDelegate, NSTextFieldDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextDelegate>
 {
@@ -30,12 +30,11 @@
     
     IBOutlet NSButton * cancelButton;
     IBOutlet NSButton * applyChangesButton;
-
-    IBOutlet NSPopover * animateMotionKeyValuesPopover;
-    IBOutlet AnimateMotionKeyValuesPopoverViewController * animateMotionKeyValuesPopoverViewController;
+    
+    BOOL isAwake;
 }
 
-@property (strong) NSMutableArray * valuesArray;
+//@property (strong) NSMutableArray * valuesArray;
 
 
 - (IBAction)cancelButtonAction:(id)sender;

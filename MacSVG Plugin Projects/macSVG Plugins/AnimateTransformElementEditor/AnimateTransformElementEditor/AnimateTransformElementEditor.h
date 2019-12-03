@@ -7,7 +7,6 @@
 //
 
 #import <MacSVGPlugin/MacSVGPlugin.h>
-@class AnimateTransformKeyValuesPopoverViewController;
 
 @interface AnimateTransformElementEditor : MacSVGPlugin <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate, NSControlTextEditingDelegate>
 {
@@ -28,11 +27,10 @@
     IBOutlet NSButton * cancelButton;
     IBOutlet NSButton * applyChangesButton;
 
-    IBOutlet NSPopover * keyValuesPopover;
-    IBOutlet AnimateTransformKeyValuesPopoverViewController * animateTransformKeyValuesPopoverViewController;
+    BOOL isAwake;
 }
 
-@property (strong) NSMutableArray * valuesArray;
+//@property (strong) NSMutableArray * valuesArray;
 
 - (IBAction)typePopupButtonAction:(id)sender;
 

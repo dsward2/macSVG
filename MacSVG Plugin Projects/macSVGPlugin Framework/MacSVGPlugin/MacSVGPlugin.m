@@ -630,6 +630,71 @@
     NSLog(@"%@\n%@", messagePrefix, filteredStackSymbols);
 }
 
+//==================================================================================
+//    configureAnimationKeyValuesWithUseKeyPoints:
+//==================================================================================
+
+- (void)configureAnimationKeyValuesWithUseKeyPoints:(BOOL)useKeyPoints
+{
+    self.animationValuesArray = [NSMutableArray array];
+
+    NSXMLElement * animateElement = self.pluginTargetXMLElement;
+
+    NSXMLNode * valuesAttributeNode = [animateElement attributeForName:@"values"];
+    
+    if (valuesAttributeNode != NULL)
+    {
+        NSString * valuesAttributeString = valuesAttributeNode.stringValue;
+        
+        NSArray * valueRowsArray = [valuesAttributeString componentsSeparatedByString:@";"];
+
+        NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        
+        for (NSString * aValuesString in valueRowsArray)
+        {
+            NSString * trimmedValuesString = [aValuesString stringByTrimmingCharactersInSet:whitespaceSet];
+            
+            trimmedValuesString = [trimmedValuesString stringByReplacingOccurrencesOfString:@"," withString:@" "];
+
+            NSInteger aValuesStringLength = trimmedValuesString.length;
+        
+            if (aValuesStringLength > 0)
+            {
+                NSMutableString * filteredValuesString = [NSMutableString string];
+                
+                unichar prevChar = ' ';
+                
+                for (NSInteger i = 0; i < aValuesStringLength; i++)
+                {
+                    unichar aChar = [trimmedValuesString characterAtIndex:i];
+                    NSString * aCharString = [NSString stringWithFormat:@"%C", aChar];
+                    
+                    if (aChar == ' ')
+                    {
+                        if (prevChar != ' ')
+                        {
+                            [filteredValuesString appendString:aCharString];
+                        }
+                    }
+                    else
+                    {
+                        [filteredValuesString appendString:aCharString];
+                    }
+                    
+                    prevChar = aChar;
+                }
+                
+                NSArray * animationItemsArray = [filteredValuesString componentsSeparatedByString:@" "];
+                
+                NSMutableArray * mutableAnimationItemsArray = [animationItemsArray mutableCopy];
+            
+                [self.animationValuesArray addObject:mutableAnimationItemsArray];
+            }
+        }
+    }
+        
+    [self.keyValuesPopoverViewController useKeyPoints:useKeyPoints];
+}
 
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "AnimateTransformElementEditor.h"
-#import "AnimateTransformKeyValuesPopoverViewController.h"
+#import <MacSVGPlugin/KeyValuesPopoverViewController.h>
 
 @implementation AnimateTransformElementEditor
 
@@ -26,6 +26,13 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    if (isAwake == NO)
+    {
+        isAwake = YES;
+        
+        self.keyValuesPopoverViewController.macSVGPlugin = self;
+    }
 }
 
 //==================================================================================
@@ -37,7 +44,7 @@
     self = [super init];
     if (self) {
         // Initialization code here.
-        self.valuesArray = [NSMutableArray array];
+        self.animationValuesArray = [NSMutableArray array];
     }
     
     return self;
@@ -168,7 +175,7 @@
     BOOL result = [super beginEditForXMLElement:newPluginTargetXMLElement
             domElement:newPluginTargetElement];
 
-    self.valuesArray = [NSMutableArray array];
+    self.animationValuesArray = [NSMutableArray array];
     
     [valuesTableView reloadData];
 
@@ -385,7 +392,8 @@
     {
         [animateTransformTabView selectTabViewItemAtIndex:1];
         
-        [self configureValuesTableView];
+        [self configureAnimationKeyValuesWithUseKeyPoints:NO];
+        [valuesTableView reloadData];
     }
 }
 
@@ -393,15 +401,15 @@
 //	configureValuesTableView
 //==================================================================================
 
+/*
 - (void)configureValuesTableView
 {
     NSXMLElement * animateTransformElement = self.pluginTargetXMLElement;
 
     self.valuesArray = [NSMutableArray array];
 
-
-
     NSXMLNode * valuesAttributeNode = [animateTransformElement attributeForName:@"values"];
+
     if (valuesAttributeNode != NULL)
     {
         NSString * valuesAttributeString = valuesAttributeNode.stringValue;
@@ -557,7 +565,131 @@
     [valuesTableView reloadData];
     
     valuesTableView.rowHeight = 14.0f;
+
+    [self.keyValuesPopoverViewController useKeyPoints:NO];
 }
+*/
+
+
+- (void)configureValuesTableView
+{
+    while(valuesTableView.tableColumns.count > 0)
+    {
+        [valuesTableView removeTableColumn:valuesTableView.tableColumns.lastObject];
+    }
+    
+    valuesTableView.columnAutoresizingStyle = NSTableViewUniformColumnAutoresizingStyle;
+    
+    NSTableColumn * indexTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"rowNumber"];
+    indexTableColumn.title = @"#";
+    indexTableColumn.width = 30.0f;
+    indexTableColumn.minWidth = 30.0f;
+    indexTableColumn.maxWidth = 100.0f;
+    indexTableColumn.identifier = @"rowNumber";
+    [valuesTableView addTableColumn:indexTableColumn];
+    
+    CGFloat tableWidth = valuesTableView.bounds.size.width - 30.0f;
+    
+    NSString * typeAttributeString = typePopUpButton.titleOfSelectedItem;
+    
+    if ([typeAttributeString isEqualToString:@"translate"] == YES)
+    {
+        CGFloat columnWidth = tableWidth / 2.0f;
+    
+        NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
+        xTableColumn.title = @"x";
+        xTableColumn.width = columnWidth;
+        xTableColumn.minWidth = 60.0f;
+        xTableColumn.maxWidth = 100.0f;
+        xTableColumn.identifier = @"column1";
+        [valuesTableView addTableColumn:xTableColumn];
+    
+        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
+        yTableColumn.title = @"y";
+        yTableColumn.width = columnWidth;
+        yTableColumn.minWidth = 60.0f;
+        yTableColumn.maxWidth = 100.0f;
+        yTableColumn.identifier = @"column2";
+        [valuesTableView addTableColumn:yTableColumn];
+    }
+    else if ([typeAttributeString isEqualToString:@"scale"] == YES)
+    {
+        CGFloat columnWidth = tableWidth / 2.0f;
+    
+        NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
+        xTableColumn.title = @"x";
+        xTableColumn.width = columnWidth;
+        xTableColumn.minWidth = 60.0f;
+        xTableColumn.maxWidth = 100.0f;
+        xTableColumn.identifier = @"column1";
+        [valuesTableView addTableColumn:xTableColumn];
+    
+        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
+        yTableColumn.title = @"y";
+        yTableColumn.width = columnWidth;
+        yTableColumn.minWidth = 60.0f;
+        yTableColumn.maxWidth = 100.0f;
+        yTableColumn.identifier = @"column2";
+        [valuesTableView addTableColumn:yTableColumn];
+    }
+    else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
+    {
+        CGFloat columnWidth = tableWidth / 3.0f;
+
+        NSTableColumn * degreesTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"degrees"];
+        degreesTableColumn.title = @"degrees";
+        degreesTableColumn.width = columnWidth;
+        degreesTableColumn.minWidth = 60.0f;
+        degreesTableColumn.maxWidth = 100.0f;
+        degreesTableColumn.identifier = @"column1";
+        [valuesTableView addTableColumn:degreesTableColumn];
+        
+        NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"center x"];
+        xTableColumn.title = @"center x";
+        xTableColumn.width = columnWidth;
+        xTableColumn.minWidth = 60.0f;
+        xTableColumn.maxWidth = 100.0f;
+        xTableColumn.identifier = @"column2";
+        [valuesTableView addTableColumn:xTableColumn];
+    
+        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"center y"];
+        yTableColumn.title = @"center y";
+        yTableColumn.width = columnWidth;
+        yTableColumn.minWidth = 60.0f;
+        yTableColumn.maxWidth = 100.0f;
+        yTableColumn.identifier = @"column3";
+        [valuesTableView addTableColumn:yTableColumn];
+    }
+    else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
+    {
+        CGFloat columnWidth = tableWidth;
+
+        NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
+        xTableColumn.title = @"x";
+        xTableColumn.width = columnWidth;
+        xTableColumn.minWidth = 60.0f;
+        xTableColumn.maxWidth = 100.0f;
+        xTableColumn.identifier = @"column1";
+        [valuesTableView addTableColumn:xTableColumn];
+    }
+    else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
+    {
+        CGFloat columnWidth = tableWidth;
+
+        NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
+        yTableColumn.title = @"y";
+        yTableColumn.width = columnWidth;
+        yTableColumn.minWidth = 60.0f;
+        yTableColumn.maxWidth = 100.0f;
+        yTableColumn.identifier = @"column1";
+        [valuesTableView addTableColumn:yTableColumn];
+    }
+    
+    [valuesTableView reloadData];
+    
+    valuesTableView.rowHeight = 14.0f;
+}
+
 
 //==================================================================================
 //	numberOfRowsInTableView:
@@ -565,7 +697,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return (self.valuesArray).count;
+    return (self.animationValuesArray).count;
 }
 
 //==================================================================================
@@ -600,7 +732,7 @@
         expectedColumnsCount = 1;
     }
     
-    for (NSMutableArray * rowArray in self.valuesArray)
+    for (NSMutableArray * rowArray in self.animationValuesArray)
     {
         while (rowArray.count < expectedColumnsCount)
         {
@@ -617,48 +749,56 @@
 
 - (IBAction)itemTextFieldUpdated:(id)sender
 {
-    NSInteger rowIndex = [valuesTableView rowForView:sender];
-    NSInteger columnIndex = [valuesTableView columnForView:sender];
-    
-    NSString * stringValue = [sender stringValue];
-    
-    stringValue = [stringValue copy];
-    
-    NSMutableArray * rowArray = (self.valuesArray)[rowIndex];
-    
-    NSString * typeString = typePopUpButton.titleOfSelectedItem;
-
-    NSInteger expectedColumnsCount = 0;
-    if ([typeString isEqualToString:@"transform"] == YES)
-    {
-        expectedColumnsCount = 2;
-    }
-    else if ([typeString isEqualToString:@"scale"] == YES)
-    {
-        expectedColumnsCount = 2;
-    }
-    else if ([typeString isEqualToString:@"rotate"] == YES)
-    {
-        expectedColumnsCount = 3;
-    }
-    else if ([typeString isEqualToString:@"skewX"] == YES)
-    {
-        expectedColumnsCount = 1;
-    }
-    else if ([typeString isEqualToString:@"skewY"] == YES)
-    {
-        expectedColumnsCount = 1;
-    }
-    
-    while (rowArray.count < expectedColumnsCount)
-    {
-        [rowArray addObject:@"0"];
-    }
-
-    rowArray[(columnIndex - 1)] = stringValue;
-    
     NSTextField * textField = sender;
-    textField.backgroundColor = [NSColor clearColor];
+    NSTableCellView * tableCellView = (NSTableCellView *)textField.superview;
+
+    NSInteger rowIndex = [valuesTableView rowForView:tableCellView];
+    
+    if (rowIndex >= 0)
+    {
+        NSInteger columnIndex = [valuesTableView columnForView:tableCellView];
+        
+        NSString * stringValue = [sender stringValue];
+        
+        stringValue = [stringValue copy];
+        
+        NSMutableArray * rowArray = (self.animationValuesArray)[rowIndex];
+        
+        NSString * typeString = typePopUpButton.titleOfSelectedItem;
+
+        NSInteger expectedColumnsCount = 0;
+        if ([typeString isEqualToString:@"transform"] == YES)
+        {
+            expectedColumnsCount = 2;
+        }
+        else if ([typeString isEqualToString:@"scale"] == YES)
+        {
+            expectedColumnsCount = 2;
+        }
+        else if ([typeString isEqualToString:@"rotate"] == YES)
+        {
+            expectedColumnsCount = 3;
+        }
+        else if ([typeString isEqualToString:@"skewX"] == YES)
+        {
+            expectedColumnsCount = 1;
+        }
+        else if ([typeString isEqualToString:@"skewY"] == YES)
+        {
+            expectedColumnsCount = 1;
+        }
+        
+        while (rowArray.count < expectedColumnsCount)
+        {
+            [rowArray addObject:@"0"];
+        }
+
+        rowArray[(columnIndex - 1)] = stringValue;
+    }
+    else
+    {
+        NSBeep();
+    }
 }
 
 //==================================================================================
@@ -708,41 +848,34 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    //NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-    NSTextField * resultView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:NULL];
-
-    if (resultView == nil)
-    {
-        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
-        resultView.identifier = tableColumn.identifier;
-        resultView.font = [NSFont systemFontOfSize:10];
-        resultView.bordered = NO;
-        resultView.backgroundColor = [NSColor clearColor];
-    }
-
-    NSString * resultString = @"";
-
     NSString * tableColumnIdentifier = tableColumn.identifier;
     
-    if ([tableColumnIdentifier isEqualToString:@"#"] == YES)
+    NSString * cellViewIdentifier = [tableColumnIdentifier stringByAppendingString:@"CellView"];
+
+    NSTableCellView * resultView = [tableView makeViewWithIdentifier:cellViewIdentifier owner:NULL];
+    NSTextField * textField = resultView.textField;
+
+    NSString * resultString = @"";
+    
+    if ([tableColumnIdentifier isEqualToString:@"rowNumber"] == YES)
     {
         resultString = [NSString stringWithFormat:@"%ld", (row + 1)];
-        resultView.editable = NO;
+        textField.editable = NO;
     }
     else
     {
-        resultView.editable = YES;
-        resultView.delegate = self;
+        textField.editable = YES;
+        textField.delegate = self;
         
-        resultView.target = self;
-        resultView.action = @selector(itemTextFieldUpdated:);
+        textField.target = self;
+        textField.action = @selector(itemTextFieldUpdated:);
     
         NSArray * rowArray = NULL;
         NSInteger rowArrayCount = 0;
 
-        if (self.valuesArray.count > 0)
+        if (self.animationValuesArray.count > 0)
         {
-            rowArray = (self.valuesArray)[row];
+            rowArray = (self.animationValuesArray)[row];
             rowArrayCount = rowArray.count;
         }
 
@@ -750,14 +883,14 @@
         
         if ([typeAttributeString isEqualToString:@"translate"] == YES)
         {
-            if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"column1"] == YES)
             {
                 if (rowArrayCount > 0)
                 {
                     resultString = rowArray[0];
                 }
             }
-            else if ([tableColumnIdentifier isEqualToString:@"y"] == YES)
+            else if ([tableColumnIdentifier isEqualToString:@"column2"] == YES)
             {
                 if (rowArrayCount > 1)
                 {
@@ -767,14 +900,14 @@
         }
         else if ([typeAttributeString isEqualToString:@"scale"] == YES)
         {
-            if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"column1"] == YES)
             {
                 if (rowArrayCount > 0)
                 {
                     resultString = rowArray[0];
                 }
             }
-            else if ([tableColumnIdentifier isEqualToString:@"y"] == YES)
+            else if ([tableColumnIdentifier isEqualToString:@"column2"] == YES)
             {
                 if (rowArrayCount > 1)
                 {
@@ -784,21 +917,21 @@
         }
         else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
         {
-            if ([tableColumnIdentifier isEqualToString:@"degrees"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"column1"] == YES)
             {
                 if (rowArrayCount > 0)
                 {
                     resultString = rowArray[0];
                 }
             }
-            if ([tableColumnIdentifier isEqualToString:@"center x"] == YES)
+            else if ([tableColumnIdentifier isEqualToString:@"column2"] == YES)
             {
                 if (rowArrayCount > 1)
                 {
                     resultString = rowArray[1];
                 }
             }
-            else if ([tableColumnIdentifier isEqualToString:@"center y"] == YES)
+            else if ([tableColumnIdentifier isEqualToString:@"column3"] == YES)
             {
                 if (rowArrayCount > 2)
                 {
@@ -808,7 +941,7 @@
         }
         else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
         {
-            if ([tableColumnIdentifier isEqualToString:@"x"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"column1"] == YES)
             {
                 if (rowArrayCount > 0)
                 {
@@ -818,7 +951,7 @@
         }
         else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
         {
-            if ([tableColumnIdentifier isEqualToString:@"y"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"column1"] == YES)
             {
                 if (rowArrayCount > 0)
                 {
@@ -828,7 +961,7 @@
         }
     }
 
-    resultView.stringValue = resultString;
+    textField.stringValue = resultString;
     
     return resultView;
 }
@@ -952,8 +1085,8 @@
     }
     
     NSMutableString * valuesString = [NSMutableString string];
-    NSArray * lastItem = self.valuesArray.lastObject;
-    for (NSArray * rowArray in self.valuesArray)
+    NSArray * lastItem = self.animationValuesArray.lastObject;
+    for (NSArray * rowArray in self.animationValuesArray)
     {
         NSInteger actualRowArrayCount = rowArray.count;
         
@@ -1014,7 +1147,7 @@
     NSMutableString * keySplinesAttributeString = [NSMutableString string];
     NSMutableString * keyPointsAttributeString = [NSMutableString string];
     
-    NSArray * keyValuesArray = animateTransformKeyValuesPopoverViewController.keyValuesArray;
+    NSArray * keyValuesArray = self.keyValuesPopoverViewController.keyValuesArray;
     
     for (NSDictionary * keyValuesDictionary in keyValuesArray)
     {
@@ -1055,17 +1188,17 @@
 {
     NSButton *targetButton = (NSButton *)sender;
     
-    NSInteger validRowsCount = [animateTransformKeyValuesPopoverViewController validRowsCount:self.valuesArray];
-    [animateTransformKeyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
+    NSInteger validRowsCount = [self.keyValuesPopoverViewController validRowsCount:self.animationValuesArray];
+    [self.keyValuesPopoverViewController loadKeyValuesDataForValidRowsCount:validRowsCount];
 
     // configure the preferred position of the popover
-    [keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
+    [self.keyValuesPopover showRelativeToRect:targetButton.bounds ofView:sender preferredEdge:NSMaxYEdge];
 }
 
 //==================================================================================
 //	addValuesRow:
 //==================================================================================
-
+/*
 - (IBAction)addValuesRow:(id)sender
 {
     NSInteger selectedRow = valuesTableView.selectedRow;
@@ -1074,7 +1207,7 @@
     
     if (selectedRow > 0)
     {
-        selectedRowArray = (self.valuesArray)[selectedRow];
+        selectedRowArray = (self.animationValuesArray)[selectedRow];
     }
     
     NSMutableArray * newRowArray = [NSMutableArray array];
@@ -1086,13 +1219,80 @@
         [newRowArray addObject:newColumnString];
     }
     
-    [self.valuesArray insertObject:newRowArray atIndex:(selectedRow + 1)];
+    [self.animationValuesArray insertObject:newRowArray atIndex:(selectedRow + 1)];
     
     [valuesTableView reloadData];
     
     NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:(selectedRow + 1)];
     [valuesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
 }
+*/
+
+//==================================================================================
+//    addValuesRow:
+//==================================================================================
+
+- (IBAction)addValuesRow:(id)sender
+{
+    NSInteger selectedRow = valuesTableView.selectedRow;
+    
+    if (selectedRow == -1)
+    {
+        if (self.animationValuesArray.count > 0)
+        {
+            selectedRow = self.animationValuesArray.count - 1;
+        }
+    }
+    
+    NSMutableArray * selectedRowArray = NULL;
+    
+    if (selectedRow >= 0)
+    {
+        selectedRowArray = (self.animationValuesArray)[selectedRow];
+    }
+    else
+    {
+        NSString * typeString = typePopUpButton.titleOfSelectedItem;
+
+        if ([typeString isEqualToString:@"translate"] == YES)
+        {
+            selectedRowArray = [NSMutableArray arrayWithObjects:@"0", @"0", NULL];
+        }
+        else if ([typeString isEqualToString:@"scale"] == YES)
+        {
+            selectedRowArray = [NSMutableArray arrayWithObjects:@"0", @"0", NULL];
+        }
+        else if ([typeString isEqualToString:@"rotate"] == YES)
+        {
+            selectedRowArray = [NSMutableArray arrayWithObjects:@"0", @"0", @"0", NULL];
+        }
+        else if ([typeString isEqualToString:@"skewX"] == YES)
+        {
+            selectedRowArray = [NSMutableArray arrayWithObjects:@"0", NULL];
+        }
+        else if ([typeString isEqualToString:@"skewY"] == YES)
+        {
+            selectedRowArray = [NSMutableArray arrayWithObjects:@"0", NULL];
+        }
+    }
+    
+    NSMutableArray * newRowArray = [NSMutableArray array];
+    
+    for (NSString * columnString in selectedRowArray)
+    {
+        NSString * newColumnString = [NSString stringWithString:columnString];
+        
+        [newRowArray addObject:newColumnString];
+    }
+    
+    [self.animationValuesArray insertObject:newRowArray atIndex:(selectedRow + 1)];
+    
+    [valuesTableView reloadData];
+    
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:(selectedRow + 1)];
+    [valuesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
+}
+
 
 //==================================================================================
 //	deleteValuesRow:
@@ -1104,10 +1304,18 @@
 
     if (selectedRow >= 0)
     {
-        [self.valuesArray removeObjectAtIndex:selectedRow];
+        [self.animationValuesArray removeObjectAtIndex:selectedRow];
         
         [valuesTableView reloadData];
     }
+    
+    if (selectedRow > self.animationValuesArray.count - 1)
+    {
+        selectedRow = self.animationValuesArray.count - 1;
+    }
+
+    NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:selectedRow];
+    [valuesTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
 }
 
 //==================================================================================

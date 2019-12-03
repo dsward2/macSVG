@@ -12,7 +12,7 @@
 
 @interface KeySplinesView : NSView
 {
-    IBOutlet KeyValuesPopoverViewController * keyValuesPopoverViewController;
 }
+@property(strong) IBOutlet KeyValuesPopoverViewController * keyValuesPopoverViewController;
 
 @end

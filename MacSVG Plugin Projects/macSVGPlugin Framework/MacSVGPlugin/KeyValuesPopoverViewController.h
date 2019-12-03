@@ -13,16 +13,13 @@
 
 @interface KeyValuesPopoverViewController : NSViewController <NSComboBoxDelegate, NSTableViewDelegate, NSTableViewDataSource>
 {
-    IBOutlet NSPopover * keyValuesPopover;
-    IBOutlet MacSVGPlugin * macSVGPlugin;
-    IBOutlet NSTableView * keyValuesTableView;
-    IBOutlet NSButton * addRowButton;
-    IBOutlet NSButton * deleteRowButton;
-    IBOutlet KeySplinesView * keySplinesView;
-    IBOutlet NSPopUpButton * presetsPopUpButton;
+    BOOL isAwake;
 }
 
+@property(strong) IBOutlet MacSVGPlugin * macSVGPlugin;
 @property(strong) NSMutableArray * keyValuesArray;
+@property(weak) IBOutlet NSTableView * keyValuesTableView;
+@property(weak) IBOutlet NSTableColumn * keyPointsTableColumn;
 
 - (IBAction)tableCellChanged:(id)sender;
 
@@ -32,5 +29,7 @@
 - (NSInteger)validRowsCount:(NSArray *)valuesArray;
 
 - (void)loadKeyValuesDataForValidRowsCount:(NSInteger)validRowsCount;
+
+- (void)useKeyPoints:(BOOL)useKeyPoints;
 
 @end

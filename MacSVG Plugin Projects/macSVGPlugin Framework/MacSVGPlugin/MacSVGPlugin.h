@@ -20,7 +20,6 @@
 #import "MacSVGPlugin/SZJsonParser.h"
 #import "MacSVGPlugin/KeySplinesView.h"
 #import "MacSVGPlugin/KeyValuesPopoverViewController.h"
-#import "MacSVGPlugin/KeyValuesTableRowView.h"
 
 @class WebView;
 @class DOMElement;
@@ -29,7 +28,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-@interface MacSVGPlugin : NSObject
+@interface MacSVGPlugin : NSObject <NSTableViewDelegate, NSTableViewDataSource>
 {
 }
 
@@ -49,13 +48,18 @@
     
 @property(assign) BOOL editingIsActive;               // YES if this plugin is currently in an editing session
 
-    // A couple of useful shared dictionaries constructed from the SVG 1.1 XML DTD
+// A couple of useful shared dictionaries constructed from the SVG 1.1 XML DTD
 @property(strong) NSMutableDictionary * elementsDictionary; // valid element tag names, attributes and values
 @property(strong) NSMutableDictionary * elementContentsDictionary; // valid child elements per parent element
     
 @property(strong) MacSVGPluginCallbacks * macSVGPluginCallbacks;
 @property(strong) WebKitInterface * webKitInterface;
 @property(assign) JSContextRef globalContext;
+
+// for animate, animateMotion and animateTransform element plugin editors
+@property(strong) NSMutableArray * animationValuesArray;    // a mutable array of mutable arrays
+@property(strong) IBOutlet NSPopover * keyValuesPopover;
+@property(strong) IBOutlet KeyValuesPopoverViewController * keyValuesPopoverViewController;
 
 //@property (readonly, copy) NSString *pluginName;
 - (NSString *)pluginName;
@@ -123,6 +127,9 @@
 
 // Used for automatic path closing
 - (void)closePath;
+
+// Used for keyTimes, keySplines, keyPoints popover
+- (void)configureAnimationKeyValuesWithUseKeyPoints:(BOOL)useKeyPoints;
 
 // Plugin implementations should override this method to be notified when the host application is resizing the plugin panel in it's scrollview
 - (void)resizePluginViewSizeForScrollView:(NSScrollView *)scrollView;

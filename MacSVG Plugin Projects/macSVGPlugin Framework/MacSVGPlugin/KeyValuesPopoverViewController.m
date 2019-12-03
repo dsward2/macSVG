@@ -65,6 +65,19 @@ Notes from the SVG spec -
 }
 
 //==================================================================================
+//    initWithNibName:bundle:
+//==================================================================================
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        // Initialization code here.
+    }
+    return self;
+}
+
+//==================================================================================
 //	awakeFromNib
 //==================================================================================
 
@@ -72,7 +85,66 @@ Notes from the SVG spec -
 {
     [super awakeFromNib];
 
-    self.keyValuesArray = [NSMutableArray array];
+    if (isAwake == NO)
+    {
+        isAwake = YES;
+        
+        self.keyValuesArray = [NSMutableArray array];
+        
+        // load xib file containing view from framework
+        NSString * frameworksPath = [[NSBundle mainBundle] privateFrameworksPath];
+        NSString * plugInsFrameworkPath = [frameworksPath stringByAppendingPathComponent:@"MacSVGPlugin.framework"];
+        NSString * plugInsPath = [plugInsFrameworkPath stringByAppendingPathComponent:@"PlugIns"];
+        NSString * plugInsBundlePath = [plugInsPath stringByAppendingPathComponent:@"MacSVGPluginBundle.bundle"];
+        NSBundle * bundle = [NSBundle bundleWithPath:plugInsBundlePath];
+        
+        NSArray * topLevelObjects = NULL;
+        
+        if (bundle != NULL)
+        {
+            BOOL loadResult = [bundle loadNibNamed:@"AnimationKeysView" owner:self topLevelObjects:&topLevelObjects];
+            
+            for (id nibObject in topLevelObjects)
+            {
+                if ([nibObject isKindOfClass:[NSView class]] == YES)
+                {
+                    self.view = nibObject;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            NSLog(@"Error - MacSVGPluginBundle.bundle not found");
+        }
+    }
+}
+
+//==================================================================================
+//  viewWillAppear
+//==================================================================================
+
+- (void)viewWillAppear
+{
+    self.keyValuesTableView.delegate = self;
+    self.keyValuesTableView.dataSource = self;
+    [self.keyValuesTableView reloadData];
+
+    NSInteger numberOfRows = [self numberOfRowsInTableView:self.keyValuesTableView];
+    for (NSInteger i = 0; i < numberOfRows; i++)
+    {
+        NSInteger keySplinesTableColumnIndex = [self.keyValuesTableView columnWithIdentifier:@"keySplinesColumn"];
+        NSView * cellView = [self.keyValuesTableView viewAtColumn:keySplinesTableColumnIndex row:i makeIfNecessary:YES];
+        NSArray * subviews = cellView.subviews;
+        for (NSView * aSubview in subviews)
+        {
+            if ([aSubview isKindOfClass:[KeySplinesView class]] == YES)
+            {
+                [aSubview setNeedsDisplay:YES];
+                break;
+            }
+        }
+    }
 }
 
 //==================================================================================
@@ -81,7 +153,7 @@ Notes from the SVG spec -
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-    return (self.keyValuesArray).count;
+    return self.keyValuesArray.count;
 }
 
 //==================================================================================
@@ -91,9 +163,28 @@ Notes from the SVG spec -
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSString * tableColumnIdentifier = tableColumn.identifier;
+    
+    NSString * cellViewIdentifier = @"";
+    
+    if ([tableColumnIdentifier isEqualToString:@"rowNumberColumn"] == YES)
+    {
+        cellViewIdentifier = @"rowNumberCellView";
+    }
+    else if ([tableColumnIdentifier isEqualToString:@"keyTimesColumn"] == YES)
+    {
+        cellViewIdentifier = @"keyTimesCellView";
+    }
+    else if ([tableColumnIdentifier isEqualToString:@"keySplinesColumn"] == YES)
+    {
+        cellViewIdentifier = @"keySplinesCellView";
+    }
+    else if ([tableColumnIdentifier isEqualToString:@"keyPointsColumn"] == YES)
+    {
+        cellViewIdentifier = @"keyPointsCellView";
+    }
         
     //NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
-    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
+    NSTableCellView * tableCellView = (NSTableCellView *)[tableView makeViewWithIdentifier:cellViewIdentifier owner:NULL];
 
     NSString * resultString = @"";
 
@@ -101,23 +192,36 @@ Notes from the SVG spec -
     {
         resultString = [self tableView:tableView objectValueForTableColumn:tableColumn row:row];
     
-        if ([tableColumn.identifier isEqualToString:@"keySplines"] == YES)
+        if ([tableColumn.identifier isEqualToString:@"keySplinesColumn"] == YES)
         {
-            NSComboBox * comboBox = (NSComboBox *)tableCellView;
+            NSArray * subviews = tableCellView.subviews;
             
-            comboBox.stringValue = resultString;
-            comboBox.target = self;
-            comboBox.action = @selector(tableCellChanged:);
-            
-            if (row < self.keyValuesArray.count -1)
+            for (NSView * aSubview in subviews)
             {
-                comboBox.editable = YES;
-                comboBox.enabled = YES;
-            }
-            else
-            {
-                comboBox.editable = NO;
-                comboBox.enabled = NO;
+                if ([aSubview isKindOfClass:[NSComboBox class]] == YES)
+                {
+                    NSComboBox * comboBox = (NSComboBox *)aSubview;
+                    
+                    comboBox.stringValue = resultString;
+                    comboBox.target = self;
+                    comboBox.action = @selector(tableCellChanged:);
+                    
+                    if (row < self.keyValuesArray.count -1)
+                    {
+                        comboBox.editable = YES;
+                        comboBox.enabled = YES;
+                    }
+                    else
+                    {
+                        comboBox.editable = NO;
+                        comboBox.enabled = NO;
+                    }
+                }
+                else if ([aSubview isKindOfClass:[KeySplinesView class]] == YES)
+                {
+                    KeySplinesView * keySplinesView = (KeySplinesView *)aSubview;
+                    keySplinesView.keyValuesPopoverViewController = self.macSVGPlugin.keyValuesPopoverViewController;
+                }
             }
         }
         else
@@ -126,7 +230,7 @@ Notes from the SVG spec -
             tableCellView.textField.target = self;
             tableCellView.textField.action = @selector(tableCellChanged:);
             
-            if ([tableColumnIdentifier isEqualToString:@"keyTimes"] == YES)
+            if ([tableColumnIdentifier isEqualToString:@"keyTimesColumn"] == YES)
             {
                 if (row == 0)
                 {
@@ -146,10 +250,16 @@ Notes from the SVG spec -
                     tableCellView.textField.enabled = YES;
                 }
             }
-            else if ([tableColumnIdentifier isEqualToString:@"keyPoints"] == YES)
+            else if ([tableColumnIdentifier isEqualToString:@"keyPointsColumn"] == YES)
             {
                 tableCellView.textField.editable = YES;
                 tableCellView.textField.enabled = YES;
+            }
+            else if ([tableColumnIdentifier isEqualToString:@"rowNumberColumn"] == YES)
+            {
+                tableCellView.textField.editable = NO;
+                tableCellView.textField.enabled = YES;
+                tableCellView.textField.stringValue = [NSString stringWithFormat:@"%ld", row + 1];
             }
             else
             {
@@ -176,19 +286,19 @@ Notes from the SVG spec -
         
         if (keyValuesDictionary != NULL)
         {
-            if ([aTableColumn.identifier isEqualToString:@"rowNumber"] == YES)
+            if ([aTableColumn.identifier isEqualToString:@"rowNumberColumn"] == YES)
             {
                 objectValue = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
             }
-            else if ([aTableColumn.identifier isEqualToString:@"keyTimes"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"keyTimesColumn"] == YES)
             {
                 objectValue = keyValuesDictionary[@"keyTimes"];
             }
-            else if ([aTableColumn.identifier isEqualToString:@"keySplines"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"keySplinesColumn"] == YES)
             {
                 objectValue = keyValuesDictionary[@"keySplines"];
             }
-            else if ([aTableColumn.identifier isEqualToString:@"keyPoints"] == YES)
+            else if ([aTableColumn.identifier isEqualToString:@"keyPointsColumn"] == YES)
             {
                 objectValue = keyValuesDictionary[@"keyPoints"];
             }
@@ -210,31 +320,26 @@ Notes from the SVG spec -
 {
     NSControl * aControl = sender;
 
-    NSArray * tableColumns = [keyValuesTableView tableColumns];
+    NSArray * tableColumns = [self.keyValuesTableView tableColumns];
     NSInteger tableColumnIndex = aControl.tag;
     NSTableColumn * aTableColumn = [tableColumns objectAtIndex:tableColumnIndex];
 
     NSCharacterSet * whitespaceSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
-    NSInteger rowIndex = [keyValuesTableView selectedRow];
-    
-    if (rowIndex == -1)
-    {
-        rowIndex = [keyValuesTableView rowForView:sender];
-    }
+    NSInteger rowIndex = [self.keyValuesTableView rowForView:sender];
 
     if (rowIndex >= 0)
     {
         NSString * columnIdentifier = aTableColumn.identifier;
         NSMutableDictionary * keyValuesDictionary = (self.keyValuesArray)[rowIndex];
 
-        if ([columnIdentifier isEqualToString:@"keyTimes"] == YES)
+        if ([columnIdentifier isEqualToString:@"keyTimesColumn"] == YES)
         {
             NSTextField * cellTextField = sender;
             NSString * trimmedString = [cellTextField.stringValue stringByTrimmingCharactersInSet:whitespaceSet];
             keyValuesDictionary[@"keyTimes"] = trimmedString;
         }
-        else if ([columnIdentifier isEqualToString:@"keySplines"] == YES)
+        else if ([columnIdentifier isEqualToString:@"keySplinesColumn"] == YES)
         {
             NSComboBox * comboBox = sender;
             NSString * rawKeySplinesString = comboBox.stringValue;
@@ -272,9 +377,11 @@ Notes from the SVG spec -
             keyValuesDictionary[@"keySplines"] = trimmedString;
             
             NSIndexSet * selectedRowIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
-            [keyValuesTableView selectRowIndexes:selectedRowIndexSet byExtendingSelection:NO];
+            [self.keyValuesTableView selectRowIndexes:selectedRowIndexSet byExtendingSelection:NO];
+            
+            comboBox.stringValue = trimmedString;
         }
-        else if ([columnIdentifier isEqualToString:@"keyPoints"] == YES)
+        else if ([columnIdentifier isEqualToString:@"keyPointsColumn"] == YES)
         {
             NSTextField * cellTextField = sender;
             NSString * trimmedString = [cellTextField.stringValue stringByTrimmingCharactersInSet:whitespaceSet];
@@ -282,9 +389,21 @@ Notes from the SVG spec -
         }
     }
     
-    [keyValuesTableView reloadData];
-    
-    [keySplinesView setNeedsDisplay:YES];
+    NSInteger numberOfRows = [self numberOfRowsInTableView:self.keyValuesTableView];
+    for (NSInteger i = 0; i < numberOfRows; i++)
+    {
+        NSInteger keySplinesTableColumnIndex = [self.keyValuesTableView columnWithIdentifier:@"keySplinesColumn"];
+        NSView * cellView = [self.keyValuesTableView viewAtColumn:keySplinesTableColumnIndex row:i makeIfNecessary:YES];        
+        NSArray * subviews = cellView.subviews;
+        for (NSView * aSubview in subviews)
+        {
+            if ([aSubview isKindOfClass:[KeySplinesView class]] == YES)
+            {
+                [aSubview setNeedsDisplay:YES];
+                break;
+            }
+        }
+    }
 }
 
 
@@ -296,7 +415,7 @@ Notes from the SVG spec -
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	id aTableView = aNotification.object;
-	if (aTableView == keyValuesTableView)
+	if (aTableView == self.keyValuesTableView)
 	{
 	}
 }
@@ -307,7 +426,7 @@ Notes from the SVG spec -
 
 - (IBAction)cancelButtonAction:(id)sender
 {
-    [keyValuesPopover performClose:self];
+    [self.macSVGPlugin.keyValuesPopover performClose:self];
 }
 
 //==================================================================================
@@ -316,7 +435,7 @@ Notes from the SVG spec -
 
 - (IBAction)doneButtonAction:(id)sender
 {
-    [keyValuesPopover performClose:self];
+    [self.macSVGPlugin.keyValuesPopover performClose:self];
 }
 
 //==================================================================================
@@ -412,7 +531,7 @@ Notes from the SVG spec -
 {
     NSInteger validRowsCount = 0;
 
-    NSXMLElement * targetElement = macSVGPlugin.pluginTargetXMLElement;
+    NSXMLElement * targetElement = self.macSVGPlugin.pluginTargetXMLElement;
 
     NSXMLNode * valuesNode = [targetElement attributeForName:@"values"];
     if (valuesNode != NULL)
@@ -454,7 +573,7 @@ Notes from the SVG spec -
 
 - (void)loadKeyValuesDataForValidRowsCount:(NSInteger)validRowsCount
 {
-    NSXMLElement * targetElement = macSVGPlugin.pluginTargetXMLElement;
+    NSXMLElement * targetElement = self.macSVGPlugin.pluginTargetXMLElement;
     
     if (targetElement == NULL)
     {
@@ -494,7 +613,7 @@ Notes from the SVG spec -
 }
 
 //==================================================================================
-//	loadValuesForKeyTimes:keySplines:keyPoints:
+//	loadValuesForKeyTimes:keySplines:keyPoints:validRowsCount:
 //==================================================================================
 
 - (void)loadValuesForKeyTimes:(NSString *)keyTimesString keySplines:(NSString *)keySplinesString
@@ -599,9 +718,7 @@ Notes from the SVG spec -
         [self.keyValuesArray removeAllObjects];
     }
     
-    [keyValuesTableView reloadData];
-    
-    [keySplinesView setNeedsDisplay:YES];
+    [self.keyValuesTableView reloadData];
 }
 
 //==================================================================================
@@ -611,5 +728,15 @@ Notes from the SVG spec -
 -(void)popoverDidShow:(NSNotification *)notification
 {
 }
+
+//==================================================================================
+//    popoverDidShow:
+//==================================================================================
+
+- (void)useKeyPoints:(BOOL)useKeyPoints
+{
+    self.keyPointsTableColumn.hidden = !useKeyPoints;
+}
+
 
 @end

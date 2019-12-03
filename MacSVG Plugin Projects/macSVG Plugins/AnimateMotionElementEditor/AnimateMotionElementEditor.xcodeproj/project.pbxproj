@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E2C85B21809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C85B11809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.m */; };
 		0E46DA1217CBFD7800314429 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1017CBFD7800314429 /* InfoPlist.strings */; };
 		0E46DA1D17CBFE1200314429 /* AnimateMotionElementEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46DA1C17CBFE1200314429 /* AnimateMotionElementEditor.m */; };
 		0E46DA2017CBFE5800314429 /* AnimateMotionElementEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46DA1E17CBFE5800314429 /* AnimateMotionElementEditor.xib */; };
@@ -15,8 +14,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0E2C85B01809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateMotionKeyValuesPopoverViewController.h; sourceTree = "<group>"; };
-		0E2C85B11809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateMotionKeyValuesPopoverViewController.m; sourceTree = "<group>"; };
 		0E43C7092331F09400F55196 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AnimateMotionElementEditor.xib; sourceTree = "<group>"; };
 		0E46DA0417CBFD7800314429 /* AnimateMotionElementEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimateMotionElementEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E46DA0717CBFD7800314429 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -72,8 +69,6 @@
 			children = (
 				0E46DA1B17CBFE1200314429 /* AnimateMotionElementEditor.h */,
 				0E46DA1C17CBFE1200314429 /* AnimateMotionElementEditor.m */,
-				0E2C85B01809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.h */,
-				0E2C85B11809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.m */,
 				0E46DA0E17CBFD7800314429 /* Supporting Files */,
 			);
 			path = AnimateMotionElementEditor;
@@ -161,7 +156,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E2C85B21809B2C90002B9F5 /* AnimateMotionKeyValuesPopoverViewController.m in Sources */,
 				0E46DA1D17CBFE1200314429 /* AnimateMotionElementEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

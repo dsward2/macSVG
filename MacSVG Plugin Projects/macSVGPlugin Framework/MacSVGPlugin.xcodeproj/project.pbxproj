@@ -14,16 +14,39 @@
 		0E05D36D178F397B000B910E /* MacSVGPluginCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E083F441F8918B900AD1285 /* SZJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E083F451F8918B900AD1285 /* SZJsonParser.m */; };
+		0E2F01042387B24600962E15 /* MacSVGPluginBundle.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0E2F01012387A99500962E15 /* MacSVGPluginBundle.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E3F77FF1E7F925600599EC0 /* MacSVGPluginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */; };
 		0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */; };
 		0E90DBFE23629FEE003D91B0 /* KeyValuesPopoverViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E90DBFA23629FEE003D91B0 /* KeyValuesPopoverViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E90DBFF23629FEE003D91B0 /* KeyValuesPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */; };
 		0E90DC0023629FEE003D91B0 /* KeySplinesView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E90DBFC23629FEE003D91B0 /* KeySplinesView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0E90DC0123629FEE003D91B0 /* KeySplinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */; };
-		0E90DC04236632FB003D91B0 /* KeyValuesTableRowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E90DC02236632FB003D91B0 /* KeyValuesTableRowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0E90DC05236632FB003D91B0 /* KeyValuesTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E90DC03236632FB003D91B0 /* KeyValuesTableRowView.m */; };
 		0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EDA099A178F52A400E97D95 /* WebKitInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0E2F01002387A99500962E15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0E2F00FC2387A99500962E15 /* MacSVGPluginBundle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E2F00AB23876B4E00962E15;
+			remoteInfo = MacSVGPluginBundle;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0E2F01052387B24600962E15 /* Embed PlugIns */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0E2F01042387B24600962E15 /* MacSVGPluginBundle.bundle in Embed PlugIns */,
+			);
+			name = "Embed PlugIns";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0E05D336178F35C4000B910E /* MacSVGPlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MacSVGPlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,14 +63,13 @@
 		0E05D368178F397B000B910E /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGPluginCallbacks.h; path = "../../../macSVG/SVGDocument Classes/MacSVGPluginCallbacks.h"; sourceTree = "<group>"; };
 		0E083F441F8918B900AD1285 /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZJsonParser.h; sourceTree = "<group>"; };
 		0E083F451F8918B900AD1285 /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZJsonParser.m; sourceTree = "<group>"; };
+		0E2F00FC2387A99500962E15 /* MacSVGPluginBundle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = MacSVGPluginBundle.xcodeproj; sourceTree = "<group>"; };
 		0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MacSVGPluginView.xib; path = macSVGPlugin/MacSVGPluginView.xib; sourceTree = SOURCE_ROOT; };
 		0E3F78001E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MacSVGPluginSwiftInterface.swift; path = macSVGPlugin/MacSVGPluginSwiftInterface.swift; sourceTree = SOURCE_ROOT; };
 		0E90DBFA23629FEE003D91B0 /* KeyValuesPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValuesPopoverViewController.h; sourceTree = "<group>"; };
 		0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValuesPopoverViewController.m; sourceTree = "<group>"; };
 		0E90DBFC23629FEE003D91B0 /* KeySplinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeySplinesView.h; sourceTree = "<group>"; };
 		0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeySplinesView.m; sourceTree = "<group>"; };
-		0E90DC02236632FB003D91B0 /* KeyValuesTableRowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyValuesTableRowView.h; sourceTree = "<group>"; };
-		0E90DC03236632FB003D91B0 /* KeyValuesTableRowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyValuesTableRowView.m; sourceTree = "<group>"; };
 		0EDA099A178F52A400E97D95 /* WebKitInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebKitInterface.h; path = "../../../macSVG/Application Classes/WebKitInterface.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,8 +136,6 @@
 				0E90DBFD23629FEE003D91B0 /* KeySplinesView.m */,
 				0E90DBFA23629FEE003D91B0 /* KeyValuesPopoverViewController.h */,
 				0E90DBFB23629FEE003D91B0 /* KeyValuesPopoverViewController.m */,
-				0E90DC02236632FB003D91B0 /* KeyValuesTableRowView.h */,
-				0E90DC03236632FB003D91B0 /* KeyValuesTableRowView.m */,
 				0E05D340178F35C4000B910E /* Supporting Files */,
 			);
 			path = MacSVGPlugin;
@@ -124,12 +144,29 @@
 		0E05D340178F35C4000B910E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0E2F00F82387A99500962E15 /* MacSVGPluginBundle */,
 				0E3F77FE1E7F925600599EC0 /* MacSVGPluginView.xib */,
 				0E05D342178F35C4000B910E /* InfoPlist.strings */,
 				0E05D364178F3950000B910E /* MacSVGPlugin-Info.plist */,
 				0E05D345178F35C4000B910E /* MacSVGPlugin-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0E2F00F82387A99500962E15 /* MacSVGPluginBundle */ = {
+			isa = PBXGroup;
+			children = (
+				0E2F00FC2387A99500962E15 /* MacSVGPluginBundle.xcodeproj */,
+			);
+			path = MacSVGPluginBundle;
+			sourceTree = "<group>";
+		};
+		0E2F00FD2387A99500962E15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0E2F01012387A99500962E15 /* MacSVGPluginBundle.bundle */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +181,6 @@
 				0E083F461F8918B900AD1285 /* SZJsonParser.h in Headers */,
 				0E90DC0023629FEE003D91B0 /* KeySplinesView.h in Headers */,
 				0E90DBFE23629FEE003D91B0 /* KeyValuesPopoverViewController.h in Headers */,
-				0E90DC04236632FB003D91B0 /* KeyValuesTableRowView.h in Headers */,
 				0EDA099B178F52A400E97D95 /* WebKitInterface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +196,7 @@
 				0E05D332178F35C4000B910E /* Frameworks */,
 				0E05D333178F35C4000B910E /* Headers */,
 				0E05D334178F35C4000B910E /* Resources */,
+				0E2F01052387B24600962E15 /* Embed PlugIns */,
 			);
 			buildRules = (
 			);
@@ -197,12 +234,28 @@
 			mainGroup = 0E05D32C178F35C4000B910E;
 			productRefGroup = 0E05D337178F35C4000B910E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0E2F00FD2387A99500962E15 /* Products */;
+					ProjectRef = 0E2F00FC2387A99500962E15 /* MacSVGPluginBundle.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				0E05D335178F35C4000B910E /* MacSVGPlugin */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0E2F01012387A99500962E15 /* MacSVGPluginBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MacSVGPluginBundle.bundle;
+			remoteRef = 0E2F01002387A99500962E15 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0E05D334178F35C4000B910E /* Resources */ = {
@@ -221,7 +274,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E90DC05236632FB003D91B0 /* KeyValuesTableRowView.m in Sources */,
 				0E90DBFF23629FEE003D91B0 /* KeyValuesPopoverViewController.m in Sources */,
 				0E3F78011E7F926000599EC0 /* MacSVGPluginSwiftInterface.swift in Sources */,
 				0E083F471F8918B900AD1285 /* SZJsonParser.m in Sources */,
