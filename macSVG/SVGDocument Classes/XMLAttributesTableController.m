@@ -421,17 +421,6 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
 
     //NSLog(@"tableView: viewForTableColumn:%@ row:%ld %@", tableColumnIdentifier, row, resultView);
 
-    /*
-    if (resultView == nil)
-    {
-        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
-        resultView.identifier = tableColumn.identifier;
-        resultView.font = [NSFont systemFontOfSize:10];
-        resultView.bordered = NO;
-        resultView.backgroundColor = [NSColor clearColor];
-    }
-    */
-
     NSString * resultString = @"";
 
     if (resultView != NULL)

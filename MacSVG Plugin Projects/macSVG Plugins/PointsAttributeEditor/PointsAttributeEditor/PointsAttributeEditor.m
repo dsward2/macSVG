@@ -395,17 +395,6 @@
     
     NSTableCellView * resultView = [tableView makeViewWithIdentifier:tableCellIndentifier owner:NULL];
 
-    /*
-    if (resultView == nil)
-    {
-        resultView = [[NSTextField alloc] initWithFrame:tableView.frame];
-        resultView.identifier = tableColumn.identifier;
-        resultView.font = [NSFont systemFontOfSize:10];
-        resultView.bordered = NO;
-        resultView.backgroundColor = [NSColor clearColor];
-    }
-    */
-
     NSString * resultString = @"";
 
     if (row < (self.pointsArray).count)
