@@ -8,6 +8,8 @@
 
 **The user interface for managing animation elements has been improved for setting the keyTimes, keySplines and keyPoints attributes.  This change makes it easier to set linear/ease-in/ease-out animation timings.**
 
+The OpenClipArt.org website under the Help menu is currently offline.  Hopefully it will return soon.
+
 <hr>
 
 **macSVG is a MIT-licensed open-source macOS app for designing HTML5 SVG 1.1 (Scalable Vector Graphics) art and animation.**

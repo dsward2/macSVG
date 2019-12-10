@@ -27,7 +27,7 @@
 	<key>Clker.com Website</key>
 	<string>https://www.clker.com/</string>
 	<key>Google SVG Search Website</key>
-	<string>https://images.google.com/advanced_image_search?as_filetype=svg</string>
+	<string>https://www.google.com/advanced_image_search?biw=1449&amp;bih=962&amp;q=&amp;uact=5&amp;tbm=isch&amp;hl=en</string>
 	<key>Google Web Fonts Website</key>
 	<string>https://www.google.com/webfonts</string>
 </dict>

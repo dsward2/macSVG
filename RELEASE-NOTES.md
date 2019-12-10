@@ -22,6 +22,12 @@ The URL for viewing SVG documentation was fixed to match the new location at the
 
 A bug was fixed in several places where an extra semicolon was added after the final item in values attributes.
 
+The tool panel now contains a Share button.  It can be used with AirDrop to quickly open the current SVG document on an iPhone, iPad or another Mac.
+
+The URL for the Google SVG Search under the Help menu was fixed.
+
+The OpenClipArt.org website under the Help menu is currently offline due to the murder of one of the developers getting murdered in Syria, and then that website got hacked.  Hopefully, the OpenClipArt website will return soon.
+
 ## macSVG v1.1.5 - February 1, 2019
 
 MacSVG v1.1.5 provides a temporary fix for the application to work in macOS Mojave Dark Mode.  For now, the app will "opt-out" of Dark Mode, and render views as a Light Mode application.  Specifically, the NSRequiresAquaSystemAppearance is set to true in Info.plist to force Light Mode rendering.  The next release will adjust the views to provide a proper Dark Mode user interface.
