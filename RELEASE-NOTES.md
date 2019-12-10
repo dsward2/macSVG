@@ -1,5 +1,27 @@
 # macSVG Release Notes
 
+## macSVG v1.1.6 - December 9, 2019
+
+Several deprecation warnings about WebKit were supressed with #pragma statements.
+
+Several deprecated API calls were fixed, such as updating NSURLRequest to use NSURLSessionDataTask instead.  Several drag-and-drop functions were also updated.
+
+JavaScript is now programatically enabled when a document window is opened.
+
+Several bugs were fixed in NSTableViews and the NSOutlineView for the SVG XML document.  Some bugs were fixed for tool tips in the outline view to display the full text of an element when the mouse hovers over an outline item.
+
+All remaining cell-based table views were converted to view-based.  In most cases for table views, MakeViewWithIdentifier:owner: now passes NULL as the owner.
+
+The user interface for editing the keyTimes, keySpines and keyPoints attributes for the animate, animateMotion and animateTransform elements were updated.  Each row in the table view contains a combo box which allows linear, ease-in, ease-out or ease-in/out animation timings to be set.  The keySplines curve is displayed for each item.  The user interface tries to make sure that the correct number of parameters are availabe for editing based on the number of items in the values attribute.
+
+Some third-party libraries were updated: libssh2, CocoaLumberjack and CocoaAsyncSocket.
+
+Stepper controls were added in the AnimateTransform editor for the transform values.
+
+The URL for viewing SVG documentation was fixed to match the new location at the w3c website.
+
+A bug was fixed in several places where an extra semicolon was added after the final item in values attributes.
+
 ## macSVG v1.1.5 - February 1, 2019
 
 MacSVG v1.1.5 provides a temporary fix for the application to work in macOS Mojave Dark Mode.  For now, the app will "opt-out" of Dark Mode, and render views as a Light Mode application.  Specifically, the NSRequiresAquaSystemAppearance is set to true in Info.plist to force Light Mode rendering.  The next release will adjust the views to provide a proper Dark Mode user interface.
