@@ -13,17 +13,9 @@
 #import "MacSVGDocumentWindowController.h"
 #import "MacSVGDocument.h"
 
-// CocoaHTTPServer
-#import "HTTPServer.h"
-#import <CocoaLumberjack/DDLog.h>
-#import <CocoaLumberjack/DDTTYLogger.h>
-#import "HTTPDynamicFileResponse.h"
-#import "HTTPLogging.h"
-#import "SVGHTTPConnection.h"
-
-
-// Log levels: off, error, warn, info, verbose
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#import "GCDWebServer.h"
+#import "GCDWebServerDataRequest.h"
+#import "GCDWebServerDataResponse.h"
 
 
 @interface WebServerController (PrivateMethods)
@@ -71,44 +63,43 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
             httpServerPort = 8080;
         }
         self.webServerPort = httpServerPort;
-
-        // For CocoaHTTPServer
-        // Configure our logging framework.
-        // To keep things simple and fast, we're just going to log to the Xcode console.
-        [DDLog addLogger:[DDTTYLogger sharedInstance]];
-        
-        // Initalize our http server
-        self.httpServer = [[HTTPServer alloc] init];
-        
-        // Tell server to use our custom SVGHTTPConnection class.
-        [self.httpServer setConnectionClass:[SVGHTTPConnection class]];
         
         // Tell the server to broadcast its presence via Bonjour.
         // This allows browsers such as Safari to automatically discover our service.
         //[httpServer setType:@"_http._tcp."];
-        
-        // Normally there's no need to run our server on any specific port.
-        // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
-        // However, for easy testing you may want force a certain port so you can just hit the refresh button.
-        [self.httpServer setPort:self.webServerPort];
-        
+                
         // Serve files from our embedded Web folder
-        NSString * webPath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"Web"];
-        //DDLogVerbose(@"Setting document root: %@", webPath);
+        //NSString * webPath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"Web"];
         
-        [self.httpServer setDocumentRoot:webPath];
+        //[self.httpServer setDocumentRoot:webPath];
         
         // Start the server (and check for problems)
+        self.httpServer = [[GCDWebServer alloc] init];
         
-        NSError *error;
-        BOOL success = [self.httpServer start:&error];
-        
-        if(!success)
+        __weak WebServerController * weakSelf = self;
+
+        // Add a handler to respond to GET requests on any URL
+        [self.httpServer addDefaultHandlerForMethod:@"GET"
+                                  requestClass:[GCDWebServerDataRequest class]
+                                  processBlock:^GCDWebServerDataResponse *(GCDWebServerRequest* request) {
+          
+          return [GCDWebServerDataResponse responseWithData:[weakSelf svgData] contentType:@"image/svg+xml"];
+          
+        }];
+
+        BOOL success = [self.httpServer startWithPort:self.webServerPort bonjourName:NULL];
+
+        if(success == YES)
         {
-            DDLogError(@"Error starting HTTP Server: %@", error);
+            NSLog(@"Web server running at %@", self.httpServer.serverURL);
+        }
+        else
+        {
+            NSLog(@"Error starting HTTP Server");
         }
     }
 }
+
 
 //==================================================================================
 //	stopProcessing
@@ -120,5 +111,52 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     
     self.httpServer = NULL;
 }
+
+//==================================================================================
+//    svgData
+//==================================================================================
+
+- (NSData *)svgData
+{
+    // FIXME TODO response header needs Content-Type image/svg+xml
+
+    MacSVGDocument * macSVGDocument = [self findFrontmostMacSVGDocument];
+
+    NSXMLDocument * svgXmlDocument = macSVGDocument.svgXmlDocument;
+        
+    NSData * svgData = svgXmlDocument.XMLData;
+        
+    return svgData;
+}
+
+
+//==================================================================================
+//    findFrontmostMacSVGDocument
+//==================================================================================
+
+- (MacSVGDocument *)findFrontmostMacSVGDocument
+{
+    __block MacSVGDocument * result = NULL;
+
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSArray *orderedDocuments = NSApp.orderedDocuments;
+            NSUInteger documentCount = orderedDocuments.count;
+            int i;
+            for (i = 0; i < documentCount; i++)
+            {
+                if (result == NULL)
+                {
+                    NSDocument *aDocument = (NSDocument *)orderedDocuments[i];
+                    if ([aDocument isMemberOfClass:[MacSVGDocument class]] == YES)
+                    {
+                        result = (MacSVGDocument *)aDocument;
+                    }
+                }
+            }
+    });
+
+    return result;
+}
+
 
 @end

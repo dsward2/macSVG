@@ -10,13 +10,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class HTTPServer;
+@class GCDWebServer;
 
 @interface WebServerController : NSObject 
 {
 }
 
-@property(strong) HTTPServer * httpServer;
+@property(strong) GCDWebServer * httpServer;
 @property(assign) NSUInteger webServerPort;
 
 - (void)startProcessing;
