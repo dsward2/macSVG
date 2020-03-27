@@ -17,7 +17,127 @@
     [super awakeFromNib];
 
     [self setDefaultsButtonAction:self];
+
+    [selectionStrokeWidthStepper setMinValue:0];
+    [selectionStrokeWidthStepper setMaxValue:1000];
+
+    [selectionHandleSizeStepper setMinValue:0];
+    [selectionHandleSizeStepper setMaxValue:1000];
+
+    [pathEndpointStrokeWidthStepper setMinValue:0];
+    [pathEndpointStrokeWidthStepper setMaxValue:1000];
+
+    [pathEndpointRadiusStepper setMinValue:0];
+    [pathEndpointRadiusStepper setMaxValue:1000];
+
+    [pathCurvePointStrokeWidthStepper setMinValue:0];
+    [pathCurvePointStrokeWidthStepper setMaxValue:1000];
+
+    [pathCurvePointRadiusStepper setMinValue:0];
+    [pathCurvePointRadiusStepper setMaxValue:1000];
+
+    [pathLineStrokeWidthStepper setMinValue:0];
+    [pathLineStrokeWidthStepper setMaxValue:1000];
 }
+
+
+- (void)viewWillAppear
+{
+    [super viewWillAppear];
+
+    [self updateStepperValuesWithTextFields:self];
+}
+
+- (IBAction)performClose:(id)sender
+{
+    [self updateSettingsFromUserInterface];
+
+    [macSVGDocumentWindowController.toolSettingsPopover performClose:sender];
+    [macSVGDocumentWindowController reloadWebView];
+}
+
+//==================================================================================
+//	updateStepperValue:withTextField:
+//==================================================================================
+
+- (void)updateStepperValue:(NSStepper *)aStepper withTextField:(NSTextField *)aTextField
+{
+    float floatValue = aTextField.floatValue;
+    aStepper.floatValue = floatValue;
+}
+
+//==================================================================================
+//	updateStepperValues:
+//==================================================================================
+
+- (IBAction)updateStepperValuesWithTextFields:(id)sender
+{
+    [self updateStepperValue:selectionStrokeWidthStepper withTextField:selectionStrokeWidthTextField];
+    [self updateStepperValue:selectionHandleSizeStepper withTextField:selectionHandleSizeTextField];
+    [self updateStepperValue:pathEndpointStrokeWidthStepper withTextField:pathEndpointStrokeWidthTextField];
+    [self updateStepperValue:pathEndpointRadiusStepper withTextField:pathEndpointRadiusTextField];
+    [self updateStepperValue:pathCurvePointStrokeWidthStepper withTextField:pathCurvePointStrokeWidthTextField];
+    [self updateStepperValue:pathCurvePointRadiusStepper withTextField:pathCurvePointRadiusTextField];
+    [self updateStepperValue:pathLineStrokeWidthStepper withTextField:pathLineStrokeWidthTextField];
+}
+
+//==================================================================================
+//	updateTextFieldValue:withStepper:
+//==================================================================================
+
+- (void)updateTextFieldValue:(NSTextField *)aTextField withStepper:(NSStepper *)aStepper
+{
+    aTextField.floatValue = aStepper.floatValue;
+}
+
+/*
+// -------------------------------------------------------------------------------
+//  controlTextDidEndEditing:
+// -------------------------------------------------------------------------------
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj;
+{
+    [self updateStepperValuesWithTextFields:self];
+}
+
+// -------------------------------------------------------------------------------
+//  textDidChange:
+// -------------------------------------------------------------------------------
+
+- (void)textDidChange:(NSNotification *)aNotification
+{
+    [self updateStepperValuesWithTextFields:self];
+}
+*/
+
+// -------------------------------------------------------------------------------
+//  controlTextDidChange:
+// -------------------------------------------------------------------------------
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    [self updateStepperValuesWithTextFields:self];
+    
+    [self updateSettingsFromUserInterface];
+}
+
+
+//==================================================================================
+//	updateTextFieldValuesWithStepperValues:
+//==================================================================================
+
+- (IBAction)updateTextFieldValuesWithSteppers:(id)sender
+{
+    [self updateTextFieldValue:selectionStrokeWidthTextField withStepper:selectionStrokeWidthStepper];
+    [self updateTextFieldValue:selectionHandleSizeTextField withStepper:selectionHandleSizeStepper];
+    [self updateTextFieldValue:pathEndpointStrokeWidthTextField withStepper:pathEndpointStrokeWidthStepper];
+    [self updateTextFieldValue:pathEndpointRadiusTextField withStepper:pathEndpointRadiusStepper];
+    [self updateTextFieldValue:pathCurvePointStrokeWidthTextField withStepper:pathCurvePointStrokeWidthStepper];
+    [self updateTextFieldValue:pathCurvePointRadiusTextField withStepper:pathCurvePointRadiusStepper];
+    [self updateTextFieldValue:pathLineStrokeWidthTextField withStepper:pathLineStrokeWidthStepper];
+}
+
+
 
 -(NSString *)hexadecimalValueOfAnNSColor:(NSColor *)aColor
 {
@@ -149,6 +269,8 @@
 
     pathLineStrokeColorWell.color = [NSColor blueColor];
     pathLineStrokeWidthTextField.stringValue = @"1";
+    
+    [self updateStepperValuesWithTextFields:self];
     
     [self updateSettingsFromUserInterface];
 }

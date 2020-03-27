@@ -2653,7 +2653,7 @@
 
         checkboxButton.refusesFirstResponder = YES;
         [checkboxButton setTarget:self];
-        [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
+        [checkboxButton setAction:@selector(visibilityCheckboxAction:)];    // FIXME: visibility checkbox not implemented
         
         [checkboxButton setIntValue:[resultValue intValue]];
     }

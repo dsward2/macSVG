@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MacSVGDocumentWindowController.h"
 
-@interface ToolSettingsPopoverViewController : NSViewController
+@interface ToolSettingsPopoverViewController : NSViewController <NSTextFieldDelegate>
 {
     IBOutlet NSColorWell * selectionStrokeColorWell;
     IBOutlet NSTextField * selectionStrokeWidthTextField;
@@ -73,5 +73,9 @@
 
 @property(strong) NSString * pathLineStrokeColor;
 @property(strong) NSString * pathLineStrokeWidth;
+
+- (IBAction)updateStepperValuesWithTextFields:(id)sender;
+- (IBAction)updateTextFieldValuesWithSteppers:(id)sender;
+- (IBAction)performClose:(id)sender;
 
 @end
