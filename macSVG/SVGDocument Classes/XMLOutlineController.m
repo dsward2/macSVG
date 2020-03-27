@@ -1976,20 +1976,30 @@
     
     NSInteger clickedRow = -1;
     
-    if ([senderButton.superview isKindOfClass:[NSTableRowView class]] == YES)
+    NSTableCellView * tableCellView = NULL;
+    
+    if ([senderButton.superview.superview isKindOfClass:[NSTableRowView class]] == YES)
     {
-        NSTableRowView * tableRowView = (NSTableRowView *)senderButton.superview;
+        tableCellView = (NSTableCellView *)senderButton.superview;
+    
+        XMLOutlineRowView * tableRowView = (XMLOutlineRowView *)tableCellView.superview;
 
         clickedRow = [self.xmlOutlineView rowForView:tableRowView];
     }
     
     if (clickedRow >= 0)
     {
-        id checkboxButtonObject = (NSButton *)[self outlineView:self.xmlOutlineView viewForTableColumn:aTableColumn item:sender];
+        NSXMLNode * selectedXMLNode = [self.xmlOutlineView itemAtRow:clickedRow];
+    
+        id checkboxCellViewObject = (NSButton *)[self outlineView:self.xmlOutlineView viewForTableColumn:aTableColumn item:selectedXMLNode];
 
-        if ([checkboxButtonObject isKindOfClass:[NSButton class]] == YES)
+        if ([checkboxCellViewObject isKindOfClass:[NSTableCellView class]] == YES)
         {
-            NSButton * checkboxButton = (NSButton *)checkboxButtonObject;
+            NSTableCellView * tableCellView = (NSTableCellView *)checkboxCellViewObject;
+        
+            NSArray * subviews = tableCellView.subviews;
+        
+            NSButton * checkboxButton = (NSButton *)subviews.firstObject;
             
             if (checkboxButton.enabled)
             {
@@ -2663,7 +2673,7 @@
         checkboxButton.refusesFirstResponder = YES;
         // object locking is not implemented yet
         //[checkboxButton setTarget:self];
-        //[checkboxButton setAction:@selector(visibilityCheckboxAction:)];
+        //[checkboxButton setAction:@selector(lockedCheckboxAction:)];
 
         [checkboxButton setIntValue:[resultValue intValue]];
     }
