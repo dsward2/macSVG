@@ -27,17 +27,20 @@
 #import "WebKitInterface.h"
 #import "SVGWebKitController.h"
 #import "SVGIconTableHeaderCell.h"
-#import "SVGIconView.h"
+//#import "SVGIconView.h"
+#import "FolderIconView.h"
+#import "TargetIconView.h"
+#import "TextIconView.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 //#import "ElementInfoEditor/ElementInfoEditor.h"
 
 #import "NSOutlineView_Extensions.h"
 
-
 #define COLUMNID_IS_VISIBLE          @"IsVisibleColumn"
 #define COLUMNID_IS_LOCKED           @"IsLockedColumn"
-#define COLUMNID_ELEMENT_NAME        @"ElementNameColumn"
 #define COLUMNID_ICON                @"IconColumn"
+#define COLUMNID_ELEMENT_NAME        @"ElementNameColumn"
+
 
 @interface XMLOutlineController(Private)
 //- (void)addNewDataToSelection:(NSXMLNode *)newChildData;
@@ -82,16 +85,21 @@
 
 - (void)awakeFromNib
 {
-    [super awakeFromNib];
+    if (self.isAwake == NO)
+    {
+        [super awakeFromNib];
 
-    self.xmlOutlineView.indentationPerLevel = 8.0;
-    self.xmlOutlineView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleNone;
+        self.xmlOutlineView.indentationPerLevel = 8.0;
+        self.xmlOutlineView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleNone;
 
-    [self.xmlOutlineView reloadData];
+        [self.xmlOutlineView reloadData];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(outlineViewSelectionIsChanging:)
-            name:NSOutlineViewSelectionIsChangingNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                selector:@selector(outlineViewSelectionIsChanging:)
+                name:NSOutlineViewSelectionIsChangingNotification object:nil];
+        
+        self.isAwake = YES;
+    }
 }
 
 
@@ -166,7 +174,11 @@
 
     [self.xmlOutlineView reloadData];
     
+    self.keepCurrentEditorDisplayed = YES;
+    
     [self.xmlOutlineView selectRowIndexes:selectedRowIndexes byExtendingSelection:NO];
+    
+    self.keepCurrentEditorDisplayed = NO;
 }
 
 //==================================================================================
@@ -2602,6 +2614,90 @@
 }
 
 //==================================================================================
+//	outlineView:viewForTableColumn:item:
+//==================================================================================
+
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    //NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSString * tableColumnIdentifier = tableColumn.identifier;
+    id resultValue = [self outlineView:outlineView objectValueForTableColumn:tableColumn byItem:item];
+    
+    NSString * tableCellViewIdentifier = @"Error";
+    if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_VISIBLE] == YES)
+    {
+        tableCellViewIdentifier = @"IsVisibleColumnCellView";
+    }
+    else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
+    {
+        tableCellViewIdentifier = @"IsLockedColumnCellView";
+    }
+    else if ([tableColumnIdentifier isEqualToString:COLUMNID_ICON] == YES)
+    {
+        // set tableColumnIdentifier = TextIconCellView, TextIconCellView, TargetIconCellView or FolderIconCellView
+        tableCellViewIdentifier = resultValue;
+    }
+    else if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
+    {
+        tableCellViewIdentifier = @"ElementNameCellView";
+    }
+
+    NSView * resultView = [outlineView makeViewWithIdentifier:tableCellViewIdentifier owner:self];
+    
+    NSArray * subviews = resultView.subviews;
+    NSView * controlView = subviews.firstObject;
+
+    if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_VISIBLE] == YES)
+    {
+        NSButton * checkboxButton = (NSButton *)controlView;
+
+        checkboxButton.refusesFirstResponder = YES;
+        [checkboxButton setTarget:self];
+        [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
+        
+        [checkboxButton setIntValue:[resultValue intValue]];
+    }
+    else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
+    {
+        NSButton * checkboxButton = (NSButton *)controlView;
+        checkboxButton.refusesFirstResponder = YES;
+        // object locking is not implemented yet
+        //[checkboxButton setTarget:self];
+        //[checkboxButton setAction:@selector(visibilityCheckboxAction:)];
+
+        [checkboxButton setIntValue:[resultValue intValue]];
+    }
+    else if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
+    {
+        NSTextField * textField = (NSTextField *)controlView;
+
+        NSInteger nonTextChildNodes = 0;
+        
+        NSXMLElement * xmlElement = [item copy];
+        NSArray * xmlElementChildren = xmlElement.children;
+        for (NSXMLNode * childNode in xmlElementChildren)
+        {
+            if (childNode.kind != NSXMLTextKind)
+            {
+                [childNode detach];
+                nonTextChildNodes++;
+            }
+        }
+        if (nonTextChildNodes > 0)
+        {
+            NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
+            ellipseTextNode.stringValue = @" … ";
+            [xmlElement addChild:ellipseTextNode];
+        }
+        textField.toolTip = [xmlElement XMLString];
+        
+        [textField setStringValue:resultValue];
+    }
+
+    return resultView;
+}
+
+//==================================================================================
 //	outlineView:objectValueForTableColumn:byItem:
 //==================================================================================
 
@@ -2611,173 +2707,146 @@
 
     if (item == NULL)
     {
-        if ((tableColumn == nil) || [tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME]) 
-        {
-            objectValue = @"Missing";
-        } 
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE]) 
-        {
-            // set the state of a check box.
-            objectValue = @YES;
-        } 
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_LOCKED])
-        {
-            // set the state of the check box.
-            objectValue = @NO;
-        }
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
-        {
-            SVGIconView * svgIconView = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            svgIconView.userData = @"folder";
+        NSLog(@"XMLOutlineController objectValueForTableColumn error");
+    }
 
-            objectValue = svgIconView;
+    NSXMLNode * nodeData = item;
+    NSXMLNodeKind nodeKind = nodeData.kind;
+    
+    if ([tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
+    {
+        if (nodeKind ==  NSXMLElementKind)
+        {
+            NSString * elementName = nodeData.localName;
+            NSString * idString = @"";
+            NSXMLElement * elementItem = item;
+            NSXMLNode * idNode = [elementItem attributeForName:@"id"];
+            if (idNode != NULL)
+            {
+                NSString * idValue = idNode.stringValue;
+                idString = [NSString stringWithFormat:@"id=\"%@\"", idValue];
+            }
+            objectValue = [NSString stringWithFormat:@"%@ %@", elementName, idString];
+        }
+        else if (nodeKind ==  NSXMLTextKind)
+        {
+            NSString * stringValue = nodeData.stringValue;
+            NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
+                    [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
+        }
+        else if (nodeKind ==  NSXMLCommentKind)
+        {
+            NSString * stringValue = nodeData.stringValue;
+            NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
+                    [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
         }
     }
-    else
+    else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE])
     {
-        NSXMLNode * nodeData = item;
-        NSXMLNodeKind nodeKind = nodeData.kind;
-        
-        if ((tableColumn == nil) || [tableColumn.identifier isEqualToString:COLUMNID_ELEMENT_NAME])
-        {
-            if (nodeKind ==  NSXMLElementKind)
-            {
-                NSString * elementName = nodeData.localName;
-                NSString * idString = @"";
-                NSXMLElement * elementItem = item;
-                NSXMLNode * idNode = [elementItem attributeForName:@"id"];
-                if (idNode != NULL)
-                {
-                    NSString * idValue = idNode.stringValue;
-                    idString = [NSString stringWithFormat:@"id=\"%@\"", idValue];
-                }
-                objectValue = [NSString stringWithFormat:@"%@ %@", elementName, idString];
-            }
-            else if (nodeKind ==  NSXMLTextKind)
-            {
-                NSString * stringValue = nodeData.stringValue;
-                NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
-                        [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
-            }
-            else if (nodeKind ==  NSXMLCommentKind)
-            {
-                NSString * stringValue = nodeData.stringValue;
-                NSString * trimmedValue = [stringValue stringByTrimmingCharactersInSet:
-                        [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                objectValue = [NSString stringWithFormat:@"\"%@\"", trimmedValue];
-            }
-        } 
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_VISIBLE]) 
-        {
-            // Here, object value will be used to set the state of a check box.
-            BOOL visibility = YES;
+        // Here, object value will be used to set the state of a check box.
+        BOOL visibility = YES;
 
-            if (nodeKind ==  NSXMLElementKind)
+        if (nodeKind ==  NSXMLElementKind)
+        {
+            NSXMLElement * rowElement = (id)nodeData;
+            NSXMLNode * visibilityAttributeNode = [rowElement attributeForName:@"visibility"];
+            NSString * visibilityAttributeString = visibilityAttributeNode.stringValue;
+            if (visibilityAttributeString != NULL)
             {
-                NSXMLElement * rowElement = (id)nodeData;
-                NSXMLNode * visibilityAttributeNode = [rowElement attributeForName:@"visibility"];
-                NSString * visibilityAttributeString = visibilityAttributeNode.stringValue;
-                if (visibilityAttributeString != NULL)
+                if ([visibilityAttributeString isEqualToString:@"hidden"])
                 {
-                    if ([visibilityAttributeString isEqualToString:@"hidden"])
-                    {
-                        visibility = NO;
-                    }
+                    visibility = NO;
                 }
-                
-                if (draggingOutlineItems == NO)
+            }
+            
+            if (draggingOutlineItems == NO)
+            {
+                if (self.draggingActive == NO)
                 {
-                    if (self.draggingActive == NO)
+                    // Update the visibility checkboxes in child NSXMLNodes to match parent
+                    // don't perform this part if dragging is active
+                    // due to reloadItem: call will cancel dragging
+                    NSArray * childNodes = rowElement.children;
+                    for (NSXMLNode * aChildNode in childNodes)
                     {
-                        // Update the visibility checkboxes in child NSXMLNodes to match parent
-                        // don't perform this part if dragging is active
-                        // due to reloadItem: call will cancel dragging
-                        NSArray * childNodes = rowElement.children;
-                        for (NSXMLNode * aChildNode in childNodes)
+                        NSXMLNodeKind childNodeKind = aChildNode.kind;
+                        
+                        if (childNodeKind != NSXMLElementKind)
                         {
-                            NSXMLNodeKind childNodeKind = aChildNode.kind;
+                            NSInteger childRow = [self.xmlOutlineView rowForItem:aChildNode];
                             
-                            if (childNodeKind != NSXMLElementKind)
+                            if (childRow > -1)
                             {
-                                NSInteger childRow = [self.xmlOutlineView rowForItem:aChildNode];
-                                
-                                if (childRow > -1)
-                                {
-                                    [self.xmlOutlineView reloadItem:aChildNode];
-                                }
+                                [self.xmlOutlineView reloadItem:aChildNode];
                             }
                         }
                     }
                 }
             }
-            else
-            {
-                NSXMLNode * parentNode = nodeData.parent;
-                NSXMLNodeKind parentNodeKind = parentNode.kind;
-                if (parentNodeKind == NSXMLElementKind)
-                {
-                    NSXMLElement * parentElement = (NSXMLElement *)parentNode;
-                    NSXMLNode * parentVisibilityAttributeNode = [parentElement attributeForName:@"visibility"];
-                    NSString * parentVisibilityAttributeString = parentVisibilityAttributeNode.stringValue;
-                    if (parentVisibilityAttributeString != NULL)
-                    {
-                        if ([parentVisibilityAttributeString isEqualToString:@"hidden"])
-                        {
-                            visibility = NO;
-                        }
-                    }
-                }
-            }
-
-            objectValue = @(visibility);
-        } 
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_LOCKED])
-        {
-            // Again -- this object value will set the state of the check box.
-            objectValue = @NO;
-        }
-        else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON]) 
-        {
-            SVGIconView * svgIconView = (SVGIconView *)[self outlineView:self.xmlOutlineView viewForTableColumn:tableColumn item:item];
-            
-            NSString * userData = @"folder";
-            
-            NSInteger rowForItem = [outlineView rowForItem:item];
-            NSIndexSet * selectedRowsIndexSet = [outlineView selectedRowIndexes];
-            BOOL rowIsSelected = [selectedRowsIndexSet containsIndex:rowForItem];
-            
-            if (nodeKind == NSXMLTextKind)
-            {
-                userData = @"text";
-            }
-            else if (nodeKind == NSXMLCommentKind)
-            {
-                userData = @"text";
-            }
-            else if (rowIsSelected == YES)
-            {
-                userData = @"target";
-            }
-            else
-            {
-                userData = @"folder";
-            }
-            
-            if ([svgIconView.userData isEqualToString:userData] == NO)
-            {
-                svgIconView.userData = userData;
-                
-                [svgIconView setNeedsDisplay:YES];
-            }
-
-            objectValue = svgIconView;
         }
         else
         {
-            NSLog(@"outlineView:objectValueForTableColumn:byItem: missing handler for tableColumn.identifier %@", tableColumn.identifier);
+            NSXMLNode * parentNode = nodeData.parent;
+            NSXMLNodeKind parentNodeKind = parentNode.kind;
+            if (parentNodeKind == NSXMLElementKind)
+            {
+                NSXMLElement * parentElement = (NSXMLElement *)parentNode;
+                NSXMLNode * parentVisibilityAttributeNode = [parentElement attributeForName:@"visibility"];
+                NSString * parentVisibilityAttributeString = parentVisibilityAttributeNode.stringValue;
+                if (parentVisibilityAttributeString != NULL)
+                {
+                    if ([parentVisibilityAttributeString isEqualToString:@"hidden"])
+                    {
+                        visibility = NO;
+                    }
+                }
+            }
         }
+
+        objectValue = @(visibility);    // NSCFBoolean
     }
+    else if ([tableColumn.identifier isEqualToString:COLUMNID_IS_LOCKED])
+    {
+        // Again -- this object value will set the state of the check box.
+        objectValue = @NO;
+    }
+    else if ([tableColumn.identifier isEqualToString:COLUMNID_ICON])
+    {
+        NSXMLNode * nodeData = item;
+        NSXMLNodeKind nodeKind = nodeData.kind;
+
+        NSInteger rowForItem = [outlineView rowForItem:item];
+        NSIndexSet * selectedRowsIndexSet = [outlineView selectedRowIndexes];
+        BOOL rowIsSelected = [selectedRowsIndexSet containsIndex:rowForItem];
+
+        NSString * tableCellViewIdentifier = @"";
+
+        if (nodeKind == NSXMLTextKind)
+        {
+            tableCellViewIdentifier = @"TextIconCellView";
+        }
+        else if (nodeKind == NSXMLCommentKind)
+        {
+            tableCellViewIdentifier = @"TextIconCellView";
+        }
+        else if (rowIsSelected == YES)
+        {
+            tableCellViewIdentifier = @"TargetIconCellView";    // primary selected element
+        }
+        else
+        {
+            tableCellViewIdentifier = @"FolderIconCellView";    // non-selected element or non-primary selected element
+        }
+        
+        objectValue = tableCellViewIdentifier;
+    }
+    else
+    {
+        NSLog(@"outlineView:objectValueForTableColumn:byItem: missing handler for tableColumn.identifier %@", tableColumn.identifier);
+    }
+
     
     return objectValue;
 }
@@ -2802,35 +2871,65 @@
     
         id item = [self.xmlOutlineView itemAtRow:row];
         
-        SVGIconView * svgIconView = [rowView viewAtColumn:2];
+        NSTableCellView * tableCellView = [rowView viewAtColumn:2];
+        if (tableCellView == NULL)
+        {
+            NSLog(@"XMLOutlineController error at updateRowIcons");
+        }
+        NSArray * subviews = tableCellView.subviews;
+        NSView * controlView = subviews.firstObject;
     
         NSXMLNode * nodeData = item;
         NSXMLNodeKind nodeKind = nodeData.kind;
-        
-        NSString * userData = @"folder";
+
+        BOOL rowIsSelected = row == selectedRow;
+
+        NSString * tableCellViewIdentifier = @"";
+        NSString * controlViewClassName = @"";
         
         if (nodeKind == NSXMLTextKind)
         {
-            userData = @"text";
+            tableCellViewIdentifier = @"TextIconCellView";
+            controlViewClassName = @"TextIconView";
         }
         else if (nodeKind == NSXMLCommentKind)
         {
-            userData = @"text";
+            tableCellViewIdentifier = @"TextIconCellView";
+            controlViewClassName = @"TextIconView";
         }
-        else if (row == selectedRow)
+        else if (rowIsSelected == YES)
         {
-            userData = @"target";
+            tableCellViewIdentifier = @"TargetIconCellView";
+            controlViewClassName = @"TargetIconView";
         }
         else
         {
-            userData = @"folder";
+            tableCellViewIdentifier = @"FolderIconCellView";
+            controlViewClassName = @"FolderIconView";
         }
         
-        if ([svgIconView.userData isEqualToString:userData] == NO)
+        if ([[controlView className] isEqualToString:controlViewClassName] == NO)
         {
-            svgIconView.userData = userData;
+            tableCellView.identifier = tableCellViewIdentifier;
             
-            [svgIconView setNeedsDisplay:YES];
+            NSView * newControlView = NULL;
+            if ([controlViewClassName isEqualToString:@"TextIconView"] == YES)
+            {
+                newControlView = [[TextIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            }
+            else if ([controlViewClassName isEqualToString:@"TargetIconView"] == YES)
+            {
+                newControlView = [[TargetIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            }
+            else
+            {
+                newControlView = [[FolderIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
+            }
+
+            [controlView removeFromSuperview];
+            [tableCellView addSubview:newControlView];
+
+            [tableCellView setNeedsDisplay:YES];
         }
     }];
 }
@@ -2857,139 +2956,6 @@
     return rowView;
 }
 
-//==================================================================================
-//	outlineView:viewForTableColumn:item:
-//==================================================================================
-
-- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
-{
-    //NSView * resultView = [outlineView makeViewWithIdentifier:tableColumn.identifier owner:self];
-    NSString * tableColumnIdentifier = tableColumn.identifier;
-    
-    NSString * tableCellIdentifier = [tableColumnIdentifier stringByAppendingString:@"Cell"];
-
-    NSView * resultView = [outlineView makeViewWithIdentifier:tableCellIdentifier owner:NULL];
-
-    if (resultView == nil)
-    {
-        if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_VISIBLE] == YES)
-        {
-            NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            [checkboxButton setButtonType:NSButtonTypeSwitch];
-            [checkboxButton setControlSize:NSControlSizeSmall];
-            checkboxButton.identifier = tableCellIdentifier;
-            [checkboxButton setTarget:self];
-            [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
-            
-            checkboxButton.refusesFirstResponder = YES;
-                        
-            resultView = checkboxButton;
-        }
-        else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
-        {
-            NSButton * checkboxButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            [checkboxButton setButtonType:NSButtonTypeSwitch];
-            [checkboxButton setControlSize:NSControlSizeSmall];
-            checkboxButton.identifier = tableCellIdentifier;
-            checkboxButton.refusesFirstResponder = YES;
-            
-            resultView = checkboxButton;
-        }
-        else if ([tableColumnIdentifier isEqualToString:COLUMNID_ICON] == YES)
-        {
-            SVGIconView * svgIconView = [[SVGIconView alloc] initWithFrame:NSMakeRect(0, 0, 18, 18)];
-            svgIconView.identifier = tableCellIdentifier;
-
-            NSXMLNode * nodeData = item;
-            NSXMLNodeKind nodeKind = nodeData.kind;
-            
-            NSString * userData = @"folder";
-            
-            if (nodeKind == NSXMLTextKind)
-            {
-                userData = @"text";
-            }
-            else if (nodeKind == NSXMLCommentKind)
-            {
-                userData = @"text";
-            }
-            else
-            {
-                userData = @"folder";
-            }
-            svgIconView.userData = userData;
-
-            resultView = svgIconView;
-        }
-        else if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
-        {
-            //NSTextField * textField = [[NSTextField alloc] initWithFrame:outlineView.frame];
-            NSTextField * textField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 4, 300, 14)];
-            textField.identifier = tableCellIdentifier;
-            textField.refusesFirstResponder = YES;
-            [textField setControlSize:NSControlSizeSmall];
-            textField.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
-            textField.bordered = NO;
-            textField.backgroundColor = [NSColor clearColor];
-            textField.stringValue = @"Missing";
-            textField.editable = NO;
-            textField.lineBreakMode = NSLineBreakByTruncatingTail;
-            textField.maximumNumberOfLines = 1;
-            textField.drawsBackground = NO;
-            
-            NSInteger nonTextChildNodes = 0;
-            
-            NSXMLElement * xmlElement = [item copy];
-            NSArray * xmlElementChildren = xmlElement.children;
-            for (NSXMLNode * childNode in xmlElementChildren)
-            {
-                if (childNode.kind != NSXMLTextKind)
-                {
-                    [childNode detach];
-                    nonTextChildNodes++;
-                }
-            }
-            if (nonTextChildNodes > 0)
-            {
-                NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-                ellipseTextNode.stringValue = @" … ";
-                [xmlElement addChild:ellipseTextNode];
-            }
-            textField.toolTip = [xmlElement XMLString];
-
-            resultView = textField;
-        }
-    }
-    else
-    {
-        if ([tableColumnIdentifier isEqualToString:COLUMNID_ELEMENT_NAME] == YES)
-        {
-            NSTextField * textField = (NSTextField *)resultView;
-
-            NSInteger nonTextChildNodes = 0;
-            
-            NSXMLElement * xmlElement = [item copy];
-            NSArray * xmlElementChildren = xmlElement.children;
-            for (NSXMLNode * childNode in xmlElementChildren)
-            {
-                if (childNode.kind != NSXMLTextKind)
-                {
-                    [childNode detach];
-                    nonTextChildNodes++;
-                }
-            }
-            if (nonTextChildNodes > 0)
-            {
-                NSXMLNode * ellipseTextNode = [[NSXMLNode alloc] initWithKind:NSXMLTextKind];
-                ellipseTextNode.stringValue = @" … ";
-                [xmlElement addChild:ellipseTextNode];
-            }
-            textField.toolTip = [xmlElement XMLString];
-        }
-    }
-        
-    return resultView;
-}
 
 //==================================================================================
 //	outlineView:didClickTableColumn:
@@ -3922,8 +3888,12 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 - (void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
     // a mutex lock to block overlapping calls to handleOutlineViewSelectionDidChange
-    @synchronized (self) {
-        [self handleOutlineViewSelectionDidChange];
+    
+    if (self.keepCurrentEditorDisplayed == NO)
+    {
+        @synchronized (self) {
+            [self handleOutlineViewSelectionDidChange];
+        }
     }
 }
 

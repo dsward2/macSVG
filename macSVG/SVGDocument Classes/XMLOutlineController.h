@@ -46,6 +46,8 @@
 @property (strong) NSArray * holdSelectedItems;
 
 @property(assign) BOOL draggingActive;
+@property(assign) BOOL keepCurrentEditorDisplayed;
+@property(assign) BOOL isAwake;
 
 @property(strong) NSXMLElement * editElement;
 @property(strong) NSArray * draggedNodes;

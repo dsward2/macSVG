@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0262AE1FBD103600245A94 /* SVGIconView.m */; };
 		0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8881D59ADC700265FA2 /* PathFunctions.m */; };
 		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
@@ -98,6 +97,7 @@
 		0E772CB22368F61A00E9062D /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */; };
 		0E772CB32368F61A00E9062D /* CocoaAsyncSocket.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */; };
+		0E7A95F2242BC4F000C5C867 /* TargetIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7A95F1242BC4F000C5C867 /* TargetIconView.m */; };
 		0E7E4BBA17FD142700B1FD07 /* MacSVGDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7E4BB917FD142700B1FD07 /* MacSVGDocumentController.m */; };
 		0E7F9A6714B030A8005351BE /* EditorUIFrameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F9A6614B030A8005351BE /* EditorUIFrameController.m */; };
 		0E7F9A6A14B032A7005351BE /* AttributeEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F9A6914B032A7005351BE /* AttributeEditorController.m */; };
@@ -714,6 +714,8 @@
 		0EE22BC017FB1FEE00B58D6D /* SFTPDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE22BBF17FB1FEE00B58D6D /* SFTPDownload.m */; };
 		0EE22BC317FB60BF00B58D6D /* SFTPUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE22BC217FB60BF00B58D6D /* SFTPUpload.m */; };
 		0EE22BC617FC3FE100B58D6D /* SFTPMkdir.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE22BC517FC3FE100B58D6D /* SFTPMkdir.m */; };
+		0EE3ABC2242BC62800D75F26 /* FolderIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3ABC1242BC62800D75F26 /* FolderIconView.m */; };
+		0EE3ABCD242BC68800D75F26 /* TextIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3ABCC242BC68800D75F26 /* TextIconView.m */; };
 		0EEC4F9415097C1C007D7F27 /* MacSVGPluginCallbacks.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEC4F9315097C1C007D7F27 /* MacSVGPluginCallbacks.m */; };
 		0EEE3A7F17B9E3AA0040846F /* DFSSHConnectionType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3A7B17B9E3AA0040846F /* DFSSHConnectionType.m */; };
 		0EEE3A8017B9E3AA0040846F /* DFSSHConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3A7C17B9E3AA0040846F /* DFSSHConnector.m */; };
@@ -2345,6 +2347,8 @@
 		0E772CB02368F5F100E9062D /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		0E7967C814A425080070B099 /* TimelineLabelsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLabelsTableViewDelegate.h; sourceTree = "<group>"; };
 		0E7967C914A425080070B099 /* TimelineLabelsTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineLabelsTableViewDelegate.m; sourceTree = "<group>"; };
+		0E7A95F0242BC4F000C5C867 /* TargetIconView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TargetIconView.h; sourceTree = "<group>"; };
+		0E7A95F1242BC4F000C5C867 /* TargetIconView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TargetIconView.m; sourceTree = "<group>"; };
 		0E7E4BB817FD142700B1FD07 /* MacSVGDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacSVGDocumentController.h; path = "../SVGDocument Classes/MacSVGDocumentController.h"; sourceTree = "<group>"; };
 		0E7E4BB917FD142700B1FD07 /* MacSVGDocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MacSVGDocumentController.m; path = "../SVGDocument Classes/MacSVGDocumentController.m"; sourceTree = "<group>"; };
 		0E7F9A6514B030A8005351BE /* EditorUIFrameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EditorUIFrameController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -3352,6 +3356,10 @@
 		0EE22BC217FB60BF00B58D6D /* SFTPUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SFTPUpload.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EE22BC417FC3FE100B58D6D /* SFTPMkdir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SFTPMkdir.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0EE22BC517FC3FE100B58D6D /* SFTPMkdir.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SFTPMkdir.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0EE3ABC0242BC62800D75F26 /* FolderIconView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FolderIconView.h; sourceTree = "<group>"; };
+		0EE3ABC1242BC62800D75F26 /* FolderIconView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FolderIconView.m; sourceTree = "<group>"; };
+		0EE3ABCB242BC68800D75F26 /* TextIconView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextIconView.h; sourceTree = "<group>"; };
+		0EE3ABCC242BC68800D75F26 /* TextIconView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextIconView.m; sourceTree = "<group>"; };
 		0EE997D617ED3C2F00F833D1 /* update_executable_path.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = update_executable_path.sh; path = ../update_executable_path.sh; sourceTree = "<group>"; };
 		0EEC4F9315097C1C007D7F27 /* MacSVGPluginCallbacks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MacSVGPluginCallbacks.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0EEE3A7617B9E3AA0040846F /* DFSSHConnectionType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSSHConnectionType.h; sourceTree = "<group>"; };
@@ -4507,6 +4515,12 @@
 				0E9041091D51BB99004C1826 /* SVGIconTableHeaderCell.m */,
 				0E0262AD1FBD103600245A94 /* SVGIconView.h */,
 				0E0262AE1FBD103600245A94 /* SVGIconView.m */,
+				0E7A95F0242BC4F000C5C867 /* TargetIconView.h */,
+				0E7A95F1242BC4F000C5C867 /* TargetIconView.m */,
+				0EE3ABC0242BC62800D75F26 /* FolderIconView.h */,
+				0EE3ABC1242BC62800D75F26 /* FolderIconView.m */,
+				0EE3ABCB242BC68800D75F26 /* TextIconView.h */,
+				0EE3ABCC242BC68800D75F26 /* TextIconView.m */,
 			);
 			name = "Utility Views";
 			sourceTree = "<group>";
@@ -6355,6 +6369,7 @@
 			files = (
 				0EDDC38C178DEE26003B014D /* WebKitInterface.mm in Sources */,
 				0EB6638A14286398003723F0 /* main.m in Sources */,
+				0E7A95F2242BC4F000C5C867 /* TargetIconView.m in Sources */,
 				0EB663A8142865EB003723F0 /* MacSVGAppDelegate.m in Sources */,
 				0EB663AF142865F4003723F0 /* NSOutlineView_Extensions.m in Sources */,
 				0EEE3B1117BD4EDB0040846F /* XMLOutlineRowView.m in Sources */,
@@ -6385,6 +6400,7 @@
 				0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */,
 				0EC7C1AC24299DBD00C16DFD /* GCDWebServerErrorResponse.m in Sources */,
 				0E714560142C2FB3002F8E1F /* PanelView.m in Sources */,
+				0EE3ABCD242BC68800D75F26 /* TextIconView.m in Sources */,
 				0E81A9561D32283600EA824A /* FlippedClipView.m in Sources */,
 				0E7145A1142C302C002F8E1F /* GradientView.m in Sources */,
 				0E32F8921FEB200200492813 /* XMLAttributesTableRowView.m in Sources */,
@@ -6412,7 +6428,6 @@
 				0EC7C1A724299DAA00C16DFD /* GCDWebServerDataRequest.m in Sources */,
 				0E9B317F149EA4E6008E38C7 /* AnimationTimespan.m in Sources */,
 				0EDD0C1914A1A44B00430652 /* SynchroScrollView.m in Sources */,
-				0E0262AF1FBD103600245A94 /* SVGIconView.m in Sources */,
 				0EDD0C1D14A1E6F000430652 /* FlippedView.m in Sources */,
 				0E7967CA14A425080070B099 /* TimelineLabelsTableViewDelegate.m in Sources */,
 				0E4EA2E41D40721F00C5145C /* SVGHelpManager.m in Sources */,
@@ -6427,6 +6442,7 @@
 				0EEE3ABD17BA8B1E0040846F /* CheckeredBackgroundView.m in Sources */,
 				0E10CC0414B11F550072B18D /* TextEditorController.m in Sources */,
 				0E47A9D814B3986500AC9A28 /* EmbeddedFontEncoder.m in Sources */,
+				0EE3ABC2242BC62800D75F26 /* FolderIconView.m in Sources */,
 				0E97020414BE6602004F2BF6 /* DOMSelectionCacheRecord.m in Sources */,
 				0E10814C14C727A600908087 /* TextDocumentWindowController.m in Sources */,
 				0EEE3A8217B9E3AA0040846F /* DFSSHServer.m in Sources */,
