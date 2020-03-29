@@ -25,6 +25,7 @@
 
 - (IBAction)doneButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;
+- (IBAction)resetConfigurationButtonAction:(id)sender;
 
 - (NSInteger)validRowsCount:(NSArray *)valuesArray;
 

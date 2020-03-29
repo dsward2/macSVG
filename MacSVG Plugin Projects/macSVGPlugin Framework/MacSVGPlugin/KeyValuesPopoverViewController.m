@@ -560,9 +560,23 @@ Notes from the SVG spec -
 {
     NSInteger validRowsCount = 0;
 
-    NSXMLElement * targetElement = self.macSVGPlugin.pluginTargetXMLElement;
+    NSXMLElement * targetElement = self.macSVGPlugin.pluginTargetXMLElement;    // <animate> element
 
     NSXMLNode * valuesNode = [targetElement attributeForName:@"values"];
+
+    NSXMLNode * pathAttributeNode = [targetElement attributeForName:@"path"];
+
+    NSXMLElement * mpathElement = NULL;
+    NSArray * childElementsArray = [targetElement children];
+    for (NSXMLElement * aChildElement in childElementsArray)
+    {
+        if ([aChildElement.name isEqualToString:@"mpath"] == YES)
+        {
+            mpathElement = aChildElement;
+            break;
+        }
+    }
+
     if (valuesNode != NULL)
     {
         if (valuesArray.count <= 1)
@@ -590,6 +604,25 @@ Notes from the SVG spec -
             {
                 validRowsCount = 2;
             }
+        }
+    }
+    
+    if (validRowsCount == 0)
+    {
+        NSXMLElement * mpathElement = NULL;
+        NSArray * childElementsArray = [targetElement children];
+        for (NSXMLElement * aChildElement in childElementsArray)
+        {
+            if ([aChildElement.name isEqualToString:@"mpath"] == YES)
+            {
+                mpathElement = aChildElement;
+                break;
+            }
+        }
+
+        if ((pathAttributeNode != NULL) || (mpathElement != NULL))
+        {
+            validRowsCount = 2;
         }
     }
     
@@ -759,7 +792,7 @@ Notes from the SVG spec -
 }
 
 //==================================================================================
-//    popoverDidShow:
+//    useKeyPoints:
 //==================================================================================
 
 - (void)useKeyPoints:(BOOL)useKeyPoints
@@ -767,5 +800,13 @@ Notes from the SVG spec -
     self.keyPointsTableColumn.hidden = !useKeyPoints;
 }
 
+//==================================================================================
+//    resetConfigurationButtonAction:
+//==================================================================================
+
+- (IBAction)resetConfigurationButtonAction:(id)sender
+{
+    [self.macSVGPlugin configureAnimationKeyValuesWithUseKeyPoints:!self.keyPointsTableColumn.hidden];
+}
 
 @end

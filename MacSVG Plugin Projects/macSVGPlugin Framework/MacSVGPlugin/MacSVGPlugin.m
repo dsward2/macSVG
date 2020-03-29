@@ -641,7 +641,20 @@
     NSXMLElement * animateElement = self.pluginTargetXMLElement;
 
     NSXMLNode * valuesAttributeNode = [animateElement attributeForName:@"values"];
-    
+
+    NSXMLNode * pathAttributeNode = [animateElement attributeForName:@"path"];
+
+    NSXMLElement * mpathElement = NULL;
+    NSArray * childElementsArray = [animateElement children];
+    for (NSXMLElement * aChildElement in childElementsArray)
+    {
+        if ([aChildElement.name isEqualToString:@"mpath"] == YES)
+        {
+            mpathElement = aChildElement;
+            break;
+        }
+    }
+
     if (valuesAttributeNode != NULL)
     {
         NSString * valuesAttributeString = valuesAttributeNode.stringValue;
@@ -691,6 +704,14 @@
                 [self.animationValuesArray addObject:mutableAnimationItemsArray];
             }
         }
+    }
+    else if ((pathAttributeNode != NULL) || (mpathElement != NULL))
+    {
+        NSMutableArray * array0 = [NSMutableArray arrayWithObject:@"0"];
+        [self.animationValuesArray addObject:array0];
+        
+        NSMutableArray * array1 = [NSMutableArray arrayWithObject:@"1"];
+        [self.animationValuesArray addObject:array1];
     }
         
     [self.keyValuesPopoverViewController useKeyPoints:useKeyPoints];
