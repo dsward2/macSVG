@@ -2990,47 +2990,47 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     NSMutableDictionary * pathSegmentDictionary = (self.pathSegmentsArray)[self.pathSegmentIndex];
 
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
     
-    NSString * previousX1String = newXString;
-    NSString * previousY1String = newYString;
+    NSString * existingX1String = newXString;
+    NSString * existingY1String = newYString;
 
-    NSString * tempPreviousX1String = pathSegmentDictionary[@"x1"];     // endpoint x
-    NSString * tempPreviousY1String = pathSegmentDictionary[@"y1"];     // endpoint y
+    NSString * tempExistingX1String = pathSegmentDictionary[@"x1"];     // endpoint x
+    NSString * tempExistingY1String = pathSegmentDictionary[@"y1"];     // endpoint y
     
-    if (tempPreviousX1String != NULL) previousX1String = tempPreviousX1String;
-    if (tempPreviousY1String != NULL) previousY1String = tempPreviousY1String;
+    if (tempExistingX1String != NULL) existingX1String = tempExistingX1String;
+    if (tempExistingY1String != NULL) existingY1String = tempExistingY1String;
 
 
 
     
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
-    float previousX1 = previousX1String.floatValue;
-    float previousY1 = previousY1String.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
+    float existingX1 = existingX1String.floatValue;
+    float existingY1 = existingY1String.floatValue;
     
-    NSString * previousPreviousXString = previousXString;
-    NSString * previousPreviousYString = previousYString;
+    NSString * previousExistingXString = existingXString;
+    NSString * previousExistingYString = existingYString;
     
     if (self.pathSegmentIndex > 1)
     {
         NSMutableDictionary * pathSegmentDictionary2 = (self.pathSegmentsArray)[(self.pathSegmentIndex - 1)];
         
-        NSString * tempPreviousPreviousXString = pathSegmentDictionary2[@"x"];     // endpoint x
-        NSString * tempPreviousPreviousYString = pathSegmentDictionary2[@"y"];     // endpoint y
+        NSString * tempPreviousExistingXString = pathSegmentDictionary2[@"x"];     // endpoint x
+        NSString * tempPreviousExistingYString = pathSegmentDictionary2[@"y"];     // endpoint y
 
-        if (tempPreviousPreviousXString != NULL) previousPreviousXString = tempPreviousPreviousXString;
-        if (tempPreviousPreviousYString != NULL) previousPreviousYString = tempPreviousPreviousYString;
+        if (tempPreviousExistingXString != NULL) previousExistingXString = tempPreviousExistingXString;
+        if (tempPreviousExistingYString != NULL) previousExistingYString = tempPreviousExistingYString;
     }
     
-    float previousPreviousX = previousPreviousXString.floatValue;
-    float previousPreviousY = previousPreviousYString.floatValue;
+    float previousExistingX = previousExistingXString.floatValue;
+    float previousExistingY = previousExistingYString.floatValue;
     
     
 
-    float deltaX = previousX - newX;
-    float deltaY = previousY - newY;
+    float deltaX = existingX - newX;
+    float deltaY = existingY - newY;
     
     const float kPointMinDistance = 30.0f;
     const float kPointMinDistanceSquared = kPointMinDistance * kPointMinDistance;
@@ -3042,14 +3042,14 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
         if (self.useRelativePathCoordinates == YES)
         {
-            NSPoint previousPoint = NSMakePoint(previousX, previousY);
-            NSPoint previousPreviousPoint = NSMakePoint(previousPreviousX, previousPreviousY);
+            NSPoint existingPoint = NSMakePoint(existingX, existingY);
+            NSPoint previousExistingPoint = NSMakePoint(previousExistingX, previousExistingY);
             
-            NSPoint previousControlPoint = NSMakePoint(previousX1, previousY1);
-            NSPoint previousMidPoint = bezierMidPoint(previousPreviousPoint, previousControlPoint, previousPoint);
+            NSPoint existingControlPoint = NSMakePoint(existingX1, existingY1);
+            NSPoint existingMidPoint = bezierMidPoint(previousExistingPoint, existingControlPoint, existingPoint);
         
-            float newX1 = (previousX + (previousX - previousMidPoint.x));
-            float newY1 = (previousY + (previousY - previousMidPoint.y));
+            float newX1 = (existingX + (existingX - existingMidPoint.x));
+            float newY1 = (existingY + (existingY - existingMidPoint.y));
             
             NSString * newX1String = [self allocFloatString:newX1];
             NSString * newY1String = [self allocFloatString:newY1];
@@ -3064,14 +3064,14 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         }
         else
         {
-            NSPoint previousPoint = NSMakePoint(previousX, previousY);
-            NSPoint previousPreviousPoint = NSMakePoint(previousPreviousX, previousPreviousY);
+            NSPoint existingPoint = NSMakePoint(existingX, existingY);
+            NSPoint previousExistingPoint = NSMakePoint(previousExistingX, previousExistingY);
             
-            NSPoint previousControlPoint = NSMakePoint(previousX1, previousY1);
-            NSPoint previousMidPoint = bezierMidPoint(previousPreviousPoint, previousControlPoint, previousPoint);
+            NSPoint existingControlPoint = NSMakePoint(existingX1, existingY1);
+            NSPoint existingMidPoint = bezierMidPoint(previousExistingPoint, existingControlPoint, existingPoint);
         
-            float newX1 = (previousX + (previousX - previousMidPoint.x));
-            float newY1 = (previousY + (previousY - previousMidPoint.y));
+            float newX1 = (existingX + (existingX - existingMidPoint.x));
+            float newY1 = (existingY + (existingY - existingMidPoint.y));
             
             NSString * newX1String = [self allocFloatString:newX1];
             NSString * newY1String = [self allocFloatString:newY1];
@@ -3272,7 +3272,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             unichar pathCommand = [pathCommandString characterAtIndex:0];
 
             NSPoint transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
-            NSPoint transformedPreviousMousePoint = domMouseEventsController.previousTransformedMousePagePoint;
+            NSPoint transformedExistingMousePoint = domMouseEventsController.previousTransformedMousePagePoint;
 
             switch (pathCommand)
             {
@@ -3422,8 +3422,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x1 = x1String.floatValue;
                     float y1 = y1String.floatValue;
                     
-                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
-                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedExistingMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedExistingMousePoint.y;
                     
                     float newX1 = x1 - deltaX;
                     float newY1 = y1 - deltaY;
@@ -3444,8 +3444,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x1 = x1String.floatValue;
                     float y1 = y1String.floatValue;
                     
-                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
-                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedExistingMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedExistingMousePoint.y;
                     
                     float newX1 = x1 - deltaX;
                     float newY1 = y1 - deltaY;
@@ -3476,8 +3476,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     float x = xString.floatValue;
                     float y = yString.floatValue;
                     
-                    float deltaX = transformedCurrentMousePoint.x - transformedPreviousMousePoint.x;
-                    float deltaY = transformedCurrentMousePoint.y - transformedPreviousMousePoint.y;
+                    float deltaX = transformedCurrentMousePoint.x - transformedExistingMousePoint.x;
+                    float deltaY = transformedCurrentMousePoint.y - transformedExistingMousePoint.y;
                     
                     float newX = x - deltaX;
                     float newY = y - deltaY;
@@ -4237,22 +4237,22 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentMoveto:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4272,14 +4272,14 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             if ((nextPathCommand == 'C') || (nextPathCommand == 'c'))
             {
                 // modify control point in next segment for curve continuity
-                NSString * previousX1String = nextPathSegmentDictionary[@"x1"];     // next control point x
-                NSString * previousY1String = nextPathSegmentDictionary[@"y1"];     // next control point y
+                NSString * existingX1String = nextPathSegmentDictionary[@"x1"];     // next control point x
+                NSString * existingY1String = nextPathSegmentDictionary[@"y1"];     // next control point y
                 
-                float previousX1 = previousX1String.floatValue;
-                float previousY1 = previousY1String.floatValue;
+                float existingX1 = existingX1String.floatValue;
+                float existingY1 = existingY1String.floatValue;
 
-                float newX1 = previousX1 + deltaX;
-                float newY1 = previousY1 + deltaY;
+                float newX1 = existingX1 + deltaX;
+                float newY1 = existingY1 + deltaY;
 
                 NSString * newX1String = [self allocFloatString:newX1];
                 NSString * newY1String = [self allocFloatString:newY1];
@@ -4297,22 +4297,22 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentLineto:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4328,18 +4328,18 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentHorizontal:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
 
-    float previousX = previousXString.floatValue;
+    float existingX = existingXString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"x"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
         
-        float newX = previousX + deltaX;
+        float newX = existingX + deltaX;
 
         NSString * newXString = [self allocFloatString:newX];
 
@@ -4354,18 +4354,18 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentVertical:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-    float previousY = previousYString.floatValue;
+    float existingY = existingYString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"y"] == YES)
     {
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newY = previousY + deltaY;
+        float newY = existingY + deltaY;
 
         NSString * newYString = [self allocFloatString:newY];
 
@@ -4381,15 +4381,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 {
     NSString * commandString = pathSegmentDictionary[@"command"];
 
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
-    NSString * previousX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
-    NSString * previousY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
+    NSString * existingY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
-    float previousX2 = previousX2String.floatValue;
-    float previousY2 = previousY2String.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
+    float existingX2 = existingX2String.floatValue;
+    float existingY2 = existingY2String.floatValue;
     
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
@@ -4398,13 +4398,13 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
-        float newX2 = previousX2 + deltaX;
-        float newY2 = previousY2 + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
+        float newX2 = existingX2 + deltaX;
+        float newY2 = existingY2 + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4530,10 +4530,10 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
         if (self.editingMode == kPathEditingModeNextSegment)
         {
-            float prevDeltaX = transformedCurrentMousePoint.x - previousX;
-            float prevDeltaY = transformedCurrentMousePoint.y - previousY;
-            newX2 = previousX - prevDeltaX;
-            newY2 = previousY - prevDeltaY;
+            float prevDeltaX = transformedCurrentMousePoint.x - existingX;
+            float prevDeltaY = transformedCurrentMousePoint.y - existingY;
+            newX2 = existingX - prevDeltaX;
+            newY2 = existingY - prevDeltaY;
         }
     
         NSString * newX2String = [self allocFloatString:newX2];
@@ -4555,11 +4555,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             
                 if (nextPathCommand == 'C')
                 {
-                    float handleDeltaX = previousX - newX2;
-                    float handleDeltaY = previousY - newY2;
+                    float handleDeltaX = existingX - newX2;
+                    float handleDeltaY = existingY - newY2;
                 
-                    float newX1 = previousX + handleDeltaX;
-                    float newY1 = previousY + handleDeltaY;
+                    float newX1 = existingX + handleDeltaX;
+                    float newY1 = existingY + handleDeltaY;
 
                     NSString * newX1String = [self allocFloatString:newX1];
                     NSString * newY1String = [self allocFloatString:newY1];
@@ -4569,11 +4569,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 else if (nextPathCommand == 'c')
                 {
-                    float handleDeltaX = previousX - newX2;
-                    float handleDeltaY = previousY - newY2;
+                    float handleDeltaX = existingX - newX2;
+                    float handleDeltaY = existingY - newY2;
                 
-                    float newX1 = previousX + handleDeltaX;
-                    float newY1 = previousY + handleDeltaY;
+                    float newX1 = existingX + handleDeltaX;
+                    float newY1 = existingY + handleDeltaY;
 
                     NSString * newX1String = [self allocFloatString:newX1];
                     NSString * newY1String = [self allocFloatString:newY1];
@@ -4633,11 +4633,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             newY2 = 0;
         }
 
-        float prevDeltaX = transformedCurrentMousePoint.x - previousX;
-        float prevDeltaY = transformedCurrentMousePoint.y - previousY;
+        float prevDeltaX = transformedCurrentMousePoint.x - existingX;
+        float prevDeltaY = transformedCurrentMousePoint.y - existingY;
         
-        newX2 = previousX - prevDeltaX;
-        newY2 = previousY - prevDeltaY;
+        newX2 = existingX - prevDeltaX;
+        newY2 = existingY - prevDeltaY;
     
         NSString * newX2String = [self allocFloatString:newX2];
         NSString * newY2String = [self allocFloatString:newY2];
@@ -4653,28 +4653,28 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentSmoothCubicCurve:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
-    NSString * previousX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
-    NSString * previousY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
+    NSString * existingY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
-    float previousX2 = previousX2String.floatValue;
-    float previousY2 = previousY2String.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
+    float existingX2 = existingX2String.floatValue;
+    float existingY2 = existingY2String.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
-        float newX2 = previousX2 + deltaX;
-        float newY2 = previousY2 + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
+        float newX2 = existingX2 + deltaX;
+        float newY2 = existingY2 + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4689,11 +4689,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX2;
-        float deltaY = transformedCurrentMousePoint.y - previousY2;
+        float deltaX = transformedCurrentMousePoint.x - existingX2;
+        float deltaY = transformedCurrentMousePoint.y - existingY2;
 
-        float newX2 = previousX2 + deltaX;
-        float newY2 = previousY2 + deltaY;
+        float newX2 = existingX2 + deltaX;
+        float newY2 = existingY2 + deltaY;
     
         NSString * newX2String = [self allocFloatString:newX2];
         NSString * newY2String = [self allocFloatString:newY2];
@@ -4709,15 +4709,15 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentQuadraticCurve:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
-    NSString * previousX1String = pathSegmentDictionary[@"x1"];     // control point 1 x
-    NSString * previousY1String = pathSegmentDictionary[@"y1"];     // control point 1 y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingX1String = pathSegmentDictionary[@"x1"];     // control point 1 x
+    NSString * existingY1String = pathSegmentDictionary[@"y1"];     // control point 1 y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
-    float previousX1 = previousX1String.floatValue;
-    float previousY1 = previousY1String.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
+    float existingX1 = existingX1String.floatValue;
+    float existingY1 = existingY1String.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
@@ -4726,13 +4726,13 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
-        float newX1 = previousX1 + deltaX;
-        float newY1 = previousY1 + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
+        float newX1 = existingX1 + deltaX;
+        float newY1 = existingY1 + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4747,11 +4747,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX1;
-        float deltaY = transformedCurrentMousePoint.y - previousY1;
+        float deltaX = transformedCurrentMousePoint.x - existingX1;
+        float deltaY = transformedCurrentMousePoint.y - existingY1;
 
-        float newX1 = previousX1 + deltaX;
-        float newY1 = previousY1 + deltaY;
+        float newX1 = existingX1 + deltaX;
+        float newY1 = existingY1 + deltaY;
     
         NSString * newX1String = [self allocFloatString:newX1];
         NSString * newY1String = [self allocFloatString:newY1];
@@ -4767,11 +4767,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentSmoothQuadraticCurve:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
@@ -4780,11 +4780,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
@@ -4800,11 +4800,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentEllipticalArc:(NSMutableDictionary *)pathSegmentDictionary
 {
-    NSString * previousXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * previousYString = pathSegmentDictionary[@"y"];     // endpoint y
+    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
+    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
 
-    float previousX = previousXString.floatValue;
-    float previousY = previousYString.floatValue;
+    float existingX = existingXString.floatValue;
+    float existingY = existingYString.floatValue;
 
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
@@ -4813,11 +4813,11 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - previousX;
-        float deltaY = transformedCurrentMousePoint.y - previousY;
+        float deltaX = transformedCurrentMousePoint.x - existingX;
+        float deltaY = transformedCurrentMousePoint.y - existingY;
         
-        float newX = previousX + deltaX;
-        float newY = previousY + deltaY;
+        float newX = existingX + deltaX;
+        float newY = existingY + deltaY;
 
         NSString * newXString = [self allocFloatString:newX];
         NSString * newYString = [self allocFloatString:newY];
