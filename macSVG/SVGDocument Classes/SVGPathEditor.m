@@ -4380,42 +4380,75 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 -(void) editPathSegmentCubicCurve:(NSMutableDictionary *)pathSegmentDictionary
 {
     NSString * commandString = pathSegmentDictionary[@"command"];
+    unichar commandCharacter = [commandString characterAtIndex:0];
 
-    NSString * existingXString = pathSegmentDictionary[@"x"];     // endpoint x
-    NSString * existingYString = pathSegmentDictionary[@"y"];     // endpoint y
-    NSString * existingX2String = pathSegmentDictionary[@"x2"];     // control point 2 x
-    NSString * existingY2String = pathSegmentDictionary[@"y2"];     // control point 2 y
-
-    float existingX = existingXString.floatValue;
-    float existingY = existingYString.floatValue;
-    float existingX2 = existingX2String.floatValue;
-    float existingY2 = existingY2String.floatValue;
+    NSString * existingAbsoluteStartXString = pathSegmentDictionary[@"absoluteStartX"];     // absolute start x
+    NSString * existingAbsoluteStartYString = pathSegmentDictionary[@"absoluteStartY"];     // absolute start y
+    NSString * existingAbsoluteXString = pathSegmentDictionary[@"absoluteX"];     // absolute endpoint x
+    NSString * existingAbsoluteYString = pathSegmentDictionary[@"absoluteY"];     // absolute endpoint y
+    NSString * existingAbsoluteX2String = pathSegmentDictionary[@"absoluteX2"];     // absolute control point 2 x
+    NSString * existingAbsoluteY2String = pathSegmentDictionary[@"absoluteY2"];     // absolute control point 2 y
+    
+    float existingAbsoluteStartX = existingAbsoluteStartXString.floatValue;
+    float existingAbsoluteStartY = existingAbsoluteStartYString.floatValue;
+    float existingAbsoluteX = existingAbsoluteXString.floatValue;
+    float existingAbsoluteY = existingAbsoluteYString.floatValue;
+    float existingAbsoluteX2 = existingAbsoluteX2String.floatValue;
+    float existingAbsoluteY2 = existingAbsoluteY2String.floatValue;
     
     //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
+    float deltaX = transformedCurrentMousePoint.x - existingAbsoluteX;
+    float deltaY = transformedCurrentMousePoint.y - existingAbsoluteY;
 
     NSUInteger pathSegmentCount = (self.pathSegmentsArray).count;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - existingX;
-        float deltaY = transformedCurrentMousePoint.y - existingY;
-        
-        float newX = existingX + deltaX;
-        float newY = existingY + deltaY;
-        float newX2 = existingX2 + deltaX;
-        float newY2 = existingY2 + deltaY;
+        float newAbsoluteX = existingAbsoluteX + deltaX;
+        float newAbsoluteY = existingAbsoluteY + deltaY;
+        float newAbsoluteX2 = existingAbsoluteX2 + deltaX;
+        float newAbsoluteY2 = existingAbsoluteY2 + deltaY;
 
-        NSString * newXString = [self allocFloatString:newX];
-        NSString * newYString = [self allocFloatString:newY];
-        NSString * newX2String = [self allocFloatString:newX2];
-        NSString * newY2String = [self allocFloatString:newY2];
+        NSString * newAbsoluteXString = [self allocFloatString:newAbsoluteX];
+        NSString * newAbsoluteYString = [self allocFloatString:newAbsoluteY];
+        NSString * newAbsoluteX2String = [self allocFloatString:newAbsoluteX2];
+        NSString * newAbsoluteY2String = [self allocFloatString:newAbsoluteY2];
 
-        pathSegmentDictionary[@"x"] = newXString;
-        pathSegmentDictionary[@"y"] = newYString;
+        pathSegmentDictionary[@"absoluteX"] = newAbsoluteXString;
+        pathSegmentDictionary[@"absoluteY"] = newAbsoluteYString;
                         
-        pathSegmentDictionary[@"x2"] = newX2String;
-        pathSegmentDictionary[@"y2"] = newY2String;
+        pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2String;
+        pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2String;
+        
+        if (commandCharacter == 'C')
+        {
+            pathSegmentDictionary[@"x"] = newAbsoluteXString;
+            pathSegmentDictionary[@"y"] = newAbsoluteYString;
+
+            pathSegmentDictionary[@"x2"] = newAbsoluteX2String;
+            pathSegmentDictionary[@"y2"] = newAbsoluteY2String;
+        }
+        else if (commandCharacter == 'c')
+        {
+            float newX = newAbsoluteX - existingAbsoluteStartX;
+            float newY = newAbsoluteY - existingAbsoluteStartY;
+            
+            NSString * newXString = [self allocFloatString:newX];
+            NSString * newYString = [self allocFloatString:newY];
+        
+            pathSegmentDictionary[@"x"] = newXString;
+            pathSegmentDictionary[@"y"] = newYString;
+            
+            float newX2 = newAbsoluteX2 - existingAbsoluteStartX;
+            float newY2 = newAbsoluteY2 - existingAbsoluteStartY;
+            
+            NSString * newX2String = [self allocFloatString:newX2];
+            NSString * newY2String = [self allocFloatString:newY2];
+            
+            pathSegmentDictionary[@"x2"] = newX2String;
+            pathSegmentDictionary[@"y2"] = newY2String;
+        }
         
         if (self.curveSegmentContinuity == YES)
         {
@@ -4428,60 +4461,100 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 NSString * nextPathCommandString = pathSegmentDictionary[@"command"];
                 unichar nextPathCommand = [nextPathCommandString characterAtIndex:0];
             
-                if ((nextPathCommand == 'C') || (nextPathCommand == 'c'))
+                if (nextPathCommand == 'C')
                 {
-                    float handleDeltaX = newX - newX2;
-                    float handleDeltaY = newY - newY2;
+                    float handleDeltaX = newAbsoluteX - newAbsoluteX2;
+                    float handleDeltaY = newAbsoluteY - newAbsoluteY2;
                 
-                    float newX1 = newX + handleDeltaX;
-                    float newY1 = newY + handleDeltaY;
+                    float newAbsoluteX1 = newAbsoluteX + handleDeltaX;
+                    float newAbsoluteY1 = newAbsoluteY + handleDeltaY;
+                    
+                    NSString * newAbsoluteX1String = [self allocFloatString:newAbsoluteX1];
+                    NSString * newAbsoluteY1String = [self allocFloatString:newAbsoluteY1];
 
-                    NSString * newX1String = [self allocFloatString:newX1];
-                    NSString * newY1String = [self allocFloatString:newY1];
+                    nextPathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1String;
+                    nextPathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1String;
 
-                    nextPathSegmentDictionary[@"x1"] = newX1String;
-                    nextPathSegmentDictionary[@"y1"] = newY1String;
+                    nextPathSegmentDictionary[@"x1"] = newAbsoluteX1String;
+                    nextPathSegmentDictionary[@"y1"] = newAbsoluteY1String;
+                }
+                else if (nextPathCommand == 'c')
+                {
+                    NSString * nextSegmentAbsoluteXString = nextPathSegmentDictionary[@"absoluteX"];
+                    NSString * nextSegmentAbsoluteYString = nextPathSegmentDictionary[@"absoluteY"];
+                    
+                    NSString * nextSegmentXString = nextPathSegmentDictionary[@"x"];
+                    NSString * nextSegmentYString = nextPathSegmentDictionary[@"y"];
+
+                    NSString * nextSegmentX2String = nextPathSegmentDictionary[@"x2"];
+                    NSString * nextSegmentY2String = nextPathSegmentDictionary[@"y2"];
+
+                    float nextSegmentAbsoluteX = nextSegmentAbsoluteXString.floatValue;
+                    float nextSegmentAbsoluteY = nextSegmentAbsoluteYString.floatValue;
+                
+                    float nextX = nextSegmentXString.floatValue;
+                    float nextY = nextSegmentYString.floatValue;
+                
+                    float nextX2 = nextSegmentX2String.floatValue;
+                    float nextY2 = nextSegmentY2String.floatValue;
+                
+                    float newAbsoluteX = nextSegmentAbsoluteX - deltaX;
+                    float newAbsoluteY = nextSegmentAbsoluteY - deltaY;
+                    
+                    float newX = nextX - deltaX;
+                    float newY = nextY - deltaY;
+                    
+                    float newX2 = nextX2 - deltaX;
+                    float newY2 = nextY2 - deltaY;
+                    
+                    NSString * newAbsoluteXString = [self allocFloatString:newAbsoluteX];
+                    NSString * newAbsoluteYString = [self allocFloatString:newAbsoluteY];
+
+                    nextPathSegmentDictionary[@"absoluteX"] = newAbsoluteXString;
+                    nextPathSegmentDictionary[@"absoluteY"] = newAbsoluteYString;
+
+                    NSString * newXString = [self allocFloatString:newX];
+                    NSString * newYString = [self allocFloatString:newY];
+
+                    nextPathSegmentDictionary[@"x"] = newXString;
+                    nextPathSegmentDictionary[@"y"] = newYString;
+
+                    NSString * newX2String = [self allocFloatString:newX2];
+                    NSString * newY2String = [self allocFloatString:newY2];
+
+                    nextPathSegmentDictionary[@"x2"] = newX2String;
+                    nextPathSegmentDictionary[@"y2"] = newY2String;
                 }
             }
         }
     }
     else if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
     {
-        float newX1 = transformedCurrentMousePoint.x;
-        float newY1 = transformedCurrentMousePoint.y;
-        
-        if ([commandString isEqualToString:@"c"] == YES)
-        {
-            newX1 = 0;  // relative coordinates
-            newY1 = 0;
-        }
-        
         float newAbsoluteX1 = transformedCurrentMousePoint.x;
         float newAbsoluteY1 = transformedCurrentMousePoint.y;
         
-        if (self.editingMode == kPathEditingModePreviousSegment)
-        {
-            NSPoint previousSegmentPoint = NSMakePoint(0, 0);
-            if (self.pathSegmentIndex > 0)
-            {
-                previousSegmentPoint = [self absoluteXYPointAtPathSegmentIndex:(self.pathSegmentIndex - 1)];
-            }
-        
-            float prevDeltaX = previousSegmentPoint.x - transformedCurrentMousePoint.x;
-            float prevDeltaY = previousSegmentPoint.y - transformedCurrentMousePoint.y;
-            
-            newX1 = previousSegmentPoint.x + prevDeltaX;
-            newY1 = previousSegmentPoint.y + prevDeltaY;
-            
-            newAbsoluteX1 = previousSegmentPoint.x + prevDeltaX;
-            newAbsoluteY1 = previousSegmentPoint.y + prevDeltaY;
-        }
-    
-        NSString * newX1String = [self allocFloatString:newX1];
-        NSString * newY1String = [self allocFloatString:newY1];
+        NSString * newAbsoluteX1String = [self allocFloatString:newAbsoluteX1];
+        NSString * newAbsoluteY1String = [self allocFloatString:newAbsoluteY1];
 
-        pathSegmentDictionary[@"x1"] = newX1String;
-        pathSegmentDictionary[@"y1"] = newY1String;
+        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1String;
+        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1String;
+
+        if (commandCharacter == 'C')
+        {
+            pathSegmentDictionary[@"x1"] = newAbsoluteX1String;
+            pathSegmentDictionary[@"y1"] = newAbsoluteY1String;
+        }
+        else if (commandCharacter == 'c')
+        {
+            float newX1 = existingAbsoluteX - existingAbsoluteStartX + deltaX;
+            float newY1 = existingAbsoluteY - existingAbsoluteStartY + deltaY;
+
+            NSString * newX1String = [self allocFloatString:newX1];
+            NSString * newY1String = [self allocFloatString:newY1];
+
+            pathSegmentDictionary[@"x1"] = newX1String;
+            pathSegmentDictionary[@"y1"] = newY1String;
+        }
 
         if (self.curveSegmentContinuity == YES)
         {
@@ -4493,24 +4566,42 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
                 NSString * previousPathCommandString = pathSegmentDictionary[@"command"];
                 unichar previousPathCommand = [previousPathCommandString characterAtIndex:0];
-            
-                if ((previousPathCommand == 'C') || (previousPathCommand == 'c'))
-                {
-                    NSString * previousSegmentXString = previousPathSegmentDictionary[@"x"];     // endpoint x
-                    NSString * previousSegmentYString = previousPathSegmentDictionary[@"y"];     // endpoint y
-                    
-                    float previousSegmentX = previousSegmentXString.floatValue;
-                    float previousSegmentY = previousSegmentYString.floatValue;
 
-                    float handleDeltaX = newX1 - previousSegmentX;
-                    float handleDeltaY = newY1 - previousSegmentY;
+                NSString * previousSegmentAbsoluteXString = previousPathSegmentDictionary[@"absoluteX"];     // endpoint x
+                NSString * previousSegmentAbsoluteYString = previousPathSegmentDictionary[@"absoluteY"];     // endpoint y
                 
-                    float newX2 = previousSegmentX - handleDeltaX;
-                    float newY2 = previousSegmentY - handleDeltaY;
+                float previousSegmentAbsoluteX = previousSegmentAbsoluteXString.floatValue;
+                float previousSegmentAbsoluteY = previousSegmentAbsoluteYString.floatValue;
 
-                    NSString * newX2String = [self allocFloatString:newX2];
-                    NSString * newY2String = [self allocFloatString:newY2];
+                float handleDeltaX = newAbsoluteX1 - previousSegmentAbsoluteX;
+                float handleDeltaY = newAbsoluteY1 - previousSegmentAbsoluteY;
 
+                float newAbsoluteX2 = previousSegmentAbsoluteX - handleDeltaX;
+                float newAbsoluteY2 = previousSegmentAbsoluteY - handleDeltaY;
+
+                NSString * newAbsoluteX2String = [self allocFloatString:newAbsoluteX2];
+                NSString * newAbsoluteY2String = [self allocFloatString:newAbsoluteY2];
+
+                previousPathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2String;
+                previousPathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2String;
+
+                if (previousPathCommand == 'C')
+                {
+
+                    previousPathSegmentDictionary[@"x2"] = newAbsoluteX2String;
+                    previousPathSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                }
+                else if (previousPathCommand == 'c')
+                {
+                    NSString * previousAbsoluteStartXString = previousPathSegmentDictionary[@"absoluteStartX"];
+                    NSString * previousAbsoluteStartYString = previousPathSegmentDictionary[@"absoluteStartY"];
+
+                    float previousSegmentAbsoluteStartX = previousAbsoluteStartXString.floatValue;
+                    float previousSegmentAbsoluteStartY = previousAbsoluteStartYString.floatValue;
+
+                    NSString * newX2String = [self allocFloatString:previousSegmentAbsoluteX - previousSegmentAbsoluteStartX - handleDeltaX];
+                    NSString * newY2String = [self allocFloatString:previousSegmentAbsoluteY - previousSegmentAbsoluteStartY - handleDeltaY];
+                    
                     previousPathSegmentDictionary[@"x2"] = newX2String;
                     previousPathSegmentDictionary[@"y2"] = newY2String;
                 }
@@ -4519,28 +4610,39 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     }
     else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
     {
-        float newX2 = transformedCurrentMousePoint.x;
-        float newY2 = transformedCurrentMousePoint.y;
-
-        if ([commandString isEqualToString:@"c"] == YES)
-        {
-            newX2 = 0;  // relative coordinates
-            newY2 = 0;
-        }
+        float newAbsoluteX2 = transformedCurrentMousePoint.x;
+        float newAbsoluteY2 = transformedCurrentMousePoint.y;
 
         if (self.editingMode == kPathEditingModeNextSegment)
         {
-            float prevDeltaX = transformedCurrentMousePoint.x - existingX;
-            float prevDeltaY = transformedCurrentMousePoint.y - existingY;
-            newX2 = existingX - prevDeltaX;
-            newY2 = existingY - prevDeltaY;
+            float prevDeltaX = transformedCurrentMousePoint.x - existingAbsoluteX;
+            float prevDeltaY = transformedCurrentMousePoint.y - existingAbsoluteY;
+            newAbsoluteX2 = existingAbsoluteX - prevDeltaX;
+            newAbsoluteY2 = existingAbsoluteY - prevDeltaY;
         }
     
-        NSString * newX2String = [self allocFloatString:newX2];
-        NSString * newY2String = [self allocFloatString:newY2];
+        NSString * newAbsoluteX2String = [self allocFloatString:newAbsoluteX2];
+        NSString * newAbsoluteY2String = [self allocFloatString:newAbsoluteY2];
 
-        pathSegmentDictionary[@"x2"] = newX2String;
-        pathSegmentDictionary[@"y2"] = newY2String;
+        pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2String;
+        pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2String;
+
+        if (commandCharacter == 'C')
+        {
+            pathSegmentDictionary[@"x2"] = newAbsoluteX2String;
+            pathSegmentDictionary[@"y2"] = newAbsoluteY2String;
+        }
+        else if (commandCharacter == 'c')
+        {
+            float newX2 = newAbsoluteX2 - existingAbsoluteStartX;
+            float newY2 = newAbsoluteY2 - existingAbsoluteStartY;
+
+            NSString * newX2String = [self allocFloatString:newX2];
+            NSString * newY2String = [self allocFloatString:newY2];
+
+            pathSegmentDictionary[@"x2"] = newX2String;
+            pathSegmentDictionary[@"y2"] = newY2String;
+        }
 
         // reflect control point in next segment for curve continuity
         if (self.curveSegmentContinuity == YES)
@@ -4552,32 +4654,32 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
                 NSString * nextPathCommandString = pathSegmentDictionary[@"command"];
                 unichar nextPathCommand = [nextPathCommandString characterAtIndex:0];
+
+                float handleDeltaX = existingAbsoluteX - newAbsoluteX2;
+                float handleDeltaY = existingAbsoluteY - newAbsoluteY2;
             
+                float newAbsoluteX1 = existingAbsoluteX + handleDeltaX;
+                float newAbsoluteY1 = existingAbsoluteY + handleDeltaY;
+
+                NSString * newAbsoluteX1String = [self allocFloatString:newAbsoluteX1];
+                NSString * newAbsoluteY1String = [self allocFloatString:newAbsoluteY1];
+
+                nextPathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1String;
+                nextPathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1String;
+
                 if (nextPathCommand == 'C')
                 {
-                    float handleDeltaX = existingX - newX2;
-                    float handleDeltaY = existingY - newY2;
-                
-                    float newX1 = existingX + handleDeltaX;
-                    float newY1 = existingY + handleDeltaY;
-
-                    NSString * newX1String = [self allocFloatString:newX1];
-                    NSString * newY1String = [self allocFloatString:newY1];
-
-                    nextPathSegmentDictionary[@"x1"] = newX1String;
-                    nextPathSegmentDictionary[@"y1"] = newY1String;
+                    nextPathSegmentDictionary[@"x1"] = newAbsoluteX1String;
+                    nextPathSegmentDictionary[@"y1"] = newAbsoluteY1String;
                 }
                 else if (nextPathCommand == 'c')
                 {
-                    float handleDeltaX = existingX - newX2;
-                    float handleDeltaY = existingY - newY2;
-                
-                    float newX1 = existingX + handleDeltaX;
-                    float newY1 = existingY + handleDeltaY;
-
+                    float newX1 = newAbsoluteX1 - existingAbsoluteX;
+                    float newY1 = newAbsoluteY1 - existingAbsoluteY;
+                    
                     NSString * newX1String = [self allocFloatString:newX1];
                     NSString * newY1String = [self allocFloatString:newY1];
-
+                
                     nextPathSegmentDictionary[@"x1"] = newX1String;
                     nextPathSegmentDictionary[@"y1"] = newY1String;
                 }
@@ -4587,15 +4689,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     else if ([self.pathEditingKey isEqualToString:@"x0y0"] == YES)
     {
         // clicked on reflected handle of x1, y1
-        float newX1 = transformedCurrentMousePoint.x;
-        float newY1 = transformedCurrentMousePoint.y;
-        
-        if ([commandString isEqualToString:@"c"] == YES)
-        {
-            newX1 = 0;  // relative coordinates
-            newY1 = 0;
-        }
-        
         float newAbsoluteX1 = transformedCurrentMousePoint.x;
         float newAbsoluteY1 = transformedCurrentMousePoint.y;
         
@@ -4608,42 +4701,62 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         float prevDeltaX = previousSegmentPoint.x - transformedCurrentMousePoint.x;
         float prevDeltaY = previousSegmentPoint.y - transformedCurrentMousePoint.y;
         
-        newX1 = previousSegmentPoint.x + prevDeltaX;
-        newY1 = previousSegmentPoint.y + prevDeltaY;
-        
         newAbsoluteX1 = previousSegmentPoint.x + prevDeltaX;
         newAbsoluteY1 = previousSegmentPoint.y + prevDeltaY;
-    
-        NSString * newX1String = [self allocFloatString:newX1];
-        NSString * newY1String = [self allocFloatString:newY1];
+        
+        NSString * newAbsoluteX1String = [self allocFloatString:newAbsoluteX1];
+        NSString * newAbsoluteY1String = [self allocFloatString:newAbsoluteY1];
 
-        pathSegmentDictionary[@"x1"] = newX1String;
-        pathSegmentDictionary[@"y1"] = newY1String;
+        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1String;
+        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1String;
+
+        if (commandCharacter == 'C')
+        {
+            pathSegmentDictionary[@"x1"] = newAbsoluteX1String;
+            pathSegmentDictionary[@"y1"] = newAbsoluteY1String;
+        }
+        else if (commandCharacter == 'c')
+        {
+            float newX1 = newAbsoluteX1 - existingAbsoluteStartX;
+            float newY1 = newAbsoluteY1 - existingAbsoluteStartY;
+            
+            NSString * newX1String = [self allocFloatString:newX1];
+            NSString * newY1String = [self allocFloatString:newY1];
+        
+            pathSegmentDictionary[@"x1"] = newX1String;
+            pathSegmentDictionary[@"y1"] = newY1String;
+        }
+
     }
     else if ([self.pathEditingKey isEqualToString:@"x3y3"] == YES)
 {
-        // clicked on reflected handle of x2, y2
+        // clicked on reflected handle of x2, y2 in next path segment
 
-        float newX2 = transformedCurrentMousePoint.x;
-        float newY2 = transformedCurrentMousePoint.y;
+        float newAbsoluteX2 = transformedCurrentMousePoint.x;
+        float newAbsoluteY2 = transformedCurrentMousePoint.y;
 
-        if ([commandString isEqualToString:@"c"] == YES)
-        {
-            newX2 = 0;  // relative coordinates
-            newY2 = 0;
-        }
-
-        float prevDeltaX = transformedCurrentMousePoint.x - existingX;
-        float prevDeltaY = transformedCurrentMousePoint.y - existingY;
+        float prevDeltaX = transformedCurrentMousePoint.x - existingAbsoluteX;
+        float prevDeltaY = transformedCurrentMousePoint.y - existingAbsoluteY;
         
-        newX2 = existingX - prevDeltaX;
-        newY2 = existingY - prevDeltaY;
+        newAbsoluteX2 = existingAbsoluteX - prevDeltaX;
+        newAbsoluteY2 = existingAbsoluteY - prevDeltaY;
     
-        NSString * newX2String = [self allocFloatString:newX2];
-        NSString * newY2String = [self allocFloatString:newY2];
+        NSString * newAbsoluteX2String = [self allocFloatString:newAbsoluteX2];
+        NSString * newAbsoluteY2String = [self allocFloatString:newAbsoluteY2];
 
-        pathSegmentDictionary[@"x2"] = newX2String;
-        pathSegmentDictionary[@"y2"] = newY2String;
+        pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2String;
+        pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2String;
+
+        if (commandCharacter == 'C')
+        {
+            pathSegmentDictionary[@"x2"] = newAbsoluteX2String;
+            pathSegmentDictionary[@"y2"] = newAbsoluteY2String;
+        }
+        if (commandCharacter == 'c')
+        {
+            pathSegmentDictionary[@"x2"] = @"0";
+            pathSegmentDictionary[@"y2"] = @"0";
+        }
     }
 }
 
@@ -4951,9 +5064,22 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
             }
 
+            /*
+            if (self.pathSegmentIndex > 0)
+            {
+                // a previous path segment might contain x2, y2 parameters reflecting the current cubic curve's x1, y1
+                [self fixPreviousPathSegment];
+            }
+
+            if (self.pathSegmentIndex < (self.pathSegmentsArray.count - 1))
+            {
+                // a next path segment might contain x2, y2 parameters reflecting the current cubic curve's x1, y1,
+                // or might be a relative path segment that needs, say x and y adjusted to maintain the current absolute position
+                [self fixNextPathSegment];
+            }
+            */
 
             //NSLog(@"pathSegmentIndex=%ld, pathEditingKey=%@", self.pathSegmentIndex, self.pathEditingKey);
-
 
             // For closed paths, modify joining segments
             CGEventRef event = CGEventCreate(NULL);
@@ -5046,7 +5172,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                                         if ((originalAbsoluteX1 == reflectX2) &&
                                                 (originalAbsoluteY1 == reflectY2))
                                         {
-                                            // reflect x1y1 from current cubic curve found to x2y2 in a different segment.
+                                            // reflect x1y1 from current cubic curve found to x2y2 in previous segment.
                                             NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
                                             NSString * tempPathEditingKey = self.pathEditingKey;
                                             self.pathEditingKey = @"x3y3";
