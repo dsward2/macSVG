@@ -942,7 +942,7 @@ NSComparisonResult timelineSort(id element1, id element2, void *context)
                 syncbaseOffsetString = [eventQualifier stringByReplacingOccurrencesOfString:@"end" withString:@""];
             }
             
-            CGFloat syncbaseOffsetFloat = syncbaseOffsetString.floatValue;
+            float syncbaseOffsetFloat = syncbaseOffsetString.floatValue;
             beginSeconds += syncbaseOffsetFloat;
             
             //NSLog(@"%@.%@ %@", eventID, eventQualifier, beginSecondsString);

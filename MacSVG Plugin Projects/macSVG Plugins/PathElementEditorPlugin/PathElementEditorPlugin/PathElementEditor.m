@@ -18,28 +18,9 @@
 #import "DOMMouseEventsController.h"
 #import "SVGWebKitController.h"
 #import "SVGPathEditor.h"
+#import "PathSegment.h"
 
 #define PathTableViewDataType @"NSMutableDictionary"
-
-/* pathSegmentDictionary
-{
-    absoluteStartX = 486;
-    absoluteStartY = 320;
-    absoluteX = 366;
-    absoluteX1 = 487;
-    absoluteX2 = 461;
-    absoluteY = 529;
-    absoluteY1 = 394;
-    absoluteY2 = 507;
-    command = C;
-    x = 366;
-    x1 = 487;
-    x2 = 461;
-    y = 529;
-    y1 = 394;
-    y2 = 507;
-}
-*/
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -386,8 +367,8 @@
     
     if (pathSegmentsArrayCount > 0)
     {
-        NSMutableArray * closePathSegmentDictionary = [[pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1] mutableCopy];
-        [pathSegmentsArray addObject:closePathSegmentDictionary];   // add a second the Z or z segment, the final one will be removed
+        PathSegment * closePathSegment = [[pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1] mutableCopy];
+        [pathSegmentsArray addObject:closePathSegment];   // add a second the Z or z segment, the final one will be removed
 
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
@@ -459,9 +440,9 @@
     {
         // add an extra path segment, it will be deleted when path drawing restarts
         NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
-        NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
-        [newPathSegmentDictionary setObject:@"Z" forKey:@"command"];
-        [pathSegmentsArray addObject:newPathSegmentDictionary];
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
+        newPathSegment.pathCommand = 'Z';
+        [pathSegmentsArray addObject:newPathSegment];
 
         [self.macSVGPluginCallbacks setActiveXMLElement:pathElement];
 
@@ -569,11 +550,11 @@
     {
         pathSegmentsArray = [self pathSegmentsArray];
 
-        NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
+        PathSegment * pathSegment = pathSegmentsArray[rowIndex];
             
-        if (pathSegmentDictionary != NULL)
+        if (pathSegment != NULL)
         {
-            [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+            [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegment];
         }
     }
 
@@ -678,8 +659,7 @@
     
     if (rowIndex < pathSegmentsArrayCount)
     {
-        NSDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
-
+        PathSegment * pathSegment = pathSegmentsArray[rowIndex];
         
         if ([aTableColumn.identifier isEqualToString:@"segmentIndex"] == YES)
         {
@@ -687,87 +667,86 @@
         }
         else if ([aTableColumn.identifier isEqualToString:@"segmentCommand"] == YES)
         {
-            if (pathSegmentDictionary != NULL)
+            if (pathSegment != NULL)
             {
-                NSString * segmentCommand = segmentCommand = pathSegmentDictionary[@"command"];
-
-               if ([segmentCommand isEqualToString:@"M"] == YES) 
+                if (pathSegment.pathCommand == 'M')
                 {
                     objectValue = @"Moveto";
                 }
-                else if ([segmentCommand isEqualToString:@"m"] == YES) 
+                //else if ([segmentCommand isEqualToString:@"m"] == YES)
+                else if (pathSegment.pathCommand == 'm')
                 {
                     objectValue = @"Moveto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"L"] == YES) 
+                else if (pathSegment.pathCommand == 'L')
                 {
                     objectValue = @"Lineto";
                 }
-                else if ([segmentCommand isEqualToString:@"l"] == YES) 
+                else if (pathSegment.pathCommand == 'l')
                 {
                     objectValue = @"Lineto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"H"] == YES) 
+                else if (pathSegment.pathCommand == 'H')
                 {
                     objectValue = @"Horizontal Lineto";
                 }
-                else if ([segmentCommand isEqualToString:@"h"] == YES) 
+                else if (pathSegment.pathCommand == 'h')
                 {
                     objectValue = @"Horizontal Lineto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"V"] == YES) 
+                else if (pathSegment.pathCommand == 'V')
                 {
                     objectValue = @"Vertical Lineto";
                 }
-                else if ([segmentCommand isEqualToString:@"v"] == YES) 
+                else if (pathSegment.pathCommand == 'v')
                 {
                     objectValue = @"Vertical Lineto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"C"] == YES) 
+                else if (pathSegment.pathCommand == 'C')
                 {
                     objectValue = @"Cubic Curveto";
                 }
-                else if ([segmentCommand isEqualToString:@"c"] == YES) 
+                else if (pathSegment.pathCommand == 'c')
                 {
                     objectValue = @"Cubic Curveto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"S"] == YES) 
+                else if (pathSegment.pathCommand == 'S')
                 {
                     objectValue = @"Smooth Cubic Curveto";
                 }
-                else if ([segmentCommand isEqualToString:@"s"] == YES) 
+                else if (pathSegment.pathCommand == 's')
                 {
                     objectValue = @"Smooth Cubic Curveto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"Q"] == YES) 
+                else if (pathSegment.pathCommand == 'Q')
                 {
                     objectValue = @"Quadratic Curveto";
                 }
-                else if ([segmentCommand isEqualToString:@"q"] == YES) 
+                else if (pathSegment.pathCommand == 'q')
                 {
                     objectValue = @"Quadratic Curveto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"T"] == YES) 
+                else if (pathSegment.pathCommand == 'T')
                 {
                     objectValue = @"Smooth Quadratic Curveto";
                 }
-                else if ([segmentCommand isEqualToString:@"t"] == YES) 
+                else if (pathSegment.pathCommand == 't')
                 {
                     objectValue = @"Smooth Quadratic Curveto Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"A"] == YES) 
+                else if (pathSegment.pathCommand == 'A')
                 {
                     objectValue = @"Elliptical Arc";
                 }
-                else if ([segmentCommand isEqualToString:@"a"] == YES) 
+                else if (pathSegment.pathCommand == 'a')
                 {
                     objectValue = @"Elliptical Arc Relative";
                 }
-                else if ([segmentCommand isEqualToString:@"Z"] == YES) 
+                else if (pathSegment.pathCommand == 'Z')
                 {
                     objectValue = @"Close Path";
                 }
-                else if ([segmentCommand isEqualToString:@"z"] == YES) 
+                else if (pathSegment.pathCommand == 'z')
                 {
                     objectValue = @"Close Path Relative";
                 }
@@ -775,170 +754,168 @@
         }
         else if ([aTableColumn.identifier isEqualToString:@"segmentData"] == YES)
         {
-            if (pathSegmentDictionary != NULL)
+            if (pathSegment != NULL)
             {
-                NSString * segmentCommand = segmentCommand = pathSegmentDictionary[@"command"];
-                
                 NSString * segmentValues = @"";
                 
-                if ([segmentCommand isEqualToString:@"M"] == YES) 
+                if (pathSegment.pathCommand == 'M')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"m"] == YES) 
+                else if (pathSegment.pathCommand == 'm')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"L"] == YES) 
+                else if (pathSegment.pathCommand == 'L')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"l"] == YES) 
+                else if (pathSegment.pathCommand == 'l')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"H"] == YES) 
+                else if (pathSegment.pathCommand == 'H')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
+                    NSString * xString = pathSegment.xString;
                     segmentValues = [NSString stringWithFormat:@"%@",
                             xString];
                 }
-                else if ([segmentCommand isEqualToString:@"h"] == YES) 
+                else if (pathSegment.pathCommand == 'h')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
+                    NSString * xString = pathSegment.xString;
                     segmentValues = [NSString stringWithFormat:@"%@",
                             xString];
                 }
-                else if ([segmentCommand isEqualToString:@"V"] == YES) 
+                else if (pathSegment.pathCommand == 'V')
                 {
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@",
                             yString];
                 }
-                else if ([segmentCommand isEqualToString:@"v"] == YES) 
+                else if (pathSegment.pathCommand == 'v')
                 {
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@",
                             yString];
                 }
-                else if ([segmentCommand isEqualToString:@"C"] == YES) 
+                else if (pathSegment.pathCommand == 'C')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x1String = pathSegment.x1String;
+                    NSString * y1String = pathSegment.y1String;
+                    NSString * x2String = pathSegment.x2String;
+                    NSString * y2String = pathSegment.y2String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@",
                             x1String, y1String, x2String, y2String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"c"] == YES) 
+                else if (pathSegment.pathCommand == 'c')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x1String = pathSegment.x1String;
+                    NSString * y1String = pathSegment.y1String;
+                    NSString * x2String = pathSegment.x2String;
+                    NSString * y2String = pathSegment.y2String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@",
                             x1String, y1String, x2String, y2String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"S"] == YES) 
+                else if (pathSegment.pathCommand == 'S')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x2String = pathSegment.x2String;
+                    NSString * y2String = pathSegment.y2String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@",
                             x2String, y2String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"s"] == YES) 
+                else if (pathSegment.pathCommand == 's')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x2String = pathSegment.x2String;
+                    NSString * y2String = pathSegment.y2String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@",
                             x2String, y2String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"Q"] == YES) 
+                else if (pathSegment.pathCommand == 'Q')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x1String = pathSegment.x1String;
+                    NSString * y1String = pathSegment.y1String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@",
                             x1String, y1String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"q"] == YES) 
+                else if (pathSegment.pathCommand == 'q')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
+                    NSString * x1String = pathSegment.x1String;
+                    NSString * y1String = pathSegment.y1String;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@",
                             x1String, y1String, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"T"] == YES) 
+                else if (pathSegment.pathCommand == 'T')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"t"] == YES) 
+                else if (pathSegment.pathCommand == 't')
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@",
                             xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"A"] == YES) 
+                else if (pathSegment.pathCommand == 'A')
                 {
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@ %@",
                             rxString, ryString, xAxisRotationString, largeArcFlagString, sweepFlagString, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"a"] == YES) 
+                else if (pathSegment.pathCommand == 'a')
                 {
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    NSString * yString = pathSegmentDictionary[@"y"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
+                    NSString * xString = pathSegment.xString;
+                    NSString * yString = pathSegment.yString;
                     segmentValues = [NSString stringWithFormat:@"%@ %@ %@ %@ %@ %@ %@",
                             rxString, ryString, xAxisRotationString, largeArcFlagString, sweepFlagString, xString, yString];
                 }
-                else if ([segmentCommand isEqualToString:@"Z"] == YES) 
+                else if (pathSegment.pathCommand == 'Z')
                 {
                     segmentValues = @"";
                 }
-                else if ([segmentCommand isEqualToString:@"z"] == YES) 
+                else if (pathSegment.pathCommand == 'z')
                 {
                     segmentValues = @"";
                 }
                 
-                objectValue = [NSString stringWithFormat:@"%@ %@", segmentCommand, segmentValues];
+                objectValue = [NSString stringWithFormat:@"%C %@", pathSegment.pathCommand, segmentValues];
             } 
         }
     }
@@ -985,11 +962,11 @@
 
             if (rowIndex < pathSegmentsArray.count)
             {
-                NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
+                PathSegment * pathSegment = pathSegmentsArray[rowIndex];
                     
-                if (pathSegmentDictionary != NULL)
+                if (pathSegment != NULL)
                 {
-                    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+                    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegment];
                 }
 
                 //domSelectionControlsManager.pathSegmentIndex = rowIndex;
@@ -1033,9 +1010,9 @@
 
     NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
 
-    NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
+    PathSegment * pathSegment = pathSegmentsArray[rowIndex];
     
-    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegment];
     
     (self.pathSegmentEditorPopoverViewController.applyButton).title = @"Apply";
         
@@ -1057,9 +1034,9 @@
 
     NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
 
-    NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[rowIndex];
+    PathSegment * pathSegment = pathSegmentsArray[rowIndex];
     
-    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegmentDictionary];
+    [self.pathSegmentEditorPopoverViewController loadPathSegmentData:pathSegment];
 
     (self.pathSegmentEditorPopoverViewController.applyButton).title = @"Add";
     
@@ -1452,25 +1429,19 @@
     
     if (selectedRow != -1)
     {
-        NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[selectedRow];
+        PathSegment * pathSegment = pathSegmentsArray[selectedRow];
 
-        NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
-        NSArray * allKeys = pathSegmentDictionary.allKeys;
-        for (NSString * aKey in allKeys)
-        {
-            NSString * aValue = pathSegmentDictionary[aKey];
-            NSString * copyValue = [aValue copy];
-            newPathSegmentDictionary[aKey] = copyValue;
-        }
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
+        [newPathSegment copyValuesFromPathSegment:pathSegment];
 
         // get starting point of segment
 
-        NSString * startXString = pathSegmentDictionary[@"x"];
-        NSString * startYString = pathSegmentDictionary[@"y"];
-        NSString * previousX1String = pathSegmentDictionary[@"x1"];
-        NSString * previousY1String = pathSegmentDictionary[@"y1"];
-        NSString * previousX2String = pathSegmentDictionary[@"x2"];
-        NSString * previousY2String = pathSegmentDictionary[@"y2"];
+        NSString * startXString = pathSegment.xString;
+        NSString * startYString = pathSegment.yString;
+        NSString * previousX1String = pathSegment.x1String;
+        NSString * previousY1String = pathSegment.y1String;
+        NSString * previousX2String = pathSegment.x2String;
+        NSString * previousY2String = pathSegment.y2String;
         
         unichar previousPathCommand = ' ';
         
@@ -1478,16 +1449,15 @@
         {
             // get current starting point from previous segment
             
-            NSMutableDictionary * previousPathSegmentDictionary = pathSegmentsArray[(selectedRow - 1)];
+            PathSegment * previousPathSegment = pathSegmentsArray[(selectedRow - 1)];
 
-            startXString = previousPathSegmentDictionary[@"x"];
-            startYString = previousPathSegmentDictionary[@"y"];
-            previousX1String = pathSegmentDictionary[@"x1"];
-            previousY1String = pathSegmentDictionary[@"y1"];
-            previousX2String = pathSegmentDictionary[@"x2"];
-            previousY2String = pathSegmentDictionary[@"y2"];
-            NSString * previousPathCommandString = pathSegmentDictionary[@"command"];
-            previousPathCommand = [previousPathCommandString characterAtIndex:0];
+            startXString = previousPathSegment.xString;
+            startYString = previousPathSegment.yString;
+            previousX1String = pathSegment.x1String;
+            previousY1String = pathSegment.y1String;
+            previousX2String = pathSegment.x2String;
+            previousY2String = pathSegment.y2String;
+            previousPathCommand = previousPathSegment.pathCommand;
         }
         
         if (startXString.length == 0)
@@ -1515,13 +1485,12 @@
             previousY2String = @"0";
         }
         
-        CGFloat startX = startXString.floatValue;
-        CGFloat startY = startYString.floatValue;
-        CGFloat previousX1 = previousX1String.floatValue;
-        CGFloat previousY1 = previousY1String.floatValue;
+        float startX = startXString.floatValue;
+        float startY = startYString.floatValue;
+        float previousX1 = previousX1String.floatValue;
+        float previousY1 = previousY1String.floatValue;
         
-        NSString * pathCommandString = pathSegmentDictionary[@"command"];
-        unichar commandChar = [pathCommandString characterAtIndex:0];
+        unichar commandChar = pathSegment.pathCommand;
         
         BOOL subdividablePathFound = NO;
         
@@ -1542,23 +1511,23 @@
             {
                 subdividablePathFound = YES;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat x = xString.floatValue;
-                CGFloat y = yString.floatValue;
+                float x = xString.floatValue;
+                float y = yString.floatValue;
                 
-                CGFloat midX = (x + startX) / 2.0f;
-                CGFloat midY = (y + startY) / 2.0f;
+                float midX = (x + startX) / 2.0f;
+                float midY = (y + startY) / 2.0f;
                 
                 NSString * midXString = [self allocFloatString:midX];
                 NSString * midYString = [self allocFloatString:midY];
                 
-                pathSegmentDictionary[@"x"] = midXString;
-                pathSegmentDictionary[@"y"] = midYString;
+                pathSegment.xString = midXString;
+                pathSegment.yString = midYString;
 
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
 
                 break;
             }
@@ -1567,14 +1536,14 @@
             {
                 subdividablePathFound = YES;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat x = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float x = xString.floatValue;
 
-                CGFloat midX = (x + startX) / 2.0f;
+                float midX = (x + startX) / 2.0f;
                 NSString * midXString = [self allocFloatString:midX];
 
-                pathSegmentDictionary[@"x"] = midXString;
-                newPathSegmentDictionary[@"x"] = xString;
+                pathSegment.xString = midXString;
+                newPathSegment.xString = xString;
                 
                 break;
             }
@@ -1583,14 +1552,14 @@
             {
                 subdividablePathFound = YES;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat y = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float y = yString.floatValue;
 
-                CGFloat midY = (y + startY) / 2.0f;
+                float midY = (y + startY) / 2.0f;
                 NSString * midYString = [self allocFloatString:midY];
 
-                pathSegmentDictionary[@"y"] = midYString;
-                newPathSegmentDictionary[@"y"] = yString;
+                pathSegment.yString = midYString;
+                newPathSegment.yString = yString;
 
                 break;
             }
@@ -1599,32 +1568,32 @@
             {
                 subdividablePathFound = YES;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat x1 = x1String.floatValue;
-                CGFloat y1 = y1String.floatValue;
-                CGFloat x2 = x2String.floatValue;
-                CGFloat y2 = y2String.floatValue;
-                CGFloat x = xString.floatValue;
-                CGFloat y = yString.floatValue;
+                float x1 = x1String.floatValue;
+                float y1 = y1String.floatValue;
+                float x2 = x2String.floatValue;
+                float y2 = y2String.floatValue;
+                float x = xString.floatValue;
+                float y = yString.floatValue;
                 
-                CGFloat x12 = (startX + x1) / 2.0f;
-                CGFloat y12 = (startY + y1) / 2.0f;
-                CGFloat x23 = (x1 + x2) / 2.0f;
-                CGFloat y23 = (y1 + y2) / 2.0f;
-                CGFloat x34 = (x2 + x) / 2.0f;
-                CGFloat y34 = (y2 + y) / 2.0f;
-                CGFloat x123  = (x12 + x23) / 2.0f;
-                CGFloat y123  = (y12 + y23) / 2.0f;
-                CGFloat x234  = (x23 + x34) / 2.0f;
-                CGFloat y234  = (y23 + y34) / 2.0f;
-                CGFloat x1234 = (x123 + x234) / 2.0f;
-                CGFloat y1234 = (y123 + y234) / 2.0f;
+                float x12 = (startX + x1) / 2.0f;
+                float y12 = (startY + y1) / 2.0f;
+                float x23 = (x1 + x2) / 2.0f;
+                float y23 = (y1 + y2) / 2.0f;
+                float x34 = (x2 + x) / 2.0f;
+                float y34 = (y2 + y) / 2.0f;
+                float x123  = (x12 + x23) / 2.0f;
+                float y123  = (y12 + y23) / 2.0f;
+                float x234  = (x23 + x34) / 2.0f;
+                float y234  = (y23 + y34) / 2.0f;
+                float x1234 = (x123 + x234) / 2.0f;
+                float y1234 = (y123 + y234) / 2.0f;
                 
                 NSString * x12String = [self allocFloatString:x12];
                 NSString * y12String = [self allocFloatString:y12];
@@ -1639,19 +1608,19 @@
                 NSString * x1234String = [self allocFloatString:x1234];
                 NSString * y1234String = [self allocFloatString:y1234];
                 
-                pathSegmentDictionary[@"x1"] = x12String;
-                pathSegmentDictionary[@"y1"] = y12String;
-                pathSegmentDictionary[@"x2"] = x123String;
-                pathSegmentDictionary[@"y2"] = y123String;
-                pathSegmentDictionary[@"x"] = x1234String;
-                pathSegmentDictionary[@"y"] = y1234String;
+                pathSegment.x1String = x12String;
+                pathSegment.y1String = y12String;
+                pathSegment.x2String = x123String;
+                pathSegment.y2String = y123String;
+                pathSegment.xString = x1234String;
+                pathSegment.yString = y1234String;
 
-                newPathSegmentDictionary[@"x1"] = x234String;
-                newPathSegmentDictionary[@"y1"] = y234String;
-                newPathSegmentDictionary[@"x2"] = x34String;
-                newPathSegmentDictionary[@"y2"] = y34String;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.x1String = x234String;
+                newPathSegment.y1String = y234String;
+                newPathSegment.x2String = x34String;
+                newPathSegment.y2String = y34String;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 break;
             }
             case 'S':     // absolute smooth cubic curveto
@@ -1659,31 +1628,31 @@
             {
                 subdividablePathFound = YES;
 
-                CGFloat x1 = startX - previousX1;
-                CGFloat y1 = startY - previousY1;
+                float x1 = startX - previousX1;
+                float y1 = startY - previousY1;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat x2 = x2String.floatValue;
-                CGFloat y2 = y2String.floatValue;
-                CGFloat x = xString.floatValue;
-                CGFloat y = yString.floatValue;
+                float x2 = x2String.floatValue;
+                float y2 = y2String.floatValue;
+                float x = xString.floatValue;
+                float y = yString.floatValue;
                 
-                CGFloat x12 = (startX + x1) / 2.0f;
-                CGFloat y12 = (startY + y1) / 2.0f;
-                CGFloat x23 = (x1 + x2) / 2.0f;
-                CGFloat y23 = (y1 + y2) / 2.0f;
-                CGFloat x34 = (x2 + x) / 2.0f;
-                CGFloat y34 = (y2 + y) / 2.0f;
-                CGFloat x123  = (x12 + x23) / 2.0f;
-                CGFloat y123  = (y12 + y23) / 2.0f;
-                CGFloat x234  = (x23 + x34) / 2.0f;
-                CGFloat y234  = (y23 + y34) / 2.0f;
-                CGFloat x1234 = (x123 + x234) / 2.0f;
-                CGFloat y1234 = (y123 + y234) / 2.0f;
+                float x12 = (startX + x1) / 2.0f;
+                float y12 = (startY + y1) / 2.0f;
+                float x23 = (x1 + x2) / 2.0f;
+                float y23 = (y1 + y2) / 2.0f;
+                float x34 = (x2 + x) / 2.0f;
+                float y34 = (y2 + y) / 2.0f;
+                float x123  = (x12 + x23) / 2.0f;
+                float y123  = (y12 + y23) / 2.0f;
+                float x234  = (x23 + x34) / 2.0f;
+                float y234  = (y23 + y34) / 2.0f;
+                float x1234 = (x123 + x234) / 2.0f;
+                float y1234 = (y123 + y234) / 2.0f;
                 
                 NSString * x34String = [self allocFloatString:x34];
                 NSString * y34String = [self allocFloatString:y34];
@@ -1692,15 +1661,15 @@
                 NSString * x1234String = [self allocFloatString:x1234];
                 NSString * y1234String = [self allocFloatString:y1234];
 
-                pathSegmentDictionary[@"x2"] = x123String;
-                pathSegmentDictionary[@"y2"] = y123String;
-                pathSegmentDictionary[@"x"] = x1234String;
-                pathSegmentDictionary[@"y"] = y1234String;
+                pathSegment.x2String = x123String;
+                pathSegment.y2String = y123String;
+                pathSegment.xString = x1234String;
+                pathSegment.yString = y1234String;
 
-                newPathSegmentDictionary[@"x2"] = x34String;
-                newPathSegmentDictionary[@"y2"] = y34String;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.x2String = x34String;
+                newPathSegment.y2String = y34String;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 break;
             }
             case 'Q':     // absolute quadratic Bezier curve
@@ -1708,24 +1677,24 @@
             {
                 subdividablePathFound = YES;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                CGFloat x1 = x1String.floatValue;
-                CGFloat y1 = y1String.floatValue;
-                CGFloat x = xString.floatValue;
-                CGFloat y = yString.floatValue;
+                float x1 = x1String.floatValue;
+                float y1 = y1String.floatValue;
+                float x = xString.floatValue;
+                float y = yString.floatValue;
                 
-                CGFloat control1MidpointX = (startX + x1) / 2.0f;
-                CGFloat control1MidpointY = (startY + y1) / 2.0f;
+                float control1MidpointX = (startX + x1) / 2.0f;
+                float control1MidpointY = (startY + y1) / 2.0f;
 
-                CGFloat control2MidpointX = (x1 + x) / 2.0f;
-                CGFloat control2MidpointY = (x1 + x) / 2.0f;
+                float control2MidpointX = (x1 + x) / 2.0f;
+                float control2MidpointY = (x1 + x) / 2.0f;
                 
-                CGFloat midpointX = [self calculateQuadraticBezierParameterAtx0:startX x1:x1 x2:x t:0.5f];
-                CGFloat midpointY = [self calculateQuadraticBezierParameterAtx0:startY x1:y1 x2:y t:0.5f];
+                float midpointX = [self calculateQuadraticBezierParameterAtx0:startX x1:x1 x2:x t:0.5f];
+                float midpointY = [self calculateQuadraticBezierParameterAtx0:startY x1:y1 x2:y t:0.5f];
                 
                 NSString * control1MidpointXString = [self allocFloatString:control1MidpointX];
                 NSString * control1MidpointYString = [self allocFloatString:control1MidpointY];
@@ -1734,15 +1703,15 @@
                 NSString * midpointXString = [self allocFloatString:midpointX];
                 NSString * midpointYString = [self allocFloatString:midpointY];
 
-                pathSegmentDictionary[@"x1"] = control1MidpointXString;
-                pathSegmentDictionary[@"y1"] = control1MidpointYString;
-                pathSegmentDictionary[@"x"] = midpointXString;
-                pathSegmentDictionary[@"y"] = midpointYString;
+                pathSegment.x1String = control1MidpointXString;
+                pathSegment.y1String = control1MidpointYString;
+                pathSegment.xString = midpointXString;
+                pathSegment.yString = midpointYString;
 
-                newPathSegmentDictionary[@"x1"] = control2MidpointXString;
-                newPathSegmentDictionary[@"y1"] = control2MidpointYString;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.x1String = control2MidpointXString;
+                newPathSegment.y1String = control2MidpointYString;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 break;
             }
 
@@ -1762,19 +1731,19 @@
             {
                 subdividablePathFound = YES;
                 
-                NSString * rxString = pathSegmentDictionary[@"rx"];
-                NSString * ryString = pathSegmentDictionary[@"ry"];
-                NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                NSString * dataLargeArcString = pathSegmentDictionary[@"large-arc-flag"];
-                NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * rxString = pathSegment.rxString;
+                NSString * ryString = pathSegment.ryString;
+                NSString * dataXAxisRotationString = pathSegment.xAxisRotationString;
+                NSString * dataLargeArcString = pathSegment.largeArcFlagString;
+                NSString * sweepString = pathSegment.sweepFlagString;
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                CGFloat rx = rxString.floatValue;
-                CGFloat ry = ryString.floatValue;
-                CGFloat x = xString.floatValue;
-                CGFloat y = yString.floatValue;
-                CGFloat dataXAxisRotation = dataXAxisRotationString.floatValue;
+                float rx = rxString.floatValue;
+                float ry = ryString.floatValue;
+                float x = xString.floatValue;
+                float y = yString.floatValue;
+                float dataXAxisRotation = dataXAxisRotationString.floatValue;
                 BOOL largeArcFlag = dataLargeArcString.boolValue;
                 BOOL sweepFlag = sweepString.boolValue;
                 
@@ -1789,15 +1758,15 @@
                 NSNumber * cxNumber = arcCenterDictionary[@"cx"];
                 NSNumber * cyNumber = arcCenterDictionary[@"cy"];
                 
-                CGFloat angleStart = angleStartNumber.floatValue;
-                CGFloat angleExtent = angleExtentNumber.floatValue;
-                CGFloat cx = cxNumber.floatValue;
-                CGFloat cy = cyNumber.floatValue;
+                float angleStart = angleStartNumber.floatValue;
+                float angleExtent = angleExtentNumber.floatValue;
+                float cx = cxNumber.floatValue;
+                float cy = cyNumber.floatValue;
                 
-                CGFloat halfAngleExtent = angleExtent / 2.0f;
+                float halfAngleExtent = angleExtent / 2.0f;
 
-                CGFloat angle1Start = angleStart;
-                CGFloat angle2Start = angleStart + halfAngleExtent;
+                float angle1Start = angleStart;
+                float angle2Start = angleStart + halfAngleExtent;
                 
                 NSDictionary * arc1Dictionary = [self.macSVGPluginCallbacks convertArcToEndPointWithRotation:dataXAxisRotation
                         angleStart:angle1Start angleExtent:halfAngleExtent cx:cx cy:cy rx:rx ry:ry];
@@ -1807,8 +1776,8 @@
                 NSNumber * arc1IsCounterClockwiseNumber = arc1Dictionary[@"isCounterClockwise"];
                 NSNumber * arc1IsLargeNumber = arc1Dictionary[@"isLarge"];
                 
-                CGFloat arc1EndX = arc1EndXNumber.floatValue;
-                CGFloat arc1EndY = arc1EndYNumber.floatValue;
+                float arc1EndX = arc1EndXNumber.floatValue;
+                float arc1EndY = arc1EndYNumber.floatValue;
                 BOOL arc1SweepFlag = arc1IsCounterClockwiseNumber.boolValue;
                 BOOL arc1LargeArcFlag = arc1IsLargeNumber.boolValue;
                 
@@ -1817,13 +1786,13 @@
                 NSString * arc1SweepFlagString = [NSString stringWithFormat:@"%hhd", arc1SweepFlag];
                 NSString * arc1LargeArcFlagString = [NSString stringWithFormat:@"%hhd", arc1LargeArcFlag];
 
-                pathSegmentDictionary[@"rx"] = rxString;
-                pathSegmentDictionary[@"ry"] = ryString;
-                pathSegmentDictionary[@"x-axis-rotation"] = dataXAxisRotationString;
-                pathSegmentDictionary[@"large-arc-flag"] = arc1LargeArcFlagString;
-                pathSegmentDictionary[@"sweep-flag"] = arc1SweepFlagString;
-                pathSegmentDictionary[@"x"] = arc1EndXString;
-                pathSegmentDictionary[@"y"] = arc1EndYString;
+                pathSegment.rxString = rxString;
+                pathSegment.ryString = ryString;
+                pathSegment.xAxisRotationString = dataXAxisRotationString;
+                pathSegment.largeArcFlagString = arc1LargeArcFlagString;
+                pathSegment.sweepFlagString = arc1SweepFlagString;
+                pathSegment.xString = arc1EndXString;
+                pathSegment.yString = arc1EndYString;
                 
                 NSDictionary * arc2Dictionary = [self.macSVGPluginCallbacks convertArcToEndPointWithRotation:dataXAxisRotation angleStart:angle2Start angleExtent:halfAngleExtent cx:cx cy:cy rx:rx ry:ry];
 
@@ -1832,8 +1801,8 @@
                 NSNumber * arc2IsCounterClockwiseNumber = arc2Dictionary[@"isCounterClockwise"];
                 NSNumber * arc2IsLargeNumber = arc2Dictionary[@"isLarge"];
 
-                CGFloat arc2EndX = arc2EndXNumber.floatValue;
-                CGFloat arc2EndY = arc2EndYNumber.floatValue;
+                float arc2EndX = arc2EndXNumber.floatValue;
+                float arc2EndY = arc2EndYNumber.floatValue;
                 BOOL arc2SweepFlag = arc2IsCounterClockwiseNumber.boolValue;
                 BOOL arc2LargeArcFlag = arc2IsLargeNumber.boolValue;
                 
@@ -1842,13 +1811,13 @@
                 NSString * arc2SweepFlagString = [NSString stringWithFormat:@"%hhd", arc2SweepFlag];
                 NSString * arc2LargeArcFlagString = [NSString stringWithFormat:@"%hhd", arc2LargeArcFlag];
 
-                newPathSegmentDictionary[@"rx"] = rxString;
-                newPathSegmentDictionary[@"ry"] = ryString;
-                newPathSegmentDictionary[@"x-axis-rotation"] = dataXAxisRotationString;
-                newPathSegmentDictionary[@"large-arc-flag"] = arc2LargeArcFlagString;
-                newPathSegmentDictionary[@"sweep-flag"] = arc2SweepFlagString;
-                newPathSegmentDictionary[@"x"] = arc2EndXString;
-                newPathSegmentDictionary[@"y"] = arc2EndYString;
+                newPathSegment.rxString = rxString;
+                newPathSegment.ryString = ryString;
+                newPathSegment.xAxisRotationString = dataXAxisRotationString;
+                newPathSegment.largeArcFlagString = arc2LargeArcFlagString;
+                newPathSegment.sweepFlagString = arc2SweepFlagString;
+                newPathSegment.xString = arc2EndXString;
+                newPathSegment.yString = arc2EndYString;
                 break;
             }
             case 'Z':     // absolute closepath
@@ -1863,7 +1832,7 @@
         
         if (subdividablePathFound == YES)
         {
-            [pathSegmentsArray insertObject:newPathSegmentDictionary atIndex:(selectedRow + 1)];
+            [pathSegmentsArray insertObject:newPathSegment atIndex:(selectedRow + 1)];
         }
 
             
@@ -1892,35 +1861,28 @@
     [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
 
     unichar previousCommandCharacter = ' ';
-    NSDictionary * previousSegmentDictionary = NULL;
+    PathSegment * previousSegment = NULL;
     CGPoint controlPoint = NSZeroPoint;
 
     for (NSInteger currentSegmentIndex = 0; currentSegmentIndex <= segmentIndex; currentSegmentIndex++)
     {
-        NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[currentSegmentIndex];
+        PathSegment * pathSegment = pathSegmentsArray[currentSegmentIndex];
     
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
         
-        NSNumber * absoluteXNumber = pathSegmentDictionary[@"absoluteX"];
-        NSNumber * absoluteYNumber = pathSegmentDictionary[@"absoluteY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
-        
-        CGFloat absoluteXFloat = absoluteXNumber.floatValue;
-        CGFloat absoluteYFloat = absoluteYNumber.floatValue;
+        float absoluteXFloat = pathSegment.absoluteXFloat;
+        float absoluteYFloat = pathSegment.absoluteYFloat;
 
-        NSNumber * xString = pathSegmentDictionary[@"x"];
-        NSNumber * yString = pathSegmentDictionary[@"y"];
+        NSString * xString = pathSegment.xString;
+        NSString * yString = pathSegment.yString;
         
         if (currentSegmentIndex == 0)
         {
             controlPoint = CGPointMake(absoluteStartXFloat, absoluteStartYFloat);
         }
 
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         switch (commandCharacter)
         {
@@ -1951,11 +1913,8 @@
             case 'Q':     // quadratic Bezier curve
             case 'q':     // quadratic Bezier curve
             {
-                NSNumber * oldAbsoluteX1Number = pathSegmentDictionary[@"absoluteX1"];    // quadratic x1,y1
-                NSNumber * oldAbsoluteY1Number = pathSegmentDictionary[@"absoluteY1"];
-                
-                CGFloat oldAbsoluteX1Float = oldAbsoluteX1Number.floatValue;
-                CGFloat oldAbsoluteY1Float = oldAbsoluteY1Number.floatValue;
+                float oldAbsoluteX1Float = pathSegment.absoluteX1Float;    // quadratic x1,y1
+                float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
 
                 controlPoint = CGPointMake(oldAbsoluteX1Float, oldAbsoluteY1Float);
                 
@@ -2014,24 +1973,24 @@
                     NSString * controlPointXString = [self allocFloatString:controlPoint.x];
                     NSString * controlPointYString = [self allocFloatString:controlPoint.y];
                     
-                    NSString * newCommandString = @"Q";
+                    unichar newCommand = 'Q';
                     if (commandCharacter == 't')
                     {
-                        newCommandString = @"q";
+                        newCommand = 'q';
                     }
 
-                    pathSegmentDictionary[@"x1"] = controlPointXString;
-                    pathSegmentDictionary[@"y1"] = controlPointYString;
-                    pathSegmentDictionary[@"command"] = newCommandString;
+                    pathSegment.x1String = controlPointXString;
+                    pathSegment.y1String = controlPointYString;
+                    pathSegment.pathCommand = newCommand;
                     
-                    NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
-                    newPathSegmentDictionary[@"x"] = xString;
-                    newPathSegmentDictionary[@"y"] = yString;
-                    newPathSegmentDictionary[@"x1"] = controlPointXString;
-                    newPathSegmentDictionary[@"y1"] = controlPointYString;
-                    newPathSegmentDictionary[@"command"] = newCommandString;
+                    PathSegment * newPathSegment = [[PathSegment alloc] init];
+                    newPathSegment.xString = xString;
+                    newPathSegment.yString = yString;
+                    newPathSegment.x1String = controlPointXString;
+                    newPathSegment.y1String = controlPointYString;
+                    newPathSegment.pathCommand = newCommand;
                     
-                    [pathSegmentsArray insertObject:newPathSegmentDictionary atIndex:(segmentIndex + 1)];
+                    [pathSegmentsArray insertObject:newPathSegment atIndex:(segmentIndex + 1)];
                 }
                 
                 break;
@@ -2047,7 +2006,7 @@
         }
         
         previousCommandCharacter = commandCharacter;
-        previousSegmentDictionary = pathSegmentDictionary;
+        previousSegment = pathSegment;
     }
 
     [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
@@ -2057,9 +2016,9 @@
 //	calculateQuadraticBezierParameterAtx0:x1:x2:t:
 //==================================================================================
 
-- (CGFloat)calculateQuadraticBezierParameterAtx0:(CGFloat)x0 x1:(CGFloat)x1 x2:(CGFloat)x2 t:(CGFloat)t
+- (float)calculateQuadraticBezierParameterAtx0:(float)x0 x1:(float)x1 x2:(float)x2 t:(float)t
 {
-    CGFloat result = pow(1 - t, 2) * x0 + 2 * t * (1 - t) * x1 + pow(t, 2) * x2;
+    float result = pow(1 - t, 2) * x0 + 2 * t * (1 - t) * x1 + pow(t, 2) * x2;
     
     return result;
 }
@@ -2068,10 +2027,10 @@
 //	pointOnQuadraticBezierCurveAtp0:p1:p2:t:
 //==================================================================================
 
-- (CGPoint)pointOnQuadraticBezierCurveAtp0:(CGPoint)p0 p1:(CGPoint)p1 p2:(CGPoint)p2 t:(CGFloat)t
+- (CGPoint)pointOnQuadraticBezierCurveAtp0:(CGPoint)p0 p1:(CGPoint)p1 p2:(CGPoint)p2 t:(float)t
 {
-    CGFloat x = [self calculateQuadraticBezierParameterAtx0:p0.x x1:p1.x x2:p2.x t:t];
-    CGFloat y = [self calculateQuadraticBezierParameterAtx0:p0.y x1:p1.y x2:p2.y t:t];
+    float x = [self calculateQuadraticBezierParameterAtx0:p0.x x1:p1.x x2:p2.x t:t];
+    float y = [self calculateQuadraticBezierParameterAtx0:p0.y x1:p1.y x2:p2.y t:t];
     
     CGPoint resultPoint = CGPointMake(x, y);
     return resultPoint;

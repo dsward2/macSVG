@@ -1618,8 +1618,8 @@
 
 - (void)applyNewSVGDocumentSettings:(NSXMLDocument *)svgXmlDocument
 {
-    CGFloat widthFloat = (self.widthTextField).floatValue;
-    CGFloat heightFloat = (self.heightTextField).floatValue;
+    float widthFloat = (self.widthTextField).floatValue;
+    float heightFloat = (self.heightTextField).floatValue;
     BOOL includeBackgroundRect = (self.includeBackgroundRectCheckBoxButton).state;
     
     NSString * widthPxString = [self allocPxString:widthFloat];
@@ -1687,8 +1687,8 @@
     {
         NSXMLElement * sampleTextElement = sampleTextResultArray.firstObject;
         
-        CGFloat xFloat = widthFloat / 2.0f;
-        CGFloat yFloat = heightFloat / 2.0f;
+        float xFloat = widthFloat / 2.0f;
+        float yFloat = heightFloat / 2.0f;
         
         NSString * xPxString = [self allocPxString:xFloat];
         NSString * yPxString = [self allocPxString:yFloat];

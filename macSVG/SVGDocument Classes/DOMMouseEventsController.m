@@ -277,7 +277,7 @@
     self.previousTransformedMousePagePoint = self.transformedCurrentMousePagePoint;
     self.previousTransformedMouseScreenPoint = self.transformedCurrentMouseScreenPoint;
     
-    CGFloat zoomFactor = svgWebView.zoomFactor;
+    float zoomFactor = svgWebView.zoomFactor;
     
     NSPoint scaledCurrentMouseClientPoint = NSZeroPoint;
     NSPoint scaledCurrentMousePagePoint = NSZeroPoint;
@@ -296,7 +296,7 @@
     else
     {
         // adjust mouse points to match zoom factor for web view
-        CGFloat reciprocalZoomFactor = 1.0f / zoomFactor;
+        float reciprocalZoomFactor = 1.0f / zoomFactor;
         scaledCurrentMouseClientPoint = NSMakePoint(mouseEvent.clientX * reciprocalZoomFactor,
             mouseEvent.clientY * reciprocalZoomFactor);
         scaledCurrentMousePagePoint = NSMakePoint(mouseEvent.pageX * reciprocalZoomFactor,
@@ -927,7 +927,6 @@
             
             [domSelectionControlsManager removeDOMSelectionRectsAndHandles];
             
-            //[self.svgPathEditor makePathHandles];
             [self.svgPathEditor makePathHandlesForXMLElement:pathXMLElement];
         }
     }
@@ -1924,7 +1923,7 @@
 
                 if ([handle_orientation isEqualToString:@"top"] == YES) 
                 {
-                    CGFloat radius = cy - self.transformedCurrentMousePagePoint.y;
+                    float radius = cy - self.transformedCurrentMousePagePoint.y;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1935,7 +1934,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"left"] == YES)
                 {
-                    CGFloat radius = cx - self.transformedCurrentMousePagePoint.x;
+                    float radius = cx - self.transformedCurrentMousePagePoint.x;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1946,7 +1945,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottom"] == YES)
                 {
-                    CGFloat radius = self.transformedCurrentMousePagePoint.y - cy;
+                    float radius = self.transformedCurrentMousePagePoint.y - cy;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1957,7 +1956,7 @@
                 }
                 else if ([handle_orientation isEqualToString:@"right"] == YES)
                 {
-                    CGFloat radius = self.transformedCurrentMousePagePoint.x - cx;
+                    float radius = self.transformedCurrentMousePagePoint.x - cx;
                     if (radius < 0)
                     {
                         radius = 0;
@@ -1968,10 +1967,10 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
-                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
+                    float xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    float yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
-                    CGFloat radius = xDelta;
+                    float radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
                     {
                         radius = yDelta;
@@ -1988,10 +1987,10 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topRight"] == YES)
                 {
-                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
-                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
+                    float xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    float yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
-                    CGFloat radius = xDelta;
+                    float radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
                     {
                         radius = yDelta;
@@ -2008,10 +2007,10 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
-                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
+                    float xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    float yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
-                    CGFloat radius = xDelta;
+                    float radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
                     {
                         radius = yDelta;
@@ -2028,10 +2027,10 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
                 {
-                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
-                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
+                    float xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    float yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
-                    CGFloat radius = xDelta;
+                    float radius = xDelta;
                     if (fabs(yDelta) < fabs(xDelta))
                     {
                         radius = yDelta;
@@ -2092,11 +2091,11 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
-                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
+                    float xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    float yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
-                    CGFloat radiusX = xDelta;
-                    CGFloat radiusY = yDelta;
+                    float radiusX = xDelta;
+                    float radiusY = yDelta;
                     
                     if (radiusX < 0)
                     {
@@ -2115,11 +2114,11 @@
                 }
                 else if ([handle_orientation isEqualToString:@"topRight"] == YES)
                 {
-                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
-                    CGFloat yDelta = cy - self.transformedCurrentMousePagePoint.y;
+                    float xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    float yDelta = cy - self.transformedCurrentMousePagePoint.y;
                     
-                    CGFloat radiusX = xDelta;
-                    CGFloat radiusY = yDelta;
+                    float radiusX = xDelta;
+                    float radiusY = yDelta;
                     
                     if (radiusX < 0)
                     {
@@ -2138,11 +2137,11 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomLeft"] == YES)
                 {
-                    CGFloat xDelta = cx - self.transformedCurrentMousePagePoint.x;
-                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
+                    float xDelta = cx - self.transformedCurrentMousePagePoint.x;
+                    float yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
-                    CGFloat radiusX = xDelta;
-                    CGFloat radiusY = yDelta;
+                    float radiusX = xDelta;
+                    float radiusY = yDelta;
                     
                     if (radiusX < 0)
                     {
@@ -2161,11 +2160,11 @@
                 }
                 else if ([handle_orientation isEqualToString:@"bottomRight"] == YES)
                 {
-                    CGFloat xDelta = self.transformedCurrentMousePagePoint.x - cx;
-                    CGFloat yDelta = self.transformedCurrentMousePagePoint.y - cy;
+                    float xDelta = self.transformedCurrentMousePagePoint.x - cx;
+                    float yDelta = self.transformedCurrentMousePagePoint.y - cy;
                     
-                    CGFloat radiusX = xDelta;
-                    CGFloat radiusY = yDelta;
+                    float radiusX = xDelta;
+                    float radiusY = yDelta;
                     
                     if (radiusX < 0)
                     {
@@ -2909,7 +2908,7 @@
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
             
             /*
-            CGFloat zoomFactor = svgWebView.zoomFactor;
+            float zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
             */
@@ -2957,7 +2956,7 @@
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
             
             /*
-            CGFloat zoomFactor = svgWebView.zoomFactor;
+            float zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
             */
@@ -3017,7 +3016,7 @@
             DOMMouseEvent * mouseEvent = (DOMMouseEvent *)event;
             
             /*
-            CGFloat zoomFactor = svgWebView.zoomFactor;
+            float zoomFactor = svgWebView.zoomFactor;
             self.currentMousePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             self.previousMousePoint = self.currentMousePoint;
             */

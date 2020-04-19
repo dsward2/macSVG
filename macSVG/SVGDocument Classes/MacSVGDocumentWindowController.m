@@ -3051,7 +3051,7 @@
     
     NSRect documentVisibleRect = webScrollView.documentVisibleRect;
 
-    CGFloat zoomFactor = self.svgWebKitController.svgWebView.zoomFactor;
+    float zoomFactor = self.svgWebKitController.svgWebView.zoomFactor;
     
     zoomFactor *= 2.0f;
     
@@ -3332,8 +3332,8 @@
     NSInteger imageWidth = (self.exportImagesWidthTextField.stringValue).integerValue;
     NSInteger imageHeight = (self.exportImagesHeightTextField.stringValue).integerValue;
     
-    CGFloat startTime = (self.exportImagesStartTimeTextField.stringValue).floatValue;
-    CGFloat endTime = (self.exportImagesEndTimeTextField.stringValue).floatValue;
+    float startTime = (self.exportImagesStartTimeTextField.stringValue).floatValue;
+    float endTime = (self.exportImagesEndTimeTextField.stringValue).floatValue;
     NSInteger framesPerSecond = (self.exportImagesFramesPerSecondTextField.stringValue).integerValue;
     
     if (imageWidth == 0)
@@ -3602,8 +3602,8 @@
     NSInteger movieWidth = (self.videoWidthTextField.stringValue).integerValue;
     NSInteger movieHeight = (self.videoHeightTextField.stringValue).integerValue;
     
-    CGFloat startTime = (self.videoStartTimeTextField.stringValue).floatValue;
-    CGFloat endTime = (self.videoEndTimeTextField.stringValue).floatValue;
+    float startTime = (self.videoStartTimeTextField.stringValue).floatValue;
+    float endTime = (self.videoEndTimeTextField.stringValue).floatValue;
     NSInteger framesPerSecond = (self.videoFramesPerSecondTextField.stringValue).integerValue;
     
     if (movieWidth == 0)

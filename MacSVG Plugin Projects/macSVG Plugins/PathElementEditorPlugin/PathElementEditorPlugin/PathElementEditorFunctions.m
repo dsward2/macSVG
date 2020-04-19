@@ -8,6 +8,7 @@
 
 #import "PathElementEditorFunctions.h"
 #import "PathElementEditor.h"
+#import "PathSegment.h"
 
 @implementation PathElementEditorFunctions
 
@@ -204,9 +205,9 @@
     NSMutableArray * flippedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             mirrorPathHorizontallyWithPathSegmentsArray:pathSegmentsArray];
     
-    for (NSMutableDictionary * flippedSegmentDictionary in flippedSegmentsArray)
+    for (PathSegment * flippedSegment in flippedSegmentsArray)
     {
-        [pathSegmentsArray addObject:flippedSegmentDictionary];
+        [pathSegmentsArray addObject:flippedSegment];
     }
 
     [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
@@ -228,9 +229,9 @@
     NSMutableArray * flippedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             mirrorPathVerticallyWithPathSegmentsArray:pathSegmentsArray];
     
-    for (NSMutableDictionary * flippedSegmentDictionary in flippedSegmentsArray)
+    for (PathSegment * flippedSegment in flippedSegmentsArray)
     {
-        [pathSegmentsArray addObject:flippedSegmentDictionary];
+        [pathSegmentsArray addObject:flippedSegment];
     }
 
     [self.pathElementEditor updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:NO];
@@ -286,8 +287,8 @@
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
-    CGFloat scaleX = (self.pathElementEditor.pathFunctionValue1).floatValue;
-    CGFloat scaleY = (self.pathElementEditor.pathFunctionValue2).floatValue;
+    float scaleX = (self.pathElementEditor.pathFunctionValue1).floatValue;
+    float scaleY = (self.pathElementEditor.pathFunctionValue2).floatValue;
     
     NSMutableArray * scaledSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             scalePathCoordinatesWithPathSegmentsArray:pathSegmentsArray
@@ -308,9 +309,9 @@
     
     NSMutableArray * pathSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks buildPathSegmentsArrayWithPathString:pathAttributeString];
     
-    CGFloat rotateX = (self.pathElementEditor.pathFunctionValue1).floatValue;
-    CGFloat rotateY = (self.pathElementEditor.pathFunctionValue2).floatValue;
-    CGFloat degrees = (self.pathElementEditor.pathFunctionValue3).floatValue;
+    float rotateX = (self.pathElementEditor.pathFunctionValue1).floatValue;
+    float rotateY = (self.pathElementEditor.pathFunctionValue2).floatValue;
+    float degrees = (self.pathElementEditor.pathFunctionValue3).floatValue;
     
     NSMutableArray * rotatedSegmentsArray = [self.pathElementEditor.macSVGPluginCallbacks
             rotatePathCoordinatesWithPathSegmentsArray:pathSegmentsArray

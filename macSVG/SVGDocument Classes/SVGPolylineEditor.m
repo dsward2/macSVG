@@ -259,20 +259,20 @@
     NSString * xPxString = [xString stringByAppendingString:@"px"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
-    CGFloat scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:polylineHandlesGroup];
+    float scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:polylineHandlesGroup];
     
     NSString * polylinePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
-    CGFloat polylinePointStrokeWidthFloat = polylinePointStrokeWidthString.floatValue;
+    float polylinePointStrokeWidthFloat = polylinePointStrokeWidthString.floatValue;
     polylinePointStrokeWidthFloat *= scaleFactor;
     polylinePointStrokeWidthString = [self allocPxString:polylinePointStrokeWidthFloat];
 
     NSString * polylineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
-    CGFloat polylineLineStrokeWidthFloat = polylineLineStrokeWidthString.floatValue;
+    float polylineLineStrokeWidthFloat = polylineLineStrokeWidthString.floatValue;
     polylineLineStrokeWidthFloat *= scaleFactor;
     polylineLineStrokeWidthString = [self allocPxString:polylineLineStrokeWidthFloat];
 
     NSString * polylinePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat polylinePointRadiusFloat = polylinePointRadiusString.floatValue;
+    float polylinePointRadiusFloat = polylinePointRadiusString.floatValue;
     polylinePointRadiusFloat *= scaleFactor;
     polylinePointRadiusString = [self allocPxString:polylinePointRadiusFloat];
 

@@ -241,7 +241,7 @@
 //	setSVGZoomStyleWithFloat:
 //==================================================================================
 
-- (void)setSVGZoomStyleWithFloat:(CGFloat)zoomFactor
+- (void)setSVGZoomStyleWithFloat:(float)zoomFactor
 {
     self.zoomFactor = zoomFactor;
     //NSString * zoomFactorString = [NSString stringWithFormat:@"%f", zoomFactor];

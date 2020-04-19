@@ -63,29 +63,29 @@
 //	makeBezierCircleAtCenterX:centerY:radius:sectors:
 //==================================================================================
 
--(void) makeBezierCircleAtCenterX:(CGFloat)x centerY:(CGFloat)y radius:(CGFloat)radius segments:(NSInteger)segments
+-(void) makeBezierCircleAtCenterX:(float)x centerY:(float)y radius:(float)radius segments:(NSInteger)segments
 {
     NSMutableString * svgString = [NSMutableString string];
 
-    CGFloat kappa = 0.5522847498;
+    float kappa = 0.5522847498;
 
-    CGFloat k = 4 * kappa / segments;
-    CGFloat d = k * radius;
+    float k = 4 * kappa / segments;
+    float d = k * radius;
     
-    CGFloat ax1 = 0;
-    CGFloat ay1 = radius;
+    float ax1 = 0;
+    float ay1 = radius;
     
-    CGFloat cx1 = d;
-    CGFloat cy1 = radius;
+    float cx1 = d;
+    float cy1 = radius;
     
     NSPoint cp2 = [self rotateCoordinatesWithDx:-d dy:radius theta:-(M_PI * 2)/segments];
     NSPoint ap2 = [self rotateCoordinatesWithDx:0 dy:radius theta:-(M_PI * 2)/segments];
     
-    CGFloat cx2 = cp2.x;
-    CGFloat cy2 = cp2.y;
+    float cx2 = cp2.x;
+    float cy2 = cp2.y;
     
-    CGFloat ax2 = ap2.x;
-    CGFloat ay2 = ap2.y;
+    float ax2 = ap2.x;
+    float ay2 = ap2.y;
  
     NSString * ax1String = [self allocFloatString:(ax1 + x)];
     NSString * ay1String = [self allocFloatString:(ay1 + y)];
@@ -166,7 +166,7 @@
 //	rotateCoordinatesWithDx:dy:theta:
 //==================================================================================
 
-- (NSPoint) rotateCoordinatesWithDx:(CGFloat)dx dy:(CGFloat)dy theta:(CGFloat)theta
+- (NSPoint) rotateCoordinatesWithDx:(float)dx dy:(float)dy theta:(float)theta
 {
     // Rotate vector or point (dx,dy) through an angle
     // degrees in radians

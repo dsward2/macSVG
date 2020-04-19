@@ -474,13 +474,13 @@
     indexTableColumn.maxWidth = 100.0f;
     [valuesTableView addTableColumn:indexTableColumn];
     
-    CGFloat tableWidth = valuesTableView.bounds.size.width - 30.0f;
+    float tableWidth = valuesTableView.bounds.size.width - 30.0f;
     
     NSString * typeAttributeString = typePopUpButton.titleOfSelectedItem;
     
     if ([typeAttributeString isEqualToString:@"translate"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 2.0f;
+        float columnWidth = tableWidth / 2.0f;
     
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -498,7 +498,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"scale"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 2.0f;
+        float columnWidth = tableWidth / 2.0f;
     
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -516,7 +516,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 3.0f;
+        float columnWidth = tableWidth / 3.0f;
 
         NSTableColumn * degreesTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"degrees"];
         degreesTableColumn.title = @"degrees";
@@ -541,7 +541,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
     {
-        CGFloat columnWidth = tableWidth;
+        float columnWidth = tableWidth;
 
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -552,7 +552,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
     {
-        CGFloat columnWidth = tableWidth;
+        float columnWidth = tableWidth;
 
         NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
         yTableColumn.title = @"y";
@@ -588,13 +588,13 @@
     indexTableColumn.identifier = @"rowNumber";
     [valuesTableView addTableColumn:indexTableColumn];
     
-    CGFloat tableWidth = valuesTableView.bounds.size.width - 30.0f;
+    float tableWidth = valuesTableView.bounds.size.width - 30.0f;
     
     NSString * typeAttributeString = typePopUpButton.titleOfSelectedItem;
     
     if ([typeAttributeString isEqualToString:@"translate"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 2.0f;
+        float columnWidth = tableWidth / 2.0f;
     
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -614,7 +614,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"scale"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 2.0f;
+        float columnWidth = tableWidth / 2.0f;
     
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -634,7 +634,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"rotate"] == YES)
     {
-        CGFloat columnWidth = tableWidth / 3.0f;
+        float columnWidth = tableWidth / 3.0f;
 
         NSTableColumn * degreesTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"degrees"];
         degreesTableColumn.title = @"degrees";
@@ -662,7 +662,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"skewX"] == YES)
     {
-        CGFloat columnWidth = tableWidth;
+        float columnWidth = tableWidth;
 
         NSTableColumn * xTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"x"];
         xTableColumn.title = @"x";
@@ -674,7 +674,7 @@
     }
     else if ([typeAttributeString isEqualToString:@"skewY"] == YES)
     {
-        CGFloat columnWidth = tableWidth;
+        float columnWidth = tableWidth;
 
         NSTableColumn * yTableColumn = [[NSTableColumn alloc] initWithIdentifier:@"y"];
         yTableColumn.title = @"y";

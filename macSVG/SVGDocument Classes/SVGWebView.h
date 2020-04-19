@@ -21,9 +21,9 @@
     IBOutlet SVGWebKitController * svgWebKitController;
 }
 
-@property (assign) CGFloat zoomFactor;
+@property (assign) float zoomFactor;
 
-- (void)setSVGZoomStyleWithFloat:(CGFloat)zoomFactor;
+- (void)setSVGZoomStyleWithFloat:(float)zoomFactor;
 
 
 @end

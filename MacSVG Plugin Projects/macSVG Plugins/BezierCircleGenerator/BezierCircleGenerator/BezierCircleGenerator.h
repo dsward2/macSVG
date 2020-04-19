@@ -15,6 +15,6 @@
     IBOutlet BezierCircleGeneratorWindowController * bezierCircleGeneratorWindowController;
 }
 
--(void) makeBezierCircleAtCenterX:(CGFloat)x centerY:(CGFloat)y radius:(CGFloat)radius segments:(NSInteger)segments;
+-(void) makeBezierCircleAtCenterX:(float)x centerY:(float)y radius:(float)radius segments:(NSInteger)segments;
 
 @end

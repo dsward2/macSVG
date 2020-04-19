@@ -1360,8 +1360,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 yString = @"0";
             }
     
-            CGFloat x = xString.floatValue;
-            CGFloat y = yString.floatValue;
+            float x = xString.floatValue;
+            float y = yString.floatValue;
             
             NSString * handleName = @"_macsvg_center_of_rotation";
 
@@ -1535,7 +1535,7 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
     
     //NSLog(@"rotate a=%f,%f b=%f,%f c=%f,%f", pointA.x, pointA.y, pointB.x, pointB.y, pointC.x, pointC.y);
 
-    CGFloat angleDegrees = getAngleABC(pointA, pointB, pointC);
+    float angleDegrees = getAngleABC(pointA, pointB, pointC);
     
     beginHandleDegrees = angleDegrees - degreesString.floatValue;    // starting angle relative to "top"
     
@@ -1597,8 +1597,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                 NSString * oldCenterOfRotationXString = rotateDictionary[@"x"];
                 NSString * oldCenterOfRotationYString = rotateDictionary[@"y"];
                 
-                CGFloat oldCenterOfRotationX = oldCenterOfRotationXString.floatValue;
-                CGFloat oldCenterOfRotationY = oldCenterOfRotationYString.floatValue;
+                float oldCenterOfRotationX = oldCenterOfRotationXString.floatValue;
+                float oldCenterOfRotationY = oldCenterOfRotationYString.floatValue;
                 
                 rotateDictionary[@"x"] = xString;
                 rotateDictionary[@"y"] = yString;
@@ -1679,8 +1679,8 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
                                                     NSString * centerOfRotationXString = [valueItemsArray objectAtIndex:1];
                                                     NSString * centerOfRotationYString = [valueItemsArray objectAtIndex:2];
                                                     
-                                                    CGFloat centerOfRotationX = centerOfRotationXString.floatValue;
-                                                    CGFloat centerOfRotationY = centerOfRotationYString.floatValue;
+                                                    float centerOfRotationX = centerOfRotationXString.floatValue;
+                                                    float centerOfRotationY = centerOfRotationYString.floatValue;
                                                     
                                                     if (centerOfRotationX == oldCenterOfRotationX)
                                                     {

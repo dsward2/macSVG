@@ -70,7 +70,7 @@
 
 - (NSXMLElement *)createPathWithString:(NSString *)pathTextString
         font:(NSFont *)font fontSize:(CGFloat)fontSize
-        originX:(CGFloat)originX originY:(CGFloat)originY
+        originX:(float)originX originY:(float)originY
 {
     NSXMLElement * resultElement = NULL;
 
@@ -196,7 +196,7 @@
 
 - (NSXMLElement *)createMultiplePathsWithString:(NSString *)pathTextString
         font:(NSFont *)font fontSize:(CGFloat)fontSize
-        originX:(CGFloat)originX originY:(CGFloat)originY
+        originX:(float)originX originY:(float)originY
 {
     NSInteger pathTextStringLength = pathTextString.length;
     

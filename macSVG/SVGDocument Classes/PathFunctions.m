@@ -10,8 +10,50 @@
 #import "MacSVGDocumentWindowController.h"
 #import "MacSVGDocument.h"
 #import "SVGWebKitController.h"
+#import "PathSegment.h"
 
 @implementation PathFunctions
+
+//==================================================================================
+//	allocFloatString:
+//==================================================================================
+
+- (NSMutableString *)allocFloatString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = aString.length;
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    return aString;
+}
 
 //==================================================================================
 //	computeBoundsForPathSegmentsArray
@@ -21,24 +63,19 @@
 {
     NSRect resultRect = NSZeroRect;
     
-    CGFloat xMin = FLT_MAX;
-    CGFloat xMax = FLT_MIN;
-    CGFloat yMin = FLT_MAX;
-    CGFloat yMax = FLT_MIN;
+    float xMin = FLT_MAX;
+    float xMax = FLT_MIN;
+    float yMin = FLT_MAX;
+    float yMax = FLT_MIN;
 
     [self.macSVGDocumentWindowController.svgWebKitController updatePathSegmentsAbsoluteValues:pathSegmentsArray];
     
-    for (NSDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
-        NSNumber * absoluteXNumber = pathSegmentDictionary[@"absoluteX"];
-        NSNumber * absoluteYNumber = pathSegmentDictionary[@"absoluteY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
-        CGFloat absoluteXFloat = absoluteXNumber.floatValue;
-        CGFloat absoluteYFloat = absoluteYNumber.floatValue;
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
+        float absoluteXFloat = pathSegment.absoluteXFloat;
+        float absoluteYFloat = pathSegment.absoluteYFloat;
 
         if (xMin > absoluteStartXFloat)
         {
@@ -80,9 +117,7 @@
             yMax = absoluteYFloat;
         }
 
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         switch (commandCharacter)
         {
@@ -114,11 +149,8 @@
             {
                 if (withControlPoints == YES)
                 {
-                    NSNumber * x1Number = pathSegmentDictionary[@"absoluteX1"];
-                    CGFloat x1Float = x1Number.floatValue;
-
-                    NSNumber * y1Number = pathSegmentDictionary[@"absoluteY1"];
-                    CGFloat y1Float = y1Number.floatValue;
+                    float x1Float = pathSegment.absoluteX1Float;
+                    float y1Float = pathSegment.absoluteY1Float;
 
                     if (xMin > x1Float)
                     {
@@ -138,11 +170,8 @@
                         yMax = y1Float;
                     }
 
-                    NSNumber * x2Number = pathSegmentDictionary[@"absoluteX2"];
-                    CGFloat x2Float = x2Number.floatValue;
-
-                    NSNumber * y2Number = pathSegmentDictionary[@"absoluteY2"];
-                    CGFloat y2Float = y2Number.floatValue;
+                    float x2Float = pathSegment.absoluteX2Float;
+                    float y2Float = pathSegment.absoluteY2Float;
 
                     if (xMin > x2Float)
                     {
@@ -171,11 +200,8 @@
             {
                 if (withControlPoints == YES)
                 {
-                    NSNumber * x2Number = pathSegmentDictionary[@"absoluteX2"];
-                    CGFloat x2Float = x2Number.floatValue;
-
-                    NSNumber * y2Number = pathSegmentDictionary[@"absoluteY2"];
-                    CGFloat y2Float = y2Number.floatValue;
+                    float x2Float = pathSegment.absoluteX2Float;
+                    float y2Float = pathSegment.absoluteY2Float;
 
                     if (xMin > x2Float)
                     {
@@ -204,11 +230,8 @@
             {
                 if (withControlPoints == YES)
                 {
-                    NSNumber * x1Number = pathSegmentDictionary[@"absoluteX1"];
-                    CGFloat x1Float = x1Number.floatValue;
-
-                    NSNumber * y1Number = pathSegmentDictionary[@"absoluteY1"];
-                    CGFloat y1Float = y1Number.floatValue;
+                    float x1Float = pathSegment.absoluteX1Float;
+                    float y1Float = pathSegment.absoluteY1Float;
 
                     if (xMin > x1Float)
                     {
@@ -278,17 +301,12 @@
 {
     MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
 
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         switch (commandCharacter)
         {
@@ -297,19 +315,19 @@
 
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"M";
+                pathSegment.pathCommand = 'M';
                 break;
             }
             case 'L':     // lineto
@@ -319,19 +337,19 @@
             
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"L";
+                pathSegment.pathCommand = 'L';
                 break;
             }
 
@@ -340,13 +358,13 @@
 
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                pathSegmentDictionary[@"command"] = @"H";
+                pathSegment.pathCommand = 'H';
                 break;
             }
 
@@ -355,13 +373,13 @@
 
             case 'v':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"V";
+                pathSegment.pathCommand = 'V';
                 break;
             }
 
@@ -370,43 +388,43 @@
 
             case 'c':     // curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                CGFloat x1Float = x1String.floatValue;
+                NSString * x1String = pathSegment.x1String;
+                float x1Float = x1String.floatValue;
                 x1Float += absoluteStartXFloat;
                 NSString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                CGFloat y1Float = y1String.floatValue;
+                NSString * y1String = pathSegment.y1String;
+                float y1Float = y1String.floatValue;
                 y1Float += absoluteStartYFloat;
                 NSString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                CGFloat x2Float = x2String.floatValue;
+                NSString * x2String = pathSegment.x2String;
+                float x2Float = x2String.floatValue;
                 x2Float += absoluteStartXFloat;
                 NSString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                CGFloat y2Float = y2String.floatValue;
+                NSString * y2String = pathSegment.y2String;
+                float y2Float = y2String.floatValue;
                 y2Float += absoluteStartYFloat;
                 NSString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 break;
             }
 
@@ -415,31 +433,31 @@
 
             case 's':     // smooth curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                CGFloat x2Float = x2String.floatValue;
+                NSString * x2String = pathSegment.x2String;
+                float x2Float = x2String.floatValue;
                 x2Float += absoluteStartXFloat;
                 NSString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                CGFloat y2Float = y2String.floatValue;
+                NSString * y2String = pathSegment.y2String;
+                float y2Float = y2String.floatValue;
                 y2Float += absoluteStartYFloat;
                 NSString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"S";
+                pathSegment.pathCommand = 'S';
                 break;
             }
 
@@ -448,31 +466,31 @@
 
             case 'q':     // quadratic Bezier curve
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                CGFloat x1Float = x1String.floatValue;
+                NSString * x1String = pathSegment.x1String;
+                float x1Float = x1String.floatValue;
                 x1Float += absoluteStartXFloat;
                 NSString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                CGFloat y1Float = y1String.floatValue;
+                NSString * y1String = pathSegment.y1String;
+                float y1Float = y1String.floatValue;
                 y1Float += absoluteStartYFloat;
                 NSString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
-                pathSegmentDictionary[@"command"] = @"Q";
+                pathSegment.pathCommand = 'Q';
                 break;
             }
 
@@ -481,19 +499,19 @@
 
             case 't':     // smooth quadratic Bezier curve
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"T";
+                pathSegment.pathCommand = 'T';
                 break;
             }
 
@@ -502,19 +520,19 @@
 
             case 'a':     // elliptical arc
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"A";
+                pathSegment.pathCommand = 'A';
                 break;
             }
 
@@ -556,37 +574,24 @@
     [self.macSVGDocumentWindowController.svgWebKitController updatePathSegmentsAbsoluteValues:pathSegmentsArray];
 
     unichar previousCommandCharacter = ' ';
-    NSDictionary * previousSegmentDictionary = NULL;
+    PathSegment * previousSegment = NULL;
     NSInteger pathSegmentIndex = 0;
     CGPoint controlPoint = NSZeroPoint;
 
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
         
-        NSNumber * absoluteXNumber = pathSegmentDictionary[@"absoluteX"];
-        NSNumber * absoluteYNumber = pathSegmentDictionary[@"absoluteY"];
+        float absoluteXFloat = pathSegment.absoluteXFloat;
+        float absoluteYFloat = pathSegment.absoluteYFloat;
         
-        //NSNumber * xNumber = [pathSegmentDictionary objectForKey:@"x"];
-        //NSNumber * yNumber = [pathSegmentDictionary objectForKey:@"y"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
-        
-        CGFloat absoluteXFloat = absoluteXNumber.floatValue;
-        CGFloat absoluteYFloat = absoluteYNumber.floatValue;
-        
-        //CGFloat xFloat = [xNumber floatValue];
-        //CGFloat yFloat = [yNumber floatValue];
-
         if (pathSegmentIndex == 0)
         {
             controlPoint = CGPointMake(absoluteStartXFloat, absoluteStartYFloat);
         }
 
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         switch (commandCharacter)
         {
@@ -595,19 +600,19 @@
 
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"M";
+                pathSegment.pathCommand = 'M';
                 break;
             }
             case 'L':     // lineto
@@ -617,19 +622,19 @@
             
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"L";
+                pathSegment.pathCommand = 'L';
                 break;
             }
 
@@ -638,13 +643,13 @@
 
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                pathSegmentDictionary[@"command"] = @"H";
+                pathSegment.pathCommand = 'H';
                 break;
             }
 
@@ -653,13 +658,13 @@
 
             case 'v':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"V";
+                pathSegment.pathCommand = 'V';
                 break;
             }
 
@@ -668,43 +673,43 @@
 
             case 'c':     // curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                CGFloat x1Float = x1String.floatValue;
+                NSString * x1String = pathSegment.x1String;
+                float x1Float = x1String.floatValue;
                 x1Float += absoluteStartXFloat;
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                CGFloat y1Float = y1String.floatValue;
+                NSString * y1String = pathSegment.y1String;
+                float y1Float = y1String.floatValue;
                 y1Float += absoluteStartYFloat;
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                CGFloat x2Float = x2String.floatValue;
+                NSString * x2String = pathSegment.x2String;
+                float x2Float = x2String.floatValue;
                 x2Float += absoluteStartXFloat;
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                CGFloat y2Float = y2String.floatValue;
+                NSString * y2String = pathSegment.y2String;
+                float y2Float = y2String.floatValue;
                 y2Float += absoluteStartYFloat;
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 break;
             }
 
@@ -720,70 +725,56 @@
                     case 'S':
                     case 's':
                     {
-                        NSNumber * previousAbsoluteX2Number = previousSegmentDictionary[@"absoluteX2"];
-                        NSNumber * previousAbsoluteY2Number = previousSegmentDictionary[@"absoluteY2"];
+                        float previousAbsoluteX2Float = previousSegment.absoluteX2Float;
+                        float previousAbsoluteY2Float = previousSegment.absoluteY2Float;
                         
-                        CGFloat previousAbsoluteX2Float = previousAbsoluteX2Number.floatValue;
-                        CGFloat previousAbsoluteY2Float = previousAbsoluteY2Number.floatValue;
+                        float x1Float = absoluteStartXFloat + (absoluteStartXFloat - previousAbsoluteX2Float);
+                        float y1Float = absoluteStartYFloat + (absoluteStartYFloat - previousAbsoluteY2Float);
+
+                        //pathSegment.x1String = [self allocFloatString:x1Float];
+                        //pathSegment.y1String = [self allocFloatString:y1Float];
                         
-                        CGFloat x1Float = absoluteStartXFloat + (absoluteStartXFloat - previousAbsoluteX2Float);
-                        CGFloat y1Float = absoluteStartYFloat + (absoluteStartYFloat - previousAbsoluteY2Float);
-
-                        NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                        pathSegmentDictionary[@"x1"] = newX1String;
-
-                        NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                        pathSegmentDictionary[@"y1"] = newY1String;
+                        pathSegment.x1Float = x1Float;
+                        pathSegment.y1Float = y1Float;
                         
-                        NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
-
-                        NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                        pathSegment.absoluteX1Float = x1Float;
+                        pathSegment.absoluteY1Float = y1Float;
 
                         break;
                     }
                     default:
                     {
                         NSMutableString * newX1String = [macSVGDocument allocFloatString:absoluteStartXFloat];
-                        pathSegmentDictionary[@"x1"] = newX1String;
+                        pathSegment.x1String = newX1String;
 
                         NSMutableString * newY1String = [macSVGDocument allocFloatString:absoluteStartYFloat];
-                        pathSegmentDictionary[@"y1"] = newY1String;
+                        pathSegment.y1String = newY1String;
 
-                        NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:absoluteStartXFloat];
-                        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
-
-                        NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:absoluteStartYFloat];
-                        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                        pathSegment.absoluteX1Float = absoluteStartXFloat;
+                        pathSegment.absoluteY1Float = absoluteStartYFloat;
                     }
                 }
 
-                NSNumber * absoluteX2Number = pathSegmentDictionary[@"absoluteX2"];
-                NSNumber * absoluteY2Number = pathSegmentDictionary[@"absoluteY2"];
-                
-                CGFloat absoluteX2Float = absoluteX2Number.floatValue;
-                CGFloat absoluteY2Float = absoluteY2Number.floatValue;
+                float absoluteX2Float = pathSegment.absoluteX2Float;
+                float absoluteY2Float = pathSegment.absoluteY2Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:absoluteX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:absoluteY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:absoluteX2Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX2Number;
+                pathSegment.absoluteX1Float = absoluteX2Float;
 
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:absoluteY2Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY2Number;
+                pathSegment.absoluteY1Float = absoluteY2Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -795,51 +786,42 @@
                 CGPoint currentPoint = CGPointMake(absoluteStartXFloat, absoluteStartYFloat);
                 CGPoint targetPoint = CGPointMake(absoluteXFloat, absoluteYFloat);
 
-                NSNumber * oldAbsoluteX1Number = pathSegmentDictionary[@"absoluteX1"];    // quadratic x1,y1
-                NSNumber * oldAbsoluteY1Number = pathSegmentDictionary[@"absoluteY1"];
-                
-                CGFloat oldAbsoluteX1Float = oldAbsoluteX1Number.floatValue;
-                CGFloat oldAbsoluteY1Float = oldAbsoluteY1Number.floatValue;
+                float oldAbsoluteX1Float = pathSegment.absoluteX1Float;    // quadratic x1,y1
+                float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
 
                 controlPoint = CGPointMake(oldAbsoluteX1Float, oldAbsoluteY1Float);
                 
-                CGFloat x1Float = currentPoint.x - ((currentPoint.x - controlPoint.x) / 1.5f);
-                CGFloat y1Float = currentPoint.y - ((currentPoint.y - controlPoint.y) / 1.5f);
+                float x1Float = currentPoint.x - ((currentPoint.x - controlPoint.x) / 1.5f);
+                float y1Float = currentPoint.y - ((currentPoint.y - controlPoint.y) / 1.5f);
                 
-                CGFloat x2Float = targetPoint.x - ((targetPoint.x - controlPoint.x) / 1.5f);
-                CGFloat y2Float = targetPoint.y - ((targetPoint.y - controlPoint.y) / 1.5f);
+                float x2Float = targetPoint.x - ((targetPoint.x - controlPoint.x) / 1.5f);
+                float y2Float = targetPoint.y - ((targetPoint.y - controlPoint.y) / 1.5f);
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
                 
-                NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
-
-                NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                pathSegment.absoluteX1Float = x1Float;
+                pathSegment.absoluteY1Float = y1Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:x2Float];
-                pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2Number;
-
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:y2Float];
-                pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2Number;
+                pathSegment.absoluteX2Float = x2Float;
+                pathSegment.absoluteY2Float = y2Float;
 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -891,43 +873,37 @@
                     controlPoint = cubicPoint;
                 }
 
-                CGFloat x1Float = point1.x;
-                CGFloat y1Float = point1.y;
+                float x1Float = point1.x;
+                float y1Float = point1.y;
                 
-                CGFloat x2Float = point2.x;
-                CGFloat y2Float = point2.y;
+                float x2Float = point2.x;
+                float y2Float = point2.y;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
                 
-                NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
-
-                NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                pathSegment.absoluteX1Float = x1Float;
+                pathSegment.absoluteY1Float = y1Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:x2Float];
-                pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2Number;
-
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:y2Float];
-                pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2Number;
+                pathSegment.absoluteX2Float = x2Float;
+                pathSegment.absoluteY2Float = y2Float;
 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -937,19 +913,19 @@
 
             case 'a':     // elliptical arc
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"A";
+                pathSegment.pathCommand = 'A';
                 break;
             }
 
@@ -959,7 +935,7 @@
         }
         
         previousCommandCharacter = commandCharacter;
-        previousSegmentDictionary = pathSegmentDictionary;
+        previousSegment = pathSegment;
         
         pathSegmentIndex++;
     }
@@ -995,37 +971,24 @@
     [self.macSVGDocumentWindowController.svgWebKitController updatePathSegmentsAbsoluteValues:pathSegmentsArray];
 
     unichar previousCommandCharacter = ' ';
-    NSDictionary * previousSegmentDictionary = NULL;
+    PathSegment * previousSegment = NULL;
     NSInteger pathSegmentIndex = 0;
     CGPoint controlPoint = NSZeroPoint;
 
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
         
-        NSNumber * absoluteXNumber = pathSegmentDictionary[@"absoluteX"];
-        NSNumber * absoluteYNumber = pathSegmentDictionary[@"absoluteY"];
+        float absoluteXFloat = pathSegment.absoluteXFloat;
+        float absoluteYFloat = pathSegment.absoluteYFloat;
         
-        //NSNumber * xNumber = [pathSegmentDictionary objectForKey:@"x"];
-        //NSNumber * yNumber = [pathSegmentDictionary objectForKey:@"y"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
-        
-        CGFloat absoluteXFloat = absoluteXNumber.floatValue;
-        CGFloat absoluteYFloat = absoluteYNumber.floatValue;
-        
-        //CGFloat xFloat = [xNumber floatValue];
-        //CGFloat yFloat = [yNumber floatValue];
-
         if (pathSegmentIndex == 0)
         {
             controlPoint = CGPointMake(absoluteStartXFloat, absoluteStartYFloat);
         }
 
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         switch (commandCharacter)
         {
@@ -1034,104 +997,104 @@
 
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"M";
+                pathSegment.pathCommand = 'M';
                 break;
             }
             case 'L':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                pathSegmentDictionary[@"x1"] = xString;
-                pathSegmentDictionary[@"y1"] = yString;
-                pathSegmentDictionary[@"x2"] = xString;
-                pathSegmentDictionary[@"y2"] = yString;
+                pathSegment.x1String = xString;
+                pathSegment.y1String = yString;
+                pathSegment.x2String = xString;
+                pathSegment.y2String = yString;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
             
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"x1"] = newXString;
-                pathSegmentDictionary[@"y1"] = newYString;
-                pathSegmentDictionary[@"x2"] = newXString;
-                pathSegmentDictionary[@"y2"] = newYString;
+                pathSegment.x1String = newXString;
+                pathSegment.y1String = newYString;
+                pathSegment.x2String = newXString;
+                pathSegment.y2String = newYString;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 break;
             }
 
             case 'H':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * xString = pathSegment.xString;
                 NSString * yString = [macSVGDocument allocFloatString:absoluteStartYFloat];
 
-                pathSegmentDictionary[@"x1"] = xString;
-                pathSegmentDictionary[@"y1"] = yString;
-                pathSegmentDictionary[@"x2"] = xString;
-                pathSegmentDictionary[@"y2"] = yString;
+                pathSegment.x1String = xString;
+                pathSegment.y1String = yString;
+                pathSegment.x2String = xString;
+                pathSegment.y2String = yString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
 
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * yString = [macSVGDocument allocFloatString:absoluteStartYFloat];
 
-                pathSegmentDictionary[@"x1"] = xString;
-                pathSegmentDictionary[@"y1"] = yString;
-                pathSegmentDictionary[@"x2"] = xString;
-                pathSegmentDictionary[@"y2"] = yString;
+                pathSegment.x1String = xString;
+                pathSegment.y1String = yString;
+                pathSegment.x2String = xString;
+                pathSegment.y2String = yString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 break;
             }
 
             case 'V':     // vertical lineto
             {
                 NSString * xString = [macSVGDocument allocFloatString:absoluteStartXFloat];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment.yString;
 
-                pathSegmentDictionary[@"x1"] = xString;
-                pathSegmentDictionary[@"y1"] = yString;
-                pathSegmentDictionary[@"x2"] = xString;
-                pathSegmentDictionary[@"y2"] = yString;
+                pathSegment.x1String = xString;
+                pathSegment.y1String = yString;
+                pathSegment.x2String = xString;
+                pathSegment.y2String = yString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
@@ -1140,18 +1103,18 @@
             {
                 NSString * xString = [macSVGDocument allocFloatString:absoluteStartXFloat];
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
-                pathSegmentDictionary[@"x1"] = xString;
-                pathSegmentDictionary[@"y1"] = yString;
-                pathSegmentDictionary[@"x2"] = xString;
-                pathSegmentDictionary[@"y2"] = yString;
+                pathSegment.x1String = xString;
+                pathSegment.y1String = yString;
+                pathSegment.x2String = xString;
+                pathSegment.y2String = yString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
@@ -1161,43 +1124,43 @@
 
             case 'c':     // curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                CGFloat x1Float = x1String.floatValue;
+                NSString * x1String = pathSegment.x1String;
+                float x1Float = x1String.floatValue;
                 x1Float += absoluteStartXFloat;
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                CGFloat y1Float = y1String.floatValue;
+                NSString * y1String = pathSegment.y1String;
+                float y1Float = y1String.floatValue;
                 y1Float += absoluteStartYFloat;
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                CGFloat x2Float = x2String.floatValue;
+                NSString * x2String = pathSegment.x2String;
+                float x2Float = x2String.floatValue;
                 x2Float += absoluteStartXFloat;
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
-                NSString * y2String = pathSegmentDictionary[@"y2"];
-                CGFloat y2Float = y2String.floatValue;
+                NSString * y2String = pathSegment.y2String;
+                float y2Float = y2String.floatValue;
                 y2Float += absoluteStartYFloat;
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 break;
             }
 
@@ -1213,70 +1176,58 @@
                     case 'S':
                     case 's':
                     {
-                        NSNumber * previousAbsoluteX2Number = previousSegmentDictionary[@"absoluteX2"];
-                        NSNumber * previousAbsoluteY2Number = previousSegmentDictionary[@"absoluteY2"];
+                        float previousAbsoluteX2Float = previousSegment.absoluteX2Float;
+                        float previousAbsoluteY2Float = previousSegment.absoluteY2Float;
                         
-                        CGFloat previousAbsoluteX2Float = previousAbsoluteX2Number.floatValue;
-                        CGFloat previousAbsoluteY2Float = previousAbsoluteY2Number.floatValue;
-                        
-                        CGFloat x1Float = absoluteStartXFloat + (absoluteStartXFloat - previousAbsoluteX2Float);
-                        CGFloat y1Float = absoluteStartYFloat + (absoluteStartYFloat - previousAbsoluteY2Float);
+                        float x1Float = absoluteStartXFloat + (absoluteStartXFloat - previousAbsoluteX2Float);
+                        float y1Float = absoluteStartYFloat + (absoluteStartYFloat - previousAbsoluteY2Float);
 
                         NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                        pathSegmentDictionary[@"x1"] = newX1String;
+                        pathSegment.x1String = newX1String;
 
                         NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                        pathSegmentDictionary[@"y1"] = newY1String;
+                        pathSegment.y1String = newY1String;
                         
-                        NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
+                        pathSegment.absoluteX1Float = x1Float;
 
-                        NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                        pathSegment.absoluteY1Float = y1Float;
 
                         break;
                     }
                     default:
                     {
                         NSMutableString * newX1String = [macSVGDocument allocFloatString:absoluteStartXFloat];
-                        pathSegmentDictionary[@"x1"] = newX1String;
+                        pathSegment.x1String = newX1String;
 
                         NSMutableString * newY1String = [macSVGDocument allocFloatString:absoluteStartYFloat];
-                        pathSegmentDictionary[@"y1"] = newY1String;
+                        pathSegment.y1String = newY1String;
 
-                        NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:absoluteStartXFloat];
-                        pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
+                        pathSegment.absoluteX1Float = absoluteStartXFloat;
 
-                        NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:absoluteStartYFloat];
-                        pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                        pathSegment.absoluteY1Float = absoluteStartYFloat;
                     }
                 }
 
-                NSNumber * absoluteX2Number = pathSegmentDictionary[@"absoluteX2"];
-                NSNumber * absoluteY2Number = pathSegmentDictionary[@"absoluteY2"];
-                
-                CGFloat absoluteX2Float = absoluteX2Number.floatValue;
-                CGFloat absoluteY2Float = absoluteY2Number.floatValue;
+                float absoluteX2Float = pathSegment.absoluteX2Float;
+                float absoluteY2Float = pathSegment.absoluteY2Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:absoluteX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:absoluteY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:absoluteX2Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX2Number;
+                pathSegment.absoluteX1Float = absoluteX2Float;
 
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:absoluteY2Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY2Number;
+                pathSegment.absoluteY1Float = absoluteY2Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -1288,51 +1239,44 @@
                 CGPoint currentPoint = CGPointMake(absoluteStartXFloat, absoluteStartYFloat);
                 CGPoint targetPoint = CGPointMake(absoluteXFloat, absoluteYFloat);
 
-                NSNumber * oldAbsoluteX1Number = pathSegmentDictionary[@"absoluteX1"];    // quadratic x1,y1
-                NSNumber * oldAbsoluteY1Number = pathSegmentDictionary[@"absoluteY1"];
-                
-                CGFloat oldAbsoluteX1Float = oldAbsoluteX1Number.floatValue;
-                CGFloat oldAbsoluteY1Float = oldAbsoluteY1Number.floatValue;
+                float oldAbsoluteX1Float = pathSegment.absoluteX1Float;
+                float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
 
                 controlPoint = CGPointMake(oldAbsoluteX1Float, oldAbsoluteY1Float);
                 
-                CGFloat x1Float = currentPoint.x - ((currentPoint.x - controlPoint.x) / 1.5f);
-                CGFloat y1Float = currentPoint.y - ((currentPoint.y - controlPoint.y) / 1.5f);
+                float x1Float = currentPoint.x - ((currentPoint.x - controlPoint.x) / 1.5f);
+                float y1Float = currentPoint.y - ((currentPoint.y - controlPoint.y) / 1.5f);
                 
-                CGFloat x2Float = targetPoint.x - ((targetPoint.x - controlPoint.x) / 1.5f);
-                CGFloat y2Float = targetPoint.y - ((targetPoint.y - controlPoint.y) / 1.5f);
+                float x2Float = targetPoint.x - ((targetPoint.x - controlPoint.x) / 1.5f);
+                float y2Float = targetPoint.y - ((targetPoint.y - controlPoint.y) / 1.5f);
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
                 
-                NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
+                pathSegment.absoluteX1Float = x1Float;
 
-                NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                pathSegment.absoluteY1Float = y1Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:x2Float];
-                pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2Number;
+                pathSegment.absoluteX2Float = x2Float;
 
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:y2Float];
-                pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2Number;
+                pathSegment.absoluteY2Float = y2Float;
 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -1384,43 +1328,39 @@
                     controlPoint = cubicPoint;
                 }
 
-                CGFloat x1Float = point1.x;
-                CGFloat y1Float = point1.y;
+                float x1Float = point1.x;
+                float y1Float = point1.y;
                 
-                CGFloat x2Float = point2.x;
-                CGFloat y2Float = point2.y;
+                float x2Float = point2.x;
+                float y2Float = point2.y;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:x1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:y1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
                 
-                NSNumber * newAbsoluteX1Number = [NSNumber numberWithFloat:x1Float];
-                pathSegmentDictionary[@"absoluteX1"] = newAbsoluteX1Number;
+                pathSegment.absoluteX1Float = x1Float;
 
-                NSNumber * newAbsoluteY1Number = [NSNumber numberWithFloat:y1Float];
-                pathSegmentDictionary[@"absoluteY1"] = newAbsoluteY1Number;
+                pathSegment.absoluteY1Float = y1Float;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:x2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:y2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                NSNumber * newAbsoluteX2Number = [NSNumber numberWithFloat:x2Float];
-                pathSegmentDictionary[@"absoluteX2"] = newAbsoluteX2Number;
+                pathSegment.absoluteX2Float = x2Float;
 
-                NSNumber * newAbsoluteY2Number = [NSNumber numberWithFloat:y2Float];
-                pathSegmentDictionary[@"absoluteY2"] = newAbsoluteY2Number;
+                pathSegment.absoluteY2Float = y2Float;
 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:absoluteXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:absoluteYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
                 
                 break;
             }
@@ -1432,19 +1372,19 @@
             case 'a':     // elliptical arc
             {
                 // TODO: convert elliptical arc to cubic bezier?
-                NSString * xString = pathSegmentDictionary[@"x"];
-                CGFloat xFloat = xString.floatValue;
+                NSString * xString = pathSegment.xString;
+                float xFloat = xString.floatValue;
                 xFloat += absoluteStartXFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
-                NSString * yString = pathSegmentDictionary[@"y"];
-                CGFloat yFloat = yString.floatValue;
+                NSString * yString = pathSegment.yString;
+                float yFloat = yString.floatValue;
                 yFloat += absoluteStartYFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                pathSegmentDictionary[@"command"] = @"A";
+                pathSegment.pathCommand = 'A';
                 break;
             }
 
@@ -1454,7 +1394,7 @@
         }
         
         previousCommandCharacter = commandCharacter;
-        previousSegmentDictionary = pathSegmentDictionary;
+        previousSegment = pathSegment;
         
         pathSegmentIndex++;
     }
@@ -1472,57 +1412,27 @@
 {
     NSMutableArray * resultArray = [NSMutableArray array];
 
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSMutableDictionary * newDictionary = [NSMutableDictionary dictionary];
-    
-        NSArray * allKeys = pathSegmentDictionary.allKeys;
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
+        [newPathSegment copyValuesFromPathSegment:pathSegment];
         
-        for (NSString * aKey in allKeys)
-        {
-            id aValue = pathSegmentDictionary[aKey];
-            
-            NSString * newKey = [aKey copy];
-            id newValue = [aValue copy];
-            
-            newDictionary[newKey] = newValue;
-        }
-        
-        [resultArray addObject:newDictionary];
+        [resultArray addObject:newPathSegment];
     }
     
     return resultArray;
 }
 
 //==================================================================================
-//	duplicateSegmentDictionary
+//	duplicatePathSegment
 //==================================================================================
 
-- (NSMutableDictionary *)duplicateSegmentDictionary:(NSMutableDictionary *)pathSegmentDictionary
+- (PathSegment *)duplicatePathSegment:(PathSegment *)pathSegment
 {
-    NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+    PathSegment * newPathSegment = [[PathSegment alloc] init];
+    [newPathSegment copyValuesFromPathSegment:pathSegment];
     
-    NSArray * originalKeys = pathSegmentDictionary.allKeys;
-    
-    for (NSString * aKey in originalKeys)
-    {
-        id originalObject = pathSegmentDictionary[aKey];
-        
-        if ([originalObject isKindOfClass:[NSString class]] == YES)
-        {
-            NSString * aString = originalObject;
-            NSMutableString * newString = [NSMutableString stringWithString:aString];
-            newSegmentDictionary[aKey] = newString;
-        }
-        else if ([originalObject isKindOfClass:[NSNumber class]] == YES)
-        {
-            NSNumber * aNumber = originalObject;
-            NSNumber * newNumber = @(aNumber.floatValue);
-            newSegmentDictionary[aKey] = newNumber;
-        }
-    }
-    
-    return newSegmentDictionary;
+    return newPathSegment;
 }
 
 //==================================================================================
@@ -1537,20 +1447,20 @@
     NSMutableArray * cubicPathSegmentsArray = [self copyPathSegmentsArray:pathSegmentsArray];
     cubicPathSegmentsArray = [self convertCurvesToAbsoluteCubicBezierWithPathSegmentsArray:cubicPathSegmentsArray];
     NSMutableArray * reverseCubicsSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * cubicSegmentDictionary in cubicPathSegmentsArray)
+    for (PathSegment * cubicPathSegment in cubicPathSegmentsArray)
     {
-        NSMutableDictionary * newCubicSegmentDictionary = [self duplicateSegmentDictionary:cubicSegmentDictionary];
+        PathSegment * newCubicPathSegment = [self duplicatePathSegment:cubicPathSegment];
 
-        [reverseCubicsSegmentsArray insertObject:newCubicSegmentDictionary atIndex:0];
+        [reverseCubicsSegmentsArray insertObject:newCubicPathSegment atIndex:0];
     }
 
     // reverse sequence of input array
     NSMutableArray * reverseSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSMutableDictionary * newSegmentDictionary = [self duplicateSegmentDictionary:pathSegmentDictionary];
+        PathSegment * newPathSegment = [self duplicatePathSegment:pathSegment];
 
-        [reverseSegmentsArray insertObject:newSegmentDictionary atIndex:0];
+        [reverseSegmentsArray insertObject:newPathSegment atIndex:0];
     }
     
     NSMutableArray * newPathSegmentsArray = [NSMutableArray array];
@@ -1559,36 +1469,29 @@
     
     unichar originalLastCommand = ' ';
     
-    for (NSMutableDictionary * reversePathSegmentDictionary in reverseSegmentsArray)
+    for (PathSegment * reversePathSegment in reverseSegmentsArray)
     {
-        NSMutableDictionary * pathSegmentDictionary = [NSMutableDictionary dictionary];
+        PathSegment * pathSegment = [[PathSegment alloc] init];
     
-        NSNumber * absoluteStartXNumber = reversePathSegmentDictionary[@"absoluteStartX"];    // reversed, this will be the new endpoint
-        NSNumber * absoluteStartYNumber = reversePathSegmentDictionary[@"absoluteStartY"];
-        NSNumber * absoluteXNumber = reversePathSegmentDictionary[@"absoluteX"];              // reversed, this will be the new startpoint
-        NSNumber * absoluteYNumber = reversePathSegmentDictionary[@"absoluteY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
-        CGFloat absoluteXFloat = absoluteXNumber.floatValue;
-        CGFloat absoluteYFloat = absoluteYNumber.floatValue;
+        float absoluteStartXFloat = reversePathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = reversePathSegment.absoluteStartYFloat;
+        float absoluteXFloat = reversePathSegment.absoluteXFloat;
+        float absoluteYFloat = reversePathSegment.absoluteYFloat;
         
         NSString * absoluteStartXString = [macSVGDocument allocFloatString:absoluteStartXFloat];
         NSString * absoluteStartYString = [macSVGDocument allocFloatString:absoluteStartYFloat];
         NSString * absoluteXString = [macSVGDocument allocFloatString:absoluteXFloat];
         NSString * absoluteYString = [macSVGDocument allocFloatString:absoluteYFloat];
         
-        NSString * xString = pathSegmentDictionary[@"x"];
-        NSNumber * yString = pathSegmentDictionary[@"y"];
+        NSString * xString = pathSegment.xString;
+        NSString * yString = pathSegment.yString;
 
-        CGFloat xFloat = xString.floatValue;
-        CGFloat yFloat = yString.floatValue;
+        float xFloat = xString.floatValue;
+        float yFloat = yString.floatValue;
         
-        NSString * commandString = reversePathSegmentDictionary[@"command"];
+        pathSegment.pathCommand = reversePathSegment.pathCommand;;
         
-        pathSegmentDictionary[@"command"] = commandString;
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
 
         if (currentIndex == 0)
         {
@@ -1617,8 +1520,7 @@
             {
                 // change smooth cubic curve to cubic curve
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
 
                 NSString * absoluteX1String = [macSVGDocument allocFloatString:absoluteStartXFloat];
                 NSString * absoluteY1String = [macSVGDocument allocFloatString:absoluteStartYFloat];
@@ -1633,19 +1535,19 @@
 
                     if ((nextAbsoluteX2Number != NULL) && (nextAbsoluteY2Number != NULL))
                     {
-                        CGFloat nextAbsoluteX2Float = nextAbsoluteX2Number.floatValue;
-                        CGFloat nextAbsoluteY2Float = nextAbsoluteY2Number.floatValue;
+                        float nextAbsoluteX2Float = nextAbsoluteX2Number.floatValue;
+                        float nextAbsoluteY2Float = nextAbsoluteY2Number.floatValue;
                     
-                        CGFloat absoluteX1 = absoluteStartXFloat + (absoluteStartXFloat - nextAbsoluteX2Float);
-                        CGFloat absoluteY1 = absoluteStartYFloat + (absoluteStartYFloat - nextAbsoluteY2Float);
+                        float absoluteX1 = absoluteStartXFloat + (absoluteStartXFloat - nextAbsoluteX2Float);
+                        float absoluteY1 = absoluteStartYFloat + (absoluteStartYFloat - nextAbsoluteY2Float);
                         
                         absoluteX1String = [macSVGDocument allocFloatString:absoluteX1];
                         absoluteY1String = [macSVGDocument allocFloatString:absoluteY1];
                     }
                 }
                 
-                reversePathSegmentDictionary[@"x1"] = absoluteX1String;
-                reversePathSegmentDictionary[@"y1"] = absoluteY1String;
+                reversePathSegment.x1String = absoluteX1String;
+                reversePathSegment.y1String = absoluteY1String;
                 
                 break;
             }
@@ -1653,8 +1555,7 @@
             {
                 // change smooth cubic curve to cubic curve
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
 
                 NSString * absoluteX1String = [macSVGDocument allocFloatString:absoluteStartXFloat];
                 NSString * absoluteY1String = [macSVGDocument allocFloatString:absoluteStartYFloat];
@@ -1669,34 +1570,31 @@
 
                     if ((nextAbsoluteX2Number != NULL) && (nextAbsoluteY2Number != NULL))
                     {
-                        CGFloat nextAbsoluteX2Float = nextAbsoluteX2Number.floatValue;
-                        CGFloat nextAbsoluteY2Float = nextAbsoluteY2Number.floatValue;
+                        float nextAbsoluteX2Float = nextAbsoluteX2Number.floatValue;
+                        float nextAbsoluteY2Float = nextAbsoluteY2Number.floatValue;
                     
-                        CGFloat absoluteX1 = absoluteStartXFloat + (absoluteStartXFloat - nextAbsoluteX2Float);
-                        CGFloat absoluteY1 = absoluteStartYFloat + (absoluteStartYFloat - nextAbsoluteY2Float);
+                        float absoluteX1 = absoluteStartXFloat + (absoluteStartXFloat - nextAbsoluteX2Float);
+                        float absoluteY1 = absoluteStartYFloat + (absoluteStartYFloat - nextAbsoluteY2Float);
                         
                         absoluteX1String = [macSVGDocument allocFloatString:absoluteX1];
                         absoluteY1String = [macSVGDocument allocFloatString:absoluteY1];
                     }
                 }
                 
-                reversePathSegmentDictionary[@"x1"] = absoluteX1String;
-                reversePathSegmentDictionary[@"y1"] = absoluteY1String;
+                reversePathSegment.x1String = absoluteX1String;
+                reversePathSegment.y1String = absoluteY1String;
 
-                reversePathSegmentDictionary[@"x"] = absoluteXString;
-                reversePathSegmentDictionary[@"y"] = absoluteYString;
+                reversePathSegment.xString = absoluteXString;
+                reversePathSegment.yString = absoluteYString;
 
-                NSNumber * absoluteX2Number = reversePathSegmentDictionary[@"absoluteX2"];
-                NSNumber * absoluteY2Number = reversePathSegmentDictionary[@"absoluteY2"];
-
-                CGFloat absoluteX2 = absoluteX2Number.floatValue;
-                CGFloat absoluteY2 = absoluteY2Number.floatValue;
+                float absoluteX2 = reversePathSegment.absoluteX2Float;
+                float absoluteY2 = reversePathSegment.absoluteY2Float;
                 
                 NSString * absoluteX2String = [macSVGDocument allocFloatString:absoluteX2];
                 NSString * absoluteY2String = [macSVGDocument allocFloatString:absoluteY2];
                 
-                reversePathSegmentDictionary[@"x2"] = absoluteX2String;
-                reversePathSegmentDictionary[@"y2"] = absoluteY2String;
+                reversePathSegment.x2String = absoluteX2String;
+                reversePathSegment.y2String = absoluteY2String;
                 
                 break;
             }
@@ -1704,29 +1602,25 @@
             {
                 // change quadratic curve to cubic curve
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
 
-                NSNumber * absoluteX1Number = reversePathSegmentDictionary[@"absoluteX1"];
-                NSNumber * absoluteY1Number = reversePathSegmentDictionary[@"absoluteY1"];
+                float absoluteX1Float = reversePathSegment.absoluteX1Float;
+                float absoluteY1Float = reversePathSegment.absoluteY1Float;
                 
-                CGFloat absoluteX1Float = absoluteX1Number.floatValue;
-                CGFloat absoluteY1Float = absoluteY1Number.floatValue;
-                
-                CGFloat newAbsoluteX1Float = absoluteStartXFloat - ((absoluteStartXFloat - absoluteX1Float) / 1.5f);
-                CGFloat newAbsoluteY1Float = absoluteStartYFloat - ((absoluteStartYFloat - absoluteY1Float) / 1.5f);
-                CGFloat newAbsoluteX2Float = absoluteXFloat - ((absoluteXFloat - absoluteX1Float) / 1.5f);
-                CGFloat newAbsoluteY2Float = absoluteYFloat - ((absoluteYFloat - absoluteY1Float) / 1.5f);
+                float newAbsoluteX1Float = absoluteStartXFloat - ((absoluteStartXFloat - absoluteX1Float) / 1.5f);
+                float newAbsoluteY1Float = absoluteStartYFloat - ((absoluteStartYFloat - absoluteY1Float) / 1.5f);
+                float newAbsoluteX2Float = absoluteXFloat - ((absoluteXFloat - absoluteX1Float) / 1.5f);
+                float newAbsoluteY2Float = absoluteYFloat - ((absoluteYFloat - absoluteY1Float) / 1.5f);
                 
                 NSString * absoluteX1String = [macSVGDocument allocFloatString:newAbsoluteX1Float];
                 NSString * absoluteY1String = [macSVGDocument allocFloatString:newAbsoluteY1Float];
                 NSString * absoluteX2String = [macSVGDocument allocFloatString:newAbsoluteX2Float];
                 NSString * absoluteY2String = [macSVGDocument allocFloatString:newAbsoluteY2Float];
                 
-                reversePathSegmentDictionary[@"x1"] = absoluteX1String;
-                reversePathSegmentDictionary[@"y1"] = absoluteY1String;
-                reversePathSegmentDictionary[@"x2"] = absoluteX2String;
-                reversePathSegmentDictionary[@"y2"] = absoluteY2String;
+                reversePathSegment.x1String = absoluteX1String;
+                reversePathSegment.y1String = absoluteY1String;
+                reversePathSegment.x2String = absoluteX2String;
+                reversePathSegment.y2String = absoluteY2String;
                 
                 break;
             }
@@ -1734,29 +1628,25 @@
             {
                 // change quadratic curve to cubic curve
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
 
-                NSNumber * absoluteX1Number = reversePathSegmentDictionary[@"absoluteX1"];
-                NSNumber * absoluteY1Number = reversePathSegmentDictionary[@"absoluteY1"];
+                float absoluteX1Float = reversePathSegment.absoluteX1Float;
+                float absoluteY1Float = reversePathSegment.absoluteY1Float;
                 
-                CGFloat absoluteX1Float = absoluteX1Number.floatValue;
-                CGFloat absoluteY1Float = absoluteY1Number.floatValue;
-                
-                CGFloat newAbsoluteX1Float = absoluteStartXFloat - ((absoluteStartXFloat - absoluteX1Float) / 1.5f);
-                CGFloat newAbsoluteY1Float = absoluteStartYFloat - ((absoluteStartYFloat - absoluteY1Float) / 1.5f);
-                CGFloat newAbsoluteX2Float = absoluteXFloat - ((absoluteXFloat - absoluteX1Float) / 1.5f);
-                CGFloat newAbsoluteY2Float = absoluteYFloat - ((absoluteYFloat - absoluteY1Float) / 1.5f);
+                float newAbsoluteX1Float = absoluteStartXFloat - ((absoluteStartXFloat - absoluteX1Float) / 1.5f);
+                float newAbsoluteY1Float = absoluteStartYFloat - ((absoluteStartYFloat - absoluteY1Float) / 1.5f);
+                float newAbsoluteX2Float = absoluteXFloat - ((absoluteXFloat - absoluteX1Float) / 1.5f);
+                float newAbsoluteY2Float = absoluteYFloat - ((absoluteYFloat - absoluteY1Float) / 1.5f);
                 
                 NSString * absoluteX1String = [macSVGDocument allocFloatString:newAbsoluteX1Float];
                 NSString * absoluteY1String = [macSVGDocument allocFloatString:newAbsoluteY1Float];
                 NSString * absoluteX2String = [macSVGDocument allocFloatString:newAbsoluteX2Float];
                 NSString * absoluteY2String = [macSVGDocument allocFloatString:newAbsoluteY2Float];
                 
-                reversePathSegmentDictionary[@"x1"] = absoluteX1String;
-                reversePathSegmentDictionary[@"y1"] = absoluteY1String;
-                reversePathSegmentDictionary[@"x2"] = absoluteX2String;
-                reversePathSegmentDictionary[@"y2"] = absoluteY2String;
+                reversePathSegment.x1String = absoluteX1String;
+                reversePathSegment.y1String = absoluteY1String;
+                reversePathSegment.x2String = absoluteX2String;
+                reversePathSegment.y2String = absoluteY2String;
                 
                 break;
             }
@@ -1764,100 +1654,98 @@
             {
                 // change quadratic curve to cubic curve
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
                 
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSNumber * cubicAbsoluteStartXNumber = cubicSegmentDictionary[@"absoluteStartX"];
-                NSNumber * cubicAbsoluteStartYNumber = cubicSegmentDictionary[@"absoluteStartY"];
-                NSNumber * cubicAbsoluteXNumber = cubicSegmentDictionary[@"absoluteX"];
-                NSNumber * cubicAbsoluteYNumber = cubicSegmentDictionary[@"absoluteY"];
-                NSNumber * cubicAbsoluteX1Number = cubicSegmentDictionary[@"absoluteX1"];
-                NSNumber * cubicAbsoluteY1Number = cubicSegmentDictionary[@"absoluteY1"];
-                NSNumber * cubicAbsoluteX2Number = cubicSegmentDictionary[@"absoluteX2"];
-                NSNumber * cubicAbsoluteY2Number = cubicSegmentDictionary[@"absoluteY2"];
+                float cubicAbsoluteStartX = cubicPathSegment.absoluteStartXFloat;
+                float cubicAbsoluteStartY = cubicPathSegment.absoluteStartYFloat;
+                float cubicAbsoluteX = cubicPathSegment.absoluteXFloat;
+                float cubicAbsoluteY = cubicPathSegment.absoluteYFloat;
+                float cubicAbsoluteX1 = cubicPathSegment.absoluteX1Float;
+                float cubicAbsoluteY1 = cubicPathSegment.absoluteY1Float;
+                float cubicAbsoluteX2 = cubicPathSegment.absoluteX2Float;
+                float cubicAbsoluteY2 = cubicPathSegment.absoluteY2Float;
                 
-                NSString * cubicX1String = cubicSegmentDictionary[@"x1"];
-                NSString * cubicY1String = cubicSegmentDictionary[@"y1"];
-                NSString * cubicX2String = cubicSegmentDictionary[@"x2"];
-                NSString * cubicY2String = cubicSegmentDictionary[@"y2"];
+                NSString * cubicX1String = cubicPathSegment.x1String;
+                NSString * cubicY1String = cubicPathSegment.y1String;
+                NSString * cubicX2String = cubicPathSegment.x2String;
+                NSString * cubicY2String = cubicPathSegment.y2String;
                 
                 // reverse the endpoint of the cubic bezier for the new segment
                 
-                NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
+                PathSegment * newPathSegment = [[PathSegment alloc] init];
                 
-                newPathSegmentDictionary[@"absoluteStartX"] = cubicAbsoluteXNumber;
-                newPathSegmentDictionary[@"absoluteStartY"] = cubicAbsoluteYNumber;
-                newPathSegmentDictionary[@"absoluteX"] = cubicAbsoluteStartXNumber;
-                newPathSegmentDictionary[@"absoluteY"] = cubicAbsoluteStartYNumber;
+                newPathSegment.absoluteStartXFloat = cubicAbsoluteX;
+                newPathSegment.absoluteStartYFloat = cubicAbsoluteY;
+                newPathSegment.absoluteXFloat = cubicAbsoluteStartX;
+                newPathSegment.absoluteYFloat = cubicAbsoluteStartY;
                 
-                newPathSegmentDictionary[@"absoluteX1"] = cubicAbsoluteX1Number;
-                newPathSegmentDictionary[@"absoluteY1"] = cubicAbsoluteY1Number;
-                newPathSegmentDictionary[@"absoluteX2"] = cubicAbsoluteX2Number;
-                newPathSegmentDictionary[@"absoluteY2"] = cubicAbsoluteY2Number;
+                newPathSegment.absoluteX1Float = cubicAbsoluteX1;
+                newPathSegment.absoluteY1Float = cubicAbsoluteY1;
+                newPathSegment.absoluteX2Float = cubicAbsoluteX2;
+                newPathSegment.absoluteY2Float = cubicAbsoluteY2;
                 
-                NSString * newXString = cubicAbsoluteStartXNumber.stringValue;
-                NSString * newYString = cubicAbsoluteStartXNumber.stringValue;
+                NSString * newXString = [self allocFloatString:cubicAbsoluteStartX];
+                NSString * newYString = [self allocFloatString:cubicAbsoluteStartY];
 
-                newPathSegmentDictionary[@"x"] = newXString;
-                newPathSegmentDictionary[@"y"] = newYString;
-                newPathSegmentDictionary[@"x1"] = cubicX1String;
-                newPathSegmentDictionary[@"y1"] = cubicY1String;
-                newPathSegmentDictionary[@"x2"] = cubicX2String;
-                newPathSegmentDictionary[@"y2"] = cubicY2String;
+                newPathSegment.xString = newXString;
+                newPathSegment.yString = newYString;
+                newPathSegment.x1String = cubicX1String;
+                newPathSegment.y1String = cubicY1String;
+                newPathSegment.x2String = cubicX2String;
+                newPathSegment.y2String = cubicY2String;
 
-                [reversePathSegmentDictionary setDictionary:newPathSegmentDictionary];
+                [reversePathSegment copyValuesFromPathSegment:newPathSegment];
 
                 break;
             }
             case 't':     // absolute smooth quadratic curve
             {
                 commandCharacter = 'C';
-                commandString = @"C";
-                pathSegmentDictionary[@"command"] = commandString;
+                pathSegment.pathCommand = commandCharacter;
                 
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSNumber * cubicAbsoluteStartXNumber = cubicSegmentDictionary[@"absoluteStartX"];
-                NSNumber * cubicAbsoluteStartYNumber = cubicSegmentDictionary[@"absoluteStartY"];
-                NSNumber * cubicAbsoluteXNumber = cubicSegmentDictionary[@"absoluteX"];
-                NSNumber * cubicAbsoluteYNumber = cubicSegmentDictionary[@"absoluteY"];
-                NSNumber * cubicAbsoluteX1Number = cubicSegmentDictionary[@"absoluteX1"];
-                NSNumber * cubicAbsoluteY1Number = cubicSegmentDictionary[@"absoluteY1"];
-                NSNumber * cubicAbsoluteX2Number = cubicSegmentDictionary[@"absoluteX2"];
-                NSNumber * cubicAbsoluteY2Number = cubicSegmentDictionary[@"absoluteY2"];
+                float cubicAbsoluteStartX = cubicPathSegment.absoluteStartXFloat;
+                float cubicAbsoluteStartY = cubicPathSegment.absoluteStartYFloat;
+                float cubicAbsoluteX = cubicPathSegment.absoluteXFloat;
+                float cubicAbsoluteY = cubicPathSegment.absoluteYFloat;
+                float cubicAbsoluteX1 = cubicPathSegment.absoluteX1Float;
+                float cubicAbsoluteY1 = cubicPathSegment.absoluteY1Float;
+                float cubicAbsoluteX2 = cubicPathSegment.absoluteX2Float;
+                float cubicAbsoluteY2 = cubicPathSegment.absoluteY2Float;
                 
-                NSString * cubicX1String = cubicSegmentDictionary[@"x1"];
-                NSString * cubicY1String = cubicSegmentDictionary[@"y1"];
-                NSString * cubicX2String = cubicSegmentDictionary[@"x2"];
-                NSString * cubicY2String = cubicSegmentDictionary[@"y2"];
+                NSString * cubicX1String = cubicPathSegment.x1String;
+                NSString * cubicY1String = cubicPathSegment.y1String;
+                NSString * cubicX2String = cubicPathSegment.x2String;
+                NSString * cubicY2String = cubicPathSegment.y2String;
                 
                 // reverse the endpoint of the cubic bezier for the new segment
                 
-                NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
+                PathSegment * newPathSegment = [[PathSegment alloc] init];
                 
-                newPathSegmentDictionary[@"absoluteStartX"] = cubicAbsoluteXNumber;
-                newPathSegmentDictionary[@"absoluteStartY"] = cubicAbsoluteYNumber;
-                newPathSegmentDictionary[@"absoluteX"] = cubicAbsoluteStartXNumber;
-                newPathSegmentDictionary[@"absoluteY"] = cubicAbsoluteStartYNumber;
+                newPathSegment.absoluteStartXFloat = cubicAbsoluteX;
+                newPathSegment.absoluteStartYFloat = cubicAbsoluteY;
+                newPathSegment.absoluteXFloat = cubicAbsoluteStartX;
+                newPathSegment.absoluteYFloat = cubicAbsoluteStartY;
                 
-                newPathSegmentDictionary[@"absoluteX1"] = cubicAbsoluteX1Number;
-                newPathSegmentDictionary[@"absoluteY1"] = cubicAbsoluteY1Number;
-                newPathSegmentDictionary[@"absoluteX2"] = cubicAbsoluteX2Number;
-                newPathSegmentDictionary[@"absoluteY2"] = cubicAbsoluteY2Number;
+                newPathSegment.absoluteX1Float = cubicAbsoluteX1;
+                newPathSegment.absoluteY1Float = cubicAbsoluteY1;
+                newPathSegment.absoluteX2Float = cubicAbsoluteX2;
+                newPathSegment.absoluteY2Float = cubicAbsoluteY2;
                 
-                NSString * newXString = cubicAbsoluteStartXNumber.stringValue;
-                NSString * newYString = cubicAbsoluteStartXNumber.stringValue;
+                NSString * newXString = [self allocFloatString:cubicAbsoluteStartX];
+                NSString * newYString = [self allocFloatString:cubicAbsoluteStartX];
 
-                newPathSegmentDictionary[@"x"] = newXString;
-                newPathSegmentDictionary[@"y"] = newYString;
-                newPathSegmentDictionary[@"x1"] = cubicX1String;
-                newPathSegmentDictionary[@"y1"] = cubicY1String;
-                newPathSegmentDictionary[@"x2"] = cubicX2String;
-                newPathSegmentDictionary[@"y2"] = cubicY2String;
+                newPathSegment.xString = newXString;
+                newPathSegment.yString = newYString;
+                newPathSegment.x1String = cubicX1String;
+                newPathSegment.y1String = cubicY1String;
+                newPathSegment.x2String = cubicX2String;
+                newPathSegment.y2String = cubicY2String;
 
-                [reversePathSegmentDictionary setDictionary:newPathSegmentDictionary];
+                [reversePathSegment copyValuesFromPathSegment:newPathSegment];
 
                 break;
             }
@@ -1868,8 +1756,8 @@
         {
             case 'M':     // moveto
             {
-                pathSegmentDictionary[@"x"] = absoluteStartXString;
-                pathSegmentDictionary[@"y"] = absoluteStartYString;
+                pathSegment.xString = absoluteStartXString;
+                pathSegment.yString = absoluteStartYString;
                 
                 break;
             }
@@ -1878,18 +1766,18 @@
             {
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
             case 'L':     // lineto
             {
-                pathSegmentDictionary[@"x"] = absoluteStartXString;
-                pathSegmentDictionary[@"y"] = absoluteStartYString;
+                pathSegment.xString = absoluteStartXString;
+                pathSegment.yString = absoluteStartYString;
 
                 break;
             }
@@ -1898,18 +1786,18 @@
             {
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
 
             case 'H':     // horizontal lineto
             {
-                pathSegmentDictionary[@"x"] = absoluteStartXString;
+                pathSegment.xString = absoluteStartXString;
                 
                 break;
             }
@@ -1918,14 +1806,14 @@
             {
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
                 
                 break;
             }
 
             case 'V':     // vertical lineto
             {
-                pathSegmentDictionary[@"y"] = absoluteStartYString;
+                pathSegment.yString = absoluteStartYString;
                 
                 break;
             }
@@ -1934,26 +1822,26 @@
             {
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
 
             case 'C':     // curveto
             {
-                pathSegmentDictionary[@"x"] = absoluteStartXString;
-                pathSegmentDictionary[@"y"] = absoluteStartYString;
+                pathSegment.xString = absoluteStartXString;
+                pathSegment.yString = absoluteStartYString;
 
-                NSString * x1String = reversePathSegmentDictionary[@"x1"];
-                NSString * y1String = reversePathSegmentDictionary[@"y1"];
-                NSString * x2String = reversePathSegmentDictionary[@"x2"];
-                NSString * y2String = reversePathSegmentDictionary[@"y2"];
+                NSString * x1String = reversePathSegment.x1String;
+                NSString * y1String = reversePathSegment.y1String;
+                NSString * x2String = reversePathSegment.x2String;
+                NSString * y2String = reversePathSegment.y2String;
                 
                 
-                pathSegmentDictionary[@"x1"] = x2String;
-                pathSegmentDictionary[@"y1"] = y2String;
-                pathSegmentDictionary[@"x2"] = x1String;
-                pathSegmentDictionary[@"y2"] = y1String;
+                pathSegment.x1String = x2String;
+                pathSegment.y1String = y2String;
+                pathSegment.x2String = x1String;
+                pathSegment.y2String = y1String;
 
                 break;
             }
@@ -1962,21 +1850,21 @@
             {
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * x1String = reversePathSegmentDictionary[@"x1"];
-                NSString * y1String = reversePathSegmentDictionary[@"y1"];
-                NSString * x2String = reversePathSegmentDictionary[@"x2"];
-                NSString * y2String = reversePathSegmentDictionary[@"y2"];
+                NSString * x1String = reversePathSegment.x1String;
+                NSString * y1String = reversePathSegment.y1String;
+                NSString * x2String = reversePathSegment.x2String;
+                NSString * y2String = reversePathSegment.y2String;
                 
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
                 x1Float = -x1Float;
                 y1Float = -y1Float;
@@ -1988,10 +1876,10 @@
                 x2String = [macSVGDocument allocFloatString:x2Float];
                 y2String = [macSVGDocument allocFloatString:y2Float];
                 
-                pathSegmentDictionary[@"x1"] = x2String;
-                pathSegmentDictionary[@"y1"] = y2String;
-                pathSegmentDictionary[@"x2"] = x1String;
-                pathSegmentDictionary[@"y2"] = y1String;
+                pathSegment.x1String = x2String;
+                pathSegment.y1String = y2String;
+                pathSegment.x2String = x1String;
+                pathSegment.y2String = y1String;
 
                 break;
             }
@@ -2040,24 +1928,24 @@
 
             case 'A':     // elliptical arc
             {
-                pathSegmentDictionary[@"x"] = absoluteStartXString;
-                pathSegmentDictionary[@"y"] = absoluteStartYString;
+                pathSegment.xString = absoluteStartXString;
+                pathSegment.yString = absoluteStartYString;
 
-                NSString * rxString = reversePathSegmentDictionary[@"rx"];
-                NSString * ryString = reversePathSegmentDictionary[@"ry"];
-                NSString * xAxisRotationString = reversePathSegmentDictionary[@"x-axis-rotation"];
-                NSString * largeArcFlagString = reversePathSegmentDictionary[@"large-arc-flag"];
-                NSString * sweepFlagString = reversePathSegmentDictionary[@"sweep-flag"];
+                NSString * rxString = reversePathSegment.rxString;
+                NSString * ryString = reversePathSegment.ryString;
+                NSString * xAxisRotationString = reversePathSegment.xAxisRotationString;
+                NSString * largeArcFlagString = reversePathSegment.largeArcFlagString;
+                NSString * sweepFlagString = reversePathSegment.sweepFlagString;
                 
                 NSInteger sweepFlag = sweepFlagString.integerValue;
                 sweepFlag = !sweepFlag;
                 sweepFlagString = [NSString stringWithFormat:@"%ld", sweepFlag];
                 
-                pathSegmentDictionary[@"rx"] = rxString;
-                pathSegmentDictionary[@"ry"] = ryString;
-                pathSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                pathSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                pathSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                pathSegment.rxString = rxString;
+                pathSegment.ryString = ryString;
+                pathSegment.xAxisRotationString = xAxisRotationString;
+                pathSegment.largeArcFlagString = largeArcFlagString;
+                pathSegment.sweepFlagString = sweepFlagString;
 
                 break;
             }
@@ -2065,27 +1953,27 @@
             {
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
-                NSString * rxString = reversePathSegmentDictionary[@"rx"];
-                NSString * ryString = reversePathSegmentDictionary[@"ry"];
-                NSString * xAxisRotationString = reversePathSegmentDictionary[@"x-axis-rotation"];
-                NSString * largeArcFlagString = reversePathSegmentDictionary[@"large-arc-flag"];
-                NSString * sweepFlagString = reversePathSegmentDictionary[@"sweep-flag"];
+                NSString * rxString = reversePathSegment.rxString;
+                NSString * ryString = reversePathSegment.ryString;
+                NSString * xAxisRotationString = reversePathSegment.xAxisRotationString;
+                NSString * largeArcFlagString = reversePathSegment.largeArcFlagString;
+                NSString * sweepFlagString = reversePathSegment.sweepFlagString;
 
                 NSInteger sweepFlag = sweepFlagString.integerValue;
                 sweepFlag = !sweepFlag;
                 sweepFlagString = [NSString stringWithFormat:@"%ld", sweepFlag];
                 
-                pathSegmentDictionary[@"rx"] = rxString;
-                pathSegmentDictionary[@"ry"] = ryString;
-                pathSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                pathSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                pathSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                pathSegment.rxString = rxString;
+                pathSegment.ryString = ryString;
+                pathSegment.xAxisRotationString = xAxisRotationString;
+                pathSegment.largeArcFlagString = largeArcFlagString;
+                pathSegment.sweepFlagString = sweepFlagString;
 
                 break;
             }
@@ -2099,19 +1987,19 @@
         {
             if ((commandCharacter != 'Z') && (commandCharacter != 'z'))
             {
-                [newPathSegmentsArray addObject:pathSegmentDictionary];
+                [newPathSegmentsArray addObject:pathSegment];
             }
         }
         else if (currentIndex >= reverseSegmentsArray.count - 1)
         {
             if ((commandCharacter != 'M') && (commandCharacter != 'm'))
             {
-                [newPathSegmentsArray addObject:pathSegmentDictionary];
+                [newPathSegmentsArray addObject:pathSegment];
             }
         }
         else
         {
-            [newPathSegmentsArray addObject:pathSegmentDictionary];
+            [newPathSegmentsArray addObject:pathSegment];
         }
         
         currentIndex++;
@@ -2119,12 +2007,11 @@
     
     if ((originalLastCommand == 'Z') || (originalLastCommand == 'z'))
     {
-        NSMutableDictionary * closePathDictionary = [NSMutableDictionary dictionary];
+        PathSegment * closePathSegment = [[PathSegment alloc] init];
         
-        NSString * newLastCommand = [NSString stringWithFormat:@"%C", originalLastCommand];
-        closePathDictionary[@"command"] = newLastCommand;
+        closePathSegment.pathCommand = originalLastCommand;
         
-        [newPathSegmentsArray addObject:closePathDictionary];
+        [newPathSegmentsArray addObject:closePathSegment];
     }
 
     [self.macSVGDocumentWindowController.svgWebKitController updatePathSegmentsAbsoluteValues:newPathSegmentsArray];
@@ -2140,21 +2027,21 @@
 {
     // reverse sequence of input array
     NSMutableArray * reverseSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSMutableDictionary * newSegmentDictionary = [self duplicateSegmentDictionary:pathSegmentDictionary];
+        PathSegment * newPathSegment = [self duplicatePathSegment:pathSegment];
 
-        [reverseSegmentsArray insertObject:newSegmentDictionary atIndex:0];
+        [reverseSegmentsArray insertObject:newPathSegment atIndex:0];
     }
 
     NSMutableArray * cubicPathSegmentsArray = [self copyPathSegmentsArray:pathSegmentsArray];
     cubicPathSegmentsArray = [self convertCurvesToAbsoluteCubicBezierWithPathSegmentsArray:cubicPathSegmentsArray];
     NSMutableArray * reverseCubicsSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * cubicSegmentDictionary in cubicPathSegmentsArray)
+    for (PathSegment * cubicPathSegment in cubicPathSegmentsArray)
     {
-        NSMutableDictionary * newCubicSegmentDictionary = [self duplicateSegmentDictionary:cubicSegmentDictionary];
+        PathSegment * newCubicPathSegment = [self duplicatePathSegment:cubicPathSegment];
 
-        [reverseCubicsSegmentsArray insertObject:newCubicSegmentDictionary atIndex:0];
+        [reverseCubicsSegmentsArray insertObject:newCubicPathSegment atIndex:0];
     }
 
     NSInteger lastIndex = pathSegmentsArray.count - 1;
@@ -2164,109 +2051,104 @@
     
     NSInteger currentIndex = 0;
     
-    for (NSMutableDictionary * pathSegmentDictionary in reverseSegmentsArray)
+    for (PathSegment * pathSegment in reverseSegmentsArray)
     {
         MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
 
         NSPoint originalCurrentPoint = [self.macSVGDocumentWindowController.svgWebKitController
                 endPointForSegmentIndex:(lastIndex - currentIndex)
                 pathSegmentsArray:pathSegmentsArray];
         
-        CGFloat currentXDelta = originalCurrentPoint.x - reverseOriginPoint.x;
+        float currentXDelta = originalCurrentPoint.x - reverseOriginPoint.x;
         
         NSPoint currentPoint = NSMakePoint(originalCurrentPoint.x - currentXDelta, originalCurrentPoint.y);
         
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
         
         switch (commandCharacter)
         {
             case 'M':     // moveto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
 
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
 
                 xFloat = -xFloat;
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
             case 'L':     // lineto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
             
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
 
-                CGFloat newXFloat = xFloat;
-                CGFloat newYFloat = -yFloat;
+                float newXFloat = xFloat;
+                float newYFloat = -yFloat;
 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
 
             case 'H':     // horizontal lineto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
+                float newXFloat = currentPoint.x + deltaX;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 
                 break;
@@ -2274,131 +2156,131 @@
 
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * xString = pathSegment.xString;
                 
-                CGFloat xFloat = xString.floatValue;
+                float xFloat = xString.floatValue;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
                 
                 break;
             }
 
             case 'V':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat yFloat = yString.floatValue;
+                float yFloat = yString.floatValue;
                 
-                CGFloat yDelta = absoluteStartYFloat - yFloat;
+                float yDelta = absoluteStartYFloat - yFloat;
                 yFloat = currentPoint.y + yDelta;
                 NSMutableString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
             
             case 'v':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat yFloat = yString.floatValue;
+                float yFloat = yString.floatValue;
                 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
 
             case 'C':     // curveto
             {
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
                 
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
                 break;
             }
 
             case 'c':     // curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
                 //float deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = xFloat;
-                CGFloat newYFloat = -yFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = xFloat;
+                float newYFloat = -yFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
                 break;
             }
@@ -2407,51 +2289,48 @@
             case 's':     // smooth curveto
             {
                 // Convert this segment to an absolute cubic curve
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSString * x1String = cubicSegmentDictionary[@"x1"];
-                NSString * y1String = cubicSegmentDictionary[@"y1"];
-                NSString * x2String = cubicSegmentDictionary[@"x2"];
-                NSString * y2String = cubicSegmentDictionary[@"y2"];
+                NSString * x1String = cubicPathSegment.x1String;
+                NSString * y1String = cubicPathSegment.y1String;
+                NSString * x2String = cubicPathSegment.x2String;
+                NSString * y2String = cubicPathSegment.y2String;
                 
-                //NSString * cubicXString = [cubicSegmentDictionary objectForKey:@"x"];
-                //NSString * cubicYString = [cubicSegmentDictionary objectForKey:@"y"];
-
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
@@ -2461,51 +2340,48 @@
             case 'q':     // quadratic Bezier curve
             {
                 // Convert this segment to an absolute cubic curve
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSString * x1String = cubicSegmentDictionary[@"x1"];
-                NSString * y1String = cubicSegmentDictionary[@"y1"];
-                NSString * x2String = cubicSegmentDictionary[@"x2"];
-                NSString * y2String = cubicSegmentDictionary[@"y2"];
+                NSString * x1String = cubicPathSegment.x1String;
+                NSString * y1String = cubicPathSegment.y1String;
+                NSString * x2String = cubicPathSegment.x2String;
+                NSString * y2String = cubicPathSegment.y2String;
                 
-                //NSString * cubicXString = [cubicSegmentDictionary objectForKey:@"x"];
-                //NSString * cubicYString = [cubicSegmentDictionary objectForKey:@"y"];
-
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
@@ -2515,51 +2391,48 @@
             case 't':     // smooth quadratic Bezier curve
             {
                 // Convert this segment to an absolute cubic curve
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSString * x1String = cubicSegmentDictionary[@"x1"];
-                NSString * y1String = cubicSegmentDictionary[@"y1"];
-                NSString * x2String = cubicSegmentDictionary[@"x2"];
-                NSString * y2String = cubicSegmentDictionary[@"y2"];
+                NSString * x1String = cubicPathSegment.x1String;
+                NSString * y1String = cubicPathSegment.y1String;
+                NSString * x2String = cubicPathSegment.x2String;
+                NSString * y2String = cubicPathSegment.y2String;
                 
-                //NSString * cubicXString = [cubicSegmentDictionary objectForKey:@"x"];
-                //NSString * cubicYString = [cubicSegmentDictionary objectForKey:@"y"];
-
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
@@ -2568,34 +2441,34 @@
 
             case 'A':     // elliptical arc
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
             case 'a':     // elliptical arc
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
                 
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
@@ -2621,22 +2494,22 @@
 {
     // reverse sequence of input array
     NSMutableArray * reverseSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSMutableDictionary * newSegmentDictionary = [self duplicateSegmentDictionary:pathSegmentDictionary];
+        PathSegment * newPathSegment = [self duplicatePathSegment:pathSegment];
 
-        [reverseSegmentsArray insertObject:newSegmentDictionary atIndex:0];
+        [reverseSegmentsArray insertObject:newPathSegment atIndex:0];
     }
 
 
     NSMutableArray * cubicPathSegmentsArray = [self copyPathSegmentsArray:pathSegmentsArray];
     cubicPathSegmentsArray = [self convertCurvesToAbsoluteCubicBezierWithPathSegmentsArray:cubicPathSegmentsArray];
     NSMutableArray * reverseCubicsSegmentsArray = [NSMutableArray array];
-    for (NSMutableDictionary * cubicSegmentDictionary in cubicPathSegmentsArray)
+    for (PathSegment * cubicPathSegment in cubicPathSegmentsArray)
     {
-        NSMutableDictionary * newCubicSegmentDictionary = [self duplicateSegmentDictionary:cubicSegmentDictionary];
+        PathSegment * newCubicSegment = [self duplicatePathSegment:cubicPathSegment];
 
-        [reverseCubicsSegmentsArray insertObject:newCubicSegmentDictionary atIndex:0];
+        [reverseCubicsSegmentsArray insertObject:newCubicSegment atIndex:0];
     }
 
 
@@ -2648,109 +2521,104 @@
     
     NSInteger currentIndex = 0;
     
-    for (NSMutableDictionary * pathSegmentDictionary in reverseSegmentsArray)
+    for (PathSegment * pathSegment in reverseSegmentsArray)
     {
         MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
         
-        NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-        NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
-        
-        CGFloat absoluteStartXFloat = absoluteStartXNumber.floatValue;
-        CGFloat absoluteStartYFloat = absoluteStartYNumber.floatValue;
+        float absoluteStartXFloat = pathSegment.absoluteStartXFloat;
+        float absoluteStartYFloat = pathSegment.absoluteStartYFloat;
 
         NSPoint originalCurrentPoint = [self.macSVGDocumentWindowController.svgWebKitController
                 endPointForSegmentIndex:(lastIndex - currentIndex)
                 pathSegmentsArray:pathSegmentsArray];
         
-        CGFloat currentYDelta = originalCurrentPoint.y - reverseOriginPoint.y;
+        float currentYDelta = originalCurrentPoint.y - reverseOriginPoint.y;
         
         NSPoint currentPoint = NSMakePoint(originalCurrentPoint.x, originalCurrentPoint.y - currentYDelta);
         
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
         
         switch (commandCharacter)
         {
             case 'M':     // moveto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
 
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
 
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
             case 'L':     // lineto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
             
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
 
-                CGFloat newXFloat = xFloat;
-                CGFloat newYFloat = -yFloat;
+                float newXFloat = xFloat;
+                float newYFloat = -yFloat;
 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
 
             case 'H':     // horizontal lineto
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
+                float newXFloat = currentPoint.x + deltaX;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 
                 break;
@@ -2758,130 +2626,130 @@
 
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * xString = pathSegment.xString;
                 
-                CGFloat xFloat = xString.floatValue;
+                float xFloat = xString.floatValue;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
                 
                 break;
             }
 
             case 'V':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat yFloat = yString.floatValue;
+                float yFloat = yString.floatValue;
                 
-                CGFloat yDelta = absoluteStartYFloat - yFloat;
+                float yDelta = absoluteStartYFloat - yFloat;
                 yFloat = currentPoint.y + yDelta;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
                 
                 break;
             }
             
             case 'v':     // vertical lineto
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat yFloat = yString.floatValue;
+                float yFloat = yString.floatValue;
                 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
 
             case 'C':     // curveto
             {
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
                 
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
                 break;
             }
 
             case 'c':     // curveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaX1 = currentPoint.x - x2Float;
-                CGFloat deltaX2 = currentPoint.x - x1Float;
+                float deltaX1 = currentPoint.x - x2Float;
+                float deltaX2 = currentPoint.x - x1Float;
                 
-                CGFloat newXFloat = xFloat;
-                CGFloat newYFloat = -yFloat;
-                CGFloat newX1Float = currentPoint.x + deltaX1;
-                CGFloat newY1Float = y2Float;
-                CGFloat newX2Float = currentPoint.x + deltaX2;
-                CGFloat newY2Float = y1Float;
+                float newXFloat = xFloat;
+                float newYFloat = -yFloat;
+                float newX1Float = currentPoint.x + deltaX1;
+                float newY1Float = y2Float;
+                float newX2Float = currentPoint.x + deltaX2;
+                float newY2Float = y1Float;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
 
                 break;
             }
@@ -2895,82 +2763,82 @@
             case 't':     // smooth quadratic Bezier curve
             {
                 // Convert this segment to an absolute cubic curve
-                NSMutableDictionary * cubicSegmentDictionary = reverseCubicsSegmentsArray[currentIndex];
+                PathSegment * cubicPathSegment = reverseCubicsSegmentsArray[currentIndex];
 
-                NSString * x1String = cubicSegmentDictionary[@"x1"];
-                NSString * y1String = cubicSegmentDictionary[@"y1"];
-                NSString * x2String = cubicSegmentDictionary[@"x2"];
-                NSString * y2String = cubicSegmentDictionary[@"y2"];
+                NSString * x1String = cubicPathSegment.x1String;
+                NSString * y1String = cubicPathSegment.y1String;
+                NSString * x2String = cubicPathSegment.x2String;
+                NSString * y2String = cubicPathSegment.y2String;
                 
-                CGFloat x1Float = x1String.floatValue;
-                CGFloat y1Float = y1String.floatValue;
-                CGFloat x2Float = x2String.floatValue;
-                CGFloat y2Float = y2String.floatValue;
+                float x1Float = x1String.floatValue;
+                float y1Float = y1String.floatValue;
+                float x2Float = x2String.floatValue;
+                float y2Float = y2String.floatValue;
                 
-                CGFloat deltaY = currentPoint.y - absoluteStartYFloat;
-                CGFloat deltaY1 = currentPoint.y - y2Float;
-                CGFloat deltaY2 = currentPoint.y - y1Float;
+                float deltaY = currentPoint.y - absoluteStartYFloat;
+                float deltaY1 = currentPoint.y - y2Float;
+                float deltaY2 = currentPoint.y - y1Float;
                 
-                CGFloat newXFloat = absoluteStartXFloat;
-                CGFloat newYFloat = currentPoint.y + deltaY;
-                CGFloat newX1Float = x2Float;
-                CGFloat newY1Float = currentPoint.y + deltaY1;
-                CGFloat newX2Float = x1Float;
-                CGFloat newY2Float = currentPoint.y + deltaY2;
+                float newXFloat = absoluteStartXFloat;
+                float newYFloat = currentPoint.y + deltaY;
+                float newX1Float = x2Float;
+                float newY1Float = currentPoint.y + deltaY1;
+                float newX2Float = x1Float;
+                float newY2Float = currentPoint.y + deltaY2;
                 
                 NSMutableString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSMutableString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 NSMutableString * newX1String = [macSVGDocument allocFloatString:newX1Float];
-                pathSegmentDictionary[@"x1"] = newX1String;
+                pathSegment.x1String = newX1String;
 
                 NSMutableString * newY1String = [macSVGDocument allocFloatString:newY1Float];
-                pathSegmentDictionary[@"y1"] = newY1String;
+                pathSegment.y1String = newY1String;
 
                 NSMutableString * newX2String = [macSVGDocument allocFloatString:newX2Float];
-                pathSegmentDictionary[@"x2"] = newX2String;
+                pathSegment.x2String = newX2String;
 
                 NSMutableString * newY2String = [macSVGDocument allocFloatString:newY2Float];
-                pathSegmentDictionary[@"y2"] = newY2String;
+                pathSegment.y2String = newY2String;
                 
-                pathSegmentDictionary[@"command"] = @"C";
+                pathSegment.pathCommand = 'C';
 
                 break;
             }
                 
             case 'A':     // elliptical arc
             {
-                CGFloat deltaX = currentPoint.x - absoluteStartXFloat;
+                float deltaX = currentPoint.x - absoluteStartXFloat;
                 
-                CGFloat newXFloat = currentPoint.x + deltaX;
-                CGFloat newYFloat = absoluteStartYFloat;
+                float newXFloat = currentPoint.x + deltaX;
+                float newYFloat = absoluteStartYFloat;
                 
                 NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
             case 'a':     // elliptical arc
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
                 
                 xFloat = -xFloat;
                 NSString * newXString = [macSVGDocument allocFloatString:xFloat];
-                pathSegmentDictionary[@"x"] = newXString;
+                pathSegment.xString = newXString;
 
                 yFloat = -yFloat;
                 NSString * newYString = [macSVGDocument allocFloatString:yFloat];
-                pathSegmentDictionary[@"y"] = newYString;
+                pathSegment.yString = newYString;
 
                 break;
             }
@@ -2988,20 +2856,6 @@
     return reverseSegmentsArray;
 }
 
-//==================================================================================
-//	floatForAttribute:pathSegment:
-//==================================================================================
-
-- (CGFloat) floatForAttribute:(NSString *)attributeName pathSegment:(NSDictionary *)pathSegmentDictionary
-{
-    CGFloat result = 0;
-    NSString * valueString = pathSegmentDictionary[attributeName];
-    if (valueString != NULL)
-    {
-        result = valueString.floatValue;
-    }
-    return result;
-}
 
 //==================================================================================
 //	flipPathHorizontallyWithPathSegmentsArray:
@@ -3015,28 +2869,28 @@
 
     if (pathSegmentsArray.count > 0)
     {
-        CGFloat pathOriginX = 0;
-        CGFloat pathOriginY = 0;
+        float pathOriginX = 0;
+        float pathOriginY = 0;
         
         NSInteger currentIndex = 0;
         
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            CGFloat oldAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:pathSegmentDictionary];
-            CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
-            CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
-            NSString * oldYString = [macSVGDocument allocFloatString:oldYFloat];
-
-            CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
-            CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
-            CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-            NSString * oldY1String = [macSVGDocument allocFloatString:oldY1Float];
-
-            CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
-            CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
-            CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-            NSString * oldY2String = [macSVGDocument allocFloatString:oldY2Float];
-            
+            float oldAbsoluteXFloat = pathSegment.absoluteXFloat;
+            float oldXFloat = pathSegment.xFloat;
+            float oldYFloat = pathSegment.yFloat;
+            NSString * oldYString = pathSegment.yString;
+        
+            float oldAbsoluteX1Float = pathSegment.absoluteX1Float;
+            float oldX1Float = pathSegment.x1Float;
+            float oldY1Float = pathSegment.y1Float;
+            NSString * oldY1String = pathSegment.y1String;
+        
+            float oldAbsoluteX2Float = pathSegment.absoluteX2Float;
+            float oldX2Float = pathSegment.x2Float;
+            float oldY2Float = pathSegment.y2Float;
+            NSString * oldY2String = pathSegment.y2String;
+                    
             if (currentIndex == 0)
             {
                 oldAbsoluteXFloat = oldXFloat;
@@ -3045,191 +2899,189 @@
                 pathOriginY = oldYFloat;
             }
 
-            CGFloat newAbsoluteXFloat = pathOriginX + (pathOriginX - oldAbsoluteXFloat);
+            float newAbsoluteXFloat = pathOriginX + (pathOriginX - oldAbsoluteXFloat);
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXFloat];
 
-            CGFloat newAbsoluteX1Float = pathOriginX + (pathOriginX - oldAbsoluteX1Float);
+            float newAbsoluteX1Float = pathOriginX + (pathOriginX - oldAbsoluteX1Float);
             NSString * newAbsoluteX1String = [macSVGDocument allocFloatString:newAbsoluteX1Float];
 
-            CGFloat newAbsoluteX2Float = pathOriginX + (pathOriginX - oldAbsoluteX2Float);
+            float newAbsoluteX2Float = pathOriginX + (pathOriginX - oldAbsoluteX2Float);
             NSString * newAbsoluteX2String = [macSVGDocument allocFloatString:newAbsoluteX2Float];
 
-            CGFloat newRelativeXFloat = -oldXFloat;
+            float newRelativeXFloat = -oldXFloat;
             NSString * newRelativeXString = [macSVGDocument allocFloatString:newRelativeXFloat];
 
-            CGFloat newRelativeX1Float = -oldX1Float;
+            float newRelativeX1Float = -oldX1Float;
             NSString * newRelativeX1String = [macSVGDocument allocFloatString:newRelativeX1Float];
 
-            CGFloat newRelativeX2Float = -oldX2Float;
+            float newRelativeX2Float = -oldX2Float;
             NSString * newRelativeX2String = [macSVGDocument allocFloatString:newRelativeX2Float];
             
-            NSString * commandString = pathSegmentDictionary[@"command"];
+            unichar commandCharacter = pathSegment.pathCommand;
             
-            unichar commandCharacter = [commandString characterAtIndex:0];
-            
-            NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * newPathSegment = [[PathSegment alloc] init];
 
-            newSegmentDictionary[@"command"] = commandString;
+            newPathSegment.pathCommand = commandCharacter;
             
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
 
                 case 'm':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
                 case 'L':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
                 
                 case 'l':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
 
                 case 'H':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
+                    newPathSegment.xString = newAbsoluteXString;
                     break;
                 }
 
                 case 'h':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
+                    newPathSegment.xString = newRelativeXString;
                     break;
                 }
 
                 case 'V':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
                 
                 case 'v':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
 
                 case 'C':     // absolute curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = oldY1String;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = oldY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = oldY1String;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = oldY2String;
                     break;
                 }
 
                 case 'c':     // relative curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = oldY1String;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = oldY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = oldY1String;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = oldY2String;
 
                     break;
                 }
 
                 case 'S':     // absolute smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = oldY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = oldY2String;
                     break;
                 }
                 
                 case 's':     // relative smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = oldY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = oldY2String;
                     break;
                 }
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = oldY1String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x1String = newAbsoluteXString;
+                    newPathSegment.y1String = oldY1String;
                     break;
                 }
                 
                 case 'q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = oldY1String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = oldY1String;
                     break;
                 }
 
                 case 'T':     // smooth quadratic Bezier curve
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
                     break;
 
                 case 't':     // smooth quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
                     break;
                 }
 
                 case 'A':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = oldYString;
 
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
                 case 'a':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = oldYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = oldYString;
 
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
                     break;
                 }
 
@@ -3238,7 +3090,7 @@
                     break;
             }
             
-            [newSegmentsArray addObject:newSegmentDictionary];
+            [newSegmentsArray addObject:newPathSegment];
             
             currentIndex++;
         }
@@ -3271,207 +3123,205 @@
 
         NSInteger currentIndex = 0;
         
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
-            CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
-            CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
-            NSString * oldXString = [macSVGDocument allocFloatString:oldXFloat];
-
-            CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
-            CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
-            CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-            NSString * oldX1String = [macSVGDocument allocFloatString:oldX1Float];
-
-            CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
-            CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
-            CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-            NSString * oldX2String = [macSVGDocument allocFloatString:oldX2Float];
+            float oldAbsoluteYFloat = pathSegment.absoluteYFloat;
+            float oldXFloat = pathSegment.xFloat;
+            float oldYFloat = pathSegment.yFloat;
+            NSString * oldXString = pathSegment.xString;
+        
+            float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
+            float oldX1Float = pathSegment.x1Float;
+            float oldY1Float = pathSegment.y1Float;
+            NSString * oldX1String = pathSegment.x1String;
+        
+            float oldAbsoluteY2Float = pathSegment.absoluteY2Float;
+            float oldX2Float = pathSegment.x2Float;
+            float oldY2Float = pathSegment.y2Float;
+            NSString * oldX2String = pathSegment.x2String;
             
-            CGFloat newAbsoluteYFloat = pathEndPoint.y - (oldAbsoluteYFloat - pathOriginPoint.y);
+            float newAbsoluteYFloat = pathEndPoint.y - (oldAbsoluteYFloat - pathOriginPoint.y);
             NSString * newAbsoluteYString = [macSVGDocument allocFloatString:newAbsoluteYFloat];
 
-            CGFloat newAbsoluteY1Float = pathEndPoint.y - (oldAbsoluteY1Float - pathOriginPoint.y);
+            float newAbsoluteY1Float = pathEndPoint.y - (oldAbsoluteY1Float - pathOriginPoint.y);
             NSString * newAbsoluteY1String = [macSVGDocument allocFloatString:newAbsoluteY1Float];
 
-            CGFloat newAbsoluteY2Float = pathEndPoint.y - (oldAbsoluteY2Float - pathOriginPoint.y);
+            float newAbsoluteY2Float = pathEndPoint.y - (oldAbsoluteY2Float - pathOriginPoint.y);
             NSString * newAbsoluteY2String = [macSVGDocument allocFloatString:newAbsoluteY2Float];
 
-            CGFloat newRelativeYFloat = -oldYFloat;
+            float newRelativeYFloat = -oldYFloat;
             NSString * newRelativeYString = [macSVGDocument allocFloatString:newRelativeYFloat];
 
-            CGFloat newRelativeY1Float = -oldY1Float;
+            float newRelativeY1Float = -oldY1Float;
             NSString * newRelativeY1String = [macSVGDocument allocFloatString:newRelativeY1Float];
 
-            CGFloat newRelativeY2Float = -oldY2Float;
+            float newRelativeY2Float = -oldY2Float;
             NSString * newRelativeY2String = [macSVGDocument allocFloatString:newRelativeY2Float];
             
-            NSString * commandString = pathSegmentDictionary[@"command"];
+            unichar commandCharacter = pathSegment.pathCommand;
             
-            unichar commandCharacter = [commandString characterAtIndex:0];
-            
-            NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * newPathSegment = [[PathSegment alloc] init];
 
-            newSegmentDictionary[@"command"] = commandString;
+            newPathSegment.pathCommand = commandCharacter;
             
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
 
                 case 'm':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
                 case 'L':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'l':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'H':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
+                    newPathSegment.xString = oldXString;
                     break;
                 }
 
                 case 'h':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
+                    newPathSegment.xString = oldXString;
                     break;
                 }
 
                 case 'V':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'v':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'C':     // absolute curveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = oldX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
-                    newSegmentDictionary[@"x2"] = oldX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = oldX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
+                    newPathSegment.x2String = oldX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
 
                 case 'c':     // relative curveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = oldX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
-                    newSegmentDictionary[@"x2"] = oldX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = oldX1String;
+                    newPathSegment.y1String = newRelativeY1String;
+                    newPathSegment.x2String = oldX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'S':     // absolute smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x2"] = oldX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x2String = oldX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
                 
                 case 's':     // relative smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x2"] = oldX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x2String = oldX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = oldX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = oldX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
                     break;
                 }
                 
                 case 'q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = oldX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = oldX1String;
+                    newPathSegment.y1String = newRelativeY1String;
                     break;
                 }
 
                 case 'T':     // smooth quadratic Bezier curve
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
 
                 case 't':     // smooth quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'A':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
                 case 'a':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = oldXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = oldXString;
+                    newPathSegment.yString = newRelativeYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
@@ -3481,7 +3331,7 @@
                     break;
             }
             
-            [newSegmentsArray addObject:newSegmentDictionary];
+            [newSegmentsArray addObject:newPathSegment];
             
             currentIndex++;
         }
@@ -3497,7 +3347,7 @@
 //	translatePathCoordinatesWithPathSegmentsArray:x:y:
 //==================================================================================
 
-- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)translateX y:(CGFloat)translateY
+- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(float)translateX y:(float)translateY
 {
     MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
@@ -3510,235 +3360,233 @@
         
         NSInteger currentIndex = 0;
         
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            CGFloat oldAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
-            CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
-            CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
-
-            CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
-            CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
-            CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-
-            CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
-            CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
-            CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-
-            CGFloat newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
+            float oldAbsoluteXFloat = pathSegment.absoluteXFloat;
+            float oldAbsoluteYFloat = pathSegment.absoluteYFloat;
+            float oldXFloat = pathSegment.xFloat;
+            float oldYFloat = pathSegment.yFloat;
+        
+            float oldAbsoluteX1Float = pathSegment.absoluteX1Float;
+            float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
+            float oldX1Float = pathSegment.x1Float;
+            float oldY1Float = pathSegment.y1Float;
+        
+            float oldAbsoluteX2Float = pathSegment.absoluteX2Float;
+            float oldAbsoluteY2Float = pathSegment.absoluteY2Float;
+            float oldX2Float = pathSegment.x2Float;
+            float oldY2Float = pathSegment.y2Float;
+        
+            float newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXFloat];
             
-            CGFloat newAbsoluteYFloat = ((oldAbsoluteYFloat - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
+            float newAbsoluteYFloat = ((oldAbsoluteYFloat - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
             NSString * newAbsoluteYString = [macSVGDocument allocFloatString:newAbsoluteYFloat];
 
-            CGFloat newAbsoluteX1Float = ((oldAbsoluteX1Float - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
+            float newAbsoluteX1Float = ((oldAbsoluteX1Float - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
             NSString * newAbsoluteX1String = [macSVGDocument allocFloatString:newAbsoluteX1Float];
 
-            CGFloat newAbsoluteY1Float = ((oldAbsoluteY1Float - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
+            float newAbsoluteY1Float = ((oldAbsoluteY1Float - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
             NSString * newAbsoluteY1String = [macSVGDocument allocFloatString:newAbsoluteY1Float];
 
-            CGFloat newAbsoluteX2Float = ((oldAbsoluteX2Float - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
+            float newAbsoluteX2Float = ((oldAbsoluteX2Float - pathOriginPoint.x) + translateX) + pathOriginPoint.x;
             NSString * newAbsoluteX2String = [macSVGDocument allocFloatString:newAbsoluteX2Float];
 
-            CGFloat newAbsoluteY2Float = ((oldAbsoluteY2Float - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
+            float newAbsoluteY2Float = ((oldAbsoluteY2Float - pathOriginPoint.y) + translateY) + pathOriginPoint.y;
             NSString * newAbsoluteY2String = [macSVGDocument allocFloatString:newAbsoluteY2Float];
 
-            CGFloat newRelativeXFloat = oldXFloat + translateX;
+            float newRelativeXFloat = oldXFloat + translateX;
             NSString * newRelativeXString = [macSVGDocument allocFloatString:newRelativeXFloat];
 
-            CGFloat newRelativeYFloat = oldYFloat + translateY;
+            float newRelativeYFloat = oldYFloat + translateY;
             NSString * newRelativeYString = [macSVGDocument allocFloatString:newRelativeYFloat];
 
-            CGFloat newRelativeX1Float = oldX1Float + translateX;
+            float newRelativeX1Float = oldX1Float + translateX;
             NSString * newRelativeX1String = [macSVGDocument allocFloatString:newRelativeX1Float];
 
-            CGFloat newRelativeY1Float = oldY1Float + translateY;
+            float newRelativeY1Float = oldY1Float + translateY;
             NSString * newRelativeY1String = [macSVGDocument allocFloatString:newRelativeY1Float];
 
-            CGFloat newRelativeX2Float = oldX2Float + translateX;
+            float newRelativeX2Float = oldX2Float + translateX;
             NSString * newRelativeX2String = [macSVGDocument allocFloatString:newRelativeX2Float];
             
-            CGFloat newRelativeY2Float = oldY2Float + translateY;
+            float newRelativeY2Float = oldY2Float + translateY;
             NSString * newRelativeY2String = [macSVGDocument allocFloatString:newRelativeY2Float];
             
-            NSString * commandString = pathSegmentDictionary[@"command"];
+            unichar commandCharacter = pathSegment.pathCommand;
             
-            unichar commandCharacter = [commandString characterAtIndex:0];
-            
-            NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * newPathSegment = [[PathSegment alloc] init];
 
-            newSegmentDictionary[@"command"] = commandString;
+            newPathSegment.pathCommand = commandCharacter;
             
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
 
                 case 'm':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
                 case 'L':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'l':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'H':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
+                    newPathSegment.xString = newAbsoluteXString;
                     break;
                 }
 
                 case 'h':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
+                    newPathSegment.xString = newRelativeXString;
                     break;
                 }
 
                 case 'V':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'v':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'C':     // absolute curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
 
                 case 'c':     // relative curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = newRelativeY1String;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'S':     // absolute smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
                 
                 case 's':     // relative smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
                     break;
                 }
                 
                 case 'q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = newRelativeY1String;
                     break;
                 }
 
                 case 'T':     // smooth quadratic Bezier curve
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
 
                 case 't':     // smooth quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'A':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    CGFloat rxFloat = rxString.floatValue + translateX;
-                    CGFloat ryFloat = ryString.floatValue + translateY;
+                    float rxFloat = rxString.floatValue + translateX;
+                    float ryFloat = ryString.floatValue + translateY;
                     rxString = [macSVGDocument allocFloatString:rxFloat];
                     ryString = [macSVGDocument allocFloatString:ryFloat];
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
                 case 'a':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
 
-                    CGFloat rxFloat = rxString.floatValue + translateX;
-                    CGFloat ryFloat = ryString.floatValue + translateY;
+                    float rxFloat = rxString.floatValue + translateX;
+                    float ryFloat = ryString.floatValue + translateY;
                     rxString = [macSVGDocument allocFloatString:rxFloat];
                     ryString = [macSVGDocument allocFloatString:ryFloat];
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
@@ -3748,7 +3596,7 @@
                     break;
             }
             
-            [newSegmentsArray addObject:newSegmentDictionary];
+            [newSegmentsArray addObject:newPathSegment];
             
             currentIndex++;
         }
@@ -3763,7 +3611,7 @@
 //	scalePathCoordinatesWithPathSegmentsArray:scaleX:scaleY:
 //==================================================================================
 
-- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(CGFloat)scaleX scaleY:(CGFloat)scaleY
+- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(float)scaleX scaleY:(float)scaleY
 {
     MacSVGDocument * macSVGDocument = (self.macSVGDocumentWindowController).document;
 
@@ -3776,235 +3624,233 @@
         
         NSInteger currentIndex = 0;
         
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            CGFloat oldAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
-            CGFloat oldXFloat = [self floatForAttribute:@"x" pathSegment:pathSegmentDictionary];
-            CGFloat oldYFloat = [self floatForAttribute:@"y" pathSegment:pathSegmentDictionary];
+            float oldAbsoluteXFloat = pathSegment.absoluteXFloat;
+            float oldAbsoluteYFloat = pathSegment.absoluteYFloat;
+            float oldXFloat = pathSegment.xFloat;
+            float oldYFloat = pathSegment.yFloat;
+        
+            float oldAbsoluteX1Float = pathSegment.absoluteX1Float;
+            float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
+            float oldX1Float = pathSegment.x1Float;
+            float oldY1Float = pathSegment.y1Float;
+        
+            float oldAbsoluteX2Float = pathSegment.absoluteX2Float;
+            float oldAbsoluteY2Float = pathSegment.absoluteY2Float;
+            float oldX2Float = pathSegment.x2Float;
+            float oldY2Float = pathSegment.y2Float;
 
-            CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
-            CGFloat oldX1Float = [self floatForAttribute:@"x1" pathSegment:pathSegmentDictionary];
-            CGFloat oldY1Float = [self floatForAttribute:@"y1" pathSegment:pathSegmentDictionary];
-
-            CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
-            CGFloat oldX2Float = [self floatForAttribute:@"x2" pathSegment:pathSegmentDictionary];
-            CGFloat oldY2Float = [self floatForAttribute:@"y2" pathSegment:pathSegmentDictionary];
-
-            CGFloat newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
+            float newAbsoluteXFloat = ((oldAbsoluteXFloat - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
             NSString * newAbsoluteXString = [macSVGDocument allocFloatString:newAbsoluteXFloat];
             
-            CGFloat newAbsoluteYFloat = ((oldAbsoluteYFloat - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
+            float newAbsoluteYFloat = ((oldAbsoluteYFloat - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
             NSString * newAbsoluteYString = [macSVGDocument allocFloatString:newAbsoluteYFloat];
 
-            CGFloat newAbsoluteX1Float = ((oldAbsoluteX1Float - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
+            float newAbsoluteX1Float = ((oldAbsoluteX1Float - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
             NSString * newAbsoluteX1String = [macSVGDocument allocFloatString:newAbsoluteX1Float];
 
-            CGFloat newAbsoluteY1Float = ((oldAbsoluteY1Float - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
+            float newAbsoluteY1Float = ((oldAbsoluteY1Float - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
             NSString * newAbsoluteY1String = [macSVGDocument allocFloatString:newAbsoluteY1Float];
 
-            CGFloat newAbsoluteX2Float = ((oldAbsoluteX2Float - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
+            float newAbsoluteX2Float = ((oldAbsoluteX2Float - pathOriginPoint.x) * scaleX) + pathOriginPoint.x;
             NSString * newAbsoluteX2String = [macSVGDocument allocFloatString:newAbsoluteX2Float];
 
-            CGFloat newAbsoluteY2Float = ((oldAbsoluteY2Float - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
+            float newAbsoluteY2Float = ((oldAbsoluteY2Float - pathOriginPoint.y) * scaleY) + pathOriginPoint.y;
             NSString * newAbsoluteY2String = [macSVGDocument allocFloatString:newAbsoluteY2Float];
 
-            CGFloat newRelativeXFloat = oldXFloat * scaleX;
+            float newRelativeXFloat = oldXFloat * scaleX;
             NSString * newRelativeXString = [macSVGDocument allocFloatString:newRelativeXFloat];
 
-            CGFloat newRelativeYFloat = oldYFloat * scaleY;
+            float newRelativeYFloat = oldYFloat * scaleY;
             NSString * newRelativeYString = [macSVGDocument allocFloatString:newRelativeYFloat];
 
-            CGFloat newRelativeX1Float = oldX1Float * scaleX;
+            float newRelativeX1Float = oldX1Float * scaleX;
             NSString * newRelativeX1String = [macSVGDocument allocFloatString:newRelativeX1Float];
 
-            CGFloat newRelativeY1Float = oldY1Float * scaleY;
+            float newRelativeY1Float = oldY1Float * scaleY;
             NSString * newRelativeY1String = [macSVGDocument allocFloatString:newRelativeY1Float];
 
-            CGFloat newRelativeX2Float = oldX2Float * scaleX;
+            float newRelativeX2Float = oldX2Float * scaleX;
             NSString * newRelativeX2String = [macSVGDocument allocFloatString:newRelativeX2Float];
             
-            CGFloat newRelativeY2Float = oldY2Float * scaleY;
+            float newRelativeY2Float = oldY2Float * scaleY;
             NSString * newRelativeY2String = [macSVGDocument allocFloatString:newRelativeY2Float];
             
-            NSString * commandString = pathSegmentDictionary[@"command"];
+            unichar commandCharacter = pathSegment.pathCommand;
             
-            unichar commandCharacter = [commandString characterAtIndex:0];
-            
-            NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * newPathSegment = [[PathSegment alloc] init];
 
-            newSegmentDictionary[@"command"] = commandString;
+            newPathSegment.pathCommand = commandCharacter;
             
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
 
                 case 'm':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
                 case 'L':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'l':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'H':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
+                    newPathSegment.xString = newAbsoluteXString;
                     break;
                 }
 
                 case 'h':     // horizontal lineto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
+                    newPathSegment.xString = newRelativeXString;
                     break;
                 }
 
                 case 'V':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
                 case 'v':     // vertical lineto
                 {
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'C':     // absolute curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
 
                 case 'c':     // relative curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = newRelativeY1String;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'S':     // absolute smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
                 
                 case 's':     // relative smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x2"] = newRelativeX2String;
-                    newSegmentDictionary[@"y2"] = newRelativeY2String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x2String = newRelativeX2String;
+                    newPathSegment.y2String = newRelativeY2String;
                     break;
                 }
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
                     break;
                 }
                 
                 case 'q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
-                    newSegmentDictionary[@"x1"] = newRelativeX1String;
-                    newSegmentDictionary[@"y1"] = newRelativeY1String;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
+                    newPathSegment.x1String = newRelativeX1String;
+                    newPathSegment.y1String = newRelativeY1String;
                     break;
                 }
 
                 case 'T':     // smooth quadratic Bezier curve
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
 
                 case 't':     // smooth quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     break;
                 }
 
                 case 'A':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    CGFloat rxFloat = rxString.floatValue * scaleX;
-                    CGFloat ryFloat = ryString.floatValue * scaleY;
+                    float rxFloat = rxString.floatValue * scaleX;
+                    float ryFloat = ryString.floatValue * scaleY;
                     rxString = [macSVGDocument allocFloatString:rxFloat];
                     ryString = [macSVGDocument allocFloatString:ryFloat];
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
                 case 'a':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newRelativeXString;
-                    newSegmentDictionary[@"y"] = newRelativeYString;
+                    newPathSegment.xString = newRelativeXString;
+                    newPathSegment.yString = newRelativeYString;
                     
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
 
-                    CGFloat rxFloat = rxString.floatValue * scaleX;
-                    CGFloat ryFloat = ryString.floatValue * scaleY;
+                    float rxFloat = rxString.floatValue * scaleX;
+                    float ryFloat = ryString.floatValue * scaleY;
                     rxString = [macSVGDocument allocFloatString:rxFloat];
                     ryString = [macSVGDocument allocFloatString:ryFloat];
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
 
                     break;
                 }
@@ -4014,7 +3860,7 @@
                     break;
             }
             
-            [newSegmentsArray addObject:newSegmentDictionary];
+            [newSegmentsArray addObject:newPathSegment];
             
             currentIndex++;
         }
@@ -4029,19 +3875,19 @@
 //	rotate_point()
 //==================================================================================
 
-- (CGPoint)rotatePoint:(CGPoint)aPoint centerPoint:(CGPoint)centerPoint degrees:(CGFloat)degrees
+- (CGPoint)rotatePoint:(CGPoint)aPoint centerPoint:(CGPoint)centerPoint degrees:(float)degrees
 {
     double radians = degrees * (M_PI / 180.0f);
 
-    CGFloat s = sinf(radians);
-    CGFloat c = cosf(radians);
+    float s = sinf(radians);
+    float c = cosf(radians);
 
     CGPoint translatePoint = aPoint;
     translatePoint.x -= centerPoint.x;
     translatePoint.y -= centerPoint.y;
     
-    CGFloat rotX = (translatePoint.x * c) - (translatePoint.y * s);
-    CGFloat rotY = (translatePoint.x * s) + (translatePoint.y * c);
+    float rotX = (translatePoint.x * c) - (translatePoint.y * s);
+    float rotY = (translatePoint.x * s) + (translatePoint.y * c);
     
     CGPoint result = CGPointZero;
     result.x = rotX + centerPoint.x;
@@ -4054,7 +3900,7 @@
 //	rotatePathCoordinatesWithPathSegmentsArray:x:y:degree:
 //==================================================================================
 
-- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)mixedPathSegmentsArray x:(CGFloat)rotateX y:(CGFloat)rotateY degrees:(CGFloat)degrees
+- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)mixedPathSegmentsArray x:(float)rotateX y:(float)rotateY degrees:(float)degrees
 {
     // this method will convert the path segments to use absolute coordinates
     // 'H' and 'V' drawing commands are replaced with 'L' command with both x and y coordinates.
@@ -4071,17 +3917,17 @@
         
         CGPoint centerPoint = CGPointMake(rotateX, rotateY);
         
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            CGFloat oldAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:pathSegmentDictionary];
-
-            CGFloat oldAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:pathSegmentDictionary];
-
-            CGFloat oldAbsoluteX2Float = [self floatForAttribute:@"absoluteX2" pathSegment:pathSegmentDictionary];
-            CGFloat oldAbsoluteY2Float = [self floatForAttribute:@"absoluteY2" pathSegment:pathSegmentDictionary];
-
+            float oldAbsoluteXFloat = pathSegment.absoluteXFloat;
+            float oldAbsoluteYFloat = pathSegment.absoluteYFloat;
+        
+            float oldAbsoluteX1Float = pathSegment.absoluteX1Float;
+            float oldAbsoluteY1Float = pathSegment.absoluteY1Float;
+        
+            float oldAbsoluteX2Float = pathSegment.absoluteX2Float;
+            float oldAbsoluteY2Float = pathSegment.absoluteY2Float;
+        
             CGPoint oldAbsoluteXYPoint = CGPointMake(oldAbsoluteXFloat, oldAbsoluteYFloat);
             CGPoint oldAbsoluteXY1Point = CGPointMake(oldAbsoluteX1Float, oldAbsoluteY1Float);
             CGPoint oldAbsoluteXY2Point = CGPointMake(oldAbsoluteX2Float, oldAbsoluteY2Float);
@@ -4098,31 +3944,27 @@
             NSString * newAbsoluteX2String = [macSVGDocument allocFloatString:newAbsoluteXY2Point.x];
             NSString * newAbsoluteY2String = [macSVGDocument allocFloatString:newAbsoluteXY2Point.y];
             
-            NSString * commandString = pathSegmentDictionary[@"command"];
-            
-            unichar commandCharacter = [commandString characterAtIndex:0];
+            unichar commandCharacter = pathSegment.pathCommand;
 
             if (commandCharacter == 'H')
             {
-                commandString = @"L";
                 commandCharacter = 'L';
             }
             if (commandCharacter == 'V')
             {
-                commandString = @"L";
                 commandCharacter = 'L';
             }
             
-            NSMutableDictionary * newSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * newPathSegment = [[PathSegment alloc] init];
 
-            newSegmentDictionary[@"command"] = commandString;
+            newPathSegment.pathCommand = commandCharacter;
             
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
 
@@ -4132,8 +3974,8 @@
                 }
                 case 'L':     // lineto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
                 }
                 
@@ -4164,12 +4006,12 @@
 
                 case 'C':     // absolute curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
 
@@ -4180,10 +4022,10 @@
 
                 case 'S':     // absolute smooth cubic curveto
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x2"] = newAbsoluteX2String;
-                    newSegmentDictionary[@"y2"] = newAbsoluteY2String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x2String = newAbsoluteX2String;
+                    newPathSegment.y2String = newAbsoluteY2String;
                     break;
                 }
                 
@@ -4194,10 +4036,10 @@
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
-                    newSegmentDictionary[@"x1"] = newAbsoluteX1String;
-                    newSegmentDictionary[@"y1"] = newAbsoluteY1String;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
+                    newPathSegment.x1String = newAbsoluteX1String;
+                    newPathSegment.y1String = newAbsoluteY1String;
                     break;
                 }
                 
@@ -4207,8 +4049,8 @@
                 }
 
                 case 'T':     // smooth quadratic Bezier curve
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
                     break;
 
                 case 't':     // smooth quadratic Bezier curve
@@ -4218,20 +4060,20 @@
 
                 case 'A':     // elliptical arc
                 {
-                    newSegmentDictionary[@"x"] = newAbsoluteXString;
-                    newSegmentDictionary[@"y"] = newAbsoluteYString;
+                    newPathSegment.xString = newAbsoluteXString;
+                    newPathSegment.yString = newAbsoluteYString;
 
-                    NSString * rxString = pathSegmentDictionary[@"rx"];
-                    NSString * ryString = pathSegmentDictionary[@"ry"];
-                    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-                    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-                    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
+                    NSString * rxString = pathSegment.rxString;
+                    NSString * ryString = pathSegment.ryString;
+                    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+                    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+                    NSString * sweepFlagString = pathSegment.sweepFlagString;
                     
-                    newSegmentDictionary[@"rx"] = rxString;
-                    newSegmentDictionary[@"ry"] = ryString;
-                    newSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                    newSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                    newSegmentDictionary[@"sweep-flag"] = sweepFlagString;
+                    newPathSegment.rxString = rxString;
+                    newPathSegment.ryString = ryString;
+                    newPathSegment.xAxisRotationString = xAxisRotationString;
+                    newPathSegment.largeArcFlagString = largeArcFlagString;
+                    newPathSegment.sweepFlagString = sweepFlagString;
                     
                     break;
                 }
@@ -4245,7 +4087,7 @@
                     break;
             }
             
-            [newSegmentsArray addObject:newSegmentDictionary];
+            [newSegmentsArray addObject:newPathSegment];
             
             currentIndex++;
         }
@@ -4310,11 +4152,10 @@
         NSInteger secondSegmentIndex = 1;
         NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
         
-        for (NSMutableDictionary * aPathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * aPathSegment in pathSegmentsArray)
         {
-            NSString * aPathSegmentCommandString = [aPathSegmentDictionary objectForKey:@"command"];
-            unichar aPathSegmentCommand = [aPathSegmentCommandString characterAtIndex:0];
-            NSInteger aPathSegmentIndex = [pathSegmentsArray indexOfObject:aPathSegmentDictionary];
+            unichar aPathSegmentCommand = aPathSegment.pathCommand;
+            NSInteger aPathSegmentIndex = [pathSegmentsArray indexOfObject:aPathSegment];
             
             if (aPathSegmentIndex < lastSegmentIndex - 2)
             {
@@ -4332,36 +4173,32 @@
         }
     
         
-        NSMutableDictionary * firstPathSegmentDictionary = [pathSegmentsArray objectAtIndex:firstSegmentIndex];
-        NSString * firstPathSegmentCommandString = [firstPathSegmentDictionary objectForKey:@"command"];
-        unichar firstPathSegmentCommand = [firstPathSegmentCommandString characterAtIndex:0];
+        PathSegment * firstPathSegment = [pathSegmentsArray objectAtIndex:firstSegmentIndex];
+        unichar firstPathSegmentCommand = firstPathSegment.pathCommand;
+        
+        float firstXFloat = firstPathSegment.xFloat;
+        float firstYFloat = firstPathSegment.yFloat;
 
-        CGFloat firstXFloat = [self floatForAttribute:@"x" pathSegment:firstPathSegmentDictionary];
-        CGFloat firstYFloat = [self floatForAttribute:@"y" pathSegment:firstPathSegmentDictionary];
+        float firstAbsoluteXFloat = firstPathSegment.absoluteXFloat;
+        float firstAbsoluteYFloat = firstPathSegment.absoluteYFloat;
 
-        CGFloat firstAbsoluteXFloat = [self floatForAttribute:@"absoluteX" pathSegment:firstPathSegmentDictionary];
-        CGFloat firstAbsoluteYFloat = [self floatForAttribute:@"absoluteY" pathSegment:firstPathSegmentDictionary];
+        PathSegment * secondPathSegment = [pathSegmentsArray objectAtIndex:secondSegmentIndex];
+        unichar secondPathSegmentCommand = secondPathSegment.pathCommand;
+        
+        float secondX1Float = secondPathSegment.x1Float;
+        float secondY1Float = secondPathSegment.y1Float;
 
-        NSMutableDictionary * secondPathSegmentDictionary = [pathSegmentsArray objectAtIndex:secondSegmentIndex];
-        NSString * secondPathSegmentCommandString = [secondPathSegmentDictionary objectForKey:@"command"];
-        unichar secondPathSegmentCommand = [secondPathSegmentCommandString characterAtIndex:0];
+        float secondX2Float = secondPathSegment.x2Float;
+        float secondY2Float = secondPathSegment.y2Float;
 
-        CGFloat secondX1Float = [self floatForAttribute:@"x1" pathSegment:secondPathSegmentDictionary];
-        CGFloat secondY1Float = [self floatForAttribute:@"y1" pathSegment:secondPathSegmentDictionary];
+        float secondAbsoluteX1Float = secondPathSegment.absoluteX1Float;
+        float secondAbsoluteY1Float = secondPathSegment.absoluteY1Float;
 
-        CGFloat secondX2Float = [self floatForAttribute:@"x2" pathSegment:secondPathSegmentDictionary];
-        CGFloat secondY2Float = [self floatForAttribute:@"y2" pathSegment:secondPathSegmentDictionary];
-
-        CGFloat secondAbsoluteX1Float = [self floatForAttribute:@"absoluteX1" pathSegment:secondPathSegmentDictionary];
-        CGFloat secondAbsoluteY1Float = [self floatForAttribute:@"absoluteY1" pathSegment:secondPathSegmentDictionary];
-
-        NSMutableDictionary * lastPathSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
-        NSString * lastPathSegmentCommandString = [lastPathSegmentDictionary objectForKey:@"command"];
-        unichar lastPathSegmentCommand = [lastPathSegmentCommandString characterAtIndex:0];
-
-        CGFloat lastAbsoluteStartXFloat = [self floatForAttribute:@"absoluteStartX" pathSegment:lastPathSegmentDictionary];
-        CGFloat lastAbsoluteStartYFloat = [self floatForAttribute:@"absoluteStartY" pathSegment:lastPathSegmentDictionary];
-
+        PathSegment * lastPathSegment = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
+        unichar lastPathSegmentCommand = lastPathSegment.pathCommand;
+        
+        float lastAbsoluteStartXFloat = lastPathSegment.absoluteStartXFloat;
+        float lastAbsoluteStartYFloat = lastPathSegment.absoluteStartYFloat;
         
         if ((lastPathSegmentCommand != 'Z') && (lastPathSegmentCommand != 'z'))
         {
@@ -4383,24 +4220,24 @@
                         NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"L";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'L';
 
                         break;
                     }
                     
                     case 'l':     // lineto
                     {
-                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                        float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                         NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"l";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'l';
 
                         break;
                     }
@@ -4410,24 +4247,24 @@
                         NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"L";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'L';
 
                         break;
                     }
 
                     case 'h':     // horizontal lineto
                     {
-                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                        float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                         NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"l";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'l';
 
                         break;
                     }
@@ -4437,24 +4274,24 @@
                         NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"L";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'L';
 
                         break;
                     }
                     
                     case 'v':     // vertical lineto
                     {
-                        CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                        CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                        float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                        float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                         NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                         NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                        lastPathSegmentDictionary[@"x"] = newXString;
-                        lastPathSegmentDictionary[@"y"] = newYString;
-                        lastPathSegmentDictionary[@"command"] = @"l";
+                        lastPathSegment.xString = newXString;
+                        lastPathSegment.yString = newYString;
+                        lastPathSegment.pathCommand = 'l';
 
                         break;
                     }
@@ -4466,16 +4303,16 @@
                             NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                            CGFloat newX2Float = firstXFloat - (secondX1Float - firstXFloat);
-                            CGFloat newY2Float = firstYFloat - (secondY1Float - firstYFloat);
+                            float newX2Float = firstXFloat - (secondX1Float - firstXFloat);
+                            float newY2Float = firstYFloat - (secondY1Float - firstYFloat);
                             
                             NSString * newX2String = [macSVGDocument allocFloatString:newX2Float];
                             NSString * newY2String = [macSVGDocument allocFloatString:newY2Float];
                             
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x2"] = newX2String;
-                            lastPathSegmentDictionary[@"y2"] = newY2String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x2String = newX2String;
+                            lastPathSegment.y2String = newY2String;
                         }
 
                         break;
@@ -4485,22 +4322,22 @@
                     {
                         if (secondPathSegmentCommand == 'c')
                         {
-                            CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                            CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                            float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                            float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
                         
                             NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                            CGFloat newX2Float = (firstAbsoluteXFloat - secondAbsoluteX1Float) + (firstAbsoluteXFloat - lastAbsoluteStartXFloat);
-                            CGFloat newY2Float = (firstAbsoluteYFloat - secondAbsoluteY1Float) + (firstAbsoluteYFloat -lastAbsoluteStartYFloat);
+                            float newX2Float = (firstAbsoluteXFloat - secondAbsoluteX1Float) + (firstAbsoluteXFloat - lastAbsoluteStartXFloat);
+                            float newY2Float = (firstAbsoluteYFloat - secondAbsoluteY1Float) + (firstAbsoluteYFloat -lastAbsoluteStartYFloat);
                             
                             NSString * newX2String = [macSVGDocument allocFloatString:newX2Float];
                             NSString * newY2String = [macSVGDocument allocFloatString:newY2Float];
                             
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x2"] = newX2String;
-                            lastPathSegmentDictionary[@"y2"] = newY2String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x2String = newX2String;
+                            lastPathSegment.y2String = newY2String;
                         }
 
                         break;
@@ -4513,16 +4350,16 @@
                             NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                            CGFloat newX2Float = firstXFloat - (secondX2Float - firstXFloat);
-                            CGFloat newY2Float = firstYFloat - (secondY2Float - firstYFloat);
+                            float newX2Float = firstXFloat - (secondX2Float - firstXFloat);
+                            float newY2Float = firstYFloat - (secondY2Float - firstYFloat);
                             
                             NSString * newX2String = [macSVGDocument allocFloatString:newX2Float];
                             NSString * newY2String = [macSVGDocument allocFloatString:newY2Float];
                             
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x2"] = newX2String;
-                            lastPathSegmentDictionary[@"y2"] = newY2String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x2String = newX2String;
+                            lastPathSegment.y2String = newY2String;
                         }
                         break;
                     }
@@ -4531,8 +4368,8 @@
                     {
                         if (secondPathSegmentCommand == 's')
                         {
-                            CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                            CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                            float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                            float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                             NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
@@ -4540,10 +4377,10 @@
                             NSString * newX2String = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newY2String = [macSVGDocument allocFloatString:newYFloat];
                             
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x2"] = newX2String;
-                            lastPathSegmentDictionary[@"y2"] = newY2String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x2String = newX2String;
+                            lastPathSegment.y2String = newY2String;
                         }
                         break;
                     }
@@ -4555,16 +4392,16 @@
                             NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                            CGFloat newX1Float = firstXFloat - (secondX1Float - firstXFloat);
-                            CGFloat newY1Float = firstYFloat - (secondY1Float - firstYFloat);
+                            float newX1Float = firstXFloat - (secondX1Float - firstXFloat);
+                            float newY1Float = firstYFloat - (secondY1Float - firstYFloat);
                             
                             NSString * newX1String = [macSVGDocument allocFloatString:newX1Float];
                             NSString * newY1String = [macSVGDocument allocFloatString:newY1Float];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x1"] = newX1String;
-                            lastPathSegmentDictionary[@"y1"] = newY1String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x1String = newX1String;
+                            lastPathSegment.y1String = newY1String;
                         }
                         break;
                     }
@@ -4573,8 +4410,8 @@
                     {
                         if (secondPathSegmentCommand == 'q')
                         {
-                            CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                            CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                            float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                            float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                             NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
@@ -4582,10 +4419,10 @@
                             NSString * newX1String = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newY1String = [macSVGDocument allocFloatString:newYFloat];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
-                            lastPathSegmentDictionary[@"x1"] = newX1String;
-                            lastPathSegmentDictionary[@"y1"] = newY1String;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
+                            lastPathSegment.x1String = newX1String;
+                            lastPathSegment.y1String = newY1String;
                         }
 
                         break;
@@ -4597,8 +4434,8 @@
                             NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
                         }
                         break;
 
@@ -4606,14 +4443,14 @@
                     {
                         if (secondPathSegmentCommand == 't')
                         {
-                            CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                            CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                            float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                            float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                             NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
                         }
 
                         break;
@@ -4626,8 +4463,8 @@
                             NSString * newXString = [macSVGDocument allocFloatString:firstXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:firstYFloat];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
                         }
                         
                         break;
@@ -4636,14 +4473,14 @@
                     {
                         if (secondPathSegmentCommand == 'a')
                         {
-                            CGFloat newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
-                            CGFloat newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
+                            float newXFloat = firstAbsoluteXFloat - lastAbsoluteStartXFloat;
+                            float newYFloat = firstAbsoluteYFloat - lastAbsoluteStartYFloat;
 
                             NSString * newXString = [macSVGDocument allocFloatString:newXFloat];
                             NSString * newYString = [macSVGDocument allocFloatString:newYFloat];
 
-                            lastPathSegmentDictionary[@"x"] = newXString;
-                            lastPathSegmentDictionary[@"y"] = newYString;
+                            lastPathSegment.xString = newXString;
+                            lastPathSegment.yString = newYString;
                         }
 
                         break;
@@ -4655,18 +4492,18 @@
                 }
             }
 
-            NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionary];
+            PathSegment * closePathSegment = [[PathSegment alloc] init];
             
             if ((lastPathSegmentCommand >= 'a') && (lastPathSegmentCommand <= 'z'))
             {
-                [closePathSegmentDictionary setObject:@"z" forKey:@"command"];
+                closePathSegment.pathCommand = 'z';
             }
             else
             {
-                [closePathSegmentDictionary setObject:@"Z" forKey:@"command"];
+                closePathSegment.pathCommand = 'Z';
             }
             
-            [pathSegmentsArray addObject:closePathSegmentDictionary];
+            [pathSegmentsArray addObject:closePathSegment];
         }
     }
     
@@ -4690,17 +4527,17 @@
     
     if ((pathSegmentsArrayCount > 3) && (offset < pathSegmentsArrayCount))
     {
-        NSMutableDictionary * firstSegmentDictionary = [pathSegmentsArray objectAtIndex:0];
-        NSString * firstSegmentCommand = [firstSegmentDictionary objectForKey:@"command"];
+        PathSegment * firstPathSegment = [pathSegmentsArray objectAtIndex:0];
+        unichar firstSegmentCommand = firstPathSegment.pathCommand;
         
-        if ([firstSegmentCommand isEqualToString:@"M"] == YES)
+        if (firstSegmentCommand == 'M')
         {
             BOOL lastSegmentIsClosePath = NO;
             NSInteger lastSegmentIndex = pathSegmentsArrayCount - 1;
 
-            NSMutableDictionary * lastSegmentDictionary = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
-            NSString * lastSegmentCommand = [lastSegmentDictionary objectForKey:@"command"];
-            if ([lastSegmentCommand isEqualToString:@"Z"] == YES)
+            PathSegment * lastPathSegment = [pathSegmentsArray objectAtIndex:lastSegmentIndex];
+            unichar lastSegmentCommand = lastPathSegment.pathCommand;
+            if ((lastSegmentCommand == 'Z') || (lastSegmentCommand == 'z'))
             {
                 lastSegmentIsClosePath = YES;
                 lastSegmentIndex--;
@@ -4712,50 +4549,50 @@
             {
                 // left rotation
 
-                NSMutableDictionary * startSegmentDictionary = [pathSegmentsArray objectAtIndex:-offset];
-                NSNumber * startXNumber = [startSegmentDictionary objectForKey:@"absoluteX"];
-                NSNumber * startYNumber = [startSegmentDictionary objectForKey:@"absoluteY"];
+                PathSegment * startPathSegment = [pathSegmentsArray objectAtIndex:-offset];
+                float startX = startPathSegment.absoluteXFloat;
+                float startY = startPathSegment.absoluteYFloat;
                 
-                NSString * startX = [startXNumber stringValue];
-                NSString * startY = [startYNumber stringValue];
+                NSString * startXString = [self allocFloatString:startX];
+                NSString * startYString = [self allocFloatString:startY];
                 
-                NSMutableDictionary * newFirstSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                        @"M", @"command",
-                        [startXNumber copy], @"absoluteX",
-                        [startYNumber copy], @"absoluteY",
-                        [startXNumber copy], @"absoluteStartX",
-                        [startYNumber copy], @"absoluteStartY",
-                        startX, @"x",
-                        startY, @"y",
-                        NULL];
-                
-                [newSegmentsArray addObject:newFirstSegmentDictionary];
+                PathSegment * newFirstPathSegment = [[PathSegment alloc] init];
+                newFirstPathSegment.pathCommand = 'M';
+                newFirstPathSegment.absoluteXFloat = startX;
+                newFirstPathSegment.absoluteYFloat = startY;
+                newFirstPathSegment.absoluteStartXFloat = startX;
+                newFirstPathSegment.absoluteStartYFloat = startY;
+                newFirstPathSegment.xString = startXString;
+                newFirstPathSegment.yString = startYString;
+                                
+                [newSegmentsArray addObject:newFirstPathSegment];
                 
                 for (NSInteger i = -offset + 1; i <= lastSegmentIndex; i++)
                 {
-                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    PathSegment * pathSegment = [pathSegmentsArray objectAtIndex:i];
                     
-                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+                    PathSegment * newPathSegment = [[PathSegment alloc] init];
+                    [newPathSegment copyValuesFromPathSegment:pathSegment];
 
-                    [newSegmentsArray addObject:newSegmentDictionary];
+                    [newSegmentsArray addObject:newPathSegment];
                 }
 
                 for (NSInteger i = 1; i <= -offset; i++)
                 {
-                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    PathSegment * pathSegment = [pathSegmentsArray objectAtIndex:i];
                     
-                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+                    PathSegment * newPathSegment = [[PathSegment alloc] init];
+                    [newPathSegment copyValuesFromPathSegment:pathSegment];
 
-                    [newSegmentsArray addObject:newSegmentDictionary];
+                    [newSegmentsArray addObject:newPathSegment];
                 }
                 
                 if (lastSegmentIsClosePath == YES)
                 {
-                    NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"Z", @"command",
-                            NULL];
+                    PathSegment * closePathSegment = [[PathSegment alloc] init];
+                    closePathSegment.pathCommand = 'Z';
                     
-                    [newSegmentsArray addObject:closePathSegmentDictionary];
+                    [newSegmentsArray addObject:closePathSegment];
                 }
 
             }
@@ -4765,50 +4602,49 @@
                 
                 NSInteger startSegmentIndex = lastSegmentIndex - offset;
 
-                NSMutableDictionary * startSegmentDictionary = [pathSegmentsArray objectAtIndex:startSegmentIndex];
-                NSNumber * startXNumber = [startSegmentDictionary objectForKey:@"absoluteX"];
-                NSNumber * startYNumber = [startSegmentDictionary objectForKey:@"absoluteY"];
+                PathSegment * startPathSegment = [pathSegmentsArray objectAtIndex:startSegmentIndex];
+                float startX = startPathSegment.absoluteXFloat;
+                float startY = startPathSegment.absoluteYFloat;
                 
-                NSString * startX = [startXNumber stringValue];
-                NSString * startY = [startYNumber stringValue];
+                NSString * startXString = [self allocFloatString:startX];
+                NSString * startYString = [self allocFloatString:startY];
                 
-                NSMutableDictionary * newFirstSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                        @"M", @"command",
-                        [startXNumber copy], @"absoluteX",
-                        [startYNumber copy], @"absoluteY",
-                        [startXNumber copy], @"absoluteStartX",
-                        [startYNumber copy], @"absoluteStartY",
-                        startX, @"x",
-                        startY, @"y",
-                        NULL];
+                PathSegment * newFirstPathSegment = [[PathSegment alloc] init];
+                newFirstPathSegment.pathCommand = 'M';
+                newFirstPathSegment.absoluteXFloat = startX;
+                newFirstPathSegment.absoluteYFloat = startY;
+                newFirstPathSegment.absoluteStartXFloat = startX;
+                newFirstPathSegment.absoluteStartYFloat = startY;
+                newFirstPathSegment.xString = startXString;
+                newFirstPathSegment.yString = startYString;
                 
-                [newSegmentsArray addObject:newFirstSegmentDictionary];
+                [newSegmentsArray addObject:newFirstPathSegment];
                 
                 for (NSInteger i = startSegmentIndex + 1; i <= lastSegmentIndex; i++)
                 {
-                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    PathSegment * pathSegment = [pathSegmentsArray objectAtIndex:i];
 
-                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+                    PathSegment * newPathSegment = [[PathSegment alloc] init];
+                    [newPathSegment copyValuesFromPathSegment:pathSegment];
 
-                    [newSegmentsArray addObject:newSegmentDictionary];
+                    [newSegmentsArray addObject:newPathSegment];
                 }
 
                 for (NSInteger i = 1; i < lastSegmentIndex - offset + 1; i++)
                 {
-                    NSMutableDictionary * pathSegmentDictionary = [pathSegmentsArray objectAtIndex:i];
+                    PathSegment * pathSegment = [pathSegmentsArray objectAtIndex:i];
                     
-                    NSMutableDictionary * newSegmentDictionary = [pathSegmentDictionary mutableCopy];
+                    PathSegment * newPathSegment = [[PathSegment alloc] init];
+                    [newPathSegment copyValuesFromPathSegment:pathSegment];
 
-                    [newSegmentsArray addObject:newSegmentDictionary];
+                    [newSegmentsArray addObject:newPathSegment];
                 }
                 
                 if (lastSegmentIsClosePath == YES)
                 {
-                    NSMutableDictionary * closePathSegmentDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                            @"Z", @"command",
-                            NULL];
+                    PathSegment * closePathSegment = [[PathSegment alloc] init];
                     
-                    [newSegmentsArray addObject:closePathSegmentDictionary];
+                    [newSegmentsArray addObject:closePathSegment];
                 }
             }
             
@@ -4829,7 +4665,7 @@
 //	degreesToRadians()
 //==================================================================================
 
-CGFloat degreesToRadians(CGFloat degree)
+float degreesToRadians(float degree)
 {
     return (degree * M_PI) / 180;
 }
@@ -4838,7 +4674,7 @@ CGFloat degreesToRadians(CGFloat degree)
 //	radiansToDegrees()
 //==================================================================================
 
-CGFloat radiansToDegrees(CGFloat radians)
+float radiansToDegrees(float radians)
 {
     return (radians * 180) / (M_PI);
 }
@@ -4853,19 +4689,19 @@ CGFloat radiansToDegrees(CGFloat radians)
  * @param	a Arc
  * @return	Object containing parameters {start<Point>, end<Point>, rx<Number>, ry<Number>, rotation<Number>, isLarge<Boolean>, isClockwise<Boolean>}
  */
-- (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
-        cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry
+- (NSDictionary *) convertArcToEndPointWithRotation:(float)rotation angleStart:(float)angleStart angleExtent:(float)angleExtent
+        cx:(float)cx cy:(float)cy rx:(float)rx ry:(float)ry
 {
     // http://www.w3.org/TR/SVG11/implnote.html#ArcConversionCenterToEndpoint
-    CGFloat radRotation = degreesToRadians(rotation);
-    CGFloat radStart = degreesToRadians(angleStart);
-    CGFloat radExtent = degreesToRadians(angleExtent);
-    CGFloat sinRotation = sinf(radRotation);
-    CGFloat cosRotation = cosf(radRotation);
+    float radRotation = degreesToRadians(rotation);
+    float radStart = degreesToRadians(angleStart);
+    float radExtent = degreesToRadians(angleExtent);
+    float sinRotation = sinf(radRotation);
+    float cosRotation = cosf(radRotation);
     
     CGPoint start = CGPointZero;
-    CGFloat rxcos = rx * cosf(radStart);
-    CGFloat rysin = ry * sinf(radStart);
+    float rxcos = rx * cosf(radStart);
+    float rysin = ry * sinf(radStart);
     start.x = (cosRotation * rxcos) + (-sinRotation * rxcos) + cx;
     start.y = (sinRotation * rysin) + (cosRotation * rysin) + cy;
     
@@ -4909,24 +4745,24 @@ CGFloat radiansToDegrees(CGFloat radians)
     * @param	isLarge	Define if is a large arc (large-arc-flag)
     * @param	isCounterClockwise	Define if arc should be draw clockwise (sweep-flag)
     */
-- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
-        rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise
+- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(float)rx ry:(float)ry
+        rotation:(float)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise
 {
     // adapted from https://github.com/millermedeiros/SVGParser/blob/master/com/millermedeiros/geom/SVGArc.as
     // http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
 
     //midpoint
-    CGFloat midX = (start.x - end.x) / 2;
-    CGFloat midY = (start.y - end.y) / 2;
+    float midX = (start.x - end.x) / 2;
+    float midY = (start.y - end.y) / 2;
 
     //rotation
-    CGFloat radRotation = degreesToRadians(rotation);
-    CGFloat sinRotation = sinf(radRotation);
-    CGFloat cosRotation = cosf(radRotation);
+    float radRotation = degreesToRadians(rotation);
+    float sinRotation = sinf(radRotation);
+    float cosRotation = cosf(radRotation);
 
     //(x1', y1')
-    CGFloat x1 = cosRotation * midX + sinRotation * midY;
-    CGFloat y1 = -sinRotation * midX + cosRotation * midY;
+    float x1 = cosRotation * midX + sinRotation * midY;
+    float y1 = -sinRotation * midX + cosRotation * midY;
 
     // Correction of out-of-range radii
     if (rx == 0 || ry == 0)
@@ -4935,15 +4771,15 @@ CGFloat radiansToDegrees(CGFloat radians)
         return NULL;
     }
 
-    CGFloat abs_rx = fabs(rx);
-    CGFloat abs_ry = fabs(ry);
+    float abs_rx = fabs(rx);
+    float abs_ry = fabs(ry);
     
-    CGFloat x1_2 = x1 * x1;
-    CGFloat y1_2 = y1 * y1;
-    CGFloat rx_2 = abs_rx * abs_rx;
-    CGFloat ry_2 = abs_ry * abs_ry;
+    float x1_2 = x1 * x1;
+    float y1_2 = y1 * y1;
+    float rx_2 = abs_rx * abs_rx;
+    float ry_2 = abs_ry * abs_ry;
     
-    CGFloat radiiFix = (x1_2 / rx_2) + (y1_2 / ry_2);
+    float radiiFix = (x1_2 / rx_2) + (y1_2 / ry_2);
     
     if(radiiFix > 1)
     {
@@ -4954,31 +4790,31 @@ CGFloat radiansToDegrees(CGFloat radians)
     }
 
     //(cx', cy')
-    CGFloat cf = ((rx_2 * ry_2) - (rx_2 * y1_2) - (ry_2 * x1_2)) / ((rx_2 * y1_2) + (ry_2 * x1_2));
+    float cf = ((rx_2 * ry_2) - (rx_2 * y1_2) - (ry_2 * x1_2)) / ((rx_2 * y1_2) + (ry_2 * x1_2));
     cf = (cf > 0)? cf : 0;
-    CGFloat sqr = sqrt(cf);
+    float sqr = sqrt(cf);
     sqr *= (isLarge != isCounterClockwise)? 1 : -1;
-    CGFloat cx1 = sqr * ((abs_rx * y1) / abs_ry);
-    CGFloat cy1 = sqr * -((abs_ry * x1) / abs_rx);
+    float cx1 = sqr * ((abs_rx * y1) / abs_ry);
+    float cy1 = sqr * -((abs_ry * x1) / abs_rx);
 
     //(cx, cy) from (cx', cy')
-    CGFloat cx = (cosRotation * cx1 - sinRotation * cy1) + ((start.x + end.x) / 2);
-    CGFloat cy = (sinRotation * cx1 + cosRotation * cy1) + ((start.y + end.y) / 2);
+    float cx = (cosRotation * cx1 - sinRotation * cy1) + ((start.x + end.x) / 2);
+    float cy = (sinRotation * cx1 + cosRotation * cy1) + ((start.y + end.y) / 2);
 
     // angleStart and angleExtent
-    CGFloat ux = (x1 - cx1) / abs_rx;
-    CGFloat uy = (y1 - cy1) / abs_ry;
-    CGFloat vx = (-x1 - cx1) / abs_rx;
-    CGFloat vy = (-y1 - cy1) / abs_ry;
-    CGFloat uv = ux*vx + uy*vy; // u.v
-    CGFloat u_norm = sqrt(ux*ux + uy*uy); // ||u||
-    CGFloat uv_norm = sqrt((ux*ux + uy*uy) * (vx*vx + vy*vy)); // ||u||||v||
+    float ux = (x1 - cx1) / abs_rx;
+    float uy = (y1 - cy1) / abs_ry;
+    float vx = (-x1 - cx1) / abs_rx;
+    float vy = (-y1 - cy1) / abs_ry;
+    float uv = ux*vx + uy*vy; // u.v
+    float u_norm = sqrt(ux*ux + uy*uy); // ||u||
+    float uv_norm = sqrt((ux*ux + uy*uy) * (vx*vx + vy*vy)); // ||u||||v||
     
     NSInteger sign = (uy < 0)? -1 : 1; //((1,0),(vx, vy))
     
-    CGFloat angleStart = radiansToDegrees( sign * acos(ux / u_norm));
+    float angleStart = radiansToDegrees( sign * acos(ux / u_norm));
     sign = ((ux * vy - uy * vx) < 0) ? -1 : 1; //((ux,uy),(vx, vy))
-    CGFloat angleExtent = radiansToDegrees( sign * acos(uv / uv_norm));
+    float angleExtent = radiansToDegrees( sign * acos(uv / uv_norm));
     if (!isCounterClockwise && angleExtent > 0) angleExtent -= 360;
     else if (isCounterClockwise && angleExtent < 0) angleExtent += 360;
     angleStart = fmod(angleStart, 360);
@@ -5087,6 +4923,7 @@ bool SVGPathParser::decomposeArcToCubic(float angle, float rx, float ry, FloatPo
     return true;
 }
 */
+
 
 
 @end

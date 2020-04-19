@@ -39,10 +39,10 @@
     NSString * radiusString = radiusTextField.stringValue;
     NSString * segmentsString = segmentsTextField.stringValue;
     
-    CGFloat centerX = centerXString.floatValue;
-    CGFloat centerY = centerYString.floatValue;
-    CGFloat radius = radiusString.floatValue;
-    CGFloat segments = segmentsString.floatValue;
+    float centerX = centerXString.floatValue;
+    float centerY = centerYString.floatValue;
+    float radius = radiusString.floatValue;
+    float segments = segmentsString.floatValue;
     
     [[NSApplication sharedApplication] stopModalWithCode:NSModalResponseOK];
     

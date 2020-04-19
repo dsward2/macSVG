@@ -34,7 +34,7 @@
 @property (strong) DOMElement * domElementForHandles;
 @property (assign) time_t domElementForHandlesCreationTime;
 
-@property(assign) CGFloat segmentStrokeWidth;
+@property(assign) float segmentStrokeWidth;
 @property(strong) NSString * segmentStrokeHexColor;
 
 - (void) makeDOMSelectionRects;
@@ -63,7 +63,7 @@
 
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup
-        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        x:(float)x y:(float)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName;
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E06F8891D59ADC700265FA2 /* PathFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8881D59ADC700265FA2 /* PathFunctions.m */; };
+		0E08FD3524395248002360E0 /* PathSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08FD3424395248002360E0 /* PathSegment.m */; };
 		0E0A050A1E1B12C4002A8035 /* StyleAttributeEditor.plugin in Copy Plugins Files */ = {isa = PBXBuildFile; fileRef = 0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0E0AEDB11D8A9344004D82C3 /* path_markers_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AED991D8A932F004D82C3 /* path_markers_example.svg */; };
 		0E0AEDB31D8AE663004D82C3 /* pattern_example.svg in Copy macSVG Examples Files */ = {isa = PBXBuildFile; fileRef = 0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */; };
@@ -1704,6 +1705,8 @@
 		0E06F8871D59ADC700265FA2 /* PathFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PathFunctions.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0E06F8881D59ADC700265FA2 /* PathFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PathFunctions.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0E0799711D8A53C9001064D5 /* MacSVGPluginCallbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacSVGPluginCallbacks.h; sourceTree = "<group>"; };
+		0E08FD3324395248002360E0 /* PathSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathSegment.h; sourceTree = "<group>"; };
+		0E08FD3424395248002360E0 /* PathSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathSegment.m; sourceTree = "<group>"; };
 		0E0A05051E1B1273002A8035 /* StyleAttributeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = StyleAttributeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E0AED991D8A932F004D82C3 /* path_markers_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = path_markers_example.svg; sourceTree = "<group>"; };
 		0E0AEDB21D8AE618004D82C3 /* pattern_example.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pattern_example.svg; sourceTree = "<group>"; };
@@ -4436,6 +4439,8 @@
 				0E06F8881D59ADC700265FA2 /* PathFunctions.m */,
 				0EDC2EB71471D8C100747907 /* SVGPathEditor.h */,
 				0EDC2EB81471D8C100747907 /* SVGPathEditor.m */,
+				0E08FD3324395248002360E0 /* PathSegment.h */,
+				0E08FD3424395248002360E0 /* PathSegment.m */,
 				0E770CDA1D7FCE52000401C9 /* SVGPolylineEditor.h */,
 				0E770CDB1D7FCE52000401C9 /* SVGPolylineEditor.m */,
 				0EA47BEB1D886B9C005B2FF3 /* SVGLineEditor.h */,
@@ -6398,6 +6403,7 @@
 				0E714538142C037A002F8E1F /* HorizontalRulerView.m in Sources */,
 				0EE22BC317FB60BF00B58D6D /* SFTPUpload.m in Sources */,
 				0E71453B142C0CD4002F8E1F /* VerticalRulerView.m in Sources */,
+				0E08FD3524395248002360E0 /* PathSegment.m in Sources */,
 				0EC7C1AC24299DBD00C16DFD /* GCDWebServerErrorResponse.m in Sources */,
 				0E714560142C2FB3002F8E1F /* PanelView.m in Sources */,
 				0EE3ABCD242BC68800D75F26 /* TextIconView.m in Sources */,

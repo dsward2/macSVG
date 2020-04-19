@@ -1714,16 +1714,16 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     
     if (aImage != NULL)
     {
-        CGFloat xFloat = 10;
+        float xFloat = 10;
         NSString * xString = [NSString stringWithFormat:@"%fpx", xFloat];
 
-        CGFloat yFloat = 10;
+        float yFloat = 10;
         NSString * yString = [NSString stringWithFormat:@"%fpx", yFloat];
 
-        CGFloat widthFloat = aImage.size.width;
+        float widthFloat = aImage.size.width;
         NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
 
-        CGFloat heightFloat = aImage.size.height;
+        float heightFloat = aImage.size.height;
         NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
         
         NSString * newIDString = [self uniqueIDForElementTagName:@"image" pendingIDs:NULL];
@@ -1776,16 +1776,16 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSNumber * jpegCompressionNumber = (self.macSVGDocumentWindowController.imageDictionary)[@"jpegCompressionNumber"];
         NSString * pngDataString = [self xmlStringForEmbeddedImageData:tiffImageData outputFormat:@"png" jpegCompressionNumber:jpegCompressionNumber];
 
-        CGFloat xFloat = 10;
+        float xFloat = 10;
         NSString * xString = [NSString stringWithFormat:@"%fpx", xFloat];
 
-        CGFloat yFloat = 10;
+        float yFloat = 10;
         NSString * yString = [NSString stringWithFormat:@"%fpx", yFloat];
 
-        CGFloat widthFloat = aImage.size.width;
+        float widthFloat = aImage.size.width;
         NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
 
-        CGFloat heightFloat = aImage.size.height;
+        float heightFloat = aImage.size.height;
         NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
         
         NSString * newIDString = [self uniqueIDForElementTagName:@"image" pendingIDs:NULL];
@@ -1841,16 +1841,16 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         NSNumber * jpegCompressionNumber = (self.macSVGDocumentWindowController.imageDictionary)[@"jpegCompressionNumber"];
         NSString * jpegDataString = [self xmlStringForEmbeddedImageData:jpegData outputFormat:@"jpeg" jpegCompressionNumber:jpegCompressionNumber];
 
-        CGFloat xFloat = 10;
+        float xFloat = 10;
         NSString * xString = [NSString stringWithFormat:@"%fpx", xFloat];
 
-        CGFloat yFloat = 10;
+        float yFloat = 10;
         NSString * yString = [NSString stringWithFormat:@"%fpx", yFloat];
 
-        CGFloat widthFloat = aImage.size.width;
+        float widthFloat = aImage.size.width;
         NSString * widthString = [NSString stringWithFormat:@"%fpx", widthFloat];
 
-        CGFloat heightFloat = aImage.size.height;
+        float heightFloat = aImage.size.height;
         NSString * heightString = [NSString stringWithFormat:@"%fpx", heightFloat];
         
         NSString * newIDString = [self uniqueIDForElementTagName:@"image" pendingIDs:NULL];

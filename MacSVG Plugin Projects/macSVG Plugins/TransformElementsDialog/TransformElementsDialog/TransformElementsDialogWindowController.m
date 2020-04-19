@@ -145,25 +145,25 @@
     
     if ([transformName isEqualToString:@"Translate"] == YES)
     {
-        CGFloat translateXFloat = textValue1.floatValue;
-        CGFloat translateYFloat = textValue2.floatValue;
+        float translateXFloat = textValue1.floatValue;
+        float translateYFloat = textValue2.floatValue;
 
         [self translateSelectedElementsWithX:translateXFloat y:translateYFloat];
     }
 
     if ([transformName isEqualToString:@"Scale"] == YES)
     {
-        CGFloat scaleXFloat = textValue1.floatValue;
-        CGFloat scaleYFloat = textValue2.floatValue;
+        float scaleXFloat = textValue1.floatValue;
+        float scaleYFloat = textValue2.floatValue;
         
         [self scaleSelectedElementsWithXScale:scaleXFloat yScale:scaleYFloat];
     }
 
     if ([transformName isEqualToString:@"Rotate"] == YES)
     {
-        CGFloat centerXFloat = textValue1.floatValue;
-        CGFloat centerYFloat = textValue2.floatValue;
-        CGFloat degreesFloat = textValue3.floatValue;
+        float centerXFloat = textValue1.floatValue;
+        float centerYFloat = textValue2.floatValue;
+        float degreesFloat = textValue3.floatValue;
         
         [self rotateSelectedElementsWithCenterX:centerXFloat centerY:centerYFloat degrees:degreesFloat];
     }
@@ -176,7 +176,7 @@
 //	translateSelectedElementsWithX:y:
 //==================================================================================
 
-- (void)translateSelectedElementsWithX:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translateSelectedElementsWithX:(float)xTranslate y:(float)yTranslate
 {
     NSMutableArray * selectedElementsArray = (transformElementsDialog.macSVGPluginCallbacks).selectedElementsArray;
     
@@ -233,7 +233,7 @@
 //	translatePathElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translatePathElement:(NSMutableDictionary *)pathElementDictionary x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translatePathElement:(NSMutableDictionary *)pathElementDictionary x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * pathElement = pathElementDictionary[@"xmlElement"];
 
@@ -252,21 +252,21 @@
 //	translateRectElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translateRectElement:(NSMutableDictionary *)rectElementDictionary x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translateRectElement:(NSMutableDictionary *)rectElementDictionary x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * rectElement = rectElementDictionary[@"xmlElement"];
     DOMElement * domRectElement = rectElementDictionary[@"domElement"];
     
     NSXMLNode * xAttributeNode = [rectElement attributeForName:@"x"];
     NSString * xAttributeString = xAttributeNode.stringValue;
-    CGFloat x = xAttributeString.floatValue;
+    float x = xAttributeString.floatValue;
     
     NSXMLNode * yAttributeNode = [rectElement attributeForName:@"y"];
     NSString * yAttributeString = yAttributeNode.stringValue;
-    CGFloat y = yAttributeString.floatValue;
+    float y = yAttributeString.floatValue;
     
-    CGFloat newX = x + xTranslate;
-    CGFloat newY = y + yTranslate;
+    float newX = x + xTranslate;
+    float newY = y + yTranslate;
     
     xAttributeString = [transformElementsDialog allocPxString:newX];
     yAttributeString = [transformElementsDialog allocPxString:newY];
@@ -282,21 +282,21 @@
 //	translateCircleElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translateCircleElement:(NSMutableDictionary *)circleElementDictionary  x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translateCircleElement:(NSMutableDictionary *)circleElementDictionary  x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * circleElement = circleElementDictionary[@"xmlElement"];
     DOMElement * domCircleElement = circleElementDictionary[@"domElement"];
     
     NSXMLNode * cxAttributeNode = [circleElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [circleElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
-    CGFloat newCX = cx + xTranslate;
-    CGFloat newCY = cy + yTranslate;
+    float newCX = cx + xTranslate;
+    float newCY = cy + yTranslate;
     
     cxAttributeString = [transformElementsDialog allocPxString:newCX];
     cyAttributeString = [transformElementsDialog allocPxString:newCY];
@@ -312,21 +312,21 @@
 //	translateEllipseElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translateEllipseElement:(NSMutableDictionary *)ellipseElementDictionary x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translateEllipseElement:(NSMutableDictionary *)ellipseElementDictionary x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * ellipseElement = ellipseElementDictionary[@"xmlElement"];
     DOMElement * domEllipseElement = ellipseElementDictionary[@"domElement"];
     
     NSXMLNode * cxAttributeNode = [ellipseElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [ellipseElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
-    CGFloat newCX = cx + xTranslate;
-    CGFloat newCY = cy + yTranslate;
+    float newCX = cx + xTranslate;
+    float newCY = cy + yTranslate;
     
     cxAttributeString = [transformElementsDialog allocPxString:newCX];
     cyAttributeString = [transformElementsDialog allocPxString:newCY];
@@ -342,7 +342,7 @@
 //	translatePolylineElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translatePolylineElement:(NSMutableDictionary *)polylineElementDictionary x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translatePolylineElement:(NSMutableDictionary *)polylineElementDictionary x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * polylineElement = polylineElementDictionary[@"xmlElement"];
 
@@ -372,8 +372,8 @@
         NSString * xString = pointsArray[i];
         NSString * yString = pointsArray[(i + 1)];
         
-        CGFloat x = xString.floatValue;
-        CGFloat y = yString.floatValue;
+        float x = xString.floatValue;
+        float y = yString.floatValue;
         
         x = x + xTranslate;
         y = y + yTranslate;
@@ -402,31 +402,31 @@
 //	translateLineElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)translateLineElement:(NSMutableDictionary *)lineElementDictionary x:(CGFloat)xTranslate y:(CGFloat)yTranslate
+- (void)translateLineElement:(NSMutableDictionary *)lineElementDictionary x:(float)xTranslate y:(float)yTranslate
 {
     NSXMLElement * lineElement = lineElementDictionary[@"xmlElement"];
     DOMElement * domLineElement = lineElementDictionary[@"domElement"];
     
     NSXMLNode * x1AttributeNode = [lineElement attributeForName:@"x1"];
     NSString * x1AttributeString = x1AttributeNode.stringValue;
-    CGFloat x1 = x1AttributeString.floatValue;
+    float x1 = x1AttributeString.floatValue;
     
     NSXMLNode * y1AttributeNode = [lineElement attributeForName:@"y1"];
     NSString * y1AttributeString = y1AttributeNode.stringValue;
-    CGFloat y1 = y1AttributeString.floatValue;
+    float y1 = y1AttributeString.floatValue;
     
     NSXMLNode * x2AttributeNode = [lineElement attributeForName:@"x2"];
     NSString * x2AttributeString = x2AttributeNode.stringValue;
-    CGFloat x2 = x2AttributeString.floatValue;
+    float x2 = x2AttributeString.floatValue;
     
     NSXMLNode * y2AttributeNode = [lineElement attributeForName:@"y2"];
     NSString * y2AttributeString = y2AttributeNode.stringValue;
-    CGFloat y2 = y2AttributeString.floatValue;
+    float y2 = y2AttributeString.floatValue;
     
-    CGFloat newX1 = x1 + xTranslate;
-    CGFloat newY1 = y1 + yTranslate;
-    CGFloat newX2 = x2 + yTranslate;
-    CGFloat newY2 = y2 + yTranslate;
+    float newX1 = x1 + xTranslate;
+    float newY1 = y1 + yTranslate;
+    float newX2 = x2 + yTranslate;
+    float newY2 = y2 + yTranslate;
     
     x1AttributeString = [transformElementsDialog allocPxString:newX1];
     y1AttributeString = [transformElementsDialog allocPxString:newY1];
@@ -452,7 +452,7 @@
 //	scaleSelectedElementsWithXScale:yScale:
 //==================================================================================
 
-- (void)scaleSelectedElementsWithXScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleSelectedElementsWithXScale:(float)xScale yScale:(float)yScale
 {
     NSMutableArray * selectedElementsArray = (transformElementsDialog.macSVGPluginCallbacks).selectedElementsArray;
     
@@ -509,7 +509,7 @@
 //	scalePathElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scalePathElement:(NSMutableDictionary *)pathElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scalePathElement:(NSMutableDictionary *)pathElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * pathElement = pathElementDictionary[@"xmlElement"];
 
@@ -523,9 +523,9 @@
 
     NSXMLNode * strokeWidthAttributeNode = [pathElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
 
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newStrokeWidth = strokeWidth * xScale;
 
     strokeWidthAttributeString = [transformElementsDialog allocPxString:newStrokeWidth];
 
@@ -542,36 +542,36 @@
 //	scaleRectElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scaleRectElement:(NSMutableDictionary *)rectElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleRectElement:(NSMutableDictionary *)rectElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * rectElement = rectElementDictionary[@"xmlElement"];
     DOMElement * domRectElement = rectElementDictionary[@"domElement"];
     
     NSXMLNode * xAttributeNode = [rectElement attributeForName:@"x"];
     NSString * xAttributeString = xAttributeNode.stringValue;
-    CGFloat x = xAttributeString.floatValue;
+    float x = xAttributeString.floatValue;
     
     NSXMLNode * yAttributeNode = [rectElement attributeForName:@"y"];
     NSString * yAttributeString = yAttributeNode.stringValue;
-    CGFloat y = yAttributeString.floatValue;
+    float y = yAttributeString.floatValue;
     
     NSXMLNode * widthAttributeNode = [rectElement attributeForName:@"width"];
     NSString * widthAttributeString = widthAttributeNode.stringValue;
-    CGFloat width = widthAttributeString.floatValue;
+    float width = widthAttributeString.floatValue;
     
     NSXMLNode * heightAttributeNode = [rectElement attributeForName:@"height"];
     NSString * heightAttributeString = heightAttributeNode.stringValue;
-    CGFloat height = heightAttributeString.floatValue;
+    float height = heightAttributeString.floatValue;
 
     NSXMLNode * strokeWidthAttributeNode = [rectElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
 
-    CGFloat newX = x * xScale;
-    CGFloat newY = y * yScale;
-    CGFloat newWidth = width * xScale;
-    CGFloat newHeight = height * yScale;
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newX = x * xScale;
+    float newY = y * yScale;
+    float newWidth = width * xScale;
+    float newHeight = height * yScale;
+    float newStrokeWidth = strokeWidth * xScale;
     
     xAttributeString = [transformElementsDialog allocPxString:newX];
     yAttributeString = [transformElementsDialog allocPxString:newY];
@@ -596,31 +596,31 @@
 //	scaleCircleElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scaleCircleElement:(NSMutableDictionary *)circleElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleCircleElement:(NSMutableDictionary *)circleElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * circleElement = circleElementDictionary[@"xmlElement"];
     DOMElement * domCircleElement = circleElementDictionary[@"domElement"];
     
     NSXMLNode * cxAttributeNode = [circleElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [circleElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
     NSXMLNode * rAttributeNode = [circleElement attributeForName:@"r"];
     NSString * rAttributeString = rAttributeNode.stringValue;
-    CGFloat r = rAttributeString.floatValue;
+    float r = rAttributeString.floatValue;
 
     NSXMLNode * strokeWidthAttributeNode = [circleElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
     
-    CGFloat newCX = cx * xScale;
-    CGFloat newCY = cy * yScale;
-    CGFloat newR = r * xScale;
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newCX = cx * xScale;
+    float newCY = cy * yScale;
+    float newR = r * xScale;
+    float newStrokeWidth = strokeWidth * xScale;
     
     cxAttributeString = [transformElementsDialog allocPxString:newCX];
     cyAttributeString = [transformElementsDialog allocPxString:newCY];
@@ -642,36 +642,36 @@
 //	scaleEllipseElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scaleEllipseElement:(NSMutableDictionary *)ellipseElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleEllipseElement:(NSMutableDictionary *)ellipseElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * ellipseElement = ellipseElementDictionary[@"xmlElement"];
     DOMElement * domEllipseElement = ellipseElementDictionary[@"domElement"];
     
     NSXMLNode * cxAttributeNode = [ellipseElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [ellipseElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
     NSXMLNode * rxAttributeNode = [ellipseElement attributeForName:@"rx"];
     NSString * rxAttributeString = rxAttributeNode.stringValue;
-    CGFloat rx = rxAttributeString.floatValue;
+    float rx = rxAttributeString.floatValue;
     
     NSXMLNode * ryAttributeNode = [ellipseElement attributeForName:@"ry"];
     NSString * ryAttributeString = ryAttributeNode.stringValue;
-    CGFloat ry = ryAttributeString.floatValue;
+    float ry = ryAttributeString.floatValue;
 
     NSXMLNode * strokeWidthAttributeNode = [ellipseElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
     
-    CGFloat newCX = cx * xScale;
-    CGFloat newCY = cy * yScale;
-    CGFloat newRX = rx * xScale;
-    CGFloat newRY = ry * yScale;
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newCX = cx * xScale;
+    float newCY = cy * yScale;
+    float newRX = rx * xScale;
+    float newRY = ry * yScale;
+    float newStrokeWidth = strokeWidth * xScale;
     
     cxAttributeString = [transformElementsDialog allocPxString:newCX];
     cyAttributeString = [transformElementsDialog allocPxString:newCY];
@@ -696,7 +696,7 @@
 //	scalePolylineElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scalePolylineElement:(NSMutableDictionary *)polylineElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scalePolylineElement:(NSMutableDictionary *)polylineElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * polylineElement = polylineElementDictionary[@"xmlElement"];
 
@@ -726,8 +726,8 @@
         NSString * xString = pointsArray[i];
         NSString * yString = pointsArray[(i + 1)];
         
-        CGFloat x = xString.floatValue;
-        CGFloat y = yString.floatValue;
+        float x = xString.floatValue;
+        float y = yString.floatValue;
         
         x = x * xScale;
         y = y * yScale;
@@ -749,9 +749,9 @@
 
     NSXMLNode * strokeWidthAttributeNode = [polylineElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
 
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newStrokeWidth = strokeWidth * xScale;
 
     strokeWidthAttributeString = [transformElementsDialog allocPxString:newStrokeWidth];
 
@@ -767,36 +767,36 @@
 //	scaleLineElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scaleLineElement:(NSMutableDictionary *)lineElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleLineElement:(NSMutableDictionary *)lineElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * lineElement = lineElementDictionary[@"xmlElement"];
     DOMElement * domLineElement = lineElementDictionary[@"domElement"];
     
     NSXMLNode * x1AttributeNode = [lineElement attributeForName:@"x1"];
     NSString * x1AttributeString = x1AttributeNode.stringValue;
-    CGFloat x1 = x1AttributeString.floatValue;
+    float x1 = x1AttributeString.floatValue;
     
     NSXMLNode * y1AttributeNode = [lineElement attributeForName:@"y1"];
     NSString * y1AttributeString = y1AttributeNode.stringValue;
-    CGFloat y1 = y1AttributeString.floatValue;
+    float y1 = y1AttributeString.floatValue;
     
     NSXMLNode * x2AttributeNode = [lineElement attributeForName:@"x2"];
     NSString * x2AttributeString = x2AttributeNode.stringValue;
-    CGFloat x2 = x2AttributeString.floatValue;
+    float x2 = x2AttributeString.floatValue;
     
     NSXMLNode * y2AttributeNode = [lineElement attributeForName:@"y2"];
     NSString * y2AttributeString = y2AttributeNode.stringValue;
-    CGFloat y2 = y2AttributeString.floatValue;
+    float y2 = y2AttributeString.floatValue;
 
     NSXMLNode * strokeWidthAttributeNode = [lineElement attributeForName:@"stroke-width"];
     NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-    CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+    float strokeWidth = strokeWidthAttributeString.floatValue;
     
-    CGFloat newX1 = x1 * xScale;
-    CGFloat newY1 = y1 * yScale;
-    CGFloat newX2 = x2 * xScale;
-    CGFloat newY2 = y2 * yScale;
-    CGFloat newStrokeWidth = strokeWidth * xScale;
+    float newX1 = x1 * xScale;
+    float newY1 = y1 * yScale;
+    float newX2 = x2 * xScale;
+    float newY2 = y2 * yScale;
+    float newStrokeWidth = strokeWidth * xScale;
     
     x1AttributeString = [transformElementsDialog allocPxString:newX1];
     y1AttributeString = [transformElementsDialog allocPxString:newY1];
@@ -821,26 +821,26 @@
 //	scaleTextElement:scaleX:scaleY:
 //==================================================================================
 
-- (void)scaleTextElement:(NSMutableDictionary *)textElementDictionary xScale:(CGFloat)xScale yScale:(CGFloat)yScale
+- (void)scaleTextElement:(NSMutableDictionary *)textElementDictionary xScale:(float)xScale yScale:(float)yScale
 {
     NSXMLElement * textElement = textElementDictionary[@"xmlElement"];
     DOMElement * domTextElement = textElementDictionary[@"domElement"];
     
     NSXMLNode * xAttributeNode = [textElement attributeForName:@"x"];
     NSString * xAttributeString = xAttributeNode.stringValue;
-    CGFloat x = xAttributeString.floatValue;
+    float x = xAttributeString.floatValue;
     
     NSXMLNode * yAttributeNode = [textElement attributeForName:@"y"];
     NSString * yAttributeString = yAttributeNode.stringValue;
-    CGFloat y = yAttributeString.floatValue;
+    float y = yAttributeString.floatValue;
     
     NSXMLNode * fontSizeAttributeNode = [textElement attributeForName:@"font-size"];
     NSString * fontSizeAttributeString = fontSizeAttributeNode.stringValue;
-    CGFloat fontSize = fontSizeAttributeString.floatValue;
+    float fontSize = fontSizeAttributeString.floatValue;
     
-    CGFloat newX = x * xScale;
-    CGFloat newY = y * yScale;
-    CGFloat newFontSize = fontSize * xScale;
+    float newX = x * xScale;
+    float newY = y * yScale;
+    float newFontSize = fontSize * xScale;
     
     xAttributeString = [transformElementsDialog allocPxString:newX];
     yAttributeString = [transformElementsDialog allocPxString:newY];
@@ -858,9 +858,9 @@
     if (strokeWidthAttributeNode != NULL)
     {
         NSString * strokeWidthAttributeString = strokeWidthAttributeNode.stringValue;
-        CGFloat strokeWidth = strokeWidthAttributeString.floatValue;
+        float strokeWidth = strokeWidthAttributeString.floatValue;
 
-        CGFloat newStrokeWidth = strokeWidth * xScale;
+        float newStrokeWidth = strokeWidth * xScale;
 
         strokeWidthAttributeString = [transformElementsDialog allocPxString:newStrokeWidth];
 
@@ -874,7 +874,7 @@
 //	rotateSelectedElementsWithCenterX:centerY:degrees:
 //==================================================================================
 
-- (void)rotateSelectedElementsWithCenterX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+- (void)rotateSelectedElementsWithCenterX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     NSMutableArray * selectedElementsArray = (transformElementsDialog.macSVGPluginCallbacks).selectedElementsArray;
     
@@ -919,7 +919,7 @@
 //	rotatePathElement:centerX:centerY:degrees:
 //==================================================================================
 
-- (void)rotatePathElement:(NSMutableDictionary *)pathElementDictionary centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+- (void)rotatePathElement:(NSMutableDictionary *)pathElementDictionary centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     NSXMLElement * pathElement = pathElementDictionary[@"xmlElement"];
 
@@ -958,17 +958,17 @@
 //	rotateCircleElement:centerX:centerY:degrees:
 //==================================================================================
 
-- (void)rotateCircleElement:(NSMutableDictionary *)circleElementDictionary centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+- (void)rotateCircleElement:(NSMutableDictionary *)circleElementDictionary centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     NSXMLElement * circleElement = circleElementDictionary[@"xmlElement"];
 
     NSXMLNode * cxAttributeNode = [circleElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [circleElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
     CGPoint circlePoint = CGPointMake(cx, cy);
     CGPoint rotationPoint = CGPointMake(centerX, centerY);
@@ -993,7 +993,7 @@
 //==================================================================================
 
 - (void)rotateEllipseElement:(NSMutableDictionary *)elementDictionary
-        centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+        centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     // convert rect element to a path element with four cubic beziers
 
@@ -1002,22 +1002,22 @@
     
     NSXMLNode * cxAttributeNode = [ellipseElement attributeForName:@"cx"];
     NSString * cxAttributeString = cxAttributeNode.stringValue;
-    CGFloat cx = cxAttributeString.floatValue;
+    float cx = cxAttributeString.floatValue;
     
     NSXMLNode * cyAttributeNode = [ellipseElement attributeForName:@"cy"];
     NSString * cyAttributeString = cyAttributeNode.stringValue;
-    CGFloat cy = cyAttributeString.floatValue;
+    float cy = cyAttributeString.floatValue;
     
     NSXMLNode * rxAttributeNode = [ellipseElement attributeForName:@"rx"];
     NSString * rxAttributeString = rxAttributeNode.stringValue;
-    CGFloat rx = rxAttributeString.floatValue;
+    float rx = rxAttributeString.floatValue;
     
     NSXMLNode * ryAttributeNode = [ellipseElement attributeForName:@"ry"];
     NSString * ryAttributeString = ryAttributeNode.stringValue;
-    CGFloat ry = ryAttributeString.floatValue;
+    float ry = ryAttributeString.floatValue;
     
-    CGFloat rxDiv2 = rx / 2.0f;
-    CGFloat ryDiv2 = ry / 2.0f;
+    float rxDiv2 = rx / 2.0f;
+    float ryDiv2 = ry / 2.0f;
     
     NSString * pathString = [NSString stringWithFormat:@"M %f,%f C %f,%f %f,%f %f,%f C %f,%f %f,%f %f,%f C %f,%f %f,%f %f,%f C %f,%f %f,%f %f,%f Z",
             cx, cy - ry,    // moveto top of ellipse
@@ -1071,7 +1071,7 @@
 //==================================================================================
 
 - (void)rotateRectElement:(NSMutableDictionary *)elementDictionary
-        centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+        centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     // convert rect element to a path element
     
@@ -1080,19 +1080,19 @@
     
     NSXMLNode * xAttributeNode = [rectElement attributeForName:@"x"];
     NSString * xAttributeString = xAttributeNode.stringValue;
-    CGFloat x = xAttributeString.floatValue;
+    float x = xAttributeString.floatValue;
     
     NSXMLNode * yAttributeNode = [rectElement attributeForName:@"y"];
     NSString * yAttributeString = yAttributeNode.stringValue;
-    CGFloat y = yAttributeString.floatValue;
+    float y = yAttributeString.floatValue;
     
     NSXMLNode * widthAttributeNode = [rectElement attributeForName:@"width"];
     NSString * widthAttributeString = widthAttributeNode.stringValue;
-    CGFloat width = widthAttributeString.floatValue;
+    float width = widthAttributeString.floatValue;
     
     NSXMLNode * heightAttributeNode = [rectElement attributeForName:@"height"];
     NSString * heightAttributeString = heightAttributeNode.stringValue;
-    CGFloat height = heightAttributeString.floatValue;
+    float height = heightAttributeString.floatValue;
     
     NSString * pathString = [NSString stringWithFormat:@"M %f,%f L %f,%f L %f,%f L %f,%f L %f,%f Z",
             x, y,
@@ -1144,7 +1144,7 @@
 //	rotatePolylineElement:centerX:centerY:degrees:
 //==================================================================================
 
-- (void)rotatePolylineElement:(NSMutableDictionary *)polylineElementDictionary centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+- (void)rotatePolylineElement:(NSMutableDictionary *)polylineElementDictionary centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     NSXMLElement * polylineElement = polylineElementDictionary[@"xmlElement"];
 
@@ -1174,8 +1174,8 @@
         NSString * xString = pointsArray[i];
         NSString * yString = pointsArray[(i + 1)];
         
-        CGFloat x = xString.floatValue;
-        CGFloat y = yString.floatValue;
+        float x = xString.floatValue;
+        float y = yString.floatValue;
         
         CGPoint polylinePoint = CGPointMake(x, y);
         CGPoint rotationPoint = CGPointMake(centerX, centerY);
@@ -1207,25 +1207,25 @@
 //	rotateLineElement:centerX:centerY:degrees:
 //==================================================================================
 
-- (void)rotateLineElement:(NSMutableDictionary *)lineElementDictionary centerX:(CGFloat)centerX centerY:(CGFloat)centerY degrees:(CGFloat)degrees
+- (void)rotateLineElement:(NSMutableDictionary *)lineElementDictionary centerX:(float)centerX centerY:(float)centerY degrees:(float)degrees
 {
     NSXMLElement * lineElement = lineElementDictionary[@"xmlElement"];
 
     NSXMLNode * x1AttributeNode = [lineElement attributeForName:@"x1"];
     NSString * x1AttributeString = x1AttributeNode.stringValue;
-    CGFloat x1 = x1AttributeString.floatValue;
+    float x1 = x1AttributeString.floatValue;
 
     NSXMLNode * y1AttributeNode = [lineElement attributeForName:@"y1"];
     NSString * y1AttributeString = y1AttributeNode.stringValue;
-    CGFloat y1 = y1AttributeString.floatValue;
+    float y1 = y1AttributeString.floatValue;
 
     NSXMLNode * x2AttributeNode = [lineElement attributeForName:@"x2"];
     NSString * x2AttributeString = x2AttributeNode.stringValue;
-    CGFloat x2 = x2AttributeString.floatValue;
+    float x2 = x2AttributeString.floatValue;
 
     NSXMLNode * y2AttributeNode = [lineElement attributeForName:@"y2"];
     NSString * y2AttributeString = y2AttributeNode.stringValue;
-    CGFloat y2 = y2AttributeString.floatValue;
+    float y2 = y2AttributeString.floatValue;
 
     CGPoint xy1Point = CGPointMake(x1, y1);
     CGPoint xy2Point = CGPointMake(x2, y2);
@@ -1258,19 +1258,19 @@
 //	rotatePoint:centerPoint:degrees:
 //==================================================================================
 
-- (CGPoint)rotatePoint:(CGPoint)aPoint centerPoint:(CGPoint)centerPoint degrees:(CGFloat)degrees
+- (CGPoint)rotatePoint:(CGPoint)aPoint centerPoint:(CGPoint)centerPoint degrees:(float)degrees
 {
     double radians = degrees * (M_PI / 180.0f);
 
-    CGFloat s = sinf(radians);
-    CGFloat c = cosf(radians);
+    float s = sinf(radians);
+    float c = cosf(radians);
 
     CGPoint translatePoint = aPoint;
     translatePoint.x -= centerPoint.x;
     translatePoint.y -= centerPoint.y;
     
-    CGFloat rotX = (translatePoint.x * c) - (translatePoint.y * s);
-    CGFloat rotY = (translatePoint.x * s) + (translatePoint.y * c);
+    float rotX = (translatePoint.x * c) - (translatePoint.y * s);
+    float rotY = (translatePoint.x * s) + (translatePoint.y * c);
     
     CGPoint result = CGPointZero;
     result.x = rotX + centerPoint.x;

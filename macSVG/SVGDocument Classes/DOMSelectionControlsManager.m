@@ -28,6 +28,7 @@
 #import "AnimationTimelineView.h"
 #import "EditorUIFrameController.h"
 #import "ElementEditorPlugInController.h"
+#import "PathSegment.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -459,7 +460,7 @@
                             
                                 if (radiusString != NULL)
                                 {
-                                    CGFloat radiusFloat = [radiusString floatValue];
+                                    float radiusFloat = [radiusString floatValue];
                             
                                     NSString * newAttributeName = NULL;
                                     
@@ -481,7 +482,7 @@
                                             strokeWidthString = @"0";
                                         }
                                         
-                                        CGFloat strokeWidth = strokeWidthString.floatValue;
+                                        float strokeWidth = strokeWidthString.floatValue;
                                     
                                         [controlAnimationElement setAttribute:@"attributeName" value:newAttributeName];
                                         
@@ -493,7 +494,7 @@
                                         {
                                             if ([aAnimateValue length] > 0)
                                             {
-                                                CGFloat aAnimateValueFloat = [aAnimateValue floatValue];
+                                                float aAnimateValueFloat = [aAnimateValue floatValue];
 
                                                 aAnimateValueFloat -= radiusFloat;
                                                 aAnimateValueFloat -= strokeWidth / 2.0f;
@@ -539,7 +540,7 @@
                                     strokeWidthString = @"0";
                                 }
                                 
-                                CGFloat strokeWidth = strokeWidthString.floatValue;
+                                float strokeWidth = strokeWidthString.floatValue;
                             
                                 NSArray * animateValuesArray = [animateValues componentsSeparatedByCharactersInSet:delimitersCharacterSet];
                                 
@@ -549,7 +550,7 @@
                                 {
                                     if ([aAnimateValue length] > 0)
                                     {
-                                        CGFloat aAnimateValueFloat = [aAnimateValue floatValue];
+                                        float aAnimateValueFloat = [aAnimateValue floatValue];
                                         
                                         aAnimateValueFloat -= strokeWidth / 2.0f;
                                         //aAnimateValueFloat -= 1.0f;
@@ -720,10 +721,10 @@
                 NSString * widthAttributeString = [aSelectedSvgElement getAttribute:@"width"];
                 NSString * heightAttributeString = [aSelectedSvgElement getAttribute:@"height"];
                 
-                CGFloat xAttributeFloat = xAttributeString.floatValue;
-                CGFloat yAttributeFloat = yAttributeString.floatValue;
-                CGFloat widthAttributeFloat = widthAttributeString.floatValue;
-                CGFloat heightAttributeFloat = heightAttributeString.floatValue;
+                float xAttributeFloat = xAttributeString.floatValue;
+                float yAttributeFloat = yAttributeString.floatValue;
+                float widthAttributeFloat = widthAttributeString.floatValue;
+                float heightAttributeFloat = heightAttributeString.floatValue;
                 
                 boundingBox.origin.x += xAttributeFloat;
                 boundingBox.origin.y += yAttributeFloat;
@@ -738,10 +739,10 @@
                 NSString * widthAttributeString = [aSelectedSvgElement getAttribute:@"width"];
                 NSString * heightAttributeString = [aSelectedSvgElement getAttribute:@"height"];
                 
-                CGFloat xAttributeFloat = xAttributeString.floatValue;
-                CGFloat yAttributeFloat = yAttributeString.floatValue;
-                CGFloat widthAttributeFloat = widthAttributeString.floatValue;
-                CGFloat heightAttributeFloat = heightAttributeString.floatValue;
+                float xAttributeFloat = xAttributeString.floatValue;
+                float yAttributeFloat = yAttributeString.floatValue;
+                float widthAttributeFloat = widthAttributeString.floatValue;
+                float heightAttributeFloat = heightAttributeString.floatValue;
                 
                 boundingBox.origin.x = xAttributeFloat;
                 boundingBox.origin.y = yAttributeFloat;
@@ -881,9 +882,9 @@
                     NSString * selectionStrokeColor = toolSettingsPopoverViewController.selectionStrokeColor;
                     NSString * selectionStrokeWidth = toolSettingsPopoverViewController.selectionStrokeWidth;
                     
-                    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:aSelectedSvgElement];
+                    float scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:aSelectedSvgElement];
 
-                    CGFloat selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
+                    float selectionStrokeWidthFloat = selectionStrokeWidth.floatValue;
                     selectionStrokeWidthFloat = selectionStrokeWidthFloat * scaleForDOMElementHandles;
                     selectionStrokeWidth = [self allocPxString:selectionStrokeWidthFloat];
                     
@@ -961,13 +962,13 @@
 
     NSPoint scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
     
-    CGFloat maxHandleScale = scaleForDOMElementHandles.x;
+    float maxHandleScale = scaleForDOMElementHandles.x;
     if (scaleForDOMElementHandles.y > maxHandleScale)
     {
         maxHandleScale = scaleForDOMElementHandles.y;
     }
 
-    CGFloat handleStrokeWidthFloat = 0.0625f * maxHandleScale;
+    float handleStrokeWidthFloat = 0.0625f * maxHandleScale;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutableSelectionHandleSize = [NSMutableString stringWithString:selectionHandleSize];
@@ -1073,13 +1074,13 @@
 
     NSPoint scaleForDOMElementHandles = [svgWebKitController scaleForDOMElementHandles:handleOwnerElement];
 
-    CGFloat maxHandleScale = scaleForDOMElementHandles.x;
+    float maxHandleScale = scaleForDOMElementHandles.x;
     if (scaleForDOMElementHandles.y > maxHandleScale)
     {
         maxHandleScale = scaleForDOMElementHandles.y;
     }
 
-    CGFloat handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * maxHandleScale;
+    float handleStrokeWidthFloat = pluginHandleStrokeWidth.floatValue * maxHandleScale;
     NSString * handleStrokeWidth = [self allocPxString:handleStrokeWidthFloat];
     
     NSMutableString * mutablePluginHandleSize = [NSMutableString stringWithString:pluginHandleSize];
@@ -1095,7 +1096,7 @@
     DOMDocument * domDocument = svgWebView.mainFrame.DOMDocument;
 
     NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat pointRadius = pointRadiusString.floatValue;
+    float pointRadius = pointRadiusString.floatValue;
     //pointRadius *= 2.0f;
     pointRadius *= maxHandleScale;
     pointRadiusString = [NSString stringWithFormat:@"%f", pointRadius];
@@ -1286,8 +1287,8 @@
                     NSString * xAttributeString = [aDomElement getAttribute:@"x"];
                     NSString * yAttributeString = [aDomElement getAttribute:@"y"];
                     
-                    CGFloat xAttributeFloat = xAttributeString.floatValue;
-                    CGFloat yAttributeFloat = yAttributeString.floatValue;
+                    float xAttributeFloat = xAttributeString.floatValue;
+                    float yAttributeFloat = yAttributeString.floatValue;
                     
                     boundingBox.origin.x += xAttributeFloat;
                     boundingBox.origin.y += yAttributeFloat;
@@ -1300,10 +1301,10 @@
                     NSString * widthAttributeString = [aDomElement getAttribute:@"width"];
                     NSString * heightAttributeString = [aDomElement getAttribute:@"height"];
                     
-                    CGFloat xAttributeFloat = xAttributeString.floatValue;
-                    CGFloat yAttributeFloat = yAttributeString.floatValue;
-                    CGFloat widthAttributeFloat = widthAttributeString.floatValue;
-                    CGFloat heightAttributeFloat = heightAttributeString.floatValue;
+                    float xAttributeFloat = xAttributeString.floatValue;
+                    float yAttributeFloat = yAttributeString.floatValue;
+                    float widthAttributeFloat = widthAttributeString.floatValue;
+                    float heightAttributeFloat = heightAttributeString.floatValue;
                     
                     boundingBox.origin.x = xAttributeFloat;
                     boundingBox.origin.y = yAttributeFloat;
@@ -1455,7 +1456,7 @@
 
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup
-        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        x:(float)x y:(float)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName
 {
     // for use in callback from plug-in, e.g. for center-of-rotation in transform attribute editor
@@ -1551,8 +1552,8 @@
                     NSString * xString = polylinePointDictionary[@"x"];
                     NSString * yString = polylinePointDictionary[@"y"];
                     
-                    CGFloat xFloat = xString.floatValue;
-                    CGFloat yFloat = yString.floatValue;
+                    float xFloat = xString.floatValue;
+                    float yFloat = yString.floatValue;
                     
                     NSPoint polylinePoint = NSMakePoint(xFloat, yFloat);
                     
@@ -1576,9 +1577,9 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:polylineDOMElement];
+    float scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:polylineDOMElement];
 
-    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
+    float scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
     NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
@@ -1737,7 +1738,7 @@
             // highlight the point
             
             NSString * pathWidthString = [polylineDOMElement getAttribute:@"stroke-width"];
-            CGFloat pathWidth = pathWidthString.integerValue;
+            float pathWidth = pathWidthString.integerValue;
             if (pathWidth > 0)
             {
                 pathWidth += 2;
@@ -1759,7 +1760,7 @@
             [pointHandleCircleElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:selectionStrokeWidth];
             
             NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-            CGFloat pointRadius = pointRadiusString.floatValue;
+            float pointRadius = pointRadiusString.floatValue;
             pointRadius *= 2.0f;
             pointRadiusString = [self allocPxString:pointRadius];
             [pointHandleCircleElement setAttributeNS:NULL qualifiedName:@"r"
@@ -1850,8 +1851,8 @@
                     yString = [selectedDOMElement getAttribute:@"y2"];
                 }
                 
-                CGFloat xFloat = xString.floatValue;
-                CGFloat yFloat = yString.floatValue;
+                float xFloat = xString.floatValue;
+                float yFloat = yString.floatValue;
                 
                 NSPoint linePoint = NSMakePoint(xFloat, yFloat);
                 
@@ -1869,9 +1870,9 @@
 {
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:lineDOMElement];
+    float scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:lineDOMElement];
 
-    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
+    float scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
     NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
@@ -2030,7 +2031,7 @@
             // highlight the point
             
             NSString * pathWidthString = [lineDOMElement getAttribute:@"stroke-width"];
-            CGFloat pathWidth = pathWidthString.integerValue;
+            float pathWidth = pathWidthString.integerValue;
             if (pathWidth > 0)
             {
                 pathWidth += 2;
@@ -2052,7 +2053,7 @@
             [pointHandleCircleElement setAttributeNS:NULL qualifiedName:@"stroke-width" value:selectionStrokeWidth];
             
             NSString * pointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-            CGFloat pointRadius = pointRadiusString.floatValue;
+            float pointRadius = pointRadiusString.floatValue;
             pointRadius *= 2.0f;
             pointRadiusString = [self allocPxString:pointRadius];
             [pointHandleCircleElement setAttributeNS:NULL qualifiedName:@"r"
@@ -2086,9 +2087,9 @@
     // pathSegmentString is basically a moveto, and a cubic curve
     NSString * selectionHandleColor = self.segmentStrokeHexColor;
 
-    CGFloat scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathDOMElement];
+    float scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathDOMElement];
 
-    CGFloat scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
+    float scaledStrokeWidthFloat = self.segmentStrokeWidth * scaleForDOMElementHandles;
     
     NSString * selectionStrokeWidth = [self allocPxString:scaledStrokeWidthFloat];
     
@@ -2173,9 +2174,9 @@
                 qualifiedName:@"marker" ];
         [markerElement setAttributeNS:NULL qualifiedName:@"id" value:@"_macsvg_highlightPathSegmentMarker"];
         
-        CGFloat markerWidthFloat = 4.0f * scaleForDOMElementHandles;
+        float markerWidthFloat = 4.0f * scaleForDOMElementHandles;
         NSString * markerWidthString = [self allocPxString:markerWidthFloat];
-        CGFloat markerHeightFloat = 3.0f * scaleForDOMElementHandles;
+        float markerHeightFloat = 3.0f * scaleForDOMElementHandles;
         NSString * markerHeightString = [self allocPxString:markerHeightFloat];
 
         DOMElement * markerElement = [domDocument createElementNS:svgNamespace
@@ -2308,7 +2309,7 @@
             // draw the path segment highlight
             
             NSString * pathWidthString = [pathDOMElement getAttribute:@"stroke-width"];
-            CGFloat pathWidth = pathWidthString.integerValue;
+            float pathWidth = pathWidthString.integerValue;
             if (pathWidth > 0)
             {
                 pathWidth += 2;
@@ -2390,27 +2391,24 @@
                     NSMutableArray * bezierPathSegmentsArray = [pathFunctions
                             convertCurvesToAbsoluteCubicBezierWithPathSegmentsArray:pathSegmentsArray];
                     
-                    //NSMutableDictionary * pathSegmentDictionary = [bezierPathSegmentsArray objectAtIndex:self.pathSegmentIndex];
-                    NSMutableDictionary * pathSegmentDictionary =
+                    PathSegment * pathSegment =
                             bezierPathSegmentsArray[svgWebKitController.domMouseEventsController.svgPathEditor.pathSegmentIndex];
 
-                    NSString * startXString = pathSegmentDictionary[@"x"];
-                    NSString * startYString = pathSegmentDictionary[@"y"];
+                    NSString * startXString = pathSegment.xString;
+                    NSString * startYString = pathSegment.yString;
                     
                     //if (self.pathSegmentIndex > 0)
                     if (svgWebKitController.domMouseEventsController.svgPathEditor.pathSegmentIndex > 0)
                     {
                         // get current starting point from previous segment
-                        //NSMutableDictionary * previousPathSegmentDictionary =
-                        //        [pathSegmentsArray objectAtIndex:(self.pathSegmentIndex - 1)];
-                        NSMutableDictionary * previousPathSegmentDictionary =
+                        PathSegment * previousPathSegment =
                                 pathSegmentsArray[(svgWebKitController.domMouseEventsController.svgPathEditor.pathSegmentIndex - 1)];
 
-                        NSNumber * startXNumber = previousPathSegmentDictionary[@"absoluteX"];
-                        NSNumber * startYNumber = previousPathSegmentDictionary[@"absoluteY"];
+                        float startX = previousPathSegment.absoluteXFloat;
+                        float startY = previousPathSegment.absoluteYFloat;
                         
-                        startXString = startXNumber.stringValue;
-                        startYString = startYNumber.stringValue;
+                        startXString = [self allocFloatString:startX];
+                        startYString = [self allocFloatString:startY];
                     }
                     
                     if (startXString.length == 0)
@@ -2435,8 +2433,8 @@
                     
                     
                     
-                    NSString * pathCommandString = pathSegmentDictionary[@"command"];
-                    unichar commandChar = [pathCommandString characterAtIndex:0];
+                    unichar commandChar = pathSegment.pathCommand;
+                    NSString * pathCommandString = [NSString stringWithFormat:@"%C", commandChar];
                     
                     // draw the path segment
                     switch (commandChar) 
@@ -2454,12 +2452,12 @@
                                 [newPathString appendString:pathCommandString];
                             }
                             
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             
                             [newPathString appendString:@","];
                             
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             
                             [newPathString appendString:@" "];
@@ -2470,10 +2468,10 @@
                         {
                             [newPathString appendString:@"L"];
                             
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2481,10 +2479,10 @@
                         case 'l':     // lineto
                         {
                             [newPathString appendString:@"l"];
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2492,7 +2490,7 @@
                         case 'H':     // horizontal lineto
                         {
                             [newPathString appendString:@"H"];
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@" "];
                             break;
@@ -2500,7 +2498,7 @@
                         case 'h':     // horizontal lineto
                         {
                             [newPathString appendString:@"h"];
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@" "];
                             break;
@@ -2508,7 +2506,7 @@
                         case 'V':     // vertical lineto
                         {
                             [newPathString appendString:@"V"];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2516,7 +2514,7 @@
                         case 'v':     // vertical lineto
                         {
                             [newPathString appendString:@"v"];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2524,24 +2522,24 @@
                         case 'C':     // curveto
                         {
                             [newPathString appendString:@"C"];
-                            NSString * x1String = pathSegmentDictionary[@"x1"];
+                            NSString * x1String = pathSegment.x1String;
                             [newPathString appendString:x1String];
                             [newPathString appendString:@","];
-                            NSString * y1String = pathSegmentDictionary[@"y1"];
+                            NSString * y1String = pathSegment.y1String;
                             [newPathString appendString:y1String];
                             [newPathString appendString:@" "];
 
-                            NSString * x2String = pathSegmentDictionary[@"x2"];
+                            NSString * x2String = pathSegment.x2String;
                             [newPathString appendString:x2String];
                             [newPathString appendString:@","];
-                            NSString * y2String = pathSegmentDictionary[@"y2"];
+                            NSString * y2String = pathSegment.y2String;
                             [newPathString appendString:y2String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2549,24 +2547,24 @@
                         case 'c':     // curveto
                         {
                             [newPathString appendString:@"c"];
-                            NSString * x1String = pathSegmentDictionary[@"x1"];
+                            NSString * x1String = pathSegment.x1String;
                             [newPathString appendString:x1String];
                             [newPathString appendString:@","];
-                            NSString * y1String = pathSegmentDictionary[@"y1"];
+                            NSString * y1String = pathSegment.y1String;
                             [newPathString appendString:y1String];
                             [newPathString appendString:@" "];
 
-                            NSString * x2String = pathSegmentDictionary[@"x2"];
+                            NSString * x2String = pathSegment.x2String;
                             [newPathString appendString:x2String];
                             [newPathString appendString:@","];
-                            NSString * y2String = pathSegmentDictionary[@"y2"];
+                            NSString * y2String = pathSegment.y2String;
                             [newPathString appendString:y2String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2575,17 +2573,17 @@
                         {
                             [newPathString appendString:@"S"];
 
-                            NSString * x2String = pathSegmentDictionary[@"x2"];
+                            NSString * x2String = pathSegment.x2String;
                             [newPathString appendString:x2String];
                             [newPathString appendString:@","];
-                            NSString * y2String = pathSegmentDictionary[@"y2"];
+                            NSString * y2String = pathSegment.y2String;
                             [newPathString appendString:y2String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2594,17 +2592,17 @@
                         {
                             [newPathString appendString:@"s"];
 
-                            NSString * x2String = pathSegmentDictionary[@"x2"];
+                            NSString * x2String = pathSegment.x2String;
                             [newPathString appendString:x2String];
                             [newPathString appendString:@","];
-                            NSString * y2String = pathSegmentDictionary[@"y2"];
+                            NSString * y2String = pathSegment.y2String;
                             [newPathString appendString:y2String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2612,17 +2610,17 @@
                         case 'Q':     // quadratic Bezier curve
                         {
                             [newPathString appendString:@"Q"];
-                            NSString * x1String = pathSegmentDictionary[@"x1"];
+                            NSString * x1String = pathSegment.x1String;
                             [newPathString appendString:x1String];
                             [newPathString appendString:@","];
-                            NSString * y1String = pathSegmentDictionary[@"y1"];
+                            NSString * y1String = pathSegment.y1String;
                             [newPathString appendString:y1String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2630,17 +2628,17 @@
                         case 'q':     // quadratic Bezier curve
                         {
                             [newPathString appendString:@"q"];
-                            NSString * x1String = pathSegmentDictionary[@"x1"];
+                            NSString * x1String = pathSegment.x1String;
                             [newPathString appendString:x1String];
                             [newPathString appendString:@","];
-                            NSString * y1String = pathSegmentDictionary[@"y1"];
+                            NSString * y1String = pathSegment.y1String;
                             [newPathString appendString:y1String];
                             [newPathString appendString:@" "];
 
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2648,10 +2646,10 @@
                         case 'T':     // smooth quadratic Bezier curve
                         {
                             [newPathString appendString:@"T"];
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2659,10 +2657,10 @@
                         case 't':     // smooth quadratic Bezier curve
                         {
                             [newPathString appendString:@"t"];
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2671,29 +2669,29 @@
                         {
                             [newPathString appendString:@"A"];
                             
-                            NSString * rxString = pathSegmentDictionary[@"rx"];
+                            NSString * rxString = pathSegment.rxString;
                             [newPathString appendString:rxString];
                             [newPathString appendString:@","];
-                            NSString * ryString = pathSegmentDictionary[@"ry"];
+                            NSString * ryString = pathSegment.ryString;
                             [newPathString appendString:ryString];
                             [newPathString appendString:@" "];
                             
-                            NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
+                            NSString * dataXAxisRotationString = pathSegment.xAxisRotationString;
                             [newPathString appendString:dataXAxisRotationString];
                             [newPathString appendString:@" "];
                             
-                            NSString * dataLargeArcString = pathSegmentDictionary[@"large-arc-flag"];
+                            NSString * dataLargeArcString = pathSegment.largeArcFlagString;
                             [newPathString appendString:dataLargeArcString];
                             [newPathString appendString:@" "];
                             
-                            NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
+                            NSString * sweepString = pathSegment.sweepFlagString;
                             [newPathString appendString:sweepString];
                             [newPathString appendString:@" "];
                             
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2702,29 +2700,29 @@
                         {
                             [newPathString appendString:@"a"];
                             
-                            NSString * rxString = pathSegmentDictionary[@"rx"];
+                            NSString * rxString = pathSegment.rxString;
                             [newPathString appendString:rxString];
                             [newPathString appendString:@","];
-                            NSString * ryString = pathSegmentDictionary[@"ry"];
+                            NSString * ryString = pathSegment.ryString;
                             [newPathString appendString:ryString];
                             [newPathString appendString:@" "];
                             
-                            NSString * aXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
+                            NSString * aXAxisRotationString = pathSegment.xAxisRotationString;
                             [newPathString appendString:aXAxisRotationString];
                             [newPathString appendString:@" "];
                             
-                            NSString * largeArcString = pathSegmentDictionary[@"large-arc-flag"];
+                            NSString * largeArcString = pathSegment.largeArcFlagString;
                             [newPathString appendString:largeArcString];
                             [newPathString appendString:@" "];
                             
-                            NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
+                            NSString * sweepString = pathSegment.sweepFlagString;
                             [newPathString appendString:sweepString];
                             [newPathString appendString:@" "];
                             
-                            NSString * xString = pathSegmentDictionary[@"x"];
+                            NSString * xString = pathSegment.xString;
                             [newPathString appendString:xString];
                             [newPathString appendString:@","];
-                            NSString * yString = pathSegmentDictionary[@"y"];
+                            NSString * yString = pathSegment.yString;
                             [newPathString appendString:yString];
                             [newPathString appendString:@" "];
                             break;
@@ -2863,7 +2861,7 @@
         if (svgElementsList.length > 0)
         {
             NSString * currentTimeString = (macSVGDocumentWindowController.svgWebKitController.currentTimeTextField).stringValue;
-            CGFloat currentTimeValue = [currentTimeString floatValue];
+            float currentTimeValue = [currentTimeString floatValue];
             
             [macSVGDocumentWindowController.animationTimelineView setPlayHeadPosition:currentTimeValue];
             

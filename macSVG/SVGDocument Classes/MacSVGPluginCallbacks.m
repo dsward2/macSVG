@@ -82,13 +82,13 @@
 }
 
 
-- (CGFloat)zoomFactor
+- (float)zoomFactor
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
     id svgWebView = [svgWebKitController svgWebView];
 
-    CGFloat zoomFactor = [svgWebView zoomFactor];
+    float zoomFactor = [svgWebView zoomFactor];
     return zoomFactor;
 }
 
@@ -104,19 +104,19 @@
 }
 
 
-- (CGFloat)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement
+- (float)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id svgWebKitController = [macSVGDocumentWindowController svgWebKitController];
 
-    CGFloat scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:aDOMElement];
+    float scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:aDOMElement];
     return scaleFactor;
 }
 
 
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup
-        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        x:(float)x y:(float)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
@@ -580,7 +580,7 @@
 }
 
 
-- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)translateX y:(CGFloat)translateY
+- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(float)translateX y:(float)translateY
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id pathFunctions = [macSVGDocumentWindowController pathFunctions];
@@ -588,7 +588,7 @@
 }
 
 
-- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(CGFloat)scaleX scaleY:(CGFloat)scaleY
+- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(float)scaleX scaleY:(float)scaleY
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id pathFunctions = [macSVGDocumentWindowController pathFunctions];
@@ -596,7 +596,7 @@
 
 }
 
-- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)rotateX y:(CGFloat)rotateY degrees:(CGFloat)degrees
+- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(float)rotateX y:(float)rotateY degrees:(float)degrees
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id pathFunctions = [macSVGDocumentWindowController pathFunctions];
@@ -620,8 +620,8 @@
 }
 
 
-- (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
-        cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry
+- (NSDictionary *) convertArcToEndPointWithRotation:(float)rotation angleStart:(float)angleStart angleExtent:(float)angleExtent
+        cx:(float)cx cy:(float)cy rx:(float)rx ry:(float)ry
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id pathFunctions = [macSVGDocumentWindowController pathFunctions];
@@ -630,8 +630,8 @@
 }
 
 
-- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
-        rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise
+- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(float)rx ry:(float)ry
+        rotation:(float)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise
 {
     id macSVGDocumentWindowController = [self.macSVGDocument macSVGDocumentWindowController];
     id pathFunctions = [macSVGDocumentWindowController pathFunctions];

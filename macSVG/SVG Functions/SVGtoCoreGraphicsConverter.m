@@ -16,6 +16,7 @@
 #import "WebKitInterface.h"
 #import "WebKit/WebKit.h"
 #import "JavaScriptCore/JavaScriptCore.h"
+#import "PathSegment.h"
 
 @implementation SVGtoCoreGraphicsConverter
 
@@ -782,18 +783,16 @@
     NSString * pathVar = [self indexVarName:@"path"];
     [resultString appendFormat:@"\tCGMutablePathRef %@ = CGPathCreateMutable();\n", pathVar];
 
-    for (NSDictionary * pathSegmentDictionary in pathSegmentsArray)
+    for (PathSegment * pathSegment in pathSegmentsArray)
     {
-        NSString * commandString = pathSegmentDictionary[@"command"];
-        
-        unichar commandCharacter = [commandString characterAtIndex:0];
+        unichar commandCharacter = pathSegment.pathCommand;
         
         switch (commandCharacter)
         {
             case 'M':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathMoveToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 
@@ -803,10 +802,10 @@
             }
             case 'm':     // moveto
             {
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathMoveToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathMoveToPoint(%@, NULL, %f, %f);\n", pathVar, absoluteX, absoluteY];
 
                 [resultString appendString:segmentString];
                 
@@ -814,8 +813,8 @@
             }
             case 'L':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
@@ -824,64 +823,64 @@
             }
             case 'l':     // lineto
             {
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %f, %f);\n", pathVar, absoluteX, absoluteY];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'H':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                NSString * xString = pathSegment.xString;
+                CGFloat yString = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %f);\n", pathVar, xString, yString];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'h':     // horizontal lineto
             {
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %f, %f);\n", pathVar, absoluteX, absoluteY];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'V':     // vertical lineto
             {
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                NSString * yString = pathSegment.yString;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %f, %@);\n", pathVar, absoluteX, yString];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'v':     // vertical lineto
             {
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %@, %@);\n", pathVar, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddLineToPoint(%@, NULL, %f, %f);\n", pathVar, absoluteX, absoluteY];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'C':     // curveto
             {
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
 
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddCurveToPoint(%@, NULL, %@, %@, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, x2String, y2String, xString, yString];
@@ -891,37 +890,35 @@
             }
             case 'c':     // curveto
             {
-                NSString * x1String = pathSegmentDictionary[@"absoluteX1"];
-                NSString * y1String = pathSegmentDictionary[@"absoluteY1"];
+                CGFloat absoluteX1 = pathSegment.absoluteX1Float;
+                CGFloat absoluteY1 = pathSegment.absoluteY1Float;
 
-                NSString * x2String = pathSegmentDictionary[@"absoluteX2"];
-                NSString * y2String = pathSegmentDictionary[@"absoluteY2"];
+                CGFloat absoluteX2 = pathSegment.absoluteX2Float;
+                CGFloat absoluteY2 = pathSegment.absoluteY2Float;
 
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddCurveToPoint(%@, NULL, %@, %@, %@, %@, %@, %@);\n",
-                        pathVar, x1String, y1String, x2String, y2String, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddCurveToPoint(%@, NULL, %f, %f, %f, %f, %f, %f);\n",
+                        pathVar, absoluteX1, absoluteY1, absoluteX2, absoluteY2, absoluteX, absoluteY];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'S':     // smooth curveto
             {
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
                 
-                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
+                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegment];
                 
                 if (currentSegmentIndex > 0)
                 {
-                    //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
-                    
-                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
-                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
+                    NSString * previousX2String = pathSegment.x2String;
+                    NSString * previousY2String = pathSegment.y2String;
                     
                     CGFloat previousX2 = previousX2String.floatValue;
                     CGFloat previousY2 = previousY2String.floatValue;
@@ -944,20 +941,18 @@
             }
             case 's':     // smooth curveto
             {
-                NSString * x2String = pathSegmentDictionary[@"x2"];
-                NSString * y2String = pathSegmentDictionary[@"y2"];
+                NSString * x2String = pathSegment.x2String;
+                NSString * y2String = pathSegment.y2String;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
+                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegment];
 
                 if (currentSegmentIndex > 0)
                 {
-                    //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
-                    
-                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
-                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
+                    NSString * previousX2String = pathSegment.x2String;
+                    NSString * previousY2String = pathSegment.y2String;
                     
                     CGFloat previousX2 = previousX2String.floatValue;
                     CGFloat previousY2 = previousY2String.floatValue;
@@ -980,11 +975,11 @@
             }
             case 'Q':     // quadratic Bezier curve
             {
-                NSString * x1String = pathSegmentDictionary[@"x1"];
-                NSString * y1String = pathSegmentDictionary[@"y1"];
+                NSString * x1String = pathSegment.x1String;
+                NSString * y1String = pathSegment.y1String;
 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
                 NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddQuadCurveToPoint(%@, NULL, %@, %@, %@, %@);\n",
                         pathVar, x1String, y1String, xString, yString];
@@ -994,31 +989,29 @@
             }
             case 'q':     // quadratic Bezier curve
             {
-                NSString * x1String = pathSegmentDictionary[@"absoluteX1"];
-                NSString * y1String = pathSegmentDictionary[@"absoluteY1"];
+                CGFloat absoluteX1 = pathSegment.absoluteX1Float;
+                CGFloat absoluteY1 = pathSegment.absoluteY1Float;
 
-                NSString * xString = pathSegmentDictionary[@"absoluteX"];
-                NSString * yString = pathSegmentDictionary[@"absoluteY"];
+                CGFloat absoluteX = pathSegment.absoluteXFloat;
+                CGFloat absoluteY = pathSegment.absoluteYFloat;
 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddQuadCurveToPoint(%@, NULL, %@, %@, %@, %@);\n",
-                        pathVar, x1String, y1String, xString, yString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddQuadCurveToPoint(%@, NULL, %f, %f, %f, %f);\n",
+                        pathVar, absoluteX1, absoluteY1, absoluteX, absoluteY];
                 [resultString appendString:segmentString];
 
                 break;
             }
             case 'T':     // smooth quadratic Bezier curve
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
+                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegment];
 
                 if (currentSegmentIndex > 0)
                 {
-                    //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
-                    
-                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
-                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
+                    NSString * previousX2String = pathSegment.x2String;
+                    NSString * previousY2String = pathSegment.y2String;
                     
                     CGFloat previousX2 = previousX2String.floatValue;
                     CGFloat previousY2 = previousY2String.floatValue;
@@ -1041,17 +1034,15 @@
             }
             case 't':     // smooth quadratic Bezier curve
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegmentDictionary];
+                NSInteger currentSegmentIndex = [pathSegmentsArray indexOfObject:pathSegment];
 
                 if (currentSegmentIndex > 0)
                 {
-                    //NSDictionary * previousPathSegmentDictionary = [pathSegmentsArray objectAtIndex:(currentSegmentIndex - 1)];
-                    
-                    NSString * previousX2String = pathSegmentDictionary[@"x2"];
-                    NSString * previousY2String = pathSegmentDictionary[@"y2"];
+                    NSString * previousX2String = pathSegment.x2String;
+                    NSString * previousY2String = pathSegment.y2String;
                     
                     CGFloat previousX2 = previousX2String.floatValue;
                     CGFloat previousY2 = previousY2String.floatValue;
@@ -1074,20 +1065,20 @@
             }
             case 'A':     // elliptical arc
             {
-                NSString * rxString = pathSegmentDictionary[@"rx"];
-                NSString * ryString = pathSegmentDictionary[@"ry"];
+                NSString * rxString = pathSegment.rxString;
+                NSString * ryString = pathSegment.ryString;
                 
-                NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
+                NSString * dataXAxisRotationString = pathSegment.xAxisRotationString;
                 
-                NSString * largeArcString = pathSegmentDictionary[@"large-arc-flag"];
+                NSString * largeArcString = pathSegment.largeArcFlagString;
                 
-                NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
+                NSString * sweepString = pathSegment.sweepFlagString;
                 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                NSString * startXString = pathSegmentDictionary[@"absoluteStartX"];
-                NSString * startYString = pathSegmentDictionary[@"absoluteStartY"];
+                CGFloat absoluteStartX = pathSegment.absoluteStartXFloat;
+                CGFloat absoluteStartY = pathSegment.absoluteStartYFloat;
 
                 //CGContextAddArcToPoint (context, x1, y1, x2, y2, radius)
                 
@@ -1097,7 +1088,7 @@
                 [resultString appendString:segmentString];
                 */
                 
-                CGPoint curPoint = CGPointMake(startXString.floatValue, startYString.floatValue);
+                CGPoint curPoint = CGPointMake(absoluteStartX, absoluteStartY);
                 CGFloat xRadius = rxString.floatValue;
                 CGFloat yRadius = ryString.floatValue;
                 double dataXAxisRotation = dataXAxisRotationString.doubleValue;
@@ -1114,28 +1105,28 @@
             }
             case 'a':     // elliptical arc
             {
-                NSString * rxString = pathSegmentDictionary[@"rx"];
-                NSString * ryString = pathSegmentDictionary[@"ry"];   // CoreGraphics does not support rx/ry, so we just use rx
+                NSString * rxString = pathSegment.rxString;
+                NSString * ryString = pathSegment.ryString;   // CoreGraphics does not support rx/ry, so we just use rx
                 #pragma unused(ryString)
                 
-                NSString * dataXAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];   // not sure how to handle these yet
-                NSString * largeArcString = pathSegmentDictionary[@"large-arc-flag"];
-                NSString * sweepString = pathSegmentDictionary[@"sweep-flag"];
+                NSString * dataXAxisRotationString = pathSegment.xAxisRotationString;   // not sure how to handle these yet
+                NSString * largeArcString = pathSegment.largeArcFlagString;
+                NSString * sweepString = pathSegment.sweepFlagString;
 
                 #pragma unused(dataXAxisRotationString)
                 #pragma unused(largeArcString)
                 #pragma unused(sweepString)
                 
-                NSString * xString = pathSegmentDictionary[@"x"];
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * xString = pathSegment.xString;
+                NSString * yString = pathSegment.yString;
 
-                NSString * startXString = pathSegmentDictionary[@"absoluteStartX"];
-                NSString * startYString = pathSegmentDictionary[@"absoluteStartY"];
+                CGFloat absoluteStartX = pathSegment.absoluteStartXFloat;
+                CGFloat absoluteStartY = pathSegment.absoluteStartYFloat;
 
                 //CGContextAddArcToPoint (context, x1, y1, x2, y2, radius)
                 
-                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddArcToPoint(%@, NULL, %@, %@, %@, %@, %@);\n",
-                        pathVar, startXString, startYString, xString, yString, rxString];
+                NSString * segmentString = [NSString stringWithFormat:@"\tCGPathAddArcToPoint(%@, NULL, %f, %f, %@, %@, %@);\n",
+                        pathVar, absoluteStartX, absoluteStartY, xString, yString, rxString];
                 [resultString appendString:segmentString];
 
                 break;
@@ -1144,10 +1135,10 @@
             {
                 //[resultString appendFormat:@"CGPathClosePath(%@);\n", pathVar];
 
-                NSDictionary * firstPathSegmentDictionary = pathSegmentsArray.firstObject;
+                PathSegment * firstPathSegment = pathSegmentsArray.firstObject;
 
-                NSString * firstXString = firstPathSegmentDictionary[@"x"];
-                NSString * firstYString = firstPathSegmentDictionary[@"y"];
+                NSString * firstXString = firstPathSegment.xString;
+                NSString * firstYString = firstPathSegment.yString;
 
                 if (firstXString == NULL)
                 {
@@ -1167,10 +1158,10 @@
             {
                 //[resultString appendFormat:@"CGPathClosePath(%@);\n", pathVar];
 
-                NSDictionary * firstPathSegmentDictionary = pathSegmentsArray.firstObject;
+                PathSegment * firstPathSegment = pathSegmentsArray.firstObject;
 
-                NSString * firstXString = firstPathSegmentDictionary[@"x"];
-                NSString * firstYString = firstPathSegmentDictionary[@"y"];
+                NSString * firstXString = firstPathSegment.xString;
+                NSString * firstYString = firstPathSegment.yString;
                 
                 if (firstXString == NULL)
                 {

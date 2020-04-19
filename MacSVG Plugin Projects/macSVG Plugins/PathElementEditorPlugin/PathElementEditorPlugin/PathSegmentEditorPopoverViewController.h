@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class PathElementEditor;
+@class PathSegment;
 
 @interface PathSegmentEditorPopoverViewController : NSViewController
 {
@@ -53,7 +54,7 @@
 - (IBAction)applyButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;
 
- -(void)loadPathSegmentData:(NSMutableDictionary *)pathSegmentDictionary;
+ -(void)loadPathSegmentData:(PathSegment *)pathSegment;
 
 - (IBAction)segmentTypePopUpButtonAction:(id)sender;
 

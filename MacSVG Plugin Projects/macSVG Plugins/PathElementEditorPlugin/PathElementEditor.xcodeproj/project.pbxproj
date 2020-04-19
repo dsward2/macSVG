@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0E06F8861D57B7F300265FA2 /* PathElementEditorFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */; };
 		0E3F0F4B1E44606A001FDDD7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EDEB22C1501AE0E008CA4AF /* Cocoa.framework */; };
+		0E4D10D6243D0026000D92C4 /* PathSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D10D5243D0026000D92C4 /* PathSegment.m */; };
 		0E6E00381D37126A0060154A /* PathSegmentEditorPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */; };
 		0EA47BEA1D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA47BE91D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m */; };
 		0EDEB2371501AE0E008CA4AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EDEB2351501AE0E008CA4AF /* InfoPlist.strings */; };
@@ -20,6 +21,8 @@
 /* Begin PBXFileReference section */
 		0E06F8841D57B7F300265FA2 /* PathElementEditorFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathElementEditorFunctions.h; sourceTree = "<group>"; };
 		0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathElementEditorFunctions.m; sourceTree = "<group>"; };
+		0E4D10D4243D0026000D92C4 /* PathSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathSegment.h; path = "../../../../macSVG/SVGDocument Classes/PathSegment.h"; sourceTree = "<group>"; };
+		0E4D10D5243D0026000D92C4 /* PathSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PathSegment.m; path = "../../../../macSVG/SVGDocument Classes/PathSegment.m"; sourceTree = "<group>"; };
 		0E6E00361D37126A0060154A /* PathSegmentEditorPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathSegmentEditorPopoverViewController.h; sourceTree = "<group>"; };
 		0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathSegmentEditorPopoverViewController.m; sourceTree = "<group>"; };
 		0EA47BE81D87DD53005B2FF3 /* ArcSettingsPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcSettingsPopoverViewController.h; sourceTree = "<group>"; };
@@ -82,6 +85,8 @@
 				0EDEB2411501AEA4008CA4AF /* PathElementEditor.m */,
 				0E06F8841D57B7F300265FA2 /* PathElementEditorFunctions.h */,
 				0E06F8851D57B7F300265FA2 /* PathElementEditorFunctions.m */,
+				0E4D10D4243D0026000D92C4 /* PathSegment.h */,
+				0E4D10D5243D0026000D92C4 /* PathSegment.m */,
 				0E6E00361D37126A0060154A /* PathSegmentEditorPopoverViewController.h */,
 				0E6E00371D37126A0060154A /* PathSegmentEditorPopoverViewController.m */,
 				0EA47BE81D87DD53005B2FF3 /* ArcSettingsPopoverViewController.h */,
@@ -173,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E4D10D6243D0026000D92C4 /* PathSegment.m in Sources */,
 				0E06F8861D57B7F300265FA2 /* PathElementEditorFunctions.m in Sources */,
 				0E6E00381D37126A0060154A /* PathSegmentEditorPopoverViewController.m in Sources */,
 				0EA47BEA1D87DD53005B2FF3 /* ArcSettingsPopoverViewController.m in Sources */,

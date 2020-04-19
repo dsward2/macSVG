@@ -33,6 +33,7 @@
 #import "TextIconView.h"
 #import "MacSVGPlugin/MacSVGPlugin.h"
 //#import "ElementInfoEditor/ElementInfoEditor.h"
+#import "PathSegment.h"
 
 #import "NSOutlineView_Extensions.h"
 
@@ -833,11 +834,11 @@
                         NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
                         [durNode setStringValue:@"3s"];
 
-                        CGFloat translateX = translateXString.floatValue;
-                        CGFloat endTranslateX = translateX + 20.0f;
+                        float translateX = translateXString.floatValue;
+                        float endTranslateX = translateX + 20.0f;
                         
-                        CGFloat translateY = translateYString.floatValue;
-                        CGFloat endTranslateY = translateY + 20.0f;
+                        float translateY = translateYString.floatValue;
+                        float endTranslateY = translateY + 20.0f;
                         
                         NSString * endTranslateXString = [self allocFloatString:endTranslateX];
                         NSString * endTranslateYString = [self allocFloatString:endTranslateY];
@@ -872,11 +873,11 @@
                         NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
                         [durNode setStringValue:@"3s"];
 
-                        CGFloat scaleX = scaleXString.floatValue;
-                        CGFloat endScaleX = scaleX * 1.2f;
+                        float scaleX = scaleXString.floatValue;
+                        float endScaleX = scaleX * 1.2f;
                         
-                        CGFloat scaleY = scaleYString.floatValue;
-                        CGFloat endScaleY = scaleY * 1.2f;
+                        float scaleY = scaleYString.floatValue;
+                        float endScaleY = scaleY * 1.2f;
                         
                         NSString * endScaleXString = [self allocFloatString:endScaleX];
                         NSString * endScaleYString = [self allocFloatString:endScaleY];
@@ -909,8 +910,8 @@
                         NSXMLNode * typeNode = [prototypeElement attributeForName:@"type"];
                         [typeNode setStringValue:@"rotate"];
 
-                        CGFloat rotateDegrees = rotateDegreesString.floatValue;
-                        CGFloat endRotateDegrees = rotateDegrees + 360.0f;
+                        float rotateDegrees = rotateDegreesString.floatValue;
+                        float endRotateDegrees = rotateDegrees + 360.0f;
                         
                         NSString * endRotateDegreesString = [self allocFloatString:endRotateDegrees];
                         
@@ -942,8 +943,8 @@
                         NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
                         [durNode setStringValue:@"3s"];
 
-                        CGFloat skewXDegrees = skewXDegreesString.floatValue;
-                        CGFloat endSkewXDegrees = skewXDegrees + 10.0f;
+                        float skewXDegrees = skewXDegreesString.floatValue;
+                        float endSkewXDegrees = skewXDegrees + 10.0f;
                         
                         NSString * endSkewXDegreesString = [self allocFloatString:endSkewXDegrees];
                         
@@ -974,8 +975,8 @@
                         NSXMLNode * durNode = [prototypeElement attributeForName:@"dur"];
                         [durNode setStringValue:@"3s"];
 
-                        CGFloat skewYDegrees = skewYDegreesString.floatValue;
-                        CGFloat endSkewYDegrees = skewYDegrees + 10.0f;
+                        float skewYDegrees = skewYDegreesString.floatValue;
+                        float endSkewYDegrees = skewYDegrees + 10.0f;
                         
                         NSString * endSkewYDegreesString = [self allocFloatString:endSkewYDegrees];
                         
@@ -1036,8 +1037,8 @@
             
             if (NSIsEmptyRect(boundingBox) == NO)
             {
-                CGFloat midX = NSMidX(boundingBox);
-                CGFloat midY = NSMidY(boundingBox);
+                float midX = NSMidX(boundingBox);
+                float midY = NSMidY(boundingBox);
                 
                 NSString * midXString = [self allocFloatString:midX];
                 NSString * midYString = [self allocFloatString:midY];
@@ -1088,8 +1089,8 @@
         
         if (NSIsEmptyRect(boundingBox) == NO)
         {
-            CGFloat x = boundingBox.origin.x;
-            CGFloat y = boundingBox.origin.y;
+            float x = boundingBox.origin.x;
+            float y = boundingBox.origin.y;
             
             NSString * parentElementName = parentElement.name;
             if (([parentElementName isEqualToString:@"circle"] == YES) ||
@@ -2112,7 +2113,7 @@
 //	nudgeSelectedItemsWithDeltaX:deltaY:
 //==================================================================================
 
-- (void)nudgeSelectedItemsWithDeltaX:(CGFloat)deltaX deltaY:(CGFloat)deltaY
+- (void)nudgeSelectedItemsWithDeltaX:(float)deltaX deltaY:(float)deltaY
 {
     //NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
 
@@ -2179,14 +2180,14 @@
         {
             NSXMLNode * xAttributeNode = [aXMLElement attributeForName:@"x"];
             NSString * xAttributeString = xAttributeNode.stringValue;
-            CGFloat xAttributeFloat = xAttributeString.floatValue;
+            float xAttributeFloat = xAttributeString.floatValue;
             xAttributeFloat += deltaX;
             xAttributeString = [self allocPxString:xAttributeFloat];
             xAttributeNode.stringValue = xAttributeString;
             
             NSXMLNode * yAttributeNode = [aXMLElement attributeForName:@"y"];
             NSString * yAttributeString = yAttributeNode.stringValue;
-            CGFloat yAttributeFloat = yAttributeString.floatValue;
+            float yAttributeFloat = yAttributeString.floatValue;
             yAttributeFloat += deltaY;
             yAttributeString = [self allocPxString:yAttributeFloat];
             yAttributeNode.stringValue = yAttributeString;
@@ -2199,14 +2200,14 @@
         {
             NSXMLNode * cxAttributeNode = [aXMLElement attributeForName:@"cx"];
             NSString * cxAttributeString = cxAttributeNode.stringValue;
-            CGFloat cxAttributeFloat = cxAttributeString.floatValue;
+            float cxAttributeFloat = cxAttributeString.floatValue;
             cxAttributeFloat += deltaX;
             cxAttributeString = [self allocPxString:cxAttributeFloat];
             cxAttributeNode.stringValue = cxAttributeString;
             
             NSXMLNode * cyAttributeNode = [aXMLElement attributeForName:@"cy"];
             NSString * cyAttributeString = cyAttributeNode.stringValue;
-            CGFloat cyAttributeFloat = cyAttributeString.floatValue;
+            float cyAttributeFloat = cyAttributeString.floatValue;
             cyAttributeFloat += deltaY;
             cyAttributeString = [self allocPxString:cyAttributeFloat];
             cyAttributeNode.stringValue = cyAttributeString;
@@ -2219,14 +2220,14 @@
         {
             NSXMLNode * x1AttributeNode = [aXMLElement attributeForName:@"x1"];
             NSString * x1AttributeString = x1AttributeNode.stringValue;
-            CGFloat x1AttributeFloat = x1AttributeString.floatValue;
+            float x1AttributeFloat = x1AttributeString.floatValue;
             x1AttributeFloat += deltaX;
             x1AttributeString = [self allocPxString:x1AttributeFloat];
             x1AttributeNode.stringValue = x1AttributeString;
             
             NSXMLNode * y1AttributeNode = [aXMLElement attributeForName:@"y1"];
             NSString * y1AttributeString = y1AttributeNode.stringValue;
-            CGFloat y1AttributeFloat = y1AttributeString.floatValue;
+            float y1AttributeFloat = y1AttributeString.floatValue;
             y1AttributeFloat += deltaY;
             y1AttributeString = [self allocPxString:y1AttributeFloat];
             y1AttributeNode.stringValue = y1AttributeString;
@@ -2239,14 +2240,14 @@
         {
             NSXMLNode * x2AttributeNode = [aXMLElement attributeForName:@"x2"];
             NSString * x2AttributeString = x2AttributeNode.stringValue;
-            CGFloat x2AttributeFloat = x2AttributeString.floatValue;
+            float x2AttributeFloat = x2AttributeString.floatValue;
             x2AttributeFloat += deltaX;
             x2AttributeString = [self allocPxString:x2AttributeFloat];
             x2AttributeNode.stringValue = x2AttributeString;
             
             NSXMLNode * y2AttributeNode = [aXMLElement attributeForName:@"y2"];
             NSString * y2AttributeString = y2AttributeNode.stringValue;
-            CGFloat y2AttributeFloat = y2AttributeString.floatValue;
+            float y2AttributeFloat = y2AttributeString.floatValue;
             y2AttributeFloat += deltaY;
             y2AttributeString = [self allocPxString:y2AttributeFloat];
             y2AttributeNode.stringValue = y2AttributeString;
@@ -2270,7 +2271,7 @@
 //	nudgeSelectedItemsWithDeltaX:deltaY:
 //==================================================================================
 
-- (void)nudgePathElement:(NSMutableDictionary *)pathElementDictionary deltaX:(CGFloat)deltaX deltaY:(CGFloat)deltaY
+- (void)nudgePathElement:(NSMutableDictionary *)pathElementDictionary deltaX:(float)deltaX deltaY:(float)deltaY
 {
         NSXMLElement * aXMLElement = pathElementDictionary[@"xmlElement"];
         DOMElement * aDOMElement = pathElementDictionary[@"domElement"];
@@ -2281,27 +2282,26 @@
         NSMutableArray * pathSegmentsArray = [self.macSVGDocumentWindowController.svgWebKitController
                 buildPathSegmentsArrayWithPathString:dAttributeString];
     
-        for (NSMutableDictionary * pathSegmentDictionary in pathSegmentsArray)
+        for (PathSegment * pathSegment in pathSegmentsArray)
         {
-            NSString * commandString = pathSegmentDictionary[@"command"];
-            
-            unichar commandCharacter = [commandString characterAtIndex:0];
+            unichar commandCharacter = pathSegment.pathCommand;
+            NSString * commandString = [NSString stringWithFormat:@"%C", commandCharacter];
 
             switch (commandCharacter)
             {
                 case 'M':     // moveto
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
                     break;    // no changes required
                 }
                 case 'm':     // moveto
@@ -2311,17 +2311,17 @@
                 
                 case 'L':     // lineto
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
                     break;
                 }
                 case 'l':     // lineto
@@ -2331,11 +2331,11 @@
 
                 case 'H':     // horizontal lineto
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
                     break;
                 }
                 case 'h':     // horizontal lineto
@@ -2345,11 +2345,11 @@
 
                 case 'V':     // vertical lineto
                 {
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
                     break;
                 }
                 case 'v':     // vertical lineto
@@ -2359,41 +2359,41 @@
 
                 case 'C':     // curveto
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
 
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    CGFloat x1Float = x1String.floatValue;
+                    NSString * x1String = pathSegment.x1String;
+                    float x1Float = x1String.floatValue;
                     x1Float += deltaX;
                     NSString * newX1String = [self allocFloatString:x1Float];
-                    pathSegmentDictionary[@"x1"] = newX1String;
+                    pathSegment.x1String = newX1String;
 
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
-                    CGFloat y1Float = y1String.floatValue;
+                    NSString * y1String = pathSegment.y1String;
+                    float y1Float = y1String.floatValue;
                     y1Float += deltaY;
                     NSString * newY1String = [self allocFloatString:y1Float];
-                    pathSegmentDictionary[@"y1"] = newY1String;
+                    pathSegment.y1String = newY1String;
 
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    CGFloat x2Float = x2String.floatValue;
+                    NSString * x2String = pathSegment.x2String;
+                    float x2Float = x2String.floatValue;
                     x2Float += deltaX;
                     NSString * newX2String = [self allocFloatString:x2Float];
-                    pathSegmentDictionary[@"x2"] = newX2String;
+                    pathSegment.x2String = newX2String;
 
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
-                    CGFloat y2Float = y2String.floatValue;
+                    NSString * y2String = pathSegment.y2String;
+                    float y2Float = y2String.floatValue;
                     y2Float += deltaY;
                     NSString * newY2String = [self allocFloatString:y2Float];
-                    pathSegmentDictionary[@"y2"] = newY2String;
+                    pathSegment.y2String = newY2String;
                     break;
                 }
                 case 'c':     // curveto
@@ -2403,29 +2403,29 @@
 
                 case 'S':     // smooth curveto
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
 
-                    NSString * x2String = pathSegmentDictionary[@"x2"];
-                    CGFloat x2Float = x2String.floatValue;
+                    NSString * x2String = pathSegment.x2String;
+                    float x2Float = x2String.floatValue;
                     x2Float += deltaX;
                     NSString * newX2String = [self allocFloatString:x2Float];
-                    pathSegmentDictionary[@"x2"] = newX2String;
+                    pathSegment.x2String = newX2String;
 
-                    NSString * y2String = pathSegmentDictionary[@"y2"];
-                    CGFloat y2Float = y2String.floatValue;
+                    NSString * y2String = pathSegment.y2String;
+                    float y2Float = y2String.floatValue;
                     y2Float += deltaY;
                     NSString * newY2String = [self allocFloatString:y2Float];
-                    pathSegmentDictionary[@"y2"] = newY2String;
+                    pathSegment.y2String = newY2String;
                     break;
                 }
                 case 's':     // smooth curveto
@@ -2435,29 +2435,29 @@
 
                 case 'Q':     // quadratic Bezier curve
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
 
-                    NSString * x1String = pathSegmentDictionary[@"x1"];
-                    CGFloat x1Float = x1String.floatValue;
+                    NSString * x1String = pathSegment.x1String;
+                    float x1Float = x1String.floatValue;
                     x1Float += deltaX;
                     NSString * newX1String = [self allocFloatString:x1Float];
-                    pathSegmentDictionary[@"x1"] = newX1String;
+                    pathSegment.x1String = newX1String;
 
-                    NSString * y1String = pathSegmentDictionary[@"y1"];
-                    CGFloat y1Float = y1String.floatValue;
+                    NSString * y1String = pathSegment.y1String;
+                    float y1Float = y1String.floatValue;
                     y1Float += deltaY;
                     NSString * newY1String = [self allocFloatString:y1Float];
-                    pathSegmentDictionary[@"y1"] = newY1String;
+                    pathSegment.y1String = newY1String;
                     break;
                 }
                 case 'q':     // quadratic Bezier curve
@@ -2467,17 +2467,17 @@
 
                 case 'T':     // smooth quadratic Bezier curve
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
                     break;
                 }
 
@@ -2488,17 +2488,17 @@
 
                 case 'A':     // elliptical arc
                 {
-                    NSString * xString = pathSegmentDictionary[@"x"];
-                    CGFloat xFloat = xString.floatValue;
+                    NSString * xString = pathSegment.xString;
+                    float xFloat = xString.floatValue;
                     xFloat += deltaX;
                     NSString * newXString = [self allocFloatString:xFloat];
-                    pathSegmentDictionary[@"x"] = newXString;
+                    pathSegment.xString = newXString;
 
-                    NSString * yString = pathSegmentDictionary[@"y"];
-                    CGFloat yFloat = yString.floatValue;
+                    NSString * yString = pathSegment.yString;
+                    float yFloat = yString.floatValue;
                     yFloat += deltaY;
                     NSString * newYString = [self allocFloatString:yFloat];
-                    pathSegmentDictionary[@"y"] = newYString;
+                    pathSegment.yString = newYString;
                     break;
                 }
 

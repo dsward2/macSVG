@@ -191,20 +191,20 @@
     NSString * x2String = x2AttributeNode.stringValue;
     NSString * y2String = y2AttributeNode.stringValue;
     
-    CGFloat scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:lineHandlesGroup];
+    float scaleFactor = [svgWebKitController maxScaleForDOMElementHandles:lineHandlesGroup];
     
     NSString * linePointStrokeWidthString = toolSettingsPopoverViewController.pathEndpointStrokeWidth;
-    CGFloat linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
+    float linePointStrokeWidthFloat = linePointStrokeWidthString.floatValue;
     linePointStrokeWidthFloat *= scaleFactor;
     linePointStrokeWidthString = [self allocPxString:linePointStrokeWidthFloat];
 
     NSString * lineLineStrokeWidthString = toolSettingsPopoverViewController.pathLineStrokeWidth;
-    CGFloat lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
+    float lineLineStrokeWidthFloat = lineLineStrokeWidthString.floatValue;
     lineLineStrokeWidthFloat *= scaleFactor;
     lineLineStrokeWidthString = [self allocPxString:lineLineStrokeWidthFloat];
 
     NSString * linePointRadiusString = toolSettingsPopoverViewController.pathEndpointRadius;
-    CGFloat linePointRadiusFloat = linePointRadiusString.floatValue;
+    float linePointRadiusFloat = linePointRadiusString.floatValue;
     linePointRadiusFloat *= scaleFactor;
     linePointRadiusString = [self allocPxString:linePointRadiusFloat];
     

@@ -6,28 +6,9 @@
 //
 //
 
-/* pathSegmentDictionary
-{
-    absoluteStartX = 486;
-    absoluteStartY = 320;
-    absoluteX = 366;
-    absoluteX1 = 487;
-    absoluteX2 = 461;
-    absoluteY = 529;
-    absoluteY1 = 394;
-    absoluteY2 = 507;
-    command = C;
-    x = 366;
-    x1 = 487;
-    x2 = 461;
-    y = 529;
-    y1 = 394;
-    y2 = 507;
-}
-*/
-
 #import "PathSegmentEditorPopoverViewController.h"
 #import "PathElementEditor.h"
+#import "PathSegment.h"
 
 #import <WebKit/WebKit.h>
 
@@ -53,17 +34,14 @@
 
     if (selectedRow >= 0)
     {
-        NSMutableDictionary * pathSegmentDictionary = (self.pathElementEditor.pathSegmentsArray)[selectedRow];
+        PathSegment * pathSegment = (self.pathElementEditor.pathSegmentsArray)[selectedRow];
         
-        NSMutableDictionary *newPathSegmentDictionary =
-                (__bridge NSMutableDictionary *)(CFPropertyListCreateDeepCopy(kCFAllocatorDefault,
-                (__bridge CFPropertyListRef)(pathSegmentDictionary),
-                kCFPropertyListMutableContainersAndLeaves));
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
+        [newPathSegment copyValuesFromPathSegment:pathSegment];
         
         NSInteger selectedSegmentTypeIndex = segmentTypePopUpButton.indexOfSelectedItem;
         
-        NSString * currentCommand = pathSegmentDictionary[@"command"];
-        unichar newCommand = [currentCommand characterAtIndex:0];
+        unichar newCommand = pathSegment.pathCommand;
         
         BOOL useRelativeCoordinates = relativeCoordinatesCheckboxButton.state;
         
@@ -81,7 +59,7 @@
                     newCommand = 'm';
                 }
                 NSArray * validAttributes = @[@"x", @"y"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 1:
@@ -96,7 +74,7 @@
                     newCommand = 'l';
                 }
                 NSArray * validAttributes = @[@"x", @"y"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 2:
@@ -111,7 +89,7 @@
                     newCommand = 'h';
                 }
                 NSArray * validAttributes = @[@"x"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 3:
@@ -126,7 +104,7 @@
                     newCommand = 'v';
                 }
                 NSArray * validAttributes = @[@"y"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 4:
@@ -141,7 +119,7 @@
                     newCommand = 'c';
                 }
                 NSArray * validAttributes = @[@"x", @"y", @"x1", @"y1", @"x2", @"y2"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 5:
@@ -156,7 +134,7 @@
                     newCommand = 's';
                 }
                 NSArray * validAttributes = @[@"x", @"y", @"x2", @"y2"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 6:
@@ -171,7 +149,7 @@
                     newCommand = 'q';
                 }
                 NSArray * validAttributes = @[@"x", @"y", @"x1", @"y1"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 7:
@@ -186,7 +164,7 @@
                     newCommand = 't';
                 }
                 NSArray * validAttributes = @[@"x", @"y"];
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 8:
@@ -203,7 +181,7 @@
                 NSArray * validAttributes = @[@"x", @"y", @"rx", @"ry", @"x-axis-rotation", @"large-arc-flag", @"sweep-flag"];
                 
 
-                [self validateAttributes:validAttributes inPathSegmentDictionary:newPathSegmentDictionary];
+                [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
             }
             case 9:
@@ -221,19 +199,22 @@
             }
         }
         
-        NSString * newCommandString = [NSString stringWithFormat:@"%C", newCommand];
-        newPathSegmentDictionary[@"command"] = newCommandString;
-        [self loadPathSegmentData:newPathSegmentDictionary];
+        newPathSegment.pathCommand = newCommand;
+        
+        [self loadPathSegmentData:newPathSegment];
     }
 }
 
 //==================================================================================
-//	validateAttributes:inPathSegmentDictionary:
+//	validateAttributes:inPathSegment:
 //==================================================================================
 
-- (void)validateAttributes:(NSArray *)validAttributesArray inPathSegmentDictionary:(NSMutableDictionary *)pathSegmentDictionary
+- (void)validateAttributes:(NSArray *)validAttributesArray inPathSegment:(PathSegment *)pathSegment
 {
-    NSArray * allKeys = pathSegmentDictionary.allKeys;
+    NSLog(@"FIXME:PathSegmentEditorPopoverViewController validAttributesArray:inPathSegment");
+
+/*
+    NSArray * allKeys = pathSegment.allKeys;
     
     for (NSString * aKey in allKeys)
     {
@@ -271,13 +252,13 @@
         
         if (commonKeyFound == NO)
         {
-            [pathSegmentDictionary removeObjectForKey:aKey];
+            [pathSegment removeObjectForKey:aKey];
         }
     }
     
     for (NSString * aValidAttribute in validAttributesArray)
     {
-        id existingAttribute = pathSegmentDictionary[aValidAttribute];
+        id existingAttribute = pathSegment[aValidAttribute];
         
         if (existingAttribute == NULL)
         {
@@ -286,7 +267,7 @@
             unichar firstAttributeCharacter = [aValidAttribute characterAtIndex:0];
             if (firstAttributeCharacter == 'x')
             {
-                NSString * xString = pathSegmentDictionary[@"x"];
+                NSString * xString = pathSegment[@"x"];
                 
                 if (xString != NULL)
                 {
@@ -295,7 +276,7 @@
             }
             else if (firstAttributeCharacter == 'y')
             {
-                NSString * yString = pathSegmentDictionary[@"y"];
+                NSString * yString = pathSegment[@"y"];
                 
                 if (yString != NULL)
                 {
@@ -303,9 +284,10 @@
                 }
             }
             
-            pathSegmentDictionary[aValidAttribute] = newAttributeValue;
+            pathSegment[aValidAttribute] = newAttributeValue;
         }
     }
+    */
 }
 
 //==================================================================================
@@ -318,14 +300,13 @@
 
     if (selectedRow >= 0)
     {
-        NSMutableDictionary * pathSegmentDictionary = (self.pathElementEditor.pathSegmentsArray)[selectedRow];
+        PathSegment * pathSegment = (self.pathElementEditor.pathSegmentsArray)[selectedRow];
         
-        NSMutableDictionary * newPathSegmentDictionary = [NSMutableDictionary dictionary];
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
         
         NSInteger selectedSegmentTypeIndex = segmentTypePopUpButton.indexOfSelectedItem;
         
-        NSString * currentCommand = pathSegmentDictionary[@"command"];
-        unichar newCommand = [currentCommand characterAtIndex:0];
+        unichar newCommand = pathSegment.pathCommand;
         
         BOOL useRelativeCoordinates = relativeCoordinatesCheckboxButton.state;
         
@@ -343,13 +324,12 @@
                     newCommand = 'm';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * xString = textfield1.stringValue;
                 NSString * yString = textfield2.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -365,13 +345,12 @@
                     newCommand = 'l';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * xString = textfield1.stringValue;
                 NSString * yString = textfield2.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -387,11 +366,10 @@
                     newCommand = 'h';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * xString = textfield1.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x"] = xString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.xString = xString;
                 
                 break;
             }
@@ -407,11 +385,10 @@
                     newCommand = 'v';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * yString = textfield2.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -427,7 +404,6 @@
                     newCommand = 'c';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * x1String = textfield1.stringValue;
                 NSString * y1String = textfield2.stringValue;
                 NSString * x2String = textfield3.stringValue;
@@ -435,13 +411,13 @@
                 NSString * xString = textfield5.stringValue;
                 NSString * yString = textfield6.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x1"] = x1String;
-                newPathSegmentDictionary[@"y1"] = y1String;
-                newPathSegmentDictionary[@"x2"] = x2String;
-                newPathSegmentDictionary[@"y2"] = y2String;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.x1String = x1String;
+                newPathSegment.y1String = y1String;
+                newPathSegment.x2String = x2String;
+                newPathSegment.y2String = y2String;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -457,17 +433,16 @@
                     newCommand = 's';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * x2String = textfield1.stringValue;
                 NSString * y2String = textfield2.stringValue;
                 NSString * xString = textfield3.stringValue;
                 NSString * yString = textfield4.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x2"] = x2String;
-                newPathSegmentDictionary[@"y2"] = y2String;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.x2String = x2String;
+                newPathSegment.y2String = y2String;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
 
                 break;
             }
@@ -483,17 +458,16 @@
                     newCommand = 'q';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * x1String = textfield1.stringValue;
                 NSString * y1String = textfield2.stringValue;
                 NSString * xString = textfield3.stringValue;
                 NSString * yString = textfield4.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x1"] = x1String;
-                newPathSegmentDictionary[@"y1"] = y1String;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.x1String = x1String;
+                newPathSegment.y1String = y1String;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -509,13 +483,12 @@
                     newCommand = 't';
                 }
                 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * xString = textfield1.stringValue;
                 NSString * yString = textfield2.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -531,7 +504,6 @@
                     newCommand = 'a';
                 }
 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
                 NSString * rxString = textfield1.stringValue;
                 NSString * ryString = textfield2.stringValue;
                 NSString * xAxisRotationString = textfield3.stringValue;
@@ -540,14 +512,14 @@
                 NSString * xString = textfield6.stringValue;
                 NSString * yString = textfield7.stringValue;
                 
-                newPathSegmentDictionary[@"command"] = commandString;
-                newPathSegmentDictionary[@"rx"] = rxString;
-                newPathSegmentDictionary[@"ry"] = ryString;
-                newPathSegmentDictionary[@"x-axis-rotation"] = xAxisRotationString;
-                newPathSegmentDictionary[@"large-arc-flag"] = largeArcFlagString;
-                newPathSegmentDictionary[@"sweep-flag"] = sweepFlagString;
-                newPathSegmentDictionary[@"x"] = xString;
-                newPathSegmentDictionary[@"y"] = yString;
+                newPathSegment.pathCommand = newCommand;
+                newPathSegment.rxString = rxString;
+                newPathSegment.ryString = ryString;
+                newPathSegment.xAxisRotationString = xAxisRotationString;
+                newPathSegment.largeArcFlagString = largeArcFlagString;
+                newPathSegment.sweepFlagString = sweepFlagString;
+                newPathSegment.xString = xString;
+                newPathSegment.yString = yString;
                 
                 break;
             }
@@ -563,9 +535,7 @@
                     newCommand = 'z';
                 }
 
-                NSString * commandString = [NSString stringWithFormat:@"%C", newCommand];
-
-                newPathSegmentDictionary[@"command"] = commandString;
+                newPathSegment.pathCommand = newCommand;
 
                 break;
             }
@@ -575,11 +545,11 @@
         
         if (self.pathElementEditor.pathSegmentEditorMode == kEditPathSegment)
         {
-            (self.pathElementEditor.pathSegmentsArray)[selectedRow] = newPathSegmentDictionary;
+            (self.pathElementEditor.pathSegmentsArray)[selectedRow] = newPathSegment;
         }
         if (self.pathElementEditor.pathSegmentEditorMode == kAddPathSegment)
         {
-            [self.pathElementEditor.pathSegmentsArray insertObject:newPathSegmentDictionary atIndex:(selectedRow + 1)];
+            [self.pathElementEditor.pathSegmentsArray insertObject:newPathSegment atIndex:(selectedRow + 1)];
         }
         
         [self.pathElementEditor.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:self.pathElementEditor.pathSegmentsArray];
@@ -706,18 +676,56 @@
     }
 }
 
+//==================================================================================
+//	allocFloatString:
+//==================================================================================
+
+- (NSMutableString *)allocFloatString:(float)aFloat
+{
+    NSMutableString * aString = [[NSMutableString alloc] initWithFormat:@"%f", aFloat];
+
+    BOOL continueTrim = YES;
+    while (continueTrim == YES)
+    {
+        NSUInteger stringLength = aString.length;
+        
+        if (stringLength <= 1)
+        {
+            continueTrim = NO;
+        }
+        else
+        {
+            unichar lastChar = [aString characterAtIndex:(stringLength - 1)];
+            
+            if (lastChar == '0')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+            }
+            else if (lastChar == '.')
+            {
+                NSRange deleteRange = NSMakeRange(stringLength - 1, 1);
+                [aString deleteCharactersInRange:deleteRange];
+                continueTrim = NO;
+            }
+            else
+            {
+                continueTrim = NO;
+            }
+        }
+    }
+    return aString;
+}
 
 //==================================================================================
 //	setPathSegmentData:
 //==================================================================================
 
-- (void)setPathSegmentData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setPathSegmentData:(PathSegment *)pathSegment
 {
     [self.pathElementEditor.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:self.pathElementEditor.pathSegmentsArray];
 
-    NSString * segmentCommand = segmentCommand = pathSegmentDictionary[@"command"];
-    
-    unichar commandChar = [segmentCommand characterAtIndex:0];
+    unichar commandChar = pathSegment.pathCommand;
     
     if ((commandChar >= 'a') && (commandChar <= 'z'))
     {
@@ -728,32 +736,15 @@
         [relativeCoordinatesCheckboxButton setState:NO];
     }
     
-    NSNumber * absoluteStartXNumber = pathSegmentDictionary[@"absoluteStartX"];
-    NSNumber * absoluteStartYNumber = pathSegmentDictionary[@"absoluteStartY"];
-    NSNumber * absoluteXNumber = pathSegmentDictionary[@"absoluteX"];
-    NSNumber * absoluteYNumber = pathSegmentDictionary[@"absoluteY"];
+    float absoluteStartX = pathSegment.absoluteStartXFloat;
+    float absoluteStartY = pathSegment.absoluteStartYFloat;
+    float absoluteX = pathSegment.absoluteXFloat;
+    float absoluteY = pathSegment.absoluteYFloat;
     
-    if (absoluteStartXNumber == NULL)
-    {
-        absoluteStartXNumber = @0.0f;
-    }
-    if (absoluteStartYNumber == NULL)
-    {
-        absoluteStartYNumber = @0.0f;
-    }
-    if (absoluteXNumber == NULL)
-    {
-        absoluteXNumber = @0.0f;
-    }
-    if (absoluteYNumber == NULL)
-    {
-        absoluteYNumber = @0.0f;
-    }
-
-    absoluteStartXTextField.stringValue = absoluteStartXNumber.stringValue;
-    absoluteStartYTextField.stringValue = absoluteStartYNumber.stringValue;
-    absoluteXTextField.stringValue = absoluteXNumber.stringValue;
-    absoluteYTextField.stringValue = absoluteYNumber.stringValue;
+    absoluteStartXTextField.stringValue = [self allocFloatString:absoluteStartX];
+    absoluteStartYTextField.stringValue = [self allocFloatString:absoluteStartY];
+    absoluteXTextField.stringValue = [self allocFloatString:absoluteX];
+    absoluteYTextField.stringValue = [self allocFloatString:absoluteY];
     
     switch (commandChar)
     {
@@ -761,70 +752,70 @@
         case 'm':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Moveto"];
-            [self setXYFieldData:pathSegmentDictionary];
+            [self setXYFieldData:pathSegment];
             break;
         }
         case 'L':
         case 'l':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Lineto"];
-            [self setXYFieldData:pathSegmentDictionary];
+            [self setXYFieldData:pathSegment];
             break;
         }
         case 'H':
         case 'h':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Horizontal Lineto"];
-            [self setXFieldData:pathSegmentDictionary];
+            [self setXFieldData:pathSegment];
             break;
         }
         case 'V':
         case 'v':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Vertical Lineto"];
-            [self setYFieldData:pathSegmentDictionary];
+            [self setYFieldData:pathSegment];
             break;
         }
         case 'C':
         case 'c':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Cubic Curveto"];
-            [self setCubicCurveFieldData:pathSegmentDictionary];
+            [self setCubicCurveFieldData:pathSegment];
             break;
         }
         case 'S':
         case 's':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Cubic Curveto Smooth"];
-            [self setSmoothCubicCurveFieldData:pathSegmentDictionary];
+            [self setSmoothCubicCurveFieldData:pathSegment];
             break;
         }
         case 'Q':
         case 'q':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Quadratic Curveto"];
-            [self setQuadraticCurveFieldData:pathSegmentDictionary];
+            [self setQuadraticCurveFieldData:pathSegment];
             break;
         }
         case 'T':
         case 't':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Quadratic Curveto Smooth"];
-            [self setSmoothQuadraticCurveFieldData:pathSegmentDictionary];
+            [self setSmoothQuadraticCurveFieldData:pathSegment];
             break;
         }
         case 'A':
         case 'a':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Elliptical Arc"];
-        [self setEllipticalArcFieldData:pathSegmentDictionary];
+        [self setEllipticalArcFieldData:pathSegment];
             break;
         }
         case 'Z':
         case 'z':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Close Path"];
-            [self setClosePathFieldData:pathSegmentDictionary];
+            [self setClosePathFieldData:pathSegment];
             break;
         }
     }
@@ -834,10 +825,10 @@
 //	setXYFieldData:
 //==================================================================================
 
-- (void)setXYFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setXYFieldData:(PathSegment *)pathSegment
 {
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"x" value:xString];
     [self showTextFieldIndex:2 label:@"y" value:yString];
@@ -847,9 +838,9 @@
 //	setXFieldData:
 //==================================================================================
 
-- (void)setXFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setXFieldData:(PathSegment *)pathSegment
 {
-    NSString * xString = pathSegmentDictionary[@"x"];
+    NSString * xString = pathSegment.xString;
     
     [self showTextFieldIndex:1 label:@"x" value:xString];
 }
@@ -858,9 +849,9 @@
 //	setYFieldData:
 //==================================================================================
 
-- (void)setYFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setYFieldData:(PathSegment *)pathSegment
 {
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"y" value:yString];
 }
@@ -869,16 +860,16 @@
 //	setCubicCurveFieldData:
 //==================================================================================
 
-- (void)setCubicCurveFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setCubicCurveFieldData:(PathSegment *)pathSegment
 {
-    NSString * x1String = pathSegmentDictionary[@"x1"];
-    NSString * y1String = pathSegmentDictionary[@"y1"];
+    NSString * x1String = pathSegment.x1String;
+    NSString * y1String = pathSegment.y1String;
     
-    NSString * x2String = pathSegmentDictionary[@"x2"];
-    NSString * y2String = pathSegmentDictionary[@"y2"];
+    NSString * x2String = pathSegment.x2String;
+    NSString * y2String = pathSegment.y2String;
     
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"x1" value:x1String];
     [self showTextFieldIndex:2 label:@"y1" value:y1String];
@@ -894,13 +885,13 @@
 //	setSmoothCubicCurveFieldData:
 //==================================================================================
 
-- (void)setSmoothCubicCurveFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setSmoothCubicCurveFieldData:(PathSegment *)pathSegment
 {
-    NSString * x2String = pathSegmentDictionary[@"x2"];
-    NSString * y2String = pathSegmentDictionary[@"y2"];
+    NSString * x2String = pathSegment.x2String;
+    NSString * y2String = pathSegment.y2String;
     
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"x2" value:x2String];
     [self showTextFieldIndex:2 label:@"y2" value:y2String];
@@ -913,13 +904,13 @@
 //	setQuadraticCurveFieldData:
 //==================================================================================
 
-- (void)setQuadraticCurveFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setQuadraticCurveFieldData:(PathSegment *)pathSegment
 {
-    NSString * x1String = pathSegmentDictionary[@"x1"];
-    NSString * y1String = pathSegmentDictionary[@"y1"];
+    NSString * x1String = pathSegment.x1String;
+    NSString * y1String = pathSegment.y1String;
     
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"x1" value:x1String];
     [self showTextFieldIndex:2 label:@"y1" value:y1String];
@@ -932,10 +923,10 @@
 //	setSmoothQuadraticCurveFieldData:
 //==================================================================================
 
-- (void)setSmoothQuadraticCurveFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setSmoothQuadraticCurveFieldData:(PathSegment *)pathSegment
 {
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"x" value:xString];
     [self showTextFieldIndex:2 label:@"y" value:yString];
@@ -945,15 +936,15 @@
 //	setEllipticalArcFieldData:
 //==================================================================================
 
-- (void)setEllipticalArcFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setEllipticalArcFieldData:(PathSegment *)pathSegment
 {
-    NSString * rxString = pathSegmentDictionary[@"rx"];
-    NSString * ryString = pathSegmentDictionary[@"ry"];
-    NSString * xAxisRotationString = pathSegmentDictionary[@"x-axis-rotation"];
-    NSString * largeArcFlagString = pathSegmentDictionary[@"large-arc-flag"];
-    NSString * sweepFlagString = pathSegmentDictionary[@"sweep-flag"];
-    NSString * xString = pathSegmentDictionary[@"x"];
-    NSString * yString = pathSegmentDictionary[@"y"];
+    NSString * rxString = pathSegment.rxString;
+    NSString * ryString = pathSegment.ryString;
+    NSString * xAxisRotationString = pathSegment.xAxisRotationString;
+    NSString * largeArcFlagString = pathSegment.largeArcFlagString;
+    NSString * sweepFlagString = pathSegment.sweepFlagString;
+    NSString * xString = pathSegment.xString;
+    NSString * yString = pathSegment.yString;
     
     [self showTextFieldIndex:1 label:@"rx" value:rxString];
     [self showTextFieldIndex:2 label:@"ry" value:ryString];
@@ -968,7 +959,7 @@
 //	setClosePathFieldData:
 //==================================================================================
 
-- (void)setClosePathFieldData:(NSMutableDictionary *)pathSegmentDictionary
+- (void)setClosePathFieldData:(PathSegment *)pathSegment
 {
 }
 
@@ -984,9 +975,9 @@
     {
         NSMutableArray * pathSegmentsArray = [self.pathElementEditor pathSegmentsArray];
 
-        NSMutableDictionary * pathSegmentDictionary = pathSegmentsArray[selectedRow];
+        PathSegment * pathSegment = pathSegmentsArray[selectedRow];
 
-        [self copyTextFieldValuesToTransformDictionary:pathSegmentDictionary];
+        [self copyTextFieldValuesToTransformDictionary:pathSegment];
     }    
 }
 
@@ -994,20 +985,20 @@
 //	copyTextFieldValuesToTransformDictionary:
 //==================================================================================
 
-- (void)copyTextFieldValuesToTransformDictionary:(NSMutableDictionary *)transformDictionary
+- (void)copyTextFieldValuesToTransformDictionary:(PathSegment *)pathSegment
 {
-    NSLog(@"PathPluginEditor - copyTextFieldValuesToTransformDictionary method needed here");
+    NSLog(@"FIXME: PathPluginEditor - copyTextFieldValuesToTransformDictionary method needed here");
 }
 
 //==================================================================================
 //	loadPathSegmentData:
 //==================================================================================
 
--(void)loadPathSegmentData:(NSMutableDictionary *)pathSegmentDictionary
+-(void)loadPathSegmentData:(PathSegment *)pathSegment
 {
     [self hideAllFields];
     
-    [self setPathSegmentData:pathSegmentDictionary];
+    [self setPathSegmentData:pathSegment];
     
     [textfield1 becomeFirstResponder];
 }

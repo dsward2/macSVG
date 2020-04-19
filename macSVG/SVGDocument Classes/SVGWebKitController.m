@@ -728,8 +728,8 @@
 
 -(void) updateLiveCoordinates
 {
-    CGFloat xFloat = self.domMouseEventsController.currentMousePagePoint.x;
-    CGFloat yFloat = self.domMouseEventsController.currentMousePagePoint.y;
+    float xFloat = self.domMouseEventsController.currentMousePagePoint.x;
+    float yFloat = self.domMouseEventsController.currentMousePagePoint.y;
     
     int originXInt = self.domMouseEventsController.clickMousePagePoint.x;
     int originYInt = self.domMouseEventsController.clickMousePagePoint.y;
@@ -812,7 +812,7 @@
             
             //self.domMouseEventsController.previousMousePagePoint = self.domMouseEventsController.currentMousePagePoint;
             
-            //CGFloat zoomFactor = self.svgWebView.zoomFactor;
+            //float zoomFactor = self.svgWebView.zoomFactor;
             //self.domMouseEventsController.currentMousePagePoint = NSMakePoint(mouseEvent.pageX * (1.0f / zoomFactor), mouseEvent.pageY * (1.0f / zoomFactor));
             //[self updateLiveCoordinates];
         }
@@ -858,7 +858,7 @@
             {
                 DOMTimeStamp mouseUpMSInterval = (newTimeStamp - self.lastMouseUpDOMTimeStamp);
                 
-                CGFloat mouseUpSeconds = mouseUpMSInterval / 1000.0f;
+                float mouseUpSeconds = mouseUpMSInterval / 1000.0f;
                 
                 NSTimeInterval doubleClickInterval = [NSEvent doubleClickInterval];
                 
@@ -1167,7 +1167,7 @@
     // this method will trigger scrolling to the specified point after the mainFrame load is completed
     NSPoint newScrollToPoint = NSZeroPoint;
     
-    CGFloat zoomFactor = self.svgWebView.zoomFactor;
+    float zoomFactor = self.svgWebView.zoomFactor;
 
     MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
     WebKitInterface * webKitInterface = [macSVGAppDelegate webKitInterface];
@@ -1468,12 +1468,12 @@
             //NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
             //NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
             
-            CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
-            CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
-            CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
-            CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
-            //CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
-            //CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
+            float ctmMatrixA = ctmMatrixAString.floatValue;
+            float ctmMatrixB = ctmMatrixBString.floatValue;
+            float ctmMatrixC = ctmMatrixCString.floatValue;
+            float ctmMatrixD = ctmMatrixDString.floatValue;
+            //float ctmMatrixE = ctmMatrixEString.floatValue;
+            //float ctmMatrixF = ctmMatrixFString.floatValue;
             
             scalePoint.x = sqrtf((ctmMatrixA * ctmMatrixA) + (ctmMatrixB * ctmMatrixB));
             scalePoint.y = sqrtf((ctmMatrixC * ctmMatrixC) + (ctmMatrixD * ctmMatrixD));
@@ -1492,11 +1492,11 @@
 //	maxScaleForDOMElementHandles:
 //==================================================================================
 
-- (CGFloat) maxScaleForDOMElementHandles:(DOMElement *)domElement
+- (float) maxScaleForDOMElementHandles:(DOMElement *)domElement
 {
     NSPoint scalePoint = [self scaleForDOMElementHandles:domElement];
 
-    CGFloat largerScale = scalePoint.x;
+    float largerScale = scalePoint.x;
     if (scalePoint.y > scalePoint.x)
     {
         largerScale = scalePoint.y;
@@ -1518,7 +1518,7 @@ function deltaTransformPoint(matrix, x, y) {
 //	deltaTransformPointWithMatrix:x:y:
 //==================================================================================
 
-- (NSPoint)deltaTransformPointWithMatrix:(id)ctmMatrix x:(CGFloat)x y:(CGFloat)y
+- (NSPoint)deltaTransformPointWithMatrix:(id)ctmMatrix x:(float)x y:(float)y
 {
     NSPoint resultPoint = NSZeroPoint;
     
@@ -1529,12 +1529,12 @@ function deltaTransformPoint(matrix, x, y) {
     //NSString * ctmMatrixEString = [ctmMatrix valueForKey:@"e"];
     //NSString * ctmMatrixFString = [ctmMatrix valueForKey:@"f"];
     
-    CGFloat ctmMatrixA = ctmMatrixAString.floatValue;
-    CGFloat ctmMatrixB = ctmMatrixBString.floatValue;
-    CGFloat ctmMatrixC = ctmMatrixCString.floatValue;
-    CGFloat ctmMatrixD = ctmMatrixDString.floatValue;
-    //CGFloat ctmMatrixE = ctmMatrixEString.floatValue;
-    //CGFloat ctmMatrixF = ctmMatrixFString.floatValue;
+    float ctmMatrixA = ctmMatrixAString.floatValue;
+    float ctmMatrixB = ctmMatrixBString.floatValue;
+    float ctmMatrixC = ctmMatrixCString.floatValue;
+    float ctmMatrixD = ctmMatrixDString.floatValue;
+    //float ctmMatrixE = ctmMatrixEString.floatValue;
+    //float ctmMatrixF = ctmMatrixFString.floatValue;
 
     resultPoint.x = (x * ctmMatrixA) + (y * ctmMatrixC);
     resultPoint.y = (x * ctmMatrixB) + (y * ctmMatrixD);

@@ -138,10 +138,10 @@
                 JSValueRef widthValueRef = JSObjectGetProperty(globalContext, getBBoxValueObject, widthPropertyName, exception);
                 JSValueRef heightValueRef = JSObjectGetProperty(globalContext, getBBoxValueObject, heightPropertyName, exception);
                 
-                CGFloat x = JSValueToNumber(globalContext, xValueRef, exception);
-                CGFloat y = JSValueToNumber(globalContext, yValueRef, exception);
-                CGFloat width = JSValueToNumber(globalContext, widthValueRef, exception);
-                CGFloat height = JSValueToNumber(globalContext, heightValueRef, exception);
+                double x = JSValueToNumber(globalContext, xValueRef, exception);
+                double y = JSValueToNumber(globalContext, yValueRef, exception);
+                double width = JSValueToNumber(globalContext, widthValueRef, exception);
+                double height = JSValueToNumber(globalContext, heightValueRef, exception);
             
                 resultRect = NSMakeRect(x, y, width, height);
             }
@@ -337,10 +337,10 @@
                 NSNumber * bottomRightCTMXNumber = [bottomRightCTMPoint valueForKey:@"x"];
                 NSNumber * bottomRightCTMYNumber = [bottomRightCTMPoint valueForKey:@"y"];
                 
-                CGFloat topLeftCTMX = topLeftCTMXNumber.floatValue;
-                CGFloat topLeftCTMY = topLeftCTMYNumber.floatValue;
-                CGFloat bottomRightCTMX = bottomRightCTMXNumber.floatValue;
-                CGFloat bottomRightCTMY = bottomRightCTMYNumber.floatValue;
+                float topLeftCTMX = topLeftCTMXNumber.floatValue;
+                float topLeftCTMY = topLeftCTMYNumber.floatValue;
+                float bottomRightCTMX = bottomRightCTMXNumber.floatValue;
+                float bottomRightCTMY = bottomRightCTMYNumber.floatValue;
                 
                 resultRect.size.width = bottomRightCTMX - topLeftCTMX;
                 resultRect.size.height = bottomRightCTMY - topLeftCTMY;

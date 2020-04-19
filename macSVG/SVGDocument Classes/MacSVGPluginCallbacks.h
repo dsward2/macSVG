@@ -24,7 +24,7 @@
 @property (readonly, strong) id macSVGDocumentWindowController;      // returns MacSVGDocumentWindowController
 @property (readonly, strong) id svgWebKitController;                      // returns SVGWebKitController
 @property (readonly, strong) id svgWebView;                               // returns SVGWebView
-@property (readonly) CGFloat zoomFactor;
+@property (readonly) float zoomFactor;
 
 //@property (readonly, strong) id svgPathEditorSelectedPathElement;           // returns NSXMLElement
 - (id)svgPathEditorSelectedPathElement;  // returns NSXMLElement
@@ -91,20 +91,20 @@
 - (NSMutableArray *)mirrorPathVerticallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
 - (NSMutableArray *)flipPathHorizontallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
 - (NSMutableArray *)flipPathVerticallyWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
-- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)translateX y:(CGFloat)translateY;
-- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(CGFloat)scaleX scaleY:(CGFloat)scaleY;
-- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(CGFloat)rotateX y:(CGFloat)rotateY degrees:(CGFloat)degrees;
+- (NSMutableArray *)translatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(float)translateX y:(float)translateY;
+- (NSMutableArray *)scalePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray scaleX:(float)scaleX scaleY:(float)scaleY;
+- (NSMutableArray *)rotatePathCoordinatesWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray x:(float)rotateX y:(float)rotateY degrees:(float)degrees;
 - (NSMutableArray *)closePathWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray;
 - (NSMutableArray *)rotateSegmentsWithPathSegmentsArray:(NSMutableArray *)pathSegmentsArray offset:(NSInteger)offset;
-- (NSDictionary *) convertArcToEndPointWithRotation:(CGFloat)rotation angleStart:(CGFloat)angleStart angleExtent:(CGFloat)angleExtent
-        cx:(CGFloat)cx cy:(CGFloat)cy rx:(CGFloat)rx ry:(CGFloat)ry;
-- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(CGFloat)rx ry:(CGFloat)ry
-        rotation:(CGFloat)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise;
+- (NSDictionary *) convertArcToEndPointWithRotation:(float)rotation angleStart:(float)angleStart angleExtent:(float)angleExtent
+        cx:(float)cx cy:(float)cy rx:(float)rx ry:(float)ry;
+- (NSDictionary *) convertArcToCenterPointWithStart:(CGPoint)start end:(CGPoint)end rx:(float)rx ry:(float)ry
+        rotation:(float)rotation isLarge:(BOOL)isLarge isCounterClockwise:(BOOL)isCounterClockwise;
 - (NSPoint)scaleForDOMElementHandles:(DOMElement *)aDOMElement;
-- (CGFloat)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement;
+- (float)maxScaleForDOMElementHandles:(DOMElement *)aDOMElement;
 - (void)addPluginSelectionHandleWithDOMElement:(DOMElement *)aDomElement
         handlesGroup:(DOMElement *)newSelectionHandlesGroup
-        x:(CGFloat)x y:(CGFloat)y handleName:(NSString *)handleName
+        x:(float)x y:(float)y handleName:(NSString *)handleName
         pluginName:(NSString *)pluginName;
 
 - (NSXMLElement *)xmlElementForMacsvgid:(NSString *)macsvgid;

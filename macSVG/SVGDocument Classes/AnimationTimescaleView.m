@@ -262,7 +262,7 @@
             NSPoint globalLocation = theEvent.locationInWindow;
             NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
             
-            CGFloat newTimeValue = localLocation.x / animationTimelineView.pixelsPerSecond;
+            float newTimeValue = localLocation.x / animationTimelineView.pixelsPerSecond;
             
             if (newTimeValue < 0.0f)
             {

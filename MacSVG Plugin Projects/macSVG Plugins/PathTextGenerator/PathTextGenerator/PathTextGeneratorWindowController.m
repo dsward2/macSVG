@@ -99,8 +99,8 @@
 {
     NSString * inputTextString = inputTextField.stringValue;
     CGFloat fontSize = inputTextField.floatValue;
-    CGFloat originX = originXTextField.floatValue;
-    CGFloat originY = originYTextField.floatValue;
+    float originX = originXTextField.floatValue;
+    float originY = originYTextField.floatValue;
 
     [[NSApplication sharedApplication] stopModalWithCode:NSModalResponseOK];
     
