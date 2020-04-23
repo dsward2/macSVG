@@ -2720,8 +2720,6 @@
 
 - (IBAction)findElement:(id)sender
 {
-    //[svgSearchField becomeFirstResponder];
-    
     [svgSearchField.window makeFirstResponder:svgSearchField];
 }
 
@@ -2731,10 +2729,7 @@
 
 - (IBAction)findNextElement:(id)sender
 {
-    //[svgSearchField becomeFirstResponder];
-
     [svgSearchField.window makeFirstResponder:svgSearchField];
-
 
     NSString * svgSearchText = svgSearchField.stringValue;
     

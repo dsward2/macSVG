@@ -11,7 +11,7 @@
 @class PathElementEditor;
 @class PathSegment;
 
-@interface PathSegmentEditorPopoverViewController : NSViewController
+@interface PathSegmentEditorPopoverViewController : NSViewController <NSPopoverDelegate>
 {
     IBOutlet NSPopover * pathSegmentEditorPopover;
 

@@ -1559,7 +1559,6 @@
         segmentIndex:(NSUInteger)segmentIndex pathHandlesGroup:(DOMElement *)pathHandlesGroup
         pathXMLElement:(NSXMLElement *)pathXMLElement
 {
-
     // path commands M,m
     NSString * xString = pathSegment.xString;
     NSString * yString = pathSegment.yString;
@@ -1708,9 +1707,6 @@
 {
     // path commands L,l
 
-    //NSString * xString = pathSegment.xString;
-    //NSString * yString = pathSegment.yString;
-
     NSString * xString = pathSegment.absoluteXString;
     NSString * yString = pathSegment.absoluteYString;
 
@@ -1763,7 +1759,7 @@
         currentPoint = [self absoluteXYPointAtPathSegmentIndex:(segmentIndex - 1)];
     }
 
-    NSString * xString = pathSegment.xString;
+    NSString * xString = pathSegment.absoluteXString;
     NSString * xPxString = [xString stringByAppendingString:@"px"];
 
     NSString * yPxString = [self allocPxString:currentPoint.y];
@@ -1811,7 +1807,7 @@
 
     NSString * xPxString = [self allocPxString:currentPoint.x];
     
-    NSString * yString = pathSegment.yString;
+    NSString * yString = pathSegment.absoluteYString;
     NSString * yPxString = [yString stringByAppendingString:@"px"];
 
     float scaleForDOMElementHandles = [svgWebKitController maxScaleForDOMElementHandles:pathHandlesGroup];
@@ -4877,34 +4873,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentEllipticalArc:(PathSegment *)pathSegment
 {
-/*
-    NSString * existingXString = pathSegment.xString;     // endpoint x
-    NSString * existingYString = pathSegment.yString;     // endpoint y
-
-    float existingX = existingXString.floatValue;
-    float existingY = existingYString.floatValue;
-
-    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
-    NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
-
-    //NSUInteger pathSegmentCount = [pathSegmentsArray count];
-    
-    if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
-    {
-        float deltaX = transformedCurrentMousePoint.x - existingX;
-        float deltaY = transformedCurrentMousePoint.y - existingY;
-        
-        float newX = existingX + deltaX;
-        float newY = existingY + deltaY;
-
-        NSString * newXString = [self allocFloatString:newX];
-        NSString * newYString = [self allocFloatString:newY];
-
-        pathSegment.xString = newXString;
-        pathSegment.yString = newYString;
-    }
-*/
-
     unichar commandCharacter = pathSegment.pathCommand;
 
     float existingAbsoluteStartX = pathSegment.absoluteStartXFloat;
@@ -5183,30 +5151,30 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     {
         unichar currentSegmentCommandCharacter = currentPathSegment.pathCommand;
 
-        float originalSegmentAbsoluteXFloat = originalPathSegment.absoluteXFloat;
-        float originalSegmentAbsoluteYFloat = originalPathSegment.absoluteYFloat;
+        float originalPathSegmentAbsoluteXFloat = originalPathSegment.absoluteXFloat;
+        float originalPathSegmentAbsoluteYFloat = originalPathSegment.absoluteYFloat;
 
         PathSegment * nextPathSegment =
                 (self.pathSegmentsArray)[(self.pathSegmentIndex + 1)];
 
-        unichar nextSegmentCommandCharacter = nextPathSegment.pathCommand;
+        unichar nextPathSegmentCommandCharacter = nextPathSegment.pathCommand;
 
-        float nextSegmentAbsoluteX = nextPathSegment.absoluteXFloat;
-        float nextSegmentAbsoluteY = nextPathSegment.absoluteYFloat;
+        float nextPathSegmentAbsoluteX = nextPathSegment.absoluteXFloat;
+        float nextPathSegmentAbsoluteY = nextPathSegment.absoluteYFloat;
 
-        float nextSegmentX = nextPathSegment.xFloat;
-        float nextSegmentY = nextPathSegment.yFloat;
+        float nextPathSegmentX = nextPathSegment.xFloat;
+        float nextPathSegmentY = nextPathSegment.yFloat;
 
         NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
-        float deltaX = transformedCurrentMousePoint.x - originalSegmentAbsoluteXFloat;
-        float deltaY = transformedCurrentMousePoint.y - originalSegmentAbsoluteYFloat;
+        float deltaX = transformedCurrentMousePoint.x - originalPathSegmentAbsoluteXFloat;
+        float deltaY = transformedCurrentMousePoint.y - originalPathSegmentAbsoluteYFloat;
 
         if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
         {
-            if ((nextSegmentCommandCharacter >= 'a') && (nextSegmentCommandCharacter <= 'z'))
+            if ((nextPathSegmentCommandCharacter >= 'a') && (nextPathSegmentCommandCharacter <= 'z'))
             {
                 // next path segment is relative to current segment
-                switch (nextSegmentCommandCharacter)
+                switch (nextPathSegmentCommandCharacter)
                 {
                     case 'm':     // moveto
                     case 'l':     // lineto
@@ -5215,45 +5183,42 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     case 't':     // smooth quadratic Bezier curve
                     case 'a':     // elliptical arc
                     {
-                        float newNextSegmentAbsoluteX = nextSegmentAbsoluteX + deltaX;
-                        float newNextSegmentAbsoluteY = nextSegmentAbsoluteY + deltaY;
+                        float newNextPathSegmentAbsoluteX = nextPathSegmentAbsoluteX + deltaX;
+                        float newNextPathSegmentAbsoluteY = nextPathSegmentAbsoluteY + deltaY;
 
-                        nextPathSegment.absoluteXFloat = newNextSegmentAbsoluteX;
-                        nextPathSegment.absoluteYFloat = newNextSegmentAbsoluteY;
+                        nextPathSegment.absoluteXFloat = newNextPathSegmentAbsoluteX;
+                        nextPathSegment.absoluteYFloat = newNextPathSegmentAbsoluteY;
                         
-                        float newNextSegmentX = nextSegmentX - deltaX;
-                        float newNextSegmentY = nextSegmentY - deltaY;
+                        float newNextPathSegmentX = nextPathSegmentX - deltaX;
+                        float newNextPathSegmentY = nextPathSegmentY - deltaY;
 
-                        //NSString * newNextSegmentXString = [self allocFloatString:newNextSegmentX];
-                        //NSString * newNextSegmentYString = [self allocFloatString:newNextSegmentY];
-
-                        nextPathSegment.xFloat = newNextSegmentX;
-                        nextPathSegment.yFloat = newNextSegmentY;
+                        nextPathSegment.xFloat = newNextPathSegmentX;
+                        nextPathSegment.yFloat = newNextPathSegmentY;
 
                         break;
                     }
                     case 'c':     // curveto
                     {
-                        float nextSegmentAbsoluteX1 = nextPathSegment.absoluteX1Float;
-                        float nextSegmentAbsoluteY1 = nextPathSegment.absoluteY1Float;
+                        float nextPathSegmentAbsoluteX1 = nextPathSegment.absoluteX1Float;
+                        float nextPathSegmentAbsoluteY1 = nextPathSegment.absoluteY1Float;
 
-                        float newNextSegmentAbsoluteX1 = nextSegmentAbsoluteX1 + deltaX;
-                        float newNextSegmentAbsoluteY1 = nextSegmentAbsoluteY1 + deltaY;
+                        float newNextPathSegmentAbsoluteX1 = nextPathSegmentAbsoluteX1 + deltaX;
+                        float newNextPathSegmentAbsoluteY1 = nextPathSegmentAbsoluteY1 + deltaY;
 
-                        nextPathSegment.absoluteX1Float = newNextSegmentAbsoluteX1;
-                        nextPathSegment.absoluteY1Float = newNextSegmentAbsoluteY1;
+                        nextPathSegment.absoluteX1Float = newNextPathSegmentAbsoluteX1;
+                        nextPathSegment.absoluteY1Float = newNextPathSegmentAbsoluteY1;
 
-                        float nextSegmentX2 = nextPathSegment.x2Float;
-                        float nextSegmentY2 = nextPathSegment.y2Float;
+                        float nextPathSegmentX2 = nextPathSegment.x2Float;
+                        float nextPathSegmentY2 = nextPathSegment.y2Float;
 
-                        float newNextSegmentX2 = nextSegmentX2 - deltaX;
-                        float newNextSegmentY2 = nextSegmentY2 - deltaY;
+                        float newNextPathSegmentX2 = nextPathSegmentX2 - deltaX;
+                        float newNextPathSegmentY2 = nextPathSegmentY2 - deltaY;
 
-                        nextPathSegment.x2Float = newNextSegmentX2;
-                        nextPathSegment.y2Float = newNextSegmentY2;
+                        nextPathSegment.x2Float = newNextPathSegmentX2;
+                        nextPathSegment.y2Float = newNextPathSegmentY2;
 
-                        float newNextPathSegmentX = nextSegmentX - deltaX;
-                        float newNextPathSegmentY = nextSegmentY - deltaY;
+                        float newNextPathSegmentX = nextPathSegmentX - deltaX;
+                        float newNextPathSegmentY = nextPathSegmentY - deltaY;
                         
                         nextPathSegment.xFloat = newNextPathSegmentX;
                         nextPathSegment.yFloat = newNextPathSegmentY;
@@ -5264,25 +5229,21 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     }
                     case 'h':     // horizontal lineto
                     {
-                        float newNextSegmentAbsoluteX = nextSegmentAbsoluteX + deltaX;
-                        //NSString * newNextSegmentAbsoluteXString = [self allocFloatString:newNextSegmentAbsoluteX];
-                        nextPathSegment.absoluteXFloat = newNextSegmentAbsoluteX;
+                        float newNextPathSegmentAbsoluteX = nextPathSegmentAbsoluteX + deltaX;
+                        nextPathSegment.absoluteXFloat = newNextPathSegmentAbsoluteX;
 
-                        float newNextPathSegmentX = nextSegmentX + deltaX;
-                        //NSString * newNextSegmentXString = [self allocFloatString:newNextSegmentX];
+                        float newNextPathSegmentX = nextPathSegmentX + deltaX;
                         nextPathSegment.xFloat = newNextPathSegmentX;
 
                         break;
                     }
                     case 'v':     // vertical lineto
                     {
-                        float newNextSegmentAbsoluteY = nextSegmentAbsoluteX + deltaY;
-                        //NSString * newNextSegmentAbsoluteYString = [self allocFloatString:newNextSegmentAbsoluteY];
-                        nextPathSegment.absoluteYFloat = newNextSegmentAbsoluteY;
+                        float newNextPathSegmentAbsoluteY = nextPathSegmentAbsoluteX + deltaY;
+                        nextPathSegment.absoluteYFloat = newNextPathSegmentAbsoluteY;
 
-                        float newNextSegmentY = nextSegmentY + deltaY;
-                        //NSString * newNextSegmentYString = [self allocFloatString:newNextSegmentY];
-                        nextPathSegment.yFloat = newNextSegmentY;
+                        float newNextPathSegmentY = nextPathSegmentY + deltaY;
+                        nextPathSegment.yFloat = newNextPathSegmentY;
 
                         break;
                     }
@@ -5297,18 +5258,18 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 // adjust reflected control point in next segment for curve continuity
                 if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
                 {
-                    float currentSegmentAbsoluteX = currentPathSegment.absoluteXFloat;
-                    float currentSegmentAbsoluteY = currentPathSegment.absoluteYFloat;
-                    float currentSegmentAbsoluteX2 = currentPathSegment.absoluteX2Float;
-                    float currentSegmentAbsoluteY2 = currentPathSegment.absoluteY2Float;
+                    float currentPathSegmentAbsoluteX = currentPathSegment.absoluteXFloat;
+                    float currentPathSegmentAbsoluteY = currentPathSegment.absoluteYFloat;
+                    float currentPathSegmentAbsoluteX2 = currentPathSegment.absoluteX2Float;
+                    float currentPathSegmentAbsoluteY2 = currentPathSegment.absoluteY2Float;
                     
-                    float handleDeltaX = currentSegmentAbsoluteX - currentSegmentAbsoluteX2;
-                    float handleDeltaY = currentSegmentAbsoluteY - currentSegmentAbsoluteY2;
+                    float handleDeltaX = currentPathSegmentAbsoluteX - currentPathSegmentAbsoluteX2;
+                    float handleDeltaY = currentPathSegmentAbsoluteY - currentPathSegmentAbsoluteY2;
 
-                    if (nextSegmentCommandCharacter == 'C')
+                    if (nextPathSegmentCommandCharacter == 'C')
                     {
-                        float newAbsoluteX1 = originalSegmentAbsoluteXFloat + handleDeltaX;
-                        float newAbsoluteY1 = originalSegmentAbsoluteYFloat + handleDeltaY;
+                        float newAbsoluteX1 = originalPathSegmentAbsoluteXFloat + handleDeltaX;
+                        float newAbsoluteY1 = originalPathSegmentAbsoluteYFloat + handleDeltaY;
                         
                         nextPathSegment.absoluteX1Float = newAbsoluteX1;
                         nextPathSegment.absoluteY1Float = newAbsoluteY1;
@@ -5319,44 +5280,35 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                 }
                 else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
                 {
-                    float currentSegmentAbsoluteX = currentPathSegment.absoluteXFloat;
-                    float currentSegmentAbsoluteY = currentPathSegment.absoluteYFloat;
-                    float currentSegmentAbsoluteX2 = currentPathSegment.absoluteX2Float;
-                    float currentSegmentAbsoluteY2 = currentPathSegment.absoluteY2Float;
+                    float currentPathSegmentAbsoluteX = currentPathSegment.absoluteXFloat;
+                    float currentPathSegmentAbsoluteY = currentPathSegment.absoluteYFloat;
+                    float currentPathSegmentAbsoluteX2 = currentPathSegment.absoluteX2Float;
+                    float currentPathSegmentAbsoluteY2 = currentPathSegment.absoluteY2Float;
                     
-                    float handleDeltaX = currentSegmentAbsoluteX - currentSegmentAbsoluteX2;
-                    float handleDeltaY = currentSegmentAbsoluteY - currentSegmentAbsoluteY2;
+                    float handleDeltaX = currentPathSegmentAbsoluteX - currentPathSegmentAbsoluteX2;
+                    float handleDeltaY = currentPathSegmentAbsoluteY - currentPathSegmentAbsoluteY2;
 
-                    if (nextSegmentCommandCharacter == 'C')
+                    if (nextPathSegmentCommandCharacter == 'C')
                     {
-                        float newAbsoluteX1 = originalSegmentAbsoluteXFloat + handleDeltaX;
-                        float newAbsoluteY1 = originalSegmentAbsoluteYFloat + handleDeltaY;
+                        float newAbsoluteX1 = originalPathSegmentAbsoluteXFloat + handleDeltaX;
+                        float newAbsoluteY1 = originalPathSegmentAbsoluteYFloat + handleDeltaY;
                         
-                        //NSString * newAbsoluteX1String = [self allocFloatString:newAbsoluteX1];
-                        //NSString * newAbsoluteY1String = [self allocFloatString:newAbsoluteY1];
-
                         nextPathSegment.absoluteX1Float = newAbsoluteX1;
                         nextPathSegment.absoluteY1Float = newAbsoluteY1;
 
                         nextPathSegment.x1Float = newAbsoluteX1;
                         nextPathSegment.y1Float = newAbsoluteY1;
                     }
-                    else if (nextSegmentCommandCharacter == 'c')
+                    else if (nextPathSegmentCommandCharacter == 'c')
                     {
-                        //NSString * nextSegmentAbsoluteX1String = nextSegment.absoluteX1;
-                        //NSString * nextSegmentAbsoluteY1String = nextSegment.absoluteY1;
-                    
-                        float nextSegmentAbsoluteX1 = nextPathSegment.absoluteX1Float;
-                        float nextSegmentAbsoluteY1 = nextPathSegment.absoluteY1Float;
+                        float nextPathSegmentAbsoluteX1 = nextPathSegment.absoluteX1Float;
+                        float nextPathSegmentAbsoluteY1 = nextPathSegment.absoluteY1Float;
 
-                        float newNextSegmentAbsoluteX1 = nextSegmentAbsoluteX1 + deltaX;
-                        float newNextSegmentAbsoluteY1 = nextSegmentAbsoluteY1 + deltaY;
+                        float newNextPathSegmentAbsoluteX1 = nextPathSegmentAbsoluteX1 + deltaX;
+                        float newNextPathSegmentAbsoluteY1 = nextPathSegmentAbsoluteY1 + deltaY;
 
-                        //NSString * newAbsoluteX1String = [self allocFloatString:newNextSegmentAbsoluteX1];
-                        //NSString * newAbsoluteY1String = [self allocFloatString:newNextSegmentAbsoluteY1];
-
-                        nextPathSegment.absoluteX1Float = newNextSegmentAbsoluteX1;
-                        nextPathSegment.absoluteY1Float = newNextSegmentAbsoluteY1;
+                        nextPathSegment.absoluteX1Float = newNextPathSegmentAbsoluteX1;
+                        nextPathSegment.absoluteY1Float = newNextPathSegmentAbsoluteY1;
                     }
                     else
                     {

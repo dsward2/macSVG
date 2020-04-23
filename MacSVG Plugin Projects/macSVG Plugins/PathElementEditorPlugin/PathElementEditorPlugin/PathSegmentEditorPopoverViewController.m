@@ -179,7 +179,6 @@
                     newCommand = 'a';
                 }
                 NSArray * validAttributes = @[@"x", @"y", @"rx", @"ry", @"x-axis-rotation", @"large-arc-flag", @"sweep-flag"];
-                
 
                 [self validateAttributes:validAttributes inPathSegment:newPathSegment];
                 break;
@@ -211,83 +210,200 @@
 
 - (void)validateAttributes:(NSArray *)validAttributesArray inPathSegment:(PathSegment *)pathSegment
 {
-    NSLog(@"FIXME:PathSegmentEditorPopoverViewController validAttributesArray:inPathSegment");
-
-/*
-    NSArray * allKeys = pathSegment.allKeys;
-    
-    for (NSString * aKey in allKeys)
+    BOOL parameterFound = [self isValidAttribute:@"x" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
     {
-        //NSInteger attributeIndex = [validAttributesArray indexOfObjectIdenticalTo:aKey];
-        
-        BOOL commonKeyFound = NO;
-        
-        if ([aKey isEqualToString:@"absoluteStartX"] == YES)
+        if ([pathSegment.xString isEqualToString:@"NAN"] == YES)
         {
-            commonKeyFound = YES;
-        }
-        else if ([aKey isEqualToString:@"absoluteStartY"] == YES)
-        {
-            commonKeyFound = YES;
-        }
-        else if ([aKey isEqualToString:@"absoluteX"] == YES)
-        {
-            commonKeyFound = YES;
-        }
-        else if ([aKey isEqualToString:@"absoluteX"] == YES)
-        {
-            commonKeyFound = YES;
-        }
-        else
-        {
-            for (NSString * aValidAttribute in validAttributesArray)
-            {
-                if ([aKey isEqualToString:aValidAttribute] == YES)
-                {
-                    commonKeyFound = YES;
-                    break;
-                }
-            }
-        }
-        
-        if (commonKeyFound == NO)
-        {
-            [pathSegment removeObjectForKey:aKey];
+            pathSegment.xString = @"0";
         }
     }
+    else
+    {
+        if ([pathSegment.xString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.xString = @"NAN";
+        }
+    }
+    
+    parameterFound = [self isValidAttribute:@"y" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.yString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.yString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.yString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.yString = @"NAN";
+        }
+    }
+
+    parameterFound = [self isValidAttribute:@"x1" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.x1String isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.x1String = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.x1String isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.x1String = @"NAN";
+        }
+    }
+    
+    parameterFound = [self isValidAttribute:@"y1" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.y1String isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.y1String = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.y1String isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.y1String = @"NAN";
+        }
+    }
+    
+    parameterFound = [self isValidAttribute:@"x2" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.x2String isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.x2String = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.x2String isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.x2String = @"NAN";
+        }
+    }
+    
+    parameterFound = [self isValidAttribute:@"y2" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.y2String isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.y2String = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.y2String isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.y2String = @"NAN";
+        }
+    }
+ 
+    parameterFound = [self isValidAttribute:@"x-axis-rotation" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.xAxisRotationString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.xAxisRotationString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.xAxisRotationString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.xAxisRotationString = @"NAN";
+        }
+    }
+
+    parameterFound = [self isValidAttribute:@"large-arc-flag" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.largeArcFlagString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.largeArcFlagString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.largeArcFlagString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.largeArcFlagString = @"NAN";
+        }
+    }
+
+    parameterFound = [self isValidAttribute:@"sweep-flag" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.sweepFlagString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.sweepFlagString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.sweepFlagString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.sweepFlagString = @"NAN";
+        }
+    }
+
+    parameterFound = [self isValidAttribute:@"rx" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.rxString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.rxString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.rxString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.rxString = @"NAN";
+        }
+    }
+    
+    parameterFound = [self isValidAttribute:@"ry" validAttributesArray:validAttributesArray];
+    if (parameterFound == YES)
+    {
+        if ([pathSegment.ryString isEqualToString:@"NAN"] == YES)
+        {
+            pathSegment.ryString = @"0";
+        }
+    }
+    else
+    {
+        if ([pathSegment.ryString isEqualToString:@"NAN"] == NO)
+        {
+            pathSegment.ryString = @"NAN";
+        }
+    }
+}
+
+//==================================================================================
+//	isValidAttribute:validAttributesArray:
+//==================================================================================
+
+- (BOOL)isValidAttribute:(NSString *)aAttribute validAttributesArray:(NSArray *)validAttributesArray
+{
+    BOOL result = NO;
     
     for (NSString * aValidAttribute in validAttributesArray)
     {
-        id existingAttribute = pathSegment[aValidAttribute];
-        
-        if (existingAttribute == NULL)
+        if ([aAttribute isEqualToString:aValidAttribute] == YES)
         {
-            NSString * newAttributeValue = @"0";
-            
-            unichar firstAttributeCharacter = [aValidAttribute characterAtIndex:0];
-            if (firstAttributeCharacter == 'x')
-            {
-                NSString * xString = pathSegment[@"x"];
-                
-                if (xString != NULL)
-                {
-                    newAttributeValue = xString;
-                }
-            }
-            else if (firstAttributeCharacter == 'y')
-            {
-                NSString * yString = pathSegment[@"y"];
-                
-                if (yString != NULL)
-                {
-                    newAttributeValue = yString;
-                }
-            }
-            
-            pathSegment[aValidAttribute] = newAttributeValue;
+            result = YES;
         }
     }
-    */
+    
+    return result;
 }
 
 //==================================================================================
@@ -385,7 +501,7 @@
                     newCommand = 'v';
                 }
                 
-                NSString * yString = textfield2.stringValue;
+                NSString * yString = textfield1.stringValue;
                 
                 newPathSegment.pathCommand = newCommand;
                 newPathSegment.yString = yString;
@@ -547,7 +663,7 @@
         {
             (self.pathElementEditor.pathSegmentsArray)[selectedRow] = newPathSegment;
         }
-        if (self.pathElementEditor.pathSegmentEditorMode == kAddPathSegment)
+        else if (self.pathElementEditor.pathSegmentEditorMode == kAddPathSegment)
         {
             [self.pathElementEditor.pathSegmentsArray insertObject:newPathSegment atIndex:(selectedRow + 1)];
         }
@@ -562,6 +678,11 @@
     }
 
     [pathSegmentEditorPopover performClose:self];
+
+    NSIndexSet * selectedIndexSet = [NSIndexSet indexSetWithIndex:selectedRow];
+    [self.pathElementEditor.pathTableView selectRowIndexes:selectedIndexSet byExtendingSelection:NO];
+    
+    [self.pathElementEditor.pathTableView scrollRowToVisible:selectedRow];
 }
 
 //==================================================================================
@@ -581,24 +702,31 @@
 {
     [label1 setHidden:YES];
     [textfield1 setHidden:YES];
+    textfield1.nextKeyView = NULL;
 
     [label2 setHidden:YES];
     [textfield2 setHidden:YES];
+    textfield2.nextKeyView = NULL;
 
     [label3 setHidden:YES];
     [textfield3 setHidden:YES];
+    textfield3.nextKeyView = NULL;
 
     [label4 setHidden:YES];
     [textfield4 setHidden:YES];
+    textfield4.nextKeyView = NULL;
 
     [label5 setHidden:YES];
     [textfield5 setHidden:YES];
+    textfield5.nextKeyView = NULL;
 
     [label6 setHidden:YES];
     [textfield6 setHidden:YES];
+    textfield6.nextKeyView = NULL;
 
     [label7 setHidden:YES];
     [textfield7 setHidden:YES];
+    textfield7.nextKeyView = NULL;
 }
 
 //==================================================================================
@@ -808,7 +936,7 @@
         case 'a':
         {
             [segmentTypePopUpButton selectItemWithTitle:@"Elliptical Arc"];
-        [self setEllipticalArcFieldData:pathSegment];
+            [self setEllipticalArcFieldData:pathSegment];
             break;
         }
         case 'Z':
@@ -832,6 +960,9 @@
     
     [self showTextFieldIndex:1 label:@"x" value:xString];
     [self showTextFieldIndex:2 label:@"y" value:yString];
+    
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -879,6 +1010,13 @@
     
     [self showTextFieldIndex:5 label:@"x" value:xString];
     [self showTextFieldIndex:6 label:@"y" value:yString];
+
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield3;
+    textfield3.nextKeyView = textfield4;
+    textfield4.nextKeyView = textfield5;
+    textfield5.nextKeyView = textfield6;
+    textfield6.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -898,6 +1036,11 @@
     
     [self showTextFieldIndex:3 label:@"x" value:xString];
     [self showTextFieldIndex:4 label:@"y" value:yString];
+
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield3;
+    textfield3.nextKeyView = textfield4;
+    textfield4.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -917,6 +1060,11 @@
     
     [self showTextFieldIndex:3 label:@"x" value:xString];
     [self showTextFieldIndex:4 label:@"y" value:yString];
+
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield3;
+    textfield3.nextKeyView = textfield4;
+    textfield4.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -930,6 +1078,10 @@
     
     [self showTextFieldIndex:1 label:@"x" value:xString];
     [self showTextFieldIndex:2 label:@"y" value:yString];
+
+
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -953,6 +1105,14 @@
     [self showTextFieldIndex:5 label:@"sweep-flag" value:sweepFlagString];
     [self showTextFieldIndex:6 label:@"x" value:xString];
     [self showTextFieldIndex:7 label:@"y" value:yString];
+
+    textfield1.nextKeyView = textfield2;
+    textfield2.nextKeyView = textfield3;
+    textfield3.nextKeyView = textfield4;
+    textfield4.nextKeyView = textfield5;
+    textfield5.nextKeyView = textfield6;
+    textfield6.nextKeyView = textfield7;
+    textfield7.nextKeyView = textfield1;
 }
 
 //==================================================================================
@@ -999,8 +1159,6 @@
     [self hideAllFields];
     
     [self setPathSegmentData:pathSegment];
-    
-    [textfield1 becomeFirstResponder];
 }
 
 

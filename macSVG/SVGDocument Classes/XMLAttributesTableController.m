@@ -572,7 +572,8 @@ NSComparisonResult nameSort(id attribute1, id attribute2, void *context)
             
             cellTextField.nextKeyView = nextTextField;
 
-            [nextTextField becomeFirstResponder];
+            //[nextTextField becomeFirstResponder];
+            [nextTextField.window makeFirstResponder:nextTextField];
 
             [self.xmlAttributesTableView editColumn:editColumnIndex row:rowIndex withEvent:nil select:YES];
 
