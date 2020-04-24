@@ -712,19 +712,19 @@
 
                     NSUInteger indexOfDestinationElement = 0;
                     
-                    NSMutableArray * childElements = [NSMutableArray array];
+                    NSMutableArray * existingDestinationChildElements = [NSMutableArray array];
                     for (NSXMLNode * childNode in targetNode.children)
                     {
                         if (childNode.kind == NSXMLElementKind)
                         {
-                            [childElements addObject:childNode];
+                            [existingDestinationChildElements addObject:childNode];
                         }
                     }
 
-                    if (childElements.count > 0)
+                    if (existingDestinationChildElements.count > 0)
                     {
                         //indexOfDestinationElement = [targetNode.children indexOfObject:lastSelectedNode];
-                        indexOfDestinationElement = [targetNode.children indexOfObject:childElements.lastObject];
+                        indexOfDestinationElement = [targetNode.children indexOfObject:existingDestinationChildElements.lastObject];
                     }
                     
                     if (indexOfDestinationElement == NSNotFound)
@@ -734,55 +734,23 @@
                     else
                     {
                         // check rules for valid insertion as child elements
-                        BOOL insertChildren = YES;
+                        BOOL insertIntoTargetAsChildElements = NO;  // default to insert after target element
                         if ([self.xmlOutlineController.xmlOutlineView isItemExpanded:targetNode] == YES)
                         {
-                            BOOL checkDTDRules = self.toolSettingsPopoverViewController.validateElementPlacement;
-
-                            CGEventRef event = CGEventCreate(NULL);
-                            CGEventFlags modifiers = CGEventGetFlags(event);
-                            CFRelease(event);
-                            CGEventFlags flags = (kCGEventFlagMaskAlternate);
-                            
-                            if ((modifiers & flags) != 0)
-                            {
-                                checkDTDRules = NO;
-                            }
-                           
-                            if (checkDTDRules == YES)
-                            {
-                                MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
-                                SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
-                                NSDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
-
-                                NSString * proposedParentTagName = targetNode.name;
-                                
-                                for (NSXMLNode * aNode in xmlElementsArray)
-                                {
-                                    NSString * sourceTagName = aNode.name;
-                                    
-                                    NSDictionary * allowedChildrenDictionary = elementContentsDictionary[proposedParentTagName];
-                                    NSDictionary * childTagDictionary = allowedChildrenDictionary[sourceTagName];
-                                    
-                                    if (childTagDictionary == NULL)
-                                    {
-                                        // matching tag not found in allowedChildrenDictionary, disallow child insertion
-                                        insertChildren = NO;
-                                        break;
-                                    }
-                                }
-                            }
+                            // If target element is expanded and is a valid parent container, insertIntoTargetAsChildElements is YES
+                            insertIntoTargetAsChildElements = [self validateProposedParentElement:targetNode forChildren:xmlElementsArray];
                         }
                         
-                        if (insertChildren == NO)
+                        if (insertIntoTargetAsChildElements == NO)
                         {
+                            // insert after target node
                             targetNode = (NSXMLElement *)targetNode.parent;
                             indexOfDestinationElement = [targetNode.children indexOfObject:lastSelectedNode];
-                            childIndex = indexOfDestinationElement + 1;  // insert after target node
+                            childIndex = indexOfDestinationElement + 1;
                         }
                         else
                         {
-                            // target node is expanded, insert child nodes within
+                            // insert nodes as children into expanded target node
                             //childIndex = indexOfSourceElement;
                             childIndex = 0;
                         }
@@ -841,6 +809,52 @@
             }
         }
     }
+}
+
+//==================================================================================
+//	validateProposedParentElement:forChildren:
+//==================================================================================
+
+- (BOOL)validateProposedParentElement:(NSXMLElement *)targetElement forChildren:(NSArray *)xmlElementsArray
+{
+    BOOL result = YES;
+
+    BOOL checkDTDRules = self.toolSettingsPopoverViewController.validateElementPlacement;
+
+    CGEventRef event = CGEventCreate(NULL);
+    CGEventFlags modifiers = CGEventGetFlags(event);
+    CFRelease(event);
+    CGEventFlags flags = (kCGEventFlagMaskAlternate);
+    
+    if ((modifiers & flags) != 0)
+    {
+        checkDTDRules = NO;
+    }
+   
+    if (checkDTDRules == YES)
+    {
+        MacSVGAppDelegate * macSVGAppDelegate = (MacSVGAppDelegate *)NSApp.delegate;
+        SVGDTDData * svgDtdData = macSVGAppDelegate.svgDtdData;
+        NSDictionary * elementContentsDictionary = svgDtdData.elementContentsDictionary;
+
+        NSString * proposedParentTagName = targetElement.name;
+        
+        for (NSXMLNode * aNode in xmlElementsArray)
+        {
+            NSString * sourceTagName = aNode.name;
+            
+            NSDictionary * allowedChildrenDictionary = elementContentsDictionary[proposedParentTagName];
+            NSDictionary * childTagDictionary = allowedChildrenDictionary[sourceTagName];
+            
+            if (childTagDictionary == NULL)
+            {
+                // matching tag not found in allowedChildrenDictionary, disallow child insertion
+                result = NO;
+                break;
+            }
+        }
+    }
+    return result;
 }
 
 //==================================================================================
