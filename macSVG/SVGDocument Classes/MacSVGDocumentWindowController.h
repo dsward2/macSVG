@@ -25,7 +25,7 @@
 @class SVGtoCoreGraphicsConverter;
 @class PathFunctions;
 
-@interface MacSVGDocumentWindowController : NSWindowController <NSSplitViewDelegate, NSMenuDelegate, NSSharingServiceDelegate, NSSharingServicePickerDelegate>
+@interface MacSVGDocumentWindowController : NSWindowController <NSSplitViewDelegate, NSMenuDelegate, NSSharingServiceDelegate, NSSharingServicePickerDelegate, NSMenuItemValidation>
 {
     IBOutlet NSView * infoView;
     IBOutlet NSTextField * selectedElementID;

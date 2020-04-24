@@ -257,58 +257,6 @@
 }
 
 //==================================================================================
-//	outlineView:selectionIndexesForProposedSelection:
-//==================================================================================
-
-- (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
-{
-    // select child nodes with parent node
-    NSMutableIndexSet * modifiedSelectionIndexes = [NSMutableIndexSet indexSet];
-    
-    CGEventRef event = CGEventCreate(NULL);
-    CGEventFlags modifiers = CGEventGetFlags(event);
-    CFRelease(event);
-    //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
-    CGEventFlags flags = (kCGEventFlagMaskAlternate);   // check for option key
-
-    [proposedSelectionIndexes enumerateIndexesUsingBlock:^(NSUInteger indexRow, BOOL *stop) 
-    {
-        [modifiedSelectionIndexes addIndex:indexRow];
-    
-        NSXMLNode * aXMLNode = [self.xmlOutlineView itemAtRow:indexRow];
-
-        if (aXMLNode.kind ==  NSXMLElementKind) 
-        {
-            if ([outlineView isItemExpanded:aXMLNode] == YES)
-            {
-                [self addSelectionIndexesForChildNodes:aXMLNode selectionIndexes:modifiedSelectionIndexes];
-            }
-        }
- 
-        if ((modifiers & flags) == 0)
-        {
-            // option key not pressed
-            if ((aXMLNode.kind ==  NSXMLTextKind) || (aXMLNode.kind ==  NSXMLCommentKind))
-            {
-                // user clicked on row for XML text or comment entity, extend the selection to the parent element
-                NSXMLNode * parentElement = aXMLNode.parent;
-
-                NSInteger parentRow = [self.xmlOutlineView rowForItem:parentElement];
-
-                if (parentRow != -1)
-                {
-                    [modifiedSelectionIndexes addIndex:parentRow];
-                }
-            }
-        }
-    }];
-    
-    //NSLog(@"proposedSelectionIndexes:%@ modifiedSelectionIndexes:%@", proposedSelectionIndexes, modifiedSelectionIndexes);
-
-    return modifiedSelectionIndexes;
-}
-
-//==================================================================================
 //	selectElement
 //==================================================================================
 
@@ -2521,6 +2469,7 @@
     [aDOMElement setAttribute:@"d" value:newDAttributeString];
 }
 
+
 @end
 
 // ================================================================
@@ -2663,13 +2612,13 @@
 
         checkboxButton.refusesFirstResponder = YES;
         [checkboxButton setTarget:self];
-        [checkboxButton setAction:@selector(visibilityCheckboxAction:)];    // FIXME: visibility checkbox not implemented
+        [checkboxButton setAction:@selector(visibilityCheckboxAction:)];
         
         [checkboxButton setIntValue:[resultValue intValue]];
     }
     else if ([tableColumnIdentifier isEqualToString:COLUMNID_IS_LOCKED] == YES)
     {
-        NSButton * checkboxButton = (NSButton *)controlView;
+        NSButton * checkboxButton = (NSButton *)controlView;    // FIXME: item lock checkbox not implemented
         checkboxButton.refusesFirstResponder = YES;
         // object locking is not implemented yet
         //[checkboxButton setTarget:self];
@@ -3048,6 +2997,8 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
+    NSLog(@"outlineView:writeItems:toPasteboard: items %@", items);
+
     //self.draggedNodes = items;
     
     NSMutableArray * newDraggedNodes = [NSMutableArray array];
@@ -3149,7 +3100,57 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     return NO;
 }
 
+//==================================================================================
+//	outlineView:selectionIndexesForProposedSelection:
+//==================================================================================
 
+- (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+{
+    // select child nodes with parent node
+    NSMutableIndexSet * modifiedSelectionIndexes = [NSMutableIndexSet indexSet];
+    
+    CGEventRef event = CGEventCreate(NULL);
+    CGEventFlags modifiers = CGEventGetFlags(event);
+    CFRelease(event);
+    //CGEventFlags flags = (kCGEventFlagMaskShift | kCGEventFlagMaskCommand);
+    CGEventFlags flags = (kCGEventFlagMaskAlternate);   // check for option key
+
+    [proposedSelectionIndexes enumerateIndexesUsingBlock:^(NSUInteger indexRow, BOOL *stop)
+    {
+        [modifiedSelectionIndexes addIndex:indexRow];
+    
+        NSXMLNode * aXMLNode = [self.xmlOutlineView itemAtRow:indexRow];
+
+        if (aXMLNode.kind ==  NSXMLElementKind)
+        {
+            if ([outlineView isItemExpanded:aXMLNode] == YES)
+            {
+                [self addSelectionIndexesForChildNodes:aXMLNode selectionIndexes:modifiedSelectionIndexes];
+            }
+        }
+ 
+        if ((modifiers & flags) == 0)
+        {
+            // option key not pressed
+            if ((aXMLNode.kind ==  NSXMLTextKind) || (aXMLNode.kind ==  NSXMLCommentKind))
+            {
+                // user clicked on row for XML text or comment entity, extend the selection to the parent element
+                NSXMLNode * parentElement = aXMLNode.parent;
+
+                NSInteger parentRow = [self.xmlOutlineView rowForItem:parentElement];
+
+                if (parentRow != -1)
+                {
+                    [modifiedSelectionIndexes addIndex:parentRow];
+                }
+            }
+        }
+    }];
+    
+    //NSLog(@"proposedSelectionIndexes:%@ modifiedSelectionIndexes:%@", proposedSelectionIndexes, modifiedSelectionIndexes);
+
+    return modifiedSelectionIndexes;
+}
 
 //==================================================================================
 //	outlineView:validateDrop:proposedItem:proposedChildIndex:
@@ -3702,7 +3703,9 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
    willBeginAtPoint:(NSPoint)screenPoint
            forItems:(NSArray *)draggedItems
 {
-    draggingOutlineItems = YES;
+   NSLog(@"outlineView:draggingSession:willBeginAtPoint:forItems: - draggedItems %@", draggedItems);
+
+   draggingOutlineItems = YES;
 
     if (self.holdSelectedItems != NULL)
     {
@@ -3720,7 +3723,6 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
         
         self.holdSelectedItems = NULL;
     }
-
 }
 
 //==================================================================================
@@ -4068,8 +4070,49 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
             }
         }
     }
+    
+    [self enableEditMenuItems];
 }
 
+//==================================================================================
+//	enableEditMenuItems
+//==================================================================================
+
+- (void)enableEditMenuItems
+{
+    NSMenu * mainMenu = NSApp.mainMenu;
+
+    NSUInteger editMenuIndex = [mainMenu indexOfItemWithTitle:@"Edit"];
+    NSMenuItem * editMenuItem = [mainMenu itemAtIndex:editMenuIndex];
+    NSMenu * editMenu = editMenuItem.submenu;
+
+    NSArray * selectedItems = [self selectedItems];
+    if (selectedItems.count > 0)
+    {
+        // enable pasteboard functions for selected elements
+        NSMenuItem * cutElementMenuItem = [editMenu itemWithTitle:@"Cut"];
+        cutElementMenuItem.target = self.macSVGDocumentWindowController;
+        cutElementMenuItem.action = @selector(cut:);
+        cutElementMenuItem.enabled = YES;
+
+        NSMenuItem * copyElementMenuItem = [editMenu itemWithTitle:@"Copy"];
+        copyElementMenuItem.target = self.macSVGDocumentWindowController;
+        copyElementMenuItem.action = @selector(copy:);
+        copyElementMenuItem.enabled = YES;
+    }
+    else
+    {
+        NSMenuItem * cutElementMenuItem = [editMenu itemWithTitle:@"Cut"];
+        [cutElementMenuItem setTarget:NULL];
+        [cutElementMenuItem setAction:NULL];
+        cutElementMenuItem.enabled = NO;
+    
+        NSMenuItem * copyElementMenuItem = [editMenu itemWithTitle:@"Copy"];
+        [copyElementMenuItem setTarget:NULL];
+        [copyElementMenuItem setAction:NULL];
+        copyElementMenuItem.enabled = NO;
+    }
+}
 
 //==================================================================================
 //	shouldCollapseAutoExpandedItemsForDeposited:
