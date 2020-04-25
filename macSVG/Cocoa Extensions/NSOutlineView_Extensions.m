@@ -306,7 +306,16 @@
         }
         else
         {
-            [self deselectAll:self];
+            NSPoint globalLocation = theEvent.locationInWindow;
+            NSPoint localLocation = [self convertPoint:globalLocation fromView:nil];
+            NSInteger clickedRow = [self rowAtPoint:localLocation];
+        
+            NSIndexSet * selectedRowIndexes = self.selectedRowIndexes;
+            
+            if ([selectedRowIndexes containsIndex:clickedRow] == NO)
+            {
+                [self deselectAll:self];
+            }
         }
 
         [super mouseDown:theEvent];
