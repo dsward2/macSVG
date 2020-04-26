@@ -589,49 +589,55 @@
 - (IBAction)paste:(id)sender
 {
     MacSVGDocument * macSVGDocument = self.document;
+    XMLOutlineController * xmlOutlineController = self.xmlOutlineController;
+    XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
+    NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
+    NSOperationQueue * mainQueue = [NSOperationQueue mainQueue];
+    
     [macSVGDocument pushUndoRedoDocumentChanges];
 
     NSPasteboard * pasteboard = [NSPasteboard generalPasteboard];
     NSArray * classes = @[[NSString class]];
     NSDictionary * options = @{};
-    NSArray * copiedItems = [pasteboard readObjectsForClasses:classes options:options];
+    NSArray * pasteboardElementItems = [pasteboard readObjectsForClasses:classes options:options];
 
-    if (copiedItems != nil)
+    if (pasteboardElementItems != nil)
     {
         BOOL isKeyWindow = (self.window).keyWindow;
         if (isKeyWindow == YES)
         {
             NSResponder * firstResponder = (self.window).firstResponder;
             
-            if ((firstResponder == self.xmlOutlineController.xmlOutlineView) || (firstResponder == self.svgWebKitController.svgWebView))
+            if (firstResponder == self.svgWebKitController.svgWebView)
             {
-                NSXMLElement * rootElement = [macSVGDocument.svgXmlDocument rootElement];
-
+                [xmlOutlineView.window makeFirstResponder:xmlOutlineView];
+            }
+            
+            if (firstResponder == xmlOutlineView)
+            {
+                // convert pasteboard xml strings to array of NSXMLElements
                 NSMutableArray * xmlElementsArray = [NSMutableArray array];
-                
-                for (id clipboardObject in copiedItems)
+                for (id aPasteboardElementItem in pasteboardElementItems)
                 {
-                    if ([clipboardObject isKindOfClass:[NSString class]] == YES)
+                    if ([aPasteboardElementItem isKindOfClass:[NSString class]] == YES)
                     {
-                        NSString * domString = (NSString *)clipboardObject;
-
+                        NSString * aPasteboardElementString = (NSString *)aPasteboardElementItem;
                         NSError * xmlError = NULL;
-                        
-                        NSXMLElement * aElement = [[NSXMLElement alloc] initWithXMLString:domString error:&xmlError];
-                        
-                        if (xmlError.code == 5)
+                        NSXMLElement * aElement = [[NSXMLElement alloc] initWithXMLString:aPasteboardElementString error:&xmlError];
+                        if (xmlError != NULL)
                         {
-                            // text possibly contains multiple elements, so enclose it in a group
-                            NSString * groupedElementsDOMString = [NSString stringWithFormat:@"<g>%@</g>", domString];
-                            
-                            aElement = [[NSXMLElement alloc] initWithXMLString:groupedElementsDOMString error:&xmlError];
-                            
-                            if (xmlError == NULL)
+                            if (xmlError.code == 5)
                             {
-                                domString = groupedElementsDOMString;
+                                // element text possibly contains multiple elements, so enclose it in a group
+                                NSString * groupedElementsDOMString = [NSString stringWithFormat:@"<g>%@</g>", aPasteboardElementString];
+                                aElement = [[NSXMLElement alloc] initWithXMLString:groupedElementsDOMString error:&xmlError];
+                                if (xmlError == NULL)
+                                {
+                                    aPasteboardElementString = groupedElementsDOMString;
+                                }
                             }
                         }
-                        
                         if (xmlError == NULL)
                         {
                             if (aElement != NULL)
@@ -640,160 +646,126 @@
                             }
                         }
                     }
+                    else if ([aPasteboardElementItem isKindOfClass:[NSXMLElement class]] == YES)
+                    {
+                        [xmlElementsArray addObject:aPasteboardElementItem];
+                    }
                 }
                 
-                XMLOutlineController * xmlOutlineController = self.xmlOutlineController;
-                //XMLOutlineView * xmlOutlineView = xmlOutlineController.xmlOutlineView;
-
+                NSXMLElement * pasteDestinationElement = NULL;
                 NSArray * selectedNodes = [xmlOutlineController selectedNodes];
-                
-                //NSXMLNode * lastSelectedNode = [selectedNodes lastObject];
-                
-                NSXMLElement * targetNode = NULL;
-                
-                NSXMLNode * lastSelectedNode = NULL;
-                
-                NSInteger minNodeDepth = NSIntegerMax;
-                
+                NSUInteger pasteDestinationChildIndex = 0;
                 if (selectedNodes.count == 0)
                 {
-                    // No node was selected, so use root element
-                    selectedNodes = [NSArray arrayWithObject:rootElement];
+                    // No node was selected, so use root element or last child element in root element
+                    pasteDestinationElement = rootElement;
+                    pasteDestinationChildIndex = rootElement.children.count;
+                    [xmlOutlineView expandItem:rootElement expandChildren:NO];
                 }
-
-                for (NSXMLNode * aSelectedNode in selectedNodes)
+                else
                 {
-                    if (aSelectedNode.kind == NSXMLElementKind)
+                    // Find the last valid selected NSXMLElement at minimum depth
+                    NSInteger minNodeDepth = NSIntegerMax;
+                    for (NSXMLNode * aSelectedNode in selectedNodes)
                     {
-                        if (targetNode == NULL)
-                        {
-                            lastSelectedNode = aSelectedNode;
-                            
-                            if ([self.xmlOutlineController.xmlOutlineView isItemExpanded:targetNode] == YES)
-                            {
-                                // target node is expanded, insert child nodes within
-                                targetNode = (id)aSelectedNode;
-                            }
-                            else
-                            {
-                                // target node is not expanded, insert after target node
-                                targetNode = (id)aSelectedNode.parent;
-                            }
-                            if (targetNode == NULL)
-                            {
-                                targetNode = rootElement;
-                            }
-                            minNodeDepth = [self nodeDepth:aSelectedNode];
-                        }
-                        else
+                        if (aSelectedNode.kind == NSXMLElementKind)
                         {
                             NSInteger aNodeDepth = [self nodeDepth:aSelectedNode];
                             if (aNodeDepth <= minNodeDepth)
                             {
-                                lastSelectedNode = aSelectedNode;
-                                targetNode = (id)aSelectedNode.parent;
-                                if (targetNode == NULL)
+                                NSXMLElement * aSelectedElement = (NSXMLElement *)aSelectedNode;
+                                if ([xmlOutlineView isItemExpanded:aSelectedElement] == YES)
                                 {
-                                    targetNode = rootElement;
+                                    // target node is expanded, insert into as a child
+                                    if ([self validateProposedParentElement:aSelectedElement forChildren:xmlElementsArray] == YES)
+                                    {
+                                        pasteDestinationElement = aSelectedElement;
+                                        pasteDestinationChildIndex = aSelectedElement.children.count;
+                                        minNodeDepth = [self nodeDepth:aSelectedElement];
+                                    }
                                 }
-                                minNodeDepth = aNodeDepth;
+                                else
+                                {
+                                    // target node is not expanded, insert after target node
+                                    NSXMLElement * aParentElement = (NSXMLElement *)aSelectedElement.parent;
+                                    if ([self validateProposedParentElement:aParentElement forChildren:xmlElementsArray] == YES)
+                                    {
+                                        pasteDestinationElement = aParentElement;
+                                        pasteDestinationChildIndex = aParentElement.children.count;
+                                        minNodeDepth = [self nodeDepth:aParentElement];
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                
-                NSUInteger childIndex = 0;
-                
-                // Determine the parent to insert into and the child index to insert at.
-                if (lastSelectedNode.kind == NSXMLElementKind)
+
+                if (pasteDestinationElement == NULL)
                 {
-                    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
-                    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-
-                    NSUInteger indexOfDestinationElement = 0;
-                    
-                    NSMutableArray * existingDestinationChildElements = [NSMutableArray array];
-                    for (NSXMLNode * childNode in targetNode.children)
+                    // Try the parent elements of expanded selected elements
+                    NSInteger minNodeDepth = NSIntegerMax;
+                    for (NSXMLNode * aSelectedNode in selectedNodes)
                     {
-                        if (childNode.kind == NSXMLElementKind)
+                        if (aSelectedNode.kind == NSXMLElementKind)
                         {
-                            [existingDestinationChildElements addObject:childNode];
+                            NSInteger aNodeDepth = [self nodeDepth:aSelectedNode];
+                            if (aNodeDepth <= minNodeDepth)
+                            {
+                                NSXMLElement * aSelectedElement = (NSXMLElement *)aSelectedNode.parent;
+                                if ([xmlOutlineView isItemExpanded:aSelectedElement] == YES)
+                                {
+                                    // target node is expanded, insert into as a child
+                                    if ([self validateProposedParentElement:aSelectedElement forChildren:xmlElementsArray] == YES)
+                                    {
+                                        pasteDestinationElement = aSelectedElement;
+                                        pasteDestinationChildIndex = aSelectedElement.children.count;
+                                        minNodeDepth = [self nodeDepth:aSelectedElement];
+                                    }
+                                }
+                            }
                         }
                     }
-
-                    if (existingDestinationChildElements.count > 0)
-                    {
-                        //indexOfDestinationElement = [targetNode.children indexOfObject:lastSelectedNode];
-                        indexOfDestinationElement = [targetNode.children indexOfObject:existingDestinationChildElements.lastObject];
-                    }
-                    
-                    if (indexOfDestinationElement == NSNotFound)
-                    {
-                        childIndex = targetNode.children.count; // insert after last child node
-                    }
-                    else
-                    {
-                        // check rules for valid insertion as child elements
-                        BOOL insertIntoTargetAsChildElements = NO;  // default to insert after target element
-                        if ([self.xmlOutlineController.xmlOutlineView isItemExpanded:targetNode] == YES)
-                        {
-                            // If target element is expanded and is a valid parent container, insertIntoTargetAsChildElements is YES
-                            insertIntoTargetAsChildElements = [self validateProposedParentElement:targetNode forChildren:xmlElementsArray];
-                        }
-                        
-                        if (insertIntoTargetAsChildElements == NO)
-                        {
-                            // insert after target node
-                            targetNode = (NSXMLElement *)targetNode.parent;
-                            indexOfDestinationElement = [targetNode.children indexOfObject:lastSelectedNode];
-                            childIndex = indexOfDestinationElement + 1;
-                        }
-                        else
-                        {
-                            // insert nodes as children into expanded target node
-                            //childIndex = indexOfSourceElement;
-                            childIndex = 0;
-                        }
-                    }
-                    
-                    NSMutableArray * newNodesArray = [NSMutableArray array];
-                    
-                    for (NSXMLElement * sourceXMLElement in xmlElementsArray)
-                    {
-                        NSString * tagName = sourceXMLElement.name;
-                        
-                        NSXMLElement * newNode = [[NSXMLElement alloc] initWithName:tagName];
-                        
-                        NSMutableArray * pendingIDs = [NSMutableArray array];
-                        
-                        [macSVGDocument deepCopyElement:sourceXMLElement destinationElement:newNode pendingIDsArray:pendingIDs];
-
-                        [targetNode insertChild:newNode atIndex:childIndex++];
-                        
-                        [newNodesArray addObject:newNode];
-                    }
-                    
-
-                    self.svgLoadFinishedObserver = [notificationCenter addObserverForName:@"SVGWebViewMainFrameDidFinishLoad" object:nil
-                            queue:mainQueue usingBlock:^(NSNotification *note)
-                    {
-                        NSNotificationCenter * notificationCenter2 = [NSNotificationCenter defaultCenter];
-                        [notificationCenter2 removeObserver:self.svgLoadFinishedObserver];
-                        self.svgLoadFinishedObserver = NULL;
-                        
-                        // Make sure the target is expanded
-                        //[xmlOutlineView expandItem:targetNode expandChildren:NO];
-                        [self revealElementInXMLOutline:targetNode];
-                        
-                        // Select new items.
-                        [self.svgXMLDOMSelectionManager setSelectedXMLElements:newNodesArray];
-                        
-                        
-                        [self updateXMLOutlineViewSelections];
-                    }];
-
-                    [self reloadAllViews];
                 }
+
+                if (pasteDestinationElement == NULL)
+                {
+                    // A valid destination was not found, so use root element
+                    NSBeep();
+                    pasteDestinationElement = rootElement;
+                    pasteDestinationChildIndex = rootElement.children.count;
+                    [xmlOutlineView expandItem:rootElement expandChildren:NO];
+                }
+                
+                NSMutableArray * newNodesArray = [NSMutableArray array];
+                
+                for (NSXMLElement * sourceXMLElement in xmlElementsArray)
+                {
+                    NSString * tagName = sourceXMLElement.name;
+                    NSXMLElement * newNode = [[NSXMLElement alloc] initWithName:tagName];
+                    NSMutableArray * pendingIDs = [NSMutableArray array];
+                    [macSVGDocument deepCopyElement:sourceXMLElement destinationElement:newNode pendingIDsArray:pendingIDs];
+                    [pasteDestinationElement insertChild:newNode atIndex:pasteDestinationChildIndex++];
+                    [newNodesArray addObject:newNode];
+                }
+
+                self.svgLoadFinishedObserver = [notificationCenter addObserverForName:@"SVGWebViewMainFrameDidFinishLoad"
+                        object:nil queue:mainQueue usingBlock:^(NSNotification *note)
+                {
+                    NSNotificationCenter * notificationCenter2 = [NSNotificationCenter defaultCenter];
+                    [notificationCenter2 removeObserver:self.svgLoadFinishedObserver];
+                    self.svgLoadFinishedObserver = NULL;
+                    
+                    // Make sure the target is expanded
+                    //[xmlOutlineView expandItem:targetNode expandChildren:NO];
+                    [self revealElementInXMLOutline:pasteDestinationElement];
+                    
+                    // Select new items.
+                    [self.svgXMLDOMSelectionManager setSelectedXMLElements:newNodesArray];
+                    
+                    [self updateXMLOutlineViewSelections];
+                }];
+
+                [self reloadAllViews];
             }
             else
             {
