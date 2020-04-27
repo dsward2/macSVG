@@ -601,7 +601,11 @@
 {
     NSInteger result = 0;
 
-    if (comboBox == attributeNameComboBox)
+    if (comboBox == repeatCountComboBox)
+    {
+        result = 3;
+    }
+    else if (comboBox == attributeNameComboBox)
     {
         NSArray * attributeNamesArray = [self filteredParentAttributeNames];
         

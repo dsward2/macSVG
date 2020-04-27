@@ -84,6 +84,9 @@
 - (void)expandAllNodes;
 - (void)expandElementInOutline:(NSXMLElement *)aElement;
 
+- (void)addSelectionIndexesForChildNodes:(NSXMLNode *)parentNode
+        selectionIndexes:(NSMutableIndexSet *)selectionIndexes;
+
 - (IBAction) applyEditXMLText:(id)sender;
 - (IBAction) cancelEditXMLText:(id)sender;
 

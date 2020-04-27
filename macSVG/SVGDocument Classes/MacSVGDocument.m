@@ -2101,7 +2101,17 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         if (xmlString == nil) 
         {
             // Try a URL -- it is an array of URLs, so we just grab one.
-            NSString * urlString = [[draggingPasteboard propertyListForType:NSPasteboardTypeURL] lastObject];
+            NSString * urlString = NULL;
+            id propertyList = [draggingPasteboard propertyListForType:NSPasteboardTypeURL];
+            if ([propertyList isKindOfClass:[NSString class]] == YES)
+            {
+                urlString = propertyList;
+            }
+            else if ([propertyList isKindOfClass:[NSArray class]] == YES)
+            {
+                NSArray * propertyListArray = propertyList;
+                urlString = [propertyListArray lastObject];
+            }
             
             if (urlString.length > 4) 
             {
@@ -2125,6 +2135,10 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                                 xmlString = [svgString substringFromIndex:svgStartRange.location];
                                 pasteboardType = NSPasteboardTypeURL;
                             }
+                        }
+                        else
+                        {
+                            [self showErrorMessage:@"The file URL operation failed." error:svgError];
                         }
                     }
                 }
@@ -2156,6 +2170,10 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                             //pasteboardType = NSFilenamesPboardType;
                             pasteboardType = NSPasteboardTypeFileURL;
                         }
+                    }
+                    else
+                    {
+                        [self showErrorMessage:@"The named file operation failed." error:svgError];
                     }
                 }
             }
@@ -2193,6 +2211,10 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
                                 {
                                     xmlString = [svgString substringFromIndex:svgStartRange.location];
                                 }
+                            }
+                            else
+                            {
+                                [self showErrorMessage:@"The TIFF file operation failed." error:svgError];
                             }
                         }
                     }
@@ -2387,30 +2409,37 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
             
             NSXMLDocument * tempDocument = [[NSXMLDocument alloc] initWithXMLString:xmlDocString options:NSXMLNodePreserveCDATA error:&docError];
             
-            NSXMLElement * rootElement = [tempDocument rootElement];
-            
-            NSMutableArray * newSourceNodes = [NSMutableArray array];
-            
-            NSArray * rootChildren = [rootElement.children copy];
-            
-            // retrieve the dragged nodes
-            for (NSXMLElement * newNode in rootChildren)
+            if (docError == NULL)
             {
-                [newNode detach];
+                NSXMLElement * rootElement = [tempDocument rootElement];
                 
-                if (newNode != NULL)
+                NSMutableArray * newSourceNodes = [NSMutableArray array];
+                
+                NSArray * rootChildren = [rootElement.children copy];
+                
+                // retrieve the dragged nodes
+                for (NSXMLElement * newNode in rootChildren)
                 {
-                    [self assignNewMacsvgidsForNode:newNode];
+                    [newNode detach];
                     
-                    [self assignElementIDIfUnassigned:newNode];
-                            
-                    // Finally, add it to the array of dragged items to insert
-                    //sourceNodes = @[newNode];
-                    [newSourceNodes addObject:newNode];
+                    if (newNode != NULL)
+                    {
+                        [self assignNewMacsvgidsForNode:newNode];
+                        
+                        [self assignElementIDIfUnassigned:newNode];
+                                
+                        // Finally, add it to the array of dragged items to insert
+                        //sourceNodes = @[newNode];
+                        [newSourceNodes addObject:newNode];
+                    }
                 }
+                
+                sourceNodes = newSourceNodes;
             }
-            
-            sourceNodes = newSourceNodes;
+            else
+            {
+                [self showErrorMessage:@"The drop operation failed" error:docError];
+            }
         }
     }
     
@@ -2488,7 +2517,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
         }
     }
 
-
+    [xmlOutlineView deselectAll:self];
     
     [self.macSVGDocumentWindowController reloadAllViews];
     
@@ -2510,15 +2539,69 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     for (NSXMLNode * aNode in sourceNodes) 
     {
         //[xmlOutlineView expandItem:aNode expandChildren:YES];
-        [xmlOutlineView expandItem:aNode];
+        [xmlOutlineView expandItem:aNode.parent];
     }
     
     // Select target item
-    NSArray * newSelectedItems = @[targetNode];
-    [xmlOutlineView setSelectedItems:newSelectedItems];
-    
+    //NSArray * newSelectedItems = @[targetNode];
+    //[xmlOutlineView setSelectedItems:newSelectedItems];
+
+
+    NSMutableIndexSet * proposedSelectionIndexes = [NSMutableIndexSet indexSet];
+    for (NSXMLNode * aNode in sourceNodes)
+    {
+        NSInteger rowIndex = [xmlOutlineView rowForItem:aNode];
+        [proposedSelectionIndexes addIndex:rowIndex];
+        [xmlOutlineController addSelectionIndexesForChildNodes:aNode
+                selectionIndexes:proposedSelectionIndexes];
+
+    }
+    [xmlOutlineView selectRowIndexes:proposedSelectionIndexes byExtendingSelection:YES];
+        
     // Return YES to indicate we were successful with the drop. Otherwise, it would slide back the drag image.
     return YES;
+}
+
+// ================================================================
+
+-(void)showErrorMessage:(NSString *)errorMessageString error:(NSError *)errorObject
+{
+    NSLog(@"%@ %@", errorMessageString, errorObject);
+
+    NSMutableString * errorString = [errorObject.localizedDescription mutableCopy];
+    
+    NSDictionary * userInfo = errorObject.userInfo;
+    if (userInfo != NULL)
+    {
+        if ([userInfo isKindOfClass:[NSDictionary class]] == YES)
+        {
+            NSError * underlyingError = [userInfo objectForKey:@"NSUnderlyingError"];
+            
+            if (underlyingError != NULL)
+            {
+                [errorString appendFormat:@"\n\n%@", underlyingError.localizedDescription];
+                
+                NSDictionary * underlyingUserInfo = underlyingError.userInfo;
+                if ([underlyingUserInfo isKindOfClass:[NSDictionary class]] == YES)
+                {
+                    NSString * failingURLString = [underlyingUserInfo objectForKey:@"NSErrorFailingURLStringKey"];
+                    if (failingURLString != NULL)
+                    {
+                        [errorString appendFormat:@"\n\nFailing URL: %@", failingURLString];
+                    }
+                }
+            }
+        }
+    }
+                                
+    NSString * informativeText = [NSString stringWithFormat:@"Error: %@", errorString];
+
+    NSAlert * errorAlert = [[NSAlert alloc] init];
+    errorAlert.messageText = @"The file operation failed.";
+    [errorAlert addButtonWithTitle:@"OK"];
+    errorAlert.informativeText = informativeText;
+        
+    [errorAlert runModal];
 }
 
 // ================================================================

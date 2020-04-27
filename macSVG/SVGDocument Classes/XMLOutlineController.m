@@ -2818,6 +2818,7 @@
 {
     NSInteger selectedRow = self.xmlOutlineView.selectedRow;
 
+    /*
     NSArray * selectedItems = [self.xmlOutlineView selectedItemsFlat];
     if (selectedItems.count > 0)
     {
@@ -2825,6 +2826,7 @@
         
         selectedRow = [self.xmlOutlineView rowForItem:firstSelectedItem];
     }
+    */
 
     [self.xmlOutlineView enumerateAvailableRowViewsUsingBlock:^(NSTableRowView *rowView, NSInteger row){
     
@@ -3782,6 +3784,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     
     acceptingDrop = NO;
     
+    /*
     NSMutableIndexSet * reselectIndexSet = [NSMutableIndexSet indexSet];
     for (NSXMLNode * aXMLNode in macSVGDocument.insertedXMLNodes)
     {
@@ -3793,6 +3796,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
     }
     [self.macSVGDocumentWindowController.xmlOutlineController.xmlOutlineView
             selectRowIndexes:reselectIndexSet byExtendingSelection:NO];
+    */
     
     macSVGDocument.insertedXMLNodes = NULL;
     

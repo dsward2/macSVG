@@ -638,12 +638,6 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="CBm-vG-WOY"/>
-                            <menuItem title="OpenClipArt.org Website" id="I0H-hL-cvl">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="launchWebBrowserDocument:" target="530" id="TgQ-Oc-TYf"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Clker.com Website" id="kIU-Xm-s1g">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

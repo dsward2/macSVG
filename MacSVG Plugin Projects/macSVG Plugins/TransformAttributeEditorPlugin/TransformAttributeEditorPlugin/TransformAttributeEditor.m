@@ -1039,6 +1039,30 @@ float getAngleABC( NSPoint a, NSPoint b, NSPoint c )
         {
             xString = selectedTransformDictionary[@"x"];
             yString = selectedTransformDictionary[@"y"];
+            
+            if (xString == NULL)
+            {
+                if (yString != NULL)
+                {
+                    xString = [yString copy];
+                }
+                else
+                {
+                    xString = @"1";
+                }
+            }
+            
+            if (yString == NULL)
+            {
+                if (xString != NULL)
+                {
+                    yString = [xString copy];
+                }
+                else
+                {
+                    yString = @"1";
+                }
+            }
         }
         else
         {
