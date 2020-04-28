@@ -255,7 +255,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 //	stringValueForGradientsColumn:rowIndex:
 //==================================================================================
 
-- (NSString *)stringValueForGradientsColumn:(NSTableColumn *)aTableColumn rowIndex:(NSInteger)rowIndex
+- (NSString *)stringValueForGradientsTableColumn:(NSTableColumn *)aTableColumn rowIndex:(NSInteger)rowIndex
 {
     NSString * result = @"Missing Result";
 
@@ -281,6 +281,69 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     return result;
 }
 
+//==================================================================================
+//	stringValueForColorStopsTableColumn:rowIndex:
+//==================================================================================
+
+- (NSString *)stringValueForColorStopsTableColumn:(NSTableColumn *)aTableColumn rowIndex:(NSInteger)rowIndex
+{
+    NSString * result = @"Missing Result";
+
+    if ((self.colorStopsArray).count > 0)
+    {
+        NSXMLElement * colorStopElement = (self.colorStopsArray)[rowIndex];
+
+        NSString * tableColumnTitle= aTableColumn.identifier;
+        
+        if ([tableColumnTitle isEqualToString:@"stopIndex"] == YES)
+        {
+            result = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
+        }
+        else if ([tableColumnTitle isEqualToString:@"stopID"] == YES)
+        {
+            NSXMLNode * colorStopElementIDNode = [colorStopElement attributeForName:@"id"];
+            NSString * colorStopElementIDString = colorStopElementIDNode.stringValue;
+            if (colorStopElementIDString == NULL)
+            {
+                colorStopElementIDString = @"";
+            }
+            result = colorStopElementIDString;
+        }
+        else if ([tableColumnTitle isEqualToString:@"stopOffset"] == YES)
+        {
+            NSXMLNode * colorStopElementOffsetNode = [colorStopElement attributeForName:@"offset"];
+            NSString * colorStopElementOffsetString = colorStopElementOffsetNode.stringValue;
+            if (colorStopElementOffsetString == NULL)
+            {
+                colorStopElementOffsetString = @"";
+            }
+            result = colorStopElementOffsetString;
+        }
+        else if ([tableColumnTitle isEqualToString:@"stopColor"] == YES)
+        {
+            NSXMLNode * colorStopElementColorNode = [colorStopElement attributeForName:@"stop-color"];
+            NSString * colorStopElementColorString = colorStopElementColorNode.stringValue;
+            if (colorStopElementColorString == NULL)
+            {
+                colorStopElementColorString = @"";
+            }
+            result = colorStopElementColorString;
+        }
+        else if ([tableColumnTitle isEqualToString:@"stopOpacity"] == YES)
+        {
+            NSXMLNode * colorStopElementOpacityNode = [colorStopElement attributeForName:@"stop-opacity"];
+            NSString * colorStopElementOpacityString = colorStopElementOpacityNode.stringValue;
+            if (colorStopElementOpacityString == NULL)
+            {
+                colorStopElementOpacityString = @"";
+            }
+            result = colorStopElementOpacityString;
+        }
+    }
+    
+    return result;
+}
+
 
 //==================================================================================
 //	tableView:objectValueForTableColumn:row:
@@ -292,11 +355,11 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     
     if (aTableView == gradientElementsTableView)
     {
-        result = [self stringValueForGradientsColumn:aTableColumn rowIndex:rowIndex];
+        result = [self stringValueForGradientsTableColumn:aTableColumn rowIndex:rowIndex];
     }
     else if (aTableView == colorStopElementsTableView)
     {
-        result = NULL;
+        result = [self stringValueForColorStopsTableColumn:aTableColumn rowIndex:rowIndex];
     }
     
     return result;
@@ -308,7 +371,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
 - (NSImage *)makeColorSwatchImage:(NSString *)colorString
 {
-    NSSize imageSize = NSMakeSize(17, 17);
+    NSSize imageSize = NSMakeSize(58, 17);
     NSImage * colorSwatchImage = [[NSImage alloc] initWithSize:imageSize];
 
     float redFloat = 0.0f;
@@ -455,9 +518,14 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     NSColor * swatchColor = [NSColor colorWithCalibratedRed:redFloat green:greenFloat blue:blueFloat alpha:1.0f];
     [swatchColor set];
     
-    NSRect imageRect = NSMakeRect(0, 0, 17, 17);
+    NSRect imageRect = NSMakeRect(0, 0, 58, 17);
 
     NSRectFill(imageRect);
+    
+    NSColor * borderColor = [NSColor blackColor];
+    [borderColor set];
+    [NSBezierPath strokeRect:imageRect];
+    
     [colorSwatchImage unlockFocus];
     
     return colorSwatchImage;
@@ -479,7 +547,6 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         
         if ([tableColumnIdentifier isEqualToString:@"stopIndex"] == YES)
         {
-            //NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
             NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSString * rowIndexString = [NSString stringWithFormat:@"%ld", (rowIndex + 1)];
@@ -490,30 +557,66 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
         }
         else if ([tableColumnIdentifier isEqualToString:@"stopID"] == YES)
         {
-            //NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
             NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
 
             NSXMLNode * colorStopIDNode = [colorStopElement attributeForName:@"id"];
             NSString * colorStopIDString = colorStopIDNode.stringValue;
             
+            cellView.textField.stringValue = colorStopIDString;
+            
+            resultView = cellView;
+        }
+        else if ([tableColumnIdentifier isEqualToString:@"stopOffset"] == YES)
+        {
+            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
+
             NSXMLNode * offsetNode = [colorStopElement attributeForName:@"offset"];
             NSString * offsetString = offsetNode.stringValue;
+
+            if (offsetString == NULL)
+            {
+                offsetString = @"0%";
+            }
+
+            cellView.textField.stringValue = offsetString;
             
-            NSString * cellTextString = [NSString stringWithFormat:@"%@ - %@", offsetString, colorStopIDString];
-            
+            resultView = cellView;
+        }
+        else if ([tableColumnIdentifier isEqualToString:@"stopColor"] == YES)
+        {
+            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
+
             NSXMLNode * stopColorNode = [colorStopElement attributeForName:@"stop-color"];
             NSString * stopColorString = stopColorNode.stringValue;
-            
+
+            if (stopColorString == NULL)
+            {
+                stopColorString = @"0%";
+            }
+
             NSImage * colorImage = [self makeColorSwatchImage:stopColorString];
-            
-            cellView.textField.stringValue = cellTextString;
             cellView.imageView.objectValue = colorImage;
             
             resultView = cellView;
         }
+        else if ([tableColumnIdentifier isEqualToString:@"stopOpacity"] == YES)
+        {
+            NSTableCellView * cellView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
+
+            NSXMLNode * opacityNode = [colorStopElement attributeForName:@"stop-opacity"];
+            NSString * opacityString = opacityNode.stringValue;
+            
+            if (opacityString == NULL)
+            {
+                opacityString = @"";
+            }
+
+            cellView.textField.stringValue = opacityString;
+
+            resultView = cellView;
+        }
         else
         {
-            //resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:self];
             resultView = [colorStopElementsTableView makeViewWithIdentifier:tableColumnIdentifier owner:NULL];
         }
     }
@@ -545,6 +648,11 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             if (gradientIDNode != NULL)
             {
                 gradientIDString = gradientIDNode.stringValue;
+            }
+            else
+            {
+                // gradient id missing
+                NSLog(@"gradient id missing");
             }
             
             cellView.textField.stringValue = gradientIDString;
@@ -1036,12 +1144,17 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             gradientTypeTextField.stringValue = elementName;
             
             NSString * idString = gradientIDTextField.stringValue;
+            if (idString.length == 0)
+            {
+                NSMutableArray * pendingIDs = [NSMutableArray array];
+                idString = [colorAttributeEditor.macSVGPluginCallbacks
+                        uniqueIDForElementTagName:gradientElement.name pendingIDs:pendingIDs];
+            }
             NSXMLNode * idNode = [gradientElement attributeForName:@"id"];
             if (idNode == NULL)
             {
                 idNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                 idNode.name = @"id";
-                idNode.stringValue = @"";
                 [gradientElement addAttribute:idNode];
             }
             idNode.stringValue = idString;
@@ -1054,7 +1167,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     cxNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     cxNode.name = @"cx";
-                    cxNode.stringValue = @"";
+                    cxString = @"";
                     [gradientElement addAttribute:cxNode];
                 }
                 cxNode.stringValue = cxString;
@@ -1065,7 +1178,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     cyNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     cyNode.name = @"cy";
-                    cyNode.stringValue = @"";
+                    cyString = @"";
                     [gradientElement addAttribute:cyNode];
                 }
                 cyNode.stringValue = cyString;
@@ -1076,7 +1189,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     fxNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     fxNode.name = @"fx";
-                    fxNode.stringValue = @"";
+                    fxString = @"";
                     [gradientElement addAttribute:fxNode];
                 }
                 fxNode.stringValue = fxString;
@@ -1087,7 +1200,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     fyNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     fyNode.name = @"fy";
-                    fyNode.stringValue = @"";
+                    fyString = @"";
                     [gradientElement addAttribute:fyNode];
                 }
                 fyNode.stringValue = fyString;
@@ -1098,7 +1211,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     rNode = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     rNode.name = @"r";
-                    rNode.stringValue = @"";
+                    rString = @"";
                     [gradientElement addAttribute:rNode];
                 }
                 rNode.stringValue = rString;
@@ -1111,7 +1224,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     x1Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     x1Node.name = @"x1";
-                    x1Node.stringValue = @"";
+                    x1String = @"";
                     [gradientElement addAttribute:x1Node];
                 }
                 x1Node.stringValue = x1String;
@@ -1122,7 +1235,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     y1Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     y1Node.name = @"y1";
-                    y1Node.stringValue = @"";
+                    y1String = @"";
                     [gradientElement addAttribute:y1Node];
                 }
                 y1Node.stringValue = y1String;
@@ -1133,7 +1246,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     x2Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     x2Node.name = @"x2";
-                    x2Node.stringValue = @"";
+                    x2String = @"";
                     [gradientElement addAttribute:x2Node];
                 }
                 x2Node.stringValue = x2String;
@@ -1144,7 +1257,7 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
                 {
                     y2Node = [[NSXMLNode alloc] initWithKind:NSXMLAttributeKind];
                     y2Node.name = @"y2";
-                    y2Node.stringValue = @"";
+                    y2String = @"";
                     [gradientElement addAttribute:y2Node];
                 }
                 y2Node.stringValue = y2String;
@@ -1287,12 +1400,18 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 {
     if (aTableView == gradientElementsTableView)
     {
-        [self updateGradientElement];
-        [self updateColorStopElement];
+        if (self.gradientsArray.count > 0)
+        {
+            [self updateGradientElement];
+            [self updateColorStopElement];
+        }
     }
     else if (aTableView == colorStopElementsTableView)
     {
-        [self updateColorStopElement];
+        if (self.gradientsArray.count > 0)
+        {
+            [self updateColorStopElement];
+        }
     }
     return YES;
 }
@@ -1373,6 +1492,9 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
 
  -(void)loadGradientsData
 {
+    [self.gradientsArray removeAllObjects];
+    [gradientElementsTableView deselectAll:self];
+
     gradientTypeTextField.stringValue = @"";
     gradientIDTextField.stringValue = @"";
     gradientX1TextField.stringValue = @"";
@@ -1386,14 +1508,12 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
     colorStopOpacityTextField.stringValue = @"";
     colorStopColorWell.color = [NSColor whiteColor];
 
-    [self.gradientsArray removeAllObjects];
+    
     NSArray * gradientElementsArray = [self findAllGradientElements];
     [self.gradientsArray addObjectsFromArray:gradientElementsArray];
 
-    [gradientElementsTableView reloadData];
-
     NSXMLElement * targetElement = colorAttributeEditor.pluginTargetXMLElement;
-    NSString * activeAttributeName = colorAttributeEditor.activeAttributeName;
+    NSString * activeAttributeName = colorAttributeEditor.activeAttributeName;      // typically fill or stroke
     
     NSXMLNode * attributeNode = [targetElement attributeForName:activeAttributeName];
     if (attributeNode != NULL)
@@ -1452,13 +1572,15 @@ NSComparisonResult colorStopsSort(id element1, id element2, void *context);
             
             if (validGradientIDFound == YES)
             {
+                //[self loadColorStopsData];
+
+                [gradientElementsTableView reloadData];
                 NSIndexSet * indexSet = [NSIndexSet indexSetWithIndex:foundGradientIndex];
                 [gradientElementsTableView selectRowIndexes:indexSet byExtendingSelection:NO];
             }
         }
     }
 
-    [self loadColorStopsData];
 }
 
 //==================================================================================
