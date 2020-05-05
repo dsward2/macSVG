@@ -144,7 +144,7 @@
 
 - (void)unloadPluginView
 {
-
+    [super unloadPluginView];
 }
 
 //==================================================================================
@@ -163,6 +163,35 @@
     if (updatePathLength == YES)
     {
         [self updateTotalLengthForPathElement:xmlElement];
+    }
+}
+
+//==================================================================================
+//	loadPluginViewInScrollView:
+//==================================================================================
+
+- (BOOL)loadPluginViewInScrollView:(NSScrollView *)scrollView
+{
+    BOOL result = [super loadPluginViewInScrollView:scrollView];
+
+    return result;
+}
+
+//==================================================================================
+//	svgWebViewReloaded:
+//==================================================================================
+
+- (void) svgWebViewReloaded:(NSNotification *)aNotification
+{
+    // After Undo/Redo, the path element should be re-selected
+    if ([self.svgXmlOutlineView selectedRow] == -1)
+    {
+        NSXMLElement * selectedElement = [self.macSVGPluginCallbacks xmlElementForMacsvgid:self.selectedElementMacsvgid];
+        
+        if (selectedElement != NULL)
+        {
+            [self.macSVGPluginCallbacks selectXMLElement:selectedElement];
+        }
     }
 }
 
@@ -367,8 +396,11 @@
     
     if (pathSegmentsArrayCount > 0)
     {
-        PathSegment * closePathSegment = [[pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1] mutableCopy];
-        [pathSegmentsArray addObject:closePathSegment];   // add a second the Z or z segment, the final one will be removed
+        
+        PathSegment * closePathSegment = [pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1];
+        PathSegment * newClosePathSegment = [[PathSegment alloc] init];
+        [newClosePathSegment copyValuesFromPathSegment:closePathSegment];
+        [pathSegmentsArray addObject:newClosePathSegment];   // add a second the Z or z segment, the final one will be removed
 
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
@@ -481,6 +513,10 @@
 
 - (void) loadSettingsForElement
 {
+    NSXMLNode * macsvgidNode = [self.pluginTargetXMLElement attributeForName:@"macsvgid"];
+    NSString * selectedElementMacsvgid = macsvgidNode.stringValue;
+    self.selectedElementMacsvgid = selectedElementMacsvgid;
+
     NSString * selectedPathMode = (self.macSVGPluginCallbacks).selectedPathMode;
     
     BOOL useRelativePathCoordinates = (self.macSVGPluginCallbacks).useRelativePathCoordinates;
@@ -576,6 +612,11 @@
             existingValue:existingValue];
             
     [self loadSettingsForElement];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(svgWebViewReloaded:)
+            name:@"SVGWebViewReloaded"
+            object:nil];
 
     return result;
 }
@@ -591,8 +632,24 @@
             domElement:newPluginTargetDOMElement];
 
     [self loadSettingsForElement];
-            
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(svgWebViewReloaded:)
+            name:@"SVGWebViewReloaded"
+            object:nil];
+
     return result;
+}
+
+//==================================================================================
+//	endEdi:
+//==================================================================================
+
+- (void)endEdit
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SVGWebViewReloaded" object:NULL];
+    
+    [super endEdit];
 }
 
 //==================================================================================
@@ -1029,10 +1086,31 @@
     self.pathSegmentEditorMode = kAddPathSegment;
 
     NSButton *targetButton = (NSButton *)sender;
+    
+    NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
+    
+    if (pathSegmentsArray.count == 0)
+    {
+        PathSegment * newPathSegment = [[PathSegment alloc] init];
+        newPathSegment.pathCommand = 'M';
+        newPathSegment.xFloat = 0;
+        newPathSegment.yFloat = 0;
+        newPathSegment.absoluteStartXFloat = 0;
+        newPathSegment.absoluteStartYFloat = 0;
+        newPathSegment.xFloat = 0;
+        newPathSegment.yFloat = 0;
+        
+        [pathSegmentsArray addObject:newPathSegment];
+    }
 
     NSInteger rowIndex = (self.pathTableView).selectedRow;
-
-    NSMutableArray * pathSegmentsArray = [self pathSegmentsArray];
+    
+    if (rowIndex == -1)
+    {
+        rowIndex = pathSegmentsArray.count - 1;
+        NSIndexSet * rowIndexSet = [NSIndexSet indexSetWithIndex:rowIndex];
+        [self.pathTableView selectRowIndexes:rowIndexSet byExtendingSelection:NO];
+    }
 
     PathSegment * pathSegment = pathSegmentsArray[rowIndex];
     

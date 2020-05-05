@@ -435,6 +435,8 @@
     //[self.domSelectionControlsManager updateDOMSelectionRectsAndHandles];    // 20160716
     
     [self reloadRulerViews];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SVGWebViewReloaded" object:self];
 }
 
 //==================================================================================

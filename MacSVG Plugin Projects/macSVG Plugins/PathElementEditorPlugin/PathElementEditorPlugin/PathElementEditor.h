@@ -71,6 +71,8 @@
 // path functions
 @property(strong) IBOutlet PathElementEditorFunctions * pathFunctions;
 
+@property(strong) NSString * selectedElementMacsvgid;
+
 - (IBAction)updateSVGPathEditorAction:(id)sender;
 
 - (IBAction)editPathSegmentButtonAction:(id)sender;

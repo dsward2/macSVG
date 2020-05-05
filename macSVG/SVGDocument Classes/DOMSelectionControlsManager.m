@@ -2452,12 +2452,12 @@
                                 [newPathString appendString:pathCommandString];
                             }
                             
-                            NSString * xString = pathSegment.xString;
+                            NSString * xString = pathSegment.absoluteXString;
                             [newPathString appendString:xString];
                             
                             [newPathString appendString:@","];
                             
-                            NSString * yString = pathSegment.yString;
+                            NSString * yString = pathSegment.absoluteYString;
                             [newPathString appendString:yString];
                             
                             [newPathString appendString:@" "];

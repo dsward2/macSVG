@@ -932,6 +932,9 @@
                 currentPathSegment.absoluteXFloat = segmentAbsoluteX;
                 currentPathSegment.absoluteYFloat = segmentAbsoluteY;
                 
+                currentPathSegment.absoluteStartXFloat = segmentAbsoluteX;
+                currentPathSegment.absoluteStartYFloat = segmentAbsoluteY;
+                
                 if ((previousCommandChar == 'Z') || (previousCommandChar == 'z'))
                 {
                     subpathAbsoluteStartX = segmentAbsoluteStartX;
@@ -1560,8 +1563,8 @@
         pathXMLElement:(NSXMLElement *)pathXMLElement
 {
     // path commands M,m
-    NSString * xString = pathSegment.xString;
-    NSString * yString = pathSegment.yString;
+    NSString * xString = pathSegment.absoluteXString;
+    NSString * yString = pathSegment.absoluteYString;
     
     NSString * xPxString = [xString stringByAppendingString:@"px"];
     NSString * yPxString = [yString stringByAppendingString:@"px"];
@@ -3160,6 +3163,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     NSString * pathString = [pathElement getAttribute:@"d"];
 
     NSMutableArray * aPathsArray = [self buildPathSegmentsArrayWithPathString:pathString];
+    
+    self.pathSegmentsArray = aPathsArray;
 
     NSUInteger pathSegmentsCount = aPathsArray.count;
             
@@ -4292,6 +4297,17 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
         pathSegment.xString = newXString;
         pathSegment.yString = newYString;
+        
+        if (pathSegment.pathCommand == 'M')
+        {
+            pathSegment.absoluteXFloat = newX;
+            pathSegment.absoluteYFloat = newY;
+        }
+        else if (pathSegment.pathCommand == 'm')
+        {
+            pathSegment.absoluteXFloat = pathSegment.absoluteStartXFloat + newX;
+            pathSegment.absoluteYFloat = pathSegment.absoluteStartYFloat + newX;
+        }
 
         NSUInteger pathSegmentCount = (self.pathSegmentsArray).count;
         if (self.pathSegmentIndex < (pathSegmentCount - 1))
@@ -5183,12 +5199,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     case 't':     // smooth quadratic Bezier curve
                     case 'a':     // elliptical arc
                     {
-                        float newNextPathSegmentAbsoluteX = nextPathSegmentAbsoluteX + deltaX;
-                        float newNextPathSegmentAbsoluteY = nextPathSegmentAbsoluteY + deltaY;
-
-                        nextPathSegment.absoluteXFloat = newNextPathSegmentAbsoluteX;
-                        nextPathSegment.absoluteYFloat = newNextPathSegmentAbsoluteY;
-                        
                         float newNextPathSegmentX = nextPathSegmentX - deltaX;
                         float newNextPathSegmentY = nextPathSegmentY - deltaY;
 
@@ -5199,15 +5209,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     }
                     case 'c':     // curveto
                     {
-                        float nextPathSegmentAbsoluteX1 = nextPathSegment.absoluteX1Float;
-                        float nextPathSegmentAbsoluteY1 = nextPathSegment.absoluteY1Float;
-
-                        float newNextPathSegmentAbsoluteX1 = nextPathSegmentAbsoluteX1 + deltaX;
-                        float newNextPathSegmentAbsoluteY1 = nextPathSegmentAbsoluteY1 + deltaY;
-
-                        nextPathSegment.absoluteX1Float = newNextPathSegmentAbsoluteX1;
-                        nextPathSegment.absoluteY1Float = newNextPathSegmentAbsoluteY1;
-
                         float nextPathSegmentX2 = nextPathSegment.x2Float;
                         float nextPathSegmentY2 = nextPathSegment.y2Float;
 
@@ -5229,9 +5230,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     }
                     case 'h':     // horizontal lineto
                     {
-                        float newNextPathSegmentAbsoluteX = nextPathSegmentAbsoluteX + deltaX;
-                        nextPathSegment.absoluteXFloat = newNextPathSegmentAbsoluteX;
-
                         float newNextPathSegmentX = nextPathSegmentX + deltaX;
                         nextPathSegment.xFloat = newNextPathSegmentX;
 
@@ -5239,9 +5237,6 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                     }
                     case 'v':     // vertical lineto
                     {
-                        float newNextPathSegmentAbsoluteY = nextPathSegmentAbsoluteX + deltaY;
-                        nextPathSegment.absoluteYFloat = newNextPathSegmentAbsoluteY;
-
                         float newNextPathSegmentY = nextPathSegmentY + deltaY;
                         nextPathSegment.yFloat = newNextPathSegmentY;
 
@@ -5530,7 +5525,7 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
                     pathSegment.xString = newXString;
                     pathSegment.yString = newYString;
-
+                    
                     break;
                 }
                 case 'L':     // lineto absolute
@@ -5775,6 +5770,8 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
     [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
 
     [self updateActivePathInDOM:YES];
+    
+    //NSLog(@"pathSegmentsArray - %@", self.pathSegmentsArray);
 }
 
 //==================================================================================
