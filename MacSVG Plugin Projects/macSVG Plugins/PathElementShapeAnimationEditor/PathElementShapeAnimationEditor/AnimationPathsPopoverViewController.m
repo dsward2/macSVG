@@ -359,7 +359,7 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
 
 - (void)loadSettingsForMasterPathElement:(NSXMLElement *)masterPathElement animateElement:(NSXMLElement *)animateElement
 {
-    NSLog(@"PathElementShapeAnimationEditor - loadSettingsForMasterPathElement");
+    //NSLog(@"PathElementShapeAnimationEditor - loadSettingsForMasterPathElement");
 
     self.originalPathElement = masterPathElement;
     self.originalAnimateElement = animateElement;

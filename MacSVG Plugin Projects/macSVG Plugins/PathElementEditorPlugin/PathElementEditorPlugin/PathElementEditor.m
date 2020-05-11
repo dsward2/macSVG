@@ -396,12 +396,11 @@
     
     if (pathSegmentsArrayCount > 0)
     {
-        
         PathSegment * closePathSegment = [pathSegmentsArray objectAtIndex:pathSegmentsArrayCount - 1];
         PathSegment * newClosePathSegment = [[PathSegment alloc] init];
         [newClosePathSegment copyValuesFromPathSegment:closePathSegment];
-        [pathSegmentsArray addObject:newClosePathSegment];   // add a second the Z or z segment, the final one will be removed
-
+        [pathSegmentsArray addObject:newClosePathSegment];   // add temporary Z or z segment, it will be removed on continuation
+        
         [self.macSVGPluginCallbacks updatePathSegmentsAbsoluteValues:pathSegmentsArray];
         
         [self updateWithPathSegmentsArray:pathSegmentsArray updatePathLength:YES];
@@ -448,11 +447,30 @@
 {
     MacSVGDocumentWindowController * macSVGDocumentWindowController =
             [self.macSVGDocument macSVGDocumentWindowController];
+            
+    PathSegment * lastPathSegment = self.pathSegmentsArray.lastObject;          // likely a 'Z' close path segment
 
-    [macSVGDocumentWindowController setToolMode:toolModeCrosshairCursor];
-
-    [macSVGDocumentWindowController setToolMode:toolModePath];
+    [macSVGDocumentWindowController setToolMode:toolModeCrosshairCursor];       // removes the 'Z' close path segments
     
+    [macSVGDocumentWindowController setToolMode:toolModePath];
+
+    PathSegment * newLastPathSegment = self.pathSegmentsArray.lastObject;
+    if (lastPathSegment != NULL)
+    {
+        if (newLastPathSegment != NULL)
+        {
+            if (lastPathSegment.pathCommand == 'Z')
+            {
+                if (newLastPathSegment.pathCommand != 'Z')
+                {
+                    // add the 'Z' close path command segment back to the path segment array,
+                    // this is needed for starting the next subpath at a new coordinate
+                    [self.pathSegmentsArray addObject:lastPathSegment];
+                }
+            }
+        }
+    }
+
     DOMSelectionControlsManager * domSelectionControlsManager =
     macSVGDocumentWindowController.svgXMLDOMSelectionManager.domSelectionControlsManager;
 

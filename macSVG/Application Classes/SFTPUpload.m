@@ -328,7 +328,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
 */
 
     NSInteger dataSize = fileData.length;
-    NSLog(@"dataSize = %ld", dataSize);
+    //NSLog(@"dataSize = %ld", dataSize);
     off_t got=0;
 
     while(got < dataSize)
@@ -345,8 +345,8 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
         NSRange outputRange = NSMakeRange(got, amount);  // dsward calc output range
         [fileData getBytes:&mem range:outputRange];    // dsward get output data
         
-        NSLog(@"amount = %ld", amount);
-        NSLog(@"got = %lld", got);
+        //NSLog(@"amount = %ld", amount);
+        //NSLog(@"got = %lld", got);
         
         if(amount > 0)
         {

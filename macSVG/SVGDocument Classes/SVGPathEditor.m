@@ -4275,28 +4275,24 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
 
 -(void) editPathSegmentMoveto:(PathSegment *)pathSegment
 {
-    NSString * existingXString = pathSegment.xString;     // endpoint x
-    NSString * existingYString = pathSegment.yString;     // endpoint y
+    float existingX = pathSegment.xFloat;     // endpoint x
+    float existingY = pathSegment.yFloat;     // endpoint y
 
-    float existingX = existingXString.floatValue;
-    float existingY = existingYString.floatValue;
-
-    //NSPoint  currentMousePoint = domMouseEventsController.currentMousePoint;
     NSPoint  transformedCurrentMousePoint = domMouseEventsController.transformedCurrentMousePagePoint;
     
     if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
     {
-        float deltaX = transformedCurrentMousePoint.x - existingX;
-        float deltaY = transformedCurrentMousePoint.y - existingY;
+        float existingAbsoluteX = pathSegment.absoluteXFloat;
+        float existingAbsoluteY = pathSegment.absoluteYFloat;
+
+        float deltaX = transformedCurrentMousePoint.x - existingAbsoluteX;
+        float deltaY = transformedCurrentMousePoint.y - existingAbsoluteY;
         
         float newX = existingX + deltaX;
         float newY = existingY + deltaY;
 
-        NSString * newXString = [self allocFloatString:newX];
-        NSString * newYString = [self allocFloatString:newY];
-
-        pathSegment.xString = newXString;
-        pathSegment.yString = newYString;
+        pathSegment.xFloat = newX;
+        pathSegment.yFloat = newY;
         
         if (pathSegment.pathCommand == 'M')
         {
@@ -4305,9 +4301,12 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
         }
         else if (pathSegment.pathCommand == 'm')
         {
-            pathSegment.absoluteXFloat = pathSegment.absoluteStartXFloat + newX;
-            pathSegment.absoluteYFloat = pathSegment.absoluteStartYFloat + newX;
+            pathSegment.absoluteXFloat = pathSegment.absoluteStartXFloat + deltaX;
+            pathSegment.absoluteYFloat = pathSegment.absoluteStartYFloat + deltaY;
         }
+        
+        pathSegment.absoluteStartXFloat = pathSegment.absoluteXFloat;
+        pathSegment.absoluteStartYFloat = pathSegment.absoluteYFloat;
 
         NSUInteger pathSegmentCount = (self.pathSegmentsArray).count;
         if (self.pathSegmentIndex < (pathSegmentCount - 1))
@@ -4321,12 +4320,9 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
             if (nextPathCommand == 'C')
             {
                 // modify control point in next segment for curve continuity
-                NSString * existingX1String = nextPathSegment.x1String;     // next control point x
-                NSString * existingY1String = nextPathSegment.y1String;     // next control point y
+                float existingX1 = nextPathSegment.x1Float;     // next control point x
+                float existingY1 = nextPathSegment.y1Float;     // next control point y
                 
-                float existingX1 = existingX1String.floatValue;
-                float existingY1 = existingY1String.floatValue;
-
                 float newX1 = existingX1 + deltaX;
                 float newY1 = existingY1 + deltaY;
 
@@ -5378,6 +5374,32 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         break;
                     }
                     case 'm':     // moveto relative
+                    {
+                        if ([self.pathEditingKey isEqualToString:@"xy"] == YES)
+                        {
+                            //NSNumber * absoluteXNumber = aPathSegment.absoluteX;
+                            //NSNumber * absoluteYNumber = aPathSegment.absoluteY;
+
+                            float absoluteX = aPathSegment.absoluteXFloat;
+                            float absoluteY = aPathSegment.absoluteYFloat;
+
+                            if ((originalAbsoluteX == absoluteX) &&
+                                    (originalAbsoluteY == absoluteY))
+                            {
+                                // modify this Moveto found in a different segment within the path,
+                                // this can preserve a smooth closed path, typically between the last cubic segment
+                                // and the first segment, but this seems to work for subpath matches too.
+                                NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                self.pathSegmentIndex = i;
+                                [self editPathSegmentMoveto:aPathSegment];
+                                self.pathSegmentIndex = tempPathSegmentIndex;
+     
+                                [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                            }
+                        }
+
+                        break;
+                    }
                     case 'L':     // lineto absolute
                     case 'l':     // lineto relative
                     case 'H':     // horizontal lineto absolute
@@ -5458,6 +5480,77 @@ NSPoint bezierMidPoint(NSPoint p0, NSPoint p1, NSPoint p2)
                         break;
                     }
                     case 'c':     // cubic curveto relative
+{
+                        if ([self.pathEditingKey isEqualToString:@"x1y1"] == YES)
+                        {
+                            if (i != self.pathSegmentIndex - 1) // don't check previous segment, it is already adjusted
+                            {
+                                //NSNumber * absoluteX2Number = aPathSegment.absoluteX2;
+                                //NSNumber * absoluteY2Number = aPathSegment.absoluteY2;
+                                //NSNumber * absoluteXNumber = aPathSegment.absoluteX;
+                                //NSNumber * absoluteYNumber = aPathSegment.absoluteY;
+
+                                float absoluteX2 = aPathSegment.absoluteX2Float;
+                                float absoluteY2 = aPathSegment.absoluteY2Float;
+                                float absoluteX = aPathSegment.absoluteXFloat;
+                                float absoluteY = aPathSegment.absoluteYFloat;
+                                
+                                float reflectX2 = absoluteX - (absoluteX2 - absoluteX);
+                                float reflectY2 = absoluteY - (absoluteY2 - absoluteY);
+
+                                float originalAbsoluteX1 = originalPathSegment.absoluteX1Float;
+                                float originalAbsoluteY1 = originalPathSegment.absoluteY1Float;
+                                
+                                if ((originalAbsoluteX1 == reflectX2) &&
+                                        (originalAbsoluteY1 == reflectY2))
+                                {
+                                    // reflect x1y1 from current cubic curve found to x2y2 in previous segment.
+                                    NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                    NSString * tempPathEditingKey = self.pathEditingKey;
+                                    self.pathEditingKey = @"x3y3";
+                                    self.pathSegmentIndex = i;
+                                    [self editPathSegmentCubicCurve:aPathSegment];
+                                    self.pathEditingKey = tempPathEditingKey;
+                                    self.pathSegmentIndex = tempPathSegmentIndex;
+         
+                                    [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                                }
+                            }
+                        }
+                        else if ([self.pathEditingKey isEqualToString:@"x2y2"] == YES)
+                        {
+                            if (i != self.pathSegmentIndex + 1) // don't check next segment, it is already adjusted
+                            {
+                                float absoluteX1 = aPathSegment.absoluteX1Float;
+                                float absoluteY1 = aPathSegment.absoluteY1Float;
+                                float absoluteStartX = aPathSegment.absoluteStartXFloat;
+                                float absoluteStartY = aPathSegment.absoluteStartYFloat;
+
+                                float reflectX1 = absoluteStartX - (absoluteX1 - absoluteStartX);
+                                float reflectY1 = absoluteStartY - (absoluteY1 - absoluteStartY);
+
+                                float originalAbsoluteX2 = originalPathSegment.absoluteX2Float;
+                                float originalAbsoluteY2 = originalPathSegment.absoluteY2Float;
+                                
+                                if ((originalAbsoluteX2 == reflectX1) &&
+                                        (originalAbsoluteY2 == reflectY1))
+                                {
+                                    // reflect x2y2 from current cubic curve found to x1y1 in a different segment.
+                                    NSInteger tempPathSegmentIndex = self.pathSegmentIndex;
+                                    NSString * tempPathEditingKey = self.pathEditingKey;
+                                    self.pathEditingKey = @"x0y0";
+                                    self.pathSegmentIndex = i;
+                                    [self editPathSegmentCubicCurve:aPathSegment];
+                                    self.pathEditingKey = tempPathEditingKey;
+                                    self.pathSegmentIndex = tempPathSegmentIndex;
+         
+                                    [self updatePathSegmentsAbsoluteValues:self.pathSegmentsArray];
+                                }
+                            }
+                        }
+
+                        break;
+                    }
                     case 'S':     // smooth cubic curveto absolute
                     case 's':     // smooth cubic curveto relative
                     case 'Q':     // quadratic curveto absolute

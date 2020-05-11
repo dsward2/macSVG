@@ -253,7 +253,7 @@
     fprintf(stderr, "libssh2_sftp_open() is done, now send data!\n");
 
     NSInteger dataSize = fileData.length;
-    NSLog(@"dataSize = %ld", dataSize);
+    //NSLog(@"dataSize = %ld", dataSize);
     off_t got=0;
 
     while(got < dataSize)
@@ -270,8 +270,8 @@
         NSRange outputRange = NSMakeRange(got, amount);  // dsward calc output range
         [fileData getBytes:&mem range:outputRange];    // dsward get output data
         
-        NSLog(@"amount = %ld", amount);
-        NSLog(@"got = %lld", got);
+        //NSLog(@"amount = %ld", amount);
+        //NSLog(@"got = %lld", got);
         
         if(amount > 0)
         {

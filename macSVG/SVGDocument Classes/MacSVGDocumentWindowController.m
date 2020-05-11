@@ -185,7 +185,7 @@
     }
     */
     
-    NSLog(@"macSVGDocument validateMenuItem %@", menuItem);
+    //NSLog(@"macSVGDocument validateMenuItem %@", menuItem);
     
     return YES;
 }

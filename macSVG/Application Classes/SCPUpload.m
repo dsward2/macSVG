@@ -268,7 +268,7 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
 
     NSInteger dataSize = fileData.length;
 
-    NSLog(@"dataSize = %ld", dataSize);
+    //NSLog(@"dataSize = %ld", dataSize);
 
     while(got < dataSize)
     {
@@ -284,8 +284,8 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
         NSRange outputRange = NSMakeRange(got, amount);  // dsward calc output range
         [fileData getBytes:&mem range:outputRange];    // dsward get output data
         
-        NSLog(@"amount = %ld", amount);
-        NSLog(@"got = %lld", got);
+        //NSLog(@"amount = %ld", amount);
+        //NSLog(@"got = %lld", got);
         
         if(amount > 0)
         {
@@ -308,13 +308,13 @@ static int waitsocket(int socket_fd, LIBSSH2_SESSION *session)
         got += amount;
     }
 
-    NSLog(@"Sending EOF");
+    //NSLog(@"Sending EOF");
     while (libssh2_channel_send_eof(channel) == LIBSSH2_ERROR_EAGAIN);
 
-    NSLog(@"Waiting for EOF");
+    //NSLog(@"Waiting for EOF");
     while (libssh2_channel_wait_eof(channel) == LIBSSH2_ERROR_EAGAIN);
 
-    NSLog(@"Waiting for channel to close");
+    //NSLog(@"Waiting for channel to close");
     while (libssh2_channel_wait_closed(channel) == LIBSSH2_ERROR_EAGAIN);
 
     libssh2_channel_free(channel);
