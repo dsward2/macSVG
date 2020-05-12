@@ -1,14 +1,8 @@
-# macSVG
+# macSVG 1.1.7
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg?sanitize=true" width="660" height="105">
 
-**December 9, 2019 – This release of macSVG contains several bug fixes and a couple of new features.**
-
-**The tool panel now contains a Share button.  It can be used with AirDrop to quickly open the current SVG document on an iPhone, iPad or another Mac.**
-
-**The user interface for managing animation elements has been improved for setting the keyTimes, keySplines and keyPoints attributes.  This change makes it easier to set linear/ease-in/ease-out animation timings.**
-
-The OpenClipArt.org website under the Help menu is currently offline.  Hopefully it will return soon.
+**May 12, 2020 – This release of macSVG 1.1.7 contains several bug fixes, notably with copy, paste and drag commands - and improves editing for SVG paths with relative coordinates.  Some improvements were made for editing animation with keyTimes/keySplines/keyPoints animate, animateMotion and animateTransform elements.  The built-in HTTP server was migrated to use GCDWebServer.**
 
 <hr>
 
@@ -48,8 +42,10 @@ Apple’s free Xcode system is required to build the macOS application from the 
 
 Migration to Swift language, and Swift Package Manager for importing third-party code.
 
+We are monitoring the WebKit project concerning their plans to remove the Legacy WebView framework, which is used extensively in macSVG.  
+
 #
 
-Copyright (c) 2016-2019 by ArkPhone, LLC.
+Copyright (c) 2016-2020 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.

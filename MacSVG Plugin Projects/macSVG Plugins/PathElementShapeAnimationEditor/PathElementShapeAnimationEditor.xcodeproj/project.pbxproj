@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E3F0F491E446023001FDDD7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EEE3AEB17BC03740040846F /* Cocoa.framework */; };
+		0EC200A4246A65E3003E6E1E /* PathSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC200A3246A65E3003E6E1E /* PathSegment.m */; };
 		0EEE3AF617BC03740040846F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EEE3AF417BC03740040846F /* InfoPlist.strings */; };
 		0EEE3AFF17BC041A0040846F /* PathElementShapeAnimationEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE3AFE17BC041A0040846F /* PathElementShapeAnimationEditor.m */; };
 		0EEE3B0817BC34F20040846F /* PathElementShapeAnimationEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EEE3B0017BC04840040846F /* PathElementShapeAnimationEditor.xib */; };
@@ -18,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		0E43C7082331F07000F55196 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PathElementShapeAnimationEditor.xib; sourceTree = "<group>"; };
+		0EC200A2246A65E3003E6E1E /* PathSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathSegment.h; path = "../../../../macSVG/SVGDocument Classes/PathSegment.h"; sourceTree = "<group>"; };
+		0EC200A3246A65E3003E6E1E /* PathSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PathSegment.m; path = "../../../../macSVG/SVGDocument Classes/PathSegment.m"; sourceTree = "<group>"; };
 		0ECCB00F1DB4AA86001A6085 /* macSVGPluginConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = macSVGPluginConfig.xcconfig; path = "../../../macSVGPlugin Framework/macSVGPluginConfig.xcconfig"; sourceTree = "<group>"; };
 		0EEE3AE817BC03740040846F /* PathElementShapeAnimationEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathElementShapeAnimationEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EEE3AEB17BC03740040846F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -81,6 +84,8 @@
 				0EEE3B0A17BD46BB0040846F /* AnimatePopoverViewController.m */,
 				0EEE3B0C17BD46DE0040846F /* AnimationPathsPopoverViewController.h */,
 				0EEE3B0D17BD46DE0040846F /* AnimationPathsPopoverViewController.m */,
+				0EC200A2246A65E3003E6E1E /* PathSegment.h */,
+				0EC200A3246A65E3003E6E1E /* PathSegment.m */,
 				0EEE3AF217BC03740040846F /* Supporting Files */,
 			);
 			path = PathElementShapeAnimationEditor;
@@ -168,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EC200A4246A65E3003E6E1E /* PathSegment.m in Sources */,
 				0EEE3AFF17BC041A0040846F /* PathElementShapeAnimationEditor.m in Sources */,
 				0EEE3B0B17BD46BB0040846F /* AnimatePopoverViewController.m in Sources */,
 				0EEE3B0E17BD46DE0040846F /* AnimationPathsPopoverViewController.m in Sources */,

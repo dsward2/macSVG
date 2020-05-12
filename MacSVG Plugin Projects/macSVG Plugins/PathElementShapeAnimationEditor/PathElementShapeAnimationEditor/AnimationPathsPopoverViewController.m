@@ -9,6 +9,7 @@
 #import "AnimationPathsPopoverViewController.h"
 #import "PathElementShapeAnimationEditor.h"
 #import "MacSVGPlugin/MacSVGPluginCallbacks.h"
+#import "PathSegment.h"
 
 @interface AnimationPathsPopoverViewController ()
 
@@ -879,13 +880,10 @@ height=\"150px\" viewBox=\"0 0 744 744\" preserveAspectRatio=\"xMidYMid meet\">"
     {
         for (NSInteger i = 0; i < pathArray1Count; i++)
         {
-            NSDictionary * pathArray1Dictionary = pathArray1[i];
-            NSDictionary * pathArray2Dictionary = pathArray2[i];
+            PathSegment * pathSegment1 = pathArray1[i];
+            PathSegment * pathSegment2 = pathArray2[i];
             
-            NSString * path1Command = pathArray1Dictionary[@"command"];
-            NSString * path2Command = pathArray2Dictionary[@"command"];
-            
-            if ([path1Command isEqualToString:path2Command] == NO)
+            if (pathSegment1.pathCommand != pathSegment2.pathCommand)
             {
                 result = NO;
                 break;

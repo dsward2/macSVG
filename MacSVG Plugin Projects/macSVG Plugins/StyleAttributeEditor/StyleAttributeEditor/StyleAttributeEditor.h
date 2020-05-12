@@ -23,6 +23,8 @@
 @property (strong) NSArray * styleNamesComboArray;
 @property (strong) NSArray * styleValuesComboArray;
 
+@property (strong) NSMutableArray * webColorsArray;
+
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)applyChangesButtonAction:(id)sender;
 
