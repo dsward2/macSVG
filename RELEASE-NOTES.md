@@ -1,5 +1,15 @@
 # macSVG Release Notes
 
+## macSVG v1.1.7 - May 12, 2012
+
+This release of macSVG 1.1.7 contains several bug fixes, notably with copy, paste and drag commands.  Several views containing stepper controls have bug fixes.
+
+Editing for SVG paths with relative coordinates is improved.
+
+Some improvements were made for editing animation with keyTimes/keySplines/keyPoints animate, animateMotion and animateTransform elements.  
+
+The built-in HTTP server was migrated to use GCDWebServer.
+
 ## macSVG v1.1.6 - December 9, 2019
 
 Several deprecation warnings about WebKit were supressed with #pragma statements.
