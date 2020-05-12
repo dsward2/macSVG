@@ -1,6 +1,6 @@
 # macSVG Release Notes
 
-## macSVG v1.1.7 - May 12, 2012
+## macSVG v1.1.7 - May 12, 2020
 
 This release of macSVG 1.1.7 contains several bug fixes, notably with copy, paste and drag commands.  Several views containing stepper controls have bug fixes.
 
