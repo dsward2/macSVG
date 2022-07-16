@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CocoaLumberjack",
-        "repositoryURL": "https://github.com/CocoaLumberjack/CocoaLumberjack",
-        "state": {
-          "branch": null,
-          "revision": "ded5f5999c853e7fef61fc27db100b169db0e21f",
-          "version": "3.6.0"
-        }
+  "pins" : [
+    {
+      "identity" : "libssh2prebuild",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DimaRU/Libssh2Prebuild",
+      "state" : {
+        "branch" : "master",
+        "revision" : "a91bcf205a6cbc84144f840c44145656abbd266a"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
