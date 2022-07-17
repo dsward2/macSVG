@@ -2999,7 +2999,7 @@ static NSString * GenerateUniqueFileNameAtPath(NSString *path, NSString *basenam
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
-    NSLog(@"outlineView:writeItems:toPasteboard: items %@", items);
+    //NSLog(@"outlineView:writeItems:toPasteboard: items %@", items);
 
     //self.draggedNodes = items;
     

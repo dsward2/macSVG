@@ -1,8 +1,8 @@
-# macSVG 1.1.7
+# macSVG 1.2
 
 <img src="https://cdn.rawgit.com/dsward2/macSVG/7cf2b09884673e1bb65a0a9ab5df184741bb7c65/README_images/macsvg-logo-animation.svg?sanitize=true" width="660" height="105">
 
-**May 12, 2020 – This release of macSVG 1.1.7 contains several bug fixes, notably with copy, paste and drag commands - and improves editing for SVG paths with relative coordinates.  Some improvements were made for editing animation with keyTimes/keySplines/keyPoints animate, animateMotion and animateTransform elements.  The built-in HTTP server was migrated to use GCDWebServer.**
+**July 16, 2022 – This release of macSVG 1.2 adds support for Macs with Apple Silicon M1/M2 processors.**
 
 <hr>
 
@@ -46,6 +46,6 @@ We are monitoring the WebKit project concerning their plans to remove the Legacy
 
 #
 
-Copyright (c) 2016-2020 by ArkPhone, LLC.
+Copyright (c) 2016-2022 by ArkPhone, LLC.
 
 All trademarks are the property of their respective holders.

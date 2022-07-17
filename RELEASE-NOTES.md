@@ -1,5 +1,15 @@
 # macSVG Release Notes
 
+## macSVG v1.2 - July 16, 2022
+
+This release of macSVG 1.2 adds support for Macs with Apple Silicon M1/M2 processors.
+
+Update build architectures for X86_64 and Apple Silicon.
+
+Replace the libssh2 library with the Swift package Libssh2Prebuild.
+
+Made a minor change in text_on_an_animated_path.svg to work around a WebKit animation bug.
+
 ## macSVG v1.1.7 - May 12, 2020
 
 This release of macSVG 1.1.7 contains several bug fixes, notably with copy, paste and drag commands.  Several views containing stepper controls have bug fixes.

@@ -3,7 +3,7 @@
 //  macSVG
 //
 //  Created by Douglas Ward on 3/25/20.
-//  Copyright © 2020 ArkPhone, LLC. All rights reserved.
+//  Copyright © 2022 ArkPhone, LLC. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
